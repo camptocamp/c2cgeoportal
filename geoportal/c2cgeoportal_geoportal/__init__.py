@@ -30,6 +30,7 @@ import importlib
 import json
 import logging
 import os
+import re
 import urllib.parse
 from collections.abc import Callable
 from functools import partial
@@ -45,7 +46,6 @@ import pyramid.renderers
 import pyramid.request
 import pyramid.response
 import pyramid.security
-import simple_openid_connect.data
 import sqlalchemy
 import sqlalchemy.orm
 import zope.event.classhandler
@@ -67,6 +67,7 @@ import c2cgeoportal_geoportal.views
 from c2cgeoportal_commons.models import InvalidateCacheEvent
 from c2cgeoportal_geoportal.lib import C2CPregenerator, caching, check_collector, checker, oidc
 from c2cgeoportal_geoportal.lib.cacheversion import version_cache_buster
+from c2cgeoportal_geoportal.lib.caching import get_region
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
 from c2cgeoportal_geoportal.lib.i18n import available_locale_names
 from c2cgeoportal_geoportal.lib.metrics import (
@@ -83,9 +84,11 @@ if TYPE_CHECKING:
 
 _LOG = logging.getLogger(__name__)
 
+_CACHE_REGION_OBJ = get_region("obj")
+
 # Header predicate to accept only JSON content
-JSON_CONTENT_TYPE = "Content-Type:application/json"
-GEOJSON_CONTENT_TYPE = r"Content-Type:application/geo\+json"
+_JSON_CONTENT_TYPE = "Content-Type:application/json"
+_GEOJSON_CONTENT_TYPE = r"Content-Type:application/geo\+json"
 
 
 class AssetRendererFactory:
@@ -299,11 +302,12 @@ def locale_negotiator(request: pyramid.request.Request) -> str:
     return lang
 
 
-def _match_url_start(reference: str, value: list[str]) -> bool:
-    """Check that the val URL starts like the ref URL."""
-    reference_parts = reference.rstrip("/").split("/")
-    value_parts = value[0 : len(reference_parts)]
-    return reference_parts == value_parts
+_URL_RE = re.compile(r"^[a-z]+://.*")
+
+
+@_CACHE_REGION_OBJ.cache_on_arguments()
+def _get_netlocs(hosts: list[str]) -> set[str]:
+    return {urllib.parse.urlparse(h).netloc if _URL_RE.match(h) else h.split("/", 1)[0] for h in hosts}
 
 
 def is_allowed_url(
@@ -316,7 +320,7 @@ def is_allowed_url(
     """
 
     url_netloc = urllib.parse.urlparse(url).netloc
-    return url_netloc, url_netloc == request.host or url_netloc in allowed_hosts
+    return url_netloc, url_netloc == request.host or url_netloc in _get_netlocs(allowed_hosts)
 
 
 def is_allowed_host(request: pyramid.request.Request) -> bool:
@@ -343,7 +347,7 @@ def is_valid_referrer(request: pyramid.request.Request, settings: dict[str, Any]
                 "or part of authorized_referers: %s",
                 referrer_hostname,
                 request.host,
-                ", ".join(authorized_referrers),
+                ", ".join(_get_netlocs(authorized_referrers)),
             )
             return False
     return True
@@ -734,7 +738,7 @@ def includeme(config: pyramid.config.Configurator) -> None:
         "printproxy_report_create",
         "/printproxy/report.{format}",
         request_method="POST",
-        header=JSON_CONTENT_TYPE,
+        header=_JSON_CONTENT_TYPE,
     )
     config.add_route("printproxy_status", "/printproxy/status/{ref}.json", request_method="GET")
     config.add_route("printproxy_cancel", "/printproxy/cancel/{ref}", request_method="DELETE")
@@ -783,13 +787,13 @@ def includeme(config: pyramid.config.Configurator) -> None:
     )  # supports URLs like /layers/1,2,3
     config.add_route("layers_read_one", "/layers/{layer_id:\\d+}/{feature_id}", request_method="GET")
     config.add_route(
-        "layers_create", "/layers/{layer_id:\\d+}", request_method="POST", header=GEOJSON_CONTENT_TYPE
+        "layers_create", "/layers/{layer_id:\\d+}", request_method="POST", header=_GEOJSON_CONTENT_TYPE
     )
     config.add_route(
         "layers_update",
         "/layers/{layer_id:\\d+}/{feature_id}",
         request_method="PUT",
-        header=GEOJSON_CONTENT_TYPE,
+        header=_GEOJSON_CONTENT_TYPE,
     )
     config.add_route("layers_delete", "/layers/{layer_id:\\d+}/{feature_id}", request_method="DELETE")
     config.add_route(
