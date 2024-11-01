@@ -28,7 +28,7 @@ Mako = "1.2.4" # geoportal
 OWSLib = "0.28.1" # geoportal
 papyrus = "2.5" # commons, geoportal
 passwordgenerator = "1.5.1" # geoportal
-psycopg2 = "2.9.9" # geoportal
+psycopg2 = "2.9.10" # geoportal
 pycryptodome = "3.19.1" # geoportal
 pyproj = "3.4.1" # admin, other?
 pyotp = "2.8.0" # geoportal
@@ -57,7 +57,7 @@ prospector = { extras = ["with_mypy", "with_bandit"], version = "1.9.0" }
 # pylint = "2.15.5"
 setuptools = { version = "67.1.0", optional = true }
 pygments = "2.15.1"
-cryptography = { version = "43.0.1", optional = true }
+cryptography = { version = "43.0.3", optional = true }
 gitpython = "3.1.43"
 pillow = "10.3.0"
 urllib3 = { version = "1.26.20", optional = true }
@@ -67,7 +67,7 @@ gunicorn = "22.0.0"
 certifi = { version = "2024.7.4", optional = true }
 sentry-sdk = { version = "2.8.0", optional = true }
 zipp = { version = "3.19.3", optional = true }
-webob = { version = "1.8.8", optional = true }
+webob = { version = "1.8.9", optional = true }
 waitress = { version = "3.0.1", optional = true }
 
 [tool.poetry.dev-dependencies]
