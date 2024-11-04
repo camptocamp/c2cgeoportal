@@ -2165,21 +2165,20 @@ six = ">=1.8.0"
 
 [[package]]
 name = "owslib"
-version = "0.31.0"
+version = "0.32.0"
 description = "OGC Web Service utility library"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.10"
 files = [
-    {file = "OWSLib-0.31.0-py2.py3-none-any.whl", hash = "sha256:ab54d20974bd8ddd24ee5539c46a7829ec9e77ed0976724f635d1a3a321d3a39"},
-    {file = "OWSLib-0.31.0.tar.gz", hash = "sha256:2ed6540087445cc57d905138a590b6ae58624ec7661b5c1682ed4e3303bcd150"},
+    {file = "OWSLib-0.32.0-py2.py3-none-any.whl", hash = "sha256:69d8d64138612b5f3c09fdac69e53651cc2e3b925f292ab7bde872435e78cf17"},
+    {file = "OWSLib-0.32.0.tar.gz", hash = "sha256:7513860d3102ae8d4dc5efd8652ff3c61eca3a8cb220d6c8601121357cd2b01a"},
 ]
 
 [package.dependencies]
 lxml = "*"
-python-dateutil = ">=1.5"
-pytz = "*"
+python-dateutil = "*"
 pyyaml = "*"
-requests = ">=1.0"
+requests = "*"
 
 [[package]]
 name = "packaging"
@@ -3452,17 +3451,6 @@ text-unidecode = ">=1.3"
 
 [package.extras]
 unidecode = ["Unidecode (>=1.1.1)"]
-
-[[package]]
-name = "pytz"
-version = "2024.1"
-description = "World timezone definitions, modern and historical"
-optional = false
-python-versions = "*"
-files = [
-    {file = "pytz-2024.1-py2.py3-none-any.whl", hash = "sha256:328171f4e3623139da4983451950b28e95ac706e13f3f2630a879749e7a8b319"},
-    {file = "pytz-2024.1.tar.gz", hash = "sha256:2a29735ea9c18baf14b448846bde5a48030ed267578472d8955cd0e7443a9812"},
-]
 
 [[package]]
 name = "pyyaml"
@@ -4758,4 +4746,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "c72567b21669cee291df4bd463820ca27a2e97dfb688ea2d1e3871f4ea668bc5"
+content-hash = "4ecd339b0fda1c5732ab0e08c1278378090c5d74b35f01bb9691007f99a59e8e"
