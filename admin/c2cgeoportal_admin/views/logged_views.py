@@ -28,7 +28,6 @@
 import datetime
 from typing import Generic, TypeVar
 
-import pytz
 from c2cgeoform.views.abstract_views import AbstractViews, DeleteResponse, SaveResponse
 from pyramid.httpexceptions import HTTPFound
 
@@ -73,7 +72,7 @@ class LoggedViews(AbstractViews[_T], Generic[_T]):
         assert self._name_field is not None
         assert self._id_field is not None
         log = self._log_model(
-            date=datetime.datetime.now(pytz.utc),
+            date=datetime.datetime.now(datetime.timezone.utc),
             action=action,
             element_type=self._model.__tablename__,
             element_id=getattr(obj, self._id_field),
