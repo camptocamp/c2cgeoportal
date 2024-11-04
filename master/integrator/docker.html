@@ -13,8 +13,14 @@
     <script src="../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="https://unpkg.com/mermaid@10.2.0/dist/mermaid.min.js"></script>
-    <script>mermaid.initialize({startOnLoad:true});</script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs"></script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+    <script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";
+window.addEventListener("load", () => mermaid.run());
+</script>
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -42,8 +48,8 @@
 <section id="architecture-schema">
 <h2>Architecture schema<a class="headerlink" href="#architecture-schema" title="Link to this heading">¶</a></h2>
 <p>For OpenShift projects:</p>
-<div class="mermaid">
-            graph LR
+<pre  class="mermaid">
+        graph LR
 
     client(Web client);
 
@@ -89,9 +95,9 @@
     tinyows -.-&gt; postgres;
 
     classDef data fill:#5ba6ff,color:black;
-        </div><p>For standalone projects:</p>
-<div class="mermaid">
-            graph LR
+    </pre><p>For standalone projects:</p>
+<pre  class="mermaid">
+        graph LR
 
     client(Web client);
 
@@ -145,7 +151,7 @@
     tinyows -.-&gt; postgres;
 
     classDef data fill:#5ba6ff,color:black;
-        </div></section>
+    </pre></section>
 <section id="docker-images">
 <h2>Docker Images<a class="headerlink" href="#docker-images" title="Link to this heading">¶</a></h2>
 <p>When you build your application, the following images will be generated:</p>

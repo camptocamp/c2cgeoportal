@@ -13,8 +13,14 @@
     <script src="../_static/documentation_options.js?v=5929fcd5"></script>
     <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script src="https://unpkg.com/mermaid@10.2.0/dist/mermaid.min.js"></script>
-    <script>mermaid.initialize({startOnLoad:true});</script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs"></script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+    <script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.2.0/dist/mermaid.esm.min.mjs";
+window.addEventListener("load", () => mermaid.run());
+</script>
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -230,8 +236,8 @@ add the domain of the <code class="docutils literal notranslate"><span class="pr
 <span id="integrator-authentication-oidc"></span><h4>OpenID Connect<a class="headerlink" href="#openid-connect" title="Link to this heading">¶</a></h4>
 <p>We can configure an OpenID connect service as an SSO (Single Sign-On) provider for our application. This allows users to log in to our application using their OpenID Connect credentials.</p>
 <p>We use <a class="reference external" href="https://openid.net/specs/openid-connect-discovery-1_0.html">OpenID Connect Discovery 1.0</a> with an Authorization Code Flow from <a class="reference external" href="https://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect Core 1.0</a>, with PKCE (Proof Key for Code Exchange, <a class="reference external" href="https://tools.ietf.org/html/rfc7636">RFC 7636</a>).</p>
-<div class="mermaid">
-            sequenceDiagram
+<pre  class="mermaid">
+        sequenceDiagram
     actor User
     participant Browser
     participant Geoportal
@@ -256,7 +262,7 @@ add the domain of the <code class="docutils literal notranslate"><span class="pr
     Geoportal-&gt;&gt;IAM: refresh token endpoint
     end
     Geoportal-&gt;&gt;-Browser: response
-        </div></section>
+    </pre></section>
 </section>
 <section id="authentication-provider">
 <h3>Authentication provider<a class="headerlink" href="#authentication-provider" title="Link to this heading">¶</a></h3>
