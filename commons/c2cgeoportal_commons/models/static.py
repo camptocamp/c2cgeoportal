@@ -29,12 +29,11 @@
 import crypt
 import logging
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from hashlib import sha1
 from hmac import compare_digest as compare_hash
 from typing import Any
 
-import pytz
 import sqlalchemy.schema
 from c2c.template.config import config
 from sqlalchemy import Column, ForeignKey, Table
@@ -362,10 +361,10 @@ class User(Base):  # type: ignore
         return False
 
     def expired(self) -> bool:
-        return self.expire_on is not None and self.expire_on < datetime.now(pytz.utc)
+        return self.expire_on is not None and self.expire_on < datetime.now(timezone.utc)
 
     def update_last_login(self) -> None:
-        self.last_login = datetime.now(pytz.utc)
+        self.last_login = datetime.now(timezone.utc)
 
     def __str__(self) -> str:
         return self.username or ""
