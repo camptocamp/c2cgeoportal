@@ -98,7 +98,7 @@ types-setuptools = "75.2.0.20241025"
 mappyfile = "1.0.2"
 # To be able to upgrade project from version <= 2.8
 c2cciutils = { version = "1.5.8", extras = ["checks"] }
-pre-commit = "3.8.0"
+pre-commit = "4.0.1"
 mapbox-vector-tile = "2.1.0"
 responses = "0.25.3"
 waitress = "3.0.1"
