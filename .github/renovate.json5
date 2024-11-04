@@ -113,6 +113,11 @@
       matchPaths: ['geoportal/requirements.txt'],
       enabled: false,
     },
+    /** Ignore .github/workflows/rebuild-*.yaml */
+    {
+      matchFileNames: ['.github/workflows/rebuild-*.yaml'],
+      enabled: false,
+    },
     /** Accept only the patch on stabilization branches */
     {
       matchBaseBranches: ['/^[0-9]+\\.[0-9]+$/'],
