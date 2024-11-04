@@ -393,13 +393,13 @@ publish = ["google-api-python-client (>=2.0.0,<3.0.0)", "google-auth-httplib2 (>
 
 [[package]]
 name = "c2cgeoform"
-version = "2.4.0"
+version = "2.4.1"
 description = "c2cgeoform"
 optional = false
 python-versions = "<3.13,>=3.9"
 files = [
-    {file = "c2cgeoform-2.4.0-py3-none-any.whl", hash = "sha256:55c0aea1fbc0ae927b0d15b6d198f267fa61f4f62fa189c29910a8f2f796b6d4"},
-    {file = "c2cgeoform-2.4.0.tar.gz", hash = "sha256:3bbd994cd765f89a9ec508a265fafd6a96727f42f0dbbfdcfd6513a9d8cda16e"},
+    {file = "c2cgeoform-2.4.1-py3-none-any.whl", hash = "sha256:398662ba8ecb1400219c52541b1e854d1de8d1b3e399bdbc8cb9167138c77236"},
+    {file = "c2cgeoform-2.4.1.tar.gz", hash = "sha256:e569395b32bf4409fe6d7e1881e6f40bf38f187c0ae9c2d1858d7586b0c98180"},
 ]
 
 [package.dependencies]
@@ -4746,4 +4746,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "4ecd339b0fda1c5732ab0e08c1278378090c5d74b35f01bb9691007f99a59e8e"
+content-hash = "8ad6add938b77b6ea728fd50cbd6ec536d3bc9bd45b2d3f4cdff4457344ce455"
