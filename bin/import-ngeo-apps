@@ -137,7 +137,7 @@ def main() -> None:
                     data,
                 )
                 data = _sub(
-                    re.escape('<script src="../../../dist/vendor.js') + r".*",
+                    " *" + re.escape('<script src="../../../dist/vendor.js') + r".*",
                     "",
                     data,
                     required=False,
