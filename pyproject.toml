@@ -31,7 +31,7 @@ authors = []
 python = ">=3.10,<3.13"
 alembic = "1.13.3" # geoportal
 "c2c.template" = "2.4.2" # geoportal
-c2cgeoform = "2.4.0" # commons
+c2cgeoform = "2.4.1" # commons
 colander = "2.0" # commons, admin
 ColanderAlchemy = "0.3.4" # commons
 cookiecutter = "2.6.0" # geoportal
