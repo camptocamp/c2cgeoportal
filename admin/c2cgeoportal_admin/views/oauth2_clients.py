@@ -42,7 +42,7 @@ from pyramid.view import view_config, view_defaults
 from c2cgeoportal_admin.views.logged_views import LoggedViews
 from c2cgeoportal_commons.models.static import Log, OAuth2Client
 
-_list_field = partial(ListField, OAuth2Client)  # type: ignore[var-annotated]
+_list_field = partial(ListField, OAuth2Client)
 
 base_schema = GeoFormSchemaNode(OAuth2Client)
 base_schema.add_unique_validator(OAuth2Client.client_id, OAuth2Client.id)

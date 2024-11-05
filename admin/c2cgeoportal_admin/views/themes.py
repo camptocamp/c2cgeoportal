@@ -52,7 +52,7 @@ from c2cgeoportal_admin.schemas.treegroup import children_schema_node
 from c2cgeoportal_admin.views.treeitems import TreeItemViews
 from c2cgeoportal_commons.models.main import Functionality, Interface, Role, Theme
 
-_list_field = partial(ListField, Theme)  # type: ignore[var-annotated]
+_list_field = partial(ListField, Theme)
 
 base_schema = GeoFormSchemaNode(Theme, widget=FormWidget(fields_template="theme_fields"))
 base_schema.add(children_schema_node(only_groups=True))

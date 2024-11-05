@@ -378,7 +378,7 @@ class Shorturl(Base):  # type: ignore
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     url: Mapped[str] = mapped_column(Unicode)
     ref: Mapped[str] = mapped_column(String(20), index=True, unique=True, nullable=False)
-    creator_email: Mapped[str] = mapped_column(Unicode(200), nullable=True)
+    creator_email: Mapped[str | None] = mapped_column(Unicode(200), nullable=True)
     creation: Mapped[datetime] = mapped_column(DateTime)
     last_hit: Mapped[datetime] = mapped_column(DateTime, nullable=True)
     nb_hits: Mapped[int] = mapped_column(Integer)

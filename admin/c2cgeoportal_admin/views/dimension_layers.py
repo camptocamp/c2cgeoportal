@@ -37,7 +37,7 @@ from sqlalchemy.orm import subqueryload
 from c2cgeoportal_admin.views.layers import LayerViews
 from c2cgeoportal_commons.models.main import DimensionLayer
 
-_list_field = partial(ListField, DimensionLayer)  # type: ignore[var-annotated]
+_list_field = partial(ListField, DimensionLayer)
 
 _T = TypeVar("_T", bound=DimensionLayer)
 

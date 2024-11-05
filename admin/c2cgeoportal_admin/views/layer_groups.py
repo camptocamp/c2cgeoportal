@@ -48,7 +48,7 @@ from c2cgeoportal_admin.schemas.treeitem import parent_id_node
 from c2cgeoportal_admin.views.treeitems import TreeItemViews
 from c2cgeoportal_commons.models.main import LayerGroup, TreeGroup
 
-_list_field = partial(ListField, LayerGroup)  # type: ignore[var-annotated]
+_list_field = partial(ListField, LayerGroup)
 
 base_schema = GeoFormSchemaNode(LayerGroup, widget=FormWidget(fields_template="layer_group_fields"))
 base_schema.add(children_schema_node())

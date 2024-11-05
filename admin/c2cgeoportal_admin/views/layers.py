@@ -37,7 +37,7 @@ from sqlalchemy.orm import subqueryload
 from c2cgeoportal_admin.views.treeitems import TreeItemViews
 from c2cgeoportal_commons.models.main import Interface, Layer
 
-_list_field = partial(ListField, Layer)  # type: ignore[var-annotated]
+_list_field = partial(ListField, Layer)
 
 _T = TypeVar("_T", bound=Layer)
 

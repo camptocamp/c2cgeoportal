@@ -53,7 +53,7 @@ from c2cgeoportal_admin.views.layers import LayerViews
 from c2cgeoportal_commons.lib.literal import Literal
 from c2cgeoportal_commons.models.main import LayerCOG, LayerGroup
 
-_list_field = partial(ListField, LayerCOG)  # type: ignore[var-annotated]
+_list_field = partial(ListField, LayerCOG)
 
 
 base_schema = GeoFormSchemaNode(LayerCOG, widget=FormWidget(fields_template="layer_fields"))

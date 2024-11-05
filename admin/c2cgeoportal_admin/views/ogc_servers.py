@@ -57,7 +57,7 @@ from c2cgeoportal_commons.lib.literal import Literal
 from c2cgeoportal_commons.models import cache_invalidate_cb
 from c2cgeoportal_commons.models.main import LogAction, OGCServer
 
-_list_field = partial(ListField, OGCServer)  # type: ignore[var-annotated]
+_list_field = partial(ListField, OGCServer)
 
 base_schema = GeoFormSchemaNode(OGCServer, widget=FormWidget(fields_template="ogcserver_fields"))
 base_schema.add_unique_validator(OGCServer.name, OGCServer.id)

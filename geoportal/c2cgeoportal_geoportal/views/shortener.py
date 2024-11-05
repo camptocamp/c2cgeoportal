@@ -30,6 +30,7 @@ import logging
 import random
 import string
 from datetime import datetime
+from typing import cast
 from urllib.parse import urlparse
 
 import pyramid.request
@@ -37,8 +38,7 @@ from pyramid.httpexceptions import HTTPBadRequest, HTTPFound, HTTPInternalServer
 from pyramid.view import view_config
 
 from c2cgeoportal_commons.lib.email_ import send_email_config
-from c2cgeoportal_commons.models import DBSession
-from c2cgeoportal_commons.models.static import Shorturl
+from c2cgeoportal_commons.models import DBSession, static
 from c2cgeoportal_geoportal import is_allowed_url
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
 
@@ -60,7 +60,7 @@ class Shortener:
         assert DBSession is not None
 
         ref = self.request.matchdict["ref"]
-        short_urls = DBSession.query(Shorturl).filter(Shorturl.ref == ref).all()
+        short_urls = DBSession.query(static.Shorturl).filter(static.Shorturl.ref == ref).all()
 
         if len(short_urls) != 1:
             raise HTTPNotFound(f"Ref '{ref!s}' not found")
@@ -110,7 +110,7 @@ class Shortener:
                 random.choice(string.ascii_letters + string.digits)  # nosec
                 for i in range(self.settings.get("length", 4))
             )
-            test_url = DBSession.query(Shorturl).filter(Shorturl.ref == ref).all()
+            test_url = DBSession.query(static.Shorturl).filter(static.Shorturl.ref == ref).all()
             if not test_url:
                 break
             tries += 1
@@ -119,10 +119,10 @@ class Shortener:
                 logger.error(message)
                 raise HTTPInternalServerError(message)
 
-        user_email = self.request.user.email if self.request.user is not None else None
+        user_email = cast(static.User, self.request.user).email if self.request.user is not None else None
         email = self.request.params.get("email")
         if not shortened:
-            short_url = Shorturl()
+            short_url = static.Shorturl()
             short_url.url = url
             short_url.ref = ref
             short_url.creator_email = user_email
