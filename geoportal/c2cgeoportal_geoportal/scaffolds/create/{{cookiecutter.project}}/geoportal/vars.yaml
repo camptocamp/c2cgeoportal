@@ -349,6 +349,7 @@ vars:
     login: {}
 
 update_paths:
+  - authentication.openid_connect
   - admin_interface.available_functionalities
   - admin_interface.available_metadata
   - admin_interface.functionalities
