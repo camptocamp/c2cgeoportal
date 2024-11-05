@@ -177,13 +177,13 @@ def teardown_common() -> None:
 def create_default_ogcserver(session: Session) -> "main.OGCServer":
     from c2cgeoportal_commons.models.main import OGCServer
 
-    session.flush()
     ogcserver = session.query(OGCServer).filter(OGCServer.name == "__test_ogc_server").one_or_none()
     if ogcserver is None:
         ogcserver = OGCServer(name="__test_ogc_server")
     ogcserver.url = mapserv_url
     session.add(ogcserver)
     caching.invalidate_region()
+    session.flush()
 
     return ogcserver
 
