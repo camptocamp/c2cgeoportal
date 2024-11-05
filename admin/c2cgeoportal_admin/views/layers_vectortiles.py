@@ -53,7 +53,7 @@ from c2cgeoportal_admin.views.dimension_layers import DimensionLayerViews
 from c2cgeoportal_commons.lib.literal import Literal
 from c2cgeoportal_commons.models.main import LayerGroup, LayerVectorTiles
 
-_list_field = partial(ListField, LayerVectorTiles)  # type: ignore[var-annotated]
+_list_field = partial(ListField, LayerVectorTiles)
 
 
 base_schema = GeoFormSchemaNode(LayerVectorTiles, widget=FormWidget(fields_template="layer_fields"))

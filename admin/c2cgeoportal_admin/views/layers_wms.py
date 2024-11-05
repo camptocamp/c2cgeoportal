@@ -54,7 +54,7 @@ from c2cgeoportal_admin.schemas.treeitem import parent_id_node
 from c2cgeoportal_admin.views.dimension_layers import DimensionLayerViews
 from c2cgeoportal_commons.models.main import LayerGroup, LayerWMS, LayerWMTS, LogAction, OGCServer, TreeItem
 
-_list_field = partial(ListField, LayerWMS)  # type: ignore[var-annotated]
+_list_field = partial(ListField, LayerWMS)
 
 base_schema = GeoFormSchemaNode(LayerWMS, widget=FormWidget(fields_template="layer_fields"))
 base_schema.add(dimensions_schema_node(LayerWMS.dimensions))

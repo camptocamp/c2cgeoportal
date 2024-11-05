@@ -34,7 +34,7 @@ from pyramid.view import view_config, view_defaults
 from c2cgeoportal_commons.models import _
 from c2cgeoportal_commons.models.main import AbstractLog
 
-_list_field = partial(ListField, AbstractLog)  # type: ignore[var-annotated]
+_list_field = partial(ListField, AbstractLog)
 
 
 @view_defaults(match_param="table=logs")

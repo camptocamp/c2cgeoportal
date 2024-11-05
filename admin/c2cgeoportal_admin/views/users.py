@@ -50,7 +50,7 @@ from c2cgeoportal_commons.lib.email_ import send_email_config
 from c2cgeoportal_commons.models.main import Role
 from c2cgeoportal_commons.models.static import Log, User
 
-_list_field = partial(ListField, User)  # type: ignore[var-annotated]
+_list_field = partial(ListField, User)
 
 base_schema = GeoFormSchemaNode(User, widget=FormWidget(fields_template="user_fields"))
 base_schema.add(roles_schema_node(User.roles))

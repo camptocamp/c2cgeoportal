@@ -38,7 +38,7 @@ from sqlalchemy.sql.functions import concat
 from c2cgeoportal_admin.views.logged_views import LoggedViews
 from c2cgeoportal_commons.models.main import LayergroupTreeitem, Metadata, TreeGroup, TreeItem
 
-_list_field = partial(ListField, TreeItem)  # type: ignore[var-annotated]
+_list_field = partial(ListField, TreeItem)
 
 
 _T = TypeVar("_T", bound=TreeItem)

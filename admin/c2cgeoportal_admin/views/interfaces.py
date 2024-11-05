@@ -42,7 +42,7 @@ from pyramid.view import view_config, view_defaults
 from c2cgeoportal_admin.views.logged_views import LoggedViews
 from c2cgeoportal_commons.models.main import Interface
 
-_list_field = partial(ListField, Interface)  # type: ignore[var-annotated]
+_list_field = partial(ListField, Interface)
 
 base_schema = GeoFormSchemaNode(Interface)
 

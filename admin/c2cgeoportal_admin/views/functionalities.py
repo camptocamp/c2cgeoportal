@@ -47,7 +47,7 @@ from c2cgeoportal_admin import _
 from c2cgeoportal_admin.views.logged_views import LoggedViews
 from c2cgeoportal_commons.models.main import Functionality
 
-_list_field = partial(ListField, Functionality)  # type: ignore[var-annotated]
+_list_field = partial(ListField, Functionality)
 
 
 def _translate_available_functionality(

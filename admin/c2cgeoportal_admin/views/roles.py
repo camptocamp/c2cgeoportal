@@ -50,7 +50,7 @@ from c2cgeoportal_admin.widgets import ChildrenWidget, ChildWidget
 from c2cgeoportal_commons.models.main import Role
 from c2cgeoportal_commons.models.static import User
 
-_list_field = partial(ListField, Role)  # type: ignore[var-annotated]
+_list_field = partial(ListField, Role)
 
 base_schema = GeoFormSchemaNode(Role, widget=FormWidget(fields_template="role_fields"))
 base_schema.add_before("extent", functionalities_schema_node(Role.functionalities, Role))
