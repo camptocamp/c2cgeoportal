@@ -1,3 +1,7 @@
+##### 2.8.1.159
+
+- Audit Snyk check/fix 2.8 [c2cgeoportal#11508](https://github.com/camptocamp/c2cgeoportal/pull/11508)
+
 ##### 2.8.1.158
 
 - Also invalidate the ogc-server cache [c2cgeoportal#11506](https://github.com/camptocamp/c2cgeoportal/pull/11506)
