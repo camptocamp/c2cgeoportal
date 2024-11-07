@@ -610,6 +610,7 @@ def includeme(config: pyramid.config.Configurator) -> None:
         @zope.event.classhandler.handler(InvalidateCacheEvent)  # type: ignore[misc]
         def handle(event: InvalidateCacheEvent) -> None:
             del event
+            caching.invalidate_region("ogc-server")
             caching.invalidate_region("std")
             caching.invalidate_region("obj")
             if caching.MEMORY_CACHE_DICT:
