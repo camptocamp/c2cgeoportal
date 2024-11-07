@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2023, Camptocamp SA
+# Copyright (c) 2011-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -475,6 +475,7 @@ def includeme(config: pyramid.config.Configurator) -> None:
         @zope.event.classhandler.handler(InvalidateCacheEvent)  # type: ignore
         def handle(event: InvalidateCacheEvent) -> None:
             del event
+            caching.invalidate_region("ogc-server")
             caching.invalidate_region("std")
             caching.invalidate_region("obj")
             if caching.MEMORY_CACHE_DICT:
