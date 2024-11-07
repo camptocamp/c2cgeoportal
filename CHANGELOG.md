@@ -1,3 +1,7 @@
+##### 2.8.1.158
+
+- Also invalidate the ogc-server cache [c2cgeoportal#11506](https://github.com/camptocamp/c2cgeoportal/pull/11506)
+
 ##### 2.8.1.157
 
 - Update all patch versions (2.8) (patch) [c2cgeoportal#11495](https://github.com/camptocamp/c2cgeoportal/pull/11495)
