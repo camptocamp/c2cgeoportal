@@ -79,6 +79,16 @@ Create the new branch
 
 You should create the new version branch.
 
+.. prompt:: bash
+
+    NEW_VERSION=x.y
+    git checkout master
+    git pull
+    git checkout -b "${NEW_VERSION}"
+    git push --set-upstream origin "${NEW_VERSION}"
+    git push origin "${NEW_VERSION}"
+
+
 In the files ``.github/workflows/main.yaml`` and ``.github/workflows/qgis.yaml`` set ``MAIN_BRANCH`` to
   ``<new version>``.
 
@@ -95,141 +105,41 @@ Run:
 
 .. prompt:: bash
 
-    tx pull --source --branch=<version> --force \
+    NEW_VERSION=x.y
+    NEXT_VERSION=x.y+1
+    tx pull --source --branch="${NEW_VERSION}" --force \
         --resources=geomapfish.c2cgeoportal_geoportal,geomapfish.c2cgeoportal_admin
-    tx pull --translations --branch=<version> --force --all \
+    tx pull --translations --branch="${NEW_VERSION}" --force --all \
         --resources=geomapfish.c2cgeoportal_geoportal,geomapfish.c2cgeoportal_admin
 
-    tx push --branch=<next version> --source --force \
+    tx push --branch="${NEXT_VERSION}" --source --force \
         --resources=geomapfish.c2cgeoportal_geoportal,geomapfish.c2cgeoportal_admin
-    tx push --branch=<next version> --translation --force \
+    tx push --branch="${NEXT_VERSION}" --translation --force \
         --resources=geomapfish.c2cgeoportal_geoportal,geomapfish.c2cgeoportal_admin
+
+Create a pull request
+---------------------
+
+Create a pull request to update the new version branch.
+
+.. prompt:: bash
+
+    NEW_VERSION=x.y
+    git checkout -b "setup-${NEW_VERSION}"
+    pre-commit run --files=geoportal/package.json npm-lock
+    git add geoportal/package.json geoportal/package-lock.json .github/workflows/main.yaml .github/workflows/qgis.yaml
+    git commit -m "Use ngeo version ${NEW_VERSION}"
+    git push --set-upstream origin "setup-${NEW_VERSION}"
+
+  Create the pull request on GitHub.
 
 Update the master branch
 -------------------------
 
-Configure the rebuild
----------------------
+.. prompt:: bash
 
-Copy the file ``.github/workflows/main.yaml`` from new version branch to master branch as
-``.github/workflows/rebuild-<new version>.yaml`` and do the following changes:
-
-.. code:: diff
-
-   - name: Continuous integration
-   + name: Rebuild <new version>
-
-     on:
-   -   push:
-   -   pull_request:
-   +   schedule:
-   +     - cron: "30 3 * * *"
-
-     jobs:
-   -   not-failed-backport:
-   -     ...
-
-   -     name: Continuous integration
-   +     name: Rebuild <new version>
-
-   -     if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
-
-   +     strategy:
-   +       fail-fast: false
-   +       matrix:
-   +         branch:
-   +           - 'x.y'
-
-
-        env:
-   -      MAIN_BRANCH: master
-   +      MAIN_BRANCH: <new version>
-
-           - uses: actions/checkout@v2
-             with:
-   +          ref: ${{ env.MAIN_BRANCH }}
-
-   -       # Test Upgrade
-   -       ...
-   -       - run: ci/test-upgrade cleanup ${HOME}/workspace
-
-   -       - name: Update the changelog
-   -         ...
-   -       - run: git diff CHANGELOG.md
-
-   -   - name: Push version and changelog
-   -     ...
-
-       - name: Publish
-         run: >
-           c2cciutils-publish
-           --docker-versions=${{ steps.version.outputs.versions }}
-           --snyk-version=${{ steps.version.outputs.snyk_version }}
-   +       --type=rebuild
-   -     if: >
-   -       env.HAS_SECRETS == 'HAS_SECRETS'
-   -       && steps.version.outputs.versions != ''
-   -
-   -       - name: Notify demo
-   -         ...
-   -
-   -       - name: Publish to Transifex
-   -         ...
-   -
-   -       - name: Publish documentation to GitHub.io
-   -         ...
-
-
-Copy the files ``.github/workflows/qgis.yaml`` from new version branch to master branch
-as ``.github/workflows/rebuild-qgis-<new version>.yaml`` and do the following changes:
-
-.. code:: diff
-
-   - name: QGIS build
-   + name: QGIS rebuild <new version>
-
-     on:
-   -   push:
-   -   pull_request:
-   +   schedule:
-   +     - cron: "30 3 * * *"
-
-   -     name: QGIS build
-   +     name: QGIS rebuild <new version>
-
-   -     if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
-
-         strategy:
-           fail-fast: false
-           matrix:
-             version:
-               ...
-   +         branch:
-   +           - 'x.y'
-
-         env:
-   -       MAIN_BRANCH: master
-   -       MAJOR_VERSION: x.y
-   +       MAIN_BRANCH: ${{ matrix.branch }}
-   +       MAJOR_VERSION: ${{ matrix.branch }}
-
-           - uses: actions/checkout@v1
-             with:
-              fetch-depth: 0
-   +          ref: ${{ env.MAIN_BRANCH }}
-
-      - name: Publish
-        run: >
-          c2cciutils-publish
-          --group=qgis-${{ matrix.version }}
-          --docker-versions=${{ steps.version.outputs.versions }}
-          --snyk-version=${{ steps.version.outputs.snyk_version }}
-   +      --type=rebuild
-   -     if: >
-   -       github.ref != format('refs/heads/{0}', env.MAIN_BRANCH)
-   -       && github.repository == 'camptocamp/c2cgeoportal'
-   -   - name: Publish version branch
-   -     ...
+    git checkout master
+    git pull
 
 Copy the file ``.github/workflows/main.yaml`` from new version branch to master branch as
 ``.github/workflows/ngeo-<new version>.yaml`` and do the following changes:
@@ -298,6 +208,9 @@ Copy the file ``.github/workflows/main.yaml`` from new version branch to master 
               --snyk-version=${{ steps.version.outputs.snyk_version }}
    +          --type=rebuild
 
+   -      - name: Publish version branch to pypi
+   -        ...
+   -
    -      - name: Publish to Transifex
    -        ...
    -
@@ -308,7 +221,6 @@ Copy the file ``.github/workflows/main.yaml`` from new version branch to master 
 And also remove all the `if` concerning the following tests:
 
 - ``github.ref != format('refs/heads/{0}', env.MAIN_BRANCH)``
-- ``github.repository == 'camptocamp/c2cgeoportal'``
 - ``env.HAS_SECRETS == 'HAS_SECRETS`` (optional)
 
 Configure the new branch
@@ -317,23 +229,12 @@ Configure the new branch
 In the file ``.github/workflows/main.yaml`` and ``.github/workflows/qgis.yaml`` set ``MAJOR_VERSION`` to
   ``<next version>``.
 
-Configure the audit
--------------------
-
-Add the new version branch in the ``.github/workflows/audit.yaml`` file.
-
-Configure the branch on the status dashboard
---------------------------------------------
-
-Add the new branch for the demo, ngeo and c2cgeoportal in the file
-`scripts/status.yaml <https://github.com/camptocamp/geospatial-dashboards/blob/master/ci/status.yaml>`_.
-
 Reset the change log
 --------------------
 
 On the ``c2cgeoportal`` new version branch:
 
-* Empty the file ``CHANGELOG``
+* Empty the file ``CHANGELOG.md``
 * Set the content of the file ``ci/changelog.yaml`` to:
 
   .. code:: yaml
@@ -360,10 +261,17 @@ Backport label
 
 Create the new back port label named ``backport_<new_version>``.
 
-Protect branch
---------------
+Create the pull request
+-----------------------
 
-In GitHub project settings, protect the new branch with the same settings as the master branch.
+.. prompt:: bash
+
+    NEXT_VERSION=x.y
+    git add -A
+    git add .github/workflows/ngeo-*.yaml
+    git checkout -b "start-${NEXT_VERSION}"
+    git commit -m "Start the version ${NEXT_VERSION}"
+    git push --set-upstream origin "start-${NEXT_VERSION}"
 
 Publish it
 ----------

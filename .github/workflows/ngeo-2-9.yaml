@@ -1,36 +1,20 @@
-name: Continuous integration
+name: Update ngeo 2.9
 
 on:
-  push:
-    branches:
-      - master
-      - '[0-9]+.[0-9]+'
-    tags:
-      - '*'
+  repository_dispatch:
+    types:
+      - ngeo_2.9_updated
   pull_request:
 
-env:
-  HAS_SECRETS: ${{ secrets.HAS_SECRETS }}
-
 jobs:
-  not-failed-backport:
-    name: Test that's not a failed backport
-    runs-on: ubuntu-24.04
-    timeout-minutes: 5
-
-    steps:
-      - run: 'false'
-        if: github.event.head_commit.message == '[skip ci] Add instructions to finish the backport.'
-
   main:
-    name: Continuous integration
+    name: Update ngeo 2.9
     runs-on: ubuntu-24.04
     timeout-minutes: 135
-    if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
 
     env:
-      MAIN_BRANCH: master
-      MAJOR_VERSION: '2.10'
+      MAIN_BRANCH: '2.9'
+      MAJOR_VERSION: '2.9'
 
     steps:
       - run: '! ls BACKPORT_TODO'
@@ -44,19 +28,13 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
-        if: env.HAS_SECRETS == 'HAS_SECRETS'
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-        if: env.HAS_SECRETS != 'HAS_SECRETS'
+          ref: ${{ env.MAIN_BRANCH }}
 
       - uses: camptocamp/initialise-gopass-summon-action@v2
         with:
           ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
           github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
           patterns: pypi docker transifex
-        if: env.HAS_SECRETS == 'HAS_SECRETS'
 
       - uses: actions/setup-python@v5
         with:
@@ -69,6 +47,8 @@ jobs:
           GITHUB_EVENT: ${{ toJson(github) }}
 
       - run: c2cciutils-download-applications --applications-file=ci/applications.yaml --versions-file=ci/applications-versions.yaml
+
+      - run: cd geoportal && npm update
       - id: version
         run: scripts/get-version --auto-increment --github
 
@@ -203,9 +183,6 @@ jobs:
 
       - run: git stash
       - run: git pull --ff-only origin ${{ env.MAIN_BRANCH }}
-        if: >
-          github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
-          && env.HAS_SECRETS == 'HAS_SECRETS'
       - run: git stash pop || true
 
         # Test Upgrade
@@ -241,6 +218,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: git diff CHANGELOG.md
+      - run: |
+          git add geoportal/package-lock.json
+          git commit -m "Update used ngeo version"
 
       - name: Push version and changelog
         run: |
@@ -250,25 +230,13 @@ jobs:
             git commit -m "[skip ci] Update the minor version"; \
             git push origin HEAD:${{ env.MAIN_BRANCH }} \
           )
-        if: >
-          github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
-          && env.HAS_SECRETS == 'HAS_SECRETS'
-
       - name: Publish
         run: >
           c2cciutils-publish
           --docker-versions=${{ steps.version.outputs.versions }}
           --snyk-version=${{ steps.version.outputs.snyk_version }}
-        if: >
-          env.HAS_SECRETS == 'HAS_SECRETS'
-          && steps.version.outputs.versions != ''
-      - name: Publish version branch to pypi
-        run: |
-          c2cciutils-publish --group=pypi --type=version_tag --version=${{ steps.version.outputs.full }}
-        if: >
-          github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
-          && env.HAS_SECRETS == 'HAS_SECRETS'
-          && env.MAIN_BRANCH != 'master'
+          --type=rebuild
+        if: steps.version.outputs.versions != ''
       - run: git diff --exit-code --patch > /tmp/dpkg-versions.patch || true
         if: failure()
       - uses: actions/upload-artifact@v4
@@ -286,31 +254,6 @@ jobs:
           https://api.github.com/repos/camptocamp/demo_geomapfish/dispatches
           --data '{"event_type": "geomapfish_${{ env.MAJOR_VERSION }}_updated",
             "client_payload": {"version": "'"${{ steps.version.outputs.upgrade_version }}"'"}}'
-        if: >
-          github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
-          && env.HAS_SECRETS == 'HAS_SECRETS'
-
-      - name: Publish to Transifex
-        run: |
-          git diff || true
-          git status || true
-          git status --ignored || true
-          make build-tools
-          docker run --name=transifex -ti --rm --detach --volume=${HOME}:/root camptocamp/geomapfish-tools tail -f /dev/null
-          docker exec transifex bash -c \
-              '(cd /opt/c2cgeoportal; make --makefile=dependencies.mk transifex-send)'
-          docker stop transifex
-        env:
-          DOCKER_BUILDKIT: '1'
-        if: >
-          github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
-          && env.HAS_SECRETS == 'HAS_SECRETS'
-
-      - name: Publish documentation to GitHub.io
-        run: ci/publish-documentation
-        if: >
-          github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
-          && env.HAS_SECRETS == 'HAS_SECRETS'
 
       - run: docker images
         if: always()

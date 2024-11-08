@@ -13,7 +13,7 @@ env:
   HAS_SECRETS: ${{ secrets.HAS_SECRETS }}
   DOCKER_BUILDKIT: 1
   MAIN_BRANCH: master
-  MAJOR_VERSION: '2.9'
+  MAJOR_VERSION: '2.10'
 
 jobs:
   common:
