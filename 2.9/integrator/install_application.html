@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Install an existing application &#8212; c2cgeoportal  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css?v=939896e0" />
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Upgrading a GeoMapFish application" href="upgrade_application.html" />
+    <link rel="prev" title="Create a new application" href="create_application.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="install-an-existing-application">
+<span id="integrator-install-application"></span><h1>Install an existing application<a class="headerlink" href="#install-an-existing-application" title="Link to this heading">¶</a></h1>
+<p>On this page, we explain the procedure to build an application from only the current application code.</p>
+<p>If you want to use an existing database, you should ignore all the commands concerning the database.</p>
+<dl class="simple">
+<dt>This guide assumes that:</dt><dd><ul class="simple">
+<li><p>all dependencies described in the <a class="reference internal" href="requirements.html#integrator-requirements"><span class="std std-ref">requirements</span></a> are installed,</p></li>
+<li><p>Git is used as revision control.</p></li>
+</ul>
+</dd>
+</dl>
+<p>For specific environments, this page contains some notes to give some help.</p>
+<section id="set-up-the-database">
+<span id="integrator-install-application-setup-database"></span><h2>Set up the database<a class="headerlink" href="#set-up-the-database" title="Link to this heading">¶</a></h2>
+<p>Every c2cgeoportal application requires a PostgreSQL/PostGIS database. The
+application works with its own tables, which store users, layers, etc. These
+tables are located in a specific schema of the database.</p>
+<p>If the application has MapServer layers linked to PostGIS tables, these tables
+and the application-specific tables must be in the same database, preferably in
+separate schemas. This is required for layer access control (<em>restricted
+layers</em>), where joining user/role tables to PostGIS layer tables is necessary.</p>
+<p>If you wish to use the <code class="docutils literal notranslate"><span class="pre">similarity</span></code> function within the full-text search, create the <code class="docutils literal notranslate"><span class="pre">pg_trgm</span></code> extension.</p>
+<p>Create the <code class="docutils literal notranslate"><span class="pre">unaccent</span></code> extension to have accent-insensitive search within the full-text search.</p>
+<p>By default, c2cgeoportal assumes that the <code class="docutils literal notranslate"><span class="pre">www-data</span></code> user exists with all rights on the application schemas.</p>
+<section id="create-the-schemas">
+<span id="integrator-install-application-create-schema"></span><h3>Create the schemas<a class="headerlink" href="#create-the-schemas" title="Link to this heading">¶</a></h3>
+<p>Each application needs two application-specific schemas.
+To create them, do:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">sudo<span class="w"> </span>-u<span class="w"> </span>postgres<span class="w"> </span>psql<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;CREATE SCHEMA &lt;schema_name&gt;;&quot;</span><span class="w"> </span>&lt;db_name&gt;</span>
+<span class="prompt1">sudo<span class="w"> </span>-u<span class="w"> </span>postgres<span class="w"> </span>psql<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;CREATE SCHEMA &lt;schema_name&gt;_static;&quot;</span><span class="w"> </span>&lt;db_name&gt;</span>
+<span class="prompt1">sudo<span class="w"> </span>-u<span class="w"> </span>postgres<span class="w"> </span>psql<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;GRANT ALL ON SCHEMA &lt;schema_name&gt; TO &quot;www-data&quot;&#39;</span><span class="w"> </span>&lt;db_name&gt;</span>
+<span class="prompt1">sudo<span class="w"> </span>-u<span class="w"> </span>postgres<span class="w"> </span>psql<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;GRANT ALL ON SCHEMA &lt;schema_name&gt;_static TO &quot;www-data&quot;&#39;</span><span class="w"> </span>&lt;db_name&gt;</span>
+</pre></div></div></section>
+</section>
+<section id="install-the-application">
+<h2>Install the application<a class="headerlink" href="#install-the-application" title="Link to this heading">¶</a></h2>
+<section id="windows-specific-configuration">
+<h3>Windows Specific Configuration<a class="headerlink" href="#windows-specific-configuration" title="Link to this heading">¶</a></h3>
+<p>Some Python modules cannot currently be installed through the Python Package
+Index (PyPI) and they have to be downloaded manually and stored. This is
+because these packages use DLLs and binaries which would have to be compiled
+using a C compiler.</p>
+<p>Furthermore, some changes in the Apache WSGI and MapServer configurations are
+required to make c2cgeoportal work on Windows.</p>
+<p>Also, between all the different command interfaces available on Windows (cmd,
+Cygwin, git mingw), only Windows default cmd interface handles paths correctly
+in all stages of the application setup.</p>
+<section id="command-interface-and-environment-variable">
+<h4>Command interface and environment variable<a class="headerlink" href="#command-interface-and-environment-variable" title="Link to this heading">¶</a></h4>
+<p>Only use Windows default command interface:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Start</span> <span class="o">&gt;</span> <span class="n">Run</span><span class="o">...</span> <span class="o">&gt;</span> <span class="n">cmd</span>
+</pre></div>
+</div>
+<p>Cygwin and git mingw are not compatible. Powershell is untested.</p>
+<p>In addition, you need to add all the resource paths to your system PATH
+environment variable, for cygwin, git and node binaries.</p>
+</section>
+<section id="cygwin">
+<h4>Cygwin<a class="headerlink" href="#cygwin" title="Link to this heading">¶</a></h4>
+<p>You must install the following packages:</p>
+<ul class="simple">
+<li><p>git</p></li>
+</ul>
+</section>
+</section>
+<section id="integrator-install-application-install-application">
+<span id="id1"></span><h3>Install the application<a class="headerlink" href="#integrator-install-application-install-application" title="Link to this heading">¶</a></h3>
+<p>You can build and install the application with the command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">./build</span>
+</pre></div></div><p>This previous command will do many things like:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>adapt the application configuration to your environment,</p></li>
+<li><p>build the JavaScript and CSS resources into compressed files.</p></li>
+</ul>
+</div></blockquote>
+<p>Activate the devlopement environment:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">cp<span class="w"> </span>docker-compose.override.sample.yaml<span class="w"> </span>docker-compose.override.yaml</span>
+</pre></div></div><p>Run the composition:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d</span>
+</pre></div></div><p>Then create the application tables:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>alembic<span class="w"> </span>--config<span class="o">=</span>alembic.ini<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--name<span class="o">=</span>main<span class="w"> </span>upgrade<span class="w"> </span>head</span>
+<span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>alembic<span class="w"> </span>--config<span class="o">=</span>alembic.ini<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--name<span class="o">=</span>static<span class="w"> </span>upgrade<span class="w"> </span>head</span>
+</pre></div></div><p>Your application should now be available at: <code class="docutils literal notranslate"><span class="pre">https://localhost:8484/</span></code>.</p>
+<p>If you ahave an Apache in front of your application,
+add in the <code class="docutils literal notranslate"><span class="pre">/var/www/vhosts/&lt;vhost_name&gt;/conf/proxies.conf</span></code> file
+(create it if it does not exist):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ProxyPass</span> <span class="s2">&quot;/&lt;instance&gt;&quot;</span>  <span class="s2">&quot;http://localhost:&lt;application_port&gt;/&lt;instance&gt;&quot;</span>
+<span class="n">ProxyPassReverse</span> <span class="s2">&quot;/&lt;instance&gt;&quot;</span>  <span class="s2">&quot;http://localhost:&lt;application_port&gt;/&lt;instance&gt;&quot;</span>
+<span class="n">ProxyPreserveHost</span> <span class="n">On</span>
+<span class="n">RequestHeader</span> <span class="nb">set</span> <span class="n">X</span><span class="o">-</span><span class="n">Forwarded</span><span class="o">-</span><span class="n">Proto</span> <span class="s2">&quot;https&quot;</span>
+<span class="n">RequestHeader</span> <span class="nb">set</span> <span class="n">X</span><span class="o">-</span><span class="n">Forwarded</span><span class="o">-</span><span class="n">Port</span> <span class="s2">&quot;443&quot;</span>
+<span class="n">ProxyRequests</span> <span class="n">Off</span>
+</pre></div>
+</div>
+<p>Where <code class="docutils literal notranslate"><span class="pre">&lt;application_port&gt;</span></code> is the value of <code class="docutils literal notranslate"><span class="pre">DOCKER_PORT</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">/&lt;instance&gt;</span></code> the value of <code class="docutils literal notranslate"><span class="pre">VISIBLE_ENTRY_POINT</span></code>.</p>
+<p>The root instance should be at the end.</p>
+</section>
+</section>
+<section id="migrating-to-a-new-server">
+<h2>Migrating to a new server<a class="headerlink" href="#migrating-to-a-new-server" title="Link to this heading">¶</a></h2>
+<p>If you are migrating to a new server, keep in mind that your variable
+<code class="docutils literal notranslate"><span class="pre">DOCKER_WEB_HOST</span></code> must contain the exact host name that browsers should use
+to access your site. Consider the following migration scenario:
+your current site runs on server <code class="docutils literal notranslate"><span class="pre">old-site.customer.ch</span></code> with the visible host name
+<code class="docutils literal notranslate"><span class="pre">gis.customer.ch</span></code>. You wish to setup a new server <code class="docutils literal notranslate"><span class="pre">new-site.customer.ch</span></code>,
+install the application and test it, and then switch your DNS so that
+<code class="docutils literal notranslate"><span class="pre">gis.customer.ch</span></code> now points to <code class="docutils literal notranslate"><span class="pre">new-site.customer.ch</span></code>.
+To accomplish this, you must proceed as follows:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>set <code class="docutils literal notranslate"><span class="pre">DOCKER_WEB_HOST</span></code> to <code class="docutils literal notranslate"><span class="pre">new-site.customer.ch</span></code></p></li>
+<li><p>install the application on <code class="docutils literal notranslate"><span class="pre">new-site.customer.ch</span></code> and test the application
+at <code class="docutils literal notranslate"><span class="pre">https://new-site.customer.ch</span></code></p></li>
+<li><p>later, when going live, you must:</p>
+<ul>
+<li><p>change <code class="docutils literal notranslate"><span class="pre">DOCKER_WEB_HOST</span></code> to <code class="docutils literal notranslate"><span class="pre">gis.customer.ch</span></code></p></li>
+<li><p>re-build, re-deploy - but do not test yet!</p></li>
+<li><p>change your DNS so that <code class="docutils literal notranslate"><span class="pre">gis.customer.ch</span></code> points to <code class="docutils literal notranslate"><span class="pre">new-site.customer.ch</span></code>.</p></li>
+<li><p>Now test your new live site.</p></li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo of c2cgeoportal"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">c2cgeoportal</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=camptocamp&repo=c2cgeoportal&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../administrator/index.html">Administrator Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Integrator Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/index.html">Developer Guide</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+      <li>Previous: <a href="create_application.html" title="previous chapter">Create a new application</a></li>
+      <li>Next: <a href="upgrade_application.html" title="next chapter">Upgrading a GeoMapFish application</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2011-2024, Camptocamp.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../_sources/integrator/install_application.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

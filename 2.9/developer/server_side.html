@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Server-side development &#8212; c2cgeoportal  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css?v=939896e0" />
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Application debugging" href="debugging.html" />
+    <link rel="prev" title="Developer Guide" href="index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="server-side-development">
+<span id="developer-server-side"></span><h1>Server-side development<a class="headerlink" href="#server-side-development" title="Link to this heading">¶</a></h1>
+<section id="creating-a-development-environment-in-a-project">
+<h2>Creating a development environment in a project<a class="headerlink" href="#creating-a-development-environment-in-a-project" title="Link to this heading">¶</a></h2>
+<p>c2cgeoportal developers often need to test c2cgeoportal changes in the context
+of an existing c2cgeoportal application. Here is how:</p>
+<p>Build the new containers:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">git<span class="w"> </span>clone<span class="w"> </span>git@github.com:camptocamp/c2cgeoportal.git</span>
+<span class="prompt1"><span class="nb">cd</span><span class="w"> </span>c2cgeoportal</span>
+<span class="prompt1">make<span class="w"> </span>build</span>
+</pre></div></div><p>Now, the new containers are ready to use in the application on the same host.</p>
+</section>
+<section id="docker-images">
+<h2>Docker images<a class="headerlink" href="#docker-images" title="Link to this heading">¶</a></h2>
+<p>GeoMapFish provides the following Docker images:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">camptocamp/geomapfish</span></code> the base image for the project geoportal runtime image.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">camptocamp/geomapfish-config</span></code> the base image for the project config runtime image.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">camptocamp/geomapfish-tools</span></code> the base image for the build and for custom tools.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">camptocamp/geomapfish-qgisserver</span></code> the QGIS server image with the restricted access plugin.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">camptocamp/geomapfishapp-geoportal</span></code> the geoportal image in simple application mode.</p></li>
+</ul>
+<p>In the project you will have two images:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">camptocamp/&lt;project&gt;-geoportal</span></code> the geoportal image</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">camptocamp/&lt;project&gt;-config</span></code> the config image</p></li>
+</ul>
+</section>
+<section id="tests">
+<h2>Tests<a class="headerlink" href="#tests" title="Link to this heading">¶</a></h2>
+<section id="running-tests">
+<h3>Running tests<a class="headerlink" href="#running-tests" title="Link to this heading">¶</a></h3>
+<p>c2cgeoportal has two types of tests: unit tests and functional tests. The unit
+tests are self-contained, and do not require any specific setup. The functional
+tests require to run with <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span></code>.</p>
+<section id="unit-tests">
+<h4>Unit tests<a class="headerlink" href="#unit-tests" title="Link to this heading">¶</a></h4>
+<p>Before running the tests, install and build all dependencies:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">make<span class="w"> </span>preparetest</span>
+</pre></div></div><p>Run the tests:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">make<span class="w"> </span>tests</span>
+</pre></div></div><p>To run only a specific test, use the <code class="docutils literal notranslate"><span class="pre">-k</span></code> switch. For example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tests<span class="w"> </span>pytest<span class="w"> </span>--verbose<span class="w"> </span>--color<span class="o">=</span>yes<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>-k<span class="w"> </span>test_catalogue<span class="w"> </span>/opt/c2cgeoportal/geoportal/tests</span>
+</pre></div></div></section>
+</section>
+</section>
+<section id="database">
+<h2>Database<a class="headerlink" href="#database" title="Link to this heading">¶</a></h2>
+<section id="object-model">
+<h3>Object model<a class="headerlink" href="#object-model" title="Link to this heading">¶</a></h3>
+<img alt="../_images/database.png" src="../_images/database.png" />
+<p><code class="docutils literal notranslate"><span class="pre">TreeItem</span></code> and <code class="docutils literal notranslate"><span class="pre">TreeGroup</span></code> are abstract classes used to create the tree.</p>
+<p><code class="docutils literal notranslate"><span class="pre">FullTextSearch</span></code> references a first level <code class="docutils literal notranslate"><span class="pre">LayerGroup</span></code>, but without any constraints.</p>
+<section id="metadata-vs-functionality">
+<h4><code class="docutils literal notranslate"><span class="pre">metadata</span></code> vs <code class="docutils literal notranslate"><span class="pre">functionality</span></code><a class="headerlink" href="#metadata-vs-functionality" title="Link to this heading">¶</a></h4>
+<p>The same <code class="docutils literal notranslate"><span class="pre">functionality</span></code> can be reused by more than one element.</p>
+<p><code class="docutils literal notranslate"><span class="pre">functionalities</span></code> are designed to configure and customize various parts of the application.
+For instance, via a functionality you can define which basemap is to be used when a new theme is loaded.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">metadata</span></code> contains attributes that are directly related to the element;
+for example, the layer disclaimer.</p>
+</section>
+</section>
+<section id="migration">
+<h3>Migration<a class="headerlink" href="#migration" title="Link to this heading">¶</a></h3>
+<p>We use the <code class="docutils literal notranslate"><span class="pre">alembic</span></code> module for database migration. <code class="docutils literal notranslate"><span class="pre">alembic</span></code> works with a
+so-called <em>migration repository</em>, which is a simple directory <code class="docutils literal notranslate"><span class="pre">/opt/alembic</span></code> in the
+docker image. So developers who modify the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> database schema should add migration scripts.</p>
+<p>Add a new script in c2cgeoportal root directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--user<span class="w"> </span>-e<span class="w"> </span>commons</span>
+<span class="prompt1">alembic<span class="w"> </span>--config<span class="o">=</span>commons/alembic.ini<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--name<span class="o">=[</span>main<span class="p">|</span>static<span class="o">]</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>revision<span class="w"> </span>--message<span class="w"> </span><span class="s2">&quot;&lt;Explicit name&gt;&quot;</span></span>
+</pre></div></div><p>This will generate the migration script in
+<code class="docutils literal notranslate"><span class="pre">commons/c2cgeoportal_commons/alembic/[main|static]/xxx_&lt;Explicite_name&gt;.py</span></code>.</p>
+<p>To get the project schema, use:
+<code class="docutils literal notranslate"><span class="pre">schema</span> <span class="pre">=</span> <span class="pre">context.get_context().config.get_main_option('schema')</span></code></p>
+<p>The scripts should not fail if they are run more than once. See:
+<a class="reference external" href="https://alembic.readthedocs.org/en/latest/cookbook.html#conditional-migration-elements">https://alembic.readthedocs.org/en/latest/cookbook.html#conditional-migration-elements</a></p>
+<p>Then, customize the migration to suit your needs, test it:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>upgrade<span class="w"> </span>head</span>
+</pre></div></div><dl class="simple">
+<dt>More information at:</dt><dd><ul class="simple">
+<li><p><a class="reference external" href="https://alembic.readthedocs.org/en/latest/index.html">https://alembic.readthedocs.org/en/latest/index.html</a></p></li>
+<li><p><a class="reference external" href="https://alembic.readthedocs.org/en/latest/tutorial.html#create-a-migration-script">https://alembic.readthedocs.org/en/latest/tutorial.html#create-a-migration-script</a></p></li>
+<li><p><a class="reference external" href="https://alembic.readthedocs.org/en/latest/ops.html">https://alembic.readthedocs.org/en/latest/ops.html</a></p></li>
+</ul>
+</dd>
+</dl>
+<p>To use alembic scripts on custom schemas or tables see <a class="reference internal" href="custom_alembic.html#custom-alembic"><span class="std std-ref">Alembic on custom tables</span></a>.</p>
+</section>
+</section>
+<section id="dependencies">
+<h2>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading">¶</a></h2>
+<p>Major dependencies docs:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.sqlalchemy.org/">SQLAlchemy</a></p></li>
+<li><p><a class="reference external" href="https://geoalchemy-2.readthedocs.org/">GeoAlchemy2</a></p></li>
+<li><p><a class="reference external" href="https://alembic.readthedocs.org/">alembic</a></p></li>
+<li><p><a class="reference external" href="https://docs.pylonsproject.org/en/latest/docs/pyramid.html">Pyramid</a></p></li>
+<li><p><a class="reference external" href="https://pypi.python.org/pypi/papyrus">Papyrus</a></p></li>
+<li><p><a class="reference external" href="https://mapfish.github.io/mapfish-print-doc/">MapFish Print</a></p></li>
+<li><p><a class="reference external" href="https://docutils.sourceforge.net/docs/ref/rst/introduction.html">reStructuredText</a></p></li>
+<li><p><a class="reference external" href="https://sphinx.pocoo.org/">Sphinx</a></p></li>
+</ul>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo of c2cgeoportal"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">c2cgeoportal</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=camptocamp&repo=c2cgeoportal&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../administrator/index.html">Administrator Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../integrator/index.html">Integrator Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Developer Guide</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Developer Guide</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Developer Guide</a></li>
+      <li>Next: <a href="debugging.html" title="next chapter">Application debugging</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2011-2024, Camptocamp.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../_sources/developer/server_side.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

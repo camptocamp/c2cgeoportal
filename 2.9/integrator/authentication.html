@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Authentication &#8212; c2cgeoportal  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css?v=939896e0" />
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="authentication">
+<h1>Authentication<a class="headerlink" href="#authentication" title="Link to this heading">¶</a></h1>
+<section id="supported-standards">
+<h2>Supported standards<a class="headerlink" href="#supported-standards" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><cite>OpenID Connect</cite>: as client, to be able to connect to an external OpenID Connect (OIDC) server.</p></li>
+<li><p><cite>TOTP</cite>: for two-factor authentication (2FA), this can be used for example with Google Authenticator.</p></li>
+<li><p><cite>OAuth2</cite> as server: An external application can use GeoMapFish as a single sign-on (SSO) for the
+authentication, even if it was initially implemented to be able to connect from QGIS desktop on an
+application that requires two factor authentication.</p></li>
+</ul>
+</section>
+<section id="the-default-policy">
+<h2>The default policy<a class="headerlink" href="#the-default-policy" title="Link to this heading">¶</a></h2>
+<p>By default, <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> applications use an <em>auth ticket</em> authentication
+policy (<code class="docutils literal notranslate"><span class="pre">AuthTktAuthenticationPolicy</span></code>). With this policy, the user name is
+obtained from the “auth ticket” cookie set in the request.
+The policy is created, and added to the application’s configuration, in the
+application’s main <code class="docutils literal notranslate"><span class="pre">__init__.py</span></code> file.</p>
+<p>In the file <code class="docutils literal notranslate"><span class="pre">env.project</span></code>, you can configure the policy with the following variables:</p>
+<p><code class="docutils literal notranslate"><span class="pre">AUTHTKT_TIMEOUT</span></code>: Default to one day.
+<code class="docutils literal notranslate"><span class="pre">AUTHTKT_REISSUE_TIME</span></code>: Default to 2h30, recommended to be 10 times smaller than <code class="docutils literal notranslate"><span class="pre">AUTHTKT_TIMEOUT</span></code>.
+<code class="docutils literal notranslate"><span class="pre">AUTHTKT_MAXAGE</span></code>: Default to one day, good to have the same value as <code class="docutils literal notranslate"><span class="pre">AUTHTKT_TIMEOUT</span></code>.
+<code class="docutils literal notranslate"><span class="pre">AUTHTKT_SECRET</span></code>: Should be defined
+<code class="docutils literal notranslate"><span class="pre">AUTHTKT_COOKIENAME</span></code>: Should be defined
+<code class="docutils literal notranslate"><span class="pre">AUTHTKT_HTTP_ONLY</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">true</span></code>.
+<code class="docutils literal notranslate"><span class="pre">AUTHTKT_SECURE</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">true</span></code>.
+<code class="docutils literal notranslate"><span class="pre">AUTHTKT_SAMESITE</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">Lax</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>With the default configuration, for security reasons, the authentication will only work if the project is
+served on <code class="docutils literal notranslate"><span class="pre">https</span></code>.</p>
+</div>
+<p>See also <a class="reference external" href="https://docs.pylonsproject.org/projects/pyramid/en/latest/api/authentication.html#pyramid.authentication.AuthTktAuthenticationPolicy">the official documentation</a>.</p>
+</section>
+<section id="using-another-policy">
+<h2>Using another policy<a class="headerlink" href="#using-another-policy" title="Link to this heading">¶</a></h2>
+<p>When using <code class="docutils literal notranslate"><span class="pre">AuthTktAuthenticationPolicy</span></code>, an “auth ticket” cookie should be
+set in the request for the user to be identified. In some applications, using
+a custom identification mechanism may be needed instead, for instance to use SSO.
+Our knowledge base has an example of how this can be achieved.</p>
+</section>
+<section id="user-validation">
+<h2>User validation<a class="headerlink" href="#user-validation" title="Link to this heading">¶</a></h2>
+<p>For logging in, <code class="docutils literal notranslate"><span class="pre">c2cgeoportal</span></code> validates the user credentials
+(username/password) by reading the user information from the <code class="docutils literal notranslate"><span class="pre">user</span></code> database
+table. If a c2cgeoportal application should work with another user information
+source, like LDAP, a custom <em>client validation</em> mechanism can be set up.
+Our knowledge base has an example of how this can be achieved.</p>
+</section>
+<section id="basic-auth">
+<h2>Basic auth<a class="headerlink" href="#basic-auth" title="Link to this heading">¶</a></h2>
+<p>To be able to access the OGC services from your desktop GIS, you should enable the basic authentication
+by setting <code class="docutils literal notranslate"><span class="pre">BASICAUTH</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code> in the <code class="docutils literal notranslate"><span class="pre">env.project</span></code> file.</p>
+<p>To force the application to ask for a password, you should have the attribute <code class="docutils literal notranslate"><span class="pre">authentication_required</span></code>
+in your query string.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For security reasons, basic authentication and two factor authentication should not be enabled together.</p>
+</div>
+</section>
+<section id="two-factors-authentication">
+<h2>Two factors authentication<a class="headerlink" href="#two-factors-authentication" title="Link to this heading">¶</a></h2>
+<p>GeoMapFish support TOTP (Time-Based One-Time Password Algorithm) two factors authentication
+(<a class="reference external" href="https://tools.ietf.org/html/rfc6238">RFC 6238</a>).
+To enable the two factors authentication you should set the following settings:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">authentication</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">two_factor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">two_factor_issuer_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;used_issuer_name&gt;</span>
+</pre></div>
+</div>
+<p>If a user lost his second authentication factor he can’t ask for a new one, to reset it the administrator
+should uncheck the ‘The user changed his password’ field on the user in the admin interface.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For security reasons, basic authentication and two factor authentication should not be enabled together,
+you should use <a class="reference internal" href="security.html#integrator-authentication-oauth2"><span class="std std-ref">OAuth2</span></a> for that.</p>
+</div>
+</section>
+<section id="account-lockout">
+<h2>Account lockout<a class="headerlink" href="#account-lockout" title="Link to this heading">¶</a></h2>
+<p>To lock an account after a certain number of authentication failures, set the following settings:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">authentication</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">max_consecutive_failures</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+</pre></div>
+</div>
+<p>To unlock a user, the administrator should uncheck the ‘Deactivated’ field on the user in the
+admin interface.</p>
+</section>
+<section id="intranet">
+<h2>Intranet<a class="headerlink" href="#intranet" title="Link to this heading">¶</a></h2>
+<p>To configure the intranet networks fill in the configuration like:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">intranet</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">networks</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">192.168.1.0/24</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">192.168.1.0/255.255.255.0</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">192.168.1.0/0.0.0.255</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2001:db00::0/24</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">2001:db00::0/ffff:ff00:</span><span class="p">:</span>
+</pre></div>
+</div>
+<p>See <a class="reference external" href="https://docs.python.org/3.4/library/ipaddress.html#ipaddress.IPv4Network">Python documentation</a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Intranet detection is provided to improve usability for web site usage within the Intranet;
+however, please be aware that Intranet detection is not a secure mechanism. To secure access to sensitive
+data, do not rely on Intranet detection; for that, you must use user authentication.</p>
+<p>A user can easily manually set the <cite>Forwarded</cite> or <cite>X-Forwarded-For</cite> header to spoof his IP.</p>
+</div>
+</section>
+<section id="lost-admin-password">
+<h2>Lost admin password<a class="headerlink" href="#lost-admin-password" title="Link to this heading">¶</a></h2>
+<p>You can generate a new admin password the following command:</p>
+<p><p>Reset a user password.
+The username is used as password if the password is not provided with the corresponding option.
+User can be created if it does not exist yet.</p>
+</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">docker</span> <span class="n">compose</span> <span class="n">exec</span> <span class="n">geoportal</span> <span class="n">manage</span><span class="o">-</span><span class="n">users</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">password</span> <span class="n">PASSWORD</span><span class="p">]</span>
+                                                  <span class="p">[</span><span class="o">--</span><span class="n">create</span><span class="p">]</span>
+                                                  <span class="p">[</span><span class="o">--</span><span class="n">rolename</span> <span class="n">ROLENAME</span><span class="p">]</span>
+                                                  <span class="p">[</span><span class="o">--</span><span class="n">email</span> <span class="n">EMAIL</span><span class="p">]</span>
+                                                  <span class="p">[</span><span class="n">config_uri</span><span class="p">]</span>
+                                                  <span class="p">[</span><span class="n">config_vars</span> <span class="o">...</span><span class="p">]</span> <span class="n">user</span>
+</pre></div>
+</div>
+<section id="c2cgeoportal_geoportal.scripts.manage_users-get_argparser-positional-arguments">
+<h3>Positional Arguments<a class="headerlink" href="#c2cgeoportal_geoportal.scripts.manage_users-get_argparser-positional-arguments" title="Link to this heading">¶</a></h3>
+<dl class="option-list">
+<dt><kbd>config_uri</kbd></dt>
+<dd><p>The URI to the configuration file.</p>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">'c2c://geoportal/development.ini'</span></code></p>
+</dd>
+<dt><kbd>config_vars</kbd></dt>
+<dd><p>Variables required by the config file. For example, <cite>http_port=%(http_port)s</cite> would expect <cite>http_port=8080</cite> to be passed here.</p>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">()</span></code></p>
+</dd>
+<dt><kbd>user</kbd></dt>
+<dd><p>The user</p>
+</dd>
+</dl>
+</section>
+<section id="c2cgeoportal_geoportal.scripts.manage_users-get_argparser-named-arguments">
+<h3>Named Arguments<a class="headerlink" href="#c2cgeoportal_geoportal.scripts.manage_users-get_argparser-named-arguments" title="Link to this heading">¶</a></h3>
+<dl class="option-list">
+<dt><kbd>--password, -p</kbd></dt>
+<dd><p>Set password (if not set, username is used as password</p>
+</dd>
+<dt><kbd>--create, -c</kbd></dt>
+<dd><p>Create user if it does not already exist</p>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">False</span></code></p>
+</dd>
+<dt><kbd>--rolename, -r</kbd></dt>
+<dd><p>The role name which must exist in the database</p>
+<p>Default: <code class="docutils literal notranslate"><span class="pre">'role_admin'</span></code></p>
+</dd>
+<dt><kbd>--email, -e</kbd></dt>
+<dd><p>The user email</p>
+</dd>
+</dl>
+</section>
+</section>
+<section id="external-application">
+<h2>External application<a class="headerlink" href="#external-application" title="Link to this heading">¶</a></h2>
+<p>Some service of GeoMapFish has some host restriction if you mix the domain.</p>
+<section id="application-authentication">
+<h3>Application authentication<a class="headerlink" href="#application-authentication" title="Link to this heading">¶</a></h3>
+<p>To be considered as authenticated we should have the correct <code class="docutils literal notranslate"><span class="pre">Cookie</span></code> header,
+we also check the <code class="docutils literal notranslate"><span class="pre">Referer</span></code> header to be sure that the user is coming from the same domain.
+If he is equals to the <code class="docutils literal notranslate"><span class="pre">Host</span></code> header, we consider that the user is coming from the same domain.
+If your server and client application are not on the same domain, to make the login working,
+you should add the client application domain name (with port) in the vars in <code class="docutils literal notranslate"><span class="pre">vars/authorized_referers</span></code>.</p>
+<p>This check is also done on the <code class="docutils literal notranslate"><span class="pre">came_from</span></code> parameter during the login process.</p>
+</section>
+<section id="shortener">
+<h3>Shortener<a class="headerlink" href="#shortener" title="Link to this heading">¶</a></h3>
+<p>If you use the shortener service to create link on application on another domain name, you should add
+this domain name in the vars in <code class="docutils literal notranslate"><span class="pre">vars/shortener/allowed_hosts</span></code>.</p>
+</section>
+<section id="admin">
+<h3>Admin<a class="headerlink" href="#admin" title="Link to this heading">¶</a></h3>
+<p>We provide a view for the admin interface, to be able to clear the cache per OGC server.
+If for an unknown reason you have not the same host in the <code class="docutils literal notranslate"><span class="pre">Host</span></code> header and <code class="docutils literal notranslate"><span class="pre">came_from</span></code> parameter, you should
+add the domain of the <code class="docutils literal notranslate"><span class="pre">came_from</span></code> parameter in the vars in <code class="docutils literal notranslate"><span class="pre">vars/admin_interface/allowed_hosts</span></code>.</p>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo of c2cgeoportal"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">c2cgeoportal</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=camptocamp&repo=c2cgeoportal&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../administrator/index.html">Administrator Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">Integrator Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/index.html">Developer Guide</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2011-2024, Camptocamp.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../_sources/integrator/authentication.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

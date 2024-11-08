@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Customize the application &#8212; c2cgeoportal  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css?v=939896e0" />
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Security" href="security.html" />
+    <link rel="prev" title="Configure the admin interface" href="admin_interface.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="customize-the-application">
+<span id="integrator-customise"></span><h1>Customize the application<a class="headerlink" href="#customize-the-application" title="Link to this heading">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<p>The application can be customized with the following mechanisms:
+functionalities, UI metadata and data model extensions.</p>
+<p>The functionalities will be attached to the <code class="docutils literal notranslate"><span class="pre">role</span></code> and the <code class="docutils literal notranslate"><span class="pre">theme</span></code>,
+and the UI metadata will be attached to all the elements of the theme.</p>
+<p>They should be configured in the vars file, in the <code class="docutils literal notranslate"><span class="pre">admin_interface</span></code> /
+<code class="docutils literal notranslate"><span class="pre">available_functionalities</span></code> or respectively <code class="docutils literal notranslate"><span class="pre">available_metadata</span></code>.
+It is a list of objects which have a <code class="docutils literal notranslate"><span class="pre">name</span></code> and a <code class="docutils literal notranslate"><span class="pre">type</span></code>.</p>
+<p>The type can be:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">string</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">list</span></code> a list of strings</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">boolean</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">integer</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">float</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">json</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">date</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">time</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">datetime</span></code> <a class="reference external" href="https://labix.org/python-dateutil#head-b95ce2094d189a89f80f5ae52a05b4ab7b41af47">see the python-dateutil documentation</a></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">url</span></code> see below</p></li>
+</ul>
+<p>Check <code class="docutils literal notranslate"><span class="pre">CONST_vars.yaml</span></code> for examples of usage.</p>
+<p>In order to inherit the default values from <code class="docutils literal notranslate"><span class="pre">CONST_vars.yaml</span></code>, make sure the <code class="docutils literal notranslate"><span class="pre">update_paths</span></code> section contains
+the item <code class="docutils literal notranslate"><span class="pre">admin_interface.available_functionalities</span></code> or respectively <code class="docutils literal notranslate"><span class="pre">admin_interface.available_metadata</span></code>.</p>
+<section id="url">
+<h2>URL<a class="headerlink" href="#url" title="Link to this heading">¶</a></h2>
+<p>In the admin interface, we can use for all URL definitions the following special schema:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">static</span></code>: to use a static route,</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">static:///icon.png</span></code> will get the URL of the <code class="docutils literal notranslate"><span class="pre">static</span></code> static route of the project.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">static://custom-static/icon.png</span></code> will get the URL of the <code class="docutils literal notranslate"><span class="pre">custom-static</span></code> static route of the project.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">static://prj:img/icon.png</span></code> will get the URL of the <code class="docutils literal notranslate"><span class="pre">img</span></code> static route of <code class="docutils literal notranslate"><span class="pre">prj</span></code>.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">config</span></code>: to get the server name from the URL, with the config from the <code class="docutils literal notranslate"><span class="pre">vars</span></code> file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">servers</span><span class="p">:</span>
+<span class="w">   </span><span class="nt">my_server</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://example.com/test</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">config://my_server/icon.png</span></code> will be transformed into
+the URL <code class="docutils literal notranslate"><span class="pre">https://example.com/test/icon.png</span></code>.</p>
+</li>
+</ul>
+</section>
+<section id="functionalities">
+<span id="integrator-functionality"></span><h2>Functionalities<a class="headerlink" href="#functionalities" title="Link to this heading">¶</a></h2>
+<p>c2cgeoportal provides the concept of <em>functionality</em> that can be used to customize
+the application according to the user’s permissions.</p>
+<p>A functionality may be associated to users through the admin interface.</p>
+<p>Some technical roles are used to define default functionalities depending on the user’s context,
+they are named <cite>anonymous</cite>, <cite>registered</cite> and <cite>intranet</cite>.</p>
+<p>User get functionalities from, by priority order:</p>
+<p>If authenticated:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>- roles associated to his user profile
+- role named `registered`
+</pre></div>
+</div>
+<p>If his IP is included in the intranet networks:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>- role named `intranet`
+</pre></div>
+</div>
+<p>In all cases:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>- role named `anonymous`
+</pre></div>
+</div>
+<section id="configuration">
+<h3>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file includes variables for managing <em>functionalities</em>.</p>
+<dl>
+<dt><code class="docutils literal notranslate"><span class="pre">admin_interface</span></code>/<code class="docutils literal notranslate"><span class="pre">available_functionalities</span></code></dt><dd><p>List of functionality types that should be available in the administration interface (and added to the
+<code class="docutils literal notranslate"><span class="pre">functionality</span></code> table in the database).</p>
+<p>For example:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">admin_interface</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">available_functionalities</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default_basemap</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">print_template</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mapserver_substitution</span>
+</pre></div>
+</div>
+<p>The following syntax is also accepted:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">admin_interface</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">available_functionalities</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">default_basemap</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">print_template</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">mapserver_substitution</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">functionalities:available_in_templates</span></code></dt><dd><p>Functionalities that are made available to Mako templates (e.g.
+<code class="docutils literal notranslate"><span class="pre">viewer.js</span></code>) through the <code class="docutils literal notranslate"><span class="pre">functionality</span></code> template variable.</p>
+<p>For example with:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">functionalities</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">available_in_templates</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;functionality_name&gt;</span>
+</pre></div>
+</div>
+<p>if a user is associated to, say,
+<code class="docutils literal notranslate"><span class="pre">&lt;functionality_name&gt;</span></code>/<code class="docutils literal notranslate"><span class="pre">value1</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;functionality_name&gt;</span></code>/<code class="docutils literal notranslate"><span class="pre">value2</span></code>,
+then the <code class="docutils literal notranslate"><span class="pre">functionality</span></code> template variable will be set to a dict with one
+key/value pair: <code class="docutils literal notranslate"><span class="pre">&quot;&lt;functionality_name&gt;&quot;:</span> <span class="pre">[&quot;value1&quot;,&quot;value2&quot;]</span></code>.</p>
+</dd>
+</dl>
+</section>
+<section id="usage-in-javascript-client">
+<h3>Usage in JavaScript client<a class="headerlink" href="#usage-in-javascript-client" title="Link to this heading">¶</a></h3>
+<p>The functionalities will be sent to the JavaScript client application through the user web service.
+To be published, a functionality should be present in the parameter <code class="docutils literal notranslate"><span class="pre">functionalities:available_in_templates</span></code>
+parameter in the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> configuration file.</p>
+<section id="using-functionalities-to-configure-the-basemap-to-use-for-each-theme">
+<h4>Using Functionalities to configure the basemap to use for each theme<a class="headerlink" href="#using-functionalities-to-configure-the-basemap-to-use-for-each-theme" title="Link to this heading">¶</a></h4>
+<p>A default basemap may be automatically loaded when the user selects a given
+theme. This can be configured in the administration interface, as follows:
+if not available yet, define a
+<code class="docutils literal notranslate"><span class="pre">default_basemap</span></code> functionality containing the basemap reference. Edit the
+theme and select the basemap to load in the <code class="docutils literal notranslate"><span class="pre">default_basemap</span></code> list. If
+several <code class="docutils literal notranslate"><span class="pre">default_basemap</span></code> items are selected, only the first one will be
+taken into account.</p>
+</section>
+</section>
+</section>
+<section id="extend-the-data-model">
+<h2>Extend the data model<a class="headerlink" href="#extend-the-data-model" title="Link to this heading">¶</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Extending the data model is not possible in the simple application mode.</p>
+</div>
+<p>The data model can be extended in the file <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/models.py</span></code>.</p>
+<p>For example, to add some user details, including a link to a new class named “Title”,
+add to <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/models.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">deform.widget</span> <span class="kn">import</span> <span class="n">HiddenWidget</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">,</span> <span class="n">types</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">backref</span><span class="p">,</span> <span class="n">relationship</span>
+
+<span class="kn">from</span> <span class="nn">c2cgeoportal_commons.models.static</span> <span class="kn">import</span> <span class="n">User</span><span class="p">,</span> <span class="n">_schema</span>
+
+
+<span class="k">class</span> <span class="nc">UserDetail</span><span class="p">(</span><span class="n">User</span><span class="p">):</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;userdetail&#39;</span>
+    <span class="n">__table_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;schema&#39;</span><span class="p">:</span> <span class="n">_schema</span><span class="p">}</span>
+    <span class="n">__mapper_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;polymorphic_identity&#39;</span><span class="p">:</span> <span class="s1">&#39;detailed&#39;</span><span class="p">}</span>
+    <span class="n">__colanderalchemy_config__</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;User detail&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;plural&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;User details&#39;</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span>
+        <span class="n">types</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span>
+        <span class="n">ForeignKey</span><span class="p">(</span><span class="n">_schema</span> <span class="o">+</span> <span class="s1">&#39;.user.id&#39;</span><span class="p">),</span>
+        <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">info</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;colanderalchemy&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;missing&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s2">&quot;widget&quot;</span><span class="p">:</span> <span class="n">HiddenWidget</span><span class="p">()</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+
+    <span class="n">phone</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span>
+        <span class="n">types</span><span class="o">.</span><span class="n">Unicode</span><span class="p">,</span>
+        <span class="n">info</span><span class="o">=</span><span class="p">{</span>
+            <span class="s1">&#39;colanderalchemy&#39;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Phone&#39;</span><span class="p">)</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+
+    <span class="c1"># title</span>
+    <span class="n">title_id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">_schema</span> <span class="o">+</span> <span class="s1">&#39;.title.id&#39;</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">,</span> <span class="n">backref</span><span class="o">=</span><span class="n">backref</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">),</span> <span class="n">info</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;colanderalchemy&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Title&#39;</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">})</span>
+
+
+<span class="k">class</span> <span class="nc">Title</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;title&#39;</span>
+    <span class="n">__table_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;schema&#39;</span><span class="p">:</span> <span class="n">_schema</span><span class="p">}</span>
+    <span class="n">__colanderalchemy_config__</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Title&#39;</span><span class="p">),</span>
+        <span class="s1">&#39;plural&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Titles&#39;</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">Unicode</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">info</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;colanderalchemy&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Name&#39;</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">})</span>
+</pre></div>
+</div>
+<p>Now you need to extend the administration user interface.
+For this, first ensure that the following files exist (if needed, create them as empty files):</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/admin/__init__.py</span></code>:</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/admin/views/__init__.py</span></code>:</p></li>
+</ul>
+<p>Now, create a file <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/admin/views/userdetail.py</span></code> as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+
+<span class="kn">from</span> <span class="o">&lt;</span><span class="n">package</span><span class="o">&gt;</span><span class="n">_geoportal</span><span class="o">.</span><span class="n">models</span> <span class="kn">import</span> <span class="nn">UserDetail</span>
+<span class="kn">from</span> <span class="nn">c2cgeoform.schema</span> <span class="kn">import</span> <span class="n">GeoFormSchemaNode</span>
+<span class="kn">from</span> <span class="nn">c2cgeoform.views.abstract_views</span> <span class="kn">import</span> <span class="n">ListField</span>
+<span class="kn">from</span> <span class="nn">deform.widget</span> <span class="kn">import</span> <span class="n">FormWidget</span>
+<span class="kn">from</span> <span class="nn">pyramid.view</span> <span class="kn">import</span> <span class="n">view_config</span><span class="p">,</span> <span class="n">view_defaults</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">aliased</span><span class="p">,</span> <span class="n">subqueryload</span>
+
+<span class="kn">from</span> <span class="nn">c2cgeoportal_admin.schemas.roles</span> <span class="kn">import</span> <span class="n">roles_schema_node</span>
+<span class="kn">from</span> <span class="nn">c2cgeoportal_admin.views.users</span> <span class="kn">import</span> <span class="n">UserViews</span>
+<span class="kn">from</span> <span class="nn">c2cgeoportal_commons.models.main</span> <span class="kn">import</span> <span class="n">Role</span>
+<span class="kn">from</span> <span class="nn">c2cgeoportal_commons.models.static</span> <span class="kn">import</span> <span class="n">User</span>
+
+
+<span class="n">_list_field</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">ListField</span><span class="p">,</span> <span class="n">UserDetail</span><span class="p">)</span>
+
+<span class="n">base_schema</span> <span class="o">=</span> <span class="n">GeoFormSchemaNode</span><span class="p">(</span><span class="n">UserDetail</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="n">FormWidget</span><span class="p">(</span><span class="n">fields_template</span><span class="o">=</span><span class="s2">&quot;user_fields&quot;</span><span class="p">))</span>
+<span class="n">base_schema</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">roles_schema_node</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">roles</span><span class="p">))</span>
+<span class="n">base_schema</span><span class="o">.</span><span class="n">add_unique_validator</span><span class="p">(</span><span class="n">UserDetail</span><span class="o">.</span><span class="n">username</span><span class="p">,</span> <span class="n">UserDetail</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+
+<span class="n">settings_role</span> <span class="o">=</span> <span class="n">aliased</span><span class="p">(</span><span class="n">Role</span><span class="p">)</span>
+
+
+<span class="nd">@view_defaults</span><span class="p">(</span><span class="n">match_param</span><span class="o">=</span><span class="s1">&#39;table=userdetails&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">UserDetailViews</span><span class="p">(</span><span class="n">UserViews</span><span class="p">):</span>
+    <span class="n">_list_fields</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">_list_field</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">),</span>
+        <span class="n">_list_field</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">),</span>
+        <span class="n">_list_field</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">),</span>
+        <span class="n">_list_field</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">),</span>
+        <span class="n">_list_field</span><span class="p">(</span><span class="s1">&#39;last_login&#39;</span><span class="p">),</span>
+        <span class="n">_list_field</span><span class="p">(</span><span class="s1">&#39;expire_on&#39;</span><span class="p">),</span>
+        <span class="n">_list_field</span><span class="p">(</span><span class="s1">&#39;deactivated&#39;</span><span class="p">),</span>
+        <span class="n">_list_field</span><span class="p">(</span><span class="s1">&#39;phone&#39;</span><span class="p">),</span>
+        <span class="n">_list_field</span><span class="p">(</span>
+            <span class="s2">&quot;settings_role&quot;</span><span class="p">,</span>
+            <span class="n">renderer</span><span class="o">=</span><span class="k">lambda</span> <span class="n">user</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">settings_role</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">settings_role</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="n">sort_column</span><span class="o">=</span><span class="n">settings_role</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">filter_column</span><span class="o">=</span><span class="n">settings_role</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="n">_list_field</span><span class="p">(</span>
+            <span class="s2">&quot;roles&quot;</span><span class="p">,</span>
+            <span class="n">renderer</span><span class="o">=</span><span class="k">lambda</span> <span class="n">user</span><span class="p">:</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">r</span><span class="o">.</span><span class="n">name</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">user</span><span class="o">.</span><span class="n">roles</span><span class="p">]),</span>
+            <span class="n">filter_column</span><span class="o">=</span><span class="n">Role</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">]</span>
+    <span class="n">_id_field</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span>
+    <span class="n">_model</span> <span class="o">=</span> <span class="n">UserDetail</span>
+    <span class="n">_base_schema</span> <span class="o">=</span> <span class="n">base_schema</span>
+
+    <span class="k">def</span> <span class="nf">_base_query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="o">.</span><span class="n">dbsession</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">UserDetail</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">distinct</span><span class="p">()</span>
+            <span class="o">.</span><span class="n">outerjoin</span><span class="p">(</span><span class="n">settings_role</span><span class="p">,</span> <span class="n">settings_role</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">UserDetail</span><span class="o">.</span><span class="n">settings_role_id</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">outerjoin</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">roles</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">options</span><span class="p">(</span><span class="n">subqueryload</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">settings_role</span><span class="p">))</span>
+            <span class="o">.</span><span class="n">options</span><span class="p">(</span><span class="n">subqueryload</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">roles</span><span class="p">))</span>
+        <span class="p">)</span>
+
+    <span class="nd">@view_config</span><span class="p">(</span>
+        <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;c2cgeoform_index&#39;</span><span class="p">,</span>
+        <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;./templates/index.jinja2&#39;</span>
+    <span class="p">)</span>
+    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">()</span>
+
+    <span class="nd">@view_config</span><span class="p">(</span>
+        <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;c2cgeoform_grid&#39;</span><span class="p">,</span>
+        <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;fast_json&#39;</span>
+    <span class="p">)</span>
+    <span class="k">def</span> <span class="nf">grid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+
+    <span class="nd">@view_config</span><span class="p">(</span>
+        <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;c2cgeoform_item&#39;</span><span class="p">,</span>
+        <span class="n">request_method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span>
+        <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;./templates/edit.jinja2&#39;</span>
+    <span class="p">)</span>
+    <span class="k">def</span> <span class="nf">view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">edit</span><span class="p">()</span>
+
+    <span class="nd">@view_config</span><span class="p">(</span>
+        <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;c2cgeoform_item&#39;</span><span class="p">,</span>
+        <span class="n">request_method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span>
+        <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;./templates/edit.jinja2&#39;</span>
+    <span class="p">)</span>
+    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+    <span class="nd">@view_config</span><span class="p">(</span>
+        <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;c2cgeoform_item&#39;</span><span class="p">,</span>
+        <span class="n">request_method</span><span class="o">=</span><span class="s1">&#39;DELETE&#39;</span><span class="p">,</span>
+        <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;fast_json&#39;</span>
+    <span class="p">)</span>
+    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+
+    <span class="nd">@view_config</span><span class="p">(</span>
+        <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;c2cgeoform_item_duplicate&#39;</span><span class="p">,</span>
+        <span class="n">request_method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span>
+        <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;./templates/edit.jinja2&#39;</span>
+    <span class="p">)</span>
+    <span class="k">def</span> <span class="nf">duplicate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">duplicate</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>And now the file <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/admin/views/title.py</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+
+<span class="kn">from</span> <span class="o">&lt;</span><span class="n">package</span><span class="o">&gt;</span><span class="n">_geoportal</span><span class="o">.</span><span class="n">models</span> <span class="kn">import</span> <span class="nn">Title</span>
+<span class="kn">from</span> <span class="nn">c2cgeoform.schema</span> <span class="kn">import</span> <span class="n">GeoFormSchemaNode</span>
+<span class="kn">from</span> <span class="nn">c2cgeoform.views.abstract_views</span> <span class="kn">import</span> <span class="n">AbstractViews</span><span class="p">,</span> <span class="n">ListField</span>
+<span class="kn">from</span> <span class="nn">pyramid.view</span> <span class="kn">import</span> <span class="n">view_config</span><span class="p">,</span> <span class="n">view_defaults</span>
+
+
+<span class="n">base_schema</span> <span class="o">=</span> <span class="n">GeoFormSchemaNode</span><span class="p">(</span><span class="n">Title</span><span class="p">)</span>
+<span class="n">_list_field</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">ListField</span><span class="p">,</span> <span class="n">Title</span><span class="p">)</span>
+
+
+<span class="nd">@view_defaults</span><span class="p">(</span><span class="n">match_param</span><span class="o">=</span><span class="s1">&#39;table=titles&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">TitleViews</span><span class="p">(</span><span class="n">AbstractViews</span><span class="p">):</span>
+    <span class="n">_list_fields</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">_list_field</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">),</span>
+        <span class="n">_list_field</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">),</span>
+    <span class="p">]</span>
+    <span class="n">_id_field</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span>
+    <span class="n">_model</span> <span class="o">=</span> <span class="n">Title</span>
+    <span class="n">_base_schema</span> <span class="o">=</span> <span class="n">base_schema</span>
+
+    <span class="nd">@view_config</span><span class="p">(</span>
+        <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;c2cgeoform_index&#39;</span><span class="p">,</span>
+        <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;./templates/index.jinja2&#39;</span>
+    <span class="p">)</span>
+    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">()</span>
+
+    <span class="nd">@view_config</span><span class="p">(</span>
+        <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;c2cgeoform_grid&#39;</span><span class="p">,</span>
+        <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;fast_json&#39;</span>
+    <span class="p">)</span>
+    <span class="k">def</span> <span class="nf">grid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+
+    <span class="nd">@view_config</span><span class="p">(</span>
+        <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;c2cgeoform_item&#39;</span><span class="p">,</span>
+        <span class="n">request_method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span>
+        <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;./templates/edit.jinja2&#39;</span>
+    <span class="p">)</span>
+    <span class="k">def</span> <span class="nf">view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">edit</span><span class="p">()</span>
+
+    <span class="nd">@view_config</span><span class="p">(</span>
+        <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;c2cgeoform_item&#39;</span><span class="p">,</span>
+        <span class="n">request_method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span>
+        <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;./templates/edit.jinja2&#39;</span>
+    <span class="p">)</span>
+    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+    <span class="nd">@view_config</span><span class="p">(</span>
+        <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;c2cgeoform_item&#39;</span><span class="p">,</span>
+        <span class="n">request_method</span><span class="o">=</span><span class="s1">&#39;DELETE&#39;</span><span class="p">,</span>
+        <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;fast_json&#39;</span>
+    <span class="p">)</span>
+    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+
+    <span class="nd">@view_config</span><span class="p">(</span>
+        <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;c2cgeoform_item_duplicate&#39;</span><span class="p">,</span>
+        <span class="n">request_method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span>
+        <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;./templates/edit.jinja2&#39;</span>
+    <span class="p">)</span>
+    <span class="k">def</span> <span class="nf">duplicate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">duplicate</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Change the User page in the admin, add it in your configuration <code class="docutils literal notranslate"><span class="pre">geoportal/vars.yaml</span></code>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">admin_interface</span><span class="p p-Indicator">:</span>
+<span class="w">        </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="w">        </span><span class="l l-Scalar l-Scalar-Plain">exclude_pages</span><span class="p p-Indicator">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">users</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">roles</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">functionalities</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">interfaces</span>
+<span class="w">        </span><span class="nt">include_pages</span><span class="p">:</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">url_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">userdetails</span>
+<span class="w">            </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;package&gt;_geoportal.models.UserDetail</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">url_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">titles</span>
+<span class="w">            </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;package&gt;_geoportal.models.Title</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">url_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">roles</span>
+<span class="w">            </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">c2cgeoportal_commons.models.main.Role</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">url_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">functionalities</span>
+<span class="w">            </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">c2cgeoportal_commons.models.main.Functionality</span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">url_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">interfaces</span>
+<span class="w">            </span><span class="nt">model</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">c2cgeoportal_commons.models.main.Interface</span>
+</pre></div>
+</div>
+<p>And finally in <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/__init__.py</span></code> replace <code class="docutils literal notranslate"><span class="pre">config.scan()</span></code> by:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">c2cgeoportal_admin</span> <span class="kn">import</span> <span class="n">PermissionSetter</span>
+
+<span class="k">with</span> <span class="n">PermissionSetter</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
+    <span class="c1"># Scan view decorator for adding routes</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="s1">&#39;&lt;package&gt;_geoportal.admin.views&#39;</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">ignore</span><span class="o">=</span><span class="s1">&#39;&lt;package&gt;_geoportal.admin.views&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Build and run the application:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt1:before {
+  content: "$ ";
+}
+</style><span class="prompt1">./build<span class="w"> </span>&lt;args&gt;</span>
+<span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d</span>
+</pre></div></div><p>Get and run the SQL command to create the tables:</p>
+<p>Run Python console:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>python3</span>
+</pre></div></div><p>Execute the following code:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sqlalchemy</span>
+<span class="kn">from</span> <span class="nn">c2c.template.config</span> <span class="kn">import</span> <span class="n">config</span>
+
+<span class="kn">import</span> <span class="nn">c2cgeoportal_commons.models</span>
+
+<span class="n">config</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="s1">&#39;/etc/geomapfish/config.yaml&#39;</span><span class="p">)</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">engine_from_config</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">get_config</span><span class="p">(),</span> <span class="s1">&#39;sqlalchemy.&#39;</span><span class="p">)</span>
+<span class="n">c2cgeoportal_commons</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">bind</span> <span class="o">=</span> <span class="n">engine</span>
+
+<span class="kn">from</span> <span class="o">&lt;</span><span class="n">package</span><span class="o">&gt;</span><span class="n">_geoportal</span><span class="o">.</span><span class="n">models</span> <span class="kn">import</span> <span class="nn">Title</span><span class="o">,</span> <span class="nn">UserDetail</span>
+<span class="kn">from</span> <span class="nn">sqlalchemy.schema</span> <span class="kn">import</span> <span class="n">CreateTable</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">CreateTable</span><span class="p">(</span><span class="n">Title</span><span class="o">.</span><span class="n">__table__</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">CreateTable</span><span class="p">(</span><span class="n">UserDetail</span><span class="o">.</span><span class="n">__table__</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>If the generated SQL looks good, do in the same Python console to effectively create the tables:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><style type="text/css">
+span.prompt2:before {
+  content: " ";
+}
+</style><span class="prompt2"><span class="n">Title</span><span class="o">.</span><span class="n">__table__</span><span class="o">.</span><span class="n">create</span><span class="p">()</span></span>
+<span class="prompt2"><span class="n">UserDetail</span><span class="o">.</span><span class="n">__table__</span><span class="o">.</span><span class="n">create</span><span class="p">()</span></span>
+</pre></div></div></section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo of c2cgeoportal"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">c2cgeoportal</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=camptocamp&repo=c2cgeoportal&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../administrator/index.html">Administrator Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Integrator Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/index.html">Developer Guide</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+      <li>Previous: <a href="admin_interface.html" title="previous chapter">Configure the admin interface</a></li>
+      <li>Next: <a href="security.html" title="next chapter">Security</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2011-2024, Camptocamp.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../_sources/integrator/customize.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

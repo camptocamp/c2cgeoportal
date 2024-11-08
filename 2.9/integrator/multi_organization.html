@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Multi organization &#8212; c2cgeoportal  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css?v=939896e0" />
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Vector tiles" href="vector_tiles.html" />
+    <link rel="prev" title="Routing interface" href="routing.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="multi-organization">
+<span id="integrator-multi-organization"></span><h1>Multi organization<a class="headerlink" href="#multi-organization" title="Link to this heading">¶</a></h1>
+<p>The geoportal can host multiple organizations, with configuration differences for each organization.
+In a multi-organization geoportal, each organization will have the same program code
+(Python, Javascript, SCSS). In this mode all the organizations are served by the same infrastructure.</p>
+<p>In this example we will have the came CSS but we can do some variations by using CSS var,
+see <code class="docutils literal notranslate"><span class="pre">cssVars</span></code> in <code class="docutils literal notranslate"><span class="pre">gmfOptions</span></code> in the ngeo GMF constants definitions
+<a class="extlink-ngeo_doc reference external" href="https://camptocamp.github.io/ngeo/2.9/jsdoc/module-contribs_gmf_src_options.html">gmf constants</a>.</p>
+<p>The following lines will provide a basic implementation for multi-organization.</p>
+<p>The code should be adapted, currently it handles the hostnames ‘org1.camptocamp.com’ and
+‘org2.camptocamp.com’, and you probably want to put the hardcoded values in the config.</p>
+<section id="init-py">
+<h2><code class="docutils literal notranslate"><span class="pre">__init__.py</span></code><a class="headerlink" href="#init-py" title="Link to this heading">¶</a></h2>
+<p>In the file <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/__init__.py</span></code> add the following lines:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_instance_prefix</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">host</span> <span class="o">==</span> <span class="s2">&quot;org1.camptocamp.com&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;org1&quot;</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">host</span> <span class="o">==</span> <span class="s2">&quot;org2.camptocamp.com&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;org2&quot;</span>
+    <span class="c1"># Can be used to debug the application</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DEFAULT_PREFIX&quot;</span><span class="p">,</span> <span class="s2">&quot;unknown&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">get_organization_role</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">role_type</span><span class="p">):</span>
+    <span class="n">prefix</span> <span class="o">=</span> <span class="n">get_instance_prefix</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">role_type</span><span class="si">}</span><span class="s2">&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">get_organization_interface</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">interface</span><span class="p">):</span>
+    <span class="n">prefix</span> <span class="o">=</span> <span class="n">get_instance_prefix</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">interface</span><span class="si">}</span><span class="s2">&quot;</span>
+
+
+<span class="k">def</span> <span class="nf">get_organization_print_url</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="n">prefix</span> <span class="o">=</span> <span class="n">get_instance_prefix</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
+    <span class="n">print_url</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;print_url&quot;</span><span class="p">]</span>
+    <span class="c1"># Custom code can be added to have a different behavior</span>
+    <span class="k">return</span> <span class="n">print_url</span>
+
+
+<span class="c1"># In ``main`` function, after ``config.include(&quot;c2cgeoportal_geoportal&quot;)``</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">add_request_method</span><span class="p">(</span>
+        <span class="n">get_organization_role</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_organization_role&quot;</span><span class="p">)</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">add_request_method</span><span class="p">(</span>
+        <span class="n">get_organization_interface</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_organization_interface&quot;</span><span class="p">)</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">add_request_method</span><span class="p">(</span>
+        <span class="n">get_organization_print_url</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_organization_print_url&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="vars-yaml">
+<h2><code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code><a class="headerlink" href="#vars-yaml" title="Link to this heading">¶</a></h2>
+<p>In the file <code class="docutils literal notranslate"><span class="pre">geoportal/vars.yaml</span></code> add the following in interfaces the <code class="docutils literal notranslate"><span class="pre">interfaces_config</span></code>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">org1-desktop</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">extends</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">desktop</span>
+<span class="w">    </span><span class="nt">redirect_interface</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mobile</span>
+<span class="w">    </span><span class="nt">lang_urls_suffix</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-org1</span>
+<span class="w">    </span><span class="nt">constants</span><span class="p">:</span>
+<span class="w">        </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="nt">org1-mobile</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">extends</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mobile</span>
+<span class="w">    </span><span class="nt">redirect_interface</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">desktop</span>
+<span class="w">    </span><span class="nt">lang_urls_suffix</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-org1</span>
+<span class="w">    </span><span class="nt">constants</span><span class="p">:</span>
+<span class="w">        </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="nt">org2-desktop</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">extends</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">desktop</span>
+<span class="w">    </span><span class="nt">redirect_interface</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mobile</span>
+<span class="w">    </span><span class="nt">lang_urls_suffix</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-org2</span>
+<span class="w">    </span><span class="nt">constants</span><span class="p">:</span>
+<span class="w">        </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+<span class="nt">org2-mobile</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">extends</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mobile</span>
+<span class="w">    </span><span class="nt">redirect_interface</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">desktop</span>
+<span class="w">    </span><span class="nt">lang_urls_suffix</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-org2</span>
+<span class="w">    </span><span class="nt">constants</span><span class="p">:</span>
+<span class="w">        </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</pre></div>
+</div>
+</section>
+<section id="roles">
+<h2>Roles<a class="headerlink" href="#roles" title="Link to this heading">¶</a></h2>
+<p>The following roles should be created and completed as needed
+(the original roles <code class="docutils literal notranslate"><span class="pre">anonymous</span></code>, <code class="docutils literal notranslate"><span class="pre">registered</span></code> and <code class="docutils literal notranslate"><span class="pre">intranet</span></code> are no more used):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">org1</span><span class="o">-</span><span class="n">anonymous</span>
+<span class="o">-</span> <span class="n">org1</span><span class="o">-</span><span class="n">registered</span>
+<span class="o">-</span> <span class="n">org1</span><span class="o">-</span><span class="n">intranet</span>
+<span class="o">-</span> <span class="n">org2</span><span class="o">-</span><span class="n">anonymous</span>
+<span class="o">-</span> <span class="n">org2</span><span class="o">-</span><span class="n">registered</span>
+<span class="o">-</span> <span class="n">org2</span><span class="o">-</span><span class="n">intranet</span>
+</pre></div>
+</div>
+</section>
+<section id="internationalization">
+<h2>Internationalization<a class="headerlink" href="#internationalization" title="Link to this heading">¶</a></h2>
+<p>For each organization, a set of localization file should be created.</p>
+<p>The general workflow is:</p>
+<ul class="simple">
+<li><p>The integrator performs <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">update-client-po</span></code>.</p></li>
+<li><p>This will run one <code class="docutils literal notranslate"><span class="pre">update-po</span></code> script for each organization with different environment variables.</p></li>
+<li><p>The result is one po file set for each organization with the defined suffix.</p></li>
+<li><p>The integrator needs to complete the po files with translations.</p></li>
+<li><p>When the config Docker image is built, all po files are automatically converted to JSON files
+with the same suffix.</p></li>
+<li><p>At runtime, the <code class="docutils literal notranslate"><span class="pre">dynamic</span></code> view will return the appropriate URLs for the translations.</p></li>
+</ul>
+<section id="configuration">
+<h3>Configuration<a class="headerlink" href="#configuration" title="Link to this heading">¶</a></h3>
+<p>Add this rule in the <code class="docutils literal notranslate"><span class="pre">geoportal/Makefile</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>.PHONY: update-client-po
+update-client-po:
+    # Generate po file for org1
+    cd .. &amp;&amp; SUFFIX=-org1 INTERFACES=desktop-org1,mobile-org1 \
+        update-po $(USER_ID) $(GROUP_ID) $(LANGUAGES)
+    # Generate po file for org2
+    cd .. &amp;&amp; SUFFIX=-org2 INTERFACES=desktop-org2,mobile-org2 \
+        update-po $(USER_ID) $(GROUP_ID) $(LANGUAGES)
+
+    # Example with all environment variables
+    cd .. &amp;&amp; \
+        SUFFIX=-test \
+        INTERFACES=desktop-test,mobile-test \
+        THEME_REGEX=.*-test \
+        GROUP_REGEX=.*-test \
+        WMSLAYER_REGEX=.*-test \
+        WMTSLAYER_REGEX=.*-test \
+        update-po $(USER_ID) $(GROUP_ID) $(LANGUAGES)
+</pre></div>
+</div>
+<p>The environment variables that are used by the <code class="docutils literal notranslate"><span class="pre">update-po</span></code> command are the following:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">INTERFACES</span></code>: List of interfaces we want to use.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">THEME_REGEX</span></code>: Regular expression used to filter the themes.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GROUP_REGEX</span></code>: Regular expression used to filter the layer groups.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">WMSLAYER_REGEX</span></code>: Regular expression used to filter the WMS layers.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">WMTSLAYER_REGEX</span></code>: Regular expression used to filter the WMTS layers.</p></li>
+</ul>
+</div></blockquote>
+<p>Note that the extractor is able to filter themes and layers based on the given interfaces but there is no
+link between layer groups and interfaces.</p>
+<p>Modify the <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code> to create all the needed localization JSON files:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">RUN</span> <span class="n">build</span><span class="o">-</span><span class="n">l10n</span> <span class="s2">&quot;&lt;package&gt;&quot;</span>
+<span class="o">+</span> <span class="n">RUN</span> <span class="n">build</span><span class="o">-</span><span class="n">l10n</span> <span class="o">--</span><span class="n">suffix</span><span class="o">=-</span><span class="n">org1</span> <span class="o">--</span><span class="n">suffix</span><span class="o">=-</span><span class="n">org2</span> <span class="s2">&quot;&lt;package&gt;&quot;</span>
+</pre></div>
+</div>
+<p>When loading the frontend, the <code class="docutils literal notranslate"><span class="pre">dynamic</span></code> view will return the appropriate localization URLs based on the
+<code class="docutils literal notranslate"><span class="pre">lang_urls_suffix</span></code> defined in the corresponding interface (in <code class="docutils literal notranslate"><span class="pre">interfaces_config</span></code>).
+See the definition above.</p>
+</section>
+</section>
+<section id="warning">
+<h2>Warning<a class="headerlink" href="#warning" title="Link to this heading">¶</a></h2>
+<p>With that, one user of the org1 can login to the organization org2 and will have the <code class="docutils literal notranslate"><span class="pre">registered</span></code> rights.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo of c2cgeoportal"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">c2cgeoportal</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=camptocamp&repo=c2cgeoportal&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../administrator/index.html">Administrator Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Integrator Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/index.html">Developer Guide</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+  <li><a href="features.html">Additional features</a><ul>
+      <li>Previous: <a href="routing.html" title="previous chapter">Routing interface</a></li>
+      <li>Next: <a href="vector_tiles.html" title="next chapter">Vector tiles</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2011-2024, Camptocamp.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../_sources/integrator/multi_organization.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
