@@ -52,6 +52,7 @@ class DynamicUser(NamedTuple):
     User created dynamically.
     """
 
+    id: int
     username: str
     display_name: str
     email: str
@@ -194,6 +195,7 @@ def get_user_from_remember(
                 models.DBSession.add(user)
     else:
         user = DynamicUser(
+            id=-1,
             username=username,
             display_name=display_name,
             email=email,
