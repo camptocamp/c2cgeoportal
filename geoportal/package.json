@@ -10,13 +10,13 @@
   "dependencies": {
     "@snyk/protect": "1.1294.0",
     "ngeo": "2.9.0-latest.20241104T164844Z.82cedd0a7",
-    "puppeteer": "23.6.1"
+    "puppeteer": "23.7.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "3.1.0",
     "@eslint/js": "9.14.0",
     "@popperjs/core": "2.11.8",
-    "@sentry/browser": "8.36.0",
+    "@sentry/browser": "8.37.1",
     "angular-gettext-tools": "2.5.3",
     "angular-mocks": "1.8.3",
     "commander": "12.1.0",
@@ -27,7 +27,7 @@
     "eslint": "8.57.1",
     "eslint-plugin-jsdoc": "50.4.3",
     "eslint-plugin-lit": "1.15.0",
-    "eslint-plugin-storybook": "0.10.2",
+    "eslint-plugin-storybook": "0.11.0",
     "eslint-plugin-wc": "2.2.0",
     "event-hooks-webpack-plugin": "2.3.0",
     "expose-loader": "5.0.0",
