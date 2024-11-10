@@ -29,7 +29,7 @@ authors = []
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"
-alembic = "1.13.3" # geoportal
+alembic = "1.14.0" # geoportal
 "c2c.template" = "2.4.2" # geoportal
 c2cgeoform = "2.4.3" # commons
 colander = "2.0" # commons, admin
@@ -75,7 +75,7 @@ azure-storage-blob = "12.23.1"
 simple_openid_connect = { git = "https://github.com/sbrunner/py_simple_openid_connect.git", branch = "allows-pkce" } # geoportal
 pkce = '1.0.3' # geoportal
 basicauth = "1.0.0"
-prospector = { extras = ["with_mypy", "with_bandit", "with_pyroma"], version = "1.12.1" }
+prospector = { extras = ["with_mypy", "with_bandit", "with_pyroma"], version = "1.13.0" }
 prospector-profile-duplicated = "1.6.0"
 prospector-profile-utils  = "1.9.1"
 beautifulsoup4 = "4.12.3"
@@ -94,7 +94,7 @@ types-pytz = "2024.2.0.20241003"
 types-pyyaml = "6.0.12.20240917"
 types-python-dateutil = "2.9.0.20241003"
 types-requests = "2.32.0.20241016"
-types-setuptools = "75.2.0.20241025"
+types-setuptools = "75.3.0.20241107"
 mappyfile = "1.0.2"
 # To be able to upgrade project from version <= 2.8
 c2cciutils = { version = "1.5.8", extras = ["checks"] }
