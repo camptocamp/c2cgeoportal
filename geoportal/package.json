@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@snyk/protect": "1.1294.0",
-    "ngeo": "version-2.9-latest",
+    "ngeo": "2.8.0",
     "puppeteer": "23.6.1"
   },
   "devDependencies": {
@@ -17,7 +17,7 @@
     "@eslint/js": "9.14.0",
     "@popperjs/core": "2.11.8",
     "@sentry/browser": "8.36.0",
-    "angular-gettext-tools": "2.5.3",
+    "angular-gettext-tools": "2.3.18",
     "angular-mocks": "1.8.3",
     "commander": "12.1.0",
     "copy-webpack-plugin": "12.0.2",
@@ -31,7 +31,7 @@
     "eslint-plugin-wc": "2.2.0",
     "event-hooks-webpack-plugin": "2.3.0",
     "expose-loader": "5.0.0",
-    "extract-loader": "5.1.0",
+    "extract-loader": "4.0.3",
     "file-loader": "6.2.0",
     "html-webpack-plugin": "5.6.3",
     "loader-utils": "3.3.1",
