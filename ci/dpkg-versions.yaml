@@ -371,7 +371,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34: &id001
   ubuntu_22_04/libmpdec3: 2.5.1-2build2
   ubuntu_22_04/libmpfr6: 4.1.0-3build3
   ubuntu_22_04/libmtdev1: 1.1.6-1build4
-  ubuntu_22_04/libmysqlclient21: 8.0.39-0ubuntu0.22.04.1
+  ubuntu_22_04/libmysqlclient21: 8.0.40-0ubuntu0.22.04.1
   ubuntu_22_04/libncurses6: 6.3-2ubuntu0.1
   ubuntu_22_04/libncursesw6: 6.3-2ubuntu0.1
   ubuntu_22_04/libnetcdf19: 1:4.8.1-1
@@ -937,7 +937,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_22_04/libmpdec3: 2.5.1-2build2
   ubuntu_22_04/libmpfr6: 4.1.0-3build3
   ubuntu_22_04/libmtdev1: 1.1.6-1build4
-  ubuntu_22_04/libmysqlclient21: 8.0.39-0ubuntu0.22.04.1
+  ubuntu_22_04/libmysqlclient21: 8.0.40-0ubuntu0.22.04.1
   ubuntu_22_04/libncurses6: 6.3-2ubuntu0.1
   ubuntu_22_04/libncursesw6: 6.3-2ubuntu0.1
   ubuntu_22_04/libnetcdf19: 1:4.8.1-1
