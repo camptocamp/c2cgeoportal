@@ -1,3 +1,7 @@
+##### 2.7.1.148
+
+- Force to use https in dev mode [c2cgeoportal#11524](https://github.com/camptocamp/c2cgeoportal/pull/11524)
+
 ##### 2.7.1.147
 
 - Update dependency ngeo to v2.7.0-version-2.7-latest.20241101T165500Z.da94a4bac.2.7 (2.7) [c2cgeoportal#11513](https://github.com/camptocamp/c2cgeoportal/pull/11513)
