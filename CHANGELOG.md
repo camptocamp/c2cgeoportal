@@ -1,3 +1,7 @@
+##### 2.8.1.166
+
+- [Backport 2.8] Fix force to use https in dev mode [c2cgeoportal#11532](https://github.com/camptocamp/c2cgeoportal/pull/11532)
+
 ##### 2.8.1.165
 
 - Audit Snyk check/fix 2.8 [c2cgeoportal#11530](https://github.com/camptocamp/c2cgeoportal/pull/11530)
