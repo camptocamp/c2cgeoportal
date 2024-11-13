@@ -372,11 +372,11 @@
         },
         "setuptools": {
             "hashes": [
-                "sha256:1dc484f5cf56fd3fe7216d7b8df820802e7246cfb534a1db2aa64f14fcb9cdcb",
-                "sha256:b3c5d862f98500b06ffdf7cc4499b48c46c317d8d56cb30b5c8bce4d88f5c216"
+                "sha256:f211a66637b8fa059bb28183da127d4e86396c991a942b028c6650d4319c3fd0",
+                "sha256:54faa7f2e8d2d11bcd2c07bed282eef1046b5c080d1c32add737d7b5817b1ad4"
             ],
-            "markers": "python_version >= '3.9'",
-            "version": "==75.4.0"
+            "markers": "python_version >= '3.8'",
+            "version": "==70.0.0"
         },
         "shapely": {
             "hashes": [
