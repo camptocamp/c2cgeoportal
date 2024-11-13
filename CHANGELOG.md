@@ -1,3 +1,7 @@
+##### 2.8.1.167
+
+- Update dependency c2cwsgiutils to v5.1.9 (2.8) [c2cgeoportal#11534](https://github.com/camptocamp/c2cgeoportal/pull/11534)
+
 ##### 2.8.1.166
 
 - [Backport 2.8] Fix force to use https in dev mode [c2cgeoportal#11532](https://github.com/camptocamp/c2cgeoportal/pull/11532)
