@@ -1,3 +1,7 @@
+##### 2.9.rc.5
+
+- Audit Dpkg 2.9 [c2cgeoportal#11531](https://github.com/camptocamp/c2cgeoportal/pull/11531)
+
 ##### 2.9.rc.4
 
 - [Backport 2.9] Force to use https in dev mode [c2cgeoportal#11527](https://github.com/camptocamp/c2cgeoportal/pull/11527)
