@@ -397,12 +397,12 @@ SQLAlchemy = ">=1.1.13"
 
 [[package]]
 name = "c2cwsgiutils"
-version = "5.1.7"
+version = "5.1.9"
 description = "Common utilities for Camptocamp WSGI applications"
 optional = false
 python-versions = "*"
 files = [
-    {file = "c2cwsgiutils-5.1.7-py3-none-any.whl", hash = "sha256:2132afd1996f10a13c6d9b34de7d0643b8943075267a0d203d88b12fd86b7271"},
+    {file = "c2cwsgiutils-5.1.9-py3-none-any.whl", hash = "sha256:bd2cd24e3375b13cd0772286a07c5b2f4dba3f1b8b33ba8e66a00087f8fa5b68"},
 ]
 
 [package.dependencies]
@@ -4416,4 +4416,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<3.11"
-content-hash = "94f6ff1a109cac4875a5a0ce307fefcbd1082a6946bffab9122a66d4b2ec4bc5"
+content-hash = "b123cedf7dbe863418f3311c442ed7396303ec4bfc13a3c29ede6defa43beff1"
