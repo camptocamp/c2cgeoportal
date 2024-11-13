@@ -1,3 +1,7 @@
+##### 2.7.1.150
+
+- Update all patch versions (2.7) (patch) [c2cgeoportal#11493](https://github.com/camptocamp/c2cgeoportal/pull/11493)
+
 ##### 2.7.1.149
 
 - Fix force to use https in dev mode [c2cgeoportal#11529](https://github.com/camptocamp/c2cgeoportal/pull/11529)
