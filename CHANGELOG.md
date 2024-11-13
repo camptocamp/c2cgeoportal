@@ -1,3 +1,7 @@
+##### 2.7.1.149
+
+- Fix force to use https in dev mode [c2cgeoportal#11529](https://github.com/camptocamp/c2cgeoportal/pull/11529)
+
 ##### 2.7.1.148
 
 - Force to use https in dev mode [c2cgeoportal#11524](https://github.com/camptocamp/c2cgeoportal/pull/11524)
