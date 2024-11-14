@@ -17,7 +17,7 @@ services:
     environment:
       # Single QGIS project files
       - QGIS_PROJECT_FILE=/etc/qgisserver/project.qgz
-      - GEOMAPFISH_OGCSERVER=source for image/png
+      - GEOMAPFISH_OGCSERVER=mapserver
       - QGIS_SERVER_LOG_LEVEL=0
 
   tilecloudchain:
