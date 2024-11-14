@@ -157,8 +157,10 @@ Configure the hooks in the project initialization:
 QGIS with Zitadel
 ~~~~~~~~~~~~~~~~~
 
-In Zitadel you should have a PKCS application with the following settings:
+In Zitadel you should have a PKCE application with the following settings:
 Redirect URI: ``http://127.0.0.1:7070/``.
+
+You need QGIS desktop 3.34 or later.
 
 On QGIS:
 
