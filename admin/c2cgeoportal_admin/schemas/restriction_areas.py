@@ -36,7 +36,9 @@ from sqlalchemy.orm.attributes import InstrumentedAttribute
 from c2cgeoportal_commons.models.main import RestrictionArea
 
 
-def restrictionareas_schema_node(prop: InstrumentedAttribute[Any]) -> colander.SequenceSchema:
+def restrictionareas_schema_node(
+    prop: InstrumentedAttribute[Any],  # pylint: disable=unsubscriptable-object
+) -> colander.SequenceSchema:
     """Get the schema of a restriction area."""
     return colander.SequenceSchema(
         GeoFormManyToManySchemaNode(RestrictionArea, None),
