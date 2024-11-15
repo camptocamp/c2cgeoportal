@@ -4,7 +4,6 @@ on:
   repository_dispatch:
     types:
       - ngeo_2.9_updated
-  pull_request:
 
 jobs:
   main:
