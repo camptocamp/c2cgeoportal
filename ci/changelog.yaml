@@ -54,6 +54,12 @@ commits:
         url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/4035609fc31e7452c4d17adeeb9258aceca77ede
       sha: a82c81218e650fea10e0d9289509012d1efd25d6
     a82c81218e650fea10e0d9289509012d1efd25d6: *id003
+    af42a4df833612f49b4e08ea1e75e450fc223226:
+      parents:
+      - html_url: https://github.com/camptocamp/c2cgeoportal/commit/e8230c8705837f9e6da07467893a6676670c5768
+        sha: e8230c8705837f9e6da07467893a6676670c5768
+        url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/e8230c8705837f9e6da07467893a6676670c5768
+      sha: af42a4df833612f49b4e08ea1e75e450fc223226
     b891b2bc1: &id004
       parents:
       - html_url: https://github.com/camptocamp/c2cgeoportal/commit/6742877c7b17da2a179e350d8704e07276c519e9
@@ -80,7 +86,17 @@ commits:
         url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/ad0723302450afd577ea2f59b077aaeb9265b900
       sha: d60c08113fc905b7068e3a0a7c5af8c4c72b676d
     d60c08113fc905b7068e3a0a7c5af8c4c72b676d: *id005
-    e8230c870: &id006
+    de40241c4: &id006
+      parents:
+      - html_url: https://github.com/camptocamp/c2cgeoportal/commit/af42a4df833612f49b4e08ea1e75e450fc223226
+        sha: af42a4df833612f49b4e08ea1e75e450fc223226
+        url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/af42a4df833612f49b4e08ea1e75e450fc223226
+      - html_url: https://github.com/camptocamp/c2cgeoportal/commit/d4de8b7ccfc46f90d292961d7e8f3be10cc716fd
+        sha: d4de8b7ccfc46f90d292961d7e8f3be10cc716fd
+        url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/d4de8b7ccfc46f90d292961d7e8f3be10cc716fd
+      sha: de40241c414f514755e6854fc8af11d933e1d3c8
+    de40241c414f514755e6854fc8af11d933e1d3c8: *id006
+    e8230c870: &id007
       parents:
       - html_url: https://github.com/camptocamp/c2cgeoportal/commit/13ef55b2c33fa62ae98b1df87665875bf41baf10
         sha: 13ef55b2c33fa62ae98b1df87665875bf41baf10
@@ -89,7 +105,7 @@ commits:
         sha: c71797cd667406f4a98d796fea557537f536c46a
         url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/c71797cd667406f4a98d796fea557537f536c46a
       sha: e8230c8705837f9e6da07467893a6676670c5768
-    e8230c8705837f9e6da07467893a6676670c5768: *id006
+    e8230c8705837f9e6da07467893a6676670c5768: *id007
     ff71847d04d95476b92f24991f4c82202875c0a3:
       parents:
       - html_url: https://github.com/camptocamp/c2cgeoportal/commit/b891b2bc17a859bbee8aef64bd01f66d2805436c
@@ -97,13 +113,13 @@ commits:
         url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/b891b2bc17a859bbee8aef64bd01f66d2805436c
       sha: ff71847d04d95476b92f24991f4c82202875c0a3
   ngeo:
-    99aa1e7fb: &id007
+    99aa1e7fb: &id008
       parents:
       - html_url: https://github.com/camptocamp/ngeo/commit/82cedd0a7355fa07af45abefede7ce6b0eebfc17
         sha: 82cedd0a7355fa07af45abefede7ce6b0eebfc17
         url: https://api.github.com/repos/camptocamp/ngeo/commits/82cedd0a7355fa07af45abefede7ce6b0eebfc17
       sha: 99aa1e7fb9b0fb729f26b5cbc0309435fa7ef2c1
-    99aa1e7fb9b0fb729f26b5cbc0309435fa7ef2c1: *id007
+    99aa1e7fb9b0fb729f26b5cbc0309435fa7ef2c1: *id008
 pulls:
   c2cgeoportal:
     13ef55b2c33fa62ae98b1df87665875bf41baf10: []
@@ -128,6 +144,7 @@ pulls:
       state: closed
       title: Set the correct main branch
       updated_at: '2024-11-08T15:11:43Z'
+    af42a4df833612f49b4e08ea1e75e450fc223226: []
     b891b2bc1:
     - base_ref: '2.9'
       closed_at: '2024-11-09T08:05:16Z'
@@ -147,6 +164,15 @@ pulls:
       state: closed
       title: '[Backport 2.9] Force to use https in dev mode'
       updated_at: '2024-11-12T16:26:57Z'
+    de40241c4:
+    - base_ref: '2.9'
+      closed_at: '2024-11-15T10:04:11Z'
+      created_at: '2024-11-14T20:09:37Z'
+      html_url: https://github.com/camptocamp/c2cgeoportal/pull/11537
+      number: 11537
+      state: closed
+      title: Audit Dpkg 2.9
+      updated_at: '2024-11-15T10:04:13Z'
     e8230c870:
     - base_ref: '2.9'
       closed_at: '2024-11-13T09:12:35Z'
@@ -176,4 +202,7 @@ releases:
   ngeo: 99aa1e7fb
 - c2cgeoportal: e8230c870
   name: 2.9.rc.5
+  ngeo: 99aa1e7fb
+- c2cgeoportal: de40241c4
+  name: 2.9.rc.6
   ngeo: 99aa1e7fb
