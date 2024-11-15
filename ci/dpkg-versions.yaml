@@ -1363,6 +1363,8 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/libicu74: 74.2-1ubuntu3.1
   ubuntu_24_04/libidn2-0: 2.3.7-2build1
   ubuntu_24_04/libimagequant0: 2.18.0-1build1
+  ubuntu_24_04/libio-pty-perl: 1:1.20-1build2
+  ubuntu_24_04/libipc-run-perl: 20231003.0-1
   ubuntu_24_04/libisl23: 0.26-3build1
   ubuntu_24_04/libitm1: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/libjansson4: 2.14-2build2
