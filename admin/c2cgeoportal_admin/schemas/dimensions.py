@@ -36,7 +36,9 @@ from sqlalchemy.orm.attributes import InstrumentedAttribute
 from c2cgeoportal_commons.models.main import Dimension
 
 
-def dimensions_schema_node(prop: InstrumentedAttribute[Any]) -> colander.SequenceSchema:
+def dimensions_schema_node(
+    prop: InstrumentedAttribute[Any],  # pylint: disable=unsubscriptable-object
+) -> colander.SequenceSchema:
     """Get the scheme of the dimensions."""
     return colander.SequenceSchema(
         GeoFormSchemaNode(Dimension, name="dimension", widget=MappingWidget(template="dimension")),
