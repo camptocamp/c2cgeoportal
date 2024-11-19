@@ -62,8 +62,8 @@ camptocamp/geomapfish-config:latest:
   ubuntu_24_04/libpcre2-8-0: 10.42-4ubuntu2
   ubuntu_24_04/libproc2-0: 2:4.0.4-4ubuntu3.2
   ubuntu_24_04/libpython3-stdlib: 3.12.3-0ubuntu2
-  ubuntu_24_04/libpython3.12-minimal: 3.12.3-1ubuntu0.2
-  ubuntu_24_04/libpython3.12-stdlib: 3.12.3-1ubuntu0.2
+  ubuntu_24_04/libpython3.12-minimal: 3.12.3-1ubuntu0.3
+  ubuntu_24_04/libpython3.12-stdlib: 3.12.3-1ubuntu0.3
   ubuntu_24_04/libreadline8t64: 8.2-4build1
   ubuntu_24_04/libseccomp2: 2.5.5-1ubuntu3.1
   ubuntu_24_04/libselinux1: 3.5-2ubuntu2
@@ -102,8 +102,8 @@ camptocamp/geomapfish-config:latest:
   ubuntu_24_04/python3-pkg-resources: 68.1.2-2ubuntu1.1
   ubuntu_24_04/python3-setuptools: 68.1.2-2ubuntu1.1
   ubuntu_24_04/python3-wheel: 0.42.0-2
-  ubuntu_24_04/python3.12: 3.12.3-1ubuntu0.2
-  ubuntu_24_04/python3.12-minimal: 3.12.3-1ubuntu0.2
+  ubuntu_24_04/python3.12: 3.12.3-1ubuntu0.3
+  ubuntu_24_04/python3.12-minimal: 3.12.3-1ubuntu0.3
   ubuntu_24_04/readline-common: 8.2-4build1
   ubuntu_24_04/sed: 4.9-2build1
   ubuntu_24_04/sensible-utils: 0.0.22
@@ -417,10 +417,10 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34: &id001
   ubuntu_22_04/libpulse0: 1:15.99.1+dfsg1-1ubuntu2.2
   ubuntu_22_04/libpython3-dev: 3.10.6-1~22.04.1
   ubuntu_22_04/libpython3-stdlib: 3.10.6-1~22.04.1
-  ubuntu_22_04/libpython3.10: 3.10.12-1~22.04.6
-  ubuntu_22_04/libpython3.10-dev: 3.10.12-1~22.04.6
-  ubuntu_22_04/libpython3.10-minimal: 3.10.12-1~22.04.6
-  ubuntu_22_04/libpython3.10-stdlib: 3.10.12-1~22.04.6
+  ubuntu_22_04/libpython3.10: 3.10.12-1~22.04.7
+  ubuntu_22_04/libpython3.10-dev: 3.10.12-1~22.04.7
+  ubuntu_22_04/libpython3.10-minimal: 3.10.12-1~22.04.7
+  ubuntu_22_04/libpython3.10-stdlib: 3.10.12-1~22.04.7
   ubuntu_22_04/libqca-qt5-2: 2.3.4-1build1
   ubuntu_22_04/libqca-qt5-2-plugins: 2.3.4-1build1
   ubuntu_22_04/libqhull-r8.0: 2020.2-4
@@ -661,9 +661,9 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34: &id001
   ubuntu_22_04/python3-setuptools: 59.6.0-1.2ubuntu0.22.04.2
   ubuntu_22_04/python3-stdlib-extensions: 3.10.8-1~22.04
   ubuntu_22_04/python3-wheel: 0.37.1-2ubuntu0.22.04.1
-  ubuntu_22_04/python3.10: 3.10.12-1~22.04.6
-  ubuntu_22_04/python3.10-dev: 3.10.12-1~22.04.6
-  ubuntu_22_04/python3.10-minimal: 3.10.12-1~22.04.6
+  ubuntu_22_04/python3.10: 3.10.12-1~22.04.7
+  ubuntu_22_04/python3.10-dev: 3.10.12-1~22.04.7
+  ubuntu_22_04/python3.10-minimal: 3.10.12-1~22.04.7
   ubuntu_22_04/qca2: 2.3.4-1build1
   ubuntu_22_04/qscintilla2: 2.11.6+dfsg-4
   ubuntu_22_04/qtbase-opensource-src: 5.15.3+dfsg-2ubuntu0.2
@@ -979,10 +979,10 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_22_04/libpulse0: 1:15.99.1+dfsg1-1ubuntu2.2
   ubuntu_22_04/libpython3-dev: 3.10.6-1~22.04.1
   ubuntu_22_04/libpython3-stdlib: 3.10.6-1~22.04.1
-  ubuntu_22_04/libpython3.10: 3.10.12-1~22.04.6
-  ubuntu_22_04/libpython3.10-dev: 3.10.12-1~22.04.6
-  ubuntu_22_04/libpython3.10-minimal: 3.10.12-1~22.04.6
-  ubuntu_22_04/libpython3.10-stdlib: 3.10.12-1~22.04.6
+  ubuntu_22_04/libpython3.10: 3.10.12-1~22.04.7
+  ubuntu_22_04/libpython3.10-dev: 3.10.12-1~22.04.7
+  ubuntu_22_04/libpython3.10-minimal: 3.10.12-1~22.04.7
+  ubuntu_22_04/libpython3.10-stdlib: 3.10.12-1~22.04.7
   ubuntu_22_04/libqca-qt5-2: 2.3.4-1build1
   ubuntu_22_04/libqca-qt5-2-plugins: 2.3.4-1build1
   ubuntu_22_04/libqhull-r8.0: 2020.2-4
@@ -1157,9 +1157,9 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_22_04/python3-pyqt5.sip: 12.9.1-1build1
   ubuntu_22_04/python3-setuptools: 59.6.0-1.2ubuntu0.22.04.2
   ubuntu_22_04/python3-wheel: 0.37.1-2ubuntu0.22.04.1
-  ubuntu_22_04/python3.10: 3.10.12-1~22.04.6
-  ubuntu_22_04/python3.10-dev: 3.10.12-1~22.04.6
-  ubuntu_22_04/python3.10-minimal: 3.10.12-1~22.04.6
+  ubuntu_22_04/python3.10: 3.10.12-1~22.04.7
+  ubuntu_22_04/python3.10-dev: 3.10.12-1~22.04.7
+  ubuntu_22_04/python3.10-minimal: 3.10.12-1~22.04.7
   ubuntu_22_04/readline-common: 8.1.2-1
   ubuntu_22_04/rpcsvc-proto: 1.4.2-0ubuntu6
   ubuntu_22_04/sed: 4.8-1ubuntu2
@@ -1441,10 +1441,10 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/libpsl5t64: 0.21.2-1.1build1
   ubuntu_24_04/libpython3-dev: 3.12.3-0ubuntu2
   ubuntu_24_04/libpython3-stdlib: 3.12.3-0ubuntu2
-  ubuntu_24_04/libpython3.12-dev: 3.12.3-1ubuntu0.2
-  ubuntu_24_04/libpython3.12-minimal: 3.12.3-1ubuntu0.2
-  ubuntu_24_04/libpython3.12-stdlib: 3.12.3-1ubuntu0.2
-  ubuntu_24_04/libpython3.12t64: 3.12.3-1ubuntu0.2
+  ubuntu_24_04/libpython3.12-dev: 3.12.3-1ubuntu0.3
+  ubuntu_24_04/libpython3.12-minimal: 3.12.3-1ubuntu0.3
+  ubuntu_24_04/libpython3.12-stdlib: 3.12.3-1ubuntu0.3
+  ubuntu_24_04/libpython3.12t64: 3.12.3-1ubuntu0.3
   ubuntu_24_04/libquadmath0: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/libraqm0: 0.10.1-1build1
   ubuntu_24_04/libreadline8t64: 8.2-4build1
@@ -1919,10 +1919,10 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/python3-venv: 3.12.3-0ubuntu2
   ubuntu_24_04/python3-wadllib: 1.3.6-5
   ubuntu_24_04/python3-wheel: 0.42.0-2
-  ubuntu_24_04/python3.12: 3.12.3-1ubuntu0.2
-  ubuntu_24_04/python3.12-dev: 3.12.3-1ubuntu0.2
-  ubuntu_24_04/python3.12-minimal: 3.12.3-1ubuntu0.2
-  ubuntu_24_04/python3.12-venv: 3.12.3-1ubuntu0.2
+  ubuntu_24_04/python3.12: 3.12.3-1ubuntu0.3
+  ubuntu_24_04/python3.12-dev: 3.12.3-1ubuntu0.3
+  ubuntu_24_04/python3.12-minimal: 3.12.3-1ubuntu0.3
+  ubuntu_24_04/python3.12-venv: 3.12.3-1ubuntu0.3
   ubuntu_24_04/readline-common: 8.2-4build1
   ubuntu_24_04/redis-tools: 5:7.0.15-1build2
   ubuntu_24_04/rpcsvc-proto: 1.4.2-0ubuntu7
@@ -2146,9 +2146,9 @@ camptocamp/geomapfish:latest:
   ubuntu_24_04/libproj25: 9.4.0-1build2
   ubuntu_24_04/libpsl5t64: 0.21.2-1.1build1
   ubuntu_24_04/libpython3-stdlib: 3.12.3-0ubuntu2
-  ubuntu_24_04/libpython3.12-minimal: 3.12.3-1ubuntu0.2
-  ubuntu_24_04/libpython3.12-stdlib: 3.12.3-1ubuntu0.2
-  ubuntu_24_04/libpython3.12t64: 3.12.3-1ubuntu0.2
+  ubuntu_24_04/libpython3.12-minimal: 3.12.3-1ubuntu0.3
+  ubuntu_24_04/libpython3.12-stdlib: 3.12.3-1ubuntu0.3
+  ubuntu_24_04/libpython3.12t64: 3.12.3-1ubuntu0.3
   ubuntu_24_04/libraqm0: 0.10.1-1build1
   ubuntu_24_04/libreadline8t64: 8.2-4build1
   ubuntu_24_04/librtmp1: 2.4+20151223.gitfa8646d.1-2build7
@@ -2601,9 +2601,9 @@ camptocamp/geomapfish:latest:
   ubuntu_24_04/python3-venv: 3.12.3-0ubuntu2
   ubuntu_24_04/python3-wadllib: 1.3.6-5
   ubuntu_24_04/python3-wheel: 0.42.0-2
-  ubuntu_24_04/python3.12: 3.12.3-1ubuntu0.2
-  ubuntu_24_04/python3.12-minimal: 3.12.3-1ubuntu0.2
-  ubuntu_24_04/python3.12-venv: 3.12.3-1ubuntu0.2
+  ubuntu_24_04/python3.12: 3.12.3-1ubuntu0.3
+  ubuntu_24_04/python3.12-minimal: 3.12.3-1ubuntu0.3
+  ubuntu_24_04/python3.12-venv: 3.12.3-1ubuntu0.3
   ubuntu_24_04/readline-common: 8.2-4build1
   ubuntu_24_04/sed: 4.9-2build1
   ubuntu_24_04/sensible-utils: 0.0.22
@@ -2819,9 +2819,9 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_24_04/libproj25: 9.4.0-1build2
   ubuntu_24_04/libpsl5t64: 0.21.2-1.1build1
   ubuntu_24_04/libpython3-stdlib: 3.12.3-0ubuntu2
-  ubuntu_24_04/libpython3.12-minimal: 3.12.3-1ubuntu0.2
-  ubuntu_24_04/libpython3.12-stdlib: 3.12.3-1ubuntu0.2
-  ubuntu_24_04/libpython3.12t64: 3.12.3-1ubuntu0.2
+  ubuntu_24_04/libpython3.12-minimal: 3.12.3-1ubuntu0.3
+  ubuntu_24_04/libpython3.12-stdlib: 3.12.3-1ubuntu0.3
+  ubuntu_24_04/libpython3.12t64: 3.12.3-1ubuntu0.3
   ubuntu_24_04/libraqm0: 0.10.1-1build1
   ubuntu_24_04/libreadline8t64: 8.2-4build1
   ubuntu_24_04/librtmp1: 2.4+20151223.gitfa8646d.1-2build7
@@ -3274,9 +3274,9 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_24_04/python3-venv: 3.12.3-0ubuntu2
   ubuntu_24_04/python3-wadllib: 1.3.6-5
   ubuntu_24_04/python3-wheel: 0.42.0-2
-  ubuntu_24_04/python3.12: 3.12.3-1ubuntu0.2
-  ubuntu_24_04/python3.12-minimal: 3.12.3-1ubuntu0.2
-  ubuntu_24_04/python3.12-venv: 3.12.3-1ubuntu0.2
+  ubuntu_24_04/python3.12: 3.12.3-1ubuntu0.3
+  ubuntu_24_04/python3.12-minimal: 3.12.3-1ubuntu0.3
+  ubuntu_24_04/python3.12-venv: 3.12.3-1ubuntu0.3
   ubuntu_24_04/readline-common: 8.2-4build1
   ubuntu_24_04/sed: 4.9-2build1
   ubuntu_24_04/sensible-utils: 0.0.22
