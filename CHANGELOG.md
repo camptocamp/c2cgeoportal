@@ -1,3 +1,7 @@
+##### 2.8.1.168
+
+- Audit Snyk check/fix 2.8 [c2cgeoportal#11540](https://github.com/camptocamp/c2cgeoportal/pull/11540)
+
 ##### 2.8.1.167
 
 - Update dependency c2cwsgiutils to v5.1.9 (2.8) [c2cgeoportal#11534](https://github.com/camptocamp/c2cgeoportal/pull/11534)
