@@ -6,7 +6,17 @@ commits:
         sha: e8e7527d0acca17453a470d1664f0948a2b0828b
         url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/e8e7527d0acca17453a470d1664f0948a2b0828b
       sha: 009c29aa1a95ca4b7f4f1356b595d17e3abe8c92
-    0a588e7e7: &id001
+    05e3704e0: &id001
+      parents:
+      - html_url: https://github.com/camptocamp/c2cgeoportal/commit/93b65927318c86b22b65d24473fa74839b3bfcf5
+        sha: 93b65927318c86b22b65d24473fa74839b3bfcf5
+        url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/93b65927318c86b22b65d24473fa74839b3bfcf5
+      - html_url: https://github.com/camptocamp/c2cgeoportal/commit/7cf55a048a04a564b6b6a4ac977c1335e8fc1ab9
+        sha: 7cf55a048a04a564b6b6a4ac977c1335e8fc1ab9
+        url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/7cf55a048a04a564b6b6a4ac977c1335e8fc1ab9
+      sha: 05e3704e0673a3fcfe9721a07333e8502bd54172
+    05e3704e0673a3fcfe9721a07333e8502bd54172: *id001
+    0a588e7e7: &id002
       parents:
       - html_url: https://github.com/camptocamp/c2cgeoportal/commit/1c5d72334c89fc8cb7ea7cadb8efd87a8a586aed
         sha: 1c5d72334c89fc8cb7ea7cadb8efd87a8a586aed
@@ -15,7 +25,7 @@ commits:
         sha: aeb27fa9501729c146512e554d10a9e6ff759ff8
         url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/aeb27fa9501729c146512e554d10a9e6ff759ff8
       sha: 0a588e7e76c19555c70f051eb5b13504dfbee5b6
-    0a588e7e76c19555c70f051eb5b13504dfbee5b6: *id001
+    0a588e7e76c19555c70f051eb5b13504dfbee5b6: *id002
     0b20dc36cb647d760697c848a4a0a3e874296520:
       parents:
       - html_url: https://github.com/camptocamp/c2cgeoportal/commit/44f2d0df0d238543ee50d9b3bca7e89f5c81e704
@@ -40,7 +50,7 @@ commits:
         sha: 0a588e7e76c19555c70f051eb5b13504dfbee5b6
         url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/0a588e7e76c19555c70f051eb5b13504dfbee5b6
       sha: 3c0e491132822c282211d8ff4fc0b21fdb9a7b61
-    44f2d0df0: &id002
+    44f2d0df0: &id003
       parents:
       - html_url: https://github.com/camptocamp/c2cgeoportal/commit/009c29aa1a95ca4b7f4f1356b595d17e3abe8c92
         sha: 009c29aa1a95ca4b7f4f1356b595d17e3abe8c92
@@ -49,7 +59,7 @@ commits:
         sha: 1fb4adef38b97fb8b25ef3ee53206bb9ae3db7e8
         url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/1fb4adef38b97fb8b25ef3ee53206bb9ae3db7e8
       sha: 44f2d0df0d238543ee50d9b3bca7e89f5c81e704
-    44f2d0df0d238543ee50d9b3bca7e89f5c81e704: *id002
+    44f2d0df0d238543ee50d9b3bca7e89f5c81e704: *id003
     4763462e2a3da5e980c68bc5a3d6e173970895cd:
       parents:
       - html_url: https://github.com/camptocamp/c2cgeoportal/commit/895d3f684b71595ed07e48b7baebea172d38bc92
@@ -62,7 +72,7 @@ commits:
         sha: a82c81218e650fea10e0d9289509012d1efd25d6
         url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/a82c81218e650fea10e0d9289509012d1efd25d6
       sha: 6742877c7b17da2a179e350d8704e07276c519e9
-    853a8d02a: &id003
+    853a8d02a: &id004
       parents:
       - html_url: https://github.com/camptocamp/c2cgeoportal/commit/0b20dc36cb647d760697c848a4a0a3e874296520
         sha: 0b20dc36cb647d760697c848a4a0a3e874296520
@@ -71,8 +81,8 @@ commits:
         sha: 57994662e23c21624697f9161db8dfce39181d8f
         url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/57994662e23c21624697f9161db8dfce39181d8f
       sha: 853a8d02a6ba013a18562082bc374cc4ec482878
-    853a8d02a6ba013a18562082bc374cc4ec482878: *id003
-    895d3f684: &id004
+    853a8d02a6ba013a18562082bc374cc4ec482878: *id004
+    895d3f684: &id005
       parents:
       - html_url: https://github.com/camptocamp/c2cgeoportal/commit/ff71847d04d95476b92f24991f4c82202875c0a3
         sha: ff71847d04d95476b92f24991f4c82202875c0a3
@@ -81,8 +91,14 @@ commits:
         sha: b7feb56b414af74efe49abcd56631e8168aaa3d9
         url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/b7feb56b414af74efe49abcd56631e8168aaa3d9
       sha: 895d3f684b71595ed07e48b7baebea172d38bc92
-    895d3f684b71595ed07e48b7baebea172d38bc92: *id004
-    a82c81218: &id005
+    895d3f684b71595ed07e48b7baebea172d38bc92: *id005
+    93b65927318c86b22b65d24473fa74839b3bfcf5:
+      parents:
+      - html_url: https://github.com/camptocamp/c2cgeoportal/commit/853a8d02a6ba013a18562082bc374cc4ec482878
+        sha: 853a8d02a6ba013a18562082bc374cc4ec482878
+        url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/853a8d02a6ba013a18562082bc374cc4ec482878
+      sha: 93b65927318c86b22b65d24473fa74839b3bfcf5
+    a82c81218: &id006
       parents:
       - html_url: https://github.com/camptocamp/c2cgeoportal/commit/d502d450f44da9d78ce560da52f14c1c0f4c73ef
         sha: d502d450f44da9d78ce560da52f14c1c0f4c73ef
@@ -91,14 +107,14 @@ commits:
         sha: 4035609fc31e7452c4d17adeeb9258aceca77ede
         url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/4035609fc31e7452c4d17adeeb9258aceca77ede
       sha: a82c81218e650fea10e0d9289509012d1efd25d6
-    a82c81218e650fea10e0d9289509012d1efd25d6: *id005
+    a82c81218e650fea10e0d9289509012d1efd25d6: *id006
     af42a4df833612f49b4e08ea1e75e450fc223226:
       parents:
       - html_url: https://github.com/camptocamp/c2cgeoportal/commit/e8230c8705837f9e6da07467893a6676670c5768
         sha: e8230c8705837f9e6da07467893a6676670c5768
         url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/e8230c8705837f9e6da07467893a6676670c5768
       sha: af42a4df833612f49b4e08ea1e75e450fc223226
-    b891b2bc1: &id006
+    b891b2bc1: &id007
       parents:
       - html_url: https://github.com/camptocamp/c2cgeoportal/commit/6742877c7b17da2a179e350d8704e07276c519e9
         sha: 6742877c7b17da2a179e350d8704e07276c519e9
@@ -107,14 +123,14 @@ commits:
         sha: 268fb9eebc758596cb71bff8e69ab7f9574b7bd6
         url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/268fb9eebc758596cb71bff8e69ab7f9574b7bd6
       sha: b891b2bc17a859bbee8aef64bd01f66d2805436c
-    b891b2bc17a859bbee8aef64bd01f66d2805436c: *id006
+    b891b2bc17a859bbee8aef64bd01f66d2805436c: *id007
     d502d450f44da9d78ce560da52f14c1c0f4c73ef:
       parents:
       - html_url: https://github.com/camptocamp/c2cgeoportal/commit/3c0e491132822c282211d8ff4fc0b21fdb9a7b61
         sha: 3c0e491132822c282211d8ff4fc0b21fdb9a7b61
         url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/3c0e491132822c282211d8ff4fc0b21fdb9a7b61
       sha: d502d450f44da9d78ce560da52f14c1c0f4c73ef
-    d60c08113: &id007
+    d60c08113: &id008
       parents:
       - html_url: https://github.com/camptocamp/c2cgeoportal/commit/4763462e2a3da5e980c68bc5a3d6e173970895cd
         sha: 4763462e2a3da5e980c68bc5a3d6e173970895cd
@@ -123,8 +139,8 @@ commits:
         sha: ad0723302450afd577ea2f59b077aaeb9265b900
         url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/ad0723302450afd577ea2f59b077aaeb9265b900
       sha: d60c08113fc905b7068e3a0a7c5af8c4c72b676d
-    d60c08113fc905b7068e3a0a7c5af8c4c72b676d: *id007
-    de40241c4: &id008
+    d60c08113fc905b7068e3a0a7c5af8c4c72b676d: *id008
+    de40241c4: &id009
       parents:
       - html_url: https://github.com/camptocamp/c2cgeoportal/commit/af42a4df833612f49b4e08ea1e75e450fc223226
         sha: af42a4df833612f49b4e08ea1e75e450fc223226
@@ -133,8 +149,8 @@ commits:
         sha: d4de8b7ccfc46f90d292961d7e8f3be10cc716fd
         url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/d4de8b7ccfc46f90d292961d7e8f3be10cc716fd
       sha: de40241c414f514755e6854fc8af11d933e1d3c8
-    de40241c414f514755e6854fc8af11d933e1d3c8: *id008
-    e8230c870: &id009
+    de40241c414f514755e6854fc8af11d933e1d3c8: *id009
+    e8230c870: &id010
       parents:
       - html_url: https://github.com/camptocamp/c2cgeoportal/commit/13ef55b2c33fa62ae98b1df87665875bf41baf10
         sha: 13ef55b2c33fa62ae98b1df87665875bf41baf10
@@ -143,8 +159,8 @@ commits:
         sha: c71797cd667406f4a98d796fea557537f536c46a
         url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/c71797cd667406f4a98d796fea557537f536c46a
       sha: e8230c8705837f9e6da07467893a6676670c5768
-    e8230c8705837f9e6da07467893a6676670c5768: *id009
-    e8e7527d0: &id010
+    e8230c8705837f9e6da07467893a6676670c5768: *id010
+    e8e7527d0: &id011
       parents:
       - html_url: https://github.com/camptocamp/c2cgeoportal/commit/187ffdd4d5acebbf1b39f6f59b211aaf6e079a48
         sha: 187ffdd4d5acebbf1b39f6f59b211aaf6e079a48
@@ -153,7 +169,7 @@ commits:
         sha: f7e07b954a4d5cc9e5a93ce29b2a9fdba83de075
         url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/f7e07b954a4d5cc9e5a93ce29b2a9fdba83de075
       sha: e8e7527d0acca17453a470d1664f0948a2b0828b
-    e8e7527d0acca17453a470d1664f0948a2b0828b: *id010
+    e8e7527d0acca17453a470d1664f0948a2b0828b: *id011
     ff71847d04d95476b92f24991f4c82202875c0a3:
       parents:
       - html_url: https://github.com/camptocamp/c2cgeoportal/commit/b891b2bc17a859bbee8aef64bd01f66d2805436c
@@ -161,16 +177,25 @@ commits:
         url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/b891b2bc17a859bbee8aef64bd01f66d2805436c
       sha: ff71847d04d95476b92f24991f4c82202875c0a3
   ngeo:
-    99aa1e7fb: &id011
+    99aa1e7fb: &id012
       parents:
       - html_url: https://github.com/camptocamp/ngeo/commit/82cedd0a7355fa07af45abefede7ce6b0eebfc17
         sha: 82cedd0a7355fa07af45abefede7ce6b0eebfc17
         url: https://api.github.com/repos/camptocamp/ngeo/commits/82cedd0a7355fa07af45abefede7ce6b0eebfc17
       sha: 99aa1e7fb9b0fb729f26b5cbc0309435fa7ef2c1
-    99aa1e7fb9b0fb729f26b5cbc0309435fa7ef2c1: *id011
+    99aa1e7fb9b0fb729f26b5cbc0309435fa7ef2c1: *id012
 pulls:
   c2cgeoportal:
     009c29aa1a95ca4b7f4f1356b595d17e3abe8c92: []
+    05e3704e0:
+    - base_ref: '2.9'
+      closed_at: '2024-11-21T07:45:24Z'
+      created_at: '2024-11-20T19:59:04Z'
+      html_url: https://github.com/camptocamp/c2cgeoportal/pull/11543
+      number: 11543
+      state: closed
+      title: Audit Dpkg 2.9
+      updated_at: '2024-11-21T07:45:26Z'
     0b20dc36cb647d760697c848a4a0a3e874296520: []
     13ef55b2c33fa62ae98b1df87665875bf41baf10: []
     187ffdd4d5acebbf1b39f6f59b211aaf6e079a48: []
@@ -204,6 +229,7 @@ pulls:
       state: closed
       title: Audit Dpkg 2.9
       updated_at: '2024-11-12T07:29:57Z'
+    93b65927318c86b22b65d24473fa74839b3bfcf5: []
     a82c81218:
     - base_ref: '2.9'
       closed_at: '2024-11-08T15:11:40Z'
@@ -292,4 +318,7 @@ releases:
   ngeo: 99aa1e7fb
 - c2cgeoportal: 853a8d02a
   name: 2.9.rc.9
+  ngeo: 99aa1e7fb
+- c2cgeoportal: 05e3704e0
+  name: 2.9.rc.10
   ngeo: 99aa1e7fb
