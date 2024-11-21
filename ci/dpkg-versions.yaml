@@ -1915,7 +1915,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/python3-setuptools: 68.1.2-2ubuntu1.1
   ubuntu_24_04/python3-setuptools-whl: 68.1.2-2ubuntu1.1
   ubuntu_24_04/python3-six: 1.16.0-4
-  ubuntu_24_04/python3-software-properties: 0.99.48
+  ubuntu_24_04/python3-software-properties: 0.99.49.1
   ubuntu_24_04/python3-venv: 3.12.3-0ubuntu2
   ubuntu_24_04/python3-wadllib: 1.3.6-5
   ubuntu_24_04/python3-wheel: 0.42.0-2
@@ -1929,7 +1929,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/sed: 4.9-2build1
   ubuntu_24_04/sensible-utils: 0.0.22
   ubuntu_24_04/sgml-base: '1.31'
-  ubuntu_24_04/software-properties-common: 0.99.48
+  ubuntu_24_04/software-properties-common: 0.99.49.1
   ubuntu_24_04/systemd: 255.4-1ubuntu8.4
   ubuntu_24_04/systemd-dev: 255.4-1ubuntu8.4
   ubuntu_24_04/systemd-sysv: 255.4-1ubuntu8.4
@@ -2597,7 +2597,7 @@ camptocamp/geomapfish:latest:
   ubuntu_24_04/python3-setuptools: 68.1.2-2ubuntu1.1
   ubuntu_24_04/python3-setuptools-whl: 68.1.2-2ubuntu1.1
   ubuntu_24_04/python3-six: 1.16.0-4
-  ubuntu_24_04/python3-software-properties: 0.99.48
+  ubuntu_24_04/python3-software-properties: 0.99.49.1
   ubuntu_24_04/python3-venv: 3.12.3-0ubuntu2
   ubuntu_24_04/python3-wadllib: 1.3.6-5
   ubuntu_24_04/python3-wheel: 0.42.0-2
@@ -2608,7 +2608,7 @@ camptocamp/geomapfish:latest:
   ubuntu_24_04/sed: 4.9-2build1
   ubuntu_24_04/sensible-utils: 0.0.22
   ubuntu_24_04/sgml-base: '1.31'
-  ubuntu_24_04/software-properties-common: 0.99.48
+  ubuntu_24_04/software-properties-common: 0.99.49.1
   ubuntu_24_04/systemd: 255.4-1ubuntu8.4
   ubuntu_24_04/systemd-dev: 255.4-1ubuntu8.4
   ubuntu_24_04/systemd-sysv: 255.4-1ubuntu8.4
@@ -3270,7 +3270,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_24_04/python3-setuptools: 68.1.2-2ubuntu1.1
   ubuntu_24_04/python3-setuptools-whl: 68.1.2-2ubuntu1.1
   ubuntu_24_04/python3-six: 1.16.0-4
-  ubuntu_24_04/python3-software-properties: 0.99.48
+  ubuntu_24_04/python3-software-properties: 0.99.49.1
   ubuntu_24_04/python3-venv: 3.12.3-0ubuntu2
   ubuntu_24_04/python3-wadllib: 1.3.6-5
   ubuntu_24_04/python3-wheel: 0.42.0-2
@@ -3281,7 +3281,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_24_04/sed: 4.9-2build1
   ubuntu_24_04/sensible-utils: 0.0.22
   ubuntu_24_04/sgml-base: '1.31'
-  ubuntu_24_04/software-properties-common: 0.99.48
+  ubuntu_24_04/software-properties-common: 0.99.49.1
   ubuntu_24_04/systemd: 255.4-1ubuntu8.4
   ubuntu_24_04/systemd-dev: 255.4-1ubuntu8.4
   ubuntu_24_04/systemd-sysv: 255.4-1ubuntu8.4
