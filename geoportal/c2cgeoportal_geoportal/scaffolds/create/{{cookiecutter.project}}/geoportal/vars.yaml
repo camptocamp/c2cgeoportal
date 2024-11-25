@@ -81,7 +81,7 @@ vars:
             maxTilesLoading: 128
           view:
             <<: *view
-            constrainResolution: True
+            constrainResolution: False
         gmfExternalOGCServers:
           - name: swisstopo WMS
             type: WMS
