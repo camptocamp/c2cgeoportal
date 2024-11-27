@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2023, Camptocamp SA
+# Copyright (c) 2015-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -64,7 +64,7 @@ class TestSetCorsHeaders(TestCase):
             "Cache-Control": "max-age=10, public",
             "Content-Length": "0",
             "Content-Type": "text/html; charset=UTF-8",
-            "Vary": "Origin, Cookie",
+            "Vary": "Origin, Access-Control-Request-Headers, Cookie",
         }
 
         # 2. If the value of the Origin header is not a case-sensitive match for
@@ -74,7 +74,7 @@ class TestSetCorsHeaders(TestCase):
             "Cache-Control": "max-age=10, public",
             "Content-Length": "0",
             "Content-Type": "text/html; charset=UTF-8",
-            "Vary": "Origin, Cookie",
+            "Vary": "Origin, Access-Control-Request-Headers, Cookie",
         }
 
         # 3. If the resource supports credentials add a single
@@ -85,7 +85,7 @@ class TestSetCorsHeaders(TestCase):
             "Cache-Control": "max-age=10, public",
             "Content-Length": "0",
             "Content-Type": "text/html; charset=UTF-8",
-            "Vary": "Origin, Cookie",
+            "Vary": "Origin, Access-Control-Request-Headers, Cookie",
             "Access-Control-Max-Age": self.MAX_AGE,
             "Access-Control-Allow-Origin": self.ORIGIN2,
             "Access-Control-Allow-Methods": CORS_METHODS,
@@ -110,7 +110,7 @@ class TestSetCorsHeaders(TestCase):
         assert self._do("OPTIONS", {"Access-Control-Request-Method": "GET"}) == {
             "Content-Length": "0",
             "Content-Type": "text/html; charset=UTF-8",
-            "Vary": "Origin",
+            "Vary": "Origin, Access-Control-Request-Headers, Access-Control-Request-Method",
         }
 
         # 2. If the value of the Origin header is not a case-sensitive match for
@@ -119,7 +119,7 @@ class TestSetCorsHeaders(TestCase):
         assert self._do("OPTIONS", {"Origin": "http://foe.com", "Access-Control-Request-Method": "GET"}) == {
             "Content-Length": "0",
             "Content-Type": "text/html; charset=UTF-8",
-            "Vary": "Origin",
+            "Vary": "Origin, Access-Control-Request-Headers, Access-Control-Request-Method",
         }
 
         # 3. If there is no Access-Control-Request-Method header or if parsing
@@ -128,7 +128,7 @@ class TestSetCorsHeaders(TestCase):
         assert self._do("OPTIONS", {"Origin": self.ORIGIN1}) == {
             "Content-Length": "0",
             "Content-Type": "text/html; charset=UTF-8",
-            "Vary": "Origin",
+            "Vary": "Origin, Access-Control-Request-Headers, Access-Control-Request-Method",
         }
 
         # 4. If there are no Access-Control-Request-Headers headers let header
@@ -136,7 +136,7 @@ class TestSetCorsHeaders(TestCase):
         assert self._do("OPTIONS", {"Origin": self.ORIGIN1, "Access-Control-Request-Method": "GET"}) == {
             "Content-Length": "0",
             "Content-Type": "text/html; charset=UTF-8",
-            "Vary": "Origin",
+            "Vary": "Origin, Access-Control-Request-Headers, Access-Control-Request-Method",
             "Access-Control-Allow-Origin": self.ORIGIN1,
             "Access-Control-Max-Age": self.MAX_AGE,
             "Access-Control-Allow-Methods": CORS_METHODS,
@@ -162,7 +162,7 @@ class TestSetCorsHeaders(TestCase):
         ) == {
             "Content-Length": "0",
             "Content-Type": "text/html; charset=UTF-8",
-            "Vary": "Origin",
+            "Vary": "Origin, Access-Control-Request-Headers, Access-Control-Request-Method",
             "Access-Control-Allow-Origin": self.ORIGIN1,
             "Access-Control-Allow-Credentials": "true",
             "Access-Control-Max-Age": self.MAX_AGE,
@@ -191,7 +191,7 @@ class TestSetCorsHeaders(TestCase):
         ) == {
             "Content-Length": "0",
             "Content-Type": "text/html; charset=UTF-8",
-            "Vary": "Origin",
+            "Vary": "Origin, Access-Control-Request-Headers, Access-Control-Request-Method",
             "Access-Control-Allow-Origin": self.ORIGIN1,
             "Access-Control-Max-Age": self.MAX_AGE,
             "Access-Control-Allow-Methods": CORS_METHODS,
@@ -205,7 +205,7 @@ class TestSetCorsHeaders(TestCase):
             "Cache-Control": "max-age=10, public",
             "Content-Length": "0",
             "Content-Type": "text/html; charset=UTF-8",
-            "Vary": "Origin, Cookie",
+            "Vary": "Origin, Access-Control-Request-Headers, Cookie",
         }
 
     def test_match_all(self):
@@ -220,7 +220,7 @@ class TestSetCorsHeaders(TestCase):
             "Cache-Control": "max-age=10, public",
             "Content-Length": "0",
             "Content-Type": "text/html; charset=UTF-8",
-            "Vary": "Origin, Cookie",
+            "Vary": "Origin, Access-Control-Request-Headers, Cookie",
             "Access-Control-Max-Age": self.MAX_AGE,
             "Access-Control-Allow-Origin": self.ORIGIN1,
             "Access-Control-Allow-Methods": CORS_METHODS,
@@ -233,7 +233,7 @@ class TestSetCorsHeaders(TestCase):
             "Cache-Control": "max-age=10, public",
             "Content-Length": "0",
             "Content-Type": "text/html; charset=UTF-8",
-            "Vary": "Origin, Cookie",
+            "Vary": "Origin, Access-Control-Request-Headers, Cookie",
             "Access-Control-Max-Age": self.MAX_AGE,
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": CORS_METHODS,
@@ -252,7 +252,7 @@ class TestSetCorsHeaders(TestCase):
         ) == {
             "Content-Length": "0",
             "Content-Type": "text/html; charset=UTF-8",
-            "Vary": "Origin",
+            "Vary": "Origin, Access-Control-Request-Headers, Access-Control-Request-Method",
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Max-Age": self.MAX_AGE,
             "Access-Control-Allow-Methods": CORS_METHODS,

@@ -273,8 +273,6 @@ class TestLoginView(TestCase):
         assert user._password == crypt.crypt("1234", user._password)
 
     def test_login_0(self):
-        from tests import DummyRequest
-
         from c2cgeoportal_geoportal.views.login import Login
 
         request = self._create_request_obj()
@@ -360,7 +358,7 @@ class TestLoginView(TestCase):
             "functionalities": {"func": ["value"]},
         }
         assert login.loginuser() == expected
-        assert request.response.headers["Vary"] == "Origin, Cookie"
+        assert request.response.headers["Vary"] == "Origin, Access-Control-Request-Headers, Cookie"
 
     def test_intranet(self):
         from tests import DummyRequest
