@@ -1,3 +1,7 @@
+##### 2.9.rc.12
+
+- [Backport 2.9] Fix performance issue [c2cgeoportal#11546](https://github.com/camptocamp/c2cgeoportal/pull/11546)
+
 ##### 2.9.rc.11
 
 - Add OGC API Features support [c2cgeoportal#11535](https://github.com/camptocamp/c2cgeoportal/pull/11535)

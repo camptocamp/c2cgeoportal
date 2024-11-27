@@ -124,6 +124,12 @@ commits:
         sha: e8230c8705837f9e6da07467893a6676670c5768
         url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/e8230c8705837f9e6da07467893a6676670c5768
       sha: af42a4df833612f49b4e08ea1e75e450fc223226
+    b746a21f484cf6b9661b9bfa6c2606c51bbb31cf:
+      parents:
+      - html_url: https://github.com/camptocamp/c2cgeoportal/commit/a858a086b417ac3502d51e895393a94808ce0762
+        sha: a858a086b417ac3502d51e895393a94808ce0762
+        url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/a858a086b417ac3502d51e895393a94808ce0762
+      sha: b746a21f484cf6b9661b9bfa6c2606c51bbb31cf
     b891b2bc1: &id008
       parents:
       - html_url: https://github.com/camptocamp/c2cgeoportal/commit/6742877c7b17da2a179e350d8704e07276c519e9
@@ -180,6 +186,16 @@ commits:
         url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/f7e07b954a4d5cc9e5a93ce29b2a9fdba83de075
       sha: e8e7527d0acca17453a470d1664f0948a2b0828b
     e8e7527d0acca17453a470d1664f0948a2b0828b: *id012
+    ea75aa1ac: &id013
+      parents:
+      - html_url: https://github.com/camptocamp/c2cgeoportal/commit/b746a21f484cf6b9661b9bfa6c2606c51bbb31cf
+        sha: b746a21f484cf6b9661b9bfa6c2606c51bbb31cf
+        url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/b746a21f484cf6b9661b9bfa6c2606c51bbb31cf
+      - html_url: https://github.com/camptocamp/c2cgeoportal/commit/c1756daa66788586930af25725a9c543df1f4d29
+        sha: c1756daa66788586930af25725a9c543df1f4d29
+        url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/c1756daa66788586930af25725a9c543df1f4d29
+      sha: ea75aa1ac9de463fe342af363f68bea7325d2025
+    ea75aa1ac9de463fe342af363f68bea7325d2025: *id013
     f0b58d061b9354d87033fb08bea8fb52735957c1:
       parents:
       - html_url: https://github.com/camptocamp/c2cgeoportal/commit/05e3704e0673a3fcfe9721a07333e8502bd54172
@@ -193,13 +209,13 @@ commits:
         url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/b891b2bc17a859bbee8aef64bd01f66d2805436c
       sha: ff71847d04d95476b92f24991f4c82202875c0a3
   ngeo:
-    99aa1e7fb: &id013
+    99aa1e7fb: &id014
       parents:
       - html_url: https://github.com/camptocamp/ngeo/commit/82cedd0a7355fa07af45abefede7ce6b0eebfc17
         sha: 82cedd0a7355fa07af45abefede7ce6b0eebfc17
         url: https://api.github.com/repos/camptocamp/ngeo/commits/82cedd0a7355fa07af45abefede7ce6b0eebfc17
       sha: 99aa1e7fb9b0fb729f26b5cbc0309435fa7ef2c1
-    99aa1e7fb9b0fb729f26b5cbc0309435fa7ef2c1: *id013
+    99aa1e7fb9b0fb729f26b5cbc0309435fa7ef2c1: *id014
 pulls:
   c2cgeoportal:
     009c29aa1a95ca4b7f4f1356b595d17e3abe8c92: []
@@ -265,6 +281,7 @@ pulls:
       title: Add OGC API Features support
       updated_at: '2024-11-27T06:59:30Z'
     af42a4df833612f49b4e08ea1e75e450fc223226: []
+    b746a21f484cf6b9661b9bfa6c2606c51bbb31cf: []
     b891b2bc1:
     - base_ref: '2.9'
       closed_at: '2024-11-09T08:05:16Z'
@@ -311,6 +328,15 @@ pulls:
       state: closed
       title: Audit Dpkg 2.9
       updated_at: '2024-11-18T07:25:09Z'
+    ea75aa1ac:
+    - base_ref: '2.9'
+      closed_at: '2024-11-27T11:11:38Z'
+      created_at: '2024-11-27T09:28:53Z'
+      html_url: https://github.com/camptocamp/c2cgeoportal/pull/11546
+      number: 11546
+      state: closed
+      title: '[Backport 2.9] Fix performance issue'
+      updated_at: '2024-11-27T11:11:43Z'
     f0b58d061b9354d87033fb08bea8fb52735957c1: []
     ff71847d04d95476b92f24991f4c82202875c0a3: []
   ngeo: {}
@@ -350,4 +376,7 @@ releases:
   ngeo: 99aa1e7fb
 - c2cgeoportal: a858a086b
   name: 2.9.rc.11
+  ngeo: 99aa1e7fb
+- c2cgeoportal: ea75aa1ac
+  name: 2.9.rc.12
   ngeo: 99aa1e7fb
