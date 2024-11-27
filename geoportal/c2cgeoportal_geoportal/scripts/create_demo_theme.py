@@ -55,20 +55,25 @@ def main() -> None:
         )
 
         interfaces = session.query(Interface).all()
-        ogc_server = session.query(OGCServer).filter(OGCServer.name == "source for image/png").one()
+        ogc_jpeg = session.query(OGCServer).filter(OGCServer.name == "source for image/jpeg").one()
+        session.delete(ogc_jpeg)
+
+        ogc_server_mapserver = session.query(OGCServer).filter(OGCServer.name == "source for image/png").one()
+        ogc_server_mapserver.name = "mapserver"
+        ogc_server_mapserver.url = "config://mapserver/mapserv_proxy/mapserver?map=mapserver"
 
         layer_borders = LayerWMS("Borders", "borders")
         layer_borders.interfaces = interfaces
-        layer_borders.ogc_server = ogc_server
+        layer_borders.ogc_server = ogc_server_mapserver
         layer_density = LayerWMS("Density", "density")
         layer_density.interfaces = interfaces
-        layer_density.ogc_server = ogc_server
+        layer_density.ogc_server = ogc_server_mapserver
 
-        group = LayerGroup("Demo")
-        group.children = [layer_borders, layer_density]
+        group_mapserver = LayerGroup("MapServer")
+        group_mapserver.children = [layer_borders, layer_density]
 
         theme = Theme("Demo")
-        theme.children = [group]
+        theme.children = [group_mapserver]
         theme.interfaces = interfaces
 
         session.add(theme)

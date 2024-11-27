@@ -74,24 +74,7 @@ class MapservProxy(OGCProxy):
         # GetFeatureInfo requests. For GetLegendGraphic requests we do not send layer_name, but MapServer
         # should not use the DATA string for GetLegendGraphic.
 
-        if self.ogc_server.auth == main.OGCSERVER_AUTH_STANDARD:
-            self.params["role_ids"] = ",".join([str(e) for e in get_roles_id(self.request)])
-
-            # In some application we want to display the features owned by a user than we need his id.
-            self.params["user_id"] = self.user.id if self.user is not None else "-1"
-
-        # Do not allows direct variable substitution
-        for k in list(self.params.keys()):
-            if len(k) > 1 and k[:2].capitalize() == "S_":
-                _LOG.warning("Direct substitution not allowed (%s=%s).", k, self.params[k])
-                del self.params[k]
-
-        if (
-            self.ogc_server.auth == main.OGCSERVER_AUTH_STANDARD
-            and self.ogc_server.type == main.OGCSERVER_TYPE_MAPSERVER
-        ):
-            # Add functionalities params
-            self.params.update(get_mapserver_substitution_params(self.request))
+        self._setup_auth()
 
         # Get method
         method = self.request.method
@@ -162,6 +145,70 @@ class MapservProxy(OGCProxy):
             and response.status_code < 400
         ):
             response.status_code = 400
+
+        return response
+
+    def _setup_auth(self) -> None:
+        if self.ogc_server.auth == main.OGCSERVER_AUTH_STANDARD:
+            self.params["role_ids"] = ",".join([str(e) for e in get_roles_id(self.request)])
+
+            # In some application we want to display the features owned by a user than we need his id.
+            self.params["user_id"] = self.user.id if self.user is not None else "-1"
+
+        # Do not allows direct variable substitution
+        for k in list(self.params.keys()):
+            if len(k) > 1 and k[:2].capitalize() == "S_":
+                _LOG.warning("Direct substitution not allowed (%s=%s).", k, self.params[k])
+                del self.params[k]
+
+        if (
+            self.ogc_server.auth == main.OGCSERVER_AUTH_STANDARD
+            and self.ogc_server.type == main.OGCSERVER_TYPE_MAPSERVER
+        ):
+            # Add functionalities params
+            self.params.update(get_mapserver_substitution_params(self.request))
+
+    @view_config(route_name="mapserverproxy_ogcapi_mapserver")  # type: ignore
+    def proxy_ogcapi_mapserver(self) -> Response:
+        return self.proxy_ogcapi("ogcapi")
+
+    @view_config(route_name="mapserverproxy_ogcapi_qgisserver")  # type: ignore
+    def proxy_ogcapi_qgisserver(self) -> Response:
+        return self.proxy_ogcapi("wfs3")
+
+    def proxy_ogcapi(self, subpath: str) -> Response:
+        self._setup_auth()
+
+        use_cache = False
+
+        errors: set[str] = set()
+
+        _url = self._get_wfs_url(errors)
+        if _url is not None:
+            _url.path = "/".join([_url.path.rstrip("/"), subpath, *self.request.matchdict["path"]])
+            _LOG.warning("URL: %s", _url)
+        _LOG.warning(self.request.matchdict)
+
+        if _url is None:
+            _LOG.error("Error getting the URL:\n%s", "\n".join(errors))
+            raise HTTPInternalServerError()
+
+        cache_control = Cache.PRIVATE_NO
+
+        headers = self.get_headers()
+        # Add headers for Geoserver
+        if self.ogc_server.auth == main.OGCSERVER_AUTH_GEOSERVER and self.user is not None:
+            headers["sec-username"] = self.user.username
+            headers["sec-roles"] = ";".join(get_roles_name(self.request))
+
+        response = self._proxy_callback(
+            cache_control,
+            url=_url,
+            params=self.params,
+            cache=use_cache,
+            headers=headers,
+            body=self.request.body,
+        )
 
         return response
 
