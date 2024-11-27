@@ -985,18 +985,18 @@ class Theme:
         assert models.DBSession is not None
         tasks = set()
 
-        for ogc_server in models.DBSession.query(main.OGCServer).all():
+        for ogc_server, nb_layers in (
+            models.DBSession.query(
+                main.OGCServer, sqlalchemy.func.count(main.LayerWMS.id)  # pylint: disable=not-callable
+            )
+            .filter(main.LayerWMS.ogc_server_id == main.OGCServer.id)
+            .group_by(main.OGCServer.id)
+            .all()
+        ):
             # Don't load unused OGC servers, required for landing page, because the related OGC server
             # will be on error in those functions.
-            nb_layers = (
-                models.DBSession.query(
-                    sqlalchemy.func.count(main.LayerWMS.id)  # pylint: disable=not-callable
-                )
-                .filter(main.LayerWMS.ogc_server_id == ogc_server.id)
-                .one()
-            )
-            _LOG.debug("%i layers for OGC server '%s'", nb_layers[0], ogc_server.name)
-            if nb_layers[0] > 0:
+            _LOG.debug("%i layers for OGC server '%s'", nb_layers, ogc_server.name)
+            if nb_layers > 0:
                 _LOG.debug("Preload OGC server '%s'", ogc_server.name)
                 url_internal_wfs, _, _ = self.get_url_internal_wfs(ogc_server, errors)
                 if url_internal_wfs is not None:
@@ -1143,15 +1143,15 @@ class Theme:
                 _LOG.info("Do preload in %.3fs.", time.time() - start_time)
             _LOG.debug("Run garbage collection: %s", ", ".join([str(gc.collect(n)) for n in range(3)]))
             result["ogcServers"] = {}
-            for ogc_server in models.DBSession.query(main.OGCServer).all():
-                nb_layers = (
-                    models.DBSession.query(
-                        sqlalchemy.func.count(main.LayerWMS.id)  # pylint: disable=not-callable
-                    )
-                    .filter(main.LayerWMS.ogc_server_id == ogc_server.id)
-                    .one()
+            for ogc_server, nb_layers in (
+                models.DBSession.query(
+                    main.OGCServer, sqlalchemy.func.count(main.LayerWMS.id)  # pylint: disable=not-callable
                 )
-                if nb_layers[0] == 0:
+                .filter(main.LayerWMS.ogc_server_id == main.OGCServer.id)
+                .group_by(main.OGCServer.id)
+                .all()
+            ):
+                if nb_layers == 0:
                     # QGIS Server landing page requires an OGC server that can't be used here.
                     continue
 
@@ -1190,7 +1190,7 @@ class Theme:
                             if name in attributes:
                                 del attributes[name]
 
-                result["ogcServers"][ogc_server.name] = {  # type: ignore[call-overload]
+                result["ogcServers"][ogc_server.name] = {
                     "url": url.url() if url else None,
                     "urlWfs": url_wfs.url() if url_wfs else None,
                     "type": ogc_server.type,
