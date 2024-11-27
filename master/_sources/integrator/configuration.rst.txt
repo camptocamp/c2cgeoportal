@@ -26,3 +26,4 @@ This chapter describes advanced configuration settings.
    objectstorage
    headers
    admin_interface
+   ogc_api

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>OGC API Features &#8212; c2cgeoportal  documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=686e5160" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css?v=939896e0" />
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Customize the application" href="customize.html" />
+    <link rel="prev" title="Configure the admin interface" href="admin_interface.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="ogc-api-features">
+<span id="integrator-ogc-api"></span><h1>OGC API Features<a class="headerlink" href="#ogc-api-features" title="Link to this heading">¶</a></h1>
+<p>The OGC API is a new standard that defines a modular API following the REST standard to access spatial data.
+The current implementation in c2cgeoportal is only on the server side. It is based on the
+<cite>OGC API - Features &lt;https://ogcapi.ogc.org/features/&gt;</cite> standard and only works
+with the <code class="docutils literal notranslate"><span class="pre">items</span></code> request using a <code class="docutils literal notranslate"><span class="pre">bbox</span></code> filter.</p>
+<p>It is currently supported by both MapServer and QGIS Server.</p>
+<p>In the MapServer configuration file, the following changes could be added to set an alias to a the <code class="docutils literal notranslate"><span class="pre">MAPS</span></code> block:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">#</span>
+<span class="c1"># Map aliases</span>
+<span class="c1">#</span>
+<span class="n">MAPS</span>
+    <span class="n">ExampleOGCserver</span> <span class="s2">&quot;/etc/mapserver/mapserver.map&quot;</span>
+<span class="n">END</span>
+</pre></div>
+</div>
+<p>Then use this alias as the ogc-server value in the URL for MapServer.
+e.g.: <code class="docutils literal notranslate"><span class="pre">config://mapserver/mapserv_proxy/ExampleOGCserver</span></code>.</p>
+<p>It is also recommended for any server type, to remove all special characters in the OGC Server names because they appear in the path of the URL.</p>
+<p>QGIS Server and MapServer are already configured to support the OGC API and detect automatically if the compatible path is requested.</p>
+<p>Landing pages for both MapServer and QGIS Server are not supported yet.</p>
+<p>OGC API features are accessible through <code class="docutils literal notranslate"><span class="pre">mapserv_proxy</span></code>, with the following URLs:
+* <code class="docutils literal notranslate"><span class="pre">/mapserv_proxy/&lt;ogc-server&gt;/ogcapi/*</span></code>: The MapServer path.
+* <code class="docutils literal notranslate"><span class="pre">/mapserv_proxy/&lt;ogc-server&gt;/wfs3/*</span></code>: The QGIS Server path.</p>
+</section>
+<section id="ogc-api-documentation">
+<h1>OGC API Documentation<a class="headerlink" href="#ogc-api-documentation" title="Link to this heading">¶</a></h1>
+<p><a class="reference external" href="https://mapserver.org/ogc/ogc_api.html">MapServer documentation</a>.</p>
+<p><a class="reference external" href="https://docs.qgis.org/latest/en/docs/server_manual/services/ogcapif.html">QGIS Server documentation</a>.</p>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/camptocamp.png" alt="Logo of c2cgeoportal"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">c2cgeoportal</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=camptocamp&repo=c2cgeoportal&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../administrator/index.html">Administrator Guide</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Integrator Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developer/index.html">Developer Guide</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Integrator Guide</a><ul>
+  <li><a href="configuration.html">Configuration Guide for advanced settings</a><ul>
+      <li>Previous: <a href="admin_interface.html" title="previous chapter">Configure the admin interface</a></li>
+      <li>Next: <a href="customize.html" title="next chapter">Customize the application</a></li>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2011-2024, Camptocamp.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.1.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../_sources/integrator/ogc_api.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
