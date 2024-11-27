@@ -1,3 +1,7 @@
+##### 2.9.rc.13
+
+- [Backport 2.9] Remove force center after view animation. [ngeo#9543](https://github.com/camptocamp/ngeo/pull/9543)
+
 ##### 2.9.rc.12
 
 - [Backport 2.9] Fix performance issue [c2cgeoportal#11546](https://github.com/camptocamp/c2cgeoportal/pull/11546)
