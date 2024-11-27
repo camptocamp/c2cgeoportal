@@ -1,3 +1,7 @@
+##### 2.9.rc.11
+
+- Add OGC API Features support [c2cgeoportal#11535](https://github.com/camptocamp/c2cgeoportal/pull/11535)
+
 ##### 2.9.rc.10
 
 - Audit Dpkg 2.9 [c2cgeoportal#11543](https://github.com/camptocamp/c2cgeoportal/pull/11543)
