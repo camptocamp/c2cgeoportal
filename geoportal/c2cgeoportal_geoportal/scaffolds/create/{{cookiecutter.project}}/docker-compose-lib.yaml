@@ -82,6 +82,8 @@ services:
     environment:
       - PGOPTIONS
       - MAPSERVER_CONFIG_FILE=/etc/mapserver/mapserver.conf
+      - MAPSERVER_BASE_PATH=/mapserv_proxy
+      - OGCAPI_HTML_TEMPLATE_DIRECTORY=/usr/local/share/mapserver/ogcapi/templates/html-bootstrap4/
       - AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY
       - AWS_DEFAULT_REGION

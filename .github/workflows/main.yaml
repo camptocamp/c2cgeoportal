@@ -254,6 +254,7 @@ jobs:
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && env.HAS_SECRETS == 'HAS_SECRETS'
 
+      - run: git reset --hard
       - name: Publish
         run: >
           c2cciutils-publish

@@ -17,12 +17,47 @@ import requests
         ("https://front/c2c/health_check", {"checker": "check_collector"}, 2),
         ("https://front/admin/layertree", {}, 10),
         ("https://front/admin/layertree/children", {}, 10),
-        ("http://mapserver:8080/mapserv_proxy", {"SERVICE": "WMS", "REQUEST": "GetCapabilities"}, 60),
         (
-            "https://front/mapserv_proxy",
-            {"ogcserver": "source for image/png", "SERVICE": "WMS", "REQUEST": "GetCapabilities"},
+            "http://mapserver:8080/mapserv_proxy/mapserver",
+            {"SERVICE": "WMS", "REQUEST": "GetCapabilities"},
             60,
         ),
+        (
+            "https://front/mapserv_proxy",
+            {"ogcserver": "mapserver", "SERVICE": "WMS", "REQUEST": "GetCapabilities"},
+            60,
+        ),
+        # (
+        #     "http://qgisserver:8080/mapserv_proxy/",
+        #     {"SERVICE": "WMS", "REQUEST": "GetCapabilities", "MAP": "/etc/qgisserver/project.qgs"},
+        #     60,
+        # ),
+        # (
+        #     "https://front/mapserv_proxy",
+        #     {"ogcserver": "qgisserver", "SERVICE": "WMS", "REQUEST": "GetCapabilities"},
+        #     60,
+        # ),
+        # OGC API - Features
+        # (
+        #     "http://mapserver:8080/mapserv_proxy/mapserver/ogcapi/collections/osm_protected/items",
+        #     {"bbox": "6.0,46.0,7.0,47.0", "limit": "100"},
+        #     60,
+        # ),
+        # (
+        #     "https://front/mapserv_proxy/mapserver/mapserver/ogcapi/collections/osm_open/items",
+        #     {"bbox": "6.0,46.0,7.0,47.0", "limit": "100"},
+        #     60,
+        # ),
+        # (
+        #     "http://qgisserver:8080/mapserv_proxy/qgisserver/wfs3/collections/points/items",
+        #     {"map": "/etc/qgisserver/project.qgs", "bbox": "6.0,46.0,7.0,47.0", "limit": "100"},
+        #     60,
+        # ),
+        # (
+        #     "https://front/mapserv_proxy/qgisserver/wfs3/collections/points/items",
+        #     {"bbox": "6.0,46.0,7.0,47.0", "limit": "100"},
+        #     60,
+        # ),
     ],
 )
 def test_url(url: str, params: dict[str, str], timeout: int) -> None:

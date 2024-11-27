@@ -11,6 +11,8 @@ vars:
       type: canvas
       layout: desktop
 
+  main_ogc_server: mapserver
+
   dbsessions:
     ci_test:
       url: postgresql://{PGUSER}:{PGPASSWORD}@externaldb:{PGPORT}/test
@@ -23,6 +25,7 @@ vars:
           type:
             table: main.test
 
+  checker_ogc_server: mapserver
   checker:
     fulltextsearch:
       disable: true
