@@ -18,13 +18,13 @@ import requests
         ("https://front/admin/layertree", {}, 10),
         ("https://front/admin/layertree/children", {}, 10),
         (
-            "http://mapserver:8080/mapserv_proxy/mapserver",
+            "http://mapserver:8080/mapserv_proxy/MapServer",
             {"SERVICE": "WMS", "REQUEST": "GetCapabilities"},
             60,
         ),
         (
             "https://front/mapserv_proxy",
-            {"ogcserver": "mapserver", "SERVICE": "WMS", "REQUEST": "GetCapabilities"},
+            {"ogcserver": "MapServer", "SERVICE": "WMS", "REQUEST": "GetCapabilities"},
             60,
         ),
         # (
@@ -39,12 +39,12 @@ import requests
         # ),
         # OGC API - Features
         # (
-        #     "http://mapserver:8080/mapserv_proxy/mapserver/ogcapi/collections/osm_protected/items",
+        #     "http://mapserver:8080/mapserv_proxy/MapServer/ogcapi/collections/osm_protected/items",
         #     {"bbox": "6.0,46.0,7.0,47.0", "limit": "100"},
         #     60,
         # ),
         # (
-        #     "https://front/mapserv_proxy/mapserver/mapserver/ogcapi/collections/osm_open/items",
+        #     "https://front/mapserv_proxy/MapServer/ogcapi/collections/osm_open/items",
         #     {"bbox": "6.0,46.0,7.0,47.0", "limit": "100"},
         #     60,
         # ),

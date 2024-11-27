@@ -36,6 +36,11 @@ services:
   #   environment:
   #     - LOG_LEVEL=DEBUG
 
+  mapserver:
+    environment:
+      - MS_DEBUGLEVEL=5
+      - MAPSERVER_CATCH_SEGV=1
+
   # qgisserver:
   #   # volumes:
   #   #   - './../c2cgeoportal/docker/qgisserver/geomapfish_qgisserver/:/var/www/plugins/geomapfish_qgisserver/'

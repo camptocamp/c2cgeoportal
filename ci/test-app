@@ -13,7 +13,6 @@ touch "${HOME}/workspace/testgeomapfishapp/qgisserver/project.qgs.raster"
 cp ci/tileindex/* "${HOME}/workspace/testgeomapfishapp/mapserver/"
 cp -r ci/test-app-db "${HOME}/workspace/testgeomapfishapp/ci/"
 cp -r ci/test-external-db "${HOME}/workspace/testgeomapfishapp/ci/"
-cp ci/mapserver.conf "${HOME}/workspace/testgeomapfishapp/mapserver/"
 
 cd "${HOME}/workspace/testgeomapfishapp/"
 

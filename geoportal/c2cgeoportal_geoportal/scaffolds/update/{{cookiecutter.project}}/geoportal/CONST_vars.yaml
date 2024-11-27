@@ -2,7 +2,7 @@
 vars:
   # The package name
   package: '{{cookiecutter.package}}'
-  main_ogc_server: source for image/png
+  main_ogc_server: MapServer
 
   srid: EPSG:-1
 
@@ -1206,7 +1206,7 @@ vars:
         - '{VISIBLE_WEB_PROTOCOL}://{VISIBLE_WEB_HOST}'
 
   # Checker configuration
-  checker_ogc_server: source for image/png
+  checker_ogc_server: MapServer
   checker:
     forward_host: False
     base_internal_url: http://localhost:8080
