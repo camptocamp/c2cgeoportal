@@ -1,3 +1,8 @@
+##### 2.9.rc.14
+
+- Add missing cors view of the themes view [c2cgeoportal#11547](https://github.com/camptocamp/c2cgeoportal/pull/11547)
+- Audit Dpkg 2.9 [c2cgeoportal#11550](https://github.com/camptocamp/c2cgeoportal/pull/11550)
+
 ##### 2.9.rc.13
 
 - [Backport 2.9] Remove force center after view animation. [ngeo#9543](https://github.com/camptocamp/ngeo/pull/9543)
