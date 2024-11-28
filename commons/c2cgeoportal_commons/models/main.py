@@ -747,7 +747,9 @@ class OGCServer(Base):  # type: ignore
         info={
             "colanderalchemy": {
                 "title": _("Name"),
-                "description": _("The name of the OGC Server"),
+                "description": _(
+                    "The name of the OGC Server, should contains only no unaccentuated letters, numbers and _"
+                ),
             }
         },
     )

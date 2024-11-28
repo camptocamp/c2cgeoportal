@@ -55,12 +55,10 @@ def main() -> None:
         )
 
         interfaces = session.query(Interface).all()
-        ogc_jpeg = session.query(OGCServer).filter(OGCServer.name == "source for image/jpeg").one()
+        ogc_jpeg = session.query(OGCServer).filter(OGCServer.name == "MapServer_JPEG").one()
         session.delete(ogc_jpeg)
 
-        ogc_server_mapserver = session.query(OGCServer).filter(OGCServer.name == "source for image/png").one()
-        ogc_server_mapserver.name = "mapserver"
-        ogc_server_mapserver.url = "config://mapserver/mapserv_proxy/mapserver?map=mapserver"
+        ogc_server_mapserver = session.query(OGCServer).filter(OGCServer.name == "MapServer").one()
 
         layer_borders = LayerWMS("Borders", "borders")
         layer_borders.interfaces = interfaces
