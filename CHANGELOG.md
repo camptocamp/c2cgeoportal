@@ -1,3 +1,7 @@
+##### 2.9.rc.16
+
+- Fix OGC API features [c2cgeoportal#11548](https://github.com/camptocamp/c2cgeoportal/pull/11548)
+
 ##### 2.9.rc.15
 
 - Add QGIS supported version [c2cgeoportal#11536](https://github.com/camptocamp/c2cgeoportal/pull/11536)
