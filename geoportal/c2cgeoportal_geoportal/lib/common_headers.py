@@ -63,7 +63,12 @@ def _set_cors_headers(
     credentials: bool,
 ) -> None:
     """Handle CORS requests, as specified in https://www.w3.org/TR/cors/."""
-    response.vary = (response.vary or ()) + ("Origin",)
+    response.vary = (
+        *(response.vary or ()),
+        "Origin",
+        "Access-Control-Request-Headers",
+        *(("Access-Control-Request-Method",) if request.method == "OPTIONS" else ()),
+    )
 
     if "Origin" not in request.headers:
         return  # Not a CORS request if this header is missing
