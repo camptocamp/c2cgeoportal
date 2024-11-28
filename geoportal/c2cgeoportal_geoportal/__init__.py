@@ -738,6 +738,7 @@ def includeme(config: pyramid.config.Configurator) -> None:
     c2cgeoportal_geoportal.views.add_redirect(config, "apihelp_redirect", "/apihelp.html", "apihelp.html")
 
     config.add_route("themes", "/themes", request_method="GET", pregenerator=C2CPregenerator(role=True))
+    add_cors_route(config, "/themes", "themes")
 
     config.add_route("invalidate", "/invalidate", request_method="GET")
 
