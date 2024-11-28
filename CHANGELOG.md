@@ -1,3 +1,7 @@
+##### 2.9.rc.15
+
+- Add QGIS supported version [c2cgeoportal#11536](https://github.com/camptocamp/c2cgeoportal/pull/11536)
+
 ##### 2.9.rc.14
 
 - Add missing cors view of the themes view [c2cgeoportal#11547](https://github.com/camptocamp/c2cgeoportal/pull/11547)
