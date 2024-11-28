@@ -58,8 +58,6 @@ class MapservProxy(OGCProxy):
 
     @view_config(route_name="mapserverproxy")  # type: ignore
     @view_config(route_name="mapserverproxy_post")  # type: ignore
-    @view_config(route_name="mapserverproxy_get_path")  # type: ignore
-    @view_config(route_name="mapserverproxy_post_path")  # type: ignore
     def proxy(self) -> Response:
         if self.user is None and "authentication_required" in self.request.params:
             _LOG.debug("proxy() detected authentication_required")
@@ -186,8 +184,6 @@ class MapservProxy(OGCProxy):
         _url = self._get_wfs_url(errors)
         if _url is not None:
             _url.path = "/".join([_url.path.rstrip("/"), subpath, *self.request.matchdict["path"]])
-            _LOG.warning("URL: %s", _url)
-        _LOG.warning(self.request.matchdict)
 
         if _url is None:
             _LOG.error("Error getting the URL:\n%s", "\n".join(errors))

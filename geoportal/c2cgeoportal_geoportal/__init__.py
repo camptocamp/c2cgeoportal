@@ -661,22 +661,6 @@ def includeme(config: pyramid.config.Configurator) -> None:
         pregenerator=C2CPregenerator(role=True),
         request_method="POST",
     )
-    # The two next views are used to serve the application on the URL /mapserv_proxy/<ogc server name>
-    # instead of /mapserv_proxy?ogcserver=<ogc server name>, required for QGIS server landing page
-    config.add_route(
-        "mapserverproxy_get_path",
-        "/mapserv_proxy/{ogcserver}/*path",
-        mapserverproxy=True,
-        pregenerator=C2CPregenerator(role=True),
-        request_method="GET",
-    )
-    config.add_route(
-        "mapserverproxy_post_path",
-        "/mapserv_proxy/{ogcserver}/*path",
-        mapserverproxy=True,
-        pregenerator=C2CPregenerator(role=True),
-        request_method="POST",
-    )
     # OGC Api routes
     config.add_route(
         "mapserverproxy_ogcapi_mapserver",
