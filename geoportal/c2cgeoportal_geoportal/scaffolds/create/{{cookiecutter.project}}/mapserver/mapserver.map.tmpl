@@ -66,12 +66,11 @@ MAP
     END
     WEB
         METADATA
-            "wms_title" "changeme"
-            "wms_abstract" "changeme"
+            "ows_enable_request" "*"
+            "ows_title" "changeme"
+            "ows_abstract" "changeme"
             "ows_onlineresource" "${VISIBLE_WEB_PROTOCOL}://${VISIBLE_WEB_HOST}${VISIBLE_ENTRY_POINT}mapserv_proxy?ogcserver=MapServer"
-            "wms_srs" "EPSG:{{cookiecutter.srid}}"
-            "wms_enable_request" "*"
-            "wfs_enable_request" "!*"
+            "ows_srs" "EPSG:{{cookiecutter.srid}}"
             "wms_allow_getmap_without_styles" "true"
         END
     END
