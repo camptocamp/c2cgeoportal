@@ -54,6 +54,10 @@ with the <code class="docutils literal notranslate"><span class="pre">items</spa
 <p>Then use this alias as the ogc-server value in the URL for MapServer.
 e.g.: <code class="docutils literal notranslate"><span class="pre">config://mapserver/mapserv_proxy/ExampleOGCserver</span></code>.</p>
 <p>It is also recommended for any server type, to remove all special characters in the OGC Server names because they appear in the path of the URL.</p>
+<p>The OGC Server should have the same name than the alias and use the following URL:
+<code class="docutils literal notranslate"><span class="pre">config://mapserver/mapserv_proxy/&lt;alias&gt;?MAP=&lt;alias&gt;</span></code>, where <code class="docutils literal notranslate"><span class="pre">&lt;alias&gt;</span></code> is the name of the alias.
+The alias is at two place in the URL to make working both the WMS and the OGC API.</p>
+<p>For QGIS Server, the URL didn’t changes, it is <code class="docutils literal notranslate"><span class="pre">config://qgisserver?MAP=&lt;project_file&gt;</span></code>.</p>
 <p>QGIS Server and MapServer are already configured to support the OGC API and detect automatically if the compatible path is requested.</p>
 <p>Landing pages for both MapServer and QGIS Server are not supported yet.</p>
 <p>OGC API features are accessible through <code class="docutils literal notranslate"><span class="pre">mapserv_proxy</span></code>, with the following URLs:
