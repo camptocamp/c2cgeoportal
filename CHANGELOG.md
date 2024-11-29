@@ -1,3 +1,7 @@
+##### 2.9.rc.17
+
+- OGC API feature last fix and documentation [c2cgeoportal#11555](https://github.com/camptocamp/c2cgeoportal/pull/11555)
+
 ##### 2.9.rc.16
 
 - Fix OGC API features [c2cgeoportal#11548](https://github.com/camptocamp/c2cgeoportal/pull/11548)
