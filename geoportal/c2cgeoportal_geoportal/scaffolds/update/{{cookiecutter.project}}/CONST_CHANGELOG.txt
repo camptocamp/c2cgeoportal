@@ -23,7 +23,10 @@ Information to know before starting the upgrade
    - Update Webpack to version 5 and remove Babel transpilation to ES05,
      See the related pull request: https://github.com/camptocamp/ngeo/pull/9463.
    - Update FontAwesome to version 6,
-     See the related pull request: https://github.com/camptocamp/ngeo/pull/9470
+     See the related pull request: https://github.com/camptocamp/ngeo/pull/9470.
+
+3. For the OGC API, the MapServer configuration changes, now multi map files are supported by default and the URL in
+   the admin interface should be updated, see the OGC APT - Features documentation for more information.
 
 Information
 ===========
