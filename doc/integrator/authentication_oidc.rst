@@ -180,12 +180,16 @@ Implementation
 When we implement OpenID Connect, we have to possibilities:
 
 * Implement it in the backend.
-* Implement it in the frontend, and give a token to the backend that allows to be authenticated on an other service.
+* Implement it in the frontend, and give a token to the backend that allows to be authenticated
+  on an other service.
 
 In c2cgeoportal we have implemented booth method.
 
 The backend implementation is used by ngeo an the admin interface, where se store the user information
 (including the access and refresh token) in an encrypted JSON as a cookie.
+To use the backend implementation, the ``/oidc/login`` endpoint should be called with
+an optional ``came_from`` parameter to redirect the user after the login.
 
-The frontend implementation is used by application like QGIS desktop, on every call we have to call the
-user info endpoint to get the user information.
+The frontend implementation is used by application like QGIS desktop,
+on every call the Bearer Token should be provided in the Authorization header,
+we have to call the user info endpoint to get the user information.
