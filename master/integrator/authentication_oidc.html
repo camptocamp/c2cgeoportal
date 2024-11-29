@@ -191,13 +191,17 @@ Redirect URI: <code class="docutils literal notranslate"><span class="pre">http:
 <p>When we implement OpenID Connect, we have to possibilities:</p>
 <ul class="simple">
 <li><p>Implement it in the backend.</p></li>
-<li><p>Implement it in the frontend, and give a token to the backend that allows to be authenticated on an other service.</p></li>
+<li><p>Implement it in the frontend, and give a token to the backend that allows to be authenticated
+on an other service.</p></li>
 </ul>
 <p>In c2cgeoportal we have implemented booth method.</p>
 <p>The backend implementation is used by ngeo an the admin interface, where se store the user information
-(including the access and refresh token) in an encrypted JSON as a cookie.</p>
-<p>The frontend implementation is used by application like QGIS desktop, on every call we have to call the
-user info endpoint to get the user information.</p>
+(including the access and refresh token) in an encrypted JSON as a cookie.
+To use the backend implementation, the <code class="docutils literal notranslate"><span class="pre">/oidc/login</span></code> endpoint should be called with
+an optional <code class="docutils literal notranslate"><span class="pre">came_from</span></code> parameter to redirect the user after the login.</p>
+<p>The frontend implementation is used by application like QGIS desktop,
+on every call the Bearer Token should be provided in the Authorization header,
+we have to call the user info endpoint to get the user information.</p>
 </section>
 </section>
 
