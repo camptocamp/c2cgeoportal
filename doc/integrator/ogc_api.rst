@@ -26,6 +26,12 @@ e.g.: ``config://mapserver/mapserv_proxy/ExampleOGCserver``.
 
 It is also recommended for any server type, to remove all special characters in the OGC Server names because they appear in the path of the URL.
 
+The OGC Server should have the same name than the alias and use the following URL:
+``config://mapserver/mapserv_proxy/<alias>?MAP=<alias>``, where ``<alias>`` is the name of the alias.
+The alias is at two place in the URL to make working both the WMS and the OGC API.
+
+For QGIS Server, the URL didn't changes, it is ``config://qgisserver?MAP=<project_file>``.
+
 QGIS Server and MapServer are already configured to support the OGC API and detect automatically if the compatible path is requested.
 
 Landing pages for both MapServer and QGIS Server are not supported yet.
