@@ -1,3 +1,18 @@
+##### 2.8.1.169
+
+- Lazy load legend images [ngeo#9393](https://github.com/camptocamp/ngeo/pull/9393)
+- Update CI dependencies to v1.4.17 (2.8) (patch) [ngeo#9399](https://github.com/camptocamp/ngeo/pull/9399)
+- Update dependency karma to v6.4.4 (2.8) [ngeo#9400](https://github.com/camptocamp/ngeo/pull/9400)
+- Update CI dependencies to v1.4.18 (2.8) (patch) [ngeo#9404](https://github.com/camptocamp/ngeo/pull/9404)
+- Fix typo [ngeo#9449](https://github.com/camptocamp/ngeo/pull/9449)
+- Update CI dependencies (2.8) (patch) [ngeo#9461](https://github.com/camptocamp/ngeo/pull/9461)
+- Update CI dependencies (2.8) (patch) [ngeo#9496](https://github.com/camptocamp/ngeo/pull/9496)
+- Update all patch versions (2.8) (patch) [ngeo#9497](https://github.com/camptocamp/ngeo/pull/9497)
+- Fix printing KML with Polygon fill to null [ngeo#9509](https://github.com/camptocamp/ngeo/pull/9509)
+- Update all patch versions (2.8) (patch) [ngeo#9534](https://github.com/camptocamp/ngeo/pull/9534)
+- Update dependency pyjson5 to v1.6.7 (2.8) [ngeo#9535](https://github.com/camptocamp/ngeo/pull/9535)
+- [Backport 2.8] Remove force center after view animation. [ngeo#9542](https://github.com/camptocamp/ngeo/pull/9542)
+
 ##### 2.8.1.168
 
 - Audit Snyk check/fix 2.8 [c2cgeoportal#11540](https://github.com/camptocamp/c2cgeoportal/pull/11540)
