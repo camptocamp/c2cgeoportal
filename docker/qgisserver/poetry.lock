@@ -80,13 +80,13 @@ pyyaml-include = ">=2.0"
 
 [[package]]
 name = "c2cwsgiutils"
-version = "6.1.3"
+version = "6.1.5"
 description = "Common utilities for Camptocamp WSGI applications"
 optional = false
 python-versions = ">=3.10"
 files = [
-    {file = "c2cwsgiutils-6.1.3-py3-none-any.whl", hash = "sha256:3e537c6ef3f72bd00ef519aa5f8e4948c7f1f584a95e99aa8159388805674ae6"},
-    {file = "c2cwsgiutils-6.1.3.tar.gz", hash = "sha256:afa5c7c5450512d3661be2375325cb673b8b7c2e520d487582927d099589d311"},
+    {file = "c2cwsgiutils-6.1.5-py3-none-any.whl", hash = "sha256:37337c84004fcaabbaa18fcb711534926d7bea94c5719f9fbe8afe66b8f6b6c5"},
+    {file = "c2cwsgiutils-6.1.5.tar.gz", hash = "sha256:b5d8f8529a9b7bfb01b5f11aba6a3b60bc3f3f4aacf6fdb236b009d28643b59b"},
 ]
 
 [package.dependencies]
@@ -981,13 +981,13 @@ testing = ["pytest", "pytest-benchmark"]
 
 [[package]]
 name = "prospector"
-version = "1.13.0"
+version = "1.13.3"
 description = "Prospector is a tool to analyse Python code by aggregating the result of other tools."
 optional = false
 python-versions = "<4.0,>=3.9"
 files = [
-    {file = "prospector-1.13.0-py3-none-any.whl", hash = "sha256:a4868809ef0e5e4d9837404fa4fd691d8f28621422e24340e2d7c63ad054cf55"},
-    {file = "prospector-1.13.0.tar.gz", hash = "sha256:d7061ac2e0ee419266c7b958f59912ed39441769d4029250a7135a6ec7440420"},
+    {file = "prospector-1.13.3-py3-none-any.whl", hash = "sha256:e7261c222ba54bc8aef8c9e31b2dcf5ed2a656c9b76fc0cceab294cd5ec3db6b"},
+    {file = "prospector-1.13.3.tar.gz", hash = "sha256:36ccb13f69aa27c5c4682afd4cc46219b9e0c80723e30dc64ff30c71f7b877a1"},
 ]
 
 [package.dependencies]
@@ -1229,13 +1229,13 @@ testing = ["coverage", "pytest (>=5.4.2)", "pytest-cov", "webtest (>=1.3.1)", "z
 
 [[package]]
 name = "pytest"
-version = "8.3.3"
+version = "8.3.4"
 description = "pytest: simple powerful testing with Python"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pytest-8.3.3-py3-none-any.whl", hash = "sha256:a6853c7375b2663155079443d2e45de913a911a11d669df02a50814944db57b2"},
-    {file = "pytest-8.3.3.tar.gz", hash = "sha256:70b98107bd648308a7952b06e6ca9a50bc660be218d53c257cc1fc94fda10181"},
+    {file = "pytest-8.3.4-py3-none-any.whl", hash = "sha256:50e16d954148559c9a74109af1eaf0c945ba2d8f30f0a3d3335edde19788b6f6"},
+    {file = "pytest-8.3.4.tar.gz", hash = "sha256:965370d062bce11e73868e0335abac31b4d3de0e82f4007408d242b4f8610761"},
 ]
 
 [package.dependencies]
@@ -1982,4 +1982,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "ccf0b76b0a6fab02ee405759f39fe207ca867691ce1852a8c3e8b801c7d56f1a"
+content-hash = "5e211dc9d324e8a046a70cbc4009f1cfce1d806f52a2ed7a0df3049a951b8a11"
