@@ -539,13 +539,13 @@ files = [
 
 [[package]]
 name = "pyyaml-include"
-version = "2.1"
+version = "2.2"
 description = "An extending constructor of PyYAML: include other YAML files into current YAML document"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pyyaml_include-2.1-py3-none-any.whl", hash = "sha256:f64e6dd18961450c26977e4416466662246b55d5e57953df8e7e30bbb4e18f42"},
-    {file = "pyyaml_include-2.1.tar.gz", hash = "sha256:800304da30a3686f2cadbd9888cc46db782ba3712870a723916b193368b5c4da"},
+    {file = "pyyaml_include-2.2-py3-none-any.whl", hash = "sha256:489fff69f78bad8b9509d006297a0140fd91382a66775b8b1da0ce7e126c1815"},
+    {file = "pyyaml_include-2.2.tar.gz", hash = "sha256:6f0c7e2ac56cdd9cc305b04122817b55514e6ce8584869fae2bc2a4ef2e0d40f"},
 ]
 
 [package.dependencies]
