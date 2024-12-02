@@ -1,3 +1,7 @@
+##### 2.9.rc.18
+
+- Update all patch versions (2.9) (patch) [c2cgeoportal#11565](https://github.com/camptocamp/c2cgeoportal/pull/11565)
+
 ##### 2.9.rc.17
 
 - OGC API feature last fix and documentation [c2cgeoportal#11555](https://github.com/camptocamp/c2cgeoportal/pull/11555)
