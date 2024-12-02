@@ -1,3 +1,7 @@
+##### 2.8.1.170
+
+- Update dependency waitress to v3.0.2 (2.8) [c2cgeoportal#11564](https://github.com/camptocamp/c2cgeoportal/pull/11564)
+
 ##### 2.8.1.169
 
 - Lazy load legend images [ngeo#9393](https://github.com/camptocamp/ngeo/pull/9393)
