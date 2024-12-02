@@ -29,13 +29,18 @@
 import logging
 from typing import Any
 
-from pyramid.httpexceptions import HTTPForbidden, HTTPFound, HTTPInternalServerError, HTTPUnauthorized
+from c2cgeoportal_commons.lib.url import Url
+from c2cgeoportal_commons.models import main
+from pyramid.httpexceptions import (
+    HTTPForbidden,
+    HTTPFound,
+    HTTPInternalServerError,
+    HTTPUnauthorized,
+)
 from pyramid.request import Request
 from pyramid.response import Response
 from pyramid.view import view_config
 
-from c2cgeoportal_commons.lib.url import Url
-from c2cgeoportal_commons.models import main
 from c2cgeoportal_geoportal.lib import get_roles_id, get_roles_name
 from c2cgeoportal_geoportal.lib.caching import get_region
 from c2cgeoportal_geoportal.lib.common_headers import Cache

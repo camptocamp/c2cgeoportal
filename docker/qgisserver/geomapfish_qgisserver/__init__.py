@@ -20,6 +20,7 @@ _LOG = logging.getLogger(__name__)
 def serverClassFactory(  # pylint: disable=invalid-name
     serverIface: qgis.server.QgsServerInterface,  # pylint: disable=invalid-name
 ) -> qgis.server.QgsAccessControlFilter | None:
+    """Create a new instance of the access control filter."""
     QgsMessageLog.logMessage("Configure logging...", "GeoMapFish-init", level=Qgis.Info)
 
     try:
@@ -34,7 +35,9 @@ def serverClassFactory(  # pylint: disable=invalid-name
     _LOG.info("Starting GeoMapFish access restriction...")
 
     try:
-        from .accesscontrol import GeoMapFishAccessControl  # pylint: disable=import-outside-toplevel
+        from .accesscontrol import (  # pylint: disable=import-outside-toplevel
+            GeoMapFishAccessControl,
+        )
 
         return GeoMapFishAccessControl(serverIface)
     except Exception:  # pylint: disable=broad-exception-caught

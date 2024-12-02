@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2023, Camptocamp SA
+# Copyright (c) 2011-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -39,7 +39,6 @@ from tests.functional import teardown_common as teardown_module  # noqa
 class TestRequestProperty(TestCase):
     def setup_method(self, _):
         import transaction
-
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import Role
         from c2cgeoportal_commons.models.static import User
@@ -52,7 +51,6 @@ class TestRequestProperty(TestCase):
 
     def teardown_method(self, _):
         import transaction
-
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import Role
         from c2cgeoportal_commons.models.static import User
@@ -65,7 +63,7 @@ class TestRequestProperty(TestCase):
 
     def test_request_no_auth(self):
         request = create_dummy_request()
-        assert request.user == None
+        assert request.user is None
 
     def test_request_auth(self):
         request = create_dummy_request(authentication=False, user="__test_user")
@@ -91,7 +89,7 @@ class TestRequestProperty(TestCase):
             }
         )
 
-        assert request.user == None
+        assert request.user is None
 
     def test_request_auth_overwritten_property(self):
         def setter(request):

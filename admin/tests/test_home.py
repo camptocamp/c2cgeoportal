@@ -9,6 +9,6 @@ class TestHome(AbstractViewsTests):
 
     def test_index_rendering(self, test_app):
         resp = self.get(test_app, status=302)
-        assert "http://localhost/admin/layertree" == resp.location
+        assert resp.location == "http://localhost/admin/layertree"
         to_layer_tree = resp.follow()
         assert to_layer_tree.html.select_one('div[id="layertree"]') is not None

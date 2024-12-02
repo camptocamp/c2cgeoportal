@@ -4,9 +4,7 @@ from pyramid.view import view_config
 
 
 class IsAdminPredicate:
-    """
-    A custom predicate that checks if the request is for the admin interface.
-    """
+    """A custom predicate that checks if the request is for the admin interface."""
 
     def __init__(self, val, info):
         del info

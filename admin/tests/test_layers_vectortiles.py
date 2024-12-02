@@ -18,7 +18,7 @@ def layer_vectortiles_test_data(dbsession, transact):
         name = f"layer_vectortiles_{i}"
         layer = LayerVectorTiles(name=name)
         layer.layer = name
-        layer.public = 1 == i % 2
+        layer.public = i % 2 == 1
         layer.style = "https://vectortiles-staging.geoportail.lu/styles/roadmap/style.json"
         layer.xyz = "https://vectortiles-staging.geoportail.lu/styles/roadmap/{z}/{x}/{y}.png"
         return layer
@@ -74,10 +74,10 @@ class TestLayerVectortiles(AbstractViewsTests):
 
         form = self.get_item(test_app, "new").form
 
-        assert "" == self.get_first_field_named(form, "id").value
-        assert "" == self.get_first_field_named(form, "name").value
-        assert "" == self.get_first_field_named(form, "style").value
-        assert "" == self.get_first_field_named(form, "xyz").value
+        assert self.get_first_field_named(form, "id").value == ""
+        assert self.get_first_field_named(form, "name").value == ""
+        assert self.get_first_field_named(form, "style").value == ""
+        assert self.get_first_field_named(form, "xyz").value == ""
 
     def test_grid_search(self, test_app):
         self.check_search(test_app, "layer_vectortiles_10", total=1)
@@ -87,8 +87,8 @@ class TestLayerVectortiles(AbstractViewsTests):
 
         form = self.get_item(test_app, layer.id).form
 
-        assert "layer_vectortiles_10" == self.get_first_field_named(form, "name").value
-        assert "" == self.get_first_field_named(form, "description").value
+        assert self.get_first_field_named(form, "name").value == "layer_vectortiles_10"
+        assert self.get_first_field_named(form, "description").value == ""
 
     def test_public_checkbox_edit(self, test_app, layer_vectortiles_test_data):
         layer = layer_vectortiles_test_data["layers"][10]
@@ -107,7 +107,7 @@ class TestLayerVectortiles(AbstractViewsTests):
         form = self.get_item(test_app, layer.id).form
 
         assert str(layer.id) == self.get_first_field_named(form, "id").value
-        assert "hidden" == self.get_first_field_named(form, "id").attrs["type"]
+        assert self.get_first_field_named(form, "id").attrs["type"] == "hidden"
         assert layer.name == self.get_first_field_named(form, "name").value
         assert str(layer.description or "") == self.get_first_field_named(form, "description").value
         assert layer.public is False
@@ -155,7 +155,7 @@ class TestLayerVectortiles(AbstractViewsTests):
         assert {ras[1].id, ras[3].id} == {ra.id for ra in layer.restrictionareas}
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.UPDATE
         assert log.element_type == "layer_vectortiles"
         assert log.element_id == layer.id
@@ -183,7 +183,7 @@ class TestLayerVectortiles(AbstractViewsTests):
         ).group(1)
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.INSERT
         assert log.element_type == "layer_vectortiles"
         assert log.element_id == layer.id
@@ -198,7 +198,7 @@ class TestLayerVectortiles(AbstractViewsTests):
         resp = test_app.get(f"/admin/layers_vectortiles/{layer.id}/duplicate", status=200)
         form = resp.form
 
-        assert "" == self.get_first_field_named(form, "id").value
+        assert self.get_first_field_named(form, "id").value == ""
         assert layer.name == self.get_first_field_named(form, "name").value
         assert str(layer.description or "") == self.get_first_field_named(form, "description").value
         assert layer.public is True
@@ -224,7 +224,13 @@ class TestLayerVectortiles(AbstractViewsTests):
         assert layer_vectortiles_test_data["layers"][3].metadatas[1].name == layer.metadatas[1].name
 
     def test_delete(self, test_app, dbsession):
-        from c2cgeoportal_commons.models.main import Layer, LayerVectorTiles, Log, LogAction, TreeItem
+        from c2cgeoportal_commons.models.main import (
+            Layer,
+            LayerVectorTiles,
+            Log,
+            LogAction,
+            TreeItem,
+        )
 
         layer = dbsession.query(LayerVectorTiles).first()
 
@@ -235,7 +241,7 @@ class TestLayerVectortiles(AbstractViewsTests):
         assert dbsession.query(TreeItem).get(layer.id) is None
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.DELETE
         assert log.element_type == "layer_vectortiles"
         assert log.element_id == layer.id

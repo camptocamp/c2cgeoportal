@@ -40,6 +40,7 @@ import shapely.geometry
 import sqlalchemy.ext.declarative
 import sqlalchemy.orm
 import sqlalchemy.orm.query
+from c2cgeoportal_commons import models
 from geoalchemy2 import Geometry
 from geoalchemy2.shape import from_shape, to_shape
 from geojson.feature import Feature, FeatureCollection
@@ -56,19 +57,27 @@ from pyramid.view import view_config
 from shapely import unary_union
 from shapely.errors import TopologicalError
 from sqlalchemy import Enum, Numeric, String, Text, Unicode, UnicodeText, exc, func
-from sqlalchemy.orm.exc import MultipleResultsFound, NoResultFound  # type: ignore[attr-defined]
+from sqlalchemy.orm.exc import (  # type: ignore[attr-defined]
+    MultipleResultsFound,
+    NoResultFound,
+)
 from sqlalchemy.orm.properties import ColumnProperty
 from sqlalchemy.orm.util import class_mapper
 from sqlalchemy.sql import and_, or_
 
-from c2cgeoportal_commons import models
 from c2cgeoportal_geoportal.lib import get_roles_id
 from c2cgeoportal_geoportal.lib.caching import get_region
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
-from c2cgeoportal_geoportal.lib.dbreflection import _AssociationProxy, get_class, get_table
+from c2cgeoportal_geoportal.lib.dbreflection import (
+    _AssociationProxy,
+    get_class,
+    get_table,
+)
 
 if TYPE_CHECKING:
-    from c2cgeoportal_commons.models import main  # pylint: disable=ungrouped-imports.useless-suppression
+    from c2cgeoportal_commons.models import (
+        main,  # pylint: disable=ungrouped-imports.useless-suppression
+    )
 
 
 _LOG = logging.getLogger(__name__)
@@ -222,7 +231,9 @@ class Layers:
     @staticmethod
     def _get_layer(layer_id: int) -> "main.Layer":
         """Return a ``Layer`` object for ``layer_id``."""
-        from c2cgeoportal_commons.models.main import Layer  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+            Layer,
+        )
 
         assert models.DBSession is not None
 
@@ -281,7 +292,6 @@ class Layers:
 
     def _proto_read(self, layer: "main.Layer") -> FeatureCollection:
         """Read features for the layer based on the self.request."""
-
         from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
             Layer,
             RestrictionArea,
@@ -495,7 +505,7 @@ class Layers:
             raise HTTPInternalServerError("Missing configuration")
         layername = self.request.matchdict["layer_name"]
         fieldname = self.request.matchdict["field_name"]
-        # TODO check if layer is public or not
+        # TODO check if layer is public or not # pylint: disable=fixme
 
         return cast(dict[str, Any], self._enumerate_attribute_values(layername, fieldname))
 
@@ -541,15 +551,14 @@ def get_layer_class(layer: "main.Layer", with_last_update_columns: bool = False)
     Get the SQLAlchemy class to edit a GeoMapFish layer.
 
     Keyword Arguments:
-
         layer: The GeoMapFish layer
         with_last_update_columns: False to just have a class to access to the table and be able to
            modify the last_update_columns, True to have a correct class to build the UI
            (without the hidden column).
 
     Returns: SQLAlchemy class
-    """
 
+    """
     assert layer.geo_table is not None
 
     # Exclude the columns used to record the last features update
@@ -616,7 +625,6 @@ class ColumnProperties(TypedDict, total=False):
 
 def get_layer_metadata(layer: "main.Layer") -> list[ColumnProperties]:
     """Get the metadata related to a layer."""
-
     assert models.DBSession is not None
 
     cls = get_layer_class(layer, with_last_update_columns=True)
@@ -690,7 +698,7 @@ def _convert_column_type(column_type: object) -> ColumnProperties:
         return restriction
 
     # String type
-    if isinstance(column_type, (String, Text, Unicode, UnicodeText)):
+    if isinstance(column_type, String | Text | Unicode | UnicodeText):
         if column_type.length is None:
             return {"type": "xsd:string"}
         return {"type": "xsd:string", "maxLength": int(column_type.length)}

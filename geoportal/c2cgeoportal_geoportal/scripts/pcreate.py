@@ -29,10 +29,10 @@
 import json
 import os
 import re
-import subprocess
+import subprocess  # nosec
 import sys
 from argparse import ArgumentParser
-from typing import Any, Union, cast
+from typing import Any, cast
 
 import pkg_resources
 import requests
@@ -46,7 +46,6 @@ SCAFFOLDS_DIR = pkg_resources.resource_filename("c2cgeoportal_geoportal", "scaff
 
 def get_argparser() -> ArgumentParser:
     """Get the argument parser for this script."""
-
     parser = ArgumentParser(
         prog=sys.argv[0],
         add_help=True,
@@ -183,9 +182,7 @@ class PCreateCommand:
         }
         context.update(self.read_project_file())
         if os.environ.get("CI") == "true":
-            context["authtkt_secret"] = (  # nosec
-                "io7heoDui8xaikie1rushaeGeiph8Bequei6ohchaequob6viejei0xooWeuvohf"
-            )
+            context["authtkt_secret"] = "io7heoDui8xaikie1rushaeGeiph8Bequei6ohchaequob6viejei0xooWeuvohf"  # noqa: S105
 
         self.get_var(context, "srid", "Spatial Reference System Identifier (e.g. 2056): ", int)
         srid = cast(int, context["srid"])
@@ -246,7 +243,7 @@ class PCreateCommand:
         if os.path.exists(project_file):
             with open(project_file, encoding="utf8") as f:
                 project = yaml.safe_load(f)
-                return cast(dict[str, Union[str, int]], project.get("template_vars", {}))
+                return cast(dict[str, str | int], project.get("template_vars", {}))
         else:
             return {}
 
@@ -280,16 +277,12 @@ class PCreateCommand:
             r = requests.get(f"https://epsg.io/?format=json&q={srid}", timeout=60)
             bbox = r.json()["results"][0]["bbox"]
             r = requests.get(
-                "https://epsg.io/trans?s_srs=4326&t_srs={srid}&data={bbox[1]},{bbox[0]}".format(
-                    srid=srid, bbox=bbox
-                ),
+                f"https://epsg.io/trans?s_srs=4326&t_srs={srid}&data={bbox[1]},{bbox[0]}",
                 timeout=60,
             )
             r1 = r.json()[0]
             r = requests.get(
-                "https://epsg.io/trans?s_srs=4326&t_srs={srid}&data={bbox[3]},{bbox[2]}".format(
-                    srid=srid, bbox=bbox
-                ),
+                f"https://epsg.io/trans?s_srs=4326&t_srs={srid}&data={bbox[3]},{bbox[2]}",
                 timeout=60,
             )
             r2 = r.json()[0]

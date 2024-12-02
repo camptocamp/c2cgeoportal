@@ -36,10 +36,14 @@ import pytest
 import transaction
 from geoalchemy2 import WKTElement
 from pyramid import testing
-from tests.functional import cleanup_db, create_dummy_request, fill_tech_user_functionality, mapserv_url
-from tests.functional import setup_common as setup_module  # noqa, pylint: disable=unused-import
-from tests.functional import setup_db
-from tests.functional import teardown_common as teardown_module  # noqa, pylint: disable=unused-import
+
+from tests.functional import (
+    cleanup_db,
+    create_dummy_request,
+    fill_tech_user_functionality,
+    mapserv_url,
+    setup_db,
+)
 
 _LOG = logging.getLogger(__name__)
 
@@ -102,11 +106,10 @@ class TestLoginView(TestCase):
     #
 
     def test_login_success(self):
-        from pyramid.httpexceptions import HTTPUnauthorized
-
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
         from c2cgeoportal_geoportal.views.login import Login
+        from pyramid.httpexceptions import HTTPUnauthorized
 
         user = DBSession.query(User).filter_by(username="__test_user1").one()
         user.is_password_changed = True
@@ -136,9 +139,8 @@ class TestLoginView(TestCase):
         self.assertRaises(HTTPUnauthorized, login.login)
 
     def test_logout_no_auth(self):
-        from pyramid.httpexceptions import HTTPUnauthorized
-
         from c2cgeoportal_geoportal.views.login import Login
+        from pyramid.httpexceptions import HTTPUnauthorized
 
         request = self._create_request_obj(path="/", params={"came_from": "/came_from"})
         login = Login(request)
@@ -209,18 +211,16 @@ class TestLoginView(TestCase):
         self.assertNotEqual(len(user.password), 0)
 
     def test_change_password_no_params(self):
-        from pyramid.httpexceptions import HTTPBadRequest
-
         from c2cgeoportal_geoportal.views.login import Login
+        from pyramid.httpexceptions import HTTPBadRequest
 
         request = self._create_request_obj(username="__test_user1", params={"lang": "en"}, POST={})
         login = Login(request)
         self.assertRaises(HTTPBadRequest, login.change_password)
 
     def test_change_password_wrong_old(self):
-        from pyramid.httpexceptions import HTTPUnauthorized
-
         from c2cgeoportal_geoportal.views.login import Login
+        from pyramid.httpexceptions import HTTPUnauthorized
 
         request = self._create_request_obj(
             username="__test_user1",
@@ -232,9 +232,8 @@ class TestLoginView(TestCase):
             login.change_password()
 
     def test_change_password_different(self):
-        from pyramid.httpexceptions import HTTPBadRequest
-
         from c2cgeoportal_geoportal.views.login import Login
+        from pyramid.httpexceptions import HTTPBadRequest
 
         request = self._create_request_obj(
             username="__test_user1",
@@ -362,9 +361,9 @@ class TestLoginView(TestCase):
         assert request.response.headers["Vary"] == "Origin, Access-Control-Request-Headers, Cookie"
 
     def test_intranet(self):
-        from tests import DummyRequest
-
         from c2cgeoportal_geoportal.views.login import Login
+
+        from tests import DummyRequest
 
         request = DummyRequest()
         request.registry.settings = {"intranet": {"networks": ["192.168.1.0/255.255.255.0"]}}

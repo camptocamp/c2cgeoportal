@@ -38,10 +38,10 @@ from typing import Any, cast
 import dateutil
 import pyramid.request
 import pyramid.response
+from c2cgeoportal_commons.lib.url import get_url2
 from pyramid.interfaces import IRoutePregenerator
 from zope.interface import implementer
 
-from c2cgeoportal_commons.lib.url import get_url2
 from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
 from c2cgeoportal_geoportal.lib.caching import get_region
 
@@ -145,8 +145,12 @@ def get_setting(settings: Any, path: Iterable[str], default: Any = None) -> Any:
 @_CACHE_REGION_OBJ.cache_on_arguments()
 def get_ogc_server_wms_url_ids(request: pyramid.request.Request, host: str) -> dict[str, list[int]]:
     """Get the OGCServer ids mapped on the WMS URL."""
-    from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
-    from c2cgeoportal_commons.models.main import OGCServer  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+        DBSession,
+    )
+    from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+        OGCServer,
+    )
 
     del host  # used for cache
     assert DBSession is not None
@@ -163,8 +167,12 @@ def get_ogc_server_wms_url_ids(request: pyramid.request.Request, host: str) -> d
 @_CACHE_REGION_OBJ.cache_on_arguments()
 def get_ogc_server_wfs_url_ids(request: pyramid.request.Request, host: str) -> dict[str, list[int]]:
     """Get the OGCServer ids mapped on the WFS URL."""
-    from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
-    from c2cgeoportal_commons.models.main import OGCServer  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+        DBSession,
+    )
+    from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+        OGCServer,
+    )
 
     del host  # used for cache
     assert DBSession is not None
@@ -218,7 +226,10 @@ def _get_intranet_networks(
 @_CACHE_REGION.cache_on_arguments()
 def get_role_id(name: str) -> int:
     """Get the role ID."""
-    from c2cgeoportal_commons.models import DBSession, main  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+        DBSession,
+        main,
+    )
 
     assert DBSession is not None
 
@@ -250,7 +261,4 @@ def get_roles_name(request: pyramid.request.Request) -> pyramid.response.Respons
 def is_intranet(request: pyramid.request.Request) -> bool:
     """Get if it's an intranet user."""
     address = ipaddress.ip_address(request.client_addr)
-    for network in _get_intranet_networks(request):
-        if address in network:
-            return True
-    return False
+    return any(address in network for network in _get_intranet_networks(request))

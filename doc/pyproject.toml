@@ -1,11 +1,3 @@
-[tool.black]
-line-length = 110
-target-version = ['py39']
-
-[tool.isort]
-profile = "black"
-line_length = 110
-
 [tool.poetry]
 name = 'c2cgeoportal'
 version = '0.0.0'

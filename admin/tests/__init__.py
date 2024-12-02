@@ -9,7 +9,12 @@ skip_if_ci = pytest.mark.skipif(os.environ.get("CI", "false") == "true", reason=
 
 
 def get_test_default_layers(dbsession, default_ogc_server):
-    from c2cgeoportal_commons.models.main import LayerCOG, LayerVectorTiles, LayerWMS, LayerWMTS
+    from c2cgeoportal_commons.models.main import (
+        LayerCOG,
+        LayerVectorTiles,
+        LayerWMS,
+        LayerWMTS,
+    )
 
     default_wms = None
     if default_ogc_server:
@@ -122,9 +127,9 @@ class AbstractViewsTests:
             "\n\n{}\n\n differs from \n\n{}", pp.pformat(expected_col_headers), pp.pformat(effective_cols)
         )
         actions = resp.html.select_one('th[data-field="actions"]')
-        assert "false" == actions.attrs["data-sortable"]
+        assert actions.attrs["data-sortable"] == "false"
         if new is not False:
-            assert 1 == len(list(filter(lambda x: next(x.stripped_strings) == new, resp.html.findAll("a"))))
+            assert len(list(filter(lambda x: next(x.stripped_strings) == new, resp.html.findAll("a")))) == 1
 
     def check_search(self, test_app, search="", offset=0, limit=10, sort="", order="", total=None):
         json = test_app.post(
@@ -184,7 +189,7 @@ class AbstractViewsTests:
     def _check_sequence(self, sequence, expected):
         seq_items = sequence.select(".deform-seq-item")
         assert len(expected) == len(seq_items)
-        for seq_item, exp in zip(seq_items, expected):
+        for seq_item, exp in zip(seq_items, expected, strict=False):
             self._check_mapping(seq_item, exp)
 
     def _check_mapping(self, mapping_item, expected):
@@ -203,13 +208,13 @@ class AbstractViewsTests:
                 else:
                     assert (exp["value"] or "") == input_tag.attrs.get("value", "")
             if exp.get("hidden", False):
-                assert "hidden" == input_tag["type"]
+                assert input_tag["type"] == "hidden"
             if "label" in exp:
                 label_tag = mapping_item.select_one('label[for="{}"]'.format(input_tag["id"]))
                 assert exp["label"] == label_tag.getText().strip()
 
     def _check_select(self, select, expected):
-        for exp, option in zip(expected, select.find_all("option")):
+        for exp, option in zip(expected, select.find_all("option"), strict=False):
             if "text" in exp:
                 assert exp["text"] == option.text
             if "value" in exp:
@@ -219,11 +224,11 @@ class AbstractViewsTests:
 
     def _check_submission_problem(self, resp, expected_msg):
         assert (
-            "There was a problem with your submission"
-            == resp.html.select_one('div[class="error-msg-lbl"]').text
+            resp.html.select_one('div[class="error-msg-lbl"]').text
+            == "There was a problem with your submission"
         )
         assert (
-            "Errors have been highlighted below" == resp.html.select_one('div[class="error-msg-detail"]').text
+            resp.html.select_one('div[class="error-msg-detail"]').text == "Errors have been highlighted below"
         )
         assert (
             expected_msg

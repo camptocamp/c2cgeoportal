@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2023, Camptocamp SA
+# Copyright (c) 2011-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -38,7 +38,6 @@ from tests.functional import teardown_common as teardown_module  # noqa
 class TestGroupsFinder(TestCase):
     def setup_method(self, _):
         import transaction
-
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import Role
         from c2cgeoportal_commons.models.static import User
@@ -51,7 +50,6 @@ class TestGroupsFinder(TestCase):
 
     def teardown_method(self, _):
         import transaction
-
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import Role
         from c2cgeoportal_commons.models.static import User

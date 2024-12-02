@@ -123,7 +123,6 @@ def _set_common_headers(
     content_type: str | None,
 ) -> pyramid.response.Response:
     """Set the common headers."""
-
     response.headers.update(service_headers_settings.get("headers", {}))
 
     if cache in (Cache.PRIVATE, Cache.PRIVATE_NO):

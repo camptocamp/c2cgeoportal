@@ -23,7 +23,7 @@ def layer_wmts_test_data(dbsession, transact):
         layer = LayerWMTS(name=name)
         layer.layer = name
         layer.url = f"https:///wms.geo.admin.ch_{i}.org?service=wms&request=GetCapabilities"
-        layer.public = 1 == i % 2
+        layer.public = i % 2 == 1
         layer.geo_table = f"geotable_{i}"
         layer.image_type = "image/jpeg"
         layer.style = "décontrasté"
@@ -83,20 +83,20 @@ class TestLayerWMTS(AbstractViewsTests):
 
         form = self.get_item(test_app, "new").form
 
-        assert "" == self.get_first_field_named(form, "id").value
-        assert "" == self.get_first_field_named(form, "name").value
-        assert "" == self.get_first_field_named(form, "layer").value
-        assert "" == self.get_first_field_named(form, "url").value
-        assert "" == self.get_first_field_named(form, "matrix_set").value
+        assert self.get_first_field_named(form, "id").value == ""
+        assert self.get_first_field_named(form, "name").value == ""
+        assert self.get_first_field_named(form, "layer").value == ""
+        assert self.get_first_field_named(form, "url").value == ""
+        assert self.get_first_field_named(form, "matrix_set").value == ""
 
     def test_new_default(self, test_app, layer_wmts_test_data):
         default_wmts = layer_wmts_test_data["default"]["wmts"]
 
         form = self.get_item(test_app, "new").form
 
-        assert "" == self.get_first_field_named(form, "id").value
-        assert "" == self.get_first_field_named(form, "name").value
-        assert "" == self.get_first_field_named(form, "layer").value
+        assert self.get_first_field_named(form, "id").value == ""
+        assert self.get_first_field_named(form, "name").value == ""
+        assert self.get_first_field_named(form, "layer").value == ""
         assert default_wmts.url == self.get_first_field_named(form, "url").value
         assert default_wmts.matrix_set == self.get_first_field_named(form, "matrix_set").value
 
@@ -108,7 +108,7 @@ class TestLayerWMTS(AbstractViewsTests):
         form = self.get_item(test_app, layer.id).form
 
         assert str(layer.id) == self.get_first_field_named(form, "id").value
-        assert "hidden" == self.get_first_field_named(form, "id").attrs["type"]
+        assert self.get_first_field_named(form, "id").attrs["type"] == "hidden"
         assert layer.name == self.get_first_field_named(form, "name").value
         assert str(layer.description or "") == self.get_first_field_named(form, "description").value
         assert layer.public is False
@@ -162,7 +162,7 @@ class TestLayerWMTS(AbstractViewsTests):
         assert {ras[1].id, ras[3].id} == {ra.id for ra in layer.restrictionareas}
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.UPDATE
         assert log.element_type == "layer_wmts"
         assert log.element_id == layer.id
@@ -177,7 +177,7 @@ class TestLayerWMTS(AbstractViewsTests):
         resp = test_app.get(f"/admin/layers_wmts/{layer.id}/duplicate", status=200)
         form = resp.form
 
-        assert "" == self.get_first_field_named(form, "id").value
+        assert self.get_first_field_named(form, "id").value == ""
         assert layer.name == self.get_first_field_named(form, "name").value
         assert str(layer.description or "") == self.get_first_field_named(form, "description").value
         assert layer.public is True
@@ -199,7 +199,13 @@ class TestLayerWMTS(AbstractViewsTests):
         ).group(1)
 
     def test_delete(self, test_app, dbsession):
-        from c2cgeoportal_commons.models.main import Layer, LayerWMTS, Log, LogAction, TreeItem
+        from c2cgeoportal_commons.models.main import (
+            Layer,
+            LayerWMTS,
+            Log,
+            LogAction,
+            TreeItem,
+        )
 
         layer = dbsession.query(LayerWMTS).first()
 
@@ -210,7 +216,7 @@ class TestLayerWMTS(AbstractViewsTests):
         assert dbsession.query(TreeItem).get(layer.id) is None
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.DELETE
         assert log.element_type == "layer_wmts"
         assert log.element_id == layer.id
@@ -230,14 +236,14 @@ class TestLayerWMTS(AbstractViewsTests):
 
         layer = layer_wmts_test_data["layers"][3]
 
-        assert 0 == dbsession.query(LayerWMS).filter(LayerWMS.name == layer.name).count()
-        assert 1 == dbsession.query(LayerWMTS).filter(LayerWMTS.name == layer.name).count()
+        assert dbsession.query(LayerWMS).filter(LayerWMS.name == layer.name).count() == 0
+        assert dbsession.query(LayerWMTS).filter(LayerWMTS.name == layer.name).count() == 1
 
         resp = test_app.post(f"/admin/layers_wmts/{layer.id}/convert_to_wms", status=200)
         assert f"http://localhost/admin/layers_wms/{layer.id}?msg_col=submit_ok" == resp.json["redirect"]
 
-        assert 1 == dbsession.query(LayerWMS).filter(LayerWMS.name == layer.name).count()
-        assert 0 == dbsession.query(LayerWMTS).filter(LayerWMTS.name == layer.name).count()
+        assert dbsession.query(LayerWMS).filter(LayerWMS.name == layer.name).count() == 1
+        assert dbsession.query(LayerWMTS).filter(LayerWMTS.name == layer.name).count() == 0
 
         resp = test_app.get(resp.json["redirect"], status=200)
         form = resp.form
@@ -260,8 +266,8 @@ class TestLayerWMTS(AbstractViewsTests):
         self._check_restrictionsareas(form, ras, layer)
         self._check_dimensions(resp.html, layer.dimensions)
         assert (
-            "Your submission has been taken into account."
-            == resp.html.find("div", {"class": "msg-lbl"}).getText()
+            resp.html.find("div", {"class": "msg-lbl"}).getText()
+            == "Your submission has been taken into account."
         )
 
     def test_convert_without_wms_defaults(self, test_app, layer_wmts_test_data, dbsession):
@@ -272,7 +278,7 @@ class TestLayerWMTS(AbstractViewsTests):
         test_app.post(f"/admin/layers_wmts/{layer.id}/convert_to_wms", status=200)
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.CONVERT_TO_WMS
         assert log.element_type == "layer_wmts"
         assert log.element_id == layer.id

@@ -34,7 +34,11 @@ import pyramid.request
 import pyramid.response
 import simple_openid_connect.client
 import simple_openid_connect.data
-from pyramid.httpexceptions import HTTPBadRequest, HTTPInternalServerError, HTTPUnauthorized
+from pyramid.httpexceptions import (
+    HTTPBadRequest,
+    HTTPInternalServerError,
+    HTTPUnauthorized,
+)
 from pyramid.security import remember
 
 from c2cgeoportal_geoportal.lib.caching import get_region
@@ -48,9 +52,7 @@ _CACHE_REGION_OBJ = get_region("obj")
 
 # User create on demand
 class DynamicUser(NamedTuple):
-    """
-    User created dynamically.
-    """
+    """User created dynamically."""
 
     id: int
     username: str
@@ -62,10 +64,7 @@ class DynamicUser(NamedTuple):
 
 @_CACHE_REGION_OBJ.cache_on_arguments()
 def get_oidc_client(request: pyramid.request.Request, host: str) -> simple_openid_connect.client.OpenidClient:
-    """
-    Get the OpenID Connect client from the request settings.
-    """
-
+    """Get the OpenID Connect client from the request settings."""
     del host  # used for cache key
 
     authentication_settings = request.registry.settings.get("authentication", {})
@@ -83,9 +82,7 @@ def get_oidc_client(request: pyramid.request.Request, host: str) -> simple_openi
 
 
 class OidcRememberObject(TypedDict):
-    """
-    The JSON object that is stored in a cookie to remember the user.
-    """
+    """The JSON object that is stored in a cookie to remember the user."""
 
     access_token: str
     access_token_expires: str
@@ -146,11 +143,13 @@ def get_user_from_remember(
     :param settings: The OpenID Connect configuration.
     :param update_create_user: If the user should be updated or created if it does not exist.
     """
-
     # Those imports are here to avoid initializing the models module before the database schema are
     # correctly initialized.
     from c2cgeoportal_commons import models  # pylint: disable=import-outside-toplevel
-    from c2cgeoportal_commons.models import main, static  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+        main,
+        static,
+    )
 
     assert models.DBSession is not None
 
@@ -213,9 +212,7 @@ def get_user_from_remember(
 
 
 class OidcRemember:
-    """
-    Build the abject that we want to remember in the cookie.
-    """
+    """Build the abject that we want to remember in the cookie."""
 
     def __init__(self, request: pyramid.request.Request):
         self.request = request
@@ -229,10 +226,7 @@ class OidcRemember:
         ),
         host: str,
     ) -> OidcRememberObject:
-        """
-        Remember the user in the cookie.
-        """
-
+        """Remember the user in the cookie."""
         del host  # Used for cache key
 
         if isinstance(token_response, simple_openid_connect.data.TokenErrorResponse):
@@ -297,8 +291,6 @@ class OidcRemember:
 
 
 def includeme(config: pyramid.config.Configurator) -> None:
-    """
-    Pyramid includeme function.
-    """
+    """Pyramid includeme function."""
     config.add_request_method(get_remember_from_user_info, name="get_remember_from_user_info")
     config.add_request_method(get_user_from_remember, name="get_user_from_remember")

@@ -42,10 +42,8 @@ from sqlalchemy.orm.util import class_mapper
 
 def _element_callback(tb: str, column: sqlalchemy.sql.elements.NamedColumn[Any]) -> None:
     if column.info.get("readonly"):
-        with tag(tb, "xsd:annotation"):
-            with tag(tb, "xsd:appinfo"):
-                with tag(tb, "readonly", {"value": "true"}):
-                    pass
+        with tag(tb, "xsd:annotation"), tag(tb, "xsd:appinfo"), tag(tb, "readonly", {"value": "true"}):
+            pass
 
 
 class XSDGenerator(PapyrusXSDGenerator):  # type: ignore
@@ -105,7 +103,9 @@ class XSDGenerator(PapyrusXSDGenerator):  # type: ignore
         super().add_column_property_xsd(tb, column_property)
 
     def add_association_proxy_xsd(self, tb: str, column_property: ColumnProperty[Any]) -> None:
-        from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+            DBSession,
+        )
 
         assert DBSession is not None
 
@@ -125,11 +125,13 @@ class XSDGenerator(PapyrusXSDGenerator):  # type: ignore
             attrs["nillable"] = "true"
         attrs["name"] = proxy
         with tag(tb, "xsd:element", attrs) as tb2:
-            with tag(tb2, "xsd:simpleType") as tb3:
-                with tag(tb3, "xsd:restriction", {"base": "xsd:string"}) as tb4:
-                    for (value,) in query:
-                        with tag(tb4, "xsd:enumeration", {"value": value}):
-                            pass
+            with (
+                tag(tb2, "xsd:simpleType") as tb3,
+                tag(tb3, "xsd:restriction", {"base": "xsd:string"}) as tb4,
+            ):
+                for (value,) in query:
+                    with tag(tb4, "xsd:enumeration", {"value": value}):
+                        pass
             self.element_callback(tb4, column)
 
 

@@ -29,6 +29,7 @@
 import colander
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import AbstractViews, ObjectResponse, SaveResponse
+from c2cgeoportal_commons.models.main import Theme, TreeItem
 from deform import ValidationFailure
 from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config
@@ -36,7 +37,6 @@ from pyramid.view import view_config
 from c2cgeoportal_admin import _
 from c2cgeoportal_admin.schemas.treegroup import treeitem_edit_url
 from c2cgeoportal_admin.widgets import ChildrenWidget, ChildWidget
-from c2cgeoportal_commons.models.main import Theme, TreeItem
 
 
 class ThemeOrderSchema(GeoFormSchemaNode):  # pylint: disable=abstract-method
@@ -61,7 +61,7 @@ def themes(node, kw):  # pylint: disable=unused-argument
 def themes_validator(node, cstruct):
     """Validate the theme."""
     for dict_ in cstruct:
-        if not dict_["id"] in [item["id"] for item in node.candidates]:
+        if dict_["id"] not in [item["id"] for item in node.candidates]:
             raise colander.Invalid(
                 node,
                 _("Value {} does not exist in table {}").format(dict_["id"], Theme.__tablename__),
@@ -126,7 +126,7 @@ class ThemesOrdering(AbstractViews[ThemesOrderingSchema]):
             self._request.dbsession.flush()
             return HTTPFound(self._request.route_url("layertree"))
         except ValidationFailure as e:
-            # FIXME see https://github.com/Pylons/deform/pull/243
+            # FIXME see https://github.com/Pylons/deform/pull/243 # pylint: disable=fixme
             self._populate_widgets(form.schema)
             return {
                 "title": form.title,

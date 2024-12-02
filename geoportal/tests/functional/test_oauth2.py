@@ -37,6 +37,7 @@ import pyramid.httpexceptions
 import pyramid.testing
 import pytest
 import transaction
+
 from tests.functional import cleanup_db, create_dummy_request, init_registry
 from tests.functional import setup_common as setup_module  # pylint: disable=unused-import
 from tests.functional import teardown_common as teardown_module  # pylint: disable=unused-import
@@ -588,7 +589,7 @@ class TestLoginView(TestCase):
         request.method = "POST"
         request.body = ""
         with pytest.raises(pyramid.httpexceptions.HTTPFound) as exc_info:
-            assert False, Login(request).login().body
+            raise AssertionError(Login(request).login().body)
         url = exc_info.value.headers["Location"]
         url_split = urllib.parse.urlsplit(url)
         query = dict(urllib.parse.parse_qsl(url_split.fragment))
@@ -684,7 +685,7 @@ class TestLoginView(TestCase):
         request.method = "POST"
         request.body = ""
         with pytest.raises(pyramid.httpexceptions.HTTPFound) as exc_info:
-            assert False, Login(request).login().body
+            raise AssertionError(Login(request).login().body)
         url = exc_info.value.headers["Location"]
         url_split = urllib.parse.urlsplit(url)
         query = dict(urllib.parse.parse_qsl(url_split.fragment))
@@ -766,7 +767,7 @@ class TestLoginView(TestCase):
         request.host = "127.0.0.1:7070"
         request.method = "POST"
         request.body = ""
-        with pytest.raises(pyramid.httpexceptions.HTTPBadRequest) as exc_info:
+        with pytest.raises(pyramid.httpexceptions.HTTPBadRequest):
             Login(request).login()
 
     def test_oauth2_protocol_test_login_no_pkce(self) -> None:
@@ -814,7 +815,7 @@ class TestLoginView(TestCase):
         request.host = "127.0.0.1:7070"
         request.method = "POST"
         request.body = ""
-        with pytest.raises(pyramid.httpexceptions.HTTPBadRequest) as exc_info:
+        with pytest.raises(pyramid.httpexceptions.HTTPBadRequest):
             Login(request).login()
 
     def test_pkce_oauth2_protocol_test_login_wrong_code(self) -> None:
@@ -846,7 +847,7 @@ class TestLoginView(TestCase):
         request.method = "POST"
         request.body = ""
         with pytest.raises(pyramid.httpexceptions.HTTPFound) as exc_info:
-            assert False, Login(request).login().body
+            raise AssertionError(Login(request).login().body)
         url = exc_info.value.headers["Location"]
         url_split = urllib.parse.urlsplit(url)
         query = dict(urllib.parse.parse_qsl(url_split.fragment))

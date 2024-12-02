@@ -47,7 +47,7 @@ timeout = int(os.environ.get("GUNICORN_TIMEOUT", 120))
 
 max_requests = int(os.environ.get("GUNICORN_MAX_REQUESTS", 1000))
 max_requests_jitter = int(os.environ.get("GUNICORN_MAX_REQUESTS_JITTER", 100))
-worker_tmp_dir = "/dev/shm"  # nosec
+worker_tmp_dir = "/dev/shm"  # noqa: S108
 limit_request_line = int(os.environ.get("GUNICORN_LIMIT_REQUEST_LINE", 8190))
 
 accesslog = "-"
@@ -109,7 +109,6 @@ def on_starting(server: gunicorn.arbiter.Arbiter) -> None:
 
     Called just before the master process is initialized.
     """
-
     del server
 
     prometheus.start()
@@ -121,7 +120,6 @@ def post_fork(server: gunicorn.arbiter.Arbiter, worker: gunicorn.workers.base.Wo
 
     Called just after a worker has been forked.
     """
-
     del server, worker
 
     prometheus.cleanup()
@@ -133,7 +131,6 @@ def child_exit(server: gunicorn.arbiter.Arbiter, worker: gunicorn.workers.base.W
 
     Called just after a worker has been exited, in the master process.
     """
-
     del server
 
     multiprocess.mark_process_dead(worker.pid)

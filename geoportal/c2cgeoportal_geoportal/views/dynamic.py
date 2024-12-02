@@ -31,12 +31,12 @@ import urllib.parse
 from typing import Any, cast
 
 import pyramid.request
+from c2cgeoportal_commons import models
+from c2cgeoportal_commons.models import main
 from pyramid.httpexceptions import HTTPNotFound
 from pyramid.view import view_config
 from sqlalchemy import func
 
-from c2cgeoportal_commons import models
-from c2cgeoportal_commons.models import main
 from c2cgeoportal_geoportal import is_allowed_host
 from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
 from c2cgeoportal_geoportal.lib.caching import get_region
@@ -78,13 +78,12 @@ class DynamicView:
         Get the interface configuration.
 
         Arguments:
-
             interface_config: Current interface configuration
             interface_name: Interface name (we use in the configuration)
             original_interface_name: Original interface name (directly for the query string)
             dynamic: The values that's dynamically generated
-        """
 
+        """
         if "extends" in interface_config:
             constants = self._interface(
                 self.interfaces_config[interface_config["extends"]],

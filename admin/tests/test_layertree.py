@@ -140,7 +140,7 @@ class TestLayerTreeView(AbstractViewsTests):
     def test_themes(self, test_app, layertree_test_data):
         resp = self.get(test_app, "/children", status=200)
         nodes = resp.json
-        assert 5 == len(nodes)
+        assert len(nodes) == 5
 
         # check themes are sorted by ordering
         expected = [
@@ -154,7 +154,7 @@ class TestLayerTreeView(AbstractViewsTests):
 
         # no unlink on theme
         theme_node = next(n for n in nodes if n["id"] == theme.id)
-        assert 0 == len([a for a in theme_node["actions"] if a["name"] == "unlink"])
+        assert len([a for a in theme_node["actions"] if a["name"] == "unlink"]) == 0
 
         self.check_translation(nodes, theme)
 
@@ -176,9 +176,9 @@ class TestLayerTreeView(AbstractViewsTests):
         theme.children_relation[1].ordering = 0
         dbsession.flush()
 
-        resp = self.get(test_app, "/children?group_id={0}&path=_{0}".format(theme.id), status=200)
+        resp = self.get(test_app, f"/children?group_id={theme.id}&path=_{theme.id}", status=200)
         nodes = resp.json
-        assert 2 == len(nodes)
+        assert len(nodes) == 2
 
         # check groups are sorted by ordering
         expected = [
@@ -227,9 +227,7 @@ class TestLayerTreeView(AbstractViewsTests):
         group.children_relation[1].ordering = 0
         dbsession.flush()
 
-        resp = self.get(
-            test_app, "/children?group_id={0}&path=_{1}_{0}".format(group.id, theme.id), status=200
-        )
+        resp = self.get(test_app, f"/children?group_id={group.id}&path=_{theme.id}_{group.id}", status=200)
         nodes = resp.json
         assert len(nodes) == 2
 

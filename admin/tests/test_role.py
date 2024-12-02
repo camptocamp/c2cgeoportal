@@ -155,7 +155,7 @@ class TestRole(TestTreeGroup):
         assert set(role.users) == {users[0], users[1]}
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.INSERT
         assert log.element_type == "role"
         assert log.element_id == role.id
@@ -172,7 +172,7 @@ class TestRole(TestTreeGroup):
 
         form = self.get_item(test_app, role.id).form
 
-        assert "secretary_10" == form["name"].value
+        assert form["name"].value == "secretary_10"
 
         expected = Polygon(
             [
@@ -266,8 +266,8 @@ class TestRole(TestTreeGroup):
 
         dbsession.expire(role)
 
-        assert "New name" == role.name
-        assert "New description" == role.description
+        assert role.name == "New name"
+        assert role.description == "New description"
 
         expected = Polygon(
             [
@@ -284,7 +284,7 @@ class TestRole(TestTreeGroup):
         assert set(ra_ids) == {f.id for f in role.restrictionareas}
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.UPDATE
         assert log.element_type == "role"
         assert log.element_id == role.id
@@ -299,7 +299,7 @@ class TestRole(TestTreeGroup):
         resp = test_app.get(f"/admin/roles/{role_proto.id}/duplicate", status=200)
         form = resp.form
 
-        assert "" == self.get_first_field_named(form, "id").value
+        assert self.get_first_field_named(form, "id").value == ""
         assert role_proto.name == form["name"].value
         assert role_proto.description == form["description"].value
         form["name"].value = "clone"
@@ -322,7 +322,7 @@ class TestRole(TestTreeGroup):
         assert dbsession.query(Role).get(role.id) is None
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.DELETE
         assert log.element_type == "role"
         assert log.element_id == role.id

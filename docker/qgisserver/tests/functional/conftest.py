@@ -3,11 +3,10 @@ from unittest.mock import Mock, patch
 
 import pytest
 from c2c.template.config import config
+from c2cgeoportal_commons.testing import generate_mappers
 from qgis.server import QgsServerInterface
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-
-from c2cgeoportal_commons.testing import generate_mappers
 
 
 @pytest.fixture(scope="session")
@@ -33,7 +32,14 @@ def DBSession(settings):  # noqa: ignore=N802
 @pytest.fixture(scope="module")
 @pytest.mark.usefixtures("DBSession")
 def clean_dbsession(DBSession):  # noqa: ignore=N803
-    from c2cgeoportal_commons.models.main import OGCServer, RestrictionArea, Role, TreeItem, layer_ra, role_ra
+    from c2cgeoportal_commons.models.main import (
+        OGCServer,
+        RestrictionArea,
+        Role,
+        TreeItem,
+        layer_ra,
+        role_ra,
+    )
     from c2cgeoportal_commons.models.static import User, user_role
 
     def clean():

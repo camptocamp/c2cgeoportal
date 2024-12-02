@@ -38,6 +38,7 @@ from geoalchemy2 import Geometry
 from pyramid import testing
 from sqlalchemy import Column
 from sqlalchemy.types import DateTime, Integer, Unicode
+
 from tests.functional import create_default_ogcserver, create_dummy_request, mapserv_url
 from tests.functional import setup_common as setup_module  # noqa
 from tests.functional import teardown_common as teardown_module  # noqa
@@ -61,7 +62,13 @@ class TestThemesTimeView(TestCase):
         self.maxDiff = None
 
         from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import Interface, LayerGroup, LayerWMS, LayerWMTS, Theme
+        from c2cgeoportal_commons.models.main import (
+            Interface,
+            LayerGroup,
+            LayerWMS,
+            LayerWMTS,
+            Theme,
+        )
 
         DBSession.query(PointTest).delete()
 

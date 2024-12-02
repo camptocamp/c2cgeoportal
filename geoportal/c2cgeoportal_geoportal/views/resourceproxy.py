@@ -65,7 +65,7 @@ class ResourceProxy(Proxy):
             response = self._build_response(
                 response, response.content, cache_control, "externalresource", content_type=content_type
             )
-            for header in response.headers.keys():
+            for header in response.headers:
                 if header not in self.settings["allowed_headers"]:
                     response.headers.pop(header)
             return response

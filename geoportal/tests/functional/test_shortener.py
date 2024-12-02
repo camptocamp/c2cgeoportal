@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2023, Camptocamp SA
+# Copyright (c) 2013-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -31,6 +31,7 @@
 from unittest import TestCase
 
 from pyramid import testing
+
 from tests.functional import setup_common as setup_module  # noqa
 from tests.functional import teardown_common as teardown_module  # noqa
 
@@ -40,7 +41,6 @@ class TestshortenerView(TestCase):
         testing.tearDown()
 
         import transaction
-
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import Shorturl
 
@@ -48,10 +48,10 @@ class TestshortenerView(TestCase):
         transaction.commit()
 
     def test_shortener(self):
-        from pyramid.httpexceptions import HTTPBadRequest, HTTPNotFound
-        from tests import DummyRequest
-
         from c2cgeoportal_geoportal.views.shortener import Shortener
+        from pyramid.httpexceptions import HTTPBadRequest, HTTPNotFound
+
+        from tests import DummyRequest
 
         def route_url(name, *args, **kwargs):
             del name  # Unused
@@ -78,10 +78,10 @@ class TestshortenerView(TestCase):
         self.assertRaises(HTTPBadRequest, shortener.create)
 
     def test_shortener_create_1(self):
-        from pyramid.httpexceptions import HTTPFound
-        from tests import DummyRequest
-
         from c2cgeoportal_geoportal.views.shortener import Shortener
+        from pyramid.httpexceptions import HTTPFound
+
+        from tests import DummyRequest
 
         def route_url(name, *elements, **kw):
             return "https://example.com/short/" + kw["ref"]
@@ -106,10 +106,10 @@ class TestshortenerView(TestCase):
         assert result.location == "https://example.com/hi"
 
     def test_shortener_create_2(self):
-        from pyramid.httpexceptions import HTTPFound
-        from tests import DummyRequest
-
         from c2cgeoportal_geoportal.views.shortener import Shortener
+        from pyramid.httpexceptions import HTTPFound
+
+        from tests import DummyRequest
 
         def route_url(name, *elements, **kw):
             return "https://example.com/short/" + kw["ref"]
@@ -136,9 +136,9 @@ class TestshortenerView(TestCase):
         assert result.location == "https://example.com/hi"
 
     def test_shortener_noreplace_1(self):
-        from tests import DummyRequest
-
         from c2cgeoportal_geoportal.views.shortener import Shortener
+
+        from tests import DummyRequest
 
         def route_url(name, *elements, **kw):
             return "https://example.com/short/" + kw["ref"]
@@ -156,9 +156,9 @@ class TestshortenerView(TestCase):
         assert result["short_url"] == "https://example.com/s/truite"
 
     def test_shortener_noreplace_2(self):
-        from tests import DummyRequest
-
         from c2cgeoportal_geoportal.views.shortener import Shortener
+
+        from tests import DummyRequest
 
         def route_url(name, *elements, **kw):
             return "https://example.com/short/" + kw["ref"]
@@ -176,9 +176,9 @@ class TestshortenerView(TestCase):
         assert result["short_url"] == "https://example.com/s/truite"
 
     def test_shortener_baseurl(self):
-        from tests import DummyRequest
-
         from c2cgeoportal_geoportal.views.shortener import Shortener
+
+        from tests import DummyRequest
 
         def route_url(name, *elements, **kw):
             return "https://example.com/short/" + kw["ref"]
@@ -197,9 +197,9 @@ class TestshortenerView(TestCase):
         assert result["short_url"][:index] == "http://my_host/my_short"
 
     def test_shortener_dev(self):
-        from tests import DummyRequest
-
         from c2cgeoportal_geoportal.views.shortener import Shortener
+
+        from tests import DummyRequest
 
         def route_url(name, *elements, **kw):
             return "https://localhost:8484/s/" + kw["ref"]

@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2023, Camptocamp SA
+# Copyright (c) 2011-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -26,9 +26,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-"""
-Pyramid application test package.
-"""
+"""Pyramid application test package."""
 
 import logging
 import os
@@ -36,9 +34,8 @@ import urllib.parse
 import warnings
 
 import sqlalchemy.exc
-from pyramid.testing import DummyRequest as PyramidDummyRequest
-
 from c2cgeoportal_geoportal.lib import caching
+from pyramid.testing import DummyRequest as PyramidDummyRequest
 
 with warnings.catch_warnings():
     warnings.simplefilter("ignore", category=sqlalchemy.exc.SAWarning)

@@ -22,7 +22,9 @@ from geomapfish_qgisserver.accesscontrol import (
 area1 = box(485869.5728, 76443.1884, 837076.5648, 299941.7864)
 
 
-def set_request_parameters(server_iface, params, env={}):
+def set_request_parameters(server_iface, params, env=None):
+    if env is None:
+        env = {}
     server_iface.configure_mock(
         **{
             "configFilePath.return_value": params.get("MAP", None),
@@ -199,9 +201,7 @@ def test_data(clean_dbsession):
 
 @pytest.fixture(scope="function")
 def wms_use_layer_ids(test_data):
-    """
-    Activate WMSUseLayerIDs.
-    """
+    """Activate WMSUseLayerIDs."""
     project = test_data["project"]
     try:
         project.writeEntry("WMSUseLayerIDs", "/", True)
@@ -267,7 +267,7 @@ class TestOGCServerAccessControl:
         layers = ogcserver_accesscontrol.get_layers(dbsession)
 
         assert set(expected.keys()) == set(layers.keys())
-        for key in expected.keys():
+        for key in expected:
             assert set(expected[key]) == {layer.name for layer in layers[key]}
 
     def test_get_roles(self, server_iface, DBSession, test_data):  # noqa: ignore=N803
@@ -277,7 +277,7 @@ class TestOGCServerAccessControl:
         )
 
         set_request_parameters(server_iface, {"USER_ID": "0"})
-        assert "ROOT" == ogcserver_accesscontrol.get_roles(dbsession)
+        assert ogcserver_accesscontrol.get_roles(dbsession) == "ROOT"
 
         test_users = test_data["users"]
         test_roles = test_data["roles"]
@@ -306,11 +306,11 @@ class TestOGCServerAccessControl:
             server_iface, "qgisserver1", "no_project", 21781, lambda: dbsession
         )
 
-        assert (Access.FULL, None) == ogcserver_accesscontrol.get_restriction_areas(
+        assert ogcserver_accesscontrol.get_restriction_areas(
             dbsession.query(LayerWMS).filter(LayerWMS.name == "private_layer1").one(),
             read_write=True,
             roles="ROOT",
-        )
+        ) == (Access.FULL, None)
 
         for layer_names, rw, role_names, expected in (
             (("private_layer1",), False, ("role1",), (Access.AREA, [area1])),
@@ -322,9 +322,9 @@ class TestOGCServerAccessControl:
             ]
             roles = [dbsession.query(Role).filter(Role.name == role_name).one() for role_name in role_names]
             ras = ogcserver_accesscontrol.get_restriction_areas(layers, rw, roles)
-            assert expected == ras, "get_restriction_areas with {} should return {}".format(
-                (layer_names, rw, role_names), expected
-            )
+            assert (
+                expected == ras
+            ), f"get_restriction_areas with {(layer_names, rw, role_names)} should return {expected}"
 
     def test_get_area(self, server_iface, DBSession, test_data):  # noqa: ignore=N803
         dbsession = DBSession()
@@ -395,8 +395,8 @@ class TestOGCServerAccessControl:
         )
 
         set_request_parameters(server_iface, {"USER_ID": "0"}, {"HTTP_HOST": "example.com"})
-        assert "0" == server_iface.requestHandler().parameter("USER_ID")
-        assert "example.com-ROOT" == ogcserver_accesscontrol.cacheKey()
+        assert server_iface.requestHandler().parameter("USER_ID") == "0"
+        assert ogcserver_accesscontrol.cacheKey() == "example.com-ROOT"
 
         user = test_data["users"]["user12"]
         role1 = test_data["roles"]["role1"]

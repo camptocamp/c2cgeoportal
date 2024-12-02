@@ -3,10 +3,11 @@ inherits:
   - utils:base
   - utils:fix
   - utils:no-design-checks
+  - utils:unsafe
 
 pyroma:
   run: False
 
-bandit:
+mypy:
   options:
-    config: .bandit.yaml
+    python_version: '3.10'

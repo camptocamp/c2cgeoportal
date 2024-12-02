@@ -33,10 +33,10 @@ import urllib.parse
 import pyramid.request
 import pyramid.response
 import requests
+from c2cgeoportal_commons.lib.url import Url
 from pyramid.httpexceptions import HTTPBadGateway, HTTPFound
 from pyramid.view import view_config
 
-from c2cgeoportal_commons.lib.url import Url
 from c2cgeoportal_geoportal.lib import is_intranet
 from c2cgeoportal_geoportal.lib.caching import get_region
 from c2cgeoportal_geoportal.lib.common_headers import Cache

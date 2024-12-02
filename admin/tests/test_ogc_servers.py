@@ -81,7 +81,7 @@ class TestOGCServer(AbstractViewsTests):
         assert ogc_server.name == "new_name"
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.INSERT
         assert log.element_type == "ogc_server"
         assert log.element_id == ogc_server.id
@@ -95,7 +95,7 @@ class TestOGCServer(AbstractViewsTests):
         resp = test_app.get(f"/admin/ogc_servers/{ogc_server.id}", status=200)
         form = resp.form
         assert str(ogc_server.id) == self.get_first_field_named(form, "id").value
-        assert "hidden" == self.get_first_field_named(form, "id").attrs["type"]
+        assert self.get_first_field_named(form, "id").attrs["type"] == "hidden"
         assert ogc_server.name == form["name"].value
         form["description"] = "new_description"
         with patch("c2cgeoportal_admin.views.ogc_servers.OGCServerViews._update_cache"):
@@ -103,7 +103,7 @@ class TestOGCServer(AbstractViewsTests):
         assert ogc_server.description == "new_description"
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.UPDATE
         assert log.element_type == "ogc_server"
         assert log.element_id == ogc_server.id
@@ -118,7 +118,7 @@ class TestOGCServer(AbstractViewsTests):
         assert dbsession.query(OGCServer).get(ogc_server.id) is None
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.DELETE
         assert log.element_type == "ogc_server"
         assert log.element_id == ogc_server.id
@@ -131,7 +131,7 @@ class TestOGCServer(AbstractViewsTests):
         ogc_server = ogc_server_test_data["ogc_servers"][3]
         resp = test_app.get(f"/admin/ogc_servers/{ogc_server.id}/duplicate", status=200)
         form = resp.form
-        assert "" == self.get_first_field_named(form, "id").value
+        assert self.get_first_field_named(form, "id").value == ""
         self.set_first_field_named(form, "name", "clone")
         with patch("c2cgeoportal_admin.views.ogc_servers.OGCServerViews._update_cache"):
             resp = form.submit("submit")
@@ -181,7 +181,7 @@ class TestOGCServer(AbstractViewsTests):
         resp = resp.forms["form-synchronize"].submit("synchronize")
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.SYNCHRONIZE
         assert log.element_type == "ogc_server"
         assert log.element_id == ogc_server.id

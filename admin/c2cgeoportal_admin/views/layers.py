@@ -32,10 +32,10 @@ from typing import Generic, TypeVar, cast
 import sqlalchemy
 import sqlalchemy.orm.query
 from c2cgeoform.views.abstract_views import ListField
+from c2cgeoportal_commons.models.main import Interface, Layer
 from sqlalchemy.orm import subqueryload
 
 from c2cgeoportal_admin.views.treeitems import TreeItemViews
-from c2cgeoportal_commons.models.main import Interface, Layer
 
 _list_field = partial(ListField, Layer)
 

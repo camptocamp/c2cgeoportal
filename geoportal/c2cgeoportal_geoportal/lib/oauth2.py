@@ -30,12 +30,12 @@ from datetime import datetime, timedelta
 from typing import Any, TypedDict
 
 import basicauth
+import c2cgeoportal_commons
 import oauthlib.common
 import oauthlib.oauth2
 import pyramid.threadlocal
 from pyramid.httpexceptions import HTTPBadRequest
 
-import c2cgeoportal_commons
 from c2cgeoportal_geoportal.lib.caching import get_region
 
 _LOG = logging.getLogger(__name__)
@@ -73,9 +73,11 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         both body and query can be obtained by direct attribute access, i.e.
         request.client_id for client_id in the URL query.
 
-        Keyword Arguments:
-
-            request: oauthlib.common.Request
+        Arguments:
+        ---------
+        request: oauthlib.common.Request
+        args: Additional arguments, ignored
+        kwargs: Additional keyword arguments, ignored
 
         Returns: True or False
 
@@ -86,6 +88,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
             - Refresh Token Grant
 
         .. _`HTTP Basic Authentication Scheme`: https://tools.ietf.org/html/rfc1945#section-11.1
+
         """
         del args, kwargs
 
@@ -117,7 +120,10 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
         _LOG.debug("authenticate_client_id %s", client_id)
 
-        from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+            DBSession,
+            static,
+        )
 
         assert DBSession is not None
 
@@ -163,9 +169,11 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
               client credentials or whenever Client provided client authentication, see
               `Section 6`_
 
-        Keyword Arguments:
-
-            request: oauthlib.common.Request
+        Arguments:
+        ---------
+        request: oauthlib.common.Request
+        args: Additional arguments, ignored
+        kwargs: Additional keyword arguments, ignored
 
         Returns: True or False
 
@@ -177,6 +185,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         .. _`Section 4.3.2`: https://tools.ietf.org/html/rfc6749#section-4.3.2
         .. _`Section 4.1.3`: https://tools.ietf.org/html/rfc6749#section-4.1.3
         .. _`Section 6`: https://tools.ietf.org/html/rfc6749#section-6
+
         """
         del request, args, kwargs
 
@@ -205,24 +214,30 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         the client's allowed redirect URIs, but against the URI used when the
         code was saved.
 
-        Keyword Arguments:
-
-            client_id: Unicode client identifier
-            code: Unicode authorization_code.
-            redirect_uri: Unicode absolute URI
-            client: Client object set by you, see authenticate_client.
-            request: The HTTP Request
+        Arguments:
+        ---------
+        client_id: Unicode client identifier
+        code: Unicode authorization_code.
+        redirect_uri: Unicode absolute URI
+        client: Client object set by you, see authenticate_client.
+        request: The HTTP Request
+        args: Additional arguments, ignored
+        kwargs: Additional keyword arguments, ignored
 
         Returns: True or False
 
         Method is used by:
             - Authorization Code Grant (during token request)
+
         """
         del args, kwargs
 
         _LOG.debug("confirm_redirect_uri %s %s", client_id, redirect_uri)
 
-        from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+            DBSession,
+            static,
+        )
 
         assert DBSession is not None
 
@@ -248,16 +263,19 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         Get the default redirect URI for the client.
 
-        Keyword Arguments:
-
-            client_id: Unicode client identifier
-            request: The HTTP Request
+        Arguments:
+        ---------
+        client_id: Unicode client identifier
+        request: The HTTP Request
+        args: Additional arguments, ignored
+        kwargs: Additional keyword arguments, ignored
 
         Returns: The default redirect URI for the client
 
         Method is used by:
             - Authorization Code Grant
             - Implicit Grant
+
         """
         del request, args, kwargs
 
@@ -275,10 +293,12 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         Get the default scopes for the client.
 
-        Keyword Arguments:
-
-            client_id: Unicode client identifier
-            request: The HTTP Request
+        Arguments:
+        ---------
+        client_id: Unicode client identifier
+        request: The HTTP Request
+        args: Additional arguments, ignored
+        kwargs: Additional keyword arguments, ignored
 
         Returns: List of default scopes
 
@@ -287,6 +307,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
             - Implicit Grant
             - Resource Owner Password Credentials Grant
             - Client Credentials grant
+
         """
         del request, args, kwargs
 
@@ -304,15 +325,18 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         Get the list of scopes associated with the refresh token.
 
-        Keyword Arguments:
-
-            refresh_token: Unicode refresh token
-            request: The HTTP Request
+        Arguments:
+        ---------
+        refresh_token: Unicode refresh token
+        request: The HTTP Request
+        args: Additional arguments, ignored
+        kwargs: Additional keyword arguments, ignored
 
         Returns: List of scopes.
 
         Method is used by:
             - Refresh token grant
+
         """
         del refresh_token, request, args, kwargs
 
@@ -352,17 +376,20 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         efficiency, but must fallback to other types to be compliant with RFC.
         The dict of claims is added to request.token after this method.
 
-        Keyword Arguments:
-
-            token: The token string.
-            token_type_hint: access_token or refresh_token.
-            request: OAuthlib request.
+        Arguments:
+        ---------
+        token: The token string.
+        token_type_hint: access_token or refresh_token.
+        request: OAuthlib request.
+        args: Additional arguments, ignored
+        kwargs: Additional keyword arguments, ignored
 
         Method is used by:
             - Introspect Endpoint (all grants are compatible)
 
         .. _`Introspect Claims`: https://tools.ietf.org/html/rfc7662#section-2.2
         .. _`JWT Claims`: https://tools.ietf.org/html/rfc7519#section-4
+
         """
         del token, request, args, kwargs
 
@@ -381,20 +408,26 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         Invalidate an authorization code after use.
 
-        Keyword Arguments:
-
-            client_id: Unicode client identifier
-            code: The authorization code grant (request.code).
-            request: The HTTP Request
+        Arguments:
+        ---------
+        client_id: Unicode client identifier
+        code: The authorization code grant (request.code).
+        request: The HTTP Request
+        args: Additional arguments, ignored
+        kwargs: Additional keyword arguments, ignored
 
         Method is used by:
             - Authorization Code Grant
+
         """
         del args, kwargs
 
         _LOG.debug("invalidate_authorization_code %s", client_id)
 
-        from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+            DBSession,
+            static,
+        )
 
         assert DBSession is not None
 
@@ -426,14 +459,17 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         used in situations where returning all valid scopes from the
         get_original_scopes is not practical.
 
-        Keyword Arguments:
-
-            request_scopes: A list of scopes that were requested by client
-            refresh_token: Unicode refresh_token
-            request: The HTTP Request
+        Arguments:
+        ---------
+        request_scopes: A list of scopes that were requested by client
+        refresh_token: Unicode refresh_token
+        request: The HTTP Request
+        args: Additional arguments, ignored
+        kwargs: Additional keyword arguments, ignored
 
         Method is used by:
             - Refresh token grant
+
         """
         del request, args, kwargs
 
@@ -452,14 +488,17 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         Revoke an access or refresh token.
 
-        Keyword Arguments:
-
-            token: The token string.
-            token_type_hint: access_token or refresh_token.
-            request: The HTTP Request
+        Arguments:
+        ---------
+        token: The token string.
+        token_type_hint: access_token or refresh_token.
+        request: The HTTP Request
+        args: Additional arguments, ignored
+        kwargs: Additional keyword arguments, ignored
 
         Method is used by:
             - Revocation Endpoint
+
         """
         del token, request, args, kwargs
 
@@ -475,12 +514,13 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         or replaced with a new one (rotated). Return True to rotate and
         and False for keeping original.
 
-        Keyword Arguments:
-
-            request: oauthlib.common.Request
+        Arguments:
+        ---------
+        request: oauthlib.common.Request
 
         Method is used by:
             - Refresh Token Grant
+
         """
         del request
 
@@ -515,11 +555,13 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         chose to send one.  That value should be saved and used in
         'validate_code'.
 
-        Keyword Arguments:
-
-            client_id: Unicode client identifier
-            code: A dict of the authorization code grant and, optionally, state.
-            request: The HTTP Request
+        Arguments:
+        ---------
+        client_id: Unicode client identifier
+        code: A dict of the authorization code grant and, optionally, state.
+        request: The HTTP Request
+        args: Additional arguments, ignored
+        kwargs: Additional keyword arguments, ignored
 
         Method is used by:
             - Authorization Code Grant
@@ -528,12 +570,16 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
             Code Challenge (request.code_challenge) and
             Code Challenge Method (request.code_challenge_method)
+
         """
         del args, kwargs
 
         _LOG.debug("save_authorization_code %s", client_id)
 
-        from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+            DBSession,
+            static,
+        )
 
         assert DBSession is not None
 
@@ -604,11 +650,13 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         Note that while "scope" is a string-separated list of authorized scopes,
         the original list is still available in request.scopes
 
-        Keyword Arguments:
-
-            client_id: Unicode client identifier
-            token: A Bearer token dict
-            request: The HTTP Request
+        Arguments:
+        ---------
+        client_id: Unicode client identifier
+        token: A Bearer token dict
+        request: The HTTP Request
+        args: Additional arguments, ignored
+        kwargs: Additional keyword arguments, ignored
 
         Returns: The default redirect URI for the client
 
@@ -617,12 +665,16 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
             - Implicit Grant
             - Resource Owner Password Credentials Grant (might not associate a client)
             - Client Credentials grant
+
         """
         del args, kwargs
 
         _LOG.debug("save_bearer_token")
 
-        from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+            DBSession,
+            static,
+        )
 
         assert DBSession is not None
 
@@ -654,11 +706,11 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         Ensure the Bearer token is valid and authorized access to scopes.
 
-        Keyword Arguments:
-
-            token: A string of random characters.
-            scopes: A list of scopes associated with the protected resource.
-            request: The HTTP Request
+        Arguments:
+        ---------
+        token: A string of random characters.
+        scopes: A list of scopes associated with the protected resource.
+        request: The HTTP Request
 
         A key to OAuth 2 security and restricting impact of leaked tokens is
         the short expiration time of tokens, *always ensure the token has not
@@ -690,22 +742,25 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         one provided for django these attributes will be made available
         in all protected views as keyword arguments.
 
-        Keyword Arguments:
-
-            token: Unicode Bearer token
-            scopes: List of scopes (defined by you)
-            request: The HTTP Request
+        Arguments:
+        ---------
+        token: Unicode Bearer token
+        scopes: List of scopes (defined by you)
+        request: The HTTP Request
 
         Method is indirectly used by all core Bearer token issuing grant types:
             - Authorization Code Grant
             - Implicit Grant
             - Resource Owner Password Credentials Grant
             - Client Credentials Grant
-        """
 
+        """
         _LOG.debug("validate_bearer_token %s", scopes)
 
-        from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+            DBSession,
+            static,
+        )
 
         assert DBSession is not None
 
@@ -736,20 +791,26 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         to set request.client to the client object associated with the
         given client_id.
 
-        Keyword Arguments:
-
-            client_id: Unicode client identifier
-            request: oauthlib.common.Request
+        Arguments:
+        ---------
+        client_id: Unicode client identifier
+        request: oauthlib.common.Request
+        args: Additional arguments, ignored
+        kwargs: Additional keyword arguments, ignored
 
         Method is used by:
             - Authorization Code Grant
             - Implicit Grant
+
         """
         del args, kwargs
 
         _LOG.debug("validate_client_id")
 
-        from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+            DBSession,
+            static,
+        )
 
         assert DBSession is not None
 
@@ -784,21 +845,27 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         associated with this authorization code. Similarly request.scopes
         must also be set.
 
-        Keyword Arguments:
-
-            client_id: Unicode client identifier
-            code: Unicode authorization code
-            client: Client object set by you, see authenticate_client.
-            request: The HTTP Request
+        Arguments:
+        ---------
+        client_id: Unicode client identifier
+        code: Unicode authorization code
+        client: Client object set by you, see authenticate_client.
+        request: The HTTP Request
+        args: Additional arguments, ignored
+        kwargs: Additional keyword arguments, ignored
 
         Method is used by:
             - Authorization Code Grant
+
         """
         del args, kwargs
 
         _LOG.debug("validate_code %s", client_id)
 
-        from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+            DBSession,
+            static,
+        )
 
         assert DBSession is not None
 
@@ -839,18 +906,21 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         Ensure client is authorized to use the grant_type requested.
 
-        Keyword Arguments:
-
-            client_id: Unicode client identifier
-            grant_type: Unicode grant type, i.e. authorization_code, password.
-            client: Client object set by you, see authenticate_client.
-            request: The HTTP Request
+        Arguments:
+        ---------
+        client_id: Unicode client identifier
+        grant_type: Unicode grant type, i.e. authorization_code, password.
+        client: Client object set by you, see authenticate_client.
+        request: The HTTP Request
+        args: Additional arguments, ignored
+        kwargs: Additional keyword arguments, ignored
 
         Method is used by:
             - Authorization Code Grant
             - Resource Owner Password Credentials Grant
             - Client Credentials Grant
             - Refresh Token Grant
+
         """
         del client, request, args, kwargs
 
@@ -877,21 +947,27 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         All clients should register the absolute URIs of all URIs they intend
         to redirect to. The registration is outside of the scope of oauthlib.
 
-        Keyword Arguments:
-
-            client_id: Unicode client identifier
-            redirect_uri: Unicode absolute URI
-            request: The HTTP Request
+        Arguments:
+        ---------
+        client_id: Unicode client identifier
+        redirect_uri: Unicode absolute URI
+        request: The HTTP Request
+        args: Additional arguments, ignored
+        kwargs: Additional keyword arguments, ignored
 
         Method is used by:
             - Authorization Code Grant
             - Implicit Grant
+
         """
         del request, args, kwargs
 
         _LOG.debug("validate_redirect_uri %s %s", client_id, redirect_uri)
 
-        from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+            DBSession,
+            static,
+        )
 
         assert DBSession is not None
 
@@ -918,22 +994,28 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         OBS! The request.user attribute should be set to the resource owner
         associated with this refresh token.
 
-        Keyword Arguments:
-
-            refresh_token: Unicode refresh token
-            client: Client object set by you, see authenticate_client.
-            request: The HTTP Request
+        Arguments:
+        ---------
+        refresh_token: Unicode refresh token
+        client: Client object set by you, see authenticate_client.
+        request: The HTTP Request
+        args: Additional arguments, ignored
+        kwargs: Additional keyword arguments, ignored
 
         Method is used by:
             - Authorization Code Grant (indirectly by issuing refresh tokens)
             - Resource Owner Password Credentials Grant (also indirectly)
             - Refresh Token Grant
+
         """
         del args, kwargs
 
         _LOG.debug("validate_refresh_token %s", client.client_id if client else None)
 
-        from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+            DBSession,
+            static,
+        )
 
         assert DBSession is not None
 
@@ -961,16 +1043,19 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         Ensure client is authorized to use the response_type requested.
 
-        Keyword Arguments:
-
-            client_id: Unicode client identifier
-            response_type: Unicode response type, i.e. code, token.
-            client: Client object set by you, see authenticate_client.
-            request: The HTTP Request
+        Arguments:
+        ---------
+        client_id: Unicode client identifier
+        response_type: Unicode response type, i.e. code, token.
+        client: Client object set by you, see authenticate_client.
+        request: The HTTP Request
+        args: Additional arguments, ignored
+        kwargs: Additional keyword arguments, ignored
 
         Method is used by:
             - Authorization Code Grant
             - Implicit Grant
+
         """
         del client, request, args, kwargs
 
@@ -990,18 +1075,21 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         """
         Ensure the client is authorized access to requested scopes.
 
-        Keyword Arguments:
-
-            client_id: Unicode client identifier
-            scopes: List of scopes (defined by you)
-            client: Client object set by you, see authenticate_client.
-            request: The HTTP Request
+        Arguments:
+        ---------
+        client_id: Unicode client identifier
+        scopes: List of scopes (defined by you)
+        client: Client object set by you, see authenticate_client.
+        request: The HTTP Request
+        args: Additional arguments, ignored
+        kwargs: Additional keyword arguments, ignored
 
         Method is used by all core grant types:
             - Authorization Code Grant
             - Implicit Grant
             - Resource Owner Password Credentials Grant
             - Client Credentials Grant
+
         """
         del client, request, args, kwargs
 
@@ -1026,15 +1114,18 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         not set you will be unable to associate a token with a user in the
         persistence method used (commonly, save_bearer_token).
 
-        Keyword Arguments:
-
-            username: Unicode username
-            password: Unicode password
-            client: Client object set by you, see authenticate_client.
-            request: The HTTP Request
+        Argument:
+        ---------
+        username: Unicode username
+        password: Unicode password
+        client: Client object set by you, see authenticate_client.
+        request: The HTTP Request
+        args: Additional arguments, ignored
+        kwargs: Additional keyword arguments, ignored
 
         Method is used by:
             - Resource Owner Password Credentials Grant
+
         """
         del password, client, request, args, kwargs
 
@@ -1056,10 +1147,10 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         a technique to mitigate against the threat through the use of Proof Key for Code Exchange
         (PKCE, pronounced “pixy”). See RFC7636.
 
-        Keyword Arguments:
-
-            client_id: Client identifier.
-            request (oauthlib.common.Request): OAuthlib request.
+        Arguments:
+        ---------
+        client_id: Client identifier.
+        request (oauthlib.common.Request): OAuthlib request.
 
 
         Method is used by:
@@ -1068,7 +1159,10 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
 
         """
-        from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+            DBSession,
+            static,
+        )
 
         assert DBSession is not None
 
@@ -1096,20 +1190,23 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         Return the code_challenge associated to the code. If None is returned, code is considered to not
         be associated to any challenges.
 
-        Keyword Arguments:
-
-            code: Authorization code.
-            request: OAuthlib request.
+        Arguments:
+        ---------
+        code: Authorization code.
+        request: OAuthlib request.
 
         Return:
-
             code_challenge string
 
         Method is used by:
 
                 Authorization Code Grant - when PKCE is active
+
         """
-        from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+            DBSession,
+            static,
+        )
 
         assert DBSession is not None
 
@@ -1136,10 +1233,10 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         Must return plain or S256. You can return a custom value if you have implemented your own
         AuthorizationCodeGrant class.
 
-        Keyword Arguments:
-
-            code: Authorization code.
-            request: OAuthlib request.
+        Arguments:
+        ---------
+        code: Authorization code.
+        request: OAuthlib request.
 
         Return type:
 
@@ -1148,8 +1245,12 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         Method is used by:
 
                 Authorization Code Grant - when PKCE is active
+
         """
-        from c2cgeoportal_commons.models import DBSession, static  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+            DBSession,
+            static,
+        )
 
         assert DBSession is not None
 

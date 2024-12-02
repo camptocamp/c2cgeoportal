@@ -1,7 +1,2 @@
-[tool.black]
-line-length = 110
-target-version = ['py39']
-
-[tool.isort]
-profile = "black"
-line_length = 110
+[tool.ruff]
+target-version = 'py310'

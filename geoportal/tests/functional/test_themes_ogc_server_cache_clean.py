@@ -34,12 +34,12 @@ import pyramid.httpexceptions
 import pytest
 import responses
 import transaction
+from c2cgeoportal_geoportal.lib import caching
 from pyramid import testing
+
 from tests.functional import create_default_ogcserver, create_dummy_request
 from tests.functional import setup_common as setup_module  # noqa
 from tests.functional import teardown_common as teardown_module  # noqa
-
-from c2cgeoportal_geoportal.lib import caching
 
 CAP = """<?xml version="1.0" encoding="utf-8"?>
 <WMT_MS_Capabilities version="1.1.1">
@@ -215,7 +215,11 @@ class TestThemesView(TestCase):
         testing.tearDown()
 
         from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import Dimension, Interface, Metadata, OGCServer, TreeItem
+        from c2cgeoportal_commons.models.main import (
+            Interface,
+            OGCServer,
+            TreeItem,
+        )
 
         for item in DBSession.query(TreeItem).all():
             DBSession.delete(item)

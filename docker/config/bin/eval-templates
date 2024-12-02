@@ -5,7 +5,7 @@ import glob
 import os
 import random
 import re
-import subprocess
+import subprocess  # nosec
 import urllib.parse
 import zipfile
 from typing import cast
@@ -115,14 +115,14 @@ def _main() -> None:
     if os.environ.get("VISIBLE_ENTRY_POINT"):
         os.environ["VISIBLE_ENTRY_POINT_RE_ESCAPED"] = re.escape(os.environ["VISIBLE_ENTRY_POINT"])
     os.environ["MAPSERVER_DATA_SUBSELECT"] = (
-        "SELECT {ST_JOIN}(ra.area) "
+        "SELECT {ST_JOIN}(ra.area) "  # nosec
         "FROM {PGSCHEMA}.restrictionarea AS ra, {PGSCHEMA}.role_restrictionarea AS rra, "
         "{PGSCHEMA}.layer_restrictionarea AS lra, {PGSCHEMA}.treeitem AS la "
         "WHERE rra.role_id in (%role_ids%) AND rra.restrictionarea_id = ra.id "
         "AND lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name = "
     ).format(PGSCHEMA=os.environ["PGSCHEMA"], ST_JOIN=os.environ.get("ST_JOIN", "ST_Collect"))
     os.environ["MAPSERVER_DATA_NOAREA_SUBSELECT"] = (
-        "SELECT rra.role_id "
+        "SELECT rra.role_id "  # nosec
         "FROM {PGSCHEMA}.restrictionarea AS ra, {PGSCHEMA}.role_restrictionarea AS rra, "
         "{PGSCHEMA}.layer_restrictionarea AS lra, {PGSCHEMA}.treeitem AS la "
         "WHERE rra.restrictionarea_id = ra.id AND lra.restrictionarea_id = ra.id "

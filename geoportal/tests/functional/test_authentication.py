@@ -32,14 +32,13 @@ from unittest import TestCase
 from unittest.mock import patch
 
 import transaction
-from tests.functional import create_dummy_request
-from tests.functional import setup_common as setup_module  # noqa
-from tests.functional import teardown_common as teardown_module  # noqa
-
-from c2cgeoportal_geoportal.lib import authentication
 from c2cgeoportal_geoportal.lib.authentication import UrlAuthenticationPolicy
 from c2cgeoportal_geoportal.resources import defaultgroupsfinder
 from c2cgeoportal_geoportal.scripts.urllogin import create_token
+
+from tests.functional import create_dummy_request
+from tests.functional import setup_common as setup_module  # noqa
+from tests.functional import teardown_common as teardown_module  # noqa
 
 
 class TestUrlAuthenticationPolicy(TestCase):
@@ -110,9 +109,7 @@ class TestUrlAuthenticationPolicy(TestCase):
 
     @patch("c2cgeoportal_geoportal.lib.authentication._LOG.error", side_effect=Exception())
     def test_wrong_method(self, log_mock):  # pylint: disable=unused-argument
-        """
-        POST requests with input named "auth" must not raise exceptions due to urllogin.
-        """
+        """POST requests with input named "auth" must not raise exceptions due to urllogin."""
 
         def _get_user(method):
             request = create_dummy_request(params={"auth": "this is a wrong field value"}, method=method)

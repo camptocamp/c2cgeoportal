@@ -1,20 +1,5 @@
-[tool.mypy]
-python_version = 3.10
-warn_redundant_casts = true
-warn_unused_ignores = true
-check_untyped_defs = true
-skip_version_check = true
-ignore_missing_imports = true
-
-[tool.black]
-line-length = 110
-target-version = ['py310']
-
-[tool.isort]
-profile = "black"
-line_length = 110
-known_third_party = "c2cwsgiutils,c2cgeoform,qgis,pytest"
-known_first_party = ["geomapfish_qgisserver", "c2cgeoportal_commons"]
+[tool.ruff]
+target-version = 'py310'
 
 [tool.poetry]
 name = 'c2cgeoportal'
@@ -38,7 +23,7 @@ psycopg2 = "2.9.10"
 pytz = "2024.2"
 
 [tool.poetry.dev-dependencies]
-prospector = { extras = ["with_mypy", "with_bandit"], version = "1.13.3" }
+prospector = { version = "1.13.3", extras = ["with_mypy", "with_bandit", "with_ruff"] }
 prospector-profile-duplicated = "1.9.0"
 prospector-profile-utils  = "1.14.1"
 types-pyyaml = "6.0.12.20240917"

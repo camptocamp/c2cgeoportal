@@ -57,10 +57,10 @@ class TimeInformation:
     Collect the WMS time information.
 
     Arguments:
-
         extent: A time extent instance (``TimeExtentValue`` or ``TimeExtentInterval``)
         mode: The layer mode ("single", "range" or "disabled")
         widget: The layer mode ("slider" (default) or "datepicker")
+
     """
 
     def __init__(self) -> None:
@@ -98,7 +98,7 @@ class TimeInformation:
                 self.mode = mode
 
     def merge_widget(self, widget: str | None) -> None:
-        widget = "slider" if not widget else widget
+        widget = widget if widget else "slider"
         assert widget is not None
 
         if self.widget is not None:
@@ -134,11 +134,11 @@ class TimeExtentValue:
         Initialize.
 
         Arguments:
-
             values: A set() of datetime
             resolution: The resolution from the mapfile time definition
             min_def_value: the minimum default value as a datetime
             max_def_value: the maximum default value as a datetime
+
         """
         self.values = values
         self.resolution = resolution
@@ -183,13 +183,13 @@ class TimeExtentInterval:
         Initialize.
 
         Arguments:
-
             start: The start value as a datetime
             end: The end value as a datetime
             interval: The interval as a tuple (years, months, days, seconds)
             resolution: The resolution from the mapfile time definition
             min_def_value: the minimum default value as a datetime
             max_def_value: the maximum default value as a datetime
+
         """
         self.start = start
         self.end = end
@@ -311,7 +311,7 @@ def _parse_date(date: str) -> tuple[str, datetime.datetime]:
         try:
             dt = datetime.datetime.strptime(date, pattern)
             return resolution, dt.replace(tzinfo=isodate.UTC)
-        except Exception:  # pylint: disable=broad-exception-caught # nosec
+        except Exception:  # pylint: disable=broad-exception-caught
             pass
 
     try:

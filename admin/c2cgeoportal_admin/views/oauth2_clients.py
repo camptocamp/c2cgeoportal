@@ -37,10 +37,10 @@ from c2cgeoform.views.abstract_views import (
     ObjectResponse,
     SaveResponse,
 )
+from c2cgeoportal_commons.models.static import Log, OAuth2Client
 from pyramid.view import view_config, view_defaults
 
 from c2cgeoportal_admin.views.logged_views import LoggedViews
-from c2cgeoportal_commons.models.static import Log, OAuth2Client
 
 _list_field = partial(ListField, OAuth2Client)
 

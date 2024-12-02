@@ -32,7 +32,7 @@ from unittest.mock import patch
 
 import pytest
 from c2c.template.config import config as configuration
-from sqlalchemy import func
+
 from tests.functional import setup_common as setup_module
 
 
@@ -54,9 +54,7 @@ def settings():
 
 
 def add_parent(dbsession_old, item, group):
-    """
-    Utility function to add a TreeItem in a TreeGroup.
-    """
+    """Utility function to add a TreeItem in a TreeGroup."""
     from c2cgeoportal_commons.models import main
 
     dbsession_old.add(main.LayergroupTreeitem(group=group, item=item, ordering=len(group.children_relation)))

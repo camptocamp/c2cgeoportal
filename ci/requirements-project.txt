@@ -1,4 +1,4 @@
 # When we upgrade this we should also upgrade the requirements
 # in the documentation: doc/integrator/requirements.rst
-PyYAML==3.13
+PyYAML==6.0
 requests==2.31.0

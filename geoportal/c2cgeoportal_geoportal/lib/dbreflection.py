@@ -76,7 +76,9 @@ class _AssociationProxy:
         return getattr(target, self.value_attr) if target else None
 
     def __set__(self, obj: str, val: str) -> None:
-        from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+            DBSession,
+        )
 
         assert DBSession is not None
 
@@ -118,8 +120,10 @@ def get_table(
         engine = session.bind.engine
         metadata = MetaData()
     else:
-        from c2cgeoportal_commons.models import Base  # pylint: disable=import-outside-toplevel
-        from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+            Base,
+            DBSession,
+        )
 
         assert DBSession is not None
         assert DBSession.bind is not None
@@ -162,7 +166,6 @@ def get_class(
     valid string. If there is no table identified by tablename in the database a NoSuchTableError SQLAlchemy
     exception is raised.
     """
-
     tablename, schema = _get_schema(tablename)
 
     table = get_table(tablename, schema, None, primary_key=primary_key)
@@ -187,7 +190,9 @@ def _create_class(
     readonly_attributes: list[str] | None = None,
     pk_name: str | None = None,
 ) -> type:
-    from c2cgeoportal_commons.models import Base  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+        Base,
+    )
 
     exclude_properties = exclude_properties or ()
     attributes = {
@@ -201,7 +206,7 @@ def _create_class(
     # The randint is to fix the SAWarning: This declarative base already contains a class with the same
     # class name and module name
     cls = type(
-        f"{table.name.capitalize()}_{random.randint(0, 9999999)}",  # nosec
+        f"{table.name.capitalize()}_{random.randint(0, 9999999)}",  # noqa: S311
         (GeoInterface, Base),
         attributes,
     )

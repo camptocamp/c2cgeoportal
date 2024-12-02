@@ -15,7 +15,12 @@ from .test_treegroup import TestTreeGroup
 @pytest.mark.usefixtures("dbsession", "transact")
 def restriction_area_test_data(dbsession, transact):
     del transact
-    from c2cgeoportal_commons.models.main import LayerWMS, OGCServer, RestrictionArea, Role
+    from c2cgeoportal_commons.models.main import (
+        LayerWMS,
+        OGCServer,
+        RestrictionArea,
+        Role,
+    )
 
     roles = []
     for i in range(0, 4):
@@ -116,7 +121,7 @@ class TestRestrictionAreaViews(TestTreeGroup):
         assert set(restriction_area.layers) == {layers[0], layers[1]}
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.INSERT
         assert log.element_type == "restrictionarea"
         assert log.element_id == restriction_area.id
@@ -143,7 +148,7 @@ class TestRestrictionAreaViews(TestTreeGroup):
         form = self.get_item(test_app, restriction_area.id).form
 
         assert str(restriction_area.id) == self.get_first_field_named(form, "id").value
-        assert "hidden" == self.get_first_field_named(form, "id").attrs["type"]
+        assert self.get_first_field_named(form, "id").attrs["type"] == "hidden"
         assert restriction_area.name == form["name"].value
         expected = Polygon(
             [
@@ -174,7 +179,7 @@ class TestRestrictionAreaViews(TestTreeGroup):
         assert set(restriction_area.roles) == {roles[i] for i in range(0, 3)}
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.UPDATE
         assert log.element_type == "restrictionarea"
         assert log.element_id == restriction_area.id
@@ -190,7 +195,7 @@ class TestRestrictionAreaViews(TestTreeGroup):
         assert dbsession.query(RestrictionArea).get(deleted_id) is None
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.DELETE
         assert log.element_type == "restrictionarea"
         assert log.element_id == restriction_area.id
@@ -208,7 +213,7 @@ class TestRestrictionAreaViews(TestTreeGroup):
 
         form = test_app.get(f"/admin/restriction_areas/{restriction_area.id}/duplicate", status=200).form
 
-        assert "" == self.get_first_field_named(form, "id").value
+        assert self.get_first_field_named(form, "id").value == ""
         self._check_roles(form, roles, restriction_area)
         self.check_children(
             form,

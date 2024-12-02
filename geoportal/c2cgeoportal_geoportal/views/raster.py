@@ -36,11 +36,11 @@ from typing import TYPE_CHECKING, Any
 import numpy
 import pyramid.request
 import zope.event.classhandler
+from c2cgeoportal_commons.models import InvalidateCacheEvent
 from pyramid.httpexceptions import HTTPBadRequest, HTTPNotFound
 from pyramid.view import view_config
 from rasterio.io import DatasetReader
 
-from c2cgeoportal_commons.models import InvalidateCacheEvent
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
 
 if TYPE_CHECKING:
@@ -108,7 +108,9 @@ class Raster:
             path = layer["file"]
             if layer.get("type", "shp_index") == "shp_index":
                 # Avoid loading if not needed
-                from fiona.collection import Collection  # pylint: disable=import-outside-toplevel
+                from fiona.collection import (  # pylint: disable=import-outside-toplevel
+                    Collection,
+                )
 
                 self.data[name] = Collection(path)
             elif layer.get("type") == "gdal":

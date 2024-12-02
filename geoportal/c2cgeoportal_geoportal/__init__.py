@@ -37,6 +37,7 @@ from functools import partial
 from typing import TYPE_CHECKING, Any, Optional, cast
 
 import c2cgeoform
+import c2cgeoportal_commons.models
 import c2cwsgiutils
 import c2cwsgiutils.db
 import c2cwsgiutils.index
@@ -50,6 +51,7 @@ import sqlalchemy
 import sqlalchemy.orm
 import zope.event.classhandler
 from c2cgeoform import translator
+from c2cgeoportal_commons.models import InvalidateCacheEvent
 from c2cwsgiutils.health_check import HealthCheck
 from c2cwsgiutils.prometheus import MemoryMapCollector
 from deform import Form
@@ -62,10 +64,14 @@ from pyramid.path import AssetResolver
 from pyramid_mako import add_mako_renderer
 from sqlalchemy.orm import joinedload
 
-import c2cgeoportal_commons.models
 import c2cgeoportal_geoportal.views
-from c2cgeoportal_commons.models import InvalidateCacheEvent
-from c2cgeoportal_geoportal.lib import C2CPregenerator, caching, check_collector, checker, oidc
+from c2cgeoportal_geoportal.lib import (
+    C2CPregenerator,
+    caching,
+    check_collector,
+    checker,
+    oidc,
+)
 from c2cgeoportal_geoportal.lib.cacheversion import version_cache_buster
 from c2cgeoportal_geoportal.lib.caching import get_region
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
@@ -79,7 +85,9 @@ from c2cgeoportal_geoportal.lib.xsd import XSD
 from c2cgeoportal_geoportal.views.entry import Entry, canvas_view, custom_view
 
 if TYPE_CHECKING:
-    from c2cgeoportal_commons.models import static  # pylint: disable=ungrouped-imports,useless-suppression
+    from c2cgeoportal_commons.models import (
+        static,  # pylint: disable=ungrouped-imports,useless-suppression
+    )
 
 
 _LOG = logging.getLogger(__name__)
@@ -174,7 +182,6 @@ def add_interface_ngeo(
     permission: str | None = None,
 ) -> None:
     """Add the ngeo interfaces views and routes."""
-
     config.add_route(route_name, route, request_method="GET")
     # Permalink theme: recover the theme for generating custom viewer.js url
     config.add_route(
@@ -202,7 +209,6 @@ def add_interface_canvas(
     permission: str | None = None,
 ) -> None:
     """Add the ngeo interfaces views and routes."""
-
     renderer = f"/etc/geomapfish/interfaces/{route_name}.html.mako"
     config.add_route(route_name, route, request_method="GET")
     # Permalink theme: recover the theme for generating custom viewer.js URL
@@ -235,7 +241,6 @@ def add_interface_custom(
     permission: str | None = None,
 ) -> None:
     """Add custom interfaces views and routes."""
-
     config.add_route(route_name, route, request_method="GET")
     # Permalink theme: recover the theme for generating custom viewer.js URL
     config.add_route(
@@ -259,7 +264,6 @@ def add_interface_custom(
 
 def add_admin_interface(config: pyramid.config.Configurator) -> None:
     """Add the administration interface views and routes."""
-
     assert c2cgeoportal_commons.models.DBSession is not None
 
     config.add_request_method(
@@ -318,7 +322,6 @@ def is_allowed_url(
 
     Allowed if URL netloc is request host or is found in allowed hosts.
     """
-
     url_netloc = urllib.parse.urlparse(url).netloc
     return url_netloc, url_netloc == request.host or url_netloc in _get_netlocs(allowed_hosts)
 
@@ -329,7 +332,6 @@ def is_allowed_host(request: pyramid.request.Request) -> bool:
 
     Allowed if URL netloc is request host or is found in allowed hosts.
     """
-
     return request.host in request.registry.settings.get("allowed_hosts", [])
 
 
@@ -354,7 +356,7 @@ def is_valid_referrer(request: pyramid.request.Request, settings: dict[str, Any]
 
 
 def create_get_user_from_request(
-    settings: dict[str, Any]
+    settings: dict[str, Any],
 ) -> Callable[[pyramid.request.Request, str | None], Optional["static.User"]]:
     """Get the get_user_from_request function."""
 
@@ -370,8 +372,12 @@ def create_get_user_from_request(
         * it has been deactivated
         * the referrer is invalid
         """
-        from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
-        from c2cgeoportal_commons.models.static import User  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+            DBSession,
+        )
+        from c2cgeoportal_commons.models.static import (  # pylint: disable=import-outside-toplevel
+            User,
+        )
 
         assert DBSession is not None
 
@@ -467,8 +473,12 @@ def default_user_validator(request: pyramid.request.Request, username: str, pass
     otherwise.
     """
     del request  # unused
-    from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
-    from c2cgeoportal_commons.models.static import User  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+        DBSession,
+    )
+    from c2cgeoportal_commons.models.static import (  # pylint: disable=import-outside-toplevel
+        User,
+    )
 
     assert DBSession is not None
 
@@ -930,7 +940,9 @@ def init_db_sessions(
         )
 
     c2cgeoportal_commons.models.Base.metadata.clear()
-    from c2cgeoportal_commons.models import main  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+        main,
+    )
 
     if health_check is not None:
         for name, session in c2cgeoportal_commons.models.DBSessions.items():

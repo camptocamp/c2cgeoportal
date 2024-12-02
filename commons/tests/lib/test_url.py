@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2023, Camptocamp SA
+# Copyright (c) 2013-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -29,9 +29,8 @@
 
 from unittest import TestCase
 
-from pyramid.testing import DummyRequest
-
 from c2cgeoportal_commons.lib.url import Url, get_url2
+from pyramid.testing import DummyRequest
 
 
 class TestUrl(TestCase):

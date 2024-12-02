@@ -62,15 +62,16 @@ from unittest import TestCase
 
 import transaction
 from geoalchemy2 import WKTElement
+
 from tests.functional import (
     cleanup_db,
     create_default_ogcserver,
     create_dummy_request,
     fill_tech_user_functionality,
     mapserv_url,
+    setup_db,
 )
 from tests.functional import setup_common as setup_module  # noqa
-from tests.functional import setup_db
 from tests.functional import teardown_common as teardown_module  # noqa
 from tests.functional.geodata_model import PointTest
 
@@ -1006,9 +1007,8 @@ class TestMapserverproxyView(TestCase):
         assert "<Name>testpoint_protected</Name>" in response.body.decode("utf-8")
 
     def test_authentication_required(self):
-        from pyramid.httpexceptions import HTTPForbidden
-
         from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
+        from pyramid.httpexceptions import HTTPForbidden
 
         request = self._create_getcap_request()
         request.params.update(

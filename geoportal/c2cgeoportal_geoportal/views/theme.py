@@ -33,9 +33,11 @@ import os
 import re
 import sys
 import time
+import xml.etree
+import xml.etree.ElementTree  # nosec
 from collections import Counter
 from math import sqrt
-from typing import Any, Optional, Union, cast
+from typing import Any, cast
 
 import dogpile.cache.api
 import pyramid.httpexceptions
@@ -43,19 +45,23 @@ import pyramid.request
 import requests
 import sqlalchemy
 import sqlalchemy.orm.query
+from c2cgeoportal_commons import models
+from c2cgeoportal_commons.lib.url import Url, get_url2
+from c2cgeoportal_commons.models import cache_invalidate_cb, main
 from c2cwsgiutils.auth import auth_view
 from defusedxml import lxml
-from lxml import etree  # nosec
 from owslib.wms import WebMapService
 from pyramid.view import view_config
 from sqlalchemy.orm import subqueryload
 from sqlalchemy.orm.exc import NoResultFound  # type: ignore[attr-defined]
 
-from c2cgeoportal_commons import models
-from c2cgeoportal_commons.lib.url import Url, get_url2
-from c2cgeoportal_commons.models import cache_invalidate_cb, main
 from c2cgeoportal_geoportal import is_allowed_host, is_allowed_url
-from c2cgeoportal_geoportal.lib import get_roles_id, get_typed, get_types_map, is_intranet
+from c2cgeoportal_geoportal.lib import (
+    get_roles_id,
+    get_typed,
+    get_types_map,
+    is_intranet,
+)
 from c2cgeoportal_geoportal.lib.caching import get_region
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
 from c2cgeoportal_geoportal.lib.functionality import get_mapserver_substitution_params
@@ -72,7 +78,7 @@ _CACHE_REGION = get_region("std")
 _CACHE_OGC_SERVER_REGION = get_region("ogc-server")
 _TIMEOUT = int(os.environ.get("C2CGEOPORTAL_THEME_TIMEOUT", "300"))
 
-Metadata = Union[str, int, float, bool, list[Any], dict[str, Any]]
+Metadata = str | int | float | bool | list[Any] | dict[str, Any]
 
 
 async def get_http_cached(
@@ -323,7 +329,6 @@ class Theme:
 
     def _create_layer_query(self, interface: str) -> sqlalchemy.orm.query.RowReturningQuery[tuple[str]]:
         """Create an SQLAlchemy query for Layer and for the role identified to by ``role_id``."""
-
         assert models.DBSession is not None
 
         query: sqlalchemy.orm.query.RowReturningQuery[tuple[str]] = models.DBSession.query(
@@ -596,7 +601,6 @@ class Theme:
 
     def _get_ogc_servers(self, group: main.LayerGroup, depth: int) -> set[str | bool]:
         """Get unique identifier for each child by recursing on all the children."""
-
         ogc_servers: set[str | bool] = set()
 
         # escape loop
@@ -713,15 +717,14 @@ class Theme:
                         )
 
             group_theme["mixed"] = mixed
-            if org_depth == 1:
-                if not mixed:
-                    assert time_ is not None
-                    assert dim is not None
-                    group_theme["ogcServer"] = cast(list[Any], ogc_servers)[0]
-                    if time_.has_time() and time_.layer is None:
-                        group_theme["time"] = time_.to_dict()
+            if org_depth == 1 and not mixed:
+                assert time_ is not None
+                assert dim is not None
+                group_theme["ogcServer"] = cast(list[Any], ogc_servers)[0]
+                if time_.has_time() and time_.layer is None:
+                    group_theme["time"] = time_.to_dict()
 
-                    group_theme["dimensions"] = dim.get_dimensions()
+                group_theme["dimensions"] = dim.get_dimensions()
 
             return group_theme, errors
         return None, errors
@@ -775,7 +778,6 @@ class Theme:
         self, interface: str = "desktop", filter_themes: bool = True, min_levels: int = 1
     ) -> tuple[list[dict[str, Any]], set[str]]:
         """Return theme information for the role identified by ``role_id``."""
-
         assert models.DBSession is not None
 
         self._load_tree_items()
@@ -894,7 +896,7 @@ class Theme:
 
     async def _wfs_get_features_type(
         self, wfs_url: Url, ogc_server: main.OGCServer, preload: bool = False, cache: bool = True
-    ) -> tuple[Optional[etree.Element], set[str]]:  # pylint: disable=c-extension-no-member
+    ) -> tuple[xml.etree.ElementTree.Element | None, set[str]]:  # pylint: disable=c-extension-no-member
         errors = set()
 
         wfs_url.add_query(
@@ -987,7 +989,8 @@ class Theme:
 
         for ogc_server, nb_layers in (
             models.DBSession.query(
-                main.OGCServer, sqlalchemy.func.count(main.LayerWMS.id)  # pylint: disable=not-callable
+                main.OGCServer,
+                sqlalchemy.func.count(main.LayerWMS.id),  # pylint: disable=not-callable
             )
             .filter(main.LayerWMS.ogc_server_id == main.OGCServer.id)
             .group_by(main.OGCServer.id)
@@ -1037,7 +1040,7 @@ class Theme:
                             "available namespaces: %s (OGC server: %s)",
                             type_namespace,
                             name,
-                            ", ".join([str(k) for k in child.nsmap.keys()]),
+                            ", ".join([str(k) for k in child.nsmap]),
                             ogc_server_name,
                         )
                     elif child.nsmap[type_namespace] != namespace:
@@ -1069,7 +1072,7 @@ class Theme:
                                 "available namespaces: %s (OGC server: %s)",
                                 type_namespace,
                                 name,
-                                ", ".join([str(k) for k in child.nsmap.keys()]),
+                                ", ".join([str(k) for k in child.nsmap]),
                                 ogc_server_name,
                             )
                         for key, value in children.attrib.items():
@@ -1114,7 +1117,6 @@ class Theme:
 
     @view_config(route_name="themes", renderer="json")  # type: ignore[misc]
     def themes(self) -> dict[str, dict[str, dict[str, Any]] | list[str]]:
-
         is_allowed_host(self.request)
 
         interface = self.request.params.get("interface", "desktop")
@@ -1145,7 +1147,8 @@ class Theme:
             result["ogcServers"] = {}
             for ogc_server, nb_layers in (
                 models.DBSession.query(
-                    main.OGCServer, sqlalchemy.func.count(main.LayerWMS.id)  # pylint: disable=not-callable
+                    main.OGCServer,
+                    sqlalchemy.func.count(main.LayerWMS.id),  # pylint: disable=not-callable
                 )
                 .filter(main.LayerWMS.ogc_server_id == main.OGCServer.id)
                 .group_by(main.OGCServer.id)
@@ -1239,7 +1242,7 @@ class Theme:
 
         if self.request.user is None:
             return cast(
-                dict[str, Union[dict[str, dict[str, Any]], list[str]]],
+                dict[str, dict[str, dict[str, Any]] | list[str]],
                 get_theme_anonymous(
                     is_intranet(self.request),
                     interface,

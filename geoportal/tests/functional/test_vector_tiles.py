@@ -31,6 +31,7 @@ import mapbox_vector_tile
 import pytest
 from geoalchemy2 import WKTElement
 from pyramid.httpexceptions import HTTPNotFound
+
 from tests.functional.geodata_model import PointTest
 
 
@@ -110,6 +111,6 @@ class TestVectorTilesViews:
         request.matchdict["x"] = 0
         request.matchdict["y"] = 0
 
-        with pytest.raises(HTTPNotFound) as excinfo:
+        with pytest.raises(HTTPNotFound):
             VectorTilesViews(request).vector_tiles()
         assert "Not found any vector tile layer named not_existing_layer_name"

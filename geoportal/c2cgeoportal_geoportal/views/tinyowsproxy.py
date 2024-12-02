@@ -30,13 +30,18 @@ import logging
 from typing import Any
 
 import pyramid.request
-from defusedxml import ElementTree
-from pyramid.httpexceptions import HTTPBadRequest, HTTPForbidden, HTTPInternalServerError, HTTPUnauthorized
-from pyramid.view import view_config
-
 from c2cgeoportal_commons import models
 from c2cgeoportal_commons.lib.url import Url
 from c2cgeoportal_commons.models import main
+from defusedxml import ElementTree
+from pyramid.httpexceptions import (
+    HTTPBadRequest,
+    HTTPForbidden,
+    HTTPInternalServerError,
+    HTTPUnauthorized,
+)
+from pyramid.view import view_config
+
 from c2cgeoportal_geoportal.lib.common_headers import Cache
 from c2cgeoportal_geoportal.lib.filter_capabilities import (
     filter_wfst_capabilities,
@@ -97,11 +102,10 @@ class TinyOWSProxy(OGCProxy):
         if operation is None or operation == "":
             operation = "getcapabilities"
 
-        if operation == "describefeaturetype":
-            # for DescribeFeatureType we require that exactly one type-name
-            # is given, otherwise we would have to filter the result
-            if len(typenames) != 1:
-                raise HTTPBadRequest("Exactly one type-name must be given for DescribeFeatureType requests")
+        # for DescribeFeatureType we require that exactly one type-name
+        # is given, otherwise we would have to filter the result
+        if operation == "describefeaturetype" and len(typenames) != 1:
+            raise HTTPBadRequest("Exactly one type-name must be given for DescribeFeatureType requests")
 
         if not self._is_allowed(typenames):
             raise HTTPForbidden("No access rights for at least one of the given type-names")

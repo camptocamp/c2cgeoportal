@@ -29,10 +29,6 @@
 
 from unittest.mock import Mock, mock_open, patch
 
-import pytest
-import yaml
-from c2c.template.config import config as configuration
-
 from c2cgeoportal_admin.lib.lingva_extractor import GeomapfishConfigExtractor
 
 GMF_CONFIG = """

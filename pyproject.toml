@@ -1,25 +1,5 @@
-[tool.mypy]
-python_version = "3.10"
-warn_redundant_casts = true
-warn_unused_ignores = true
-warn_return_any = true
-ignore_missing_imports = true
-disallow_untyped_defs = true
-strict_optional = true
-strict = true
-
-[[tool.mypy.overrides]]
-module = "c2cgeoportal_admin.*"
-disallow_untyped_defs = false
-
-[tool.black]
-line-length = 110
-target-version = ['py310']
-
-[tool.isort]
-profile = "black"
-line_length = 110
-known_local_folder = ["c2cgeoportal_commons", "c2cgeoportal_geoportal", "c2cgeoportal_admin", "geomapfish_qgisserver", "{{cookiecutter.package}}_geoportal"]
+[tool.ruff]
+target-version = 'py310'
 
 [tool.poetry]
 name = "c2cgeoportal"
@@ -75,7 +55,7 @@ azure-storage-blob = "12.24.0"
 simple_openid_connect = { git = "https://github.com/sbrunner/py_simple_openid_connect.git", branch = "allows-pkce" } # geoportal
 pkce = '1.0.3' # geoportal
 basicauth = "1.0.0"
-prospector = { extras = ["with_mypy", "with_bandit", "with_pyroma"], version = "1.13.3" }
+prospector = { version = "1.13.3", extras = ["with_mypy", "with_bandit", "with_pyroma", "with_ruff"] }
 prospector-profile-duplicated = "1.9.0"
 prospector-profile-utils  = "1.14.1"
 beautifulsoup4 = "4.12.3"

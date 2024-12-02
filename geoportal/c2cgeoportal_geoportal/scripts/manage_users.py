@@ -37,7 +37,6 @@ from c2cgeoportal_geoportal.scripts import fill_arguments, get_appsettings, get_
 
 def get_argparser() -> argparse.ArgumentParser:
     """Get the argument parser for this script."""
-
     usage = """Reset a user password.
 The username is used as password if the password is not provided with the corresponding option.
 User can be created if it does not exist yet."""
@@ -66,7 +65,6 @@ def main() -> None:
 
     to get the options list, do: docker compose exec geoportal manage-users --help
     """
-
     parser = get_argparser()
     options = parser.parse_args()
     username = options.user
@@ -76,8 +74,12 @@ def main() -> None:
         session = get_session(settings, transaction.manager)
 
         # Must be done only once we have loaded the project config
-        from c2cgeoportal_commons.models.main import Role  # pylint: disable=import-outside-toplevel
-        from c2cgeoportal_commons.models.static import User  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+            Role,
+        )
+        from c2cgeoportal_commons.models.static import (  # pylint: disable=import-outside-toplevel
+            User,
+        )
 
         print("\n")
 

@@ -31,12 +31,12 @@ from typing import Any
 
 import pyramid.request
 import pyramid.response
-from pyramid.httpexceptions import HTTPBadRequest, HTTPForbidden
-from pyramid.view import view_config
-
 from c2cgeoportal_commons import models
 from c2cgeoportal_commons.lib.url import Url
 from c2cgeoportal_commons.models import main
+from pyramid.httpexceptions import HTTPBadRequest, HTTPForbidden
+from pyramid.view import view_config
+
 from c2cgeoportal_geoportal.lib.common_headers import Cache
 from c2cgeoportal_geoportal.lib.layers import get_private_layers, get_protected_layers
 from c2cgeoportal_geoportal.views.ogcproxy import OGCProxy
@@ -121,7 +121,7 @@ class PdfReport(OGCProxy):
         )
 
         if layer_config["check_credentials"]:
-            # FIXME: support of mapserver groups
+            # FIXME: support of mapserver groups  # pylint: disable=fixme
             ogc_server = (
                 models.DBSession.query(main.OGCServer)
                 .filter(main.OGCServer.name == layer_config["ogc_server"])

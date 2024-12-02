@@ -30,6 +30,7 @@ class LogHandler(logging.Handler):
     """Python logging handle for QGIS."""
 
     def emit(self, record: logging.LogRecord) -> None:
+        """Emit the record."""
         # To be visible in the CI
         print(self.format(record))
 
@@ -37,9 +38,7 @@ class LogHandler(logging.Handler):
 
 
 class _RequestFilter(logging.Filter):
-    """
-    A logging filter that adds request information to CEE logs.
-    """
+    """A logging filter that adds request information to CEE logs."""
 
     def filter(self, record: Any) -> bool:
         request_handler = SERVER_IFACE.requestHandler() if SERVER_IFACE else None
@@ -66,13 +65,13 @@ _REQUEST_FILTER = _RequestFilter()
 
 
 class JsonLogHandler(c2cwsgiutils.pyramid_logging.JsonLogHandler):
-    """
-    Log to stdout in JSON.
-    """
+    """Log to stdout in JSON."""
 
     def __init__(self, stream: TextIO | None) -> None:
+        """Initialize the handler."""
         super().__init__(stream)
         self.addFilter(_REQUEST_FILTER)
 
     def emit(self, record: logging.LogRecord) -> None:
+        """Emit the record."""
         QgsMessageLog.logMessage(self.format(record), record.name, level=Qgis.Critical)

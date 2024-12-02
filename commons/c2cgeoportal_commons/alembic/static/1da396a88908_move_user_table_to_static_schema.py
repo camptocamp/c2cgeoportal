@@ -82,20 +82,13 @@ def upgrade() -> None:
 
     try:
         op.execute(
-            "INSERT INTO %(staticschema)s.user "
-            "(type, username, password, email, is_password_changed, role_name%(parent_column)s) ("
+            f"INSERT INTO {staticschema}.user "
+            f"(type, username, password, email, is_password_changed, role_name{parent_column}) ("
             "SELECT u.type, u.username, u.password, u.email, "
-            "u.is_password_changed, r.name%(parent_select)s "
-            "FROM %(schema)s.user AS u "
-            "LEFT OUTER JOIN %(schema)s.role AS r ON (r.id = u.role_id) %(parent_join)s"
+            f"u.is_password_changed, r.name{parent_select} "
+            f"FROM {schema}.user AS u "
+            f"LEFT OUTER JOIN {schema}.role AS r ON (r.id = u.role_id) {parent_join}"
             ")"
-            % {
-                "staticschema": staticschema,
-                "schema": schema,
-                "parent_select": parent_select,
-                "parent_column": parent_column,
-                "parent_join": parent_join,
-            }
         )
         op.drop_table("user", schema=schema)
     except Exception:  # pylint: disable=broad-exception-caught
@@ -135,20 +128,13 @@ def downgrade() -> None:
         parent_join = f"LEFT OUTER JOIN {parentschema}.role AS pr ON (pr.name = u.parent_role_name)"
 
     op.execute(
-        "INSERT INTO %(schema)s.user "
-        "(type, username, password, email, is_password_changed, role_id%(parent_column)s) ("
+        f"INSERT INTO {schema}.user "
+        f"(type, username, password, email, is_password_changed, role_id{parent_column}) ("
         "SELECT u.type, u.username, u.password, u.email, "
-        "u.is_password_changed, r.id%(parent_select)s "
-        "FROM %(staticschema)s.user AS u "
-        "LEFT OUTER JOIN %(schema)s.role AS r ON (r.name = u.role_name) %(parent_join)s"
+        f"u.is_password_changed, r.id{parent_select} "
+        f"FROM {staticschema}.user AS u "
+        f"LEFT OUTER JOIN {schema}.role AS r ON (r.name = u.role_name) {parent_join}"
         ")"
-        % {
-            "staticschema": staticschema,
-            "schema": schema,
-            "parent_select": parent_select,
-            "parent_column": parent_column,
-            "parent_join": parent_join,
-        }
     )
 
     op.drop_table("user", schema=staticschema)

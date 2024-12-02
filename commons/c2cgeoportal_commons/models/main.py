@@ -56,7 +56,13 @@ try:
     from c2cgeoform.ext.colander_ext import Geometry as ColanderGeometry
     from c2cgeoform.ext.deform_ext import MapWidget, RelationSelect2Widget
     from colander import drop
-    from deform.widget import CheckboxWidget, HiddenWidget, SelectWidget, TextAreaWidget, TextInputWidget
+    from deform.widget import (
+        CheckboxWidget,
+        HiddenWidget,
+        SelectWidget,
+        TextAreaWidget,
+        TextInputWidget,
+    )
 
     colander_null = colander.null
 except ModuleNotFoundError:
@@ -84,7 +90,6 @@ if os.environ.get("DEVELOPMENT", "0") == "1":
 
     def state_str(state: Any) -> str:
         """Return a string describing an instance via its InstanceState."""
-
         return "None" if state is None else f"<{state.class_.__name__} {state.obj()}>"
 
     # In the original function sqlalchemy use the id of the object that don't allow us to give some useful
@@ -308,7 +313,7 @@ class Role(Base):  # type: ignore
         return f"{self.name}[{self.id}]>"
 
     @property
-    def bounds(self) -> tuple[float, float, float, float] | None:  # TODO
+    def bounds(self) -> tuple[float, float, float, float] | None:
         if self.extent is None:
             return None
         return cast(tuple[float, float, float, float], to_shape(self.extent).bounds)
@@ -367,11 +372,7 @@ class TreeItem(Base):  # type: ignore
         if not hasattr(self, "interfaces"):
             return False
 
-        for interface in self.interfaces:
-            if interface.name == name:
-                return True
-
-        return False
+        return any(interface.name == name for interface in self.interfaces)
 
     def get_metadata(self, name: str) -> list["Metadata"]:
         return [metadata for metadata in self.metadatas if metadata.name == name]
@@ -1035,7 +1036,7 @@ class LayerWMS(DimensionLayer):
     @staticmethod
     def get_default(dbsession: Session) -> DimensionLayer | None:
         return cast(
-            Optional[DimensionLayer],
+            DimensionLayer | None,
             dbsession.query(LayerWMS).filter(LayerWMS.name == "wms-defaults").one_or_none(),
         )
 
@@ -1179,7 +1180,7 @@ class LayerWMTS(DimensionLayer):
     @staticmethod
     def get_default(dbsession: Session) -> DimensionLayer | None:
         return cast(
-            Optional[DimensionLayer],
+            DimensionLayer | None,
             dbsession.query(LayerWMTS).filter(LayerWMTS.name == "wmts-defaults").one_or_none(),
         )
 
@@ -1374,7 +1375,7 @@ class LayerVectorTiles(DimensionLayer):
     @staticmethod
     def get_default(dbsession: Session) -> DimensionLayer | None:
         return cast(
-            Optional[DimensionLayer],
+            DimensionLayer | None,
             dbsession.query(LayerVectorTiles)
             .filter(LayerVectorTiles.name == "vector-tiles-defaults")
             .one_or_none(),

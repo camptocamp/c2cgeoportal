@@ -41,7 +41,7 @@ class TestThemesOrdering(TestTreeGroup):
         )
 
         resp = form.submit("submit", status=302)
-        assert "http://localhost/admin/layertree" == resp.location
+        assert resp.location == "http://localhost/admin/layertree"
 
         for i, theme in enumerate(sorted(themes_ordering_test_data["themes"], key=lambda t: t.name)):
             assert i == theme.ordering

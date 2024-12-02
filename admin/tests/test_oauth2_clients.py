@@ -18,7 +18,7 @@ def oauth2_clients_test_data(dbsession, transact):
     from c2cgeoportal_commons.models.static import OAuth2Client
 
     clients = []
-    for i in range(23):
+    for _i in range(23):
         client = OAuth2Client()
         client.client_id = str(uuid4())
         client.secret = "1234"
@@ -86,7 +86,7 @@ class TestOAuth2Client(TestTreeGroup):
         assert oauth2_client.redirect_uri == "http://127.0.0.1:7070/bis"
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.INSERT
         assert log.element_type == "oauth2_client"
         assert log.element_id == oauth2_client.id
@@ -120,12 +120,12 @@ class TestOAuth2Client(TestTreeGroup):
 
         dbsession.expire(oauth2_client)
 
-        assert "New client ID" == oauth2_client.client_id
-        assert "New secret" == oauth2_client.secret
-        assert "New redirect URI" == oauth2_client.redirect_uri
+        assert oauth2_client.client_id == "New client ID"
+        assert oauth2_client.secret == "New secret"
+        assert oauth2_client.redirect_uri == "New redirect URI"
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.UPDATE
         assert log.element_type == "oauth2_client"
         assert log.element_id == oauth2_client.id
@@ -140,7 +140,7 @@ class TestOAuth2Client(TestTreeGroup):
         resp = test_app.get(f"/admin/oauth2_clients/{oauth2_client_proto.id}/duplicate", status=200)
         form = resp.form
 
-        assert "" == self.get_first_field_named(form, "id").value
+        assert self.get_first_field_named(form, "id").value == ""
         assert oauth2_client_proto.client_id == form["client_id"].value
         assert oauth2_client_proto.secret == form["secret"].value
         assert oauth2_client_proto.redirect_uri == form["redirect_uri"].value
@@ -162,7 +162,7 @@ class TestOAuth2Client(TestTreeGroup):
         assert dbsession.query(OAuth2Client).get(oauth2_client.id) is None
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.DELETE
         assert log.element_type == "oauth2_client"
         assert log.element_id == oauth2_client.id

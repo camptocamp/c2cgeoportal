@@ -28,11 +28,11 @@
 import logging
 
 import pyramid.request
+from c2cgeoportal_commons.lib.url import Url, get_url2
+from c2cgeoportal_commons.models import DBSession, main
 from pyramid.httpexceptions import HTTPBadRequest
 from sqlalchemy.orm.exc import NoResultFound  # type: ignore[attr-defined]
 
-from c2cgeoportal_commons.lib.url import Url, get_url2
-from c2cgeoportal_commons.models import DBSession, main
 from c2cgeoportal_geoportal.lib.caching import get_region
 from c2cgeoportal_geoportal.views.proxy import Proxy
 

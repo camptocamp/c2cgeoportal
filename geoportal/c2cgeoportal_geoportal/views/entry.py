@@ -114,7 +114,6 @@ def _get_ngeo_resources(pattern: str) -> list[str]:
 
 def canvas_view(request: pyramid.request.Request, interface_config: dict[str, Any]) -> dict[str, Any]:
     """Get view used as entry point of a canvas interface."""
-
     js_files = _get_ngeo_resources(f"{interface_config.get('layout', interface_config['name'])}*.js")
     css_files = _get_ngeo_resources(f"{interface_config.get('layout', interface_config['name'])}*.css")
     css = "\n    ".join(
@@ -149,7 +148,6 @@ def custom_view(
     request: pyramid.request.Request, interface_config: dict[str, Any]
 ) -> pyramid.response.Response:
     """Get view used as entry point of a canvas interface."""
-
     set_common_headers(request, "index", Cache.PUBLIC_NO, content_type="text/html")
 
     html_filename = interface_config.get("html_filename", f"{interface_config['name']}.html")

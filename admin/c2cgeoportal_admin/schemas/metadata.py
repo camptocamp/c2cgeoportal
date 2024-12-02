@@ -31,14 +31,14 @@ from typing import Any, cast
 import colander
 import pyramid.request
 from c2cgeoform.schema import GeoFormSchemaNode
+from c2cgeoportal_commons.lib.validators import url
+from c2cgeoportal_commons.models.main import Metadata
 from deform.widget import MappingWidget, SelectWidget, SequenceWidget, TextAreaWidget
 from sqlalchemy import inspect
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 from sqlalchemy.orm.mapper import Mapper
 
 from c2cgeoportal_admin import _
-from c2cgeoportal_commons.lib.validators import url
-from c2cgeoportal_commons.models.main import Metadata
 
 
 def get_relevant_for(model: type[Any] | Mapper[Any]) -> set[str]:
@@ -202,7 +202,6 @@ def _translate_available_metadata(
 
 def metadata_schema_node(prop: InstrumentedAttribute[Any], model: type[Any]) -> colander.SequenceSchema:
     """Get the schema of a collection of metadata."""
-
     # Deferred which returns a dictionary with metadata name as key and metadata definition as value.
     # Needed to get the metadata types on UI side.
     metadata_definitions_dict = colander.deferred(

@@ -27,6 +27,7 @@
 
 
 import pyramid.request
+from c2cgeoportal_commons.models import DBSession
 from geoalchemy2.shape import from_shape, to_shape
 from geojson import loads
 from pyramid.httpexceptions import HTTPBadRequest
@@ -34,8 +35,6 @@ from pyramid.view import view_config
 from shapely.geometry import shape
 from shapely.geometry.base import BaseGeometry
 from sqlalchemy import func
-
-from c2cgeoportal_commons.models import DBSession
 
 
 class GeometryProcessing:
