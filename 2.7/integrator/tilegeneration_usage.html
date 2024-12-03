@@ -480,19 +480,10 @@ Pyramid view.</p>
 </section>
 <section id="internal-wsgi-server">
 <h3>Internal WSGI server<a class="headerlink" href="#internal-wsgi-server" title="Permalink to this headline">¶</a></h3>
-<p>in <code class="docutils literal notranslate"><span class="pre">production.ini</span></code>:</p>
+<p>in <code class="docutils literal notranslate"><span class="pre">application.ini</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">app</span><span class="p">:</span><span class="n">tiles</span><span class="p">]</span>
 <span class="n">use</span> <span class="o">=</span> <span class="n">egg</span><span class="p">:</span><span class="n">tilecloud_chain</span><span class="c1">#server</span>
 <span class="n">configfile</span> <span class="o">=</span> <span class="o">%</span><span class="p">(</span><span class="n">here</span><span class="p">)</span><span class="n">s</span><span class="o">/</span><span class="n">tilegeneration</span><span class="o">/</span><span class="n">config</span><span class="o">.</span><span class="n">yaml</span>
-</pre></div>
-</div>
-<p>with the Apache configuration:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>WSGIDaemonProcess tiles:${instanceid} display-name=%{GROUP} user=${modwsgi_user}
-WSGIScriptAlias /${instanceid}/tiles ${directory}/apache/wmts.wsgi
-&lt;Location /${instanceid}/tiles&gt;
-    WSGIProcessGroup tiles:${instanceid}
-    WSGIApplicationGroup %{GLOBAL}
-&lt;/Location&gt;
 </pre></div>
 </div>
 </section>
