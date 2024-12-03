@@ -75,7 +75,7 @@ class TestThemesEditColumns(TestCase):
         )
         self.main = Interface(name="main")
 
-        self.ogc_server = create_default_ogcserver()
+        self.ogc_server = create_default_ogcserver(DBSession)
         self.ogc_server.auth = OGCSERVER_AUTH_NOAUTH
 
         self.metadata = None

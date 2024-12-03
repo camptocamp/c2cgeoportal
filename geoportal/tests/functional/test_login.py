@@ -273,6 +273,7 @@ class TestLoginView(TestCase):
         assert user._password == crypt.crypt("1234", user._password)
 
     def test_login_0(self):
+        from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_geoportal.views.login import Login
 
         request = self._create_request_obj()
@@ -304,8 +305,8 @@ class TestLoginView(TestCase):
             "functionalities": {"available_in_templates": ["func"]},
             "admin_interface": {"available_functionalities": [{"name": "func"}]},
         }
-        fill_tech_user_functionality("anonymous", (("func", "anon"), ("toto", "anon_value2")))
-        fill_tech_user_functionality("registered", (("func", "reg"),))
+        fill_tech_user_functionality("anonymous", (("func", "anon"), ("toto", "anon_value2")), DBSession)
+        fill_tech_user_functionality("registered", (("func", "reg"),), DBSession)
         login = Login(request)
         assert login.loginuser()["functionalities"] == {"func": ["anon"]}
 

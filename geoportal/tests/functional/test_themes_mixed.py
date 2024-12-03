@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2023, Camptocamp SA
+# Copyright (c) 2016-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -56,7 +56,7 @@ class TestThemesView(TestCase):
 
         main = Interface(name="main")
 
-        ogc_server_internal = create_default_ogcserver()
+        ogc_server_internal = create_default_ogcserver(DBSession)
         ogc_server_external = OGCServer(
             name="__test_ogc_server_external",
             url="https://wms.geo.admin.ch/",

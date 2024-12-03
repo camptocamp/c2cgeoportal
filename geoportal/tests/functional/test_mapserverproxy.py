@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2023, Camptocamp SA
+# Copyright (c) 2013-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -136,7 +136,7 @@ class TestMapserverproxyView(TestCase):
 
         setup_db()
 
-        ogc_server_internal = create_default_ogcserver()
+        ogc_server_internal = create_default_ogcserver(DBSession)
         ogcserver_geoserver = OGCServer(name="__test_ogc_server_geoserver")
         ogcserver_geoserver.url = mapserv_url
         ogcserver_geoserver.type = OGCSERVER_TYPE_GEOSERVER
@@ -904,6 +904,7 @@ class TestMapserverproxyView(TestCase):
         )
 
     def test_substitution(self):
+        from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_dummy_request()
@@ -940,7 +941,7 @@ class TestMapserverproxyView(TestCase):
         request = self._create_dummy_request()
         request.method = "POST"
         request.body = SUBSTITUTION_GETFEATURE_REQUEST
-        fill_tech_user_functionality("anonymous", (("mapserver_substitution", "name=bar"),))
+        fill_tech_user_functionality("anonymous", (("mapserver_substitution", "name=bar"),), DBSession)
 
         response = MapservProxy(request).proxy()
         self.assertTrue(response.status_int, 200)
@@ -951,7 +952,9 @@ class TestMapserverproxyView(TestCase):
 
         request.body = COLUMN_RESTRICTION_GETFEATURE_REQUEST
         fill_tech_user_functionality(
-            "anonymous", [("mapserver_substitution", e) for e in ["cols=name", "cols=city", "cols=country"]]
+            "anonymous",
+            [("mapserver_substitution", e) for e in ["cols=name", "cols=city", "cols=country"]],
+            DBSession,
         )
         response = MapservProxy(request).proxy()
         self.assertTrue(response.status_int, 200)
@@ -959,7 +962,7 @@ class TestMapserverproxyView(TestCase):
         assert "Swiss" in response.body.decode("utf-8")
 
         fill_tech_user_functionality(
-            "anonymous", [("mapserver_substitution", e) for e in ["cols=name", "cols=city"]]
+            "anonymous", [("mapserver_substitution", e) for e in ["cols=name", "cols=city"]], DBSession
         )
         response = MapservProxy(request).proxy()
         self.assertTrue(response.status_int, 200)
@@ -967,14 +970,16 @@ class TestMapserverproxyView(TestCase):
         assert "Swiss" not in response.body.decode("utf-8")
 
         fill_tech_user_functionality(
-            "anonymous", [("mapserver_substitution", e) for e in ["cols=name", "cols=country"]]
+            "anonymous", [("mapserver_substitution", e) for e in ["cols=name", "cols=country"]], DBSession
         )
         response = MapservProxy(request).proxy()
         self.assertTrue(response.status_int, 200)
         assert "Lausanne" not in response.body.decode("utf-8")
         assert "Swiss" in response.body.decode("utf-8")
 
-        fill_tech_user_functionality("anonymous", [("mapserver_substitution", e) for e in ["cols=name"]])
+        fill_tech_user_functionality(
+            "anonymous", [("mapserver_substitution", e) for e in ["cols=name"]], DBSession
+        )
         response = MapservProxy(request).proxy()
         self.assertTrue(response.status_int, 200)
         assert "Lausanne" not in response.body.decode("utf-8")
@@ -986,7 +991,7 @@ class TestMapserverproxyView(TestCase):
         }
         request.method = "POST"
         request.body = SUBSTITUTION_GETFEATURE_REQUEST
-        fill_tech_user_functionality("anonymous", (("mapserver_substitution", "foo_bar"),))
+        fill_tech_user_functionality("anonymous", (("mapserver_substitution", "foo_bar"),), DBSession)
 
         request.params.update(dict(s_test1="to be removed", S_TEST2="to be removed"))
         # just pass in the log message

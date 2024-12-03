@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2023, Camptocamp SA
+# Copyright (c) 2013-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -63,7 +63,7 @@ class TestThemesPrivateView(TestCase):
         role2 = Role(name="__test_role2")
         user2 = User(username="__test_user2", password="__test_user", settings_role=role, roles=[role, role2])
         user2.email = "__test_user@example.com"
-        ogc_server_internal = create_default_ogcserver()
+        ogc_server_internal = create_default_ogcserver(DBSession)
 
         layer_wms = LayerWMS(name="__test_layer_wms", public=True)
         layer_wms.layer = "__test_public_layer"
