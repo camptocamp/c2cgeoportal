@@ -1,3 +1,7 @@
+##### 2.9.rc.19
+
+- Audit Dpkg 2.9 [c2cgeoportal#11568](https://github.com/camptocamp/c2cgeoportal/pull/11568)
+
 ##### 2.9.rc.18
 
 - Update all patch versions (2.9) (patch) [c2cgeoportal#11565](https://github.com/camptocamp/c2cgeoportal/pull/11565)
