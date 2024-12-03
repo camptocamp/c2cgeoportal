@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "3ee884838d445537d943a6ae7a031f573e85c0a690e610d6120df7f0f69495df"
+            "sha256": "bc6e420f8c2831bf429f6434fdde19c301b59aa5325a0ecb684f9703385c2af4"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -171,10 +171,10 @@
                 "standard"
             ],
             "hashes": [
-                "sha256:7aa23190b2c76a321bfb91e45c057da648f26e4d05665f168f706eacf217c9f6"
+                "sha256:910c6c5299f89978292dc1336bfb03313808161878916d610db3f998f1b7e5d4"
             ],
             "index": "pypi",
-            "version": "==5.0.2"
+            "version": "==5.0.4"
         },
         "cee-syslog-handler": {
             "hashes": [
@@ -400,11 +400,11 @@
         },
         "deprecated": {
             "hashes": [
-                "sha256:6fac8b097794a90302bdbb17b9b815e732d3c4720583ff1b198499d78470466c",
-                "sha256:e5323eb936458dccc2582dc6f9c322c852a775a27065ff2b0c4970b9d53d01b3"
+                "sha256:353bc4a8ac4bfc96800ddab349d89c25dec1079f65fd53acdcc1e0b975b21320",
+                "sha256:683e561a90de76239796e6b6feac66b99030d2dd3fcf61ef996330f14bbb9b0d"
             ],
             "index": "pypi",
-            "version": "==1.2.14"
+            "version": "==1.2.15"
         },
         "dogpile.cache": {
             "hashes": [
@@ -1814,11 +1814,11 @@
         },
         "waitress": {
             "hashes": [
-                "sha256:26cdbc593093a15119351690752c99adc13cbc6786d75f7b6341d1234a3730ac",
-                "sha256:ef0c1f020d9f12a515c4ec65c07920a702613afcad1dbfdc3bcec256b6c072b3"
+                "sha256:682aaaf2af0c44ada4abfb70ded36393f0e307f4ab9456a215ce0020baefc31f",
+                "sha256:c56d67fd6e87c2ee598b76abdd4e96cfad1f24cacdea5078d382b1f9d7b5ed2e"
             ],
             "index": "pypi",
-            "version": "==3.0.1"
+            "version": "==3.0.2"
         },
         "webob": {
             "hashes": [
@@ -3626,11 +3626,11 @@
         },
         "waitress": {
             "hashes": [
-                "sha256:26cdbc593093a15119351690752c99adc13cbc6786d75f7b6341d1234a3730ac",
-                "sha256:ef0c1f020d9f12a515c4ec65c07920a702613afcad1dbfdc3bcec256b6c072b3"
+                "sha256:682aaaf2af0c44ada4abfb70ded36393f0e307f4ab9456a215ce0020baefc31f",
+                "sha256:c56d67fd6e87c2ee598b76abdd4e96cfad1f24cacdea5078d382b1f9d7b5ed2e"
             ],
             "index": "pypi",
-            "version": "==3.0.1"
+            "version": "==3.0.2"
         },
         "webencodings": {
             "hashes": [

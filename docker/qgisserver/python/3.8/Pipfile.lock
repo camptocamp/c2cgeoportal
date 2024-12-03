@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "9118403fcb8a232f0d970c494ab743edecb3662725aadcde36c8b3116d2f6e17"
+            "sha256": "026f2f45ae5a3f0974ad580a514e072d89adfd0aee89bdadf640896d1a35208e"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -44,10 +44,10 @@
                 "broadcast"
             ],
             "hashes": [
-                "sha256:7aa23190b2c76a321bfb91e45c057da648f26e4d05665f168f706eacf217c9f6"
+                "sha256:910c6c5299f89978292dc1336bfb03313808161878916d610db3f998f1b7e5d4"
             ],
             "index": "pypi",
-            "version": "==5.0.2"
+            "version": "==5.0.4"
         },
         "cee-syslog-handler": {
             "hashes": [
@@ -59,11 +59,11 @@
         },
         "deprecated": {
             "hashes": [
-                "sha256:6fac8b097794a90302bdbb17b9b815e732d3c4720583ff1b198499d78470466c",
-                "sha256:e5323eb936458dccc2582dc6f9c322c852a775a27065ff2b0c4970b9d53d01b3"
+                "sha256:353bc4a8ac4bfc96800ddab349d89c25dec1079f65fd53acdcc1e0b975b21320",
+                "sha256:683e561a90de76239796e6b6feac66b99030d2dd3fcf61ef996330f14bbb9b0d"
             ],
             "index": "pypi",
-            "version": "==1.2.14"
+            "version": "==1.2.15"
         },
         "geoalchemy2": {
             "hashes": [

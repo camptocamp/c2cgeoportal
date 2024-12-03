@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "d90284217b5837984bc939b6105d1ded00f35b53d16f4b27eea668c1f5fd490a"
+            "sha256": "4476431ac50820f0ae09478db11f67affd925e5f5f0d4c872fbea78a2cdc7eb8"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -43,9 +43,9 @@
                 "broadcast"
             ],
             "hashes": [
-                "sha256:7aa23190b2c76a321bfb91e45c057da648f26e4d05665f168f706eacf217c9f6"
+                "sha256:910c6c5299f89978292dc1336bfb03313808161878916d610db3f998f1b7e5d4"
             ],
-            "version": "==5.0.2"
+            "version": "==5.0.4"
         },
         "cee-syslog-handler": {
             "hashes": [
@@ -57,12 +57,12 @@
         },
         "deprecated": {
             "hashes": [
-                "sha256:6fac8b097794a90302bdbb17b9b815e732d3c4720583ff1b198499d78470466c",
-                "sha256:e5323eb936458dccc2582dc6f9c322c852a775a27065ff2b0c4970b9d53d01b3"
+                "sha256:353bc4a8ac4bfc96800ddab349d89c25dec1079f65fd53acdcc1e0b975b21320",
+                "sha256:683e561a90de76239796e6b6feac66b99030d2dd3fcf61ef996330f14bbb9b0d"
             ],
             "index": "pypi",
             "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'",
-            "version": "==1.2.14"
+            "version": "==1.2.15"
         },
         "geoalchemy2": {
             "hashes": [
@@ -988,11 +988,11 @@
         },
         "setuptools": {
             "hashes": [
-                "sha256:1dc484f5cf56fd3fe7216d7b8df820802e7246cfb534a1db2aa64f14fcb9cdcb",
-                "sha256:b3c5d862f98500b06ffdf7cc4499b48c46c317d8d56cb30b5c8bce4d88f5c216"
+                "sha256:dceeb6c0028fdb6734471eb07c0cd2aae706ccaecab45965ee83f11c8d3b1f62",
+                "sha256:e6d8668fa5f93e706934a62d7b4db19c8d9eb8cf2adbb75ef1b675aa332b69da"
             ],
             "markers": "python_version >= '3.9'",
-            "version": "==75.4.0"
+            "version": "==70.0.0"
         },
         "smmap": {
             "hashes": [
