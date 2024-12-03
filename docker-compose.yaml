@@ -48,7 +48,7 @@ services:
         lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name = '
 
   tilecloudchain:
-    image: camptocamp/tilecloud-chain:1.21
+    image: camptocamp/tilecloud-chain:1.22
     user: www-data
     restart: unless-stopped
     environment:

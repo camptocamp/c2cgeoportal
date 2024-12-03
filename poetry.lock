@@ -129,13 +129,13 @@ aio = ["aiohttp (>=3.0)"]
 
 [[package]]
 name = "azure-storage-blob"
-version = "12.23.1"
+version = "12.24.0"
 description = "Microsoft Azure Blob Storage Client Library for Python"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "azure_storage_blob-12.23.1-py3-none-any.whl", hash = "sha256:1c2238aa841d1545f42714a5017c010366137a44a0605da2d45f770174bfc6b4"},
-    {file = "azure_storage_blob-12.23.1.tar.gz", hash = "sha256:a587e54d4e39d2a27bd75109db164ffa2058fe194061e5446c5a89bca918272f"},
+    {file = "azure_storage_blob-12.24.0-py3-none-any.whl", hash = "sha256:4f0bb4592ea79a2d986063696514c781c9e62be240f09f6397986e01755bc071"},
+    {file = "azure_storage_blob-12.24.0.tar.gz", hash = "sha256:eaaaa1507c8c363d6e1d1342bd549938fdf1adec9b1ada8658c8f5bf3aea844e"},
 ]
 
 [package.dependencies]
@@ -1246,13 +1246,13 @@ six = ">=1.8.0"
 
 [[package]]
 name = "geoalchemy2"
-version = "0.15.2"
+version = "0.16.0"
 description = "Using SQLAlchemy with Spatial Databases"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "GeoAlchemy2-0.15.2-py3-none-any.whl", hash = "sha256:546455dc39f5bcdfc5b871e57d3f7546c8a6f798eb364c474200f488ace6fd32"},
-    {file = "geoalchemy2-0.15.2.tar.gz", hash = "sha256:3af0272db927373e74ee3b064cdc9464ba08defdb945c51745db1b841482f5dc"},
+    {file = "GeoAlchemy2-0.16.0-py3-none-any.whl", hash = "sha256:b0f27d5500ee757af4654c6262e0f834b7a843504d193653ec747ef1128d2ab5"},
+    {file = "geoalchemy2-0.16.0.tar.gz", hash = "sha256:df64bb72af70daafaac3f359492c96501c37ab85ed20f9510c99cc6d02881100"},
 ]
 
 [package.dependencies]
@@ -2654,25 +2654,28 @@ with-vulture = ["vulture (>=1.5)"]
 
 [[package]]
 name = "prospector-profile-duplicated"
-version = "1.6.0"
+version = "1.9.0"
 description = "Profile that can be used to disable the duplicated or conflict rules between Prospector and other tools"
 optional = false
 python-versions = "*"
 files = [
-    {file = "prospector_profile_duplicated-1.6.0-py2.py3-none-any.whl", hash = "sha256:bf6a6aae0c7de48043b95e4d42e23ccd090c6c7115b6ee8c8ca472ffb1a2022b"},
-    {file = "prospector_profile_duplicated-1.6.0.tar.gz", hash = "sha256:9c2d541076537405e8b2484cb6222276a2df17492391b6af1b192695770aab83"},
+    {file = "prospector_profile_duplicated-1.9.0-py2.py3-none-any.whl", hash = "sha256:7b7a665e6fa8b44fac597d2bbef1a91de5b6f090b8d64890a5f38ee60e8473c2"},
+    {file = "prospector_profile_duplicated-1.9.0.tar.gz", hash = "sha256:bb0b0d0946232d570ada944ee4a180fd142529db0978579b58e766d28f3c2a27"},
 ]
 
 [[package]]
 name = "prospector-profile-utils"
-version = "1.9.1"
+version = "1.14.1"
 description = "Some utility Prospector profiles."
 optional = false
-python-versions = "*"
+python-versions = "<4.0,>=3.9"
 files = [
-    {file = "prospector_profile_utils-1.9.1-py2.py3-none-any.whl", hash = "sha256:b458d8c4d59bdb1547e4630a2c6de4971946c4f0999443db6a9eef6d216b26b8"},
-    {file = "prospector_profile_utils-1.9.1.tar.gz", hash = "sha256:008efa6797a85233fd8093dcb9d86f5fa5d89673e431c15cb1496a91c9b2c601"},
+    {file = "prospector_profile_utils-1.14.1-py3-none-any.whl", hash = "sha256:1b7d79e4293c76f9ea5107b691c888e76933aa29d33e8f8b8750dc0aeea3b657"},
+    {file = "prospector_profile_utils-1.14.1.tar.gz", hash = "sha256:5447086f9a7ddba02d8ee7322baa30c80c1376328677a6593165fab23e2e4bf2"},
 ]
+
+[package.dependencies]
+prospector = ">=1.13.0"
 
 [[package]]
 name = "protobuf"
@@ -3442,13 +3445,13 @@ dev = ["pytest", "pytest-cache", "pytest-cov", "ruff"]
 
 [[package]]
 name = "pyramid-tm"
-version = "2.5"
+version = "2.6"
 description = "A package which allows Pyramid requests to join the active transaction"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.9"
 files = [
-    {file = "pyramid_tm-2.5-py2.py3-none-any.whl", hash = "sha256:6638721946e809de8b4bf3f405bd2daaaa76d58442cbdf46be30ebc259f1a354"},
-    {file = "pyramid_tm-2.5.tar.gz", hash = "sha256:5c81dcecd33770f5e3596687d2be35ffc4f8ce5eda00a31acb00ae35a51430d0"},
+    {file = "pyramid_tm-2.6-py3-none-any.whl", hash = "sha256:665a4ee1d6f41f0c7ffa5e54d9b01d70cd3e8e5bd76277529acbdd6b6bd6fe9e"},
+    {file = "pyramid_tm-2.6.tar.gz", hash = "sha256:8148d2191285280c9a0c23e6df1018b3514b4cef02115b872dd0350a4d78709c"},
 ]
 
 [package.dependencies]
@@ -4520,13 +4523,13 @@ urllib3 = ">=2"
 
 [[package]]
 name = "types-setuptools"
-version = "75.3.0.20241112"
+version = "75.6.0.20241126"
 description = "Typing stubs for setuptools"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "types-setuptools-75.3.0.20241112.tar.gz", hash = "sha256:f9e1ebd17a56f606e16395c4ee4efa1cdc394b9a2a0ee898a624058b4b62ef8f"},
-    {file = "types_setuptools-75.3.0.20241112-py3-none-any.whl", hash = "sha256:78cb5fef4a6056d2f37114d27da90f4655a306e4e38042d7034a8a880bc3f5dd"},
+    {file = "types_setuptools-75.6.0.20241126-py3-none-any.whl", hash = "sha256:aaae310a0e27033c1da8457d4d26ac673b0c8a0de7272d6d4708e263f2ea3b9b"},
+    {file = "types_setuptools-75.6.0.20241126.tar.gz", hash = "sha256:7bf25ad4be39740e469f9268b6beddda6e088891fa5a27e985c6ce68bf62ace0"},
 ]
 
 [[package]]
@@ -4862,4 +4865,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "5cc5d16690ab634e8c0d47984b08a9e6d2f0c913cb84011fa9901c467df269f2"
+content-hash = "17be9d85b8164aa82f5206c01e5d79bf526176ff253d43c9bcc49d60cbacb9cc"
