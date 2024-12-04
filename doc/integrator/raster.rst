@@ -21,8 +21,12 @@ To configure these web services, you need to set the ``raster`` variable in the 
             file: /var/sig/altimetrie/mnt.vrt
             type: gdal
             round: 1
+        DTM2:
+            url: 'https://api3.geo.admin.ch/rest/services'
+            type: external_url
+            elevation_name: 'height'
 
-``raster`` is a list of "DEM layers". There are only two entries in this example, but there could be more.
+``raster`` is a list of "DEM layers".
 
 ``file`` provides the path to the shape index that references the raster files.
 The raster files should be in the Binary Terrain (BT/VTP .bt 1.3) format.
@@ -37,6 +41,13 @@ By default the nodata value is directly read from the source.
 
 ``round`` specifies how the result values should be rounded.
 For instance '1': round to the unit, '0.01': round to the hundredth, etc.
+
+``url`` specifies the URL of a service to use to get the elevation or profile. The service must accept a request with the this format for profiles
+``{base_url}/profile.json?geom={geom}&nbPoints={nb_points}`` and
+``{base_url}/height?easting={lon}&northing={lat}`` for points, where
+``{geom}`` is the geometry of the line, ``{nb_points}`` is the number of points to get, ``{lon}`` is the longitude of the point and ``{lat}`` is the latitude of the point.
+
+``elevation_name`` specifies the name of the elevation field in the response.
 
 .. note:: gdalbuildvrt usage example:
 
