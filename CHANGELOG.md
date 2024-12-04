@@ -1,3 +1,7 @@
+##### 2.9.rc.20
+
+- Add missing selection tool 0894b56 [ngeo#9551](https://github.com/camptocamp/ngeo/pull/9551)
+
 ##### 2.9.rc.19
 
 - Audit Dpkg 2.9 [c2cgeoportal#11568](https://github.com/camptocamp/c2cgeoportal/pull/11568)

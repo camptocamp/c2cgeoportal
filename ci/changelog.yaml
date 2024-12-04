@@ -301,7 +301,14 @@ commits:
         sha: 05e3704e0673a3fcfe9721a07333e8502bd54172
         url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/05e3704e0673a3fcfe9721a07333e8502bd54172
       sha: f0b58d061b9354d87033fb08bea8fb52735957c1
-    f4a3ddc1f: &id020
+    f21030c96: &id020
+      parents:
+      - html_url: https://github.com/camptocamp/c2cgeoportal/commit/f4a3ddc1f018d0024b7d66502aaef62f3e710701
+        sha: f4a3ddc1f018d0024b7d66502aaef62f3e710701
+        url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/f4a3ddc1f018d0024b7d66502aaef62f3e710701
+      sha: f21030c96c5c7ed35b0a3c95551bafea87194ae5
+    f21030c96c5c7ed35b0a3c95551bafea87194ae5: *id020
+    f4a3ddc1f: &id021
       parents:
       - html_url: https://github.com/camptocamp/c2cgeoportal/commit/932bab0ea2193325d4e75f6b4266ddc83cc5510f
         sha: 932bab0ea2193325d4e75f6b4266ddc83cc5510f
@@ -310,7 +317,7 @@ commits:
         sha: 1b4c3dc8883017f06a63bd01cbf08dd1fb81523c
         url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/1b4c3dc8883017f06a63bd01cbf08dd1fb81523c
       sha: f4a3ddc1f018d0024b7d66502aaef62f3e710701
-    f4a3ddc1f018d0024b7d66502aaef62f3e710701: *id020
+    f4a3ddc1f018d0024b7d66502aaef62f3e710701: *id021
     fe1d00ddfb2f1b90ee18e45f5f241b730d5f5a1d:
       parents:
       - html_url: https://github.com/camptocamp/c2cgeoportal/commit/3384867f92740ec7242a4a46352853d0723a3701
@@ -324,14 +331,24 @@ commits:
         url: https://api.github.com/repos/camptocamp/c2cgeoportal/commits/b891b2bc17a859bbee8aef64bd01f66d2805436c
       sha: ff71847d04d95476b92f24991f4c82202875c0a3
   ngeo:
-    99aa1e7fb: &id021
+    99aa1e7fb: &id022
       parents:
       - html_url: https://github.com/camptocamp/ngeo/commit/82cedd0a7355fa07af45abefede7ce6b0eebfc17
         sha: 82cedd0a7355fa07af45abefede7ce6b0eebfc17
         url: https://api.github.com/repos/camptocamp/ngeo/commits/82cedd0a7355fa07af45abefede7ce6b0eebfc17
       sha: 99aa1e7fb9b0fb729f26b5cbc0309435fa7ef2c1
-    99aa1e7fb9b0fb729f26b5cbc0309435fa7ef2c1: *id021
-    d0678ccd3: &id022
+    99aa1e7fb9b0fb729f26b5cbc0309435fa7ef2c1: *id022
+    b6b15744f: &id023
+      parents:
+      - html_url: https://github.com/camptocamp/ngeo/commit/d0678ccd3b15bd7421e32308c796b6cc051eba9c
+        sha: d0678ccd3b15bd7421e32308c796b6cc051eba9c
+        url: https://api.github.com/repos/camptocamp/ngeo/commits/d0678ccd3b15bd7421e32308c796b6cc051eba9c
+      - html_url: https://github.com/camptocamp/ngeo/commit/c1672840ba7f5363cd83cdc8f0ed18b3b28b4c24
+        sha: c1672840ba7f5363cd83cdc8f0ed18b3b28b4c24
+        url: https://api.github.com/repos/camptocamp/ngeo/commits/c1672840ba7f5363cd83cdc8f0ed18b3b28b4c24
+      sha: b6b15744fee0b62cba0e1fbae14530417b1bf755
+    b6b15744fee0b62cba0e1fbae14530417b1bf755: *id023
+    d0678ccd3: &id024
       parents:
       - html_url: https://github.com/camptocamp/ngeo/commit/99aa1e7fb9b0fb729f26b5cbc0309435fa7ef2c1
         sha: 99aa1e7fb9b0fb729f26b5cbc0309435fa7ef2c1
@@ -340,7 +357,7 @@ commits:
         sha: 1f8fbc9f7653decced249abfcd752404f32c1f60
         url: https://api.github.com/repos/camptocamp/ngeo/commits/1f8fbc9f7653decced249abfcd752404f32c1f60
       sha: d0678ccd3b15bd7421e32308c796b6cc051eba9c
-    d0678ccd3b15bd7421e32308c796b6cc051eba9c: *id022
+    d0678ccd3b15bd7421e32308c796b6cc051eba9c: *id024
 pulls:
   c2cgeoportal:
     009c29aa1a95ca4b7f4f1356b595d17e3abe8c92: []
@@ -524,6 +541,7 @@ pulls:
       title: '[Backport 2.9] Fix performance issue'
       updated_at: '2024-11-27T11:11:43Z'
     f0b58d061b9354d87033fb08bea8fb52735957c1: []
+    f21030c96: []
     f4a3ddc1f:
     - base_ref: '2.9'
       closed_at: '2024-12-03T07:23:41Z'
@@ -536,6 +554,15 @@ pulls:
     fe1d00ddfb2f1b90ee18e45f5f241b730d5f5a1d: []
     ff71847d04d95476b92f24991f4c82202875c0a3: []
   ngeo:
+    b6b15744f:
+    - base_ref: '2.9'
+      closed_at: '2024-12-04T09:57:46Z'
+      created_at: '2024-12-03T16:02:56Z'
+      html_url: https://github.com/camptocamp/ngeo/pull/9551
+      number: 9551
+      state: closed
+      title: 'Add missing selection tool 0894b56 '
+      updated_at: '2024-12-04T09:58:58Z'
     d0678ccd3:
     - base_ref: '2.9'
       closed_at: '2024-11-27T13:22:05Z'
@@ -606,3 +633,6 @@ releases:
 - c2cgeoportal: f4a3ddc1f
   name: 2.9.rc.19
   ngeo: d0678ccd3
+- c2cgeoportal: f21030c96
+  name: 2.9.rc.20
+  ngeo: b6b15744f
