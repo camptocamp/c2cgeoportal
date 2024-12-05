@@ -22,7 +22,7 @@ def layer_wms_test_data(dbsession, transact):
     def layer_builder(i):
         layer = LayerWMS(name=f"layer_wms_{i}")
         layer.layer = f"layer_{i}"
-        layer.public = 1 == i % 2
+        layer.public = i % 2 == 1
         layer.geo_table = f"geotable_{i}"
         layer.ogc_server = servers[i % 4]
         layer.style = "décontrasté"
@@ -77,12 +77,12 @@ class TestLayerWMSViews(AbstractViewsTests):
 
         assert layer.id == int(row["_id_"])
         assert layer.name == row["name"]
-        assert "restrictionarea_0, restrictionarea_2" == row["restrictionareas"]
-        assert "server_0" == row["ogc_server"]
-        assert "desktop, edit" == row["interfaces"]
-        assert "Date: 2017, 1988; CLC: all" == row["dimensions"]
-        assert "layer_group_0, layer_group_3" == row["parents_relation"]
-        assert 'copyable: true, snappingConfig: {"tolerance": 50}' == row["metadatas"]
+        assert row["restrictionareas"] == "restrictionarea_0, restrictionarea_2"
+        assert row["ogc_server"] == "server_0"
+        assert row["interfaces"] == "desktop, edit"
+        assert row["dimensions"] == "Date: 2017, 1988; CLC: all"
+        assert row["parents_relation"] == "layer_group_0, layer_group_3"
+        assert row["metadatas"] == 'copyable: true, snappingConfig: {"tolerance": 50}'
 
     def test_grid_sort_on_ogc_server(self, test_app, layer_wms_test_data):
         json = self.check_search(test_app, sort="ogc_server")
@@ -116,21 +116,21 @@ class TestLayerWMSViews(AbstractViewsTests):
 
         form = self.get_item(test_app, "new").form
 
-        assert "" == self.get_first_field_named(form, "id").value
-        assert "" == self.get_first_field_named(form, "name").value
-        assert "" == self.get_first_field_named(form, "layer").value
-        assert "" == self.get_first_field_named(form, "ogc_server_id").value
-        assert "disabled" == self.get_first_field_named(form, "time_mode").value
-        assert "slider" == self.get_first_field_named(form, "time_widget").value
+        assert self.get_first_field_named(form, "id").value == ""
+        assert self.get_first_field_named(form, "name").value == ""
+        assert self.get_first_field_named(form, "layer").value == ""
+        assert self.get_first_field_named(form, "ogc_server_id").value == ""
+        assert self.get_first_field_named(form, "time_mode").value == "disabled"
+        assert self.get_first_field_named(form, "time_widget").value == "slider"
 
     def test_new_default(self, test_app, layer_wms_test_data):
         default_wms = layer_wms_test_data["default"]["wms"]
 
         form = self.get_item(test_app, "new").form
 
-        assert "" == self.get_first_field_named(form, "id").value
-        assert "" == self.get_first_field_named(form, "name").value
-        assert "" == self.get_first_field_named(form, "layer").value
+        assert self.get_first_field_named(form, "id").value == ""
+        assert self.get_first_field_named(form, "name").value == ""
+        assert self.get_first_field_named(form, "layer").value == ""
         assert str(default_wms.ogc_server.id) == self.get_first_field_named(form, "ogc_server_id").value
         assert default_wms.time_mode == self.get_first_field_named(form, "time_mode").value
         assert default_wms.time_widget == self.get_first_field_named(form, "time_widget").value
@@ -140,8 +140,8 @@ class TestLayerWMSViews(AbstractViewsTests):
 
         form = self.get_item(test_app, layer.id).form
 
-        assert "layer_wms_10" == self.get_first_field_named(form, "name").value
-        assert "" == self.get_first_field_named(form, "description").value
+        assert self.get_first_field_named(form, "name").value == "layer_wms_10"
+        assert self.get_first_field_named(form, "description").value == ""
 
     def test_public_checkbox_edit(self, test_app, layer_wms_test_data):
         layer = layer_wms_test_data["layers"][10]
@@ -160,7 +160,7 @@ class TestLayerWMSViews(AbstractViewsTests):
         form = self.get_item(test_app, layer.id).form
 
         assert str(layer.id) == self.get_first_field_named(form, "id").value
-        assert "hidden" == self.get_first_field_named(form, "id").attrs["type"]
+        assert self.get_first_field_named(form, "id").attrs["type"] == "hidden"
         assert layer.name == self.get_first_field_named(form, "name").value
         assert str(layer.description or "") == self.get_first_field_named(form, "description").value
         assert layer.public is False
@@ -214,7 +214,7 @@ class TestLayerWMSViews(AbstractViewsTests):
         assert {ras[1].id, ras[3].id} == {ra.id for ra in layer.restrictionareas}
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.UPDATE
         assert log.element_type == "layer_wms"
         assert log.element_id == layer.id
@@ -247,7 +247,7 @@ class TestLayerWMSViews(AbstractViewsTests):
         ).group(1)
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.INSERT
         assert log.element_type == "layer_wms"
         assert log.element_id == layer.id
@@ -262,7 +262,7 @@ class TestLayerWMSViews(AbstractViewsTests):
         resp = test_app.get(f"/admin/layers_wms/{layer.id}/duplicate", status=200)
         form = resp.form
 
-        assert "" == self.get_first_field_named(form, "id").value
+        assert self.get_first_field_named(form, "id").value == ""
         assert layer.name == self.get_first_field_named(form, "name").value
         assert str(layer.description or "") == self.get_first_field_named(form, "description").value
         assert layer.public is True
@@ -301,15 +301,15 @@ class TestLayerWMSViews(AbstractViewsTests):
 
         layer = layer_wms_test_data["layers"][3]
 
-        assert 0 == dbsession.query(LayerWMTS).filter(LayerWMTS.name == layer.name).count()
-        assert 1 == dbsession.query(LayerWMS).filter(LayerWMS.name == layer.name).count()
+        assert dbsession.query(LayerWMTS).filter(LayerWMTS.name == layer.name).count() == 0
+        assert dbsession.query(LayerWMS).filter(LayerWMS.name == layer.name).count() == 1
 
         resp = test_app.post(f"/admin/layers_wms/{layer.id}/convert_to_wmts", status=200)
         assert resp.json["success"]
         assert f"http://localhost/admin/layers_wmts/{layer.id}?msg_col=submit_ok" == resp.json["redirect"]
 
-        assert 1 == dbsession.query(LayerWMTS).filter(LayerWMTS.name == layer.name).count()
-        assert 0 == dbsession.query(LayerWMS).filter(LayerWMS.name == layer.name).count()
+        assert dbsession.query(LayerWMTS).filter(LayerWMTS.name == layer.name).count() == 1
+        assert dbsession.query(LayerWMS).filter(LayerWMS.name == layer.name).count() == 0
 
         resp = test_app.get(resp.json["redirect"], status=200)
         form = resp.form
@@ -333,8 +333,8 @@ class TestLayerWMSViews(AbstractViewsTests):
         self._check_dimensions(resp.html, layer.dimensions)
 
         assert (
-            "Your submission has been taken into account."
-            == resp.html.find("div", {"class": "msg-lbl"}).getText()
+            resp.html.find("div", {"class": "msg-lbl"}).getText()
+            == "Your submission has been taken into account."
         )
 
     def test_convert_image_type_from_ogcserver(self, layer_wms_test_data, test_app):
@@ -345,7 +345,7 @@ class TestLayerWMSViews(AbstractViewsTests):
         assert f"http://localhost/admin/layers_wmts/{layer.id}?msg_col=submit_ok" == resp.json["redirect"]
 
         resp = test_app.get(resp.json["redirect"], status=200)
-        assert "image/png" == resp.form["image_type"].value
+        assert resp.form["image_type"].value == "image/png"
 
         layer = layer_wms_test_data["layers"][2]
         resp = test_app.post(f"/admin/layers_wms/{layer.id}/convert_to_wmts", status=200)
@@ -353,7 +353,7 @@ class TestLayerWMSViews(AbstractViewsTests):
         assert f"http://localhost/admin/layers_wmts/{layer.id}?msg_col=submit_ok" == resp.json["redirect"]
 
         resp = test_app.get(resp.json["redirect"], status=200)
-        assert "image/jpeg" == resp.form["image_type"].value
+        assert resp.form["image_type"].value == "image/jpeg"
 
     def test_convert_without_wmts_defaults(self, test_app, layer_wms_test_data, dbsession):
         from c2cgeoportal_commons.models.main import LayerWMTS, Log, LogAction
@@ -363,7 +363,7 @@ class TestLayerWMSViews(AbstractViewsTests):
         test_app.post(f"/admin/layers_wms/{layer.id}/convert_to_wmts", status=200)
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.CONVERT_TO_WMTS
         assert log.element_type == "layer_wms"
         assert log.element_id == layer.id
@@ -381,7 +381,7 @@ class TestLayerWMSViews(AbstractViewsTests):
     def test_unicity_validator_does_not_matter_amongst_cousin(self, layer_wms_test_data, test_app, dbsession):
         from c2cgeoportal_commons.models.main import LayerGroup, LayerWMS
 
-        assert 1 == dbsession.query(LayerGroup).filter(LayerGroup.name == "layer_group_0").count()
+        assert dbsession.query(LayerGroup).filter(LayerGroup.name == "layer_group_0").count() == 1
 
         assert dbsession.query(LayerWMS).filter(LayerWMS.name == "layer_group_0").one_or_none() is None
 
@@ -396,7 +396,13 @@ class TestLayerWMSViews(AbstractViewsTests):
         # assert str(layer.id) == re.match('http://localhost/admin/layers_wms/(.*)', resp.location).group(1)
 
     def test_delete(self, test_app, dbsession):
-        from c2cgeoportal_commons.models.main import Layer, LayerWMS, Log, LogAction, TreeItem
+        from c2cgeoportal_commons.models.main import (
+            Layer,
+            LayerWMS,
+            Log,
+            LogAction,
+            TreeItem,
+        )
 
         layer = dbsession.query(LayerWMS).first()
 
@@ -407,7 +413,7 @@ class TestLayerWMSViews(AbstractViewsTests):
         assert dbsession.query(TreeItem).get(layer.id) is None
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.DELETE
         assert log.element_type == "layer_wms"
         assert log.element_id == layer.id
@@ -432,12 +438,12 @@ class TestLayerWMSViews(AbstractViewsTests):
         )
 
         assert (
-            "There was a problem with your submission"
-            == resp.html.select_one('div[class="error-msg-lbl"]').text
+            resp.html.select_one('div[class="error-msg-lbl"]').text
+            == "There was a problem with your submission"
         )
         assert (
-            "Errors have been highlighted below" == resp.html.select_one('div[class="error-msg-detail"]').text
+            resp.html.select_one('div[class="error-msg-detail"]').text == "Errors have been highlighted below"
         )
-        assert ["WMS layer name"] == sorted(
+        assert sorted(
             (x.select_one("label").text.strip()) for x in resp.html.select("[class~='has-error']")
-        )
+        ) == ["WMS layer name"]

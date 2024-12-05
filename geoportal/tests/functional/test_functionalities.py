@@ -38,7 +38,6 @@ from tests.functional import teardown_common as teardown_module  # noqa
 class TestFunctionalities(TestCase):
     def setup_method(self, _):
         import transaction
-
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import Functionality, Role
         from c2cgeoportal_commons.models.static import User
@@ -67,7 +66,6 @@ class TestFunctionalities(TestCase):
 
     def teardown_method(self, _):
         import transaction
-
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import Functionality, OGCServer, Role
         from c2cgeoportal_commons.models.static import User
@@ -89,11 +87,11 @@ class TestFunctionalities(TestCase):
         transaction.commit()
 
     def test_functionalities(self):
-        from tests.functional import create_dummy_request
-
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
         from c2cgeoportal_geoportal.lib.functionality import get_functionality
+
+        from tests.functional import create_dummy_request
 
         request = create_dummy_request()
         request.user = None
@@ -189,10 +187,10 @@ class TestFunctionalities(TestCase):
         self.assertEqual(set(get_functionality("__test_a", request2, False)), {"db1", "db2"})
 
     def test_web_client_functionalities(self):
-        from tests.functional import create_dummy_request
-
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
+
+        from tests.functional import create_dummy_request
 
         request = create_dummy_request()
         request.static_url = lambda url: "http://example.com/dummy/static/url"

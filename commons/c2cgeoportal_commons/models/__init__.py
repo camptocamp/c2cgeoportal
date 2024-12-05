@@ -47,7 +47,7 @@ DBSession: sqlalchemy.orm.scoping.scoped_session[sqlalchemy.orm.Session] | None 
 
 
 class BaseType(sqlalchemy.ext.declarative.DeclarativeMeta, type):
-    pass
+    """Base type for all the models class."""
 
 
 Base: BaseType = sqlalchemy.orm.declarative_base()

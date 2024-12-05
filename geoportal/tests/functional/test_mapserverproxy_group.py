@@ -32,6 +32,7 @@ from unittest import TestCase
 
 import transaction
 from geoalchemy2 import WKTElement
+
 from tests.functional import create_default_ogcserver, create_dummy_request
 from tests.functional import setup_common as setup_module  # noqa
 from tests.functional import teardown_common as teardown_module  # noqa
@@ -40,7 +41,12 @@ from tests.functional import teardown_common as teardown_module  # noqa
 class TestMapserverproxyViewGroup(TestCase):
     def setup_method(self, _):
         from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import Interface, LayerWMS, RestrictionArea, Role
+        from c2cgeoportal_commons.models.main import (
+            Interface,
+            LayerWMS,
+            RestrictionArea,
+            Role,
+        )
         from c2cgeoportal_commons.models.static import User
 
         ogc_server_internal = create_default_ogcserver(DBSession)
@@ -72,7 +78,13 @@ class TestMapserverproxyViewGroup(TestCase):
 
     def teardown_method(self, _):
         from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import Interface, LayerWMS, OGCServer, RestrictionArea, Role
+        from c2cgeoportal_commons.models.main import (
+            Interface,
+            LayerWMS,
+            OGCServer,
+            RestrictionArea,
+            Role,
+        )
         from c2cgeoportal_commons.models.static import User
 
         DBSession.delete(DBSession.query(User).filter(User.username == "__test_user1").one())

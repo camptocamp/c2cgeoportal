@@ -25,7 +25,7 @@
 import argparse
 import glob
 import os
-import subprocess
+import subprocess  # nosec
 
 import yaml
 from azure.storage.blob import BlobServiceClient, ContainerClient, __version__

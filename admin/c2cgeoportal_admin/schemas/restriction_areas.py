@@ -31,9 +31,8 @@ from typing import Any
 import colander
 from c2cgeoform.ext.deform_ext import RelationCheckBoxListWidget
 from c2cgeoform.schema import GeoFormManyToManySchemaNode, manytomany_validator
-from sqlalchemy.orm.attributes import InstrumentedAttribute
-
 from c2cgeoportal_commons.models.main import RestrictionArea
+from sqlalchemy.orm.attributes import InstrumentedAttribute
 
 
 def restrictionareas_schema_node(

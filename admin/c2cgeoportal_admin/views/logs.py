@@ -28,11 +28,16 @@
 from functools import partial
 
 from c2cgeoform import JSONDict
-from c2cgeoform.views.abstract_views import AbstractViews, GridResponse, IndexResponse, ItemAction, ListField
-from pyramid.view import view_config, view_defaults
-
+from c2cgeoform.views.abstract_views import (
+    AbstractViews,
+    GridResponse,
+    IndexResponse,
+    ItemAction,
+    ListField,
+)
 from c2cgeoportal_commons.models import _
 from c2cgeoportal_commons.models.main import AbstractLog
+from pyramid.view import view_config, view_defaults
 
 _list_field = partial(ListField, AbstractLog)
 

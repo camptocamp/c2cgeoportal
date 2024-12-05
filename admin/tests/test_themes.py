@@ -54,7 +54,7 @@ def theme_test_data(dbsession, transact):
     themes = []
     for i in range(0, 25):
         theme = Theme(name=f"theme_{i}", ordering=1, icon=f"icon_{i}")
-        theme.public = 1 == i % 2
+        theme.public = i % 2 == 1
         theme.interfaces = [interfaces[i % 4], interfaces[(i + 2) % 4]]
         theme.metadatas = [
             Metadata(name=metadatas_protos[id][0], value=metadatas_protos[id][1])
@@ -121,10 +121,10 @@ class TestTheme(TestTreeGroup):
 
         assert first_theme.id == int(first_row["_id_"])
         assert first_theme.name == first_row["name"]
-        assert "default_basemap=value_0" == first_row["functionalities"]
-        assert "secretary_0, secretary_2" == first_row["restricted_roles"]
-        assert "desktop, edit" == first_row["interfaces"]
-        assert 'copyable: true, snappingConfig: {"tolerance": 50}' == first_row["metadatas"]
+        assert first_row["functionalities"] == "default_basemap=value_0"
+        assert first_row["restricted_roles"] == "secretary_0, secretary_2"
+        assert first_row["interfaces"] == "desktop, edit"
+        assert first_row["metadatas"] == 'copyable: true, snappingConfig: {"tolerance": 50}'
 
     def test_grid_search(self, test_app):
         # search on metadatas key and value parts
@@ -165,7 +165,7 @@ class TestTheme(TestTreeGroup):
         form = resp.form
 
         assert str(theme.id) == self.get_first_field_named(form, "id").value
-        assert "hidden" == self.get_first_field_named(form, "id").attrs["type"]
+        assert self.get_first_field_named(form, "id").attrs["type"] == "hidden"
         assert theme.name == self.get_first_field_named(form, "name").value
         assert str(theme.description or "") == self.get_first_field_named(form, "description").value
         assert str(theme.ordering or "") == self.get_first_field_named(form, "ordering").value
@@ -231,10 +231,10 @@ class TestTheme(TestTreeGroup):
                 assert str(value or "") == str(getattr(theme, key) or "")
         assert {interfaces[1].id, interfaces[3].id} == {interface.id for interface in theme.interfaces}
         assert {functionalities[2].id} == {functionality.id for functionality in theme.functionalities}
-        assert 0 == len(theme.restricted_roles)
+        assert len(theme.restricted_roles) == 0
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.UPDATE
         assert log.element_type == "theme"
         assert log.element_id == theme.id
@@ -242,9 +242,7 @@ class TestTheme(TestTreeGroup):
         assert log.username == "test_user"
 
     def test_post_new_with_children_invalid(self, test_app, theme_test_data):
-        """
-        Check there is no rendering error when validation fails.
-        """
+        """Check there is no rendering error when validation fails."""
         groups = theme_test_data["groups"]
         resp = test_app.post(
             f"{self._prefix}/new",
@@ -314,7 +312,7 @@ class TestTheme(TestTreeGroup):
         ]
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.INSERT
         assert log.element_type == "theme"
         assert log.element_id == theme.id
@@ -322,9 +320,7 @@ class TestTheme(TestTreeGroup):
         assert log.username == "test_user"
 
     def test_post_new_with_child_layer(self, theme_test_data, test_app):
-        """
-        Check layers are rejected by the validator (also means that they are not proposed to the user).
-        """
+        """Check layers are rejected by the validator (also means that they are not proposed to the user)."""
         layers = theme_test_data["layers"]
         resp = test_app.post(
             f"{self._prefix}/new",
@@ -359,8 +355,8 @@ class TestTheme(TestTreeGroup):
         resp = test_app.get(f"{self._prefix}/{theme.id}/duplicate", status=200)
         form = resp.form
 
-        assert "" == self.get_first_field_named(form, "id").value
-        assert "hidden" == self.get_first_field_named(form, "id").attrs["type"]
+        assert self.get_first_field_named(form, "id").value == ""
+        assert self.get_first_field_named(form, "id").attrs["type"] == "hidden"
         assert theme.name == self.get_first_field_named(form, "name").value
         assert str(theme.description or "") == self.get_first_field_named(form, "description").value
         assert str(theme.ordering or "") == self.get_first_field_named(form, "ordering").value
@@ -421,7 +417,7 @@ class TestTheme(TestTreeGroup):
         assert dbsession.query(Theme).get(theme.id) is None
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.DELETE
         assert log.element_type == "theme"
         assert log.element_id == theme.id

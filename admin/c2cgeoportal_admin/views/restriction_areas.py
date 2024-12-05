@@ -39,6 +39,7 @@ from c2cgeoform.views.abstract_views import (
     ObjectResponse,
     SaveResponse,
 )
+from c2cgeoportal_commons.models.main import Layer, RestrictionArea
 from deform.widget import FormWidget
 from pyramid.view import view_config, view_defaults
 from sqlalchemy.orm import subqueryload
@@ -47,7 +48,6 @@ from c2cgeoportal_admin.schemas.roles import roles_schema_node
 from c2cgeoportal_admin.schemas.treegroup import treeitem_edit_url
 from c2cgeoportal_admin.views.logged_views import LoggedViews
 from c2cgeoportal_admin.widgets import ChildrenWidget, ChildWidget
-from c2cgeoportal_commons.models.main import Layer, RestrictionArea
 
 _list_field = partial(ListField, RestrictionArea)
 

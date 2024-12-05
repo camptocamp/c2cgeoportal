@@ -68,7 +68,6 @@ def locale(request: pyramid.request.Request) -> pyramid.response.Response:
 @view_config(route_name="localepot")  # type: ignore
 def localepot(request: pyramid.request.Request) -> pyramid.response.Response:
     """Get the pot from an HTTP request."""
-
     # Build the list of files to be processed
     sources = []
     sources += glob.glob(f"/app/{request.registry.package_name}/static-ngeo/js/apps/*.html.ejs")

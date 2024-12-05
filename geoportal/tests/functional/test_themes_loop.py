@@ -32,6 +32,7 @@ from unittest import TestCase
 
 import transaction
 from pyramid import testing
+
 from tests import DummyRequest
 from tests.functional import create_default_ogcserver, mapserv_url
 from tests.functional import setup_common as setup_module  # noqa
@@ -45,7 +46,12 @@ class TestLoopTheme(TestCase):
         self.maxDiff = None
 
         from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import Interface, LayerGroup, LayerWMS, Theme
+        from c2cgeoportal_commons.models.main import (
+            Interface,
+            LayerGroup,
+            LayerWMS,
+            Theme,
+        )
 
         ogc_server = create_default_ogcserver(DBSession)
         main = Interface(name="desktop2")
@@ -69,7 +75,12 @@ class TestLoopTheme(TestCase):
         testing.tearDown()
 
         from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import LayerGroup, LayerWMS, OGCServer, Theme
+        from c2cgeoportal_commons.models.main import (
+            LayerGroup,
+            LayerWMS,
+            OGCServer,
+            Theme,
+        )
 
         for t in DBSession.query(Theme).filter(Theme.name == "__test_theme").all():
             DBSession.delete(t)

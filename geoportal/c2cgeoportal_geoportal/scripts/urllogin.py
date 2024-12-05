@@ -56,7 +56,6 @@ def create_token(aeskey: str, user: str, password: str, valid: bool) -> str:
 
 def get_argparser() -> argparse.ArgumentParser:
     """Get the argument parser for this script."""
-
     parser = argparse.ArgumentParser(description="Generate an auth token")
     fill_arguments(parser, use_attribute=True)
     parser.add_argument("user", help="The username")
@@ -67,7 +66,6 @@ def get_argparser() -> argparse.ArgumentParser:
 
 def main() -> None:
     """Run the command."""
-
     args = get_argparser().parse_args()
     settings = get_appsettings(args)
     urllogin = settings.get("urllogin", {})

@@ -40,6 +40,14 @@ from c2cgeoform.views.abstract_views import (
     ObjectResponse,
     SaveResponse,
 )
+from c2cgeoportal_commons.models.main import (
+    LayerGroup,
+    LayerWMS,
+    LayerWMTS,
+    LogAction,
+    OGCServer,
+    TreeItem,
+)
 from deform.widget import FormWidget
 from pyramid.view import view_config, view_defaults
 from sqlalchemy import delete, insert, inspect, update
@@ -52,7 +60,6 @@ from c2cgeoportal_admin.schemas.metadata import metadata_schema_node
 from c2cgeoportal_admin.schemas.restriction_areas import restrictionareas_schema_node
 from c2cgeoportal_admin.schemas.treeitem import parent_id_node
 from c2cgeoportal_admin.views.dimension_layers import DimensionLayerViews
-from c2cgeoportal_commons.models.main import LayerGroup, LayerWMS, LayerWMTS, LogAction, OGCServer, TreeItem
 
 _list_field = partial(ListField, LayerWMTS)
 

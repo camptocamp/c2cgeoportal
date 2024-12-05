@@ -50,14 +50,12 @@ def upgrade() -> None:
     staticschema = config["schema_static"]
 
     op.execute(
-        """
+        f"""
 SET TIME ZONE 'UTC';
 ALTER TABLE {staticschema}.user ALTER COLUMN last_login TYPE timestamp with time zone;
 SET TIME ZONE LOCAL;
 ALTER TABLE {staticschema}.user ALTER COLUMN expire_on TYPE timestamp with time zone;
-""".format(
-            staticschema=staticschema
-        )
+"""
     )
 
 
@@ -66,12 +64,10 @@ def downgrade() -> None:
     staticschema = config["schema_static"]
 
     op.execute(
-        """
+        f"""
 SET TIME ZONE 'UTC';
 ALTER TABLE {staticschema}.user ALTER COLUMN last_login TYPE timestamp without time zone;
 SET TIME ZONE LOCAL;
 ALTER TABLE {staticschema}.user ALTER COLUMN expire_on TYPE timestamp without time zone;
-""".format(
-            staticschema=staticschema
-        )
+"""
     )

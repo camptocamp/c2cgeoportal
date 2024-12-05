@@ -40,12 +40,12 @@ from c2cgeoform.views.abstract_views import (
     ObjectResponse,
     SaveResponse,
 )
+from c2cgeoportal_commons.models.main import Functionality
 from deform.widget import FormWidget
 from pyramid.view import view_config, view_defaults
 
 from c2cgeoportal_admin import _
 from c2cgeoportal_admin.views.logged_views import LoggedViews
-from c2cgeoportal_commons.models.main import Functionality
 
 _list_field = partial(ListField, Functionality)
 
@@ -103,7 +103,9 @@ class FunctionalityViews(LoggedViews[Functionality]):
         return super().delete()
 
     @view_config(
-        route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2"  # type: ignore[misc]
+        route_name="c2cgeoform_item_duplicate",
+        request_method="GET",
+        renderer="../templates/edit.jinja2",  # type: ignore[misc]
     )
     def duplicate(self) -> ObjectResponse:
         return super().duplicate()

@@ -41,7 +41,7 @@ def test_desktop_alt(url: str) -> None:
 
 
 def test_enum() -> None:
-    """Test the enumerations view"""
+    """Test the enumerations view."""
     response = requests.get("https://front/layers/test/values/type", verify=False, timeout=30)  # nosec
     assert response.status_code == 200, response.text
 

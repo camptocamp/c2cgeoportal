@@ -104,64 +104,28 @@ repos:
             docker/config/haproxy_dev/localhost\.pem
             |geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter\.project}}/mapserver/data/TM_EUROPE_BORDERS-0.3\.sql
           )$
-  - repo: https://github.com/asottile/pyupgrade
-    rev: v3.19.0
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.8.1
     hooks:
-      # The script that will run on the project host
-      - id: pyupgrade
+      - id: ruff-format
         args:
-          - --py38-plus
-        files: |-
-          (?x)^(
-            geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter\.project}}/(build
-            |scripts/.*)
-            |scripts/(get-version
-            |upgrade)
-          )$
-      # All other
-      - id: pyupgrade
-        args:
-          - --py310-plus
-        # geoportal/c2cgeoportal_geoportal/views/theme\.py is present because of issue:
-        # https://bugs.launchpad.net/lxml/+bug/2079018
+          - --line-length=110
         exclude: |-
           (?x)^(
-            geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter\.project}}/(build
-            |scripts/.*)
-            |scripts/(get-version
-            |upgrade)
-            |geoportal/c2cgeoportal_geoportal/views/theme\.py
-          )$
-  - repo: https://github.com/PyCQA/autoflake
-    rev: v2.3.1
-    hooks:
-      - id: autoflake
-  - repo: https://github.com/PyCQA/isort
-    rev: 5.13.2
-    hooks:
-      - id: isort
-  - repo: https://github.com/psf/black
-    rev: 24.10.0
-    hooks:
-      - id: black
-        exclude: |-
-          (?x)^(
-            commons/c2cgeoportal_commons/alembic/script\.py\.mako
-            |.*\.rst
-            |.*\.rst\.tmpl
-            |geoportal/c2cgeoportal_geoportal/scaffolds/advance_create/{{cookiecutter.project}}/geoportal/{{cookiecutter.package}}_geoportal/__init__\.py
+            geoportal/c2cgeoportal_geoportal/scaffolds/advance_create/{{cookiecutter.project}}/geoportal/{{cookiecutter.package}}_geoportal/__init__\.py
           )$
   - repo: https://github.com/PyCQA/prospector
     rev: v1.13.3
     hooks:
       - id: prospector
         args:
-          - --tool=pydocstyle
+          - --tool=ruff
           - --die-on-tool-error
           - --output-format=pylint
         additional_dependencies:
-          - prospector-profile-duplicated==1.8.0 # pypi
+          - prospector-profile-duplicated==1.8.1 # pypi
           - prospector-profile-utils==1.13.0 # pypi
+          - ruff==0.8.1 # pypi
   - repo: https://github.com/sbrunner/jsonschema-validator
     rev: 0.3.2
     hooks:

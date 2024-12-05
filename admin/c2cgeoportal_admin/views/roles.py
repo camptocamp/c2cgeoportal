@@ -39,6 +39,8 @@ from c2cgeoform.views.abstract_views import (
     ObjectResponse,
     SaveResponse,
 )
+from c2cgeoportal_commons.models.main import Role
+from c2cgeoportal_commons.models.static import User
 from deform.widget import FormWidget
 from pyramid.view import view_config, view_defaults
 from sqlalchemy.orm import subqueryload
@@ -47,8 +49,6 @@ from c2cgeoportal_admin.schemas.functionalities import functionalities_schema_no
 from c2cgeoportal_admin.schemas.restriction_areas import restrictionareas_schema_node
 from c2cgeoportal_admin.views.logged_views import LoggedViews
 from c2cgeoportal_admin.widgets import ChildrenWidget, ChildWidget
-from c2cgeoportal_commons.models.main import Role
-from c2cgeoportal_commons.models.static import User
 
 _list_field = partial(ListField, Role)
 

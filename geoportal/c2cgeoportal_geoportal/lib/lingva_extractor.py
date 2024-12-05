@@ -29,10 +29,10 @@
 import json
 import os
 import re
-import subprocess
+import subprocess  # nosec
 import traceback
 from collections.abc import Callable
-from typing import TYPE_CHECKING, Any, Optional, cast
+from typing import TYPE_CHECKING, Any, cast
 from xml.dom import Node
 from xml.parsers.expat import ExpatError
 
@@ -42,6 +42,7 @@ import sqlalchemy.orm
 import yaml
 from bottle import MakoTemplate, template
 from c2c.template.config import config
+from c2cgeoportal_commons.lib.url import Url, get_url2
 from defusedxml.minidom import parseString
 from geoalchemy2.types import Geometry
 from lingva.extractors import Extractor, Message
@@ -54,13 +55,14 @@ from sqlalchemy.orm.properties import ColumnProperty
 from sqlalchemy.orm.util import class_mapper
 
 import c2cgeoportal_geoportal
-from c2cgeoportal_commons.lib.url import Url, get_url2
 from c2cgeoportal_geoportal.lib.bashcolor import Color, colorize
 from c2cgeoportal_geoportal.lib.caching import init_region
 from c2cgeoportal_geoportal.views.layers import Layers, get_layer_class
 
 if TYPE_CHECKING:
-    from c2cgeoportal_commons.models import main  # pylint: disable=ungrouped-imports,useless-suppression
+    from c2cgeoportal_commons.models import (
+        main,  # pylint: disable=ungrouped-imports,useless-suppression
+    )
 
 
 class LinguaExtractorException(Exception):
@@ -76,7 +78,7 @@ def _get_config(key: str, default: str | None = None) -> str | None:
     """
     request = pyramid.threadlocal.get_current_request()
     if request is not None:
-        return cast(Optional[str], request.params.get(key.lower(), default))
+        return cast(str | None, request.params.get(key.lower(), default))
 
     return os.environ.get(key, default)
 
@@ -174,23 +176,23 @@ class GeomapfishAngularExtractor(Extractor):  # type: ignore
         int_filename = filename
         if re.match("^" + re.escape(f"./{self.config['package']}/templates"), filename):
             try:
-                empty_template = Template("")  # nosec
+                empty_template = Template("")  # noqa: S702
 
-                class Lookup(TemplateLookup):  # type: ignore
+                class Lookup(TemplateLookup):  # type: ignore[misc]
                     def get_template(self, uri: str) -> Template:
                         del uri  # unused
                         return empty_template
 
-                class MyTemplate(MakoTemplate):  # type: ignore
+                class MyTemplate(MakoTemplate):  # type: ignore[misc]
                     tpl = None
 
                     def prepare(self, **kwargs: Any) -> None:
                         options.update({"input_encoding": self.encoding})
                         lookup = Lookup(**kwargs)
                         if self.source:
-                            self.tpl = Template(self.source, lookup=lookup, **kwargs)  # nosec
+                            self.tpl = Template(self.source, lookup=lookup, **kwargs)  # noqa: S702
                         else:
-                            self.tpl = Template(  # nosec
+                            self.tpl = Template(  # noqa: S702
                                 uri=self.name, filename=self.filename, lookup=lookup, **kwargs
                             )
 
@@ -252,10 +254,13 @@ def init_db(settings: dict[str, Any]) -> None:
     First test the connection, on when environment it should be OK, with the command line we should get
     an exception ind initialize the connection.
     """
-
     try:
-        from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
-        from c2cgeoportal_commons.models.main import Theme  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+            DBSession,
+        )
+        from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+            Theme,
+        )
 
         assert DBSession is not None
 
@@ -302,7 +307,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
         init_region({"backend": "dogpile.cache.memory"}, "obj")
 
         with open(filename, encoding="utf8") as config_file:
-            gmf_config = yaml.load(config_file, Loader=yaml.BaseLoader)  # nosec
+            gmf_config = yaml.load(config_file, Loader=yaml.BaseLoader)  # noqa: S506
             # For application config (config.yaml)
             if "vars" in gmf_config:
                 return self._collect_app_config(filename)
@@ -332,7 +337,9 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
             DBSession,
             DBSessions,
         )
-        from c2cgeoportal_commons.models.main import Metadata  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+            Metadata,
+        )
 
         assert DBSession is not None
 
@@ -385,7 +392,6 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
                 interface_config.get("constants", {})
                 .get("gmfDisplayQueryGridOptions", {})
                 .get("mergeTabs", {})
-                .keys()
             ):
                 location = (
                     f"interfaces_config/{interface}/constants/gmfDisplayQueryGridOptions/"
@@ -479,7 +485,9 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
 
         try:
             init_db(self.config)
-            from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
+            from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+                DBSession,
+            )
 
             assert DBSession is not None
 
@@ -588,8 +596,12 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
         has_interfaces: bool = True,
         name_regex: str = ".*",
     ) -> None:
-        from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
-        from c2cgeoportal_commons.models.main import Interface  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+            DBSession,
+        )
+        from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+            Interface,
+        )
 
         assert DBSession is not None
 
@@ -667,8 +679,12 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                     raise
 
     def _import_layer_wmts(self, layer: "main.Layer", messages: list[str]) -> None:
-        from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
-        from c2cgeoportal_commons.models.main import OGCServer  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+            DBSession,
+        )
+        from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+            OGCServer,
+        )
 
         assert DBSession is not None
 

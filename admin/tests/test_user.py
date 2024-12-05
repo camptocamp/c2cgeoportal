@@ -127,7 +127,7 @@ class TestUser(AbstractViewsTests):
         assert {roles[2].id, roles[3].id} == {role.id for role in user.roles}
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.UPDATE
         assert log.element_type == "user"
         assert log.element_id == user.id
@@ -145,7 +145,7 @@ class TestUser(AbstractViewsTests):
         assert dbsession.query(user_role).filter(user_role.c.user_id == user.id).count() == 0
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.DELETE
         assert log.element_type == "user"
         assert log.element_id == user.id
@@ -224,7 +224,7 @@ class TestUser(AbstractViewsTests):
         resp = test_app.get(f"/admin/users/{user.id}/duplicate", status=200)
         form = resp.form
 
-        assert "" == form["id"].value
+        assert form["id"].value == ""
         assert user.username == form["username"].value
         assert user.email == form["email"].value
         assert str(user.settings_role_id) == form["settings_role_id"].value
@@ -249,7 +249,7 @@ class TestUser(AbstractViewsTests):
         assert EXPECTED_WELCOME_MAIL.format("clone", "clone", "basile") == parts[1].get_payload(
             decode=True
         ).decode("utf8")
-        assert "mail7@valid.net" == parts[0].items()[3][1]
+        assert parts[0].items()[3][1] == "mail7@valid.net"
 
     @patch("c2cgeoportal_commons.lib.email_.smtplib.SMTP")
     @patch("c2cgeoportal_admin.views.users.pwgenerator.generate")
@@ -299,10 +299,10 @@ class TestUser(AbstractViewsTests):
         assert EXPECTED_WELCOME_MAIL.format("new_user", "new_user", "basile") == parts[1].get_payload(
             decode=True
         ).decode("utf8")
-        assert "valid@email.net" == parts[0].items()[3][1]
+        assert parts[0].items()[3][1] == "valid@email.net"
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.INSERT
         assert log.element_type == "user"
         assert log.element_id == user.id
@@ -339,9 +339,7 @@ class TestUser(AbstractViewsTests):
             UserViews(request).grid()
 
     def test_grid_settings_role_none(self, dbsession, test_app):
-        """
-        Grid view must work even if a user's settings_role is None.
-        """
+        """Grid view must work even if a user's settings_role is None."""
         from c2cgeoportal_commons.models.static import User
 
         dbsession.add(User("test", email="test@valid.net"))

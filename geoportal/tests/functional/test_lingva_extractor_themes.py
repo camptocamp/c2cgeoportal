@@ -29,8 +29,6 @@
 
 from unittest.mock import Mock
 
-import pytest
-
 from c2cgeoportal_geoportal.lib.lingva_extractor import GeomapfishThemeExtractor
 
 

@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2023, Camptocamp SA
+# Copyright (c) 2011-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -31,9 +31,9 @@
 from unittest import TestCase
 
 import pyramid.registry
-from tests import DummyRequest
-
 from c2cgeoportal_geoportal.lib.caching import init_region
+
+from tests import DummyRequest
 
 
 def handler(request):

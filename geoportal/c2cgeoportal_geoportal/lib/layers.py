@@ -42,7 +42,10 @@ CACHE_REGION = caching.get_region("std")
 
 
 def _get_layers_query(request: Request, what: sqlalchemy.orm.Mapper[Any] | type[Any]) -> Query[Any]:
-    from c2cgeoportal_commons.models import DBSession, main  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+        DBSession,
+        main,
+    )
 
     assert DBSession is not None
 
@@ -64,7 +67,9 @@ def get_protected_layers_query(
 
     Private layers but accessible to the user.
     """
-    from c2cgeoportal_commons.models import main  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+        main,
+    )
 
     q = _get_layers_query(request, what)
     q = q.filter(main.Layer.public.is_(False))
@@ -76,7 +81,9 @@ def get_protected_layers_query(
 
 def get_writable_layers_query(request: Request, ogc_server_ids: Iterable[int]) -> Query["main.LayerWMS"]:
     """Get the writable layers query."""
-    from c2cgeoportal_commons.models import main  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+        main,
+    )
 
     q = _get_layers_query(request, main.LayerWMS)
     return (
@@ -92,7 +99,10 @@ def get_protected_layers(request: Request, ogc_server_ids: Iterable[int]) -> dic
 
     Private layers but accessible to the user.
     """
-    from c2cgeoportal_commons.models import DBSession, main  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+        DBSession,
+        main,
+    )
 
     assert DBSession is not None
 
@@ -104,7 +114,9 @@ def get_protected_layers(request: Request, ogc_server_ids: Iterable[int]) -> dic
 
 def get_writable_layers(request: Request, ogc_server_ids: Iterable[int]) -> dict[int, "main.LayerWMS"]:
     """Get the writable layers."""
-    from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+        DBSession,
+    )
 
     assert DBSession is not None
 
@@ -117,7 +129,10 @@ def get_writable_layers(request: Request, ogc_server_ids: Iterable[int]) -> dict
 @CACHE_REGION.cache_on_arguments()
 def get_private_layers(ogc_server_ids: Iterable[int]) -> dict[int, "main.LayerWMS"]:
     """Get the private layers."""
-    from c2cgeoportal_commons.models import DBSession, main  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+        DBSession,
+        main,
+    )
 
     assert DBSession is not None
 

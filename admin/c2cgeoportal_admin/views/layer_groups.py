@@ -39,6 +39,7 @@ from c2cgeoform.views.abstract_views import (
     ObjectResponse,
     SaveResponse,
 )
+from c2cgeoportal_commons.models.main import LayerGroup, TreeGroup
 from deform.widget import FormWidget
 from pyramid.view import view_config, view_defaults
 
@@ -46,7 +47,6 @@ from c2cgeoportal_admin.schemas.metadata import metadata_schema_node
 from c2cgeoportal_admin.schemas.treegroup import children_schema_node
 from c2cgeoportal_admin.schemas.treeitem import parent_id_node
 from c2cgeoportal_admin.views.treeitems import TreeItemViews
-from c2cgeoportal_commons.models.main import LayerGroup, TreeGroup
 
 _list_field = partial(ListField, LayerGroup)
 

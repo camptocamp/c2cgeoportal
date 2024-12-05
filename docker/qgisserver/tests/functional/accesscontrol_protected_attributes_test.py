@@ -8,11 +8,15 @@
 from unittest.mock import patch
 
 import pytest
-from qgis.core import QgsProject, QgsVectorLayer
+from qgis.core import QgsProject
 from shapely.geometry import box
 
+from geomapfish_qgisserver.accesscontrol import (
+    GeoMapFishAccessControl,
+    OGCServerAccessControl,
+)
+
 from .accesscontrol_test import add_node_in_qgis_project, set_request_parameters
-from geomapfish_qgisserver.accesscontrol import GeoMapFishAccessControl, OGCServerAccessControl
 
 area1 = box(485869.5728, 76443.1884, 837076.5648, 299941.7864)
 
@@ -124,7 +128,13 @@ def _test_data_protected(clean_dbsession, protected: bool):
 
 @pytest.fixture(scope="module")
 def test_data_not_protected(clean_dbsession):
-    from c2cgeoportal_commons.models.main import Functionality, LayerWMS, Metadata, OGCServer, Role
+    from c2cgeoportal_commons.models.main import (
+        Functionality,
+        LayerWMS,
+        Metadata,
+        OGCServer,
+        Role,
+    )
     from c2cgeoportal_commons.models.static import User
 
     test_data = _test_data_protected(clean_dbsession, False)
@@ -140,7 +150,13 @@ def test_data_not_protected(clean_dbsession):
 
 @pytest.fixture(scope="module")
 def test_data_protected(clean_dbsession):
-    from c2cgeoportal_commons.models.main import Functionality, LayerWMS, Metadata, OGCServer, Role
+    from c2cgeoportal_commons.models.main import (
+        Functionality,
+        LayerWMS,
+        Metadata,
+        OGCServer,
+        Role,
+    )
     from c2cgeoportal_commons.models.static import User
 
     test_data = _test_data_protected(clean_dbsession, True)

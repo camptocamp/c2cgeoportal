@@ -34,7 +34,7 @@ jobs:
       # When we upgrade this we should also upgrade the requirements
       # in the documentation: doc/integrator/requirements.rst
       # and the first pyupgrade pre-commit hook in .pre-commit-config.yaml
-      MIN_PYTHON_VERSION: '3.8'
+      MIN_PYTHON_VERSION: '3.10'
 
     steps:
       - run: '! ls BACKPORT_TODO'
@@ -128,6 +128,7 @@ jobs:
           git add commons/c2cgeoportal_commons/alembic/main/*.py commons/c2cgeoportal_commons/alembic/static/*.py
           git diff --staged --patch > /tmp/alembic.patch
           git diff --staged --exit-code
+          git reset --hard
       - uses: actions/upload-artifact@v4
         with:
           name: Add Alembic upgrade script.patch

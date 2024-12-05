@@ -103,7 +103,11 @@ def run_migrations_online() -> None:
 
     # Autogenerate config
     alembic_name = context.config.get_main_option("type")
-    from c2cgeoportal_commons.models import Base, main, static  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+        Base,
+        main,
+        static,
+    )
 
     _schema = main._schema if alembic_name == "main" else static._schema  # pylint: disable=protected-access
 

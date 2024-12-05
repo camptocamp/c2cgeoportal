@@ -13,7 +13,6 @@ from . import AbstractViewsTests
 def logs_test_data(dbsession, transact):
     del transact
 
-    from c2cgeoportal_commons.models.main import AbstractLog
     from c2cgeoportal_commons.models.main import Log as MainLog
     from c2cgeoportal_commons.models.main import LogAction
     from c2cgeoportal_commons.models.static import Log as StaticLog

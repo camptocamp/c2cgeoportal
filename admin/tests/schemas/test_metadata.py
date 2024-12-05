@@ -11,7 +11,9 @@ def test_get_relevant_for():
 
 
 def test_metadata_definitions():
-    from c2cgeoportal_admin.schemas.metadata import get_relevant_for, metadata_definitions
+    from c2cgeoportal_admin.schemas.metadata import (
+        metadata_definitions,
+    )
     from c2cgeoportal_commons.models.main import LayerGroup, LayerWMS
 
     settings = {

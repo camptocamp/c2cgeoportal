@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2023, Camptocamp SA
+# Copyright (c) 2013-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -42,7 +42,10 @@ class TestExtent(TestCase):
         self.assertTrue(isinstance(extent, TimeExtentValue))
 
     def test_parse_interval(self):
-        from c2cgeoportal_geoportal.lib.wmstparsing import TimeExtentInterval, parse_extent
+        from c2cgeoportal_geoportal.lib.wmstparsing import (
+            TimeExtentInterval,
+            parse_extent,
+        )
 
         extent = parse_extent(["2000/2005/P1Y"], "2002")
         self.assertTrue(isinstance(extent, TimeExtentInterval))
@@ -80,7 +83,10 @@ class TestExtent(TestCase):
         )
 
     def test_merge_interval(self):
-        from c2cgeoportal_geoportal.lib.wmstparsing import TimeExtentInterval, parse_extent
+        from c2cgeoportal_geoportal.lib.wmstparsing import (
+            TimeExtentInterval,
+            parse_extent,
+        )
 
         e1 = parse_extent(["2000/2005/P1Y"], "2000/2005")
         e2 = parse_extent(["2006/2010/P1Y"], "2006/2010")
@@ -121,35 +127,35 @@ class TestParseDate(TestCase):
         from c2cgeoportal_geoportal.lib.wmstparsing import _parse_date
 
         date = _parse_date("2010")
-        assert "year" == date[0]
+        assert date[0] == "year"
         self.assertEqual(datetime.datetime(2010, 0o1, 0o1, tzinfo=isodate.UTC), date[1])
 
     def test_parse_date_month(self):
         from c2cgeoportal_geoportal.lib.wmstparsing import _parse_date
 
         date = _parse_date("2010-02")
-        assert "month" == date[0]
+        assert date[0] == "month"
         self.assertEqual(datetime.datetime(2010, 0o2, 0o1, tzinfo=isodate.UTC), date[1])
 
     def test_parse_date(self):
         from c2cgeoportal_geoportal.lib.wmstparsing import _parse_date
 
         date = _parse_date("2010-02-03")
-        assert "day" == date[0]
+        assert date[0] == "day"
         self.assertEqual(datetime.datetime(2010, 0o2, 0o3, tzinfo=isodate.UTC), date[1])
 
     def test_parse_datetime(self):
         from c2cgeoportal_geoportal.lib.wmstparsing import _parse_date
 
         date = _parse_date("2010-02-03T12:34")
-        assert "second" == date[0]
+        assert date[0] == "second"
         self.assertEqual(datetime.datetime(2010, 0o2, 0o3, 12, 34, tzinfo=isodate.UTC), date[1])
 
     def test_parse_datetime_tz(self):
         from c2cgeoportal_geoportal.lib.wmstparsing import _parse_date
 
         date = _parse_date("2010-02-03T12:34Z")
-        assert "second" == date[0]
+        assert date[0] == "second"
         self.assertEqual(datetime.datetime(2010, 0o2, 0o3, 12, 34, tzinfo=isodate.UTC), date[1])
 
     def test_unsupported_format(self):
@@ -163,13 +169,13 @@ class TestFormat(TestCase):
         from c2cgeoportal_geoportal.lib.wmstparsing import _format_date
 
         dt = datetime.datetime(2010, 0o2, 0o1, 00, 00)
-        assert "2010-02-01T00:00:00Z" == _format_date(dt)
+        assert _format_date(dt) == "2010-02-01T00:00:00Z"
 
     def test_format_tz(self):
         from c2cgeoportal_geoportal.lib.wmstparsing import _format_date, _parse_date
 
         dt = _parse_date("2010-02-03T12:34:00+01:00")
-        assert "2010-02-03T12:34:00+01:00" == _format_date(dt[1])
+        assert _format_date(dt[1]) == "2010-02-03T12:34:00+01:00"
 
 
 class TestParseDuration(TestCase):
@@ -204,9 +210,8 @@ class TestParseDuration(TestCase):
         self.assertEqual((0, 0, 0, 10), _parse_duration("PT10S"))
 
     def test_invalid(self):
-        from isodate import ISO8601Error
-
         from c2cgeoportal_geoportal.lib.wmstparsing import _parse_duration
+        from isodate import ISO8601Error
 
         self.assertRaises(ISO8601Error, _parse_duration, "10S")
 

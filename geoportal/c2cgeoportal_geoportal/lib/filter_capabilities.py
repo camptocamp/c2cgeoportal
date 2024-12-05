@@ -32,25 +32,33 @@ import xml.sax.handler  # nosec
 import xml.sax.xmlreader  # nosec
 from collections.abc import Callable
 from io import StringIO
-from typing import Any, Union
+from typing import Any
 from xml.sax.saxutils import XMLFilterBase, XMLGenerator  # nosec
 
 import defusedxml.expatreader
 import pyramid.httpexceptions
 import pyramid.request
 import requests
+from c2cgeoportal_commons.lib.url import Url
 from owslib.map.wms111 import ContentMetadata as ContentMetadata111
 from owslib.map.wms130 import ContentMetadata as ContentMetadata130
 from owslib.wms import WebMapService
 from pyramid.httpexceptions import HTTPBadGateway
 
-from c2cgeoportal_commons.lib.url import Url
-from c2cgeoportal_geoportal.lib import caching, get_ogc_server_wfs_url_ids, get_ogc_server_wms_url_ids
-from c2cgeoportal_geoportal.lib.layers import get_private_layers, get_protected_layers, get_writable_layers
+from c2cgeoportal_geoportal.lib import (
+    caching,
+    get_ogc_server_wfs_url_ids,
+    get_ogc_server_wms_url_ids,
+)
+from c2cgeoportal_geoportal.lib.layers import (
+    get_private_layers,
+    get_protected_layers,
+    get_writable_layers,
+)
 
 _CACHE_REGION = caching.get_region("std")
 _LOG = logging.getLogger(__name__)
-ContentMetadata = Union[ContentMetadata111, ContentMetadata130]
+ContentMetadata = ContentMetadata111 | ContentMetadata130
 
 
 @_CACHE_REGION.cache_on_arguments()
@@ -111,7 +119,6 @@ def filter_capabilities(
     request: pyramid.request.Request, content: str, wms: bool, url: Url, headers: dict[str, str]
 ) -> str:
     """Filter the WMS/WFS capabilities."""
-
     wms_structure_ = wms_structure(request, url, headers.get("Host"))
 
     ogc_server_ids = (
@@ -153,7 +160,6 @@ def filter_capabilities(
 
 def filter_wfst_capabilities(content: str, wfs_url: Url, request: pyramid.request.Request) -> str:
     """Filter the WTS capabilities."""
-
     writable_layers: set[str] = set()
     ogc_server_ids = get_ogc_server_wfs_url_ids(request, request.host).get(wfs_url.url())
     if ogc_server_ids is None:
@@ -312,7 +318,7 @@ class _CapabilitiesFilter(XMLFilterBase):
         )
 
     def characters(self, content: str) -> None:
-        if self.in_name and self.layers_path and not self.layers_path[-1].self_hidden is True:
+        if self.in_name and self.layers_path and self.layers_path[-1].self_hidden is not True:
             layer_name = normalize_typename(content)
             if self._keep_layer(layer_name):
                 for layer in self.layers_path:
@@ -342,9 +348,8 @@ def normalize_tag(tag: str) -> str:
     e.g. '{https://....}TypeName' -> 'TypeName'
     """
     normalized = tag
-    if len(tag) >= 3:
-        if tag[0] == "{":
-            normalized = tag[1:].split("}")[1]
+    if len(tag) >= 3 and tag[0] == "{":
+        normalized = tag[1:].split("}")[1]
     return normalized.lower()
 
 

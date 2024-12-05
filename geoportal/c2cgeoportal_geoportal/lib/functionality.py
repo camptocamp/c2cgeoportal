@@ -30,9 +30,9 @@ import logging.config
 from typing import Any, cast
 
 import pyramid.request
+from c2cgeoportal_commons.models import main, static
 from sqlalchemy.orm import joinedload
 
-from c2cgeoportal_commons.models import main, static
 from c2cgeoportal_geoportal.lib import get_typed, get_types_map, is_intranet
 from c2cgeoportal_geoportal.lib.caching import get_region
 
@@ -43,7 +43,9 @@ _CACHE_REGION = get_region("std")
 
 @_CACHE_REGION_OBJ.cache_on_arguments()
 def _get_role(name: str) -> dict[str, Any]:
-    from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+        DBSession,
+    )
 
     assert DBSession is not None
 

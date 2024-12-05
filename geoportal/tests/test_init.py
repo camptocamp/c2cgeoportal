@@ -31,12 +31,9 @@
 from unittest import TestCase
 from unittest.mock import patch
 
+import c2cgeoportal_geoportal
 import pytest
 from c2c.template.config import config
-from pyramid import testing
-from tests import DummyRequest
-
-import c2cgeoportal_geoportal
 from c2cgeoportal_geoportal import (
     call_hook,
     create_get_user_from_request,
@@ -44,6 +41,9 @@ from c2cgeoportal_geoportal import (
     is_valid_referrer,
     set_user_validator,
 )
+from pyramid import testing
+
+from tests import DummyRequest
 
 
 class TestIncludeme(TestCase):
@@ -127,9 +127,7 @@ def test_is_valid_referrer(authorized, value, expected):
 
 
 class TestReferer(TestCase):
-    """
-    Check that accessing something with a bad HTTP referrer is equivalent to a not authenticated query.
-    """
+    """Check that accessing something with a bad HTTP referrer is equivalent to a not authenticated query."""
 
     BASE1 = "http://example.com/app"
     BASE2 = "http://friend.com/app2"

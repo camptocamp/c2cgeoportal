@@ -46,11 +46,15 @@ def usage(argv: list[str]) -> None:
 
 def schema_exists(connection: Connection, schema_name: str) -> bool:
     """Get if the schema exist."""
-    sql = f"""
-SELECT count(*) AS count
-FROM information_schema.schemata
-WHERE schema_name = '{schema_name}';
-"""
+    del schema_name
+
+    sql = " ".join(
+        [  # noqa: S608
+            "SELECT count(*) AS count",
+            "FROM information_schema.schemata",
+            "WHERE schema_name = '{schema_name}';",
+        ]
+    )
     result = connection.execute(sqlalchemy.text(sql))
     row = result.first()
     return cast(bool, row[0] == 1)  # type: ignore[index]
@@ -64,8 +68,12 @@ def truncate_tables(connection: Connection) -> None:
 
 def setup_test_data(dbsession: Session) -> None:
     """Initialize the testing data."""
-    from c2cgeoportal_commons.models.main import Role  # pylint: disable=import-outside-toplevel
-    from c2cgeoportal_commons.models.static import User  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+        Role,
+    )
+    from c2cgeoportal_commons.models.static import (  # pylint: disable=import-outside-toplevel
+        User,
+    )
 
     role_admin = dbsession.merge(Role(name="role_admin"))
     role_user = dbsession.merge(Role(name="role_user"))

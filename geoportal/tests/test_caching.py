@@ -30,11 +30,15 @@
 
 from unittest import TestCase
 
-from tests import DummyRequest
-
 from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
 from c2cgeoportal_geoportal.lib.caching import init_region, invalidate_region
-from c2cgeoportal_geoportal.lib.common_headers import CORS_METHODS, Cache, set_common_headers
+from c2cgeoportal_geoportal.lib.common_headers import (
+    CORS_METHODS,
+    Cache,
+    set_common_headers,
+)
+
+from tests import DummyRequest
 
 
 class TestSetCorsHeaders(TestCase):
@@ -55,9 +59,7 @@ class TestSetCorsHeaders(TestCase):
         return dict(request.response.headers)
 
     def test_simple(self):
-        """
-        Tests specified in http://www.w3.org/TR/cors/#resource-requests.
-        """
+        """Tests specified in http://www.w3.org/TR/cors/#resource-requests."""
         # 1. If the Origin header is not present terminate this set of steps.
         #    The request is outside the scope of this specification.
         assert self._do("POST", {}) == {
@@ -102,9 +104,7 @@ class TestSetCorsHeaders(TestCase):
         # Not implemented
 
     def test_preflight(self):
-        """
-        Tests specified in http://www.w3.org/TR/cors/#resource-preflight-requests.
-        """
+        """Tests specified in http://www.w3.org/TR/cors/#resource-preflight-requests."""
         # 1. If the Origin header is not present terminate this set of steps.
         #    The request is outside the scope of this specification.
         assert self._do("OPTIONS", {"Access-Control-Request-Method": "GET"}) == {

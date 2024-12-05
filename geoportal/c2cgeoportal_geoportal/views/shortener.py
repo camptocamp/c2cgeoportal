@@ -34,11 +34,16 @@ from typing import cast
 from urllib.parse import urlparse
 
 import pyramid.request
-from pyramid.httpexceptions import HTTPBadRequest, HTTPFound, HTTPInternalServerError, HTTPNotFound
-from pyramid.view import view_config
-
 from c2cgeoportal_commons.lib.email_ import send_email_config
 from c2cgeoportal_commons.models import DBSession, static
+from pyramid.httpexceptions import (
+    HTTPBadRequest,
+    HTTPFound,
+    HTTPInternalServerError,
+    HTTPNotFound,
+)
+from pyramid.view import view_config
+
 from c2cgeoportal_geoportal import is_allowed_url
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
 
@@ -107,7 +112,7 @@ class Shortener:
         tries = 0
         while not shortened:
             ref = "".join(
-                random.choice(string.ascii_letters + string.digits)  # nosec
+                random.choice(string.ascii_letters + string.digits)  # noqa: S311
                 for i in range(self.settings.get("length", 4))
             )
             test_url = DBSession.query(static.Shorturl).filter(static.Shorturl.ref == ref).all()

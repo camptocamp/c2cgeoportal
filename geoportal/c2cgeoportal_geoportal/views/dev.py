@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2021, Camptocamp SA
+# Copyright (c) 2011-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -31,10 +31,10 @@ import re
 
 import pyramid.request
 import pyramid.response
+from c2cgeoportal_commons.lib.url import Url
 from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config
 
-from c2cgeoportal_commons.lib.url import Url
 from c2cgeoportal_geoportal.views.proxy import Proxy
 
 logger = logging.getLogger(__name__)

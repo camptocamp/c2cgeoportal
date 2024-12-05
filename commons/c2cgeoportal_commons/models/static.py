@@ -324,7 +324,7 @@ class User(Base):  # type: ignore
     @staticmethod
     def __encrypt_password_legacy(password: str) -> str:
         """Hash the given password with SHA1."""
-        return sha1(password.encode("utf8")).hexdigest()  # nosec
+        return sha1(password.encode("utf8")).hexdigest()  # noqa: S324
 
     @staticmethod
     def __encrypt_password(password: str) -> str:

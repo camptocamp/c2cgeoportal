@@ -147,8 +147,8 @@ def _fts(settings: dict[str, Any], health_check: c2cwsgiutils.health_check.Healt
 
     health_check.add_url_check(
         name="checker_fulltextsearch",
-        url=lambda r: get_both(r)["url"],  # type: ignore
-        headers=lambda r: get_both(r)["headers"],  # type: ignore
+        url=lambda r: get_both(r)["url"],  # type: ignore[misc]
+        headers=lambda r: get_both(r)["headers"],  # type: ignore[misc]
         params={"query": fts_settings["search"], "limit": "1"},
         check_cb=check,
         level=fts_settings["level"],
@@ -156,8 +156,12 @@ def _fts(settings: dict[str, Any], health_check: c2cwsgiutils.health_check.Healt
 
 
 def _themes_errors(settings: dict[str, Any], health_check: c2cwsgiutils.health_check.HealthCheck) -> None:
-    from c2cgeoportal_commons.models import DBSession  # pylint: disable=import-outside-toplevel
-    from c2cgeoportal_commons.models.main import Interface  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+        DBSession,
+    )
+    from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+        Interface,
+    )
 
     assert DBSession is not None
 
@@ -256,7 +260,7 @@ def _phantomjs(settings: dict[str, Any], health_check: c2cwsgiutils.health_check
                 cmd: list[str] = ["check-example", url]
                 env = dict(os.environ)
                 for name, value in self.route.get("environment", {}).items():
-                    if isinstance(value, (list, dict)):
+                    if isinstance(value, list | dict):
                         value = json.dumps(value)
                     elif not isinstance(value, str):
                         value = str(value)

@@ -31,6 +31,7 @@ from unittest import TestCase
 
 import transaction
 from pyramid import testing
+
 from tests.functional import create_default_ogcserver, create_dummy_request
 from tests.functional import setup_common as setup_module  # noqa
 from tests.functional import teardown_common as teardown_module  # noqa
@@ -120,7 +121,13 @@ class TestThemesPrivateView(TestCase):
     @staticmethod
     def clean():
         from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import Interface, OGCServer, RestrictionArea, Role, TreeItem
+        from c2cgeoportal_commons.models.main import (
+            Interface,
+            OGCServer,
+            RestrictionArea,
+            Role,
+            TreeItem,
+        )
         from c2cgeoportal_commons.models.static import User
 
         for obj in DBSession.query(RestrictionArea).all():

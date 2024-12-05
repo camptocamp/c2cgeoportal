@@ -71,7 +71,7 @@ def downgrade() -> None:
     schema = config["schema"]
 
     op.execute(
-        """
+        f"""
 CREATE OR REPLACE FUNCTION {schema}.on_role_name_change()
 RETURNS trigger AS
 $$
@@ -82,7 +82,5 @@ END IF;
 RETURN NEW;
 END;
 $$
-LANGUAGE plpgsql""".format(
-            schema=schema
-        )
+LANGUAGE plpgsql"""
     )

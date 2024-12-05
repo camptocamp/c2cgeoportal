@@ -30,10 +30,10 @@
 
 from unittest import TestCase
 
+from c2cgeoportal_geoportal.lib.caching import init_region
+
 from tests.functional import setup_common as setup_module
 from tests.functional import teardown_common as teardown_module  # noqa
-
-from c2cgeoportal_geoportal.lib.caching import init_region
 
 
 class TestReflection(TestCase):
@@ -60,11 +60,10 @@ class TestReflection(TestCase):
         Each test function should call this function only once. And there should not be two test functions
         that call this function with the same ptable_name value.
         """
-        from geoalchemy2 import Geometry
-        from sqlalchemy import Column, ForeignKey, Table, types
-
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import Base
+        from geoalchemy2 import Geometry
+        from sqlalchemy import Column, ForeignKey, Table, types
 
         if self._tables is None:
             self._tables = []
@@ -104,16 +103,14 @@ class TestReflection(TestCase):
         self.metadata = Base.metadata
 
     def test_get_class_nonexisting_table(self):
-        from sqlalchemy.exc import NoSuchTableError
-
         from c2cgeoportal_geoportal.lib.dbreflection import get_class
+        from sqlalchemy.exc import NoSuchTableError
 
         self.assertRaises(NoSuchTableError, get_class, "nonexisting")
 
     def test_get_class(self):
-        from geoalchemy2 import Geometry
-
         from c2cgeoportal_geoportal.lib.dbreflection import _AssociationProxy, get_class
+        from geoalchemy2 import Geometry
 
         init_region({"backend": "dogpile.cache.memory"}, "std")
         init_region({"backend": "dogpile.cache.memory"}, "obj")
@@ -142,8 +139,8 @@ class TestReflection(TestCase):
         assert modelclass.child2_id.info.get("association_proxy") == "child2"
 
         child1_asso_proxy = getattr(modelclass, modelclass.child1_id.info["association_proxy"])
-        assert "name" == child1_asso_proxy.value_attr
-        assert "name" == child1_asso_proxy.order_by
+        assert child1_asso_proxy.value_attr == "name"
+        assert child1_asso_proxy.order_by == "name"
 
         # test the Table object
         table = modelclass.__table__
@@ -192,14 +189,11 @@ class TestReflection(TestCase):
         assert modelclass.__table__.schema == "public"
 
     def test_mixing_get_class_and_queries(self):
-        """
-        This test shows that we can mix the use of DBSession and the db reflection API.
-        """
+        """This test shows that we can mix the use of DBSession and the db reflection API."""
         import transaction
-        from sqlalchemy import text
-
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_geoportal.lib.dbreflection import get_class
+        from sqlalchemy import text
 
         self._create_table("table_c")
 
@@ -239,16 +233,16 @@ class TestReflection(TestCase):
 
         assert enumerations_config == cls.__enumerations_config__
         association_proxy = getattr(cls, cls.child1_id.info["association_proxy"])
-        assert "id" == association_proxy.value_attr
-        assert "name" == association_proxy.order_by
+        assert association_proxy.value_attr == "id"
+        assert association_proxy.order_by == "name"
 
         # Without order_by.
         enumerations_config = {"child1_id": {"value": "id"}}
         cls = get_class("table_d", enumerations_config=enumerations_config)
 
         association_proxy = getattr(cls, cls.child1_id.info["association_proxy"])
-        assert "id" == association_proxy.value_attr
-        assert "id" == association_proxy.order_by
+        assert association_proxy.value_attr == "id"
+        assert association_proxy.order_by == "id"
 
     def test_get_class_readonly_attributes(self):
         from c2cgeoportal_geoportal.lib.dbreflection import get_class
@@ -258,5 +252,5 @@ class TestReflection(TestCase):
         self._create_table("table_d")
         cls = get_class("table_d", readonly_attributes=readonly_attributes)
 
-        assert True == cls.child1_id.info.get("readonly")
-        assert True == cls.point.info.get("readonly")
+        assert True is cls.child1_id.info.get("readonly")
+        assert True is cls.point.info.get("readonly")

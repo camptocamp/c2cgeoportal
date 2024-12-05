@@ -33,9 +33,15 @@ from unittest import TestCase
 import transaction
 from geoalchemy2 import WKTElement
 from pyramid import testing
-from tests.functional import cleanup_db, create_default_ogcserver, create_dummy_request, mapserv_url
+
+from tests.functional import (
+    cleanup_db,
+    create_default_ogcserver,
+    create_dummy_request,
+    mapserv_url,
+    setup_db,
+)
 from tests.functional import setup_common as setup_module  # noqa
-from tests.functional import setup_db
 from tests.functional import teardown_common as teardown_module  # noqa
 
 
@@ -45,10 +51,6 @@ class TestThemeEditing(TestCase):
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
         self._tables = []
-
-        from geoalchemy2 import Geometry
-        from sqlalchemy import Column, Table, types
-        from sqlalchemy.ext.declarative import declarative_base
 
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import (
@@ -60,6 +62,9 @@ class TestThemeEditing(TestCase):
             Theme,
         )
         from c2cgeoportal_commons.models.static import User
+        from geoalchemy2 import Geometry
+        from sqlalchemy import Column, Table, types
+        from sqlalchemy.ext.declarative import declarative_base
 
         setup_db()
 

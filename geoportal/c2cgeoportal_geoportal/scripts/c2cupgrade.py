@@ -32,13 +32,14 @@ import filecmp
 import os
 import re
 import shutil
-import subprocess
+import subprocess  # nosec
 import sys
+import tempfile
 from argparse import ArgumentParser, Namespace
 from collections.abc import Callable
 from json.decoder import JSONDecodeError
-from subprocess import call, check_call, check_output
-from typing import Any, Union, cast
+from subprocess import call, check_call, check_output  # nosec
+from typing import Any, cast
 
 import pkg_resources
 import requests
@@ -61,51 +62,10 @@ DIFF_NOTICE = (
 
 def fix_style() -> None:
     """Fix the style of all the project files using isort, Black and Prettier."""
-
-    file_to_clean = []
-    for filename, content in (
-        (".prettierignore", "*.min.js\n"),
-        ("pyproject.toml", "[tool.black]\nline-length = 110\ntarget-version = ['py39']\n"),
-        (".prettierrc.yaml", "bracketSpacing: false\nquoteProps: preserve\n"),
-        (
-            ".editorconfig",
-            """root = true
-[*]
-max_line_length = 110
-""",
-        ),
-    ):
-        if not os.path.exists(filename):
-            file_to_clean.append(filename)
-            if os.path.exists(os.path.join("CONST_create_template", filename)):
-                shutil.copyfile(os.path.join("CONST_create_template", filename), filename)
-            else:
-                with open(filename, "w", encoding="utf8") as file_:
-                    file_.write(content)
-
-    if os.path.exists("ci/config.yaml"):
-        os.rename("ci/config.yaml", "ci/config.yaml_")
     if os.path.exists(".pre-commit-config.yaml"):
         print("Run pre-commit to fix the style.")
         sys.stdout.flush()
         subprocess.run(["pre-commit", "run", "--all-files"])  # pylint: disable=subprocess-run-check
-    else:
-        print("Run c2cciutils-checks to fix the style.")
-        sys.stdout.flush()
-        subprocess.run(  # pylint: disable=subprocess-run-check
-            ["c2cciutils-checks", "--fix", "--check=isort"]
-        )
-        subprocess.run(  # pylint: disable=subprocess-run-check
-            ["c2cciutils-checks", "--fix", "--check=black"]
-        )
-        subprocess.run(  # pylint: disable=subprocess-run-check
-            ["c2cciutils-checks", "--fix", "--check=prettier"]
-        )
-    if os.path.exists("ci/config.yaml_"):
-        os.rename("ci/config.yaml_", "ci/config.yaml")
-
-    for filename in file_to_clean:
-        os.remove(filename)
 
 
 def main() -> None:
@@ -217,7 +177,7 @@ class C2cUpgradeTool:
             sys.exit(1)
 
         with open(".upgrade.yaml", encoding="utf8") as project_file:
-            return cast(Union[list[Any], dict[str, Any]], yaml.safe_load(project_file)[section])
+            return cast(list[Any] | dict[str, Any], yaml.safe_load(project_file)[section])
 
     def print_step(
         self,
@@ -254,7 +214,7 @@ class C2cUpgradeTool:
             resp = requests.get(
                 self.project["checker_url"],
                 headers=self.project.get("checker_headers"),
-                verify=False,  # nosec
+                verify=False,  # noqa: S501
                 timeout=120,
             )
         except requests.exceptions.ConnectionError as exception:
@@ -324,12 +284,13 @@ class C2cUpgradeTool:
 
     @Step(1)
     def step1(self, step: int) -> None:
-        shutil.copyfile("project.yaml", "/tmp/project.yaml")
-        try:
-            check_call(["git", "reset", "--hard"])
-            check_call(["git", "clean", "--force", "-d"])
-        finally:
-            shutil.copyfile("/tmp/project.yaml", "project.yaml")
+        with tempfile.NamedTemporaryFile("w") as project_temp_file:
+            shutil.copyfile("project.yaml", project_temp_file.name)
+            try:
+                check_call(["git", "reset", "--hard"])
+                check_call(["git", "clean", "--force", "-d"])
+            finally:
+                shutil.copyfile(project_temp_file.name, "project.yaml")
 
         self.run_step(step + 1)
 
@@ -343,36 +304,36 @@ class C2cUpgradeTool:
 
     @Step(3)
     def step3(self, step: int) -> None:
-        project_path = os.path.join("/tmp", self.project["project_folder"])
-        os.mkdir(project_path)
-        shutil.copyfile("/src/project.yaml", os.path.join(project_path, "project.yaml"))
-        check_call(
-            [
-                "pcreate",
-                "--overwrite",
-                "--scaffold=update",
-                project_path,
-            ]
-        )
-        if self.get_project().get("advance", False):
+        with tempfile.TemporaryDirectory() as temp_directory_name:
+            project_path = os.path.join(temp_directory_name, self.project["project_folder"])
+            os.mkdir(project_path)
+            shutil.copyfile("/src/project.yaml", os.path.join(project_path, "project.yaml"))
             check_call(
                 [
                     "pcreate",
                     "--overwrite",
-                    "--scaffold=advance_update",
+                    "--scaffold=update",
                     project_path,
                 ]
             )
+            if self.get_project().get("advance", False):
+                check_call(
+                    [
+                        "pcreate",
+                        "--overwrite",
+                        "--scaffold=advance_update",
+                        project_path,
+                    ]
+                )
 
-        shutil.copyfile(os.path.join(project_path, ".upgrade.yaml"), ".upgrade.yaml")
-        for upgrade_file in cast(list[dict[str, Any]], self.get_upgrade("upgrade_files")):
-            action = upgrade_file["action"]
-            if action == "remove":
-                self.files_to_remove(upgrade_file, prefix="CONST_create_template", force=True)
-            if action == "move":
-                self.files_to_move(upgrade_file, prefix="CONST_create_template", force=True)
+            shutil.copyfile(os.path.join(project_path, ".upgrade.yaml"), ".upgrade.yaml")
+            for upgrade_file in cast(list[dict[str, Any]], self.get_upgrade("upgrade_files")):
+                action = upgrade_file["action"]
+                if action == "remove":
+                    self.files_to_remove(upgrade_file, prefix="CONST_create_template", force=True)
+                if action == "move":
+                    self.files_to_move(upgrade_file, prefix="CONST_create_template", force=True)
 
-        shutil.rmtree(project_path)
         os.remove(".upgrade.yaml")
 
         check_call(["git", "add", "--all", "--force", "CONST_create_template/"])
@@ -385,26 +346,26 @@ class C2cUpgradeTool:
         if os.path.exists("CONST_create_template"):
             check_call(["git", "rm", "-r", "--force", "CONST_create_template/"])
 
-        project_path = os.path.join("/tmp", self.project["project_folder"])
-        check_call(["ln", "-s", "/src", project_path])
-        check_call(
-            [
-                "pcreate",
-                "--overwrite",
-                "--scaffold=update",
-                project_path,
-            ]
-        )
-        if self.get_project().get("advance", False):
+        with tempfile.TemporaryDirectory() as temp_directory_name:
+            project_path = os.path.join(temp_directory_name, self.project["project_folder"])
+            check_call(["ln", "-s", "/src", project_path])
             check_call(
                 [
                     "pcreate",
                     "--overwrite",
-                    "--scaffold=advance_update",
+                    "--scaffold=update",
                     project_path,
                 ]
             )
-        os.remove(project_path)
+            if self.get_project().get("advance", False):
+                check_call(
+                    [
+                        "pcreate",
+                        "--overwrite",
+                        "--scaffold=advance_update",
+                        project_path,
+                    ]
+                )
 
         check_call(["git", "add", "--all", "CONST_create_template/"])
 
@@ -644,10 +605,7 @@ class C2cUpgradeTool:
 
         if not managed:
             for files in self.project["managed_files"]:
-                if isinstance(files, str):
-                    pattern = files
-                else:
-                    pattern = files["pattern"]
+                pattern = files if isinstance(files, str) else files["pattern"]
                 if re.match(pattern + "$", file_):
                     print(f"File '{file_}' included by project config pattern `managed_files` '{pattern}'.")
                     print("managed", file_, pattern)

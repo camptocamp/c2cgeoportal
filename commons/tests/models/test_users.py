@@ -30,7 +30,7 @@ class TestUser:
         users = dbsession.query(User).all()
         assert len(users) == 1, "querying for users"
         assert users[0].username == "babar", "user from test data is babar"
-        assert 2 == len(users[0].roles)
+        assert len(users[0].roles) == 2
 
     def test_remove(self, dbsession):
         from c2cgeoportal_commons.models.static import User, user_role
@@ -39,7 +39,7 @@ class TestUser:
         dbsession.delete(users[0])
         users = dbsession.query(User).all()
         assert len(users) == 0, "removed a user"
-        assert 0 == dbsession.query(user_role).count()
+        assert dbsession.query(user_role).count() == 0
 
     def test_add(self, dbsession):
         from c2cgeoportal_commons.models.main import Role
@@ -52,9 +52,9 @@ class TestUser:
         assert dbsession.query(User).count() == 2, "added a user"
         dbsession.expire(user)
         assert user.username == "momo", "added user is momo"
-        assert 1 == len(user.roles)
+        assert len(user.roles) == 1
         assert user.roles[0].name == "Role3"
-        assert 1 == dbsession.query(user_role).filter(user_role.c.user_id == user.id).count()
+        assert dbsession.query(user_role).filter(user_role.c.user_id == user.id).count() == 1
 
     @staticmethod
     def test_edit(dbsession):
@@ -62,10 +62,10 @@ class TestUser:
         from c2cgeoportal_commons.models.static import User, user_role
 
         user = dbsession.query(User).first()
-        assert 2 == len(user.roles)
+        assert len(user.roles) == 2
         user.roles = [Role(name="Role4")]
         dbsession.flush()
         dbsession.expire(user)
-        assert 1 == len(user.roles)
+        assert len(user.roles) == 1
         assert user.roles[0].name == "Role4"
-        assert 1 == dbsession.query(user_role).filter(user_role.c.user_id == user.id).count()
+        assert dbsession.query(user_role).filter(user_role.c.user_id == user.id).count() == 1

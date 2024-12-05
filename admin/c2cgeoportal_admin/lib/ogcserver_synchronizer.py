@@ -29,16 +29,15 @@
 import functools
 import logging
 from io import StringIO
-from typing import Any, Optional, cast
+from typing import Any, cast
 from xml.etree.ElementTree import Element  # nosec
 
 import pyramid.request
 import requests
-from defusedxml import ElementTree
-from sqlalchemy.orm.session import Session
-
 from c2cgeoportal_commons.lib.url import get_url2
 from c2cgeoportal_commons.models import main
+from defusedxml import ElementTree
+from sqlalchemy.orm.session import Session
 
 
 class dry_run_transaction:  # noqa ignore=N801: class names should use CapWords convention
@@ -238,7 +237,7 @@ class OGCServerSynchronizer:
         name = name_el.text
 
         theme = cast(
-            Optional[main.Theme],
+            main.Theme | None,
             self._request.dbsession.query(main.Theme).filter(main.Theme.name == name).one_or_none(),
         )
 
@@ -263,7 +262,7 @@ class OGCServerSynchronizer:
         assert name is not None
 
         group = cast(
-            Optional[main.LayerGroup],
+            main.LayerGroup | None,
             (
                 self._request.dbsession.query(main.LayerGroup)
                 .filter(main.LayerGroup.name == name)
@@ -294,7 +293,7 @@ class OGCServerSynchronizer:
         assert name is not None
 
         layer = cast(
-            Optional[main.LayerWMS],
+            main.LayerWMS | None,
             self._request.dbsession.query(main.LayerWMS).filter(main.LayerWMS.name == name).one_or_none(),
         )
 
@@ -358,7 +357,7 @@ class OGCServerSynchronizer:
 
         return layer
 
-    @functools.lru_cache(maxsize=10)
+    @functools.lru_cache(maxsize=10)  # noqa: B019
     def wms_capabilities(self) -> bytes:
         errors: set[str] = set()
         url = get_url2(

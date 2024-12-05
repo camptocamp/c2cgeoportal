@@ -6,9 +6,8 @@ import pytest
 @pytest.mark.usefixtures("transact")
 class TestInterface:
     def test_delete_cascade_to_tsearch(self, dbsession):
-        from sqlalchemy import func
-
         from c2cgeoportal_commons.models.main import FullTextSearch, Interface
+        from sqlalchemy import func
 
         interface = Interface("desktop", "Desktop interface")
         interface_id = interface.id
@@ -24,5 +23,5 @@ class TestInterface:
         dbsession.flush()
 
         assert (
-            0 == dbsession.query(FullTextSearch).filter(FullTextSearch.interface_id == interface_id).count()
+            dbsession.query(FullTextSearch).filter(FullTextSearch.interface_id == interface_id).count() == 0
         )

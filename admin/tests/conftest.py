@@ -4,6 +4,13 @@ import pyramid.request
 import pytest
 import sqlalchemy.exc
 import transaction
+from c2cgeoportal_commons.testing import (
+    generate_mappers,
+    get_engine,
+    get_session_factory,
+    get_tm_session,
+)
+from c2cgeoportal_commons.testing.initializedb import truncate_tables
 from pyramid import testing
 from pyramid.paster import bootstrap
 from pyramid.router import Router
@@ -11,9 +18,6 @@ from pyramid.scripting import AppEnvironment
 from sqlalchemy.exc import DBAPIError
 from sqlalchemy.orm import Session, SessionTransaction
 from webtest import TestApp as WebTestApp  # Avoid warning with pytest
-
-from c2cgeoportal_commons.testing import generate_mappers, get_engine, get_session_factory, get_tm_session
-from c2cgeoportal_commons.testing.initializedb import truncate_tables
 
 
 @pytest.fixture(scope="session")

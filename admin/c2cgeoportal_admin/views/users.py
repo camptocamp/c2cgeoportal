@@ -38,6 +38,9 @@ from c2cgeoform.views.abstract_views import (
     ObjectResponse,
     SaveResponse,
 )
+from c2cgeoportal_commons.lib.email_ import send_email_config
+from c2cgeoportal_commons.models.main import Role
+from c2cgeoportal_commons.models.static import Log, User
 from deform.widget import FormWidget
 from passwordgenerator import pwgenerator
 from pyramid.httpexceptions import HTTPFound
@@ -46,9 +49,6 @@ from sqlalchemy.orm import aliased, subqueryload
 
 from c2cgeoportal_admin.schemas.roles import roles_schema_node
 from c2cgeoportal_admin.views.logged_views import LoggedViews
-from c2cgeoportal_commons.lib.email_ import send_email_config
-from c2cgeoportal_commons.models.main import Role
-from c2cgeoportal_commons.models.static import Log, User
 
 _list_field = partial(ListField, User)
 

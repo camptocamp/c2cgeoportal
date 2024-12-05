@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2023, Camptocamp SA
+# Copyright (c) 2013-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -35,10 +35,10 @@ class TestRasterViews(TestCase):
     def test_raster(self):
         from decimal import Decimal
 
-        from pyramid.httpexceptions import HTTPNotFound
-        from tests import DummyRequest
-
         from c2cgeoportal_geoportal.views.raster import Raster
+        from pyramid.httpexceptions import HTTPNotFound
+
+        from tests import DummyRequest
 
         request = DummyRequest()
         request.registry.settings = {
@@ -53,9 +53,9 @@ class TestRasterViews(TestCase):
         request.params["lon"] = "565000"
         request.params["lat"] = "218000"
         result = raster.raster()
-        assert result["dem1"] == None
-        assert result["dem2"] == None
-        assert result["dem3"] == None
+        assert result["dem1"] is None
+        assert result["dem2"] is None
+        assert result["dem3"] is None
 
         request.params["lon"] = "548000"
         request.params["lat"] = "216000"
@@ -77,9 +77,9 @@ class TestRasterViews(TestCase):
     def test_raster_angle(self):
         from decimal import Decimal
 
-        from tests import DummyRequest
-
         from c2cgeoportal_geoportal.views.raster import Raster
+
+        from tests import DummyRequest
 
         request = DummyRequest()
         request.registry.settings = {
@@ -117,14 +117,14 @@ class TestRasterViews(TestCase):
         request.params["lon"] = "547997.4"
         request.params["lat"] = "216003.5"
         result = raster.raster()
-        assert result["dem5"] == None
+        assert result["dem5"] is None
 
     def test_raster_vrt(self):
         from decimal import Decimal
 
-        from tests import DummyRequest
-
         from c2cgeoportal_geoportal.views.raster import Raster
+
+        from tests import DummyRequest
 
         request = DummyRequest()
         request.registry.settings = {
@@ -158,10 +158,10 @@ class TestRasterViews(TestCase):
     def test_profile_json(self):
         from decimal import Decimal
 
-        from pyramid.httpexceptions import HTTPNotFound
-        from tests import DummyRequest
-
         from c2cgeoportal_geoportal.views.profile import Profile
+        from pyramid.httpexceptions import HTTPNotFound
+
+        from tests import DummyRequest
 
         request = DummyRequest()
         request.registry.settings = {

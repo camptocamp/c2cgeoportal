@@ -10,7 +10,14 @@ from . import AbstractViewsTests
 def metadatas_test_data(dbsession, transact):
     del transact
 
-    from c2cgeoportal_commons.models.main import LayerGroup, LayerWMS, LayerWMTS, Metadata, OGCServer, Theme
+    from c2cgeoportal_commons.models.main import (
+        LayerGroup,
+        LayerWMS,
+        LayerWMTS,
+        Metadata,
+        OGCServer,
+        Theme,
+    )
 
     ogc_server = OGCServer(name="ogc_server")
 
@@ -333,9 +340,7 @@ class TestMetadatasView(AbstractViewsTests):
         self._test_edit_treeitem("layer_groups", metadatas_test_data["group"], test_app, LayerGroup)
 
     def test_undefined_metadata(self, metadatas_test_data, test_app):
-        """
-        Undefined metadata must be kept intact across submissions.
-        """
+        """Undefined metadata must be kept intact across submissions."""
         from c2cgeoportal_commons.models.main import Metadata
 
         layer = metadatas_test_data["layer_wms"]

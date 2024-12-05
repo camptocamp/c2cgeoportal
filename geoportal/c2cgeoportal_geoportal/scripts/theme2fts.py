@@ -1,4 +1,4 @@
-# Copyright (c) 2014-2023, Camptocamp SA
+# Copyright (c) 2014-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -95,7 +95,6 @@ def get_argparser() -> ArgumentParser:
 
 def main() -> None:
     """Run the command."""
-
     options = get_argparser().parse_args()
     settings = get_appsettings(options)
 
@@ -180,7 +179,9 @@ class Import:
         action: str,
         role: Optional["c2cgeoportal_commons.models.main.Role"],
     ) -> None:
-        from c2cgeoportal_commons.models.main import FullTextSearch  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+            FullTextSearch,
+        )
 
         key = (
             item.name if self.options.name else item.id,
@@ -248,7 +249,9 @@ class Import:
         export: bool,
         role: Optional["c2cgeoportal_commons.models.main.Role"],
     ) -> bool:
-        from c2cgeoportal_commons.models.main import LayerGroup  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+            LayerGroup,
+        )
 
         fill = False
         for child in group.children:

@@ -50,11 +50,9 @@ def upgrade() -> None:
     schema = config["schema"]
 
     op.execute(
-        (
-            "DELETE from {schema}.layer_restrictionarea WHERE layer_id IN ("
-            "SELECT id from {schema}.treeitem WHERE type = 'layerv1'"
-            ");"
-        ).format(schema=schema)
+        f"DELETE from {schema}.layer_restrictionarea WHERE layer_id IN ("
+        f"SELECT id from {schema}.treeitem WHERE type = 'layerv1'"
+        ");"
     )
     op.execute(f"DELETE from {schema}.treeitem WHERE type = 'layerv1';")
 

@@ -35,7 +35,6 @@ Revises: ('78fd093c8393', '56dc90838d90')
 Create Date: 2019-09-03 09:11:57.786920
 """
 
-
 # revision identifiers, used by Alembic.
 revision = "eeb345672454"
 down_revision = ("78fd093c8393", "56dc90838d90")

@@ -50,7 +50,7 @@ def upgrade() -> None:
     schema = config["schema"]
 
     op.execute(
-        """
+        f"""
 CREATE FUNCTION {schema}.on_role_name_change()
 RETURNS trigger AS
 $$
@@ -61,14 +61,12 @@ END IF;
 RETURN NEW;
 END;
 $$
-LANGUAGE plpgsql""".format(
-            schema=schema
-        )
+LANGUAGE plpgsql"""
     )
 
     op.execute(
-        "CREATE TRIGGER on_role_name_change AFTER UPDATE ON {schema}.role FOR EACH ROW "
-        "EXECUTE PROCEDURE {schema}.on_role_name_change()".format(schema=schema)
+        f"CREATE TRIGGER on_role_name_change AFTER UPDATE ON {schema}.role FOR EACH ROW "
+        f"EXECUTE PROCEDURE {schema}.on_role_name_change()"
     )
 
 

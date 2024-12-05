@@ -12,7 +12,11 @@ from .test_treegroup import TestTreeGroup
 def layer_groups_test_data(dbsession, transact):
     del transact
 
-    from c2cgeoportal_commons.models.main import LayerGroup, LayergroupTreeitem, Metadata
+    from c2cgeoportal_commons.models.main import (
+        LayerGroup,
+        LayergroupTreeitem,
+        Metadata,
+    )
 
     metadatas_protos = [
         ("copyable", "true"),
@@ -47,7 +51,7 @@ def layer_groups_test_data(dbsession, transact):
             for val in value:
                 add_relation(key, val)
         else:
-            for val in value.keys():
+            for val in value:
                 add_relation(key, val)
                 flatten_tree(val, value[val])
 
@@ -85,8 +89,8 @@ class TestLayersGroups(TestTreeGroup):
 
         assert group.id == int(row["_id_"])
         assert group.name == row["name"]
-        assert "groups_02, groups_06" == row["parents_relation"]
-        assert "disclaimer: © le momo, copyable: true" == row["metadatas"]
+        assert row["parents_relation"] == "groups_02, groups_06"
+        assert row["metadatas"] == "disclaimer: © le momo, copyable: true"
 
     def test_grid_search(self, test_app):
         # search on metadatas
@@ -100,7 +104,7 @@ class TestLayersGroups(TestTreeGroup):
         form = self.get_item(test_app, group.id).form
 
         assert str(group.id) == self.get_first_field_named(form, "id").value
-        assert "hidden" == self.get_first_field_named(form, "id").attrs["type"]
+        assert self.get_first_field_named(form, "id").attrs["type"] == "hidden"
         assert group.name == self.get_first_field_named(form, "name").value
         assert str(group.description or "") == self.get_first_field_named(form, "description").value
 
@@ -136,7 +140,7 @@ class TestLayersGroups(TestTreeGroup):
                 assert str(value or "") == str(getattr(group, key) or "")
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.UPDATE
         assert log.element_type == "layergroup"
         assert log.element_id == group.id
@@ -144,9 +148,7 @@ class TestLayersGroups(TestTreeGroup):
         assert log.username == "test_user"
 
     def test_post_new_with_children_invalid(self, test_app, layer_groups_test_data):
-        """
-        Check there is no rendering error when validation fails.
-        """
+        """Check there is no rendering error when validation fails."""
         groups = layer_groups_test_data["groups"]
         resp = test_app.post(
             f"{self._prefix}/new",
@@ -165,7 +167,7 @@ class TestLayersGroups(TestTreeGroup):
             ),
             status=200,
         )
-        assert "Required" == resp.html.select_one(".item-name .help-block").getText().strip()
+        assert resp.html.select_one(".item-name .help-block").getText().strip() == "Required"
 
     def test_post_new_with_children_success(self, test_app, dbsession, layer_groups_test_data):
         from c2cgeoportal_commons.models.main import Log, LogAction
@@ -214,7 +216,7 @@ class TestLayersGroups(TestTreeGroup):
         ]
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.INSERT
         assert log.element_type == "layergroup"
         assert log.element_id == group.id
@@ -222,9 +224,7 @@ class TestLayersGroups(TestTreeGroup):
         assert log.username == "test_user"
 
     def test_post_with_ancestor(self, layer_groups_test_data, test_app):
-        """
-        Check that ancestors are refused to avoid cycles.
-        """
+        """Check that ancestors are refused to avoid cycles."""
         groups = layer_groups_test_data["groups"]
         resp = test_app.post(
             f"{self._prefix}/{groups[3].id}",
@@ -259,7 +259,7 @@ class TestLayersGroups(TestTreeGroup):
 
         group = dbsession.query(LayerGroup).filter(LayerGroup.id == group.id).one()
 
-        assert "" == self.get_first_field_named(form, "id").value
+        assert self.get_first_field_named(form, "id").value == ""
         assert group.name == self.get_first_field_named(form, "name").value
         assert str(group.description or "") == self.get_first_field_named(form, "description").value
 
@@ -305,13 +305,13 @@ class TestLayersGroups(TestTreeGroup):
         group = layer_groups_test_data["groups"][9]
 
         assert (
-            3
-            == dbsession.query(LayergroupTreeitem).filter(LayergroupTreeitem.treegroup_id == group.id).count()
+            dbsession.query(LayergroupTreeitem).filter(LayergroupTreeitem.treegroup_id == group.id).count()
+            == 3
         )
 
         assert (
-            1
-            == dbsession.query(LayergroupTreeitem).filter(LayergroupTreeitem.treeitem_id == group.id).count()
+            dbsession.query(LayergroupTreeitem).filter(LayergroupTreeitem.treeitem_id == group.id).count()
+            == 1
         )
 
         test_app.delete(f"/admin/layer_groups/{group.id}", status=200)
@@ -323,17 +323,17 @@ class TestLayersGroups(TestTreeGroup):
         assert dbsession.query(TreeItem).get(group.id) is None
 
         assert (
-            0
-            == dbsession.query(LayergroupTreeitem).filter(LayergroupTreeitem.treegroup_id == group.id).count()
+            dbsession.query(LayergroupTreeitem).filter(LayergroupTreeitem.treegroup_id == group.id).count()
+            == 0
         )
 
         assert (
-            0
-            == dbsession.query(LayergroupTreeitem).filter(LayergroupTreeitem.treeitem_id == group.id).count()
+            dbsession.query(LayergroupTreeitem).filter(LayergroupTreeitem.treeitem_id == group.id).count()
+            == 0
         )
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.DELETE
         assert log.element_type == "layergroup"
         assert log.element_id == group.id

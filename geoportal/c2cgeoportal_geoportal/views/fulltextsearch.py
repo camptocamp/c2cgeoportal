@@ -29,14 +29,14 @@
 import re
 
 import pyramid.request
+from c2cgeoportal_commons.models import DBSession
+from c2cgeoportal_commons.models.main import FullTextSearch, Interface
 from geoalchemy2.shape import to_shape
 from geojson import Feature, FeatureCollection
 from pyramid.httpexceptions import HTTPBadRequest, HTTPInternalServerError
 from pyramid.view import view_config
 from sqlalchemy import ColumnElement, and_, desc, func, or_
 
-from c2cgeoportal_commons.models import DBSession
-from c2cgeoportal_commons.models.main import FullTextSearch, Interface
 from c2cgeoportal_geoportal import locale_negotiator
 from c2cgeoportal_geoportal.lib.caching import get_region
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers

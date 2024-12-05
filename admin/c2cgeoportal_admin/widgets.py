@@ -29,11 +29,10 @@ from typing import Any
 
 import colander
 import pyramid.request
+from c2cgeoportal_commons.models.main import TreeItem
 from colander import Mapping, SchemaNode
 from deform import widget
 from deform.widget import MappingWidget, SequenceWidget
-
-from c2cgeoportal_commons.models.main import TreeItem
 
 registry = widget.default_resource_registry
 registry.set_js_resources(

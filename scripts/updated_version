@@ -29,7 +29,7 @@
 
 import argparse
 import json
-import subprocess
+import subprocess  # nosec
 
 from packaging.version import Version
 

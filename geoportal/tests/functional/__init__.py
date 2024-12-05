@@ -26,27 +26,26 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-"""
-Pyramid application test package.
-"""
+"""Pyramid application test package."""
 
 import logging
 from configparser import ConfigParser
 from typing import TYPE_CHECKING, Any
 
+import c2cgeoportal_geoportal
+import c2cgeoportal_geoportal.lib
 import pyramid.registry
 import pyramid.request
-import tests
+import sqlalchemy.exc
 import transaction
 import webob.acceptparse
 from c2c.template.config import config as configuration
+from c2cgeoportal_commons import models
+from c2cgeoportal_geoportal.lib import caching
 from pyramid import testing
 from sqlalchemy.orm.session import Session
 
-import c2cgeoportal_geoportal
-import c2cgeoportal_geoportal.lib
-from c2cgeoportal_commons import models
-from c2cgeoportal_geoportal.lib import caching
+import tests
 
 if TYPE_CHECKING:
     from c2cgeoportal_commons.models import main, static
@@ -64,9 +63,7 @@ class DummyRoute:
 
 
 def cleanup_db() -> None:
-    """
-    Cleanup the database.
-    """
+    """Cleanup the database."""
     from c2cgeoportal_commons import models
     from c2cgeoportal_commons.models.main import (
         FullTextSearch,
@@ -103,9 +100,7 @@ def cleanup_db() -> None:
 
 
 def setup_db() -> None:
-    """
-    Cleanup the database.
-    """
+    """Cleanup the database."""
     cleanup_db()
 
     from c2cgeoportal_commons.models import DBSession
@@ -211,8 +206,12 @@ def init_registry(registry=None):
 def testing_legacySecurityPolicy(
     config, userid=None, groupids=(), permissive=True, remember_result=None, forget_result=None
 ):
-    """Compatibility mode for deprecated AuthorizationPolicy and AuthenticationPolicy in our tests"""
-    from pyramid.interfaces import IAuthenticationPolicy, IAuthorizationPolicy, ISecurityPolicy
+    """Compatibility mode for deprecated AuthorizationPolicy and AuthenticationPolicy in our tests."""
+    from pyramid.interfaces import (
+        IAuthenticationPolicy,
+        IAuthorizationPolicy,
+        ISecurityPolicy,
+    )
     from pyramid.security import LegacySecurityPolicy
     from pyramid.testing import DummySecurityPolicy
 
@@ -228,10 +227,9 @@ def testing_legacySecurityPolicy(
 def create_dummy_request(
     additional_settings=None, authentication=True, user=None, *args: Any, **kargs: Any
 ) -> pyramid.request.Request:
-    from pyramid.interfaces import IAuthenticationPolicy
-
     from c2cgeoportal_geoportal import create_get_user_from_request
     from c2cgeoportal_geoportal.lib.authentication import create_authentication
+    from pyramid.interfaces import IAuthenticationPolicy
 
     if additional_settings is None:
         additional_settings = {}

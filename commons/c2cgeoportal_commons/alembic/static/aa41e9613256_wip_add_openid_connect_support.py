@@ -35,7 +35,6 @@ Revises: 910b4ca53b68
 Create Date: 2024-08-30 15:56:31.163378
 """
 
-
 from alembic import op
 from c2c.template.config import config
 

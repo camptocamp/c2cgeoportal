@@ -66,7 +66,7 @@ class TestFunctionality(AbstractViewsTests):
         assert functionality.name == "new_name"
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.INSERT
         assert log.element_type == "functionality"
         assert log.element_id == functionality.id
@@ -80,14 +80,14 @@ class TestFunctionality(AbstractViewsTests):
         resp = test_app.get(f"/admin/functionalities/{functionality.id}", status=200)
         form = resp.form
         assert str(functionality.id) == self.get_first_field_named(form, "id").value
-        assert "hidden" == self.get_first_field_named(form, "id").attrs["type"]
+        assert self.get_first_field_named(form, "id").attrs["type"] == "hidden"
         assert functionality.name == form["name"].value
         form["description"] = "new_description"
         assert form.submit().status_int == 302
         assert functionality.description == "new_description"
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.UPDATE
         assert log.element_type == "functionality"
         assert log.element_id == functionality.id
@@ -103,7 +103,7 @@ class TestFunctionality(AbstractViewsTests):
         assert dbsession.query(Functionality).get(deleted_id) is None
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.DELETE
         assert log.element_type == "functionality"
         assert log.element_id == functionality.id

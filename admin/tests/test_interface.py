@@ -24,7 +24,7 @@ def interface_test_data(dbsession, transact):
     layers = []
     for i in range(0, 15):
         layer = LayerWMS(name=f"layer_wms_{i}")
-        layer.public = 1 == i % 2
+        layer.public = i % 2 == 1
         layer.ogc_server = servers[i % 4]
         dbsession.add(layer)
         layers.append(layer)
@@ -94,7 +94,7 @@ class TestInterface(AbstractViewsTests):
         assert interface.name == "new_name"
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.INSERT
         assert log.element_type == "interface"
         assert log.element_id == interface.id
@@ -112,13 +112,13 @@ class TestInterface(AbstractViewsTests):
         form = resp.form
         form["description"] = descriptions
         assert str(interface.id) == self.get_first_field_named(form, "id").value
-        assert "hidden" == self.get_first_field_named(form, "id").attrs["type"]
+        assert self.get_first_field_named(form, "id").attrs["type"] == "hidden"
         assert interface.name == self.get_first_field_named(form, "name").value
         assert form.submit().status_int == 302
         assert len(dbsession.query(Interface).filter(Interface.description == descriptions).all()) == 1
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.UPDATE
         assert log.element_type == "interface"
         assert log.element_id == interface.id
@@ -133,7 +133,7 @@ class TestInterface(AbstractViewsTests):
         assert len(dbsession.query(Interface).filter(Interface.id == interface.id).all()) == 0
 
         log = dbsession.query(Log).one()
-        assert log.date != None
+        assert log.date is not None
         assert log.action == LogAction.DELETE
         assert log.element_type == "interface"
         assert log.element_id == interface.id
@@ -144,6 +144,6 @@ class TestInterface(AbstractViewsTests):
         interface = interface_test_data["interfaces"][3]
         resp = test_app.get(f"/admin/interfaces/{interface.id}/duplicate", status=200)
         form = resp.form
-        assert "" == self.get_first_field_named(form, "id").value
+        assert self.get_first_field_named(form, "id").value == ""
         assert str(interface.description or "") == "description_3"
         assert form.submit().status_int == 302

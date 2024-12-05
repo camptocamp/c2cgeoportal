@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2023, Camptocamp SA
+# Copyright (c) 2022-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -31,9 +31,9 @@
 from unittest import TestCase
 
 import transaction
-from tests.functional import cleanup_db, create_dummy_request
+
+from tests.functional import cleanup_db, create_dummy_request, setup_db
 from tests.functional import setup_common as setup_module  # noqa
-from tests.functional import setup_db
 from tests.functional import teardown_common as teardown_module  # noqa
 
 

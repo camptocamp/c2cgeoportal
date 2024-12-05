@@ -2257,13 +2257,13 @@ wsgi = ["pyramid"]
 
 [[package]]
 name = "tilecloud-chain"
-version = "1.21.0"
+version = "1.22.0"
 description = "Tools to generate tiles from WMS or Mapnik, to S3, Berkeley DB, MBTiles, or local filesystem in WMTS layout using Amazon cloud services."
 optional = false
-python-versions = ">=3.9"
+python-versions = ">=3.10"
 files = [
-    {file = "tilecloud_chain-1.21.0-py3-none-any.whl", hash = "sha256:a73914cbc8742a1e6cc5b1a9804a78e1af2fcdc62993950f42e2949737faa739"},
-    {file = "tilecloud_chain-1.21.0.tar.gz", hash = "sha256:7cfb46c09d3ff604a46f3d8dfc7deafac8f0d771c68e55726cdd1d88a206cec8"},
+    {file = "tilecloud_chain-1.22.0-py3-none-any.whl", hash = "sha256:32dabc07c98287220d914c59baf4d6c7802a01bb855e363744a564a2f0e1704d"},
+    {file = "tilecloud_chain-1.22.0.tar.gz", hash = "sha256:c61cd96c2fc6b568e173399dd8171fa43f4e29dd4c62b584f1892ce66890c21c"},
 ]
 
 [package.dependencies]
@@ -2610,4 +2610,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "28c7611638e048ab7a91df45fc0ab246375795ffc471f0b0cccc961a82e84743"
+content-hash = "215b13d0de25b366213f6b79ea957b73aa24917bdd9ececa56512e08a49a66bc"

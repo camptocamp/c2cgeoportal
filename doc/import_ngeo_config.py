@@ -30,7 +30,7 @@ def _format_type(type_definition: dict[str, Any]) -> str:
             f"{_format_type(type_definition['declaration']['indexSignature']['type'])}}}"
         )
 
-    assert False, f"Unknown type '{type_definition['type']}':\n{type_definition}"
+    raise AssertionError(f"Unknown type '{type_definition['type']}':\n{type_definition}")
 
 
 def _get_type(type_definition: dict[str, Any]) -> list[str]:

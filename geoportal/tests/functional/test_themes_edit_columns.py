@@ -32,9 +32,13 @@ from typing import TYPE_CHECKING, Any
 from unittest import TestCase
 from urllib.parse import urlencode
 
-from tests.functional import cleanup_db, create_default_ogcserver, create_dummy_request
+from tests.functional import (
+    cleanup_db,
+    create_default_ogcserver,
+    create_dummy_request,
+    setup_db,
+)
 from tests.functional import setup_common as setup_module  # noqa
-from tests.functional import setup_db
 from tests.functional import teardown_common as teardown_module  # noqa
 
 if TYPE_CHECKING:
@@ -54,7 +58,6 @@ class TestThemesEditColumns(TestCase):
         self._tables = []
 
         import transaction
-
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import (
             OGCSERVER_AUTH_NOAUTH,
@@ -93,7 +96,6 @@ class TestThemesEditColumns(TestCase):
 
     def teardown_method(self, _: Any) -> None:
         import transaction
-
         from c2cgeoportal_commons.models import DBSession
 
         cleanup_db()
@@ -115,12 +117,11 @@ class TestThemesEditColumns(TestCase):
         It creates a layer with two features, and associates a restriction area to it.
         """
         import transaction
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.main import LayerWMS, RestrictionArea
         from geoalchemy2 import Geometry
         from sqlalchemy import Column, ForeignKey, Table, types
         from sqlalchemy.ext.declarative import declarative_base
-
-        from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import LayerWMS, RestrictionArea
 
         self.__class__._table_index += 1
         id = self.__class__._table_index
@@ -224,7 +225,6 @@ class TestThemesEditColumns(TestCase):
         return request
 
     def test_themes_edit_columns(self) -> None:
-        from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_geoportal.views.theme import Theme
 
         layer_id = self._create_layer(geom_type=True)
@@ -297,7 +297,7 @@ class TestThemesEditColumns(TestCase):
         theme_view = Theme(self._get_request(layer_id, username="__test_user", params={"interface": "main"}))
 
         themes = theme_view.themes()
-        assert [] == themes["errors"]
+        assert themes["errors"] == []
         layers = themes["themes"][0]["children"][0]["children"]
 
         self.assertEqual(

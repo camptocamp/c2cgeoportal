@@ -40,7 +40,15 @@ from hashlib import sha1
 from alembic import op
 from c2c.template.config import config
 from sqlalchemy import Column, ForeignKey, MetaData, Table
-from sqlalchemy.types import Boolean, DateTime, Float, Integer, String, Unicode, UserDefinedType
+from sqlalchemy.types import (
+    Boolean,
+    DateTime,
+    Float,
+    Integer,
+    String,
+    Unicode,
+    UserDefinedType,
+)
 
 # revision identifiers, used by Alembic.
 revision = "166ff2dcc48d"
@@ -93,10 +101,7 @@ def upgrade() -> None:
         Column("readwrite", Boolean, default=False),
         schema=schema,
     )
-    op.execute(
-        "SELECT AddGeometryColumn('%(schema)s', 'restrictionarea', "
-        "'area', %(srid)s, 'POLYGON', 2)" % {"schema": schema, "srid": srid}
-    )
+    op.execute(f"SELECT AddGeometryColumn('{schema}', 'restrictionarea', " f"'area', {srid}, 'POLYGON', 2)")
     op.create_table(
         "shorturl",
         Column("id", Integer, primary_key=True),
@@ -116,10 +121,7 @@ def upgrade() -> None:
         Column("description", Unicode),
         schema=schema,
     )
-    op.execute(
-        "SELECT AddGeometryColumn('%(schema)s', 'role', "
-        "'extent', %(srid)s, 'POLYGON', 2)" % {"schema": schema, "srid": srid}
-    )
+    op.execute(f"SELECT AddGeometryColumn('{schema}', 'role', " f"'extent', {srid}, 'POLYGON', 2)")
     role = Table("role", MetaData(), Column("name", Unicode, unique=True, nullable=False), schema=schema)
     op.bulk_insert(role, [{"name": "role_admin"}])
 
@@ -172,10 +174,7 @@ def upgrade() -> None:
         Column("params", Unicode, nullable=True),
         schema=schema,
     )
-    op.execute(
-        "SELECT AddGeometryColumn('%(schema)s', 'tsearch', 'the_geom', "
-        "%(srid)s, 'GEOMETRY', 2)" % {"schema": schema, "srid": srid}
-    )
+    op.execute(f"SELECT AddGeometryColumn('{schema}', 'tsearch', 'the_geom', " f"{srid}, 'GEOMETRY', 2)")
     op.create_index("tsearch_ts_idx", "tsearch", ["ts"], schema=schema, postgresql_using="gin")
     op.create_table(
         "treegroup",

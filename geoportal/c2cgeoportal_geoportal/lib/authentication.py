@@ -67,7 +67,7 @@ class UrlAuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
         self.debug = debug
 
     def unauthenticated_userid(self, request: pyramid.request.Request) -> str | None:
-        if not request.method == "GET" or "auth" not in request.params:
+        if request.method != "GET" or "auth" not in request.params:
             return None
         auth_enc = request.params.get("auth")
         if auth_enc is None:

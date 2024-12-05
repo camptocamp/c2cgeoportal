@@ -34,13 +34,13 @@ import colander
 import pyramid.request
 import sqlalchemy
 from c2cgeoform.schema import GeoFormSchemaNode
+from c2cgeoportal_commons.lib.literal import Literal
+from c2cgeoportal_commons.models.main import LayergroupTreeitem, TreeGroup, TreeItem
 from sqlalchemy.orm import aliased
 from sqlalchemy.sql.expression import case, func
 
 from c2cgeoportal_admin import _
 from c2cgeoportal_admin.widgets import ChildrenWidget, ChildWidget
-from c2cgeoportal_commons.lib.literal import Literal
-from c2cgeoportal_commons.models.main import LayergroupTreeitem, TreeGroup, TreeItem
 
 _LOG = logging.getLogger(__name__)
 
@@ -74,7 +74,8 @@ def treeitems(
     assert isinstance(dbsession, sqlalchemy.orm.Session)
 
     group = case(
-        (func.count(LayergroupTreeitem.id) == 0, "Unlinked"), else_="Others"  # pylint: disable=not-callable
+        (func.count(LayergroupTreeitem.id) == 0, "Unlinked"),  # pylint: disable=not-callable
+        else_="Others",
     )
 
     query = (
@@ -123,7 +124,7 @@ def treeitems(
 def children_validator(node, cstruct):
     """Get the validator on the children nodes."""
     for dict_ in cstruct:
-        if not dict_["treeitem_id"] in [item["id"] for item in node.candidates]:
+        if dict_["treeitem_id"] not in [item["id"] for item in node.candidates]:
             raise colander.Invalid(
                 node,
                 _("Value {} does not exist in table {} or is not allowed to avoid cycles").format(

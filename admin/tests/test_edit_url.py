@@ -45,7 +45,7 @@ def edit_url_test_data(dbsession, transact):
         layer_wmts.restrictionareas = [restrictionareas[i % 5], restrictionareas[(i + 2) % 5]]
         if i % 10 != 1:
             layer_wmts.interfaces = [interfaces[i % 4], interfaces[(i + 2) % 4]]
-        layer_wmts.public = 1 == i % 2
+        layer_wmts.public = i % 2 == 1
         layer_wmts.image_type = "image/jpeg"
         dbsession.add(layer_wmts)
         layers_wmts.append(layer_wmts)

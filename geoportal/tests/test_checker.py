@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2023, Camptocamp SA
+# Copyright (c) 2013-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -30,9 +30,9 @@
 
 from unittest import TestCase
 
-from tests import DummyRequest
-
 from c2cgeoportal_geoportal.lib.checker import build_url
+
+from tests import DummyRequest
 
 
 class TestExportCSVView(TestCase):

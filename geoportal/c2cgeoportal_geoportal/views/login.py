@@ -38,6 +38,9 @@ import pkce
 import pyotp
 import pyramid.request
 import pyramid.response
+from c2cgeoportal_commons import models
+from c2cgeoportal_commons.lib.email_ import send_email_config
+from c2cgeoportal_commons.models import static
 from pyramid.httpexceptions import (
     HTTPBadRequest,
     HTTPForbidden,
@@ -50,9 +53,6 @@ from pyramid.security import forget, remember
 from pyramid.view import forbidden_view_config, view_config
 from sqlalchemy.orm.exc import NoResultFound  # type: ignore[attr-defined]
 
-from c2cgeoportal_commons import models
-from c2cgeoportal_commons.lib.email_ import send_email_config
-from c2cgeoportal_commons.models import static
 from c2cgeoportal_geoportal import is_allowed_url, is_valid_referrer
 from c2cgeoportal_geoportal.lib import get_setting, is_intranet, oauth2, oidc
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
@@ -126,9 +126,7 @@ class Login:
 
     @staticmethod
     def _validate_2fa_totp(user: static.User, otp: str) -> bool:
-        if pyotp.TOTP(user.tech_data.get("2fa_totp_secret", "")).verify(otp):
-            return True
-        return False
+        return bool(pyotp.TOTP(user.tech_data.get("2fa_totp_secret", "")).verify(otp))
 
     @view_config(route_name="login")  # type: ignore
     def login(self) -> pyramid.response.Response:
@@ -374,10 +372,9 @@ class Login:
                 _LOG.info("The login '%s' does not exist.", login)
                 raise HTTPUnauthorized("See server logs for details")
 
-            if self.two_factor_auth:
-                if not self._validate_2fa_totp(user, otp):
-                    _LOG.info("The second factor is wrong for user '%s'.", login)
-                    raise HTTPUnauthorized("See server logs for details")
+            if self.two_factor_auth and not self._validate_2fa_totp(user, otp):
+                _LOG.info("The second factor is wrong for user '%s'.", login)
+                raise HTTPUnauthorized("See server logs for details")
         else:
             user = self.request.user
 
@@ -662,7 +659,7 @@ class Login:
                 "login",
                 Cache.PRIVATE_NO,
                 response=Response(
-                    # TODO respect the user interface...
+                    # TODO respect the user interface... # pylint: disable=fixme
                     json.dumps(
                         {
                             "username": user.display_name,
