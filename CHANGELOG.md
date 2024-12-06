@@ -1,3 +1,7 @@
+##### 2.9.rc.22
+
+- Use geometry field instead of computed_geometry in Mapillary [ngeo#9553](https://github.com/camptocamp/ngeo/pull/9553)
+
 ##### 2.9.rc.20
 
 - Add missing selection tool 0894b56 [ngeo#9551](https://github.com/camptocamp/ngeo/pull/9551)
