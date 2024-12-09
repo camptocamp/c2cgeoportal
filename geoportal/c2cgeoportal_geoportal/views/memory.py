@@ -43,7 +43,7 @@ from c2cgeoportal_geoportal.views import raster
 _LOG = logging.getLogger(__name__)
 
 
-@view_config(route_name="memory", renderer="fast_json")  # type: ignore
+@view_config(route_name="memory", renderer="fast_json")  # type: ignore[misc]
 def memory(request: pyramid.request.Request) -> dict[str, Any]:
     """Offer an authenticated view throw c2cwsgiutils to provide some memory information."""
     auth_view(request)

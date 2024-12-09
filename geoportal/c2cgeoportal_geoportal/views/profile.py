@@ -89,7 +89,7 @@ class Profile(Raster):
 
         return self._to_filtered(points, layers)
 
-    @view_config(route_name="profile.json", renderer="fast_json")  # type: ignore
+    @view_config(route_name="profile.json", renderer="fast_json")  # type: ignore[misc]
     def json(self) -> dict[str, Any]:
         """Answer to /profile.json."""
         _, points = self._compute_points()
