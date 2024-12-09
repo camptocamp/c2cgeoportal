@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2023, Camptocamp SA
+# Copyright (c) 2012-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -25,19 +25,24 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-
+import json
+import logging
 import math
 from decimal import Decimal
+from json.decoder import JSONDecodeError
 from typing import Any
 
 import geojson
 import pyramid.request
-from pyramid.httpexceptions import HTTPNotFound
+import requests
+from pyramid.httpexceptions import HTTPBadRequest, HTTPNotFound
 from pyramid.i18n import TranslationStringFactory
 from pyramid.view import view_config
 
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
 from c2cgeoportal_geoportal.views.raster import Raster
+
+_LOG = logging.getLogger(__name__)
 
 _ = TranslationStringFactory("c2cgeoportal")
 
@@ -47,6 +52,39 @@ class Profile(Raster):
 
     def __init__(self, request: pyramid.request.Request):
         Raster.__init__(self, request)
+
+    @staticmethod
+    def _to_filtered(points: list[dict[str, Any]], layers: list[str]) -> list[dict[str, Any]]:
+        profile = []
+        for point in points:
+            filtered_alts = {key: value for key, value in point["alts"].items() if key in layers}
+            profile.append(
+                {
+                    "dist": point["dist"],
+                    "values": filtered_alts,
+                    "x": point["easting"],
+                    "y": point["northing"],
+                }
+            )
+        return profile
+
+    def _get_profile_service_data(
+        self, layers: list[str], geom: dict[str, Any], rasters: dict[str, Any], nb_points: int
+    ) -> dict[str, Any]:
+        request = (
+            f"{rasters[layers[0]]['url']}/profile.json?geom={geom}&nbPoints={nb_points}&distinct_points=true"
+        )
+        response = requests.get(request, timeout=10)
+        try:
+            points = json.loads(response.content)
+        except (TypeError, JSONDecodeError):
+            _LOG.warning("profile request %s failed", request)
+            self.request.response.status_code = response.status_code
+            self.request.response.text = response.text
+            self.request.response.content_type = "text/plain"
+            return self.request.response
+
+        return self._to_filtered(points, layers)
 
     @view_config(route_name="profile.json", renderer="fast_json")  # type: ignore
     def json(self) -> dict[str, Any]:
@@ -58,6 +96,9 @@ class Profile(Raster):
     def _compute_points(self) -> tuple[list[str], list[dict[str, Any]]]:
         """Compute the alt=fct(dist) array."""
         geom = geojson.loads(self.request.params["geom"], object_hook=geojson.GeoJSON.to_instance)
+        nb_points = int(self.request.params["nbPoints"])
+        coords = []
+        service_results = []
 
         layers: list[str]
         if "layers" in self.request.params:
@@ -73,26 +114,47 @@ class Profile(Raster):
             layers = list(rasters.keys())
             layers.sort()
 
-        points: list[dict[str, Any]] = []
+        service_layers = [layer for layer in layers if rasters[layer].get("type") == "external_url"]
 
-        dist = 0
-        prev_coord = None
-        coords = self._create_points(geom.coordinates, int(self.request.params["nbPoints"]))
-        for coord in coords:
-            if prev_coord is not None:
-                dist += self._dist(prev_coord, coord)
+        if len(service_layers) > 0:
+            urls = [rasters[layer]["url"] for layer in service_layers]
+            if len(set(urls)) != 1:
+                raise HTTPBadRequest("All service layers must have the same URL.")
+            service_results = self._get_profile_service_data(service_layers, geom, rasters, nb_points)
+            if len(service_layers) < len(layers):
+                coords = [(point["x"], point["y"]) for point in service_results]
+            else:
+                return layers, service_results
 
-            values = {}
-            for ref in list(rasters.keys()):
-                value = self._get_raster_value(self.rasters[ref], ref, coord[0], coord[1])
-                values[ref] = value
+        if len(service_results) == 0:
+            points: list[dict[str, Any]] = []
 
-            # 10cm accuracy is enough for distances
-            rounded_dist = Decimal(str(dist)).quantize(Decimal("0.1"))
-            points.append({"dist": rounded_dist, "values": values, "x": coord[0], "y": coord[1]})
-            prev_coord = coord
+            dist = 0
+            prev_coord = None
+            coords = self._create_points(geom.coordinates, nb_points)
+            for coord in coords:
+                if prev_coord is not None:
+                    dist += self._dist(prev_coord, coord)
+                _LOG.info("new dist %s", dist)
 
-        return layers, points
+                values = {}
+                for ref in list(rasters.keys()):
+                    value = self._get_raster_value(self.rasters[ref], ref, coord[0], coord[1])
+                    values[ref] = value
+                _LOG.info("values %s", values)
+
+                # 10cm accuracy is enough for distances
+                rounded_dist = Decimal(str(dist)).quantize(Decimal("0.1"))
+                points.append({"dist": rounded_dist, "values": values, "x": coord[0], "y": coord[1]})
+                prev_coord = coord
+            return layers, points
+        else:
+            additional_layers = [layer for layer in layers if layer not in service_layers]
+            for point in service_results:
+                for ref in additional_layers:
+                    value = self._get_raster_value(self.rasters[ref], ref, point["x"], point["y"])
+                    point["values"][ref] = value
+            return layers, service_results
 
     @staticmethod
     def _dist(coord1: tuple[float, float], coord2: tuple[float, float]) -> float:
