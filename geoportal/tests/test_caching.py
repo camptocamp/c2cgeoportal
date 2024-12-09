@@ -61,7 +61,7 @@ class TestSetCorsHeaders(TestCase):
         # 1. If the Origin header is not present terminate this set of steps.
         #    The request is outside the scope of this specification.
         assert self._do("POST", {}) == {
-            "Cache-Control": "max-age=10, public",
+            "Cache-Control": "max-age=10, private",
             "Content-Length": "0",
             "Content-Type": "text/html; charset=UTF-8",
             "Vary": "Origin, Access-Control-Request-Headers, Cookie",
@@ -71,7 +71,7 @@ class TestSetCorsHeaders(TestCase):
         #    any of the values in list of origins, do not set any additional
         #    headers and terminate this set of steps.
         assert self._do("POST", {"Origin": "http://foe.com"}) == {
-            "Cache-Control": "max-age=10, public",
+            "Cache-Control": "max-age=10, private",
             "Content-Length": "0",
             "Content-Type": "text/html; charset=UTF-8",
             "Vary": "Origin, Access-Control-Request-Headers, Cookie",
@@ -82,7 +82,7 @@ class TestSetCorsHeaders(TestCase):
         #    header as value, and add a single Access-Control-Allow-Credentials
         #    header with the case-sensitive string "true" as value.
         assert self._do("POST", {"Origin": self.ORIGIN2}, credentials=True) == {
-            "Cache-Control": "max-age=10, public",
+            "Cache-Control": "max-age=10, private",
             "Content-Length": "0",
             "Content-Type": "text/html; charset=UTF-8",
             "Vary": "Origin, Access-Control-Request-Headers, Cookie",
@@ -202,7 +202,7 @@ class TestSetCorsHeaders(TestCase):
     def test_not_configured(self):
         # If the service is not configured, then no CORS head.
         assert self._do("GET", {"Origin": self.ORIGIN1}, settings=None) == {
-            "Cache-Control": "max-age=10, public",
+            "Cache-Control": "max-age=10, private",
             "Content-Length": "0",
             "Content-Type": "text/html; charset=UTF-8",
             "Vary": "Origin, Access-Control-Request-Headers, Cookie",
@@ -217,7 +217,7 @@ class TestSetCorsHeaders(TestCase):
         # An origin included in the access_control_allow_origin list is OK with
         # credentials
         assert self._do("POST", {"Origin": self.ORIGIN1}, credentials=True, settings=settings) == {
-            "Cache-Control": "max-age=10, public",
+            "Cache-Control": "max-age=10, private",
             "Content-Length": "0",
             "Content-Type": "text/html; charset=UTF-8",
             "Vary": "Origin, Access-Control-Request-Headers, Cookie",
@@ -230,7 +230,7 @@ class TestSetCorsHeaders(TestCase):
         # 3. Otherwise, add a single Access-Control-Allow-Origin header, with
         #    either the value of the Origin header or the string "*" as value.
         assert self._do("POST", {"Origin": "http://www.guest.com"}, settings=settings) == {
-            "Cache-Control": "max-age=10, public",
+            "Cache-Control": "max-age=10, private",
             "Content-Length": "0",
             "Content-Type": "text/html; charset=UTF-8",
             "Vary": "Origin, Access-Control-Request-Headers, Cookie",
