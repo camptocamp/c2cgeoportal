@@ -38,6 +38,7 @@ import pkce
 import pyotp
 import pyramid.request
 import pyramid.response
+import requests
 from pyramid.httpexceptions import (
     HTTPBadRequest,
     HTTPForbidden,
@@ -298,6 +299,17 @@ class Login:
                 client.revoke_token(user_info["access_token"])
                 if user_info.get("refresh_token") is not None:
                     client.revoke_token(user_info["refresh_token"])
+            if self.authentication_settings.get("openid_connect", {}).get("logout", False):
+                response = requests.get(  # pylint: disable=missing-timeout
+                    client.initiate_logout(), auth=client.client_auth
+                )
+                if not response.ok:
+                    _LOG.error(
+                        "Error during logout from OpenID Connect, code %s %s:\n%s",
+                        response.status_code,
+                        response.reason,
+                        response.text,
+                    )
 
         headers = forget(self.request)
 
