@@ -32,7 +32,6 @@ from decimal import Decimal
 from json.decoder import JSONDecodeError
 from typing import Any
 
-
 import geojson
 import pyramid.request
 import requests
@@ -42,6 +41,7 @@ from pyramid.view import view_config
 
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
 from c2cgeoportal_geoportal.views.raster import Raster
+
 _LOG = logging.getLogger(__name__)
 
 _ = TranslationStringFactory("c2cgeoportal")
@@ -52,9 +52,9 @@ class Profile(Raster):
 
     def __init__(self, request: pyramid.request.Request):
         Raster.__init__(self, request)
-  
+
     @staticmethod
-    def _to_filtered(points: list[dict[str, Any]], layers:list[str])-> list[dict[str, Any]]:
+    def _to_filtered(points: list[dict[str, Any]], layers: list[str]) -> list[dict[str, Any]]:
         profile = []
         for point in points:
             filtered_alts = {key: value for key, value in point["alts"].items() if key in layers}
@@ -67,10 +67,10 @@ class Profile(Raster):
                 }
             )
         return profile
-    
+
     def _get_profile_service_data(
         self, layers: list[str], geom: dict[str, Any], rasters: dict[str, Any], nb_points: int
-        )-> dict[str, Any]:
+    ) -> dict[str, Any]:
         request = (
             f"{rasters[layers[0]]['url']}/profile.json?geom={geom}&nbPoints={nb_points}&distinct_points=true"
         )
@@ -114,7 +114,7 @@ class Profile(Raster):
             layers = list(rasters.keys())
             layers.sort()
 
-        service_layers = [layer for layer in layers if rasters[layer].get('type') == 'external_url']
+        service_layers = [layer for layer in layers if rasters[layer].get("type") == "external_url"]
 
         if len(service_layers) > 0:
             urls = [rasters[layer]["url"] for layer in service_layers]
