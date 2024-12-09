@@ -77,7 +77,7 @@ class Entry:
 
         return "\n".join(api)
 
-    @view_config(route_name="apijs")  # type: ignore
+    @view_config(route_name="apijs")  # type: ignore[misc]
     def apijs(self) -> pyramid.response.Response:
         self.request.response.text = self.get_apijs(
             self.request.registry.settings["static_files"]["api.js"],

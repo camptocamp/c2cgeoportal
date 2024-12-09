@@ -47,7 +47,7 @@ class VectorTilesViews:
     def __init__(self, request: Request) -> None:
         self.request = request
 
-    @view_config(route_name="vector_tiles")  # type: ignore
+    @view_config(route_name="vector_tiles")  # type: ignore[misc]
     def vector_tiles(self) -> Response:
         assert DBSession is not None
 

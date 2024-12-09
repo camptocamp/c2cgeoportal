@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2023, Camptocamp SA
+# Copyright (c) 2012-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -48,7 +48,7 @@ class Profile(Raster):
     def __init__(self, request: pyramid.request.Request):
         Raster.__init__(self, request)
 
-    @view_config(route_name="profile.json", renderer="fast_json")  # type: ignore
+    @view_config(route_name="profile.json", renderer="fast_json")  # type: ignore[misc]
     def json(self) -> dict[str, Any]:
         """Answer to /profile.json."""
         _, points = self._compute_points()
