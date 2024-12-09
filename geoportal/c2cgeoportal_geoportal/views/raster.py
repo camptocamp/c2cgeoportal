@@ -84,7 +84,7 @@ class Raster:
             )
         return result
 
-    @view_config(route_name="raster", renderer="fast_json")  # type: ignore
+    @view_config(route_name="raster", renderer="fast_json")  # type: ignore[misc]
     def raster(self) -> dict[str, Any]:
         lon = self._get_required_finite_float_param("lon")
         lat = self._get_required_finite_float_param("lat")

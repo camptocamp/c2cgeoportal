@@ -90,7 +90,7 @@ class Login:
         if not self.request.is_valid_referer:
             _LOG.info("Invalid referrer for %s: %s", self.request.path_qs, repr(self.request.referrer))
 
-    @forbidden_view_config(renderer="login.html")  # type: ignore
+    @forbidden_view_config(renderer="login.html")  # type: ignore[misc]
     def loginform403(self) -> dict[str, Any] | pyramid.response.Response:
         if self.authentication_settings.get("openid_connect", {}).get("enabled", False):
             return HTTPFound(
@@ -111,7 +111,7 @@ class Login:
             "two_fa": self.two_factor_auth,
         }
 
-    @view_config(route_name="loginform", renderer="login.html")  # type: ignore
+    @view_config(route_name="loginform", renderer="login.html")  # type: ignore[misc]
     def loginform(self) -> dict[str, Any]:
         if self.authentication_settings.get("openid_connect", {}).get("enabled", False):
             raise HTTPBadRequest("View disabled by OpenID Connect")
@@ -130,7 +130,7 @@ class Login:
             return True
         return False
 
-    @view_config(route_name="login")  # type: ignore
+    @view_config(route_name="login")  # type: ignore[misc]
     def login(self) -> pyramid.response.Response:
         assert models.DBSession is not None
         if self.authentication_settings.get("openid_connect", {}).get("enabled", False):
@@ -289,7 +289,7 @@ class Login:
             response=Response(body, headers=headers.items()),
         )
 
-    @view_config(route_name="logout")  # type: ignore
+    @view_config(route_name="logout")  # type: ignore[misc]
     def logout(self) -> pyramid.response.Response:
         if self.authentication_settings.get("openid_connect", {}).get("enabled", False):
             client = oidc.get_oidc_client(self.request, self.request.host)
@@ -336,13 +336,13 @@ class Login:
             )
         return result
 
-    @view_config(route_name="loginuser", renderer="json")  # type: ignore
+    @view_config(route_name="loginuser", renderer="json")  # type: ignore[misc]
     def loginuser(self) -> dict[str, Any]:
         _LOG.info("Client IP address: %s", self.request.client_addr)
         set_common_headers(self.request, "login", Cache.PRIVATE_NO)
         return self._user()
 
-    @view_config(route_name="change_password", renderer="json")  # type: ignore
+    @view_config(route_name="change_password", renderer="json")  # type: ignore[misc]
     def change_password(self) -> pyramid.response.Response:
         assert models.DBSession is not None
 
@@ -432,7 +432,7 @@ class Login:
 
         return user, username, password, None
 
-    @view_config(route_name="loginresetpassword", renderer="json")  # type: ignore
+    @view_config(route_name="loginresetpassword", renderer="json")  # type: ignore[misc]
     def loginresetpassword(self) -> dict[str, Any]:
         if self.authentication_settings.get("openid_connect", {}).get("enabled", False):
             raise HTTPBadRequest("View disabled by OpenID Connect")
@@ -464,7 +464,7 @@ class Login:
 
         return {"success": True}
 
-    @view_config(route_name="oauth2introspect")  # type: ignore
+    @view_config(route_name="oauth2introspect")  # type: ignore[misc]
     def oauth2introspect(self) -> pyramid.response.Response:
         if self.authentication_settings.get("openid_connect", {}).get("enabled", False):
             raise HTTPBadRequest("View disabled by OpenID Connect")
@@ -497,7 +497,7 @@ class Login:
             response=Response(body, headers=headers.items()),
         )
 
-    @view_config(route_name="oauth2token")  # type: ignore
+    @view_config(route_name="oauth2token")  # type: ignore[misc]
     def oauth2token(self) -> pyramid.response.Response:
         if self.authentication_settings.get("openid_connect", {}).get("enabled", False):
             raise HTTPBadRequest("View disabled by OpenID Connect")
@@ -529,7 +529,7 @@ class Login:
             response=Response(body, headers=headers.items()),
         )
 
-    @view_config(route_name="oauth2revoke_token")  # type: ignore
+    @view_config(route_name="oauth2revoke_token")  # type: ignore[misc]
     def oauth2revoke_token(self) -> pyramid.response.Response:
         if self.authentication_settings.get("openid_connect", {}).get("enabled", False):
             raise HTTPBadRequest("View disabled by OpenID Connect")
@@ -559,7 +559,7 @@ class Login:
             response=Response(body, headers=headers.items()),
         )
 
-    @view_config(route_name="oauth2loginform", renderer="login.html")  # type: ignore
+    @view_config(route_name="oauth2loginform", renderer="login.html")  # type: ignore[misc]
     def oauth2loginform(self) -> dict[str, Any]:
         if self.authentication_settings.get("openid_connect", {}).get("enabled", False):
             raise HTTPBadRequest("View disabled by OpenID Connect")
@@ -577,13 +577,13 @@ class Login:
             "two_fa": self.two_factor_auth,
         }
 
-    @view_config(route_name="notlogin", renderer="notlogin.html")  # type: ignore
+    @view_config(route_name="notlogin", renderer="notlogin.html")  # type: ignore[misc]
     def notlogin(self) -> dict[str, Any]:
         set_common_headers(self.request, "login", Cache.PUBLIC)
 
         return {"lang": self.lang}
 
-    @view_config(route_name="oidc_login")  # type: ignore
+    @view_config(route_name="oidc_login")  # type: ignore[misc]
     def oidc_login(self) -> pyramid.response.Response:
         client = oidc.get_oidc_client(self.request, self.request.host)
         if "came_from" in self.request.params:
@@ -628,7 +628,7 @@ class Login:
         finally:
             client.authorization_code_flow.code_challenge = ""
 
-    @view_config(route_name="oidc_callback")  # type: ignore
+    @view_config(route_name="oidc_callback")  # type: ignore[misc]
     def oidc_callback(self) -> pyramid.response.Response:
         client = oidc.get_oidc_client(self.request, self.request.host)
         assert models.DBSession is not None
