@@ -33,8 +33,6 @@ from typing import Any, Dict, List, Optional, cast
 import pyramid.request
 import pyramid.response
 
-from c2cgeoportal_geoportal.lib import is_intranet
-
 _LOG = logging.getLogger(__name__)
 
 
@@ -119,6 +117,8 @@ def _set_common_headers(
 ) -> pyramid.response.Response:
     """Set the common headers."""
 
+    del request  # Unused
+
     response.headers.update(service_headers_settings.get("headers", {}))
 
     if cache in (Cache.PRIVATE, Cache.PRIVATE_NO):
@@ -136,10 +136,7 @@ def _set_common_headers(
     elif cache in (Cache.PUBLIC, Cache.PUBLIC_NO):
         response.cache_control.public = True
     elif cache in (Cache.PRIVATE, Cache.PRIVATE_NO):
-        if hasattr(request, "user") and request.user is not None or is_intranet(request):
-            response.cache_control.private = True
-        else:
-            response.cache_control.public = True
+        response.cache_control.private = True
     else:
         raise Exception("Invalid cache type")  # pylint: disable=broad-exception-raised
 
