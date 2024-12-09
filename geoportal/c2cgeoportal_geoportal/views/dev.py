@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2021, Camptocamp SA
+# Copyright (c) 2011-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -49,7 +49,7 @@ class Dev(Proxy):
         super().__init__(request)
         self.dev_url = self.request.registry.settings["devserver_url"]
 
-    @view_config(route_name="dev")  # type: ignore
+    @view_config(route_name="dev")  # type: ignore[misc]
     def dev(self) -> pyramid.response.Response:
         path = self.THEME_RE.sub("", self.request.path_info)
         if self.request.path.endswith("/dynamic.js"):

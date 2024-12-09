@@ -122,7 +122,7 @@ class DynamicView:
 
         return constants
 
-    @view_config(route_name="dynamic", renderer="json")  # type: ignore
+    @view_config(route_name="dynamic", renderer="json")  # type: ignore[misc]
     def dynamic(self) -> dict[str, Any]:
         is_allowed_host(self.request)
 

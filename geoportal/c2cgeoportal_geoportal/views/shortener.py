@@ -55,7 +55,7 @@ class Shortener:
         if "base_url" in self.settings:
             self.short_bases.append(self.settings["base_url"])
 
-    @view_config(route_name="shortener_get")  # type: ignore
+    @view_config(route_name="shortener_get")  # type: ignore[misc]
     def get(self) -> HTTPFound:
         assert DBSession is not None
 
@@ -71,7 +71,7 @@ class Shortener:
         set_common_headers(self.request, "shortener", Cache.PUBLIC_NO)
         return HTTPFound(location=short_urls[0].url)
 
-    @view_config(route_name="shortener_create", renderer="json")  # type: ignore
+    @view_config(route_name="shortener_create", renderer="json")  # type: ignore[misc]
     def create(self) -> dict[str, str]:
         assert DBSession is not None
 

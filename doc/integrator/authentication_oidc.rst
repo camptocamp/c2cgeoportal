@@ -80,6 +80,8 @@ Other options
 
 ``client_secret``: The secret of the client.
 
+``logout``: If ``true``, the logout is called on the OIDC provider, default is ``false``.
+
 ``trusted_audiences``: The list of trusted audiences, if the audience provided by the id-token is not in
   this list, the ``ID token`` will be rejected.
 
