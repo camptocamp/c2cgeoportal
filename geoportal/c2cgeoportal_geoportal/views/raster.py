@@ -103,12 +103,12 @@ class Raster:
 
         result = {}
 
-        service_layers = [layer for layer in layers if rasters[layer].get('type') == 'external_url']
-  
+        service_layers = [layer for layer in layers if rasters[layer].get("type") == "external_url"]
+
         if len(service_layers) > 0:
             for layer in service_layers:
                 result.update(self._get_service_data(layer, lat, lon, rasters))
-        
+
         for ref in list(rasters.keys()):
             if ref not in service_layers:
                 result[ref] = self._get_raster_value(rasters[ref], ref, lon, lat)
@@ -214,7 +214,7 @@ class Raster:
         set_common_headers(self.request, "raster", Cache.PUBLIC_NO)
 
         return {layer: result}
-      
+
     @staticmethod
     def _round(value: numpy.float32, round_to: float) -> decimal.Decimal | None:
         if value is not None:
