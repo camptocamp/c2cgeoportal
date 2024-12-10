@@ -1,3 +1,7 @@
+##### 2.9.rc.23
+
+- Remove cache-control switch from private to public [c2cgeoportal#11573](https://github.com/camptocamp/c2cgeoportal/pull/11573)
+
 ##### 2.9.rc.22
 
 - Use geometry field instead of computed_geometry in Mapillary [ngeo#9553](https://github.com/camptocamp/ngeo/pull/9553)
