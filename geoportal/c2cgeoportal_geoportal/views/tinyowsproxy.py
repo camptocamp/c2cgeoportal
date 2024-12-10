@@ -70,7 +70,7 @@ class TinyOWSProxy(OGCProxy):
         # params hold the parameters we are going to send to TinyOWS
         self.lower_params = self._get_lower_params(dict(self.request.params))
 
-    @view_config(route_name="tinyowsproxy")  # type: ignore
+    @view_config(route_name="tinyowsproxy")  # type: ignore[misc]
     def proxy(self) -> pyramid.response.Response:
         if self.user is None:
             raise HTTPUnauthorized(

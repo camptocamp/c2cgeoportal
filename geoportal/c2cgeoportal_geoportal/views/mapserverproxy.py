@@ -56,8 +56,8 @@ class MapservProxy(OGCProxy):
         OGCProxy.__init__(self, request)
         self.user = self.request.user
 
-    @view_config(route_name="mapserverproxy")  # type: ignore
-    @view_config(route_name="mapserverproxy_post")  # type: ignore
+    @view_config(route_name="mapserverproxy")  # type: ignore[misc]
+    @view_config(route_name="mapserverproxy_post")  # type: ignore[misc]
     def proxy(self) -> Response:
         if self.user is None and "authentication_required" in self.request.params:
             _LOG.debug("proxy() detected authentication_required")
@@ -166,11 +166,11 @@ class MapservProxy(OGCProxy):
             # Add functionalities params
             self.params.update(get_mapserver_substitution_params(self.request))
 
-    @view_config(route_name="mapserverproxy_ogcapi_mapserver")  # type: ignore
+    @view_config(route_name="mapserverproxy_ogcapi_mapserver")  # type: ignore[misc]
     def proxy_ogcapi_mapserver(self) -> Response:
         return self.proxy_ogcapi("ogcapi")
 
-    @view_config(route_name="mapserverproxy_ogcapi_qgisserver")  # type: ignore
+    @view_config(route_name="mapserverproxy_ogcapi_qgisserver")  # type: ignore[misc]
     def proxy_ogcapi_qgisserver(self) -> Response:
         return self.proxy_ogcapi("wfs3")
 

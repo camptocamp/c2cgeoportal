@@ -241,6 +241,9 @@ mapping:
                 type: seq
                 sequence:
                   - type: str
+              logout:
+                type: bool
+                default: false
               provide_roles:
                 type: bool
                 default: false

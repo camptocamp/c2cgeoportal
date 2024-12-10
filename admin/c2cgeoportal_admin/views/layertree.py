@@ -54,13 +54,13 @@ class LayerTreeViews:
         self._request = request
         self._dbsession = request.dbsession
 
-    @view_config(route_name="layertree", renderer="../templates/layertree.jinja2")  # type: ignore
+    @view_config(route_name="layertree", renderer="../templates/layertree.jinja2")  # type: ignore[misc]
     def index(self) -> dict[str, int]:
         node_limit = self._request.registry.settings["admin_interface"].get("layer_tree_max_nodes")
         limit_exceeded = self._dbsession.query(LayergroupTreeitem).count() < node_limit
         return {"limit_exceeded": limit_exceeded, "interfaces": self._dbsession.query(Interface).all()}
 
-    @view_config(route_name="layertree_children", renderer="fast_json")  # type: ignore
+    @view_config(route_name="layertree_children", renderer="fast_json")  # type: ignore[misc]
     def children(self) -> list[dict[str, Any]]:
         interface = self._request.params.get("interface", None)
         group_id = self._request.params.get("group_id", None)
@@ -179,7 +179,7 @@ class LayerTreeViews:
 
         return actions
 
-    @view_config(route_name="layertree_unlink", request_method="DELETE", renderer="fast_json")  # type: ignore
+    @view_config(route_name="layertree_unlink", request_method="DELETE", renderer="fast_json")  # type: ignore[misc]
     def unlink(self) -> dict[str, Any]:
         group_id = self._request.matchdict.get("group_id")
         item_id = self._request.matchdict.get("item_id")
@@ -195,7 +195,7 @@ class LayerTreeViews:
         self._request.dbsession.flush()
         return {"success": True, "redirect": self._request.route_url("layertree")}
 
-    @view_config(route_name="layertree_delete", request_method="DELETE", renderer="fast_json")  # type: ignore
+    @view_config(route_name="layertree_delete", request_method="DELETE", renderer="fast_json")  # type: ignore[misc]
     def delete(self) -> DeleteResponse:
         item_id = self._request.matchdict.get("item_id")
         item = self._request.dbsession.query(TreeItem).get(item_id)
