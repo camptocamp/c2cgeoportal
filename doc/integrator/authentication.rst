@@ -1,9 +1,11 @@
-Authentication
---------------
 
-~~~~~~~~~~~~~~~~~~~
+.. _integrator_authentication:
+
+Authentication
+==============
+
 Supported standards
-~~~~~~~~~~~~~~~~~~~
+-------------------
 
 - `OpenID Connect`: as client, to be able to connect to an external OpenID Connect (OIDC) server.
 - `TOTP`: for two-factor authentication (2FA), this can be used for example with Google Authenticator.
@@ -11,9 +13,8 @@ Supported standards
   authentication, even if it was initially implemented to be able to connect from QGIS desktop on an
   application that requires two factor authentication.
 
-~~~~~~~~~~~~~~~~~~
 The default policy
-~~~~~~~~~~~~~~~~~~
+------------------
 
 By default, ``c2cgeoportal`` applications use an *auth ticket* authentication
 policy (``AuthTktAuthenticationPolicy``). With this policy, the user name is
@@ -40,18 +41,16 @@ In the file ``env.project``, you can configure the policy with the following var
 See also `the official documentation <https://docs.pylonsproject.org/projects/pyramid/en/latest/api/authentication.html#pyramid.authentication.AuthTktAuthenticationPolicy>`_.
 
 
-~~~~~~~~~~~~~~~~~~~~
 Using another policy
-~~~~~~~~~~~~~~~~~~~~
+--------------------
 
 When using ``AuthTktAuthenticationPolicy``, an "auth ticket" cookie should be
 set in the request for the user to be identified. In some applications, using
 a custom identification mechanism may be needed instead, for instance to use SSO.
 Our knowledge base has an example of how this can be achieved.
 
-~~~~~~~~~~~~~~~
 User validation
-~~~~~~~~~~~~~~~
+---------------
 
 For logging in, ``c2cgeoportal`` validates the user credentials
 (username/password) by reading the user information from the ``user`` database
@@ -59,9 +58,8 @@ table. If a c2cgeoportal application should work with another user information
 source, like LDAP, a custom *client validation* mechanism can be set up.
 Our knowledge base has an example of how this can be achieved.
 
-~~~~~~~~~~
 Basic auth
-~~~~~~~~~~
+----------
 
 To be able to access the OGC services from your desktop GIS, you should enable the basic authentication
 by setting ``BASICAUTH`` to ``True`` in the ``env.project`` file.
@@ -73,9 +71,8 @@ in your query string.
 
    For security reasons, basic authentication and two factor authentication should not be enabled together.
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~
 Two factors authentication
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+--------------------------
 
 GeoMapFish support TOTP (Time-Based One-Time Password Algorithm) two factors authentication
 (`RFC 6238 <https://tools.ietf.org/html/rfc6238>`_).
@@ -96,9 +93,8 @@ should uncheck the 'The user changed his password' field on the user in the admi
    For security reasons, basic authentication and two factor authentication should not be enabled together,
    you should use :ref:`OAuth2<integrator_authentication_oauth2>` for that.
 
-~~~~~~~~~~~~~~~
 Account lockout
-~~~~~~~~~~~~~~~
+---------------
 
 To lock an account after a certain number of authentication failures, set the following settings:
 
@@ -111,9 +107,9 @@ To lock an account after a certain number of authentication failures, set the fo
 To unlock a user, the administrator should uncheck the 'Deactivated' field on the user in the
 admin interface.
 
-~~~~~~~~
+
 Intranet
-~~~~~~~~
+--------
 
 To configure the intranet networks fill in the configuration like:
 
@@ -138,9 +134,8 @@ See `Python documentation <https://docs.python.org/3.4/library/ipaddress.html#ip
 
    A user can easily manually set the `Forwarded` or `X-Forwarded-For` header to spoof his IP.
 
-~~~~~~~~~~~~~~~~~~~
 Lost admin password
-~~~~~~~~~~~~~~~~~~~
+-------------------
 
 You can generate a new admin password the following command:
 
@@ -148,9 +143,8 @@ You can generate a new admin password the following command:
    :ref: c2cgeoportal_geoportal.scripts.manage_users.get_argparser
    :prog: docker compose exec geoportal manage-users
 
-~~~~~~~~~~~~~~~~~~~~
 External application
-~~~~~~~~~~~~~~~~~~~~
+--------------------
 
 Some service of GeoMapFish has some host restriction if you mix the domain.
 
@@ -177,3 +171,9 @@ Admin
 We provide a view for the admin interface, to be able to clear the cache per OGC server.
 If for an unknown reason you have not the same host in the ``Host`` header and ``came_from`` parameter, you should
 add the domain of the ``came_from`` parameter in the vars in ``vars/admin_interface/allowed_hosts``.
+
+
+.. _integrator_authentication_oauth2:
+.. include:: authentication_oauth2.rst
+.. _integrator_authentication_oidc:
+.. include:: authentication_oidc.rst
