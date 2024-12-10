@@ -153,7 +153,7 @@ class TestLoginView(TestCase):
         assert response.headers["Content-Type"] == "application/json"
         assert response.headers["Pragma"] == "no-cache"
         assert response.headers["Vary"] == "Origin, Access-Control-Request-Headers, Cookie"
-        assert response.headers["Cache-Control"] == "max-age=10, no-store, public"
+        assert response.headers["Cache-Control"] == "max-age=10, no-store, private"
         data = json.loads(response.body)
         assert set(data.keys()) == {"access_token", "expires_in", "token_type", "refresh_token"}
         assert data["expires_in"] == 3600
@@ -272,7 +272,7 @@ class TestLoginView(TestCase):
         assert response.headers["Content-Type"] == "application/json"
         assert response.headers["Pragma"] == "no-cache"
         assert response.headers["Vary"] == "Origin, Access-Control-Request-Headers, Cookie"
-        assert response.headers["Cache-Control"] == "max-age=10, no-store, public"
+        assert response.headers["Cache-Control"] == "max-age=10, no-store, private"
         data = json.loads(response.body)
         assert set(data.keys()) == {"access_token", "expires_in", "token_type", "refresh_token"}
         assert data["expires_in"] == 3600
@@ -356,7 +356,7 @@ class TestLoginView(TestCase):
         assert response.headers["Content-Type"] == "application/json"
         assert response.headers["Pragma"] == "no-cache"
         assert response.headers["Vary"] == "Origin, Access-Control-Request-Headers, Cookie"
-        assert response.headers["Cache-Control"] == "max-age=10, no-store, public"
+        assert response.headers["Cache-Control"] == "max-age=10, no-store, private"
         data = json.loads(response.body)
         assert set(data.keys()) == {"access_token", "expires_in", "token_type", "refresh_token"}
         assert data["expires_in"] == 3600
@@ -479,7 +479,7 @@ class TestLoginView(TestCase):
         assert response.headers["Content-Type"] == "application/json"
         assert response.headers["Pragma"] == "no-cache"
         assert response.headers["Vary"] == "Origin, Access-Control-Request-Headers, Cookie"
-        assert response.headers["Cache-Control"] == "max-age=10, no-store, public"
+        assert response.headers["Cache-Control"] == "max-age=10, no-store, private"
         data = json.loads(response.body)
         assert set(data.keys()) == {"access_token", "expires_in", "token_type", "refresh_token"}
         assert data["expires_in"] == 3600
@@ -612,7 +612,7 @@ class TestLoginView(TestCase):
         assert response.headers["Content-Type"] == "application/json"
         assert response.headers["Pragma"] == "no-cache"
         assert response.headers["Vary"] == "Origin, Access-Control-Request-Headers, Cookie"
-        assert response.headers["Cache-Control"] == "max-age=10, no-store, public"
+        assert response.headers["Cache-Control"] == "max-age=10, no-store, private"
         data = json.loads(response.body)
         assert set(data.keys()) == {"access_token", "expires_in", "token_type", "refresh_token"}
         assert data["expires_in"] == 3600
@@ -709,7 +709,7 @@ class TestLoginView(TestCase):
         assert response.headers["Content-Type"] == "application/json"
         assert response.headers["Pragma"] == "no-cache"
         assert response.headers["Vary"] == "Origin, Access-Control-Request-Headers, Cookie"
-        assert response.headers["Cache-Control"] == "max-age=10, no-store, public"
+        assert response.headers["Cache-Control"] == "max-age=10, no-store, private"
         data = json.loads(response.body)
         assert set(data.keys()) == {"access_token", "expires_in", "token_type", "refresh_token"}
         assert data["expires_in"] == 3600

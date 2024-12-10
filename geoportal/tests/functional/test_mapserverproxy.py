@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2023, Camptocamp SA
+# Copyright (c) 2013-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -281,7 +281,7 @@ class TestMapserverproxyView(TestCase):
             )
         )
         response = MapservProxy(request).proxy()
-        self.assertTrue(response.cache_control.public)
+        self.assertFalse(response.cache_control.public)
         assert response.cache_control.max_age == 3600
 
     def test_getlegendgraphic_custom_nocache(self):
@@ -362,10 +362,10 @@ class TestMapserverproxyView(TestCase):
             re.sub(pattern, "", l) for l in response.body.decode("utf-8").splitlines()
         ).encode("utf-8")
         assert response_body.decode("utf-8") == expected_response
-        self.assertTrue(response.cache_control.public)
+        self.assertFalse(response.cache_control.public)
         assert response.cache_control.max_age == 10
         self.assertEqual(
-            str(response.cache_control), "max-age=10, must-revalidate, no-cache, no-store, public"
+            str(response.cache_control), "max-age=10, must-revalidate, no-cache, no-store, private"
         )
 
     def test_get_map_unprotected_layer_anonymous(self):
@@ -389,7 +389,7 @@ class TestMapserverproxyView(TestCase):
 
         self.assertTrue(response.status_int, 200)
         self.assertEqual(
-            str(response.cache_control), "max-age=10, must-revalidate, no-cache, no-store, public"
+            str(response.cache_control), "max-age=10, must-revalidate, no-cache, no-store, private"
         )
         # 4 points
         md5sum = hashlib.md5(response.body).hexdigest()
@@ -470,7 +470,7 @@ class TestMapserverproxyView(TestCase):
 
         self.assertTrue(response.status_int, 200)
         self.assertEqual(
-            str(response.cache_control), "max-age=10, must-revalidate, no-cache, no-store, public"
+            str(response.cache_control), "max-age=10, must-revalidate, no-cache, no-store, private"
         )
         # empty
         md5sum = hashlib.md5(response.body).hexdigest()
@@ -900,7 +900,7 @@ class TestMapserverproxyView(TestCase):
 
         self.assertTrue(response.body != "")
         self.assertEqual(
-            str(response.cache_control), "max-age=10, must-revalidate, no-cache, no-store, public"
+            str(response.cache_control), "max-age=10, must-revalidate, no-cache, no-store, private"
         )
 
     def test_substitution(self):
