@@ -53,6 +53,12 @@ Information
        exclude_pages: []
    ```
 
+4. Previously the `Cache-Control` header was set to `public` when we are not authenticated to an endpoint
+   that use the authentication. But this didn't works in every cases, for example when we use the intranet
+   role and when we have a reverse proxy with cache. Now it's always set to private for all the endpoints
+   that use the authentication.
+
+
 =============
 Version 2.8.0
 =============
