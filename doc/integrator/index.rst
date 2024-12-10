@@ -21,6 +21,7 @@ Content:
    database
    configuration
    customize
+   authentication
    security
    features
    docker
