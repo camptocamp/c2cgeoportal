@@ -1,3 +1,7 @@
+##### 2.9.rc.24
+
+- Update used MapServer version [c2cgeoportal#11578](https://github.com/camptocamp/c2cgeoportal/pull/11578)
+
 ##### 2.9.rc.23
 
 - Remove cache-control switch from private to public [c2cgeoportal#11573](https://github.com/camptocamp/c2cgeoportal/pull/11573)
