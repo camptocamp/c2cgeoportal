@@ -1,5 +1,5 @@
 OAuth2 with QGIS
-~~~~~~~~~~~~~~~~
+----------------
 
 In the admin interface create an 'OAuth2 Client' with:
 
