@@ -27,16 +27,20 @@
 
 
 import decimal
+import json
 import logging
 import math
 import os
 import traceback
+import urllib.parse
+from json.decoder import JSONDecodeError
 from typing import TYPE_CHECKING, Any
 
 import numpy
 import pyramid.request
+import requests
 import zope.event.classhandler
-from pyramid.httpexceptions import HTTPBadRequest, HTTPNotFound
+from pyramid.httpexceptions import HTTPBadRequest, HTTPInternalServerError, HTTPNotFound
 from pyramid.view import view_config
 from rasterio.io import DatasetReader
 
@@ -95,10 +99,21 @@ class Raster:
                     raise HTTPNotFound(f"Layer {layer} not found")
         else:
             rasters = self.rasters
+            layers = list(rasters.keys())
+            layers.sort()
 
-        result = {}
+        result: dict[str, Any] = {}
+
+        service_layers = [layer for layer in layers if rasters[layer].get("type") == "external_url"]
+
+        if len(service_layers) > 0:
+            for layer in service_layers:
+                service_result: dict[str, Any] = self._get_service_data(layer, lat, lon, rasters)
+                result.update(service_result)
+
         for ref in list(rasters.keys()):
-            result[ref] = self._get_raster_value(rasters[ref], ref, lon, lat)
+            if ref not in service_layers:
+                result[ref] = self._get_raster_value(rasters[ref], ref, lon, lat)
 
         set_common_headers(self.request, "raster", Cache.PUBLIC_NO)
         return result
@@ -180,6 +195,31 @@ class Raster:
             result = None
 
         return result
+
+    def _get_service_data(
+        self, layer: str, lat: float, lon: float, rasters: dict[str, Any]
+    ) -> dict[str, Any]:
+        request = (
+            f"{rasters[layer]['url']}/height?{urllib.parse.urlencode({'easting': lon, 'northing': lat})}"
+        )
+        _LOG.info("Doing height request to %s", request)
+        response = requests.get(request, timeout=10)
+        if not response.ok:
+            _LOG.error("Elevation request %s failed with status code %s", request, response.status_code)
+            raise HTTPInternalServerError(
+                f"Failed to fetch elevation data from the internal request: \
+                {response.status_code} {response.reason}"
+            )
+
+        try:
+            result = json.loads(response.content).get(rasters[layer]["elevation_name"])
+        except (TypeError, JSONDecodeError) as exc:
+            _LOG.exception("Height request to %s failed", request)
+            raise HTTPInternalServerError("Failed to decode JSON response from the internal request") from exc
+
+        set_common_headers(self.request, "raster", Cache.PUBLIC_NO)
+
+        return {layer: result}
 
     @staticmethod
     def _round(value: numpy.float32, round_to: float) -> decimal.Decimal | None:
