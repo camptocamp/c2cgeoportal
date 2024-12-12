@@ -28,6 +28,7 @@
 import json
 import logging
 import math
+import urllib.parse
 from decimal import Decimal
 from json.decoder import JSONDecodeError
 from typing import Any
@@ -35,7 +36,7 @@ from typing import Any
 import geojson
 import pyramid.request
 import requests
-from pyramid.httpexceptions import HTTPBadRequest, HTTPNotFound
+from pyramid.httpexceptions import HTTPBadRequest, HTTPInternalServerError, HTTPNotFound
 from pyramid.i18n import TranslationStringFactory
 from pyramid.view import view_config
 
@@ -70,19 +71,21 @@ class Profile(Raster):
 
     def _get_profile_service_data(
         self, layers: list[str], geom: dict[str, Any], rasters: dict[str, Any], nb_points: int
-    ) -> dict[str, Any]:
-        request = (
-            f"{rasters[layers[0]]['url']}/profile.json?geom={geom}&nbPoints={nb_points}&distinct_points=true"
-        )
+    ) -> list[dict[str, Any]]:
+        request = f"{rasters[layers[0]]['url']}/profile.json?{urllib.parse.urlencode({'geom': geom, 'nbPoints': nb_points, 'distinct_points': 'true'})}"
         response = requests.get(request, timeout=10)
+        if not response.ok:
+            _LOG.error("profile request %s failed with status code %s", request, response.status_code)
+            raise HTTPInternalServerError(
+                f"Failed to fetch profile data from internal request: \
+                {response.status_code} {response.reason}"
+            )
+
         try:
             points = json.loads(response.content)
-        except (TypeError, JSONDecodeError):
-            _LOG.warning("profile request %s failed", request)
-            self.request.response.status_code = response.status_code
-            self.request.response.text = response.text
-            self.request.response.content_type = "text/plain"
-            return self.request.response
+        except (TypeError, JSONDecodeError) as exc:
+            _LOG.exception("profile request %s failed", request)
+            raise HTTPInternalServerError("Failed to decode JSON response from internal request") from exc
 
         return self._to_filtered(points, layers)
 
@@ -98,7 +101,7 @@ class Profile(Raster):
         geom = geojson.loads(self.request.params["geom"], object_hook=geojson.GeoJSON.to_instance)
         nb_points = int(self.request.params["nbPoints"])
         coords = []
-        service_results = []
+        service_results: list[dict[str, Any]] = []
 
         layers: list[str]
         if "layers" in self.request.params:
