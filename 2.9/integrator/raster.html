@@ -51,9 +51,13 @@ The <code class="docutils literal notranslate"><span class="pre">profile</span><
 <span class="w">        </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/sig/altimetrie/mnt.vrt</span>
 <span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gdal</span>
 <span class="w">        </span><span class="nt">round</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">    </span><span class="nt">DTM2</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;https://api3.geo.admin.ch/rest/services&#39;</span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">external_url</span>
+<span class="w">        </span><span class="nt">elevation_name</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;height&#39;</span>
 </pre></div>
 </div>
-<p><code class="docutils literal notranslate"><span class="pre">raster</span></code> is a list of “DEM layers”. There are only two entries in this example, but there could be more.</p>
+<p><code class="docutils literal notranslate"><span class="pre">raster</span></code> is a list of “DEM layers”.</p>
 <p><code class="docutils literal notranslate"><span class="pre">file</span></code> provides the path to the shape index that references the raster files.
 The raster files should be in the Binary Terrain (BT/VTP .bt 1.3) format.
 One may use GDAL/OGR to convert data to such a format.</p>
@@ -64,6 +68,11 @@ We recommend to use a <a class="reference external" href="https://www.gdal.org/g
 By default the nodata value is directly read from the source.</p>
 <p><code class="docutils literal notranslate"><span class="pre">round</span></code> specifies how the result values should be rounded.
 For instance ‘1’: round to the unit, ‘0.01’: round to the hundredth, etc.</p>
+<p><code class="docutils literal notranslate"><span class="pre">url</span></code> specifies the URL of a service to use to get the elevation or profile. The service must accept a request with the this format for profiles
+<code class="docutils literal notranslate"><span class="pre">{base_url}/profile.json?geom={geom}&amp;nbPoints={nb_points}</span></code> and
+<code class="docutils literal notranslate"><span class="pre">{base_url}/height?easting={lon}&amp;northing={lat}</span></code> for points, where
+<code class="docutils literal notranslate"><span class="pre">{geom}</span></code> is the geometry of the line, <code class="docutils literal notranslate"><span class="pre">{nb_points}</span></code> is the number of points to get, <code class="docutils literal notranslate"><span class="pre">{lon}</span></code> is the longitude of the point and <code class="docutils literal notranslate"><span class="pre">{lat}</span></code> is the latitude of the point.</p>
+<p><code class="docutils literal notranslate"><span class="pre">elevation_name</span></code> specifies the name of the elevation field in the response.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>gdalbuildvrt usage example:</p>

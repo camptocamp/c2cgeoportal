@@ -1,5 +1,5 @@
 OpenID Connect
-~~~~~~~~~~~~~~
+--------------
 
 We can configure an OpenID connect service as an SSO (Single Sign-On) provider for our application. This allows users to log in to our application using their OpenID Connect credentials.
 
@@ -33,7 +33,6 @@ We use `OpenID Connect Discovery 1.0 <https://openid.net/specs/openid-connect-di
         end
         Geoportal->>-Browser: response
 
-~~~~~~~~~~~~~~~~~~~~~~~
 Authentication provider
 ~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -52,7 +51,6 @@ If we want to use OpenID Connect as an authentication provider, we need to set t
 With that the user will be create in the database at the first login, and the access right will be set in the GeoMapFish database.
 The user correspondence will be done on the email field.
 
-~~~~~~~~~~~~~~~~~~~~~~
 Authorization provider
 ~~~~~~~~~~~~~~~~~~~~~~
 
@@ -74,7 +72,6 @@ If we want to use OpenID Connect as an authorization provider, we need to set th
 
 With that the user will not be in the database only the roles will be set in the GeoMapFish database.
 
-~~~~~~~~~~~~~
 Other options
 ~~~~~~~~~~~~~
 
@@ -107,7 +104,6 @@ Other options
      display_name: name
      email: email
 
-~~~~~~~~~~~~~~~~~~~~
 Example with Zitadel
 ~~~~~~~~~~~~~~~~~~~~
 
@@ -121,7 +117,6 @@ Example with Zitadel
          query_user_info: true
          create_user: true
 
-~~~~~
 Hooks
 ~~~~~
 
@@ -153,7 +148,6 @@ Configure the hooks in the project initialization:
         config.add_request_method(get_remember_from_user_info, name="get_remember_from_user_info")
         config.add_request_method(get_user_from_remember, name="get_user_from_remember")
 
-~~~~~~~~~~~~~~~~~
 QGIS with Zitadel
 ~~~~~~~~~~~~~~~~~
 
@@ -173,7 +167,6 @@ On QGIS:
 * Set ``Client ID`` to ``<client_id>``.
 * Set ``Scope`` to the ``openid profile email``.
 
-~~~~~~~~~~~~~~
 Implementation
 ~~~~~~~~~~~~~~
 
