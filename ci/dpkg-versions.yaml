@@ -1208,8 +1208,8 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/chromium-codecs-ffmpeg-extra: 3:128.0.6613.137-0ubuntu0.24.04.1sav0.1
   ubuntu_24_04/coreutils: 9.4-3ubuntu6
   ubuntu_24_04/cpp: 4:13.2.0-7ubuntu1
-  ubuntu_24_04/cpp-13: 13.2.0-23ubuntu4
-  ubuntu_24_04/cpp-13-x86-64-linux-gnu: 13.2.0-23ubuntu4
+  ubuntu_24_04/cpp-13: 13.3.0-6ubuntu2~24.04
+  ubuntu_24_04/cpp-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04
   ubuntu_24_04/cpp-x86-64-linux-gnu: 4:13.2.0-7ubuntu1
   ubuntu_24_04/curl: 8.5.0-2ubuntu10.5
   ubuntu_24_04/dash: 0.5.12-6ubuntu5
@@ -1233,20 +1233,20 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/fonts-dejavu-core: 2.37-8
   ubuntu_24_04/fonts-dejavu-mono: 2.37-8
   ubuntu_24_04/g++: 4:13.2.0-7ubuntu1
-  ubuntu_24_04/g++-13: 13.2.0-23ubuntu4
-  ubuntu_24_04/g++-13-x86-64-linux-gnu: 13.2.0-23ubuntu4
+  ubuntu_24_04/g++-13: 13.3.0-6ubuntu2~24.04
+  ubuntu_24_04/g++-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04
   ubuntu_24_04/g++-x86-64-linux-gnu: 4:13.2.0-7ubuntu1
   ubuntu_24_04/gcc: 4:13.2.0-7ubuntu1
-  ubuntu_24_04/gcc-13: 13.2.0-23ubuntu4
-  ubuntu_24_04/gcc-13-base: 13.2.0-23ubuntu4
-  ubuntu_24_04/gcc-13-x86-64-linux-gnu: 13.2.0-23ubuntu4
+  ubuntu_24_04/gcc-13: 13.3.0-6ubuntu2~24.04
+  ubuntu_24_04/gcc-13-base: 13.3.0-6ubuntu2~24.04
+  ubuntu_24_04/gcc-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04
   ubuntu_24_04/gcc-14-base: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/gcc-x86-64-linux-gnu: 4:13.2.0-7ubuntu1
   ubuntu_24_04/gettext: 0.21-14ubuntu2
   ubuntu_24_04/gettext-base: 0.21-14ubuntu2
   ubuntu_24_04/gir1.2-girepository-2.0: 1.80.1-1
   ubuntu_24_04/gir1.2-glib-2.0: 2.80.0-6ubuntu3.2
-  ubuntu_24_04/gir1.2-packagekitglib-1.0: 1.2.8-2build3
+  ubuntu_24_04/gir1.2-packagekitglib-1.0: 1.2.8-2ubuntu1
   ubuntu_24_04/git: 1:2.43.0-1ubuntu7.1
   ubuntu_24_04/git-man: 1:2.43.0-1ubuntu7.1
   ubuntu_24_04/gnupg: 2.4.4-2ubuntu17
@@ -1336,7 +1336,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/libfreexl1: 2.0.0-1build2
   ubuntu_24_04/libfribidi0: 1.0.13-3build1
   ubuntu_24_04/libgbm1: 24.0.9-0ubuntu0.3
-  ubuntu_24_04/libgcc-13-dev: 13.2.0-23ubuntu4
+  ubuntu_24_04/libgcc-13-dev: 13.3.0-6ubuntu2~24.04
   ubuntu_24_04/libgcc-s1: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/libgcrypt20: 1.10.3-2build1
   ubuntu_24_04/libgdbm-compat4t64: 1.23-5.1build1
@@ -1420,7 +1420,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/libnss3: 2:3.98-1build1
   ubuntu_24_04/libopenjp2-7: 2.5.0-2ubuntu0.2
   ubuntu_24_04/libp11-kit0: 0.25.3-4ubuntu2.1
-  ubuntu_24_04/libpackagekit-glib2-18: 1.2.8-2build3
+  ubuntu_24_04/libpackagekit-glib2-18: 1.2.8-2ubuntu1
   ubuntu_24_04/libpam-modules: 1.5.3-5ubuntu5.1
   ubuntu_24_04/libpam-modules-bin: 1.5.3-5ubuntu5.1
   ubuntu_24_04/libpam-runtime: 1.5.3-5ubuntu5.1
@@ -1468,7 +1468,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/libssh-4: 0.10.6-2build2
   ubuntu_24_04/libssl-dev: 3.0.13-0ubuntu3.4
   ubuntu_24_04/libssl3t64: 3.0.13-0ubuntu3.4
-  ubuntu_24_04/libstdc++-13-dev: 13.2.0-23ubuntu4
+  ubuntu_24_04/libstdc++-13-dev: 13.3.0-6ubuntu2~24.04
   ubuntu_24_04/libstdc++6: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/libstemmer0d: 2.2.0-4build1
   ubuntu_24_04/libsystemd-shared: 255.4-1ubuntu8.4
@@ -1872,7 +1872,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/nodejs: 18.19.1+dfsg-6ubuntu5
   ubuntu_24_04/npm: 9.2.0~ds1-2
   ubuntu_24_04/openssl: 3.0.13-0ubuntu3.4
-  ubuntu_24_04/packagekit: 1.2.8-2build3
+  ubuntu_24_04/packagekit: 1.2.8-2ubuntu1
   ubuntu_24_04/passwd: 1:4.13+dfsg1-4ubuntu3.2
   ubuntu_24_04/perl: 5.38.2-3.2build2
   ubuntu_24_04/perl-base: 5.38.2-3.2build2
@@ -1988,7 +1988,7 @@ camptocamp/geomapfish:latest:
   ubuntu_24_04/gettext-base: 0.21-14ubuntu2
   ubuntu_24_04/gir1.2-girepository-2.0: 1.80.1-1
   ubuntu_24_04/gir1.2-glib-2.0: 2.80.0-6ubuntu3.2
-  ubuntu_24_04/gir1.2-packagekitglib-1.0: 1.2.8-2build3
+  ubuntu_24_04/gir1.2-packagekitglib-1.0: 1.2.8-2ubuntu1
   ubuntu_24_04/git: 1:2.43.0-1ubuntu7.1
   ubuntu_24_04/git-man: 1:2.43.0-1ubuntu7.1
   ubuntu_24_04/gnupg: 2.4.4-2ubuntu17
@@ -2127,7 +2127,7 @@ camptocamp/geomapfish:latest:
   ubuntu_24_04/libnss3: 2:3.98-1build1
   ubuntu_24_04/libopenjp2-7: 2.5.0-2ubuntu0.2
   ubuntu_24_04/libp11-kit0: 0.25.3-4ubuntu2.1
-  ubuntu_24_04/libpackagekit-glib2-18: 1.2.8-2build3
+  ubuntu_24_04/libpackagekit-glib2-18: 1.2.8-2ubuntu1
   ubuntu_24_04/libpam-modules: 1.5.3-5ubuntu5.1
   ubuntu_24_04/libpam-modules-bin: 1.5.3-5ubuntu5.1
   ubuntu_24_04/libpam-runtime: 1.5.3-5ubuntu5.1
@@ -2562,7 +2562,7 @@ camptocamp/geomapfish:latest:
   ubuntu_24_04/nodejs: 18.19.1+dfsg-6ubuntu5
   ubuntu_24_04/npm: 9.2.0~ds1-2
   ubuntu_24_04/openssl: 3.0.13-0ubuntu3.4
-  ubuntu_24_04/packagekit: 1.2.8-2build3
+  ubuntu_24_04/packagekit: 1.2.8-2ubuntu1
   ubuntu_24_04/passwd: 1:4.13+dfsg1-4ubuntu3.2
   ubuntu_24_04/perl: 5.38.2-3.2build2
   ubuntu_24_04/perl-base: 5.38.2-3.2build2
@@ -2661,7 +2661,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_24_04/gettext-base: 0.21-14ubuntu2
   ubuntu_24_04/gir1.2-girepository-2.0: 1.80.1-1
   ubuntu_24_04/gir1.2-glib-2.0: 2.80.0-6ubuntu3.2
-  ubuntu_24_04/gir1.2-packagekitglib-1.0: 1.2.8-2build3
+  ubuntu_24_04/gir1.2-packagekitglib-1.0: 1.2.8-2ubuntu1
   ubuntu_24_04/git: 1:2.43.0-1ubuntu7.1
   ubuntu_24_04/git-man: 1:2.43.0-1ubuntu7.1
   ubuntu_24_04/gnupg: 2.4.4-2ubuntu17
@@ -2800,7 +2800,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_24_04/libnss3: 2:3.98-1build1
   ubuntu_24_04/libopenjp2-7: 2.5.0-2ubuntu0.2
   ubuntu_24_04/libp11-kit0: 0.25.3-4ubuntu2.1
-  ubuntu_24_04/libpackagekit-glib2-18: 1.2.8-2build3
+  ubuntu_24_04/libpackagekit-glib2-18: 1.2.8-2ubuntu1
   ubuntu_24_04/libpam-modules: 1.5.3-5ubuntu5.1
   ubuntu_24_04/libpam-modules-bin: 1.5.3-5ubuntu5.1
   ubuntu_24_04/libpam-runtime: 1.5.3-5ubuntu5.1
@@ -3235,7 +3235,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_24_04/nodejs: 18.19.1+dfsg-6ubuntu5
   ubuntu_24_04/npm: 9.2.0~ds1-2
   ubuntu_24_04/openssl: 3.0.13-0ubuntu3.4
-  ubuntu_24_04/packagekit: 1.2.8-2build3
+  ubuntu_24_04/packagekit: 1.2.8-2ubuntu1
   ubuntu_24_04/passwd: 1:4.13+dfsg1-4ubuntu3.2
   ubuntu_24_04/perl: 5.38.2-3.2build2
   ubuntu_24_04/perl-base: 5.38.2-3.2build2
