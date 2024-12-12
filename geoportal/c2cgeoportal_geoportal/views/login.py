@@ -34,6 +34,7 @@ import sys
 import urllib.parse
 from typing import Any
 
+import c2cgeoportal_commons.lib.url
 import pkce
 import pyotp
 import pyramid.request
@@ -615,13 +616,16 @@ class Login:
         )
 
         try:
-            return HTTPFound(
-                location=client.authorization_code_flow.start_authentication(
+            url = c2cgeoportal_commons.lib.url.Url(
+                client.authorization_code_flow.start_authentication(
                     code_challenge=code_challenge,
                     code_challenge_method="S256",
-                ),
-                headers=self.request.response.headers,
+                )
             )
+            url.add_query(
+                self.authentication_settings.get("openid_connect", {}).get("login_extra_params", {})
+            )
+            return HTTPFound(location=url.url(), headers=self.request.response.headers)
         finally:
             client.authorization_code_flow.code_challenge = ""
 
