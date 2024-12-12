@@ -26,7 +26,6 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import json
 import os
 import re
 import subprocess
@@ -35,7 +34,7 @@ from argparse import ArgumentParser
 from typing import Any, Union, cast
 
 import pkg_resources
-import requests
+import pyproj
 import yaml
 from cookiecutter.log import configure_logger
 from cookiecutter.main import cookiecutter
@@ -277,31 +276,14 @@ class PCreateCommand:
     @staticmethod
     def epsg2bbox(srid: int) -> list[str] | None:
         try:
-            r = requests.get(f"https://epsg.io/?format=json&q={srid}", timeout=60)
-            bbox = r.json()["results"][0]["bbox"]
-            r = requests.get(
-                "https://epsg.io/trans?s_srs=4326&t_srs={srid}&data={bbox[1]},{bbox[0]}".format(
-                    srid=srid, bbox=bbox
-                ),
-                timeout=60,
-            )
-            r1 = r.json()[0]
-            r = requests.get(
-                "https://epsg.io/trans?s_srs=4326&t_srs={srid}&data={bbox[3]},{bbox[2]}".format(
-                    srid=srid, bbox=bbox
-                ),
-                timeout=60,
-            )
-            r2 = r.json()[0]
-            return [r1["x"], r2["y"], r2["x"], r1["y"]]
-        except requests.RequestException:
-            print("Failed to establish a connection to epsg.io.")
-        except json.JSONDecodeError:
-            print("epsg.io doesn't return a correct json.")
-        except IndexError:
-            print("Unable to get the bbox")
+            crs = pyproj.CRS.from_epsg(srid)
+            assert crs.area_of_use is not None
+            transformer = pyproj.Transformer.from_crs(4326, crs)
+            c1 = transformer.transform(crs.area_of_use.bounds[1], crs.area_of_use.bounds[0])
+            c2 = transformer.transform(crs.area_of_use.bounds[3], crs.area_of_use.bounds[2])
+            return [c1[0], c1[1], c2[0], c2[1]]
         except Exception as exception:  # pylint: disable=broad-exception-caught
-            print(f"unexpected error: {str(exception)}")
+            print(f"Unexpected error: {str(exception)}")
         return None
 
 
