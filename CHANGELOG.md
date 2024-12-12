@@ -1,3 +1,7 @@
+##### 2.9.rc.26
+
+- Mapserver: Add oga_onlineresource for OGCAPI support [c2cgeoportal#11581](https://github.com/camptocamp/c2cgeoportal/pull/11581)
+
 ##### 2.9.rc.25
 
 - [Backport 2.9] Get profile and height from service [c2cgeoportal#11575](https://github.com/camptocamp/c2cgeoportal/pull/11575)
