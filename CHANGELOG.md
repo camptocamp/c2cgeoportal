@@ -1,3 +1,7 @@
+##### 2.9.rc.27
+
+- Audit Dpkg 2.9 [c2cgeoportal#11586](https://github.com/camptocamp/c2cgeoportal/pull/11586)
+
 ##### 2.9.rc.26
 
 - Mapserver: Add oga_onlineresource for OGCAPI support [c2cgeoportal#11581](https://github.com/camptocamp/c2cgeoportal/pull/11581)
