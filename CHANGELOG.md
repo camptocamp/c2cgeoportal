@@ -1,3 +1,9 @@
+##### 2.9.rc.25
+
+- [Backport 2.9] Get profile and height from service [c2cgeoportal#11575](https://github.com/camptocamp/c2cgeoportal/pull/11575)
+- Create a dedicated page for the authentication [c2cgeoportal#11577](https://github.com/camptocamp/c2cgeoportal/pull/11577)
+- Audit Dpkg 2.9 [c2cgeoportal#11580](https://github.com/camptocamp/c2cgeoportal/pull/11580)
+
 ##### 2.9.rc.24
 
 - Update used MapServer version [c2cgeoportal#11578](https://github.com/camptocamp/c2cgeoportal/pull/11578)
