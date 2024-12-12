@@ -89,6 +89,10 @@ Other options
 ``create_user``: If ``true``, a user will be create in the geomapfish database if not exists,
   default is ``false``.
 
+``login_extra_params``: Extra parameters to add to the login request.
+  See `Zitadel additional parameters <https://zitadel.com/docs/apis/openidoauth/endpoints#additional-parameters>`_.
+  Default is ``{}``.
+
 ``match_field``: The field to use to match the user in the database, can be ``username`` (default) or ``email``.
 
 ``update_fields``: The fields to update in the database, default is: ``[]``, allowed values are

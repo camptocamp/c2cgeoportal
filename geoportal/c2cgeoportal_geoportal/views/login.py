@@ -50,6 +50,7 @@ from pyramid.security import forget, remember
 from pyramid.view import forbidden_view_config, view_config
 from sqlalchemy.orm.exc import NoResultFound  # type: ignore[attr-defined]
 
+import c2cgeoportal_commons.lib.url
 from c2cgeoportal_commons import models
 from c2cgeoportal_commons.lib.email_ import send_email_config
 from c2cgeoportal_commons.models import static
@@ -618,13 +619,17 @@ class Login:
         )
 
         try:
-            return HTTPFound(
-                location=client.authorization_code_flow.start_authentication(
+
+            url = c2cgeoportal_commons.lib.url.Url(
+                client.authorization_code_flow.start_authentication(
                     code_challenge=code_challenge,
                     code_challenge_method="S256",
-                ),
-                headers=self.request.response.headers,
+                )
             )
+            url.add_query(
+                self.authentication_settings.get("openid_connect", {}).get("login_extra_params", {})
+            )
+            return HTTPFound(location=url.url(), headers=self.request.response.headers)
         finally:
             client.authorization_code_flow.code_challenge = ""
 
