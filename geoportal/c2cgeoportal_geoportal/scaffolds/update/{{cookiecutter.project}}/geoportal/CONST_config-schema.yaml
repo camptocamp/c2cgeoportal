@@ -250,6 +250,11 @@ mapping:
               create_user:
                 type: bool
                 default: false
+              login_extra_params:
+                type: map
+                mapping:
+                  regex;(.+):
+                    type: str
               match_field:
                 type: str
                 enum:

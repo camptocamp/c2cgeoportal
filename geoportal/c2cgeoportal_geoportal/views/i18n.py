@@ -52,7 +52,7 @@ _LOG = logging.getLogger(__name__)
 _INITIALIZED = False
 
 
-@view_config(route_name="localejson")  # type: ignore
+@view_config(route_name="localejson")  # type: ignore[misc]
 def locale(request: pyramid.request.Request) -> pyramid.response.Response:
     """Get the locale json file for the API."""
     response = HTTPFound(
@@ -65,7 +65,7 @@ def locale(request: pyramid.request.Request) -> pyramid.response.Response:
     return response
 
 
-@view_config(route_name="localepot")  # type: ignore
+@view_config(route_name="localepot")  # type: ignore[misc]
 def localepot(request: pyramid.request.Request) -> pyramid.response.Response:
     """Get the pot from an HTTP request."""
     # Build the list of files to be processed

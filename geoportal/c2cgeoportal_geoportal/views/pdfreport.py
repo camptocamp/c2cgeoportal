@@ -101,7 +101,7 @@ class PdfReport(OGCProxy):
             ],
         }
 
-    @view_config(route_name="pdfreport", renderer="json")  # type: ignore
+    @view_config(route_name="pdfreport", renderer="json")  # type: ignore[misc]
     def get_report(self) -> pyramid.response.Response:
         assert models.DBSession is not None
 
