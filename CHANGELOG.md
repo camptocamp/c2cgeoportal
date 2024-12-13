@@ -1,3 +1,7 @@
+##### 2.9.rc.28
+
+- Add possibility to add additional parameters to login end-point [c2cgeoportal#11574](https://github.com/camptocamp/c2cgeoportal/pull/11574)
+
 ##### 2.9.rc.27
 
 - Audit Dpkg 2.9 [c2cgeoportal#11586](https://github.com/camptocamp/c2cgeoportal/pull/11586)
