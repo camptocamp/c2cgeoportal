@@ -1,3 +1,7 @@
+##### 2.9.rc.30
+
+- Update all patch versions (2.9) (patch) [c2cgeoportal#11588](https://github.com/camptocamp/c2cgeoportal/pull/11588)
+
 ##### 2.9.rc.29
 
 - Replace epsg.io by pyproj [c2cgeoportal#11585](https://github.com/camptocamp/c2cgeoportal/pull/11585)
