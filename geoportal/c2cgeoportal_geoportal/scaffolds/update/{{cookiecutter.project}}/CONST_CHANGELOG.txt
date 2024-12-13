@@ -22,6 +22,12 @@ Version 2.8.1
 
    End of support by GitHub: https://github.blog/changelog/2024-04-10-github-hosted-runner-images-deprecation-notice-docker-compose-v1/.
 
+4. Previously the `Cache-Control` header was set to `public` when we are not authenticated to an endpoint
+   that use the authentication. But this didn't works in every cases, for example when we use the intranet
+   role and when we have a reverse proxy with cache. Now it's always set to private for all the endpoints
+   that use the authentication.
+
+
 =============
 Version 2.8.0
 =============
