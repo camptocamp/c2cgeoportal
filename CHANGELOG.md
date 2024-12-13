@@ -1,3 +1,7 @@
+##### 2.8.1.171
+
+- [Backport 2.8] Remove cache-control switch from private to public [c2cgeoportal#11587](https://github.com/camptocamp/c2cgeoportal/pull/11587)
+
 ##### 2.8.1.170
 
 - Update dependency waitress to v3.0.2 (2.8) [c2cgeoportal#11564](https://github.com/camptocamp/c2cgeoportal/pull/11564)
