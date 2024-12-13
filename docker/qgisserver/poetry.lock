@@ -80,13 +80,13 @@ pyyaml-include = ">=2.0"
 
 [[package]]
 name = "c2cwsgiutils"
-version = "6.1.2"
+version = "6.1.5"
 description = "Common utilities for Camptocamp WSGI applications"
 optional = false
 python-versions = ">=3.10"
 files = [
-    {file = "c2cwsgiutils-6.1.2-py3-none-any.whl", hash = "sha256:21d3833f1df8a431c6907880b127a6c1edb12efee6536f5f913797ac7d744fa1"},
-    {file = "c2cwsgiutils-6.1.2.tar.gz", hash = "sha256:969938bbe6f4b961c47803107e0e3b17dced8e3e7010966056bff38353645103"},
+    {file = "c2cwsgiutils-6.1.5-py3-none-any.whl", hash = "sha256:37337c84004fcaabbaa18fcb711534926d7bea94c5719f9fbe8afe66b8f6b6c5"},
+    {file = "c2cwsgiutils-6.1.5.tar.gz", hash = "sha256:b5d8f8529a9b7bfb01b5f11aba6a3b60bc3f3f4aacf6fdb236b009d28643b59b"},
 ]
 
 [package.dependencies]
@@ -1229,13 +1229,13 @@ testing = ["coverage", "pytest (>=5.4.2)", "pytest-cov", "webtest (>=1.3.1)", "z
 
 [[package]]
 name = "pytest"
-version = "8.3.3"
+version = "8.3.4"
 description = "pytest: simple powerful testing with Python"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pytest-8.3.3-py3-none-any.whl", hash = "sha256:a6853c7375b2663155079443d2e45de913a911a11d669df02a50814944db57b2"},
-    {file = "pytest-8.3.3.tar.gz", hash = "sha256:70b98107bd648308a7952b06e6ca9a50bc660be218d53c257cc1fc94fda10181"},
+    {file = "pytest-8.3.4-py3-none-any.whl", hash = "sha256:50e16d954148559c9a74109af1eaf0c945ba2d8f30f0a3d3335edde19788b6f6"},
+    {file = "pytest-8.3.4.tar.gz", hash = "sha256:965370d062bce11e73868e0335abac31b4d3de0e82f4007408d242b4f8610761"},
 ]
 
 [package.dependencies]
@@ -1982,4 +1982,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "d2be3893637c79ccdd5e316dd871bbb130f3356c8984bbaca11899c96543dced"
+content-hash = "e758b063a100423f59bb6c6700f4284e34b10ad50b784d266ee30edb0219af3a"
