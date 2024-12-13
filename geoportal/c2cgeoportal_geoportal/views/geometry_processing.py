@@ -48,7 +48,7 @@ class GeometryProcessing:
     def __init__(self, request: pyramid.request.Request):
         self.request = request
 
-    @view_config(route_name="difference", renderer="geojson")  # type: ignore
+    @view_config(route_name="difference", renderer="geojson")  # type: ignore[misc]
     def difference(self) -> BaseGeometry | None:
         assert DBSession is not None
 

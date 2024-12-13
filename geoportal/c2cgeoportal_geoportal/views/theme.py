@@ -841,7 +841,7 @@ class Theme:
                 result[functionality.name] = [functionality.value]
         return result
 
-    @view_config(route_name="invalidate", renderer="json")  # type: ignore
+    @view_config(route_name="invalidate", renderer="json")  # type: ignore[misc]
     def invalidate_cache(self) -> dict[str, bool]:
         auth_view(self.request)
         models.cache_invalidate_cb()
