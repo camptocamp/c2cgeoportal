@@ -1,3 +1,8 @@
+##### 2.9.rc.29
+
+- Replace epsg.io by pyproj [c2cgeoportal#11585](https://github.com/camptocamp/c2cgeoportal/pull/11585)
+- Fix call to '/static' [c2cgeoportal#11589](https://github.com/camptocamp/c2cgeoportal/pull/11589)
+
 ##### 2.9.rc.28
 
 - Add possibility to add additional parameters to login end-point [c2cgeoportal#11574](https://github.com/camptocamp/c2cgeoportal/pull/11574)
