@@ -24,7 +24,7 @@ authors = []
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"
-c2cwsgiutils = { extras = ["broadcast"], version = "6.1.2" }
+c2cwsgiutils = { extras = ["broadcast"], version = "6.1.5" }
 papyrus = "2.6.2" # commons
 transaction = "5.0" # commons
 "c2c.template" = "2.4.2"
@@ -42,4 +42,4 @@ prospector = { extras = ["with_mypy", "with_bandit"], version = "1.12.1" }
 prospector-profile-duplicated = "1.6.0"
 prospector-profile-utils  = "1.9.1"
 types-pyyaml = "6.0.12.20240917"
-pytest = "8.3.3"
+pytest = "8.3.4"
