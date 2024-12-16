@@ -169,22 +169,6 @@ and the configuration should be as follows:
 * WFS support: recommended to be ``[X]``
 * Is single tile:  recommended to be ``[ ]``
 
-Access Restriction
-******************
-
-The access restriction is available only for Docker projects.
-
-We provide a Docker image named ``camptocamp/geomapfish-qgisserver`` with tag pattern:
-``gmf<Major GeoMapFish version}-qgis${Major QGIS}``.
-
-From version 2.7 the config is just made with the ``GEOMAPFISH_ACCESSCONTROL_BASE_URL`` environment
-variable which contains the base URL of the OGC servers, by default it's set to
-``QGISSERVER_URL``. And the plugin will search for the OGC servers that match with this base URL.
-It also requires that the OGC servers are configured with an URL like that
-``config://qgisserver?map=<project_file>``.
-
-The configuration that use the ``QGIS_PROJECT_FILE`` or ``GEOMAPFISH_ACCESSCONTROL_CONFIG`` are still
-working but are deprecated.
 
 Project in Database
 *******************
@@ -213,6 +197,37 @@ in the vars file add:
            MAP: postgresql://{PGUSER}:{PGPASSWORD}@{PGHOST}:{PGPORT}?sslmode={PGSSLMODE}&dbname={PGDATABASE}&schema=qgis&project=qgis2
 
 With that you will not have URL encoding issues.
+
+
+Access Restrictions
+===================
+
+The access restriction functionality described here is available only for Docker projects.
+
+We provide a Docker image named ``camptocamp/geomapfish-qgisserver`` with tag pattern:
+``gmf<Major GeoMapFish version}-qgis${Major QGIS}``.
+
+
+Access Restriction on QGIS OGC server
+*************************************
+
+From version 2.7 the config is just made with the ``GEOMAPFISH_ACCESSCONTROL_BASE_URL`` environment
+variable which contains the base URL of the OGC servers, by default it's set to
+``QGISSERVER_URL``. And the plugin will search for the OGC servers that match with this base URL.
+It also requires that the OGC servers are configured with an URL like that
+``config://qgisserver?map=<project_file>``.
+
+The configuration that use the ``QGIS_PROJECT_FILE`` or ``GEOMAPFISH_ACCESSCONTROL_CONFIG`` are still
+working but are deprecated.
+
+
+Protecting Attributes
+*********************
+
+Individual attributes can be protected via the layer metadata setting ``protectedAttributes``. To define which roles shall
+have access, the functionality ``allowed_attributes`` must be used in combination with this setting. As WMS layer name,
+the actual (exposed) WMS layer name must be used in this configuration.
+
 
 Landing page
 ============
