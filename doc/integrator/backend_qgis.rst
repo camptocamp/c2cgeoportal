@@ -205,7 +205,7 @@ Access Restrictions
 The access restriction functionality described here is available only for Docker projects.
 
 We provide a Docker image named ``camptocamp/geomapfish-qgisserver`` with tag pattern:
-``gmf<Major GeoMapFish version}-qgis${Major QGIS}``.
+``gmf<Minor GeoMapFish version}-qgis<Minor QGIS version>[-gdal<Minor GDAL version>]``.
 
 
 Access Restriction on QGIS OGC server
