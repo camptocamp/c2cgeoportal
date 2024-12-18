@@ -530,20 +530,20 @@ vars:
       - name: searchAlias
         type: list
         description: >
-          Comma separated list of search aliases (keywords) to be added to the tsearch.ts field for
+          Comma separated list of search aliases (keywords) to be added to the <code>tsearch.ts</code> field for
           the considered tree item (theme, layer group or layer), that is to say that considered
           tree item will match when searching for the search aliases.
         relevant_for:
           - treeitem
       - name: searchLabelPattern
         description: >
-          Template string for the label of tree items in the search results, for example: "{name} ({theme})"
+          Template string for the label of tree items in the search results, for example: <code>{name} ({theme})</code>.
           Supported parameters:
           <ul>
-              <li>name (name of the tree item)</li>
-              <li>parent (parent of the item, may be a group, a block or a theme)</li>
-              <li>block (name of the block to which the item belongs)</li>
-              <li>theme (name of the theme to which the item belongs)</li>
+              <li><code>name</code> (name of the tree item)</li>
+              <li><code>parent</code> (parent of the item, may be a group, a block or a theme)</li>
+              <li><code>block</code> (name of the block to which the item belongs)</li>
+              <li><code>theme</code> (name of the theme to which the item belongs)</li>
           </ul>
         relevant_for:
           - treeitem
@@ -592,8 +592,8 @@ vars:
           - layer_cog
       - name: legendRule
         description: >
-          The WMS "RULE" parameter used to display the icon in the layer tree. "Short version" of
-          the "iconURL" metadata.
+          The WMS <code>RULE</code> parameter used to display the icon in the layer tree. "Short version" of
+          the <code>iconURL</code> metadata.
         relevant_for:
           - layer_wms
       - name: legendImage
@@ -671,7 +671,7 @@ vars:
       - name: opacity
         type: float
         description: >
-          Layer opacity. 1.0 means fully visible, 0 means invisible.
+          Layer opacity. <code>1.0</code> means fully visible, <code>0</code> means invisible.
         relevant_for:
           - layer_wms
           - layer_wmts
@@ -709,7 +709,7 @@ vars:
         description: >
           The snapping configuration for the layer. If set, even if empty, the layer is considered to be
           "snappable" and snapping is activated by default. To disable snapping by default, set "activated"
-          to false. Example value: {"tolerance": 50, "edge": false}.
+          to false. Example value: <code>{"tolerance": 50, "edge": false}</code>.
         relevant_for:
           - layer_wms
       - name: geometryValidation
@@ -750,8 +750,8 @@ vars:
         type: list
         description: >
           Values to define the shape (bbox) to use to query the layer. The values are used like a
-          padding in css with 1, 2, 3 or 4 comma separated values: all / top-bottom, left-right /
-          top, right-left, bottom / top, right, bottom, left.
+          padding in css with 1, 2, 3 or 4 comma separated values: <code>all</code> / <code>top-bottom, left-right<code> /
+          <code>top, right-left, bottom</code> / <code>top, right, bottom, left</code>.
         relevant_for:
           - layer_wms
           - layer_wmts
@@ -778,7 +778,7 @@ vars:
       - name: protectedAttributes
         type: list
         description: >
-          For QGIS server: List of attribute names that are protected, to be used with the `allowed_attributes` functionality.
+          For QGIS server: List of attribute names that are protected, to be used with the <code>allowed_attributes</code> functionality.
         relevant_for:
           - layer_wms
       # WMTS layers
@@ -831,7 +831,7 @@ vars:
           - layer_cog
       - name: timeout
         type: float
-        description: The fetch capabilities timeout in seconds. Use `300` by default.
+        description: The fetch capabilities timeout in seconds. Use <code>300</code> by default.
         relevant_for:
           - layer_wmts
 
