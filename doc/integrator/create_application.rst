@@ -221,7 +221,7 @@ We recommend instead that you use dynamic variables as described below.
 However, in some use cases extending ``vars.yaml`` may be needed:
 
 * Configuring highly specific environments
-* Configuration of a multi-organization project
+* Configuration of a multi-tenant project
 
 Use of dynamic variables
 ........................
@@ -271,7 +271,7 @@ Do not forget to add your changes to git:
 
 .. note::
 
-    If you are using a multi-organization project, you should add all new children to
+    If you are using a multi-tenant project, you should add all new children to
     the parent site check_collector configuration.
 
 After creation and minimal setup the application is ready to be installed.

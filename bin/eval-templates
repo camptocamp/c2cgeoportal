@@ -52,4 +52,15 @@ find /etc/static-ngeo/ \( -name '*.js' -or -name '*.css' -or -name '*.html' \) -
     sed --in-place --expression="s#\.__ENTRY_POINT__#${VISIBLE_ENTRY_POINT}#g" "${file}"
 done
 
+if [ -d /app/geomapfishapp_geoportal/ ]; then
+    for name in authentication multi_tenant dev; do
+        if [ -f "/etc/geomapfish/${name}.py" ]; then
+            echo "Get: ${name}.py"
+            cp "/etc/geomapfish/${name}.py" /app/geomapfishapp_geoportal/
+        fi
+    done
+fi
+
+chmod go-w -R /app/*_geoportal/ || true
+
 exec "$@"

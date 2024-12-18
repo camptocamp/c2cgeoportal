@@ -42,7 +42,8 @@ RUN --mount=type=cache,target=/root/.cache \
     python3 -m pip install --disable-pip-version-check --editable=/app/ \
     && python3 -m compileall -q /usr/local/lib/python3.* \
         -x '/(ptvsd|.*pydev.*|networkx)/' \
-    && python3 -m compileall -q /app/{{cookiecutter.package}}_geoportal -x /app/{{cookiecutter.package}}_geoportal/static.*
+    && python3 -m compileall -q "/app/{{cookiecutter.package}}_geoportal" -x "/app/{{cookiecutter.package}}_geoportal/static".* \
+    && chmod go+w "/app/{{cookiecutter.package}}_geoportal" "/app/{{cookiecutter.package}}_geoportal/authentication.py" "/app/{{cookiecutter.package}}_geoportal/multi_tenant.py" "/app/{{cookiecutter.package}}_geoportal/dev.py"
 
 ARG GIT_HASH
 RUN c2cwsgiutils-genversion ${GIT_HASH}
