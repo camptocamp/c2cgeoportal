@@ -2,7 +2,7 @@ from pyramid.config import Configurator
 
 import {{cookiecutter.package}}_geoportal.authentication
 import {{cookiecutter.package}}_geoportal.dev
-import {{cookiecutter.package}}_geoportal.multi_organization
+import {{cookiecutter.package}}_geoportal.multi_tenant
 from c2cgeoportal_geoportal import add_interface_config, locale_negotiator
 from c2cgeoportal_geoportal.lib.i18n import LOCALE_PATH
 from {{cookiecutter.package}}_geoportal.resources import Root
@@ -28,7 +28,7 @@ def main(global_config, **settings):
 
     config.include("c2cgeoportal_geoportal")
 
-    config.include({{cookiecutter.package}}_geoportal.multi_organization.includeme)
+    config.include({{cookiecutter.package}}_geoportal.multi_tenant.includeme)
 
     # Scan view decorator for adding routes
     config.scan()
