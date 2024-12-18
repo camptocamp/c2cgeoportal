@@ -1,3 +1,7 @@
+##### 2.9.rc.32
+
+- [Backport 2.9] Documentation: add information about QGIS protected attributes [c2cgeoportal#11595](https://github.com/camptocamp/c2cgeoportal/pull/11595)
+
 ##### 2.9.rc.31
 
 - Audit Dpkg 2.9 [c2cgeoportal#11594](https://github.com/camptocamp/c2cgeoportal/pull/11594)
