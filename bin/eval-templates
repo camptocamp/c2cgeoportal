@@ -72,4 +72,15 @@ if [ "${EVALUATE_NGEO_HTML:-true}" == true ]; then
     done
 fi
 
+if [ -d /app/geomapfishapp_geoportal/ ]; then
+    for name in authentication multi_tenant dev; do
+        if [ -f "/etc/geomapfish/${name}.py" ]; then
+            echo "Get: ${name}.py"
+            cp "/etc/geomapfish/${name}.py" /app/geomapfishapp_geoportal/
+        fi
+    done
+fi
+
+chmod go-w -R /app/*_geoportal/ || true
+
 exec "$@"
