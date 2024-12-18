@@ -168,19 +168,6 @@ and the configuration should be as follows:</p>
 <li><p>WFS support: recommended to be <code class="docutils literal notranslate"><span class="pre">[X]</span></code></p></li>
 <li><p>Is single tile:  recommended to be <code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">]</span></code></p></li>
 </ul>
-<section id="access-restriction">
-<h3>Access Restriction<a class="headerlink" href="#access-restriction" title="Link to this heading">¶</a></h3>
-<p>The access restriction is available only for Docker projects.</p>
-<p>We provide a Docker image named <code class="docutils literal notranslate"><span class="pre">camptocamp/geomapfish-qgisserver</span></code> with tag pattern:
-<code class="docutils literal notranslate"><span class="pre">gmf&lt;Major</span> <span class="pre">GeoMapFish</span> <span class="pre">version}-qgis${Major</span> <span class="pre">QGIS}</span></code>.</p>
-<p>From version 2.7 the config is just made with the <code class="docutils literal notranslate"><span class="pre">GEOMAPFISH_ACCESSCONTROL_BASE_URL</span></code> environment
-variable which contains the base URL of the OGC servers, by default it’s set to
-<code class="docutils literal notranslate"><span class="pre">QGISSERVER_URL</span></code>. And the plugin will search for the OGC servers that match with this base URL.
-It also requires that the OGC servers are configured with an URL like that
-<code class="docutils literal notranslate"><span class="pre">config://qgisserver?map=&lt;project_file&gt;</span></code>.</p>
-<p>The configuration that use the <code class="docutils literal notranslate"><span class="pre">QGIS_PROJECT_FILE</span></code> or <code class="docutils literal notranslate"><span class="pre">GEOMAPFISH_ACCESSCONTROL_CONFIG</span></code> are still
-working but are deprecated.</p>
-</section>
 <section id="project-in-database">
 <h3>Project in Database<a class="headerlink" href="#project-in-database" title="Link to this heading">¶</a></h3>
 <p>If you store the project in the database, you should set the <code class="docutils literal notranslate"><span class="pre">QGIS_PROJECT_FILE</span></code> environment variable
@@ -203,6 +190,28 @@ in the vars file add:</p>
 </pre></div>
 </div>
 <p>With that you will not have URL encoding issues.</p>
+</section>
+</section>
+<section id="access-restrictions">
+<h2>Access Restrictions<a class="headerlink" href="#access-restrictions" title="Link to this heading">¶</a></h2>
+<p>The access restriction functionality described here is available only for Docker projects.</p>
+<p>We provide a Docker image named <code class="docutils literal notranslate"><span class="pre">camptocamp/geomapfish-qgisserver</span></code> with tag pattern:
+<code class="docutils literal notranslate"><span class="pre">gmf&lt;Minor</span> <span class="pre">GeoMapFish</span> <span class="pre">version}-qgis&lt;Minor</span> <span class="pre">QGIS</span> <span class="pre">version&gt;[-gdal&lt;Minor</span> <span class="pre">GDAL</span> <span class="pre">version&gt;]</span></code>.</p>
+<section id="access-restriction-on-qgis-ogc-server">
+<h3>Access Restriction on QGIS OGC server<a class="headerlink" href="#access-restriction-on-qgis-ogc-server" title="Link to this heading">¶</a></h3>
+<p>From version 2.7 the config is just made with the <code class="docutils literal notranslate"><span class="pre">GEOMAPFISH_ACCESSCONTROL_BASE_URL</span></code> environment
+variable which contains the base URL of the OGC servers, by default it’s set to
+<code class="docutils literal notranslate"><span class="pre">QGISSERVER_URL</span></code>. And the plugin will search for the OGC servers that match with this base URL.
+It also requires that the OGC servers are configured with an URL like that
+<code class="docutils literal notranslate"><span class="pre">config://qgisserver?map=&lt;project_file&gt;</span></code>.</p>
+<p>The configuration that use the <code class="docutils literal notranslate"><span class="pre">QGIS_PROJECT_FILE</span></code> or <code class="docutils literal notranslate"><span class="pre">GEOMAPFISH_ACCESSCONTROL_CONFIG</span></code> are still
+working but are deprecated.</p>
+</section>
+<section id="protecting-attributes">
+<h3>Protecting Attributes<a class="headerlink" href="#protecting-attributes" title="Link to this heading">¶</a></h3>
+<p>Individual attributes can be protected via the layer metadata setting <code class="docutils literal notranslate"><span class="pre">protectedAttributes</span></code>. To define which roles shall
+have access, the functionality <code class="docutils literal notranslate"><span class="pre">allowed_attributes</span></code> must be used in combination with this setting. As WMS layer name,
+the actual (exposed) WMS layer name must be used in this configuration.</p>
 </section>
 </section>
 <section id="landing-page">
