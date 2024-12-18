@@ -778,7 +778,7 @@ vars:
       - name: protectedAttributes
         type: list
         description: >
-          For QGIS server: List of attribute names that's protected, to be used with the `allowed_attributes` functionality.
+          For QGIS server: List of attribute names that are protected, to be used with the `allowed_attributes` functionality.
         relevant_for:
           - layer_wms
       # WMTS layers
