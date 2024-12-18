@@ -1,3 +1,7 @@
+##### 2.9.rc.33
+
+- Don't have an authenticatication loop [c2cgeoportal#11598](https://github.com/camptocamp/c2cgeoportal/pull/11598)
+
 ##### 2.9.rc.32
 
 - [Backport 2.9] Documentation: add information about QGIS protected attributes [c2cgeoportal#11595](https://github.com/camptocamp/c2cgeoportal/pull/11595)
