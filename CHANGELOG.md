@@ -1,3 +1,7 @@
+##### 2.9.rc.34
+
+- Audit Dpkg 2.9 [c2cgeoportal#11600](https://github.com/camptocamp/c2cgeoportal/pull/11600)
+
 ##### 2.9.rc.33
 
 - Don't have an authenticatication loop [c2cgeoportal#11598](https://github.com/camptocamp/c2cgeoportal/pull/11598)
