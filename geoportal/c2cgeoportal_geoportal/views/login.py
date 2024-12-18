@@ -93,6 +93,9 @@ class Login:
 
     @forbidden_view_config(renderer="login.html")  # type: ignore[misc]
     def loginform403(self) -> dict[str, Any] | pyramid.response.Response:
+        if self.request.authenticated_userid is not None:
+            return HTTPForbidden()
+
         if self.authentication_settings.get("openid_connect", {}).get("enabled", False):
             return HTTPFound(
                 location=self.request.route_url(
@@ -100,9 +103,6 @@ class Login:
                     _query={"came_from": f"{self.request.path}?{urllib.parse.urlencode(self.request.GET)}"},
                 )
             )
-
-        if self.request.authenticated_userid is not None:
-            return HTTPForbidden()
 
         set_common_headers(self.request, "login", Cache.PRIVATE_NO)
 
