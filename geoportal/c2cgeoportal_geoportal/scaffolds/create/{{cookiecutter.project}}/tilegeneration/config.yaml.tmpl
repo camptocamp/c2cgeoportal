@@ -45,7 +45,7 @@ defaults:
     url: ${MAPSERVER_URL}
     # Set the headers to get the right virtual host, and don't get any cached result
     headers:
-      Host: '${VISIBLE_WEB_HOST}'
+${DISABLE_LOCAL}      Host: '${VISIBLE_WEB_HOST}'
       Cache-Control: no-cache, no-store
       Pragma: no-cache
     # file name extension
