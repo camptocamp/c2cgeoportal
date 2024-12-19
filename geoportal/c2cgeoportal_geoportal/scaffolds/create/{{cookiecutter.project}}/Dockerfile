@@ -28,6 +28,7 @@ ENV PGSCHEMA=$PGSCHEMA
 
 RUN \
     cd /tmp/config/geoportal/ \
+    && [ "${SIMPLE}" == "TRUE" ] || rm -f {{cookiecutter.package}}_geoportal/*.py \
     && c2c-template --vars ${VARS_FILE} \
         --get-config {{cookiecutter.package}}_geoportal/config.yaml \
         ${CONFIG_VARS} \

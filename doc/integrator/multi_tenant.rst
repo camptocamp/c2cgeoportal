@@ -1,7 +1,7 @@
-.. _integrator_multi_organization:
+.. _integrator_multi_tenant:
 
-Multi organization
-==================
+Multi-tenant
+============
 
 The geoportal can host multiple organizations, with configuration differences for each organization.
 In a multi-organization geoportal, each organization will have the same program code
@@ -11,17 +11,20 @@ In this example we will have the came CSS but we can do some variations by using
 see ``cssVars`` in ``gmfOptions`` in the ngeo GMF constants definitions
 :ngeo_doc:`gmf constants </jsdoc/module-contribs_gmf_src_options.html>`.
 
-The following lines will provide a basic implementation for multi-organization.
+The following lines will provide a basic implementation for multi-tenant.
 
 The code should be adapted, currently it handles the hostnames 'org1.camptocamp.com' and
 'org2.camptocamp.com', and you probably want to put the hardcoded values in the config.
 
-``__init__.py``
----------------
+``multi_tenant.py``
+-------------------
 
-In the file ``geoportal/<package>_geoportal/__init__.py`` add the following lines:
+You should have a ``geoportal/<package>_geoportal/multi_tenant.py`` file like this one:
 
 .. code:: python
+
+    from pyramid.config import Configurator
+
 
     def get_instance_prefix(request):
         if request.host == "org1.camptocamp.com":
@@ -49,7 +52,9 @@ In the file ``geoportal/<package>_geoportal/__init__.py`` add the following line
         return print_url
 
 
-    # In ``main`` function, after ``config.include("c2cgeoportal_geoportal")``
+    def includeme(config: Configurator) -> None:
+       """Initialize the multi-tenant."""
+
         config.add_request_method(
             get_organization_role, name="get_organization_role")
         config.add_request_method(
