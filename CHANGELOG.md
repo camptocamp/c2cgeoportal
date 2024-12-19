@@ -1,3 +1,7 @@
+##### 2.9.rc.35
+
+- Tilegeneration: Remove the host on Azure [c2cgeoportal#11601](https://github.com/camptocamp/c2cgeoportal/pull/11601)
+
 ##### 2.9.rc.34
 
 - Audit Dpkg 2.9 [c2cgeoportal#11600](https://github.com/camptocamp/c2cgeoportal/pull/11600)
