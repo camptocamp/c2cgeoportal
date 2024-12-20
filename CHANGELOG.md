@@ -1,3 +1,7 @@
+##### 2.8.1.172
+
+- Fix simple application creation [c2cgeoportal#11602](https://github.com/camptocamp/c2cgeoportal/pull/11602)
+
 ##### 2.8.1.171
 
 - [Backport 2.8] Remove cache-control switch from private to public [c2cgeoportal#11587](https://github.com/camptocamp/c2cgeoportal/pull/11587)
