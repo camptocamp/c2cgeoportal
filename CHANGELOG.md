@@ -1,3 +1,7 @@
+##### 2.9.rc.37
+
+- Audit Dpkg 2.9 [c2cgeoportal#11606](https://github.com/camptocamp/c2cgeoportal/pull/11606)
+
 ##### 2.9.rc.36
 
 - [Backport 2.9] Fix simple application creation [c2cgeoportal#11605](https://github.com/camptocamp/c2cgeoportal/pull/11605)
