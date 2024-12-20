@@ -1,3 +1,7 @@
+##### 2.9.rc.36
+
+- [Backport 2.9] Fix simple application creation [c2cgeoportal#11605](https://github.com/camptocamp/c2cgeoportal/pull/11605)
+
 ##### 2.9.rc.35
 
 - Tilegeneration: Remove the host on Azure [c2cgeoportal#11601](https://github.com/camptocamp/c2cgeoportal/pull/11601)
