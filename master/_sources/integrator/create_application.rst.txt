@@ -25,10 +25,10 @@ For this procedure, we need to set some environment variables:
 
    GEOMAPFISH_VERSION=<release>
    GEOMAPFISH_PROJECT=<project>
-   GEOMAPFISH_PACKAGE=<package>
 
 Where ``<release>`` can be found on :docker_hub:`Docker Hub <camptocamp/geomapfish-tools>`,
-<project> is the project name that should be the GitHub repository name, <package> is the package name.
+``<project>`` is the project name that should be the GitHub repository name for advance application
+and ``geomapfishapp`` for simple application.
 
 
 List existing scaffolds
@@ -87,7 +87,6 @@ it later.
             camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION} \
             run $(id -u) $(id -g) /src \
             pcreate --scaffold=create \
-            --package-name=${GEOMAPFISH_PACKAGE} \
             ${GEOMAPFISH_PROJECT}
 
 This will create a directory named ``<project>`` in you current directory.
