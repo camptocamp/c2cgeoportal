@@ -58,9 +58,9 @@ span.prompt1:before {
 }
 </style><span class="prompt1"><span class="nv">GEOMAPFISH_VERSION</span><span class="o">=</span>&lt;release&gt;</span>
 <span class="prompt1"><span class="nv">GEOMAPFISH_PROJECT</span><span class="o">=</span>&lt;project&gt;</span>
-<span class="prompt1"><span class="nv">GEOMAPFISH_PACKAGE</span><span class="o">=</span>&lt;package&gt;</span>
 </pre></div></div><p>Where <code class="docutils literal notranslate"><span class="pre">&lt;release&gt;</span></code> can be found on <a class="reference external" href="https://hub.docker.com/r/camptocamp/geomapfish-tools/tags?name=2.8">Docker Hub</a>,
-&lt;project&gt; is the project name that should be the GitHub repository name, &lt;package&gt; is the package name.</p>
+<code class="docutils literal notranslate"><span class="pre">&lt;project&gt;</span></code> is the project name that should be the GitHub repository name for advance application
+and <code class="docutils literal notranslate"><span class="pre">geomapfishapp</span></code> for simple application.</p>
 </section>
 <section id="list-existing-scaffolds">
 <h2>List existing scaffolds<a class="headerlink" href="#list-existing-scaffolds" title="Permalink to this heading">¶</a></h2>
@@ -105,7 +105,6 @@ parameters:</p>
 <span class="w">    </span>camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>run<span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="w"> </span>/src<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>pcreate<span class="w"> </span>--scaffold<span class="o">=</span>create<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--package-name<span class="o">=</span><span class="si">${</span><span class="nv">GEOMAPFISH_PACKAGE</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
 <span class="w">    </span><span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span></span>
 </pre></div></div></div></blockquote>
 </div>
