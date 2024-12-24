@@ -1,3 +1,7 @@
+##### 2.8.1.173
+
+- Audit Snyk check/fix 2.8 [c2cgeoportal#11609](https://github.com/camptocamp/c2cgeoportal/pull/11609)
+
 ##### 2.8.1.172
 
 - Fix simple application creation [c2cgeoportal#11602](https://github.com/camptocamp/c2cgeoportal/pull/11602)
