@@ -73,13 +73,13 @@ waitress = { version = "3.0.2", optional = true }
 [tool.poetry.dev-dependencies]
 Babel = "2.11.0" # i18n
 beautifulsoup4 = "4.11.2" # admin tests
-Jinja2 = "3.1.4" # c2c.template
+Jinja2 = "3.1.5" # c2c.template
 lingua = "4.15.0" # i18n
 PasteScript = "3.3.0" # geoportal pcreate
 polib = "1.1.1" # i18n
 pykwalify = "1.8.0" # Validate config
 pytest = "7.2.2" # tests
-WebTest = "3.0.1" # admin tests
+WebTest = "3.0.2" # admin tests
 types-pytz = "2022.7.1.2"
 types-pyyaml = "6.0.12.12"
 types-python-dateutil = "2.8.19.20240311"
