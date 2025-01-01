@@ -1,3 +1,7 @@
+##### 2.8.1.176
+
+- Update all patch versions (2.8) (patch) [c2cgeoportal#11622](https://github.com/camptocamp/c2cgeoportal/pull/11622)
+
 ##### 2.8.1.175
 
 - Update dependency @types/geojson to v7946.0.15 (2.8) [ngeo#9564](https://github.com/camptocamp/ngeo/pull/9564)
