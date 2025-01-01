@@ -41,7 +41,7 @@ repos:
       - id: poetry-lock
         exclude: ^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/{{cookiecutter\.project}}/
         additional_dependencies:
-          - poetry==1.8.4 # pypi
+          - poetry==1.8.5 # pypi
       - id: npm-lock
   - repo: https://github.com/codespell-project/codespell
     rev: v2.3.0
@@ -60,7 +60,7 @@ repos:
     hooks:
       - id: prettier
         additional_dependencies:
-          - prettier@3.4.1 # npm
+          - prettier@3.4.2 # npm
           - prettier-plugin-sh@0.14.0 # npm
           - prettier-plugin-toml@2.0.1 # npm
         exclude: |-
@@ -105,7 +105,7 @@ repos:
             |geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter\.project}}/mapserver/data/TM_EUROPE_BORDERS-0.3\.sql
           )$
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.8.1
+    rev: v0.8.4
     hooks:
       - id: ruff-format
         args:
@@ -123,15 +123,15 @@ repos:
           - --die-on-tool-error
           - --output-format=pylint
         additional_dependencies:
-          - prospector-profile-duplicated==1.8.1 # pypi
-          - prospector-profile-utils==1.13.0 # pypi
-          - ruff==0.8.1 # pypi
+          - prospector-profile-duplicated==1.10.0 # pypi
+          - prospector-profile-utils==1.14.1 # pypi
+          - ruff==0.8.4 # pypi
   - repo: https://github.com/sbrunner/jsonschema-validator
-    rev: 0.3.2
+    rev: 1.0.0
     hooks:
       - id: jsonschema-validator
         files: ^ci/config\.yaml$
   - repo: https://github.com/renovatebot/pre-commit-hooks
-    rev: 39.44.0
+    rev: 39.86.3
     hooks:
       - id: renovate-config-validator
