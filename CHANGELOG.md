@@ -1,3 +1,7 @@
+##### 2.8.1.175
+
+- Update dependency @types/geojson to v7946.0.15 (2.8) [ngeo#9564](https://github.com/camptocamp/ngeo/pull/9564)
+
 ##### 2.8.1.173
 
 - Audit Snyk check/fix 2.8 [c2cgeoportal#11609](https://github.com/camptocamp/c2cgeoportal/pull/11609)
