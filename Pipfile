@@ -81,7 +81,7 @@ idna = "==3.7"
 importlib-metadata = "==4.11.4"
 importlib-resources = "==5.4.0"
 iso8601 = "==1.0.2"
-jinja2 = "==3.1.4"
+jinja2 = "==3.1.5"
 jinja2-time = "==0.2.0"
 jmespath = "==0.10.0"
 lingua = "==4.15.0"
@@ -152,11 +152,11 @@ polib = "==1.1.1"  # i18n
 pykwalify = "==1.7.0"  # Validate config
 pytest-cov = "==3.0.0"  # tests
 transifex-client = "==0.12.5"  # Makefile
-WebTest = "==3.0.1"  # admin tests
+WebTest = "==3.0.2"  # admin tests
 prospector = {extras = ["with_mypy", "with_bandit"], version = "==1.7.7"}
 flake8 = "==4.0.1"
 types-pytz = "==2021.3.8"
-types-pyyaml = "==6.0.12.20240917"
+types-pyyaml = "==6.0.12.20241221"
 types-python-dateutil = "==2.8.19.20240311"
 types-requests = "==2.27.31"
 types-pkg-resources = "==0.1.3"
