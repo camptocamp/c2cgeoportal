@@ -41,7 +41,7 @@ repos:
       - id: poetry-lock
         exclude: ^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/{{cookiecutter\.project}}/
         additional_dependencies:
-          - poetry==1.8.4 # pypi
+          - poetry==1.8.5 # pypi
       - id: npm-lock
   - repo: https://github.com/codespell-project/codespell
     rev: v2.3.0
@@ -105,7 +105,7 @@ repos:
             |geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter\.project}}/mapserver/data/TM_EUROPE_BORDERS-0.3\.sql
           )$
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.19.0
+    rev: v3.19.1
     hooks:
       # The script that will run on the project host
       - id: pyupgrade
