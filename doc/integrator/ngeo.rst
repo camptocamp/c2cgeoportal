@@ -121,7 +121,7 @@ The sub section is the interface name, and after that we have:
     ``Request.route_url`` `documentation
     <https://docs.pylonsproject.org/projects/pyramid/en/latest/api/request.html#pyramid.request.Request.route_url>`_.
 
-* ``lang_urls_suffix`` suffix used in l10n URL, see: :ref:`integrator_multi_organization`.
+* ``lang_urls_suffix`` suffix used in l10n URL, see: :ref:`integrator_multi_tenant`.
 
 The dynamic values names are:
 
