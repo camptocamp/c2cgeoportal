@@ -227,7 +227,7 @@
 </td>
 <td colspan="3"><p><a class="reference internal" href="#postgresql">PostgreSQL</a></p></td>
 </tr>
-<tr class="row-even"><td rowspan="26"><ul class="simple">
+<tr class="row-even"><td rowspan="25"><ul class="simple">
 <li><p>openlayers</p></li>
 </ul>
 </td>
@@ -257,140 +257,137 @@
 <tr class="row-even"><td><p>default</p></td>
 <td><p>EPSG:2056</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p>proj4js_def</p></li>
 </ul>
 </td>
 <td colspan="2"><p><em>Proj4js definition</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="2"><p>The <cite>proj4js</cite> definition, get it from <a class="reference external" href="https://epsg.io/">https://epsg.io/</a></p></td>
+<tr class="row-even"><td colspan="2"><p>The <cite>proj4js</cite> definition, by default it will be build with pyproj</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td><p><em>string</em></p></td>
 </tr>
-<tr class="row-even"><td><p>default</p></td>
-<td><p>+proj=somerc +lat_0=46.95240555555556 +lon_0=7.439583333333333 +k_0=1 +x_0=2600000 +y_0=1200000 +ellps=bessel +towgs84=674.374,15.056,405.346,0,0,0,0 +units=m +no_defs</p></td>
-</tr>
-<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<tr class="row-even"><td rowspan="4"><ul class="simple">
 <li><p>center_x</p></li>
 </ul>
 </td>
 <td colspan="2"><p><em>Center x</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="2"><p>The center easting</p></td>
+<tr class="row-odd"><td colspan="2"><p>The center easting</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td><p>default</p></td>
+<tr class="row-odd"><td><p>default</p></td>
 <td><p>2600000</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<tr class="row-even"><td rowspan="4"><ul class="simple">
 <li><p>center_y</p></li>
 </ul>
 </td>
 <td colspan="2"><p><em>Center y</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="2"><p>The center northing</p></td>
+<tr class="row-odd"><td colspan="2"><p>The center northing</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td><p>default</p></td>
+<tr class="row-odd"><td><p>default</p></td>
 <td><p>1200000</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<tr class="row-even"><td rowspan="4"><ul class="simple">
 <li><p>zoom</p></li>
 </ul>
 </td>
 <td colspan="2"><p><em>Map initial zoom</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="2"><p>The initial zoom</p></td>
+<tr class="row-odd"><td colspan="2"><p>The initial zoom</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td><p>default</p></td>
+<tr class="row-odd"><td><p>default</p></td>
 <td><p>3</p></td>
 </tr>
-<tr class="row-odd"><td><p>additionalProperties</p></td>
+<tr class="row-even"><td><p>additionalProperties</p></td>
 <td colspan="2"><p>False</p></td>
 </tr>
-<tr class="row-even"><td><ul class="simple">
+<tr class="row-odd"><td><ul class="simple">
 <li><p>server</p></li>
 </ul>
 </td>
 <td colspan="3"><p><a class="reference internal" href="#server">Server</a></p></td>
 </tr>
-<tr class="row-odd"><td><ul class="simple">
+<tr class="row-even"><td><ul class="simple">
 <li><p>cost</p></li>
 </ul>
 </td>
 <td colspan="3"><p><a class="reference internal" href="#cost">Cost</a></p></td>
 </tr>
-<tr class="row-even"><td><ul class="simple">
+<tr class="row-odd"><td><ul class="simple">
 <li><p>metadata</p></li>
 </ul>
 </td>
 <td colspan="3"><p><a class="reference internal" href="#metadata">Metadata</a></p></td>
 </tr>
-<tr class="row-odd"><td><ul class="simple">
+<tr class="row-even"><td><ul class="simple">
 <li><p>provider</p></li>
 </ul>
 </td>
 <td colspan="3"><p><a class="reference internal" href="#provider">Provider</a></p></td>
 </tr>
-<tr class="row-even"><td><ul class="simple">
+<tr class="row-odd"><td><ul class="simple">
 <li><p>logging</p></li>
 </ul>
 </td>
 <td colspan="3"><p><a class="reference internal" href="#logging">Logging</a></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="13"><ul class="simple">
+<tr class="row-even"><td rowspan="13"><ul class="simple">
 <li><p>authentication</p></li>
 </ul>
 </td>
 <td colspan="3"><p><em>Authentication</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p>The authentication configuration</p></td>
+<tr class="row-odd"><td colspan="3"><p>The authentication configuration</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>object</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p>properties</p></td>
+<tr class="row-odd"><td colspan="3"><p>properties</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p>github_repository</p></li>
 </ul>
 </td>
 <td colspan="2"><p><em>GitHub repository</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="2"><p>The GitHub repository name, on witch one we will check the access rights</p></td>
+<tr class="row-odd"><td colspan="2"><p>The GitHub repository name, on witch one we will check the access rights</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td><p><em>string</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="5"><ul class="simple">
+<tr class="row-odd"><td rowspan="5"><ul class="simple">
 <li><p>github_access_type</p></li>
 </ul>
 </td>
 <td colspan="2"><p><em>GitHub access</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="2"><p>The kind of rights the user should have on the repository</p></td>
+<tr class="row-even"><td colspan="2"><p>The kind of rights the user should have on the repository</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td><p><em>string</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>enum</p></td>
+<tr class="row-even"><td><p>enum</p></td>
 <td><p>push, pull, admin</p></td>
 </tr>
-<tr class="row-even"><td><p>default</p></td>
+<tr class="row-odd"><td><p>default</p></td>
 <td><p>pull</p></td>
 </tr>
-<tr class="row-odd"><td><p>additionalProperties</p></td>
+<tr class="row-even"><td><p>additionalProperties</p></td>
 <td colspan="2"><p>False</p></td>
 </tr>
-<tr class="row-even"><td><p>additionalProperties</p></td>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
 <td colspan="3"><p>False</p></td>
 </tr>
 </tbody>
