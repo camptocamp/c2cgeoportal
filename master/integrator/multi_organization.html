@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Multi organization &#8212; c2cgeoportal  documentation</title>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=686e5160" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css?v=939896e0" />
@@ -49,7 +49,7 @@ see <code class="docutils literal notranslate"><span class="pre">cssVars</span><
 <section id="init-py">
 <h2><code class="docutils literal notranslate"><span class="pre">__init__.py</span></code><a class="headerlink" href="#init-py" title="Link to this heading">¶</a></h2>
 <p>In the file <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/__init__.py</span></code> add the following lines:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_instance_prefix</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_instance_prefix</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">host</span> <span class="o">==</span> <span class="s2">&quot;org1.camptocamp.com&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="s2">&quot;org1&quot;</span>
     <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">host</span> <span class="o">==</span> <span class="s2">&quot;org2.camptocamp.com&quot;</span><span class="p">:</span>
@@ -58,17 +58,17 @@ see <code class="docutils literal notranslate"><span class="pre">cssVars</span><
     <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DEFAULT_PREFIX&quot;</span><span class="p">,</span> <span class="s2">&quot;unknown&quot;</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">get_organization_role</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">role_type</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_organization_role</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">role_type</span><span class="p">):</span>
     <span class="n">prefix</span> <span class="o">=</span> <span class="n">get_instance_prefix</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">role_type</span><span class="si">}</span><span class="s2">&quot;</span>
 
 
-<span class="k">def</span> <span class="nf">get_organization_interface</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">interface</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_organization_interface</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">interface</span><span class="p">):</span>
     <span class="n">prefix</span> <span class="o">=</span> <span class="n">get_instance_prefix</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
     <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">interface</span><span class="si">}</span><span class="s2">&quot;</span>
 
 
-<span class="k">def</span> <span class="nf">get_organization_print_url</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_organization_print_url</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="n">prefix</span> <span class="o">=</span> <span class="n">get_instance_prefix</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
     <span class="n">print_url</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;print_url&quot;</span><span class="p">]</span>
     <span class="c1"># Custom code can be added to have a different behavior</span>
