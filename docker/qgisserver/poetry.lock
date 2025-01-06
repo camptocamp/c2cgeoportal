@@ -1015,24 +1015,24 @@ with-vulture = ["vulture (>=1.5)"]
 
 [[package]]
 name = "prospector-profile-duplicated"
-version = "1.9.0"
+version = "1.10.4"
 description = "Profile that can be used to disable the duplicated or conflict rules between Prospector and other tools"
 optional = false
 python-versions = "*"
 files = [
-    {file = "prospector_profile_duplicated-1.9.0-py2.py3-none-any.whl", hash = "sha256:7b7a665e6fa8b44fac597d2bbef1a91de5b6f090b8d64890a5f38ee60e8473c2"},
-    {file = "prospector_profile_duplicated-1.9.0.tar.gz", hash = "sha256:bb0b0d0946232d570ada944ee4a180fd142529db0978579b58e766d28f3c2a27"},
+    {file = "prospector_profile_duplicated-1.10.4-py2.py3-none-any.whl", hash = "sha256:a856990f949e3e5c10d4bd561eb537468c817784a80fa6885c39e2afa98f29c9"},
+    {file = "prospector_profile_duplicated-1.10.4.tar.gz", hash = "sha256:833504584b236c3c9de7255571a96a09be73b7d01939b78138fd8a63ccaddb34"},
 ]
 
 [[package]]
 name = "prospector-profile-utils"
-version = "1.14.1"
+version = "1.15.1"
 description = "Some utility Prospector profiles."
 optional = false
 python-versions = "<4.0,>=3.9"
 files = [
-    {file = "prospector_profile_utils-1.14.1-py3-none-any.whl", hash = "sha256:1b7d79e4293c76f9ea5107b691c888e76933aa29d33e8f8b8750dc0aeea3b657"},
-    {file = "prospector_profile_utils-1.14.1.tar.gz", hash = "sha256:5447086f9a7ddba02d8ee7322baa30c80c1376328677a6593165fab23e2e4bf2"},
+    {file = "prospector_profile_utils-1.15.1-py3-none-any.whl", hash = "sha256:f2585466bb472c49133cfcb17c8a17c70e3aab7b8d594fa3e716c761d37b1b2c"},
+    {file = "prospector_profile_utils-1.15.1.tar.gz", hash = "sha256:1070e30518efbcf00d01d24898f798729fa62d04d8e5e2c3db1016826438e01e"},
 ]
 
 [package.dependencies]
@@ -1051,6 +1051,7 @@ files = [
     {file = "psycopg2-2.9.10-cp311-cp311-win_amd64.whl", hash = "sha256:0435034157049f6846e95103bd8f5a668788dd913a7c30162ca9503fdf542cb4"},
     {file = "psycopg2-2.9.10-cp312-cp312-win32.whl", hash = "sha256:65a63d7ab0e067e2cdb3cf266de39663203d38d6a8ed97f5ca0cb315c73fe067"},
     {file = "psycopg2-2.9.10-cp312-cp312-win_amd64.whl", hash = "sha256:4a579d6243da40a7b3182e0430493dbd55950c493d8c68f4eec0b302f6bbf20e"},
+    {file = "psycopg2-2.9.10-cp313-cp313-win_amd64.whl", hash = "sha256:91fd603a2155da8d0cfcdbf8ab24a2d54bca72795b90d2a3ed2b6da8d979dee2"},
     {file = "psycopg2-2.9.10-cp39-cp39-win32.whl", hash = "sha256:9d5b3b94b79a844a986d029eee38998232451119ad653aea42bb9220a8c5066b"},
     {file = "psycopg2-2.9.10-cp39-cp39-win_amd64.whl", hash = "sha256:88138c8dedcbfa96408023ea2b0c369eda40fe5d75002c0964c78f46f11fa442"},
     {file = "psycopg2-2.9.10.tar.gz", hash = "sha256:12ec0b40b0273f95296233e8750441339298e6a572f7039da5b260e3c8b60e11"},
@@ -2036,4 +2037,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "dfddb80abb0d577ba46d1a7f52171f21ffcfcd5f133a3494ec85080d20e2a207"
+content-hash = "2454c09c5416969ac8a31ee90b118ef6e9779fade1f8b2811d09d7a83029cc26"

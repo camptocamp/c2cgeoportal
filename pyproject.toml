@@ -20,7 +20,7 @@ defusedxml = "0.7.1" # geoportal
 "dogpile.cache" = "1.3.3" # geoportal
 Fiona = "1.10.1" # geoportal raster
 GeoAlchemy2 = "0.16.0" # commons, geoportal
-geojson = "3.1.0" # geoportal
+geojson = "3.2.0" # geoportal
 getitfixed = "1.0.29" # geoportal
 isodate = "0.7.2" # geoportal
 Mako = "1.3.6" # geoportal
@@ -56,8 +56,8 @@ simple_openid_connect = { git = "https://github.com/sbrunner/py_simple_openid_co
 pkce = '1.0.3' # geoportal
 basicauth = "1.0.0"
 prospector = { version = "1.13.3", extras = ["with_mypy", "with_bandit", "with_pyroma", "with_ruff"] }
-prospector-profile-duplicated = "1.9.0"
-prospector-profile-utils  = "1.14.1"
+prospector-profile-duplicated = "1.10.4"
+prospector-profile-utils  = "1.15.1"
 beautifulsoup4 = "4.12.3"
 
 [tool.poetry.group.dev.dependencies]
