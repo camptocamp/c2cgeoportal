@@ -1,3 +1,5 @@
+##### 2.6.0.283
+* Update dependency Jinja2 to v3.1.5 (2.6) [c2cgeoportal#11619](https://github.com/camptocamp/c2cgeoportal/pull/11619)
 ##### 2.6.0.282
 * Audit Snyk check/fix 2.6 [c2cgeoportal#11607](https://github.com/camptocamp/c2cgeoportal/pull/11607)
 ##### 2.6.0.281
