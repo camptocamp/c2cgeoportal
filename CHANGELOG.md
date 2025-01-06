@@ -1,3 +1,5 @@
+##### 2.6.0.282
+* Audit Snyk check/fix 2.6 [c2cgeoportal#11607](https://github.com/camptocamp/c2cgeoportal/pull/11607)
 ##### 2.6.0.281
 * Update CI dependencies to v1.1.47 (2.6) (patch) [c2cgeoportal#11490](https://github.com/camptocamp/c2cgeoportal/pull/11490)
 * Update dependency python to v3.8.20 (2.6) [c2cgeoportal#11491](https://github.com/camptocamp/c2cgeoportal/pull/11491)
