@@ -10,13 +10,13 @@
   "dependencies": {
     "@snyk/protect": "1.1294.2",
     "ngeo": "2.9.0-version-2.9-latest.20241206T104704Z.0bc3efb55.2.9",
-    "puppeteer": "23.9.0"
+    "puppeteer": "23.11.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "3.2.0",
-    "@eslint/js": "9.16.0",
+    "@eslint/js": "9.17.0",
     "@popperjs/core": "2.11.8",
-    "@sentry/browser": "8.42.0",
+    "@sentry/browser": "8.47.0",
     "angular-gettext-tools": "2.5.3",
     "angular-mocks": "1.8.3",
     "commander": "12.1.0",
@@ -40,17 +40,17 @@
     "minify-html-literals-loader": "1.1.1",
     "neat-csv": "7.0.0",
     "parse-absolute-css-unit": "1.0.2",
-    "sass": "1.81.1",
+    "sass": "1.83.1",
     "sass-loader": "16.0.3",
     "simple-html-tokenizer": "0.5.11",
     "svgo": "3.3.2",
     "svgo-loader": "4.0.0",
-    "terser": "5.36.0",
+    "terser": "5.37.0",
     "terser-webpack-plugin": "5.3.10",
     "url-parse": "1.5.10",
     "webpack": "5.97.0",
     "webpack-cli": "6.0.1",
-    "webpack-dev-server": "5.1.0",
+    "webpack-dev-server": "5.2.0",
     "webpack-merge": "6.0.1"
   }
 }
