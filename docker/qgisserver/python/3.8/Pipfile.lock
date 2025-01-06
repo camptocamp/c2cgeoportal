@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "fb0f7e9b71438695ac714c863307bda494a3663f5f399050853c45a95a5f0eb8"
+            "sha256": "9a5af6a36e56a439530f7b0cbf854d284d6f458815b19cd52442f7fe51fe9a09"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -772,7 +772,7 @@
                 "sha256:355216845c60bd96232cd8d8c40e8f9765cc86f46880e43a8fd22dc1a1a8cab1",
                 "sha256:e3f60a94fa066dc52ec76661e37c851cb232d92f9886b15cb560aaada2df8feb"
             ],
-            "markers": "python_version >= '3.8'",
+            "markers": "python_full_version >= '3.8.0'",
             "version": "==3.0.0"
         },
         "mccabe": {
@@ -889,7 +889,7 @@
                 "sha256:4755e6e64d22161d5b61432c0600c923c5927214e7c956e31c23923c89251a9b",
                 "sha256:afc4146269910d4bdfabcd27c24923137a74d562a23a320a41a55ad303e19783"
             ],
-            "markers": "python_version >= '3.8'",
+            "markers": "python_full_version >= '3.8.0'",
             "version": "==2.19.0"
         },
         "pylint": {
@@ -976,7 +976,7 @@
                 "sha256:439594978a49a09530cff7ebc4b5c7103ef57baf48d5ea3184f21d9a2befa098",
                 "sha256:6049d5e6ec054bf2779ab3358186963bac2ea89175919d699e378b99738c2a90"
             ],
-            "markers": "python_version >= '3.8'",
+            "markers": "python_full_version >= '3.8.0'",
             "version": "==13.9.4"
         },
         "setoptconf-tmp": {
@@ -1037,11 +1037,11 @@
         },
         "types-pyyaml": {
             "hashes": [
-                "sha256:392b267f1c0fe6022952462bf5d6523f31e37f6cea49b14cee7ad634b6301570",
-                "sha256:d1405a86f9576682234ef83bcb4e6fff7c9305c8b1fbad5e0bcd4f7dbdc9c587"
+                "sha256:7f07622dbd34bb9c8b264fe860a17e0efcad00d50b5f27e93984909d9363498c",
+                "sha256:fa4d32565219b68e6dee5f67534c722e53c00d1cfc09c435ef04d7353e1e96e6"
             ],
             "index": "pypi",
-            "version": "==6.0.12.20240917"
+            "version": "==6.0.12.20241230"
         },
         "typing-extensions": {
             "hashes": [
