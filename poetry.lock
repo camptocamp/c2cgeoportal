@@ -1542,13 +1542,13 @@ requirements-deprecated-finder = ["pip-api", "pipreqs"]
 
 [[package]]
 name = "jinja2"
-version = "3.1.4"
+version = "3.1.5"
 description = "A very fast and expressive template engine."
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "jinja2-3.1.4-py3-none-any.whl", hash = "sha256:bc5dd2abb727a5319567b7a813e6a2e7318c39f4f487cfe6c89c6f9c7d25197d"},
-    {file = "jinja2-3.1.4.tar.gz", hash = "sha256:4a3aee7acbbe7303aede8e9648d13b8bf88a429282aa6122a993f0ac800cb369"},
+    {file = "jinja2-3.1.5-py3-none-any.whl", hash = "sha256:aba0f4dc9ed8013c424088f68a5c226f7d6097ed89b246d7749c2ec4175c6adb"},
+    {file = "jinja2-3.1.5.tar.gz", hash = "sha256:8fefff8dc3034e27bb80d67c671eb8a9bc424c0ef4c0826edbff304cceff43bb"},
 ]
 
 [package.dependencies]
@@ -1835,13 +1835,13 @@ source = ["Cython (>=3.0.11)"]
 
 [[package]]
 name = "mako"
-version = "1.3.6"
+version = "1.3.8"
 description = "A super-fast templating language that borrows the best ideas from the existing templating languages."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "Mako-1.3.6-py3-none-any.whl", hash = "sha256:a91198468092a2f1a0de86ca92690fb0cfc43ca90ee17e15d93662b4c04b241a"},
-    {file = "mako-1.3.6.tar.gz", hash = "sha256:9ec3a1583713479fae654f83ed9fa8c9a4c16b7bb0daba0e6bbebff50c0d983d"},
+    {file = "Mako-1.3.8-py3-none-any.whl", hash = "sha256:42f48953c7eb91332040ff567eb7eea69b22e7a4affbc5ba8e845e8f730f6627"},
+    {file = "mako-1.3.8.tar.gz", hash = "sha256:577b97e414580d3e088d47c2dbbe9594aa7a5146ed2875d4dfa9075af2dd3cc8"},
 ]
 
 [package.dependencies]
@@ -3624,32 +3624,32 @@ typing-extensions = {version = "*", markers = "python_version < \"3.11\""}
 
 [[package]]
 name = "rasterio"
-version = "1.4.2"
+version = "1.4.3"
 description = "Fast and direct raster I/O for use with Numpy and SciPy"
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "rasterio-1.4.2-cp310-cp310-macosx_10_15_x86_64.whl", hash = "sha256:8cf84f566c12ab1d3b42466038ef79edb3d37037a421293db93a30d046e13c43"},
-    {file = "rasterio-1.4.2-cp310-cp310-macosx_14_0_arm64.whl", hash = "sha256:7fabae0d84ff5455f588d5283d1a007769e63a679ab095e739abefc780332517"},
-    {file = "rasterio-1.4.2-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:90303c1ec8f9c89b1c3c4036c8595e84b4afa21e3ad6d87b4a46bd81f4bbbd3a"},
-    {file = "rasterio-1.4.2-cp310-cp310-win_amd64.whl", hash = "sha256:e38f2869f6379dc7f0d46af2e879f14ad194ccf0b634c121b630693fee23cdbe"},
-    {file = "rasterio-1.4.2-cp311-cp311-macosx_10_15_x86_64.whl", hash = "sha256:019e6fbfea250fea91987a38abc7a02c752b50beadb3178d82a5d47e8e265313"},
-    {file = "rasterio-1.4.2-cp311-cp311-macosx_14_0_arm64.whl", hash = "sha256:a9830e0c9d09d2680079b8a31085cc2a2b885b1ed6c4d95d2a91e2813efc22aa"},
-    {file = "rasterio-1.4.2-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:ea3f38da794e7a4df409f2c57799a26a777a2560025ad401fe33a0b8efe90a5a"},
-    {file = "rasterio-1.4.2-cp311-cp311-win_amd64.whl", hash = "sha256:0c74d6a2e64fae6c2293bf520fa4048e12598379736953c34ca3dfb058cedfc5"},
-    {file = "rasterio-1.4.2-cp312-cp312-macosx_10_15_x86_64.whl", hash = "sha256:84ce104a3017c04bfb809f268faaef4287458916f7af4f25a39b93f420fa8ef4"},
-    {file = "rasterio-1.4.2-cp312-cp312-macosx_14_0_arm64.whl", hash = "sha256:856c740e621211a19f0efddc2f0a61cc3d37c89c50699ea6cb249da3930d601b"},
-    {file = "rasterio-1.4.2-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:43a21306c8dc265f50d3cb8a13a58d50e055477ace1003bb8a507658a4124c37"},
-    {file = "rasterio-1.4.2-cp312-cp312-win_amd64.whl", hash = "sha256:83bf03b39dc7e1d932907d1b05d99a53b7fc184c215a27b938f4697db7295f53"},
-    {file = "rasterio-1.4.2-cp313-cp313-macosx_10_15_x86_64.whl", hash = "sha256:e405e92ab03f5606a959d4a7d9ae1589e2212f9720c2db55853bfa8c91f6d736"},
-    {file = "rasterio-1.4.2-cp313-cp313-macosx_14_0_arm64.whl", hash = "sha256:7dbf3d084e1f72f322d378eb2b9e155fbe0ead97f0a1b0065a389e9435a5a3db"},
-    {file = "rasterio-1.4.2-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:c6f2952e1b4ad01f0dcf97f477050d8122ca781abbb3ef8b5a5751835a222317"},
-    {file = "rasterio-1.4.2-cp313-cp313-win_amd64.whl", hash = "sha256:25ec2a35548c1c45ea1dd5341e777e5aeea8f79310bbae6aaed4d5f6a4c53f26"},
-    {file = "rasterio-1.4.2-cp39-cp39-macosx_10_15_x86_64.whl", hash = "sha256:56811e3fee89a74ccd18f11849f9dbf0c98eb652671b16c90c29bd06b122c4c6"},
-    {file = "rasterio-1.4.2-cp39-cp39-macosx_14_0_arm64.whl", hash = "sha256:11fdfc2a8b610eb2f6e3d47c396455d4d65c290d69b53e0a986cd58feac3af7b"},
-    {file = "rasterio-1.4.2-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:beec16eb4d951f111235d46f66319922bbc5744e7b8e50303725b46819b458b9"},
-    {file = "rasterio-1.4.2-cp39-cp39-win_amd64.whl", hash = "sha256:5b27965b50466a1d297ea41b4b8fbe19178b05ab3dd78f35fb64ccdc0e502819"},
-    {file = "rasterio-1.4.2.tar.gz", hash = "sha256:1be35ccb4d998a4c48fa51bbee9e37927ecd9b9e954a2b2581b8f3e9bb165332"},
+    {file = "rasterio-1.4.3-cp310-cp310-macosx_10_15_x86_64.whl", hash = "sha256:80f994b92e5dda78f13291710bd5c43efcfd164f69a8a2c20489115df9d178c8"},
+    {file = "rasterio-1.4.3-cp310-cp310-macosx_14_0_arm64.whl", hash = "sha256:1a6e6ca9ec361599b48c9918ce25adb1a9203b8c8ca9b34ad78dccb3aef7945a"},
+    {file = "rasterio-1.4.3-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:5b8a4311582274de2346450e5361d092b80b8b5c7b02fda6203402ba101ffabf"},
+    {file = "rasterio-1.4.3-cp310-cp310-win_amd64.whl", hash = "sha256:e79847a5a0e01399457a1e02d8c92040cb56729d054fe7796f0c17b246b18bf0"},
+    {file = "rasterio-1.4.3-cp311-cp311-macosx_10_15_x86_64.whl", hash = "sha256:9c30114d95ebba4ff49f078b3c193d29ff56d832588649400a3fa78f1dda1c96"},
+    {file = "rasterio-1.4.3-cp311-cp311-macosx_14_0_arm64.whl", hash = "sha256:812c854e7177064aeb58def2d59752887ad6b3d39ff3f858ed9df3f2ddc95613"},
+    {file = "rasterio-1.4.3-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:54eef32d20a0dfbba59a8bb9828e562c3e9e97e2355b8dfe4a5274117976059f"},
+    {file = "rasterio-1.4.3-cp311-cp311-win_amd64.whl", hash = "sha256:4009f7ce4e0883d8e5b400970daa3f1ca309caac8916d955722ee4486654d452"},
+    {file = "rasterio-1.4.3-cp312-cp312-macosx_10_15_x86_64.whl", hash = "sha256:e703e4b2c74c678786d5d110a3f30e26f3acfd65f09ccf35f69683a532f7a772"},
+    {file = "rasterio-1.4.3-cp312-cp312-macosx_14_0_arm64.whl", hash = "sha256:38a126f8dbf405cd3450b5bd10c6cc493a2e1be4cf83442d26f5e4f412372d36"},
+    {file = "rasterio-1.4.3-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:8e90c2c300294265c16becc9822337ded0f01fb8664500b4d77890d633d8cd0e"},
+    {file = "rasterio-1.4.3-cp312-cp312-win_amd64.whl", hash = "sha256:a962ad4c29feaf38b1d7a94389313127de3646a5b9b734fbf9a04e16051a27ff"},
+    {file = "rasterio-1.4.3-cp313-cp313-macosx_10_15_x86_64.whl", hash = "sha256:5d4fcb635379b3d7b2f5e944c153849e3d27e93f35ad73ad4d3f0b8a580f0c8e"},
+    {file = "rasterio-1.4.3-cp313-cp313-macosx_14_0_arm64.whl", hash = "sha256:98a9c89eade8c779e8ac1e525269faaa18c6b9818fc3c72cfc4627df71c66d0d"},
+    {file = "rasterio-1.4.3-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:d9bab1a0bb22b8bed1db34b5258db93d790ed4e61ef21ac055a7c6933c8d5e84"},
+    {file = "rasterio-1.4.3-cp313-cp313-win_amd64.whl", hash = "sha256:1839960e2f3057a6daa323ccf67b330f8f2f0dbd4a50cc7031e88e649301c5c0"},
+    {file = "rasterio-1.4.3-cp39-cp39-macosx_10_15_x86_64.whl", hash = "sha256:af04f788f6f814569184bd9da6c5d9889512212385ab58c52720dfb1f972671d"},
+    {file = "rasterio-1.4.3-cp39-cp39-macosx_14_0_arm64.whl", hash = "sha256:3f411a6a5bcb81ab6dc9128a8bccd13d3822cfa4a50c239e3a0528751a1ad5fc"},
+    {file = "rasterio-1.4.3-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:597f8dcf494d0ca4254434496e83b1723fec206d23d64da5751a582a2b01e1d3"},
+    {file = "rasterio-1.4.3-cp39-cp39-win_amd64.whl", hash = "sha256:a702e21712ba237e34515d829847f9f5f06d8e665e864a7bb0a3d4d8f6dec10d"},
+    {file = "rasterio-1.4.3.tar.gz", hash = "sha256:201f05dbc7c4739dacb2c78a1cf4e09c0b7265b0a4d16ccbd1753ce4f2af350a"},
 ]
 
 [package.dependencies]
@@ -3672,13 +3672,13 @@ test = ["boto3 (>=1.2.4)", "fsspec", "hypothesis", "packaging", "pytest (>=2.8.2
 
 [[package]]
 name = "redis"
-version = "5.2.0"
+version = "5.2.1"
 description = "Python client for Redis database and key-value store"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "redis-5.2.0-py3-none-any.whl", hash = "sha256:ae174f2bb3b1bf2b09d54bf3e51fbc1469cf6c10aa03e21141f51969801a7897"},
-    {file = "redis-5.2.0.tar.gz", hash = "sha256:0b1087665a771b1ff2e003aa5bdd354f15a70c9e25d5a7dbf9c722c16528a7b0"},
+    {file = "redis-5.2.1-py3-none-any.whl", hash = "sha256:ee7e1056b9aea0f04c6c2ed59452947f34c4940ee025f5dd83e6a6418b6989e4"},
+    {file = "redis-5.2.1.tar.gz", hash = "sha256:16f2e22dff21d5125e8481515e386711a34cbec50f0e44413dd7d9c060a54e0f"},
 ]
 
 [package.dependencies]
@@ -4385,18 +4385,19 @@ files = [
 
 [[package]]
 name = "tilecloud"
-version = "1.12.3"
+version = "1.12.6"
 description = "Tools for managing tiles"
 optional = false
 python-versions = ">=3.10"
 files = [
-    {file = "tilecloud-1.12.3-py3-none-any.whl", hash = "sha256:f1b9e33a281b93e43e8e7928140dbc39af97281e99487cdc91bca31ef63ad5b9"},
-    {file = "tilecloud-1.12.3.tar.gz", hash = "sha256:09ce90b847575b5f0b24e82bf075846e8878cd1fb6eb351e9f39c4b0a0aba2b2"},
+    {file = "tilecloud-1.12.6-py3-none-any.whl", hash = "sha256:a2faa6278562796f84195a16676d7030e6501afe616ede8bf1dc79b349b19157"},
+    {file = "tilecloud-1.12.6.tar.gz", hash = "sha256:1ad807a2ddcec223e33ebdcae88f326b0722afd4c74cd60a2512d05f44f28bdc"},
 ]
 
 [package.dependencies]
 bottle = "*"
 certifi = "*"
+cryptography = "*"
 Pillow = "*"
 pyproj = "*"
 requests = "*"
@@ -4518,35 +4519,35 @@ files = [
 
 [[package]]
 name = "types-python-dateutil"
-version = "2.9.0.20241003"
+version = "2.9.0.20241206"
 description = "Typing stubs for python-dateutil"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "types-python-dateutil-2.9.0.20241003.tar.gz", hash = "sha256:58cb85449b2a56d6684e41aeefb4c4280631246a0da1a719bdbe6f3fb0317446"},
-    {file = "types_python_dateutil-2.9.0.20241003-py3-none-any.whl", hash = "sha256:250e1d8e80e7bbc3a6c99b907762711d1a1cdd00e978ad39cb5940f6f0a87f3d"},
+    {file = "types_python_dateutil-2.9.0.20241206-py3-none-any.whl", hash = "sha256:e248a4bc70a486d3e3ec84d0dc30eec3a5f979d6e7ee4123ae043eedbb987f53"},
+    {file = "types_python_dateutil-2.9.0.20241206.tar.gz", hash = "sha256:18f493414c26ffba692a72369fea7a154c502646301ebfe3d56a04b3767284cb"},
 ]
 
 [[package]]
 name = "types-pytz"
-version = "2024.2.0.20241003"
+version = "2024.2.0.20241221"
 description = "Typing stubs for pytz"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "types-pytz-2024.2.0.20241003.tar.gz", hash = "sha256:575dc38f385a922a212bac00a7d6d2e16e141132a3c955078f4a4fd13ed6cb44"},
-    {file = "types_pytz-2024.2.0.20241003-py3-none-any.whl", hash = "sha256:3e22df1336c0c6ad1d29163c8fda82736909eb977281cb823c57f8bae07118b7"},
+    {file = "types_pytz-2024.2.0.20241221-py3-none-any.whl", hash = "sha256:8fc03195329c43637ed4f593663df721fef919b60a969066e22606edf0b53ad5"},
+    {file = "types_pytz-2024.2.0.20241221.tar.gz", hash = "sha256:06d7cde9613e9f7504766a0554a270c369434b50e00975b3a4a0f6eed0f2c1a9"},
 ]
 
 [[package]]
 name = "types-pyyaml"
-version = "6.0.12.20240917"
+version = "6.0.12.20241230"
 description = "Typing stubs for PyYAML"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "types-PyYAML-6.0.12.20240917.tar.gz", hash = "sha256:d1405a86f9576682234ef83bcb4e6fff7c9305c8b1fbad5e0bcd4f7dbdc9c587"},
-    {file = "types_PyYAML-6.0.12.20240917-py3-none-any.whl", hash = "sha256:392b267f1c0fe6022952462bf5d6523f31e37f6cea49b14cee7ad634b6301570"},
+    {file = "types_PyYAML-6.0.12.20241230-py3-none-any.whl", hash = "sha256:fa4d32565219b68e6dee5f67534c722e53c00d1cfc09c435ef04d7353e1e96e6"},
+    {file = "types_pyyaml-6.0.12.20241230.tar.gz", hash = "sha256:7f07622dbd34bb9c8b264fe860a17e0efcad00d50b5f27e93984909d9363498c"},
 ]
 
 [[package]]
@@ -4565,13 +4566,13 @@ urllib3 = ">=2"
 
 [[package]]
 name = "types-setuptools"
-version = "75.6.0.20241126"
+version = "75.6.0.20241223"
 description = "Typing stubs for setuptools"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "types_setuptools-75.6.0.20241126-py3-none-any.whl", hash = "sha256:aaae310a0e27033c1da8457d4d26ac673b0c8a0de7272d6d4708e263f2ea3b9b"},
-    {file = "types_setuptools-75.6.0.20241126.tar.gz", hash = "sha256:7bf25ad4be39740e469f9268b6beddda6e088891fa5a27e985c6ce68bf62ace0"},
+    {file = "types_setuptools-75.6.0.20241223-py3-none-any.whl", hash = "sha256:7cbfd3bf2944f88bbcdd321b86ddd878232a277be95d44c78a53585d78ebc2f6"},
+    {file = "types_setuptools-75.6.0.20241223.tar.gz", hash = "sha256:d9478a985057ed48a994c707f548e55aababa85fe1c9b212f43ab5a1fffd3211"},
 ]
 
 [[package]]
@@ -4907,4 +4908,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "d5f72643032efe386114462107c5f9b678f79fb1a6a3b8955a264b5485549404"
+content-hash = "c4b38687b56c9cf348c80c677b0cf0ddfe24e3d2d442943bb12e4c40e3fda985"
