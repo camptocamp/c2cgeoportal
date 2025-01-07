@@ -1,3 +1,7 @@
+##### 2.9.rc.40
+
+- Audit Snyk check/fix 2.9 [c2cgeoportal#11628](https://github.com/camptocamp/c2cgeoportal/pull/11628)
+
 ##### 2.9.rc.39
 
 - Update CI dependencies (2.9) [c2cgeoportal#11623](https://github.com/camptocamp/c2cgeoportal/pull/11623)
