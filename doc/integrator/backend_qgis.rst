@@ -226,7 +226,7 @@ Protecting Attributes
 
 Individual attributes can be protected via the layer metadata setting ``protectedAttributes``. To define which roles shall
 have access, the functionality ``allowed_attributes`` must be used in combination with this setting. As WMS layer name,
-the actual (exposed) WMS layer name must be used in this configuration.
+the actual WMS layer name as exposed by the QGIS server must be used in this configuration.
 
 
 Landing page
