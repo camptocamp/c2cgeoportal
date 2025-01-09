@@ -1,3 +1,8 @@
+##### 2.9.rc.41
+
+- Improve documentation for QGIS backend configuration [c2cgeoportal#11629](https://github.com/camptocamp/c2cgeoportal/pull/11629)
+- Audit Dpkg 2.9 [c2cgeoportal#11630](https://github.com/camptocamp/c2cgeoportal/pull/11630)
+
 ##### 2.9.rc.40
 
 - Audit Snyk check/fix 2.9 [c2cgeoportal#11628](https://github.com/camptocamp/c2cgeoportal/pull/11628)
