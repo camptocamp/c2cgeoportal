@@ -17,6 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        # The versions should be set everywhere we have a == QGIS version == comment
         version:
           - '3.28'
           - 3.28-gdal3.6
@@ -29,6 +30,16 @@ jobs:
     env:
       MAIN_BRANCH: '2.7'
       MAJOR_VERSION: '2.7'
+
+    # == QGIS version ==
+    outputs:
+      success-3-28: ${{ steps.success.outputs.success-3-28 }}
+      success-3-28-gdal3-6: ${{ steps.success.outputs.success-3-28-gdal3-6 }}
+      success-3-28-gdal3-7: ${{ steps.success.outputs.success-3-28-gdal3-7 }}
+      success-3-34: ${{ steps.success.outputs.success-3-34 }}
+      success-3-34-gdal3-7: ${{ steps.success.outputs.success-3-34-gdal3-7 }}
+      success-3-34-gdal3-8: ${{ steps.success.outputs.success-3-34-gdal3-8 }}
+      success-ltr: ${{ steps.success.outputs.success-ltr }}
 
     steps:
       - uses: actions/checkout@v2
@@ -94,3 +105,26 @@ jobs:
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && env.HAS_SECRETS == 'HAS_SECRETS'
+
+      # Mark as success
+      - id: success
+        run: |
+          version=${{ matrix.version }}
+          echo "success-${version//\./-}=true" >> $GITHUB_OUTPUT
+
+  success:
+    runs-on: ubuntu-24.04
+    name: QGIS build success
+    timeout-minutes: 15
+    needs: main
+    if: always()
+
+    # == QGIS version ==
+    steps:
+      - run: '[[ "${{ needs.main.outputs.success-3-28 }}" == "true" ]]'
+      - run: '[[ "${{ needs.main.outputs.success-3-28-gdal3-6 }}" == "true" ]]'
+      - run: '[[ "${{ needs.main.outputs.success-3-28-gdal3-7 }}" == "true" ]]'
+      - run: '[[ "${{ needs.main.outputs.success-3-34 }}" == "true" ]]'
+      - run: '[[ "${{ needs.main.outputs.success-3-34-gdal3-7 }}" == "true" ]]'
+      - run: '[[ "${{ needs.main.outputs.success-3-34-gdal3-8 }}" == "true" ]]'
+      - run: '[[ "${{ needs.main.outputs.success-ltr }}" == "true" ]]'
