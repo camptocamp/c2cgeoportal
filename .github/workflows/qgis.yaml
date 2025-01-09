@@ -46,6 +46,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        # The versions should be set everywhere we have a == QGIS version == comment
         version:
           - '3.34'
           # Used as default version
@@ -54,6 +55,15 @@ jobs:
           - lr
           - lr-debug
           - master
+
+    # == QGIS version ==
+    outputs:
+      success-3-34: ${{ steps.success.outputs.success-3-34 }}
+      success-3-34-gdal3-8: ${{ steps.success.outputs.success-3-34-gdal3-8 }}
+      success-ltr: ${{ steps.success.outputs.success-ltr }}
+      success-lr: ${{ steps.success.outputs.success-lr }}
+      success-lr-debug: ${{ steps.success.outputs.success-lr-debug }}
+      success-master: ${{ steps.success.outputs.success-master }}
 
     steps:
       - uses: actions/checkout@v4
@@ -131,3 +141,25 @@ jobs:
           path: /tmp/dpkg-versions.patch
           retention-days: 1
         if: failure()
+
+      # Mark as success
+      - id: success
+        run: |
+          version=${{ matrix.version }}
+          echo "::set-output name=success-${version//\./-}::true"
+
+  success:
+    runs-on: ubuntu-24.04
+    name: QGIS build success
+    timeout-minutes: 15
+    needs: main
+    if: always()
+
+    # == QGIS version ==
+    steps:
+      - run: '[[ "${{ needs.main.outputs.success-3-34 }}" == "true" ]]'
+      - run: '[[ "${{ needs.main.outputs.success-3-34-gdal3-8 }}" == "true" ]]'
+      - run: '[[ "${{ needs.main.outputs.success-ltr }}" == "true" ]]'
+      - run: '[[ "${{ needs.main.outputs.success-lr }}" == "true" ]]'
+      - run: '[[ "${{ needs.main.outputs.success-lr-debug }}" == "true" ]]'
+      - run: '[[ "${{ needs.main.outputs.success-master }}" == "true" ]]'
