@@ -46,6 +46,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        # The versions should be set everywhere we have a == QGIS version == comment
         version:
           # Last LTR
           - '3.28'
@@ -58,6 +59,19 @@ jobs:
           - lr
           - latest
           - lr-debug
+
+    # == QGIS version ==
+    outputs:
+      success-3-28: ${{ steps.success.outputs.success-3-28 }}
+      success-3-28-gdal3-6: ${{ steps.success.outputs.success-3-28-gdal3-6 }}
+      success-3-28-gdal3-7: ${{ steps.success.outputs.success-3-28-gdal3-7 }}
+      success-3-34: ${{ steps.success.outputs.success-3-34 }}
+      success-3-34-gdal3-7: ${{ steps.success.outputs.success-3-34-gdal3-7 }}
+      success-3-34-gdal3-8: ${{ steps.success.outputs.success-3-34-gdal3-8 }}
+      success-ltr: ${{ steps.success.outputs.success-ltr }}
+      success-lr: ${{ steps.success.outputs.success-lr }}
+      success-lr-debug: ${{ steps.success.outputs.success-lr-debug }}
+      success-latest: ${{ steps.success.outputs.latest }}
 
     steps:
       - uses: actions/checkout@v3
@@ -120,3 +134,28 @@ jobs:
         if: >
           env.HAS_SECRETS == 'HAS_SECRETS'
           && steps.version.outputs.versions != ''
+
+      # Mark as success
+      - id: success
+        run: |
+          version=${{ matrix.version }}
+          echo "success-${version//\./-}=true" >> $GITHUB_OUTPUT
+
+  success:
+    runs-on: ubuntu-24.04
+    name: QGIS build success
+    timeout-minutes: 15
+    needs: main
+    if: always()
+
+    # == QGIS version ==
+    steps:
+      - run: '[[ "${{ needs.main.outputs.success-3-28 }}" == "true" ]]'
+      - run: '[[ "${{ needs.main.outputs.success-3-28-gdal3-6 }}" == "true" ]]'
+      - run: '[[ "${{ needs.main.outputs.success-3-28-gdal3-7 }}" == "true" ]]'
+      - run: '[[ "${{ needs.main.outputs.success-3-34 }}" == "true" ]]'
+      - run: '[[ "${{ needs.main.outputs.success-3-34-gdal3-7 }}" == "true" ]]'
+      - run: '[[ "${{ needs.main.outputs.success-3-34-gdal3-8 }}" == "true" ]]'
+      - run: '[[ "${{ needs.main.outputs.success-ltr }}" == "true" ]]'
+      - run: '[[ "${{ needs.main.outputs.success-lr }}" == "true" ]]'
+      - run: '[[ "${{ needs.main.outputs.success-lr-debug }}" == "true" ]]'
