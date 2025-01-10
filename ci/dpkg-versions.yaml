@@ -1006,7 +1006,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/xserver-common: 2:21.1.4-2ubuntu1.7~22.04.12
   ubuntu_22_04/xvfb: 2:21.1.4-2ubuntu1.7~22.04.12
   ubuntu_22_04/zlib1g: 1:1.2.11.dfsg-2ubuntu9.2
-camptocamp/geomapfish-qgisserver:gmflatest-qgislr: &id001
+camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_22_04/acl: 2.3.1-1
   ubuntu_22_04/adduser: 3.118ubuntu5
   ubuntu_22_04/apache2: 2.4.52-1ubuntu4.12
@@ -2040,6 +2040,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_22_04/python3-numpy: 1:1.21.5-1ubuntu22.04.1
   ubuntu_22_04/python3-pil: 9.0.1-1ubuntu0.3
   ubuntu_22_04/python3-pip: 22.0.2+dfsg-1ubuntu0.5
+  ubuntu_22_04/python3-pip-whl: 22.0.2+dfsg-1ubuntu0.5
   ubuntu_22_04/python3-pkg-resources: 59.6.0-1.2ubuntu0.22.04.2
   ubuntu_22_04/python3-pyqt5: 5.15.6+dfsg-1ubuntu3
   ubuntu_22_04/python3-pyqt5.qsci: 2.11.6+dfsg-4
