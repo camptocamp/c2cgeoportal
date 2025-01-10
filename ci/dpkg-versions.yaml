@@ -1544,6 +1544,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr: &id001
   ubuntu_22_04/python3-numpy: 1:1.21.5-1ubuntu22.04.1
   ubuntu_22_04/python3-pil: 9.0.1-1ubuntu0.3
   ubuntu_22_04/python3-pip: 22.0.2+dfsg-1ubuntu0.5
+  ubuntu_22_04/python3-pip-whl: 22.0.2+dfsg-1ubuntu0.5
   ubuntu_22_04/python3-pkg-resources: 59.6.0-1.2ubuntu0.22.04.2
   ubuntu_22_04/python3-pyqt5: 5.15.6+dfsg-1ubuntu3
   ubuntu_22_04/python3-pyqt5.qsci: 2.11.6+dfsg-4
@@ -2048,10 +2049,13 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_22_04/python3-pyqt5.qtsql: 5.15.6+dfsg-1ubuntu3
   ubuntu_22_04/python3-pyqt5.sip: 12.9.1-1build1
   ubuntu_22_04/python3-setuptools: 59.6.0-1.2ubuntu0.22.04.2
+  ubuntu_22_04/python3-setuptools-whl: 59.6.0-1.2ubuntu0.22.04.2
+  ubuntu_22_04/python3-venv: 3.10.6-1~22.04.1
   ubuntu_22_04/python3-wheel: 0.37.1-2ubuntu0.22.04.1
   ubuntu_22_04/python3.10: 3.10.12-1~22.04.7
   ubuntu_22_04/python3.10-dev: 3.10.12-1~22.04.7
   ubuntu_22_04/python3.10-minimal: 3.10.12-1~22.04.7
+  ubuntu_22_04/python3.10-venv: 3.10.12-1~22.04.7
   ubuntu_22_04/readline-common: 8.1.2-1
   ubuntu_22_04/rpcsvc-proto: 1.4.2-0ubuntu6
   ubuntu_22_04/sed: 4.8-1ubuntu2
