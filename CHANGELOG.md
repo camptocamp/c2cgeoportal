@@ -1,3 +1,7 @@
+##### 2.9.rc.42
+
+- Add a venv to fix build of QGIS master [c2cgeoportal#11634](https://github.com/camptocamp/c2cgeoportal/pull/11634)
+
 ##### 2.9.rc.41
 
 - Improve documentation for QGIS backend configuration [c2cgeoportal#11629](https://github.com/camptocamp/c2cgeoportal/pull/11629)
