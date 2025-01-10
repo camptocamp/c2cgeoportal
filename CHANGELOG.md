@@ -1,3 +1,7 @@
+##### 2.8.1.178
+
+- [Backport 2.8] Use system Python [ngeo#9568](https://github.com/camptocamp/ngeo/pull/9568)
+
 ##### 2.8.1.177
 
 - Audit Snyk check/fix 2.8 [c2cgeoportal#11627](https://github.com/camptocamp/c2cgeoportal/pull/11627)
