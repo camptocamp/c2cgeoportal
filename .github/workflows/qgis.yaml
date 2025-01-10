@@ -48,6 +48,7 @@ jobs:
       matrix:
         version:
           - '3.34'
+          # Used as default version
           - 3.34-gdal3.8
           - ltr
           - lr
@@ -126,7 +127,7 @@ jobs:
         if: failure()
       - uses: actions/upload-artifact@v4
         with:
-          name: Update dpkg versions list.patch
+          name: Update QGIS ${{ matrix.version }} dpkg versions list.patch
           path: /tmp/dpkg-versions.patch
           retention-days: 1
         if: failure()
