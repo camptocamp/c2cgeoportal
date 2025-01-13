@@ -1,3 +1,7 @@
+##### 2.8.1.179
+
+- [Backport 2.8] Add a global success marker [c2cgeoportal#11639](https://github.com/camptocamp/c2cgeoportal/pull/11639)
+
 ##### 2.8.1.178
 
 - [Backport 2.8] Use system Python [ngeo#9568](https://github.com/camptocamp/ngeo/pull/9568)
