@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2024, Camptocamp SA
+# Copyright (c) 2012-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -127,7 +127,7 @@ def _set_common_headers(
     response.headers.update(service_headers_settings.get("headers", {}))
 
     if cache in (Cache.PRIVATE, Cache.PRIVATE_NO):
-        response.vary = (response.vary or ()) + ("Cookie",)
+        response.vary = (response.vary or ()) + ("Cookie", "Authorization")
 
     maxage = (
         service_headers_settings.get("cache_control_max_age", 3600)
