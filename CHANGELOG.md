@@ -1,3 +1,7 @@
+##### 2.9.rc.43
+
+- Add a global success marker [c2cgeoportal#11633](https://github.com/camptocamp/c2cgeoportal/pull/11633)
+
 ##### 2.9.rc.42
 
 - Add a venv to fix build of QGIS master [c2cgeoportal#11634](https://github.com/camptocamp/c2cgeoportal/pull/11634)
