@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2025, Camptocamp SA
+# Copyright (c) 2011-2024, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -124,7 +124,7 @@ class Proxy:
                 method,
                 "\n".join(
                     [
-                        f"{h}: {v if h not in ('Authorization', 'Cookie') else '***'}"
+                        f"{h}: {v if h not in ('Authorization', 'Cookies') else '***'}"
                         for h, v in list(headers.items())
                     ]
                 ),
@@ -154,7 +154,7 @@ class Proxy:
                 method,
                 "\n".join(
                     [
-                        f"{h}: {v if h not in ('Authorization', 'Cookie') else '***'}"
+                        f"{h}: {v if h not in ('Authorization', 'Cookies') else '***'}"
                         for h, v in list(headers.items())
                     ]
                 ),
@@ -256,6 +256,4 @@ class Proxy:
         headers: dict[str, str] = self.request.headers
         if "Cookie" in headers:
             headers.pop("Cookie")
-        if "Authorization" in headers:
-            headers.pop("Authorization")
         return headers

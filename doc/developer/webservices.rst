@@ -20,6 +20,7 @@ Parameters
 * ``background``: parent group of background layers to get.
 * ``group``: the group to get.
 * ``min_levels``: minimum number of group levels that is required, default is ``1``.
+* ``role``: role name, not used by the server but it is required for the cache management.
 
 Requests examples:
 
