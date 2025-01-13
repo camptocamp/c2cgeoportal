@@ -1,3 +1,8 @@
+##### 2.7.1.155
+
+- [Backport 2.7] Add a global success marker [c2cgeoportal#11638](https://github.com/camptocamp/c2cgeoportal/pull/11638)
+- [Backport 2.7] Use system Python [ngeo#9567](https://github.com/camptocamp/ngeo/pull/9567)
+
 ##### 2.7.1.154
 
 - Update dependency ngeo to v2.7.0-version-2.7-latest.20250101T170019Z.7b9b6b6c6.2.7 (2.7) [c2cgeoportal#11631](https://github.com/camptocamp/c2cgeoportal/pull/11631)
