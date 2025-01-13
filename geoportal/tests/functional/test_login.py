@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2024, Camptocamp SA
+# Copyright (c) 2013-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -358,7 +358,10 @@ class TestLoginView(TestCase):
             "functionalities": {"func": ["value"]},
         }
         assert login.loginuser() == expected
-        assert request.response.headers["Vary"] == "Origin, Access-Control-Request-Headers, Cookie"
+        assert (
+            request.response.headers["Vary"]
+            == "Origin, Access-Control-Request-Headers, Cookie, Authorization"
+        )
 
     def test_intranet(self):
         from tests import DummyRequest

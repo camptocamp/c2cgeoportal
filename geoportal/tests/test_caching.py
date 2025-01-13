@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2024, Camptocamp SA
+# Copyright (c) 2015-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -64,7 +64,7 @@ class TestSetCorsHeaders(TestCase):
             "Cache-Control": "max-age=10, private",
             "Content-Length": "0",
             "Content-Type": "text/html; charset=UTF-8",
-            "Vary": "Origin, Access-Control-Request-Headers, Cookie",
+            "Vary": "Origin, Access-Control-Request-Headers, Cookie, Authorization",
         }
 
         # 2. If the value of the Origin header is not a case-sensitive match for
@@ -74,7 +74,7 @@ class TestSetCorsHeaders(TestCase):
             "Cache-Control": "max-age=10, private",
             "Content-Length": "0",
             "Content-Type": "text/html; charset=UTF-8",
-            "Vary": "Origin, Access-Control-Request-Headers, Cookie",
+            "Vary": "Origin, Access-Control-Request-Headers, Cookie, Authorization",
         }
 
         # 3. If the resource supports credentials add a single
@@ -85,7 +85,7 @@ class TestSetCorsHeaders(TestCase):
             "Cache-Control": "max-age=10, private",
             "Content-Length": "0",
             "Content-Type": "text/html; charset=UTF-8",
-            "Vary": "Origin, Access-Control-Request-Headers, Cookie",
+            "Vary": "Origin, Access-Control-Request-Headers, Cookie, Authorization",
             "Access-Control-Max-Age": self.MAX_AGE,
             "Access-Control-Allow-Origin": self.ORIGIN2,
             "Access-Control-Allow-Methods": CORS_METHODS,
@@ -205,7 +205,7 @@ class TestSetCorsHeaders(TestCase):
             "Cache-Control": "max-age=10, private",
             "Content-Length": "0",
             "Content-Type": "text/html; charset=UTF-8",
-            "Vary": "Origin, Access-Control-Request-Headers, Cookie",
+            "Vary": "Origin, Access-Control-Request-Headers, Cookie, Authorization",
         }
 
     def test_match_all(self):
@@ -220,7 +220,7 @@ class TestSetCorsHeaders(TestCase):
             "Cache-Control": "max-age=10, private",
             "Content-Length": "0",
             "Content-Type": "text/html; charset=UTF-8",
-            "Vary": "Origin, Access-Control-Request-Headers, Cookie",
+            "Vary": "Origin, Access-Control-Request-Headers, Cookie, Authorization",
             "Access-Control-Max-Age": self.MAX_AGE,
             "Access-Control-Allow-Origin": self.ORIGIN1,
             "Access-Control-Allow-Methods": CORS_METHODS,
@@ -233,7 +233,7 @@ class TestSetCorsHeaders(TestCase):
             "Cache-Control": "max-age=10, private",
             "Content-Length": "0",
             "Content-Type": "text/html; charset=UTF-8",
-            "Vary": "Origin, Access-Control-Request-Headers, Cookie",
+            "Vary": "Origin, Access-Control-Request-Headers, Cookie, Authorization",
             "Access-Control-Max-Age": self.MAX_AGE,
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": CORS_METHODS,
