@@ -24,9 +24,7 @@ jobs:
           - 3.34-gdal3.7
           - 3.34-gdal3.8
           - ltr
-          - lr
-          - lr-debug
-          - master
+          - ltr-debug
         branch:
           - '2.7'
 
