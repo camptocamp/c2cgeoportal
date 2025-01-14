@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2024, Camptocamp SA
+# Copyright (c) 2011-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -799,7 +799,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
             try:
                 rendered_headers = " ".join(
                     [
-                        f"{h}={v if h not in ('Authorization', 'Cookies') else '***'}"
+                        f"{h}={v if h not in ('Authorization', 'Cookie') else '***'}"
                         for h, v in headers.items()
                     ]
                 )
@@ -836,7 +836,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                 print(colorize(str(e), Color.RED))
                 rendered_headers = " ".join(
                     [
-                        f"{h}={v if h not in ('Authorization', 'Cookies') else '***'}"
+                        f"{h}={v if h not in ('Authorization', 'Cookie') else '***'}"
                         for h, v in headers.items()
                     ]
                 )

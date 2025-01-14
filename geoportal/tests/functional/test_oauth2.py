@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2024, Camptocamp SA
+# Copyright (c) 2021-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -153,7 +153,7 @@ class TestLoginView(TestCase):
         response = Login(request).oauth2token()
         assert response.headers["Content-Type"] == "application/json"
         assert response.headers["Pragma"] == "no-cache"
-        assert response.headers["Vary"] == "Origin, Access-Control-Request-Headers, Cookie"
+        assert response.headers["Vary"] == "Origin, Access-Control-Request-Headers, Cookie, Authorization"
         assert response.headers["Cache-Control"] == "max-age=10, no-store, private"
         data = json.loads(response.body)
         assert set(data.keys()) == {"access_token", "expires_in", "token_type", "refresh_token"}
@@ -272,7 +272,7 @@ class TestLoginView(TestCase):
         response = Login(request).oauth2token()
         assert response.headers["Content-Type"] == "application/json"
         assert response.headers["Pragma"] == "no-cache"
-        assert response.headers["Vary"] == "Origin, Access-Control-Request-Headers, Cookie"
+        assert response.headers["Vary"] == "Origin, Access-Control-Request-Headers, Cookie, Authorization"
         assert response.headers["Cache-Control"] == "max-age=10, no-store, private"
         data = json.loads(response.body)
         assert set(data.keys()) == {"access_token", "expires_in", "token_type", "refresh_token"}
@@ -356,7 +356,7 @@ class TestLoginView(TestCase):
         response = Login(request).oauth2token()
         assert response.headers["Content-Type"] == "application/json"
         assert response.headers["Pragma"] == "no-cache"
-        assert response.headers["Vary"] == "Origin, Access-Control-Request-Headers, Cookie"
+        assert response.headers["Vary"] == "Origin, Access-Control-Request-Headers, Cookie, Authorization"
         assert response.headers["Cache-Control"] == "max-age=10, no-store, private"
         data = json.loads(response.body)
         assert set(data.keys()) == {"access_token", "expires_in", "token_type", "refresh_token"}
@@ -479,7 +479,7 @@ class TestLoginView(TestCase):
         response = Login(request).oauth2token()
         assert response.headers["Content-Type"] == "application/json"
         assert response.headers["Pragma"] == "no-cache"
-        assert response.headers["Vary"] == "Origin, Access-Control-Request-Headers, Cookie"
+        assert response.headers["Vary"] == "Origin, Access-Control-Request-Headers, Cookie, Authorization"
         assert response.headers["Cache-Control"] == "max-age=10, no-store, private"
         data = json.loads(response.body)
         assert set(data.keys()) == {"access_token", "expires_in", "token_type", "refresh_token"}
@@ -612,7 +612,7 @@ class TestLoginView(TestCase):
         response = Login(request).oauth2token()
         assert response.headers["Content-Type"] == "application/json"
         assert response.headers["Pragma"] == "no-cache"
-        assert response.headers["Vary"] == "Origin, Access-Control-Request-Headers, Cookie"
+        assert response.headers["Vary"] == "Origin, Access-Control-Request-Headers, Cookie, Authorization"
         assert response.headers["Cache-Control"] == "max-age=10, no-store, private"
         data = json.loads(response.body)
         assert set(data.keys()) == {"access_token", "expires_in", "token_type", "refresh_token"}
@@ -709,7 +709,7 @@ class TestLoginView(TestCase):
         response = Login(request).oauth2token()
         assert response.headers["Content-Type"] == "application/json"
         assert response.headers["Pragma"] == "no-cache"
-        assert response.headers["Vary"] == "Origin, Access-Control-Request-Headers, Cookie"
+        assert response.headers["Vary"] == "Origin, Access-Control-Request-Headers, Cookie, Authorization"
         assert response.headers["Cache-Control"] == "max-age=10, no-store, private"
         data = json.loads(response.body)
         assert set(data.keys()) == {"access_token", "expires_in", "token_type", "refresh_token"}
