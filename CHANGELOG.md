@@ -1,3 +1,5 @@
+##### 2.6.0.285
+* [Backport 2.6] Fix small cache poisoning [c2cgeoportal#11645](https://github.com/camptocamp/c2cgeoportal/pull/11645)
 ##### 2.6.0.284
 * Ignore new CVE on jinja2 [c2cgeoportal#11626](https://github.com/camptocamp/c2cgeoportal/pull/11626)
 * [Backport 2.6] [Backport 2.7] Add a global success marker [c2cgeoportal#11649](https://github.com/camptocamp/c2cgeoportal/pull/11649)
