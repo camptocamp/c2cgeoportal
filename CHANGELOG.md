@@ -1,3 +1,6 @@
+##### 2.6.0.284
+* Ignore new CVE on jinja2 [c2cgeoportal#11626](https://github.com/camptocamp/c2cgeoportal/pull/11626)
+* [Backport 2.6] [Backport 2.7] Add a global success marker [c2cgeoportal#11649](https://github.com/camptocamp/c2cgeoportal/pull/11649)
 ##### 2.6.0.283
 * Update dependency Jinja2 to v3.1.5 (2.6) [c2cgeoportal#11619](https://github.com/camptocamp/c2cgeoportal/pull/11619)
 ##### 2.6.0.282
