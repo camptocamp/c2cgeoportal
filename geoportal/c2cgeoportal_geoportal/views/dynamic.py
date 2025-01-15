@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2024, Camptocamp SA
+# Copyright (c) 2018-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -124,6 +124,7 @@ class DynamicView:
     @view_config(route_name="dynamic", renderer="json")  # type: ignore[misc]
     def dynamic(self) -> dict[str, Any]:
         is_allowed_host(self.request)
+        self.request.response.headers["Vary"] = "Host"
 
         original_interface_name = self.request.params.get("interface")
         interface_name = self.request.get_organization_interface(original_interface_name)
