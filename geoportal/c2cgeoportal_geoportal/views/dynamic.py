@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2018-2021, Camptocamp SA
+# Copyright (c) 2018-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -110,6 +110,7 @@ class DynamicView:
 
     @view_config(route_name="dynamic", renderer="json")
     def dynamic(self):
+        self.request.response.headers["Vary"] = "Host"
         original_interface_name = self.request.params.get("interface")
         interface_name = self.request.get_organization_interface(original_interface_name)
 
