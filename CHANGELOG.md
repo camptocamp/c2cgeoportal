@@ -1,3 +1,7 @@
+##### 2.7.1.156
+
+- [Backport 2.7] Fix small cache poisoning [c2cgeoportal#11646](https://github.com/camptocamp/c2cgeoportal/pull/11646)
+
 ##### 2.7.1.155
 
 - [Backport 2.7] Add a global success marker [c2cgeoportal#11638](https://github.com/camptocamp/c2cgeoportal/pull/11638)
