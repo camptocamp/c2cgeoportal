@@ -13,6 +13,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        # The versions should be set everywhere we have a == QGIS version == comment
         version:
           # Old LTR
           - '3.10'
@@ -22,6 +23,11 @@ jobs:
     env:
       MAIN_BRANCH: 2.6
       MAJOR_VERSION: 2.6
+
+    # == QGIS version ==
+    outputs:
+      success-3-10: ${{ steps.success.outputs.success-3-10 }}
+      success-3-16: ${{ steps.success.outputs.success-3-16 }}
 
     steps:
       - uses: actions/checkout@v2
@@ -83,3 +89,21 @@ jobs:
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && github.repository == 'camptocamp/c2cgeoportal'
+
+      # Mark as success
+      - id: success
+        run: |
+          version=${{ matrix.version }}
+          echo "success-${version//\./-}=true" >> $GITHUB_OUTPUT
+
+  success:
+    runs-on: ubuntu-24.04
+    name: QGIS build success
+    timeout-minutes: 15
+    needs: main
+    if: always()
+
+    # == QGIS version ==
+    steps:
+      - run: '[[ "${{ needs.main.outputs.success-3-10 }}" == "true" ]]'
+      - run: '[[ "${{ needs.main.outputs.success-3-16 }}" == "true" ]]'
