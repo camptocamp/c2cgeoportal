@@ -2822,8 +2822,8 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/gir1.2-girepository-2.0: 1.80.1-1
   ubuntu_24_04/gir1.2-glib-2.0: 2.80.0-6ubuntu3.2
   ubuntu_24_04/gir1.2-packagekitglib-1.0: 1.2.8-2ubuntu1.1
-  ubuntu_24_04/git: 1:2.43.0-1ubuntu7.1
-  ubuntu_24_04/git-man: 1:2.43.0-1ubuntu7.1
+  ubuntu_24_04/git: 1:2.43.0-1ubuntu7.2
+  ubuntu_24_04/git-man: 1:2.43.0-1ubuntu7.2
   ubuntu_24_04/gnupg: 2.4.4-2ubuntu17
   ubuntu_24_04/gnupg-utils: 2.4.4-2ubuntu17
   ubuntu_24_04/gpg: 2.4.4-2ubuntu17
@@ -3564,8 +3564,8 @@ camptocamp/geomapfish:latest:
   ubuntu_24_04/gir1.2-girepository-2.0: 1.80.1-1
   ubuntu_24_04/gir1.2-glib-2.0: 2.80.0-6ubuntu3.2
   ubuntu_24_04/gir1.2-packagekitglib-1.0: 1.2.8-2ubuntu1.1
-  ubuntu_24_04/git: 1:2.43.0-1ubuntu7.1
-  ubuntu_24_04/git-man: 1:2.43.0-1ubuntu7.1
+  ubuntu_24_04/git: 1:2.43.0-1ubuntu7.2
+  ubuntu_24_04/git-man: 1:2.43.0-1ubuntu7.2
   ubuntu_24_04/gnupg: 2.4.4-2ubuntu17
   ubuntu_24_04/gnupg-utils: 2.4.4-2ubuntu17
   ubuntu_24_04/gpg: 2.4.4-2ubuntu17
@@ -4237,8 +4237,8 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_24_04/gir1.2-girepository-2.0: 1.80.1-1
   ubuntu_24_04/gir1.2-glib-2.0: 2.80.0-6ubuntu3.2
   ubuntu_24_04/gir1.2-packagekitglib-1.0: 1.2.8-2ubuntu1.1
-  ubuntu_24_04/git: 1:2.43.0-1ubuntu7.1
-  ubuntu_24_04/git-man: 1:2.43.0-1ubuntu7.1
+  ubuntu_24_04/git: 1:2.43.0-1ubuntu7.2
+  ubuntu_24_04/git-man: 1:2.43.0-1ubuntu7.2
   ubuntu_24_04/gnupg: 2.4.4-2ubuntu17
   ubuntu_24_04/gnupg-utils: 2.4.4-2ubuntu17
   ubuntu_24_04/gpg: 2.4.4-2ubuntu17
