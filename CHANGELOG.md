@@ -1,3 +1,7 @@
+##### 2.9.rc.45
+
+- Fix small cache poisoning [c2cgeoportal#11643](https://github.com/camptocamp/c2cgeoportal/pull/11643)
+
 ##### 2.9.rc.44
 
 - Consider Cookie and Authorization as the same [c2cgeoportal#11640](https://github.com/camptocamp/c2cgeoportal/pull/11640)
