@@ -97,6 +97,8 @@ jobs:
 
         # Tests
       - run: make preparetest
+      - run: docker compose logs --timestamps config
+        if: failure()
       - run: docker compose logs --timestamps
         if: failure()
       - run: make tests-commons

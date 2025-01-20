@@ -332,6 +332,8 @@ services:
       - C2CWSGIUTILS_LOG_LEVEL
       - LOG_TYPE
       - C2CGEOPORTAL_THEME_TIMEOUT=300
+      # For multi tenant
+      - DEFAULT_PREFIX
 
   geoportal-advance:
     image: ${DOCKER_BASE}-geoportal:${DOCKER_TAG}
