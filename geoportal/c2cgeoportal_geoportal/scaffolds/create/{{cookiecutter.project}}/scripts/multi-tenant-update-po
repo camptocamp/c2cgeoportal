@@ -1,0 +1,44 @@
+#!/usr/bin/env python3
+
+import argparse
+import os
+import subprocess
+
+import yaml
+
+
+def _main() -> None:
+    parser = argparse.ArgumentParser(
+        description="\n".join(
+            [
+                "Update the po files in multi tenants mode",
+                "",
+                "Using the information available in the tenants.yaml file.",
+            ]
+        ),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    parser.parse_args()
+
+    with open("tenants.yaml") as tenants_file:
+        tenants = yaml.safe_load(tenants_file.read())
+
+    for name, tenant in tenants.get("tenants", {}).items():
+        print(f"Update localization for tenant {name}.")
+        subprocess.run(
+            [
+                "make",
+                "update-po-from-url",
+            ],
+            check=True,
+            env={
+                **os.environ,
+                "PROJECT_PUBLIC_URL": tenant["public_url"],
+                "SUFFIX": tenant["suffix"],
+                "CURL_ARGS": tenant.get("curl_args", ""),
+            },
+        )
+
+
+if __name__ == "__main__":
+    _main()

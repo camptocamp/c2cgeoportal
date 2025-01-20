@@ -12,3 +12,6 @@
 !geoportal/{{cookiecutter.package}}_geoportal/static
 !geoportal/{{cookiecutter.package}}_geoportal/locale
 geoportal/{{cookiecutter.package}}_geoportal/locale/*.pot
+!geoportal/{{cookiecutter.package}}_geoportal/authentication.py
+!geoportal/{{cookiecutter.package}}_geoportal/multi_tenant.py
+!geoportal/{{cookiecutter.package}}_geoportal/dev.py

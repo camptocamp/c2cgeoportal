@@ -3,7 +3,6 @@
 import argparse
 import glob
 import os
-import shutil
 import subprocess
 
 
@@ -14,91 +13,71 @@ def main() -> None:
     parser.add_argument("--dry-run", action="store_true", help="run in dry-run mode")
     args = parser.parse_args()
 
-    all_suffix = [""] if args.suffix is None else args.suffix
+    all_suffix = [""] if args.suffix is None else ["", *args.suffix]
 
     package_base_path = f"/tmp/config/geoportal/{args.package}_geoportal"  # nosec
     base_path = f"{package_base_path}/locale"
+    dest_package = "geomapfishapp" if os.environ.get("SIMPLE", "false").lower() == "true" else args.package
 
     for lang in os.listdir(base_path):
         for suffix in all_suffix:
-            if args.dry_run:
-                print(
-                    f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po => "
-                    f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.mo"
-                )
-            else:
-                subprocess.run(
-                    [
-                        "msgfmt",
-                        "-o",
-                        f"{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.mo",
-                        f"{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po",
-                    ],
-                    cwd=base_path,
-                    check=True,
-                )
-
-            if os.path.exists(f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-server{suffix}.mo"):
+            if os.path.exists(f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po"):
                 if args.dry_run:
                     print(
-                        f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-server{suffix}.po => "
-                        f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-server{suffix}.mo"
+                        f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po => "
+                        f"{base_path}/{lang}/LC_MESSAGES/{dest_package}_geoportal-client{suffix}.mo"
                     )
                 else:
                     subprocess.run(
                         [
                             "msgfmt",
                             "-o",
-                            f"{lang}/LC_MESSAGES/{args.package}_geoportal-server{suffix}.mo",
+                            f"{lang}/LC_MESSAGES/{dest_package}_geoportal-client{suffix}.mo",
+                            f"{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po",
+                        ],
+                        cwd=base_path,
+                        check=True,
+                    )
+
+            if os.path.exists(f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-server{suffix}.mo"):
+                if args.dry_run:
+                    print(
+                        f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-server{suffix}.po => "
+                        f"{base_path}/{lang}/LC_MESSAGES/{dest_package}_geoportal-server{suffix}.mo"
+                    )
+                else:
+                    subprocess.run(
+                        [
+                            "msgfmt",
+                            "-o",
+                            f"{lang}/LC_MESSAGES/{dest_package}_geoportal-server{suffix}.mo",
                             f"{lang}/LC_MESSAGES/{args.package}_geoportal-server{suffix}.po",
                         ],
                         cwd=base_path,
                         check=True,
                     )
 
-            if args.dry_run:
-                print(
-                    f"/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/{lang}/LC_MESSAGES/ngeo.po, "
-                    f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po => "
-                    f"{package_base_path}/static/{lang}{suffix}.json"
-                )
-            else:
-                with open(f"{package_base_path}/static/{lang}{suffix}.json", "w", encoding="utf-8") as out:
-                    subprocess.run(
-                        [
-                            "compile-catalog",
-                            f"/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/{lang}/LC_MESSAGES/ngeo.po",
-                            f"{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po",
-                        ],
-                        stdout=out,
-                        cwd=base_path,
-                        check=True,
-                    )
-
-        if os.environ.get("SIMPLE", "false").lower() == "true":
-            if args.suffix is not None:
-                print("ERROR: simple mod is not compatible with suffix")
-            if args.dry_run:
-                print(
-                    f"mv {base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-client.mo"
-                    f"{base_path}/{lang}/LC_MESSAGES/geomapfishapp_geoportal-client.mo"
-                )
-            else:
-                shutil.move(
-                    f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-client.mo",
-                    f"{base_path}/{lang}/LC_MESSAGES/geomapfishapp_geoportal-client.mo",
-                )
-            if os.path.exists(f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-server.mo"):
+            if os.path.exists(f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po"):
                 if args.dry_run:
                     print(
-                        f"mv {base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-server.mo"
-                        f"{base_path}/{lang}/LC_MESSAGES/geomapfishapp_geoportal-server.mo"
+                        f"/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/{lang}/LC_MESSAGES/ngeo.po, "
+                        f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po => "
+                        f"{package_base_path}/static/{lang}{suffix}.json"
                     )
                 else:
-                    shutil.move(
-                        f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-server.mo",
-                        f"{base_path}/{lang}/LC_MESSAGES/geomapfishapp_geoportal-server.mo",
-                    )
+                    with open(
+                        f"{package_base_path}/static/{lang}{suffix}.json", "w", encoding="utf-8"
+                    ) as out:
+                        subprocess.run(
+                            [
+                                "compile-catalog",
+                                f"/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/{lang}/LC_MESSAGES/ngeo.po",
+                                f"{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po",
+                            ],
+                            stdout=out,
+                            cwd=base_path,
+                            check=True,
+                        )
 
     for po_file in glob.glob(f"{base_path}/*/LC_MESSAGES/*.po"):
         if args.dry_run:
