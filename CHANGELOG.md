@@ -1,3 +1,7 @@
+##### 2.8.1.181
+
+- Support multi-tenant in simple mode [c2cgeoportal#11596](https://github.com/camptocamp/c2cgeoportal/pull/11596)
+
 ##### 2.8.1.180
 
 - [Backport 2.8] Fix small cache poisoning [c2cgeoportal#11647](https://github.com/camptocamp/c2cgeoportal/pull/11647)
