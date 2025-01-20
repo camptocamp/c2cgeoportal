@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
-    <title>Multi organization &#8212; c2cgeoportal  documentation</title>
+    <title>Multi-tenant &#8212; c2cgeoportal  documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css" />
@@ -37,21 +37,24 @@
 
           <div class="body" role="main">
             
-  <section id="multi-organization">
-<span id="integrator-multi-organization"></span><h1>Multi organization<a class="headerlink" href="#multi-organization" title="Permalink to this heading">¶</a></h1>
+  <section id="multi-tenant">
+<span id="integrator-multi-tenant"></span><h1>Multi-tenant<a class="headerlink" href="#multi-tenant" title="Permalink to this heading">¶</a></h1>
 <p>The geoportal can host multiple organizations, with configuration differences for each organization.
 In a multi-organization geoportal, each organization will have the same program code
 (Python, Javascript, SCSS). In this mode all the organizations are served by the same infrastructure.</p>
 <p>In this example we will have the came CSS but we can do some variations by using CSS var,
 see <code class="docutils literal notranslate"><span class="pre">cssVars</span></code> in <code class="docutils literal notranslate"><span class="pre">gmfOptions</span></code> in the ngeo GMF constants definitions
 <a class="reference external" href="https://camptocamp.github.io/ngeo/2.8/jsdoc/module-contribs_gmf_src_options.html">gmf constants</a>.</p>
-<p>The following lines will provide a basic implementation for multi-organization.</p>
+<p>The following lines will provide a basic implementation for multi-tenant.</p>
 <p>The code should be adapted, currently it handles the hostnames ‘org1.camptocamp.com’ and
 ‘org2.camptocamp.com’, and you probably want to put the hardcoded values in the config.</p>
-<section id="init-py">
-<h2><code class="docutils literal notranslate"><span class="pre">__init__.py</span></code><a class="headerlink" href="#init-py" title="Permalink to this heading">¶</a></h2>
-<p>In the file <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/__init__.py</span></code> add the following lines:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">get_instance_prefix</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+<section id="multi-tenant-py">
+<h2><code class="docutils literal notranslate"><span class="pre">multi_tenant.py</span></code><a class="headerlink" href="#multi-tenant-py" title="Permalink to this heading">¶</a></h2>
+<p>You should have a <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/multi_tenant.py</span></code> file like this one:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pyramid.config</span> <span class="kn">import</span> <span class="n">Configurator</span>
+
+
+<span class="k">def</span> <span class="nf">get_instance_prefix</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">host</span> <span class="o">==</span> <span class="s2">&quot;org1.camptocamp.com&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="s2">&quot;org1&quot;</span>
     <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">host</span> <span class="o">==</span> <span class="s2">&quot;org2.camptocamp.com&quot;</span><span class="p">:</span>
@@ -77,7 +80,9 @@ see <code class="docutils literal notranslate"><span class="pre">cssVars</span><
     <span class="k">return</span> <span class="n">print_url</span>
 
 
-<span class="c1"># In ``main`` function, after ``config.include(&quot;c2cgeoportal_geoportal&quot;)``</span>
+<span class="k">def</span> <span class="nf">includeme</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">Configurator</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">   </span><span class="sd">&quot;&quot;&quot;Initialize the multi-tenant.&quot;&quot;&quot;</span>
+
     <span class="n">config</span><span class="o">.</span><span class="n">add_request_method</span><span class="p">(</span>
         <span class="n">get_organization_role</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_organization_role&quot;</span><span class="p">)</span>
     <span class="n">config</span><span class="o">.</span><span class="n">add_request_method</span><span class="p">(</span>
@@ -133,10 +138,20 @@ see <code class="docutils literal notranslate"><span class="pre">cssVars</span><
 <section id="internationalization">
 <h2>Internationalization<a class="headerlink" href="#internationalization" title="Permalink to this heading">¶</a></h2>
 <p>For each organization, a set of localization file should be created.</p>
+<p>First you should create a <code class="docutils literal notranslate"><span class="pre">tenants.yaml</span></code> file like that:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">tenants</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">org1</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">public_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://org1.camptocamp.com</span>
+<span class="w">    </span><span class="nt">suffix</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-org1</span>
+<span class="w">    </span><span class="nt">curl_args</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;optional&gt;</span>
+<span class="w">  </span><span class="nt">org2</span><span class="p">:</span>
+<span class="w">    </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</pre></div>
+</div>
 <p>The general workflow is:</p>
 <ul class="simple">
-<li><p>The integrator performs <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">update-client-po</span></code>.</p></li>
-<li><p>This will run one <code class="docutils literal notranslate"><span class="pre">update-po</span></code> script for each organization with different environment variables.</p></li>
+<li><p>run <code class="docutils literal notranslate"><span class="pre">scripts/multi-tenant-update-po</span></code>.</p></li>
+<li><p>This will run one <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">update-po-from-url</span></code> for each organization with different environment variables.</p></li>
 <li><p>The result is one po file set for each organization with the defined suffix.</p></li>
 <li><p>The integrator needs to complete the po files with translations.</p></li>
 <li><p>When the config Docker image is built, all po files are automatically converted to JSON files
@@ -270,7 +285,7 @@ See the definition above.</p>
       &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
       
       |
-      <a href="../_sources/integrator/multi_organization.rst.txt"
+      <a href="../_sources/integrator/multi_tenant.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 
