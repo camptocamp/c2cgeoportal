@@ -1,3 +1,7 @@
+##### 2.9.rc.48
+
+- [Backport 2.9] Support multi-tenant in simple mode [c2cgeoportal#11655](https://github.com/camptocamp/c2cgeoportal/pull/11655)
+
 ##### 2.9.rc.47
 
 - Audit Dpkg 2.9 [c2cgeoportal#11652](https://github.com/camptocamp/c2cgeoportal/pull/11652)
