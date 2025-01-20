@@ -18,6 +18,6 @@ Features that require additional steps (most of the time):
    urllogin
    pdfreport
    routing
-   multi_organization
+   multi_tenant
    vector_tiles
    extend_application
