@@ -1,3 +1,7 @@
+##### 2.9.rc.55
+
+- Update CI dependencies to v1.7.3 (2.9) (patch) [c2cgeoportal#11666](https://github.com/camptocamp/c2cgeoportal/pull/11666)
+
 ##### 2.9.rc.54
 
 - Audit Dpkg 2.9 [c2cgeoportal#11665](https://github.com/camptocamp/c2cgeoportal/pull/11665)
