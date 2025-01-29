@@ -1,3 +1,15 @@
+##### 2.9.rc.56
+
+- Update dependency OWSLib to v0.32.1 (2.9) [c2cgeoportal#11669](https://github.com/camptocamp/c2cgeoportal/pull/11669)
+- Update dependency pyjson5 to v1.6.8 (2.9) [c2cgeoportal#11670](https://github.com/camptocamp/c2cgeoportal/pull/11670)
+- Lock file maintenance (2.9) [c2cgeoportal#11671](https://github.com/camptocamp/c2cgeoportal/pull/11671)
+- [Backport 2.9] Use system Python [ngeo#9569](https://github.com/camptocamp/ngeo/pull/9569)
+- GSGGR-117 backport fix feature loading [ngeo#9571](https://github.com/camptocamp/ngeo/pull/9571)
+- Fix north arrow icon [ngeo#9572](https://github.com/camptocamp/ngeo/pull/9572)
+- Fix the close button is behind the title [ngeo#9574](https://github.com/camptocamp/ngeo/pull/9574)
+- Fix buffer is not defined [ngeo#9575](https://github.com/camptocamp/ngeo/pull/9575)
+- Audit Snyk check/fix 2.9 [ngeo#9576](https://github.com/camptocamp/ngeo/pull/9576)
+
 ##### 2.9.rc.55
 
 - Update CI dependencies to v1.7.3 (2.9) (patch) [c2cgeoportal#11666](https://github.com/camptocamp/c2cgeoportal/pull/11666)
