@@ -123,10 +123,10 @@
       matchFileNames: ['.github/workflows/ngeo-*.yaml'],
       enabled: false,
     },
-    /** Accept only the patch on stabilization branches */
+    /** Accept only the patch and lockFileMaintenance on stabilization branches */
     {
       matchBaseBranches: ['/^[0-9]+\\.[0-9]+$/'],
-      matchUpdateTypes: ['major', 'minor', 'pin', 'digest', 'lockFileMaintenance', 'rollback', 'bump'],
+      matchUpdateTypes: ['major', 'minor', 'pin', 'digest', 'rollback', 'bump'],
       enabled: false,
     },
     /** Support the 4 parts of shellcheck-py version with a v prefix */
