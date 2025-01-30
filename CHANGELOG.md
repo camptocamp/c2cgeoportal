@@ -1,3 +1,7 @@
+##### 2.9.rc.60
+
+- Remove multi_organization file [c2cgeoportal#11678](https://github.com/camptocamp/c2cgeoportal/pull/11678)
+
 ##### 2.9.rc.59
 
 - [Backport 2.9] Don't have permissing error messages on advance application [c2cgeoportal#11677](https://github.com/camptocamp/c2cgeoportal/pull/11677)
