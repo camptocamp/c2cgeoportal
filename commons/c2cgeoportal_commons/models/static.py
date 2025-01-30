@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2024, Camptocamp SA
+# Copyright (c) 2011-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -162,7 +162,7 @@ class User(Base):  # type: ignore
     temp_password: Mapped[str | None] = mapped_column(
         "temp_password", Unicode, nullable=True, info={"colanderalchemy": {"exclude": True}}
     )
-    tech_data = mapped_column(MutableDict.as_mutable(HSTORE), info={"colanderalchemy": {"exclude": True}})  # type: ignore[arg-type]
+    tech_data = mapped_column(MutableDict.as_mutable(HSTORE), info={"colanderalchemy": {"exclude": True}})
     email: Mapped[str] = mapped_column(
         Unicode,
         nullable=False,
