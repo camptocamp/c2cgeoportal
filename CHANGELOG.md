@@ -1,3 +1,7 @@
+##### 2.9.rc.57
+
+- Update all patch versions (2.9) (patch) [c2cgeoportal#11668](https://github.com/camptocamp/c2cgeoportal/pull/11668)
+
 ##### 2.9.rc.56
 
 - Update dependency OWSLib to v0.32.1 (2.9) [c2cgeoportal#11669](https://github.com/camptocamp/c2cgeoportal/pull/11669)
