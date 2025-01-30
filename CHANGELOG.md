@@ -1,3 +1,7 @@
+##### 2.8.1.182
+
+- Use geometry field instead of computed_geometry in Mapillary [ngeo#9581](https://github.com/camptocamp/ngeo/pull/9581)
+
 ##### 2.8.1.181
 
 - Support multi-tenant in simple mode [c2cgeoportal#11596](https://github.com/camptocamp/c2cgeoportal/pull/11596)
