@@ -1,3 +1,7 @@
+##### 2.9.rc.58
+
+- Fix pre-commit [c2cgeoportal#11673](https://github.com/camptocamp/c2cgeoportal/pull/11673)
+
 ##### 2.9.rc.57
 
 - Update all patch versions (2.9) (patch) [c2cgeoportal#11668](https://github.com/camptocamp/c2cgeoportal/pull/11668)
