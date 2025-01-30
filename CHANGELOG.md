@@ -1,3 +1,7 @@
+##### 2.9.rc.59
+
+- [Backport 2.9] Don't have permissing error messages on advance application [c2cgeoportal#11677](https://github.com/camptocamp/c2cgeoportal/pull/11677)
+
 ##### 2.9.rc.58
 
 - Fix pre-commit [c2cgeoportal#11673](https://github.com/camptocamp/c2cgeoportal/pull/11673)
