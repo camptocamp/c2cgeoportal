@@ -77,10 +77,11 @@ if [ -d /app/geomapfishapp_geoportal/ ]; then
         if [ -f "/etc/geomapfish/${name}.py" ]; then
             echo "Get: ${name}.py"
             cp "/etc/geomapfish/${name}.py" /app/geomapfishapp_geoportal/
+            chmod go-w "/app/geomapfishapp_geoportal/${name}.py"
         fi
     done
 fi
 
-chmod go-w -R /app/*_geoportal/ || true
+chmod go-w -R /app/*_geoportal/ 2> /dev/null || true
 
 exec "$@"
