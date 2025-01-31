@@ -1,3 +1,7 @@
+##### 2.9.rc.62
+
+- CI updates [c2cgeoportal#11681](https://github.com/camptocamp/c2cgeoportal/pull/11681)
+
 ##### 2.9.rc.61
 
 - Be more fluent, helped with Claude [c2cgeoportal#11672](https://github.com/camptocamp/c2cgeoportal/pull/11672)
