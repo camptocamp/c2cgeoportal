@@ -1,3 +1,7 @@
+##### 2.9.rc.61
+
+- Be more fluent, helped with Claude [c2cgeoportal#11672](https://github.com/camptocamp/c2cgeoportal/pull/11672)
+
 ##### 2.9.rc.60
 
 - Remove multi_organization file [c2cgeoportal#11678](https://github.com/camptocamp/c2cgeoportal/pull/11678)
