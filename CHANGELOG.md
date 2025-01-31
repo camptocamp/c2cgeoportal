@@ -1,3 +1,8 @@
+##### 2.8.1.184
+
+- Don't have permissing error messages on advance application [c2cgeoportal#11675](https://github.com/camptocamp/c2cgeoportal/pull/11675)
+- CI updates [c2cgeoportal#11682](https://github.com/camptocamp/c2cgeoportal/pull/11682)
+
 ##### 2.8.1.182
 
 - Use geometry field instead of computed_geometry in Mapillary [ngeo#9581](https://github.com/camptocamp/ngeo/pull/9581)
