@@ -1,3 +1,7 @@
+##### 2.8.1.185
+
+- Fix unexpected error [c2cgeoportal#11680](https://github.com/camptocamp/c2cgeoportal/pull/11680)
+
 ##### 2.8.1.184
 
 - Don't have permissing error messages on advance application [c2cgeoportal#11675](https://github.com/camptocamp/c2cgeoportal/pull/11675)
