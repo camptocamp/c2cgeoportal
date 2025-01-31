@@ -1,3 +1,7 @@
+##### 2.9.rc.63
+
+- [Backport 2.9] Fix unexpected error [c2cgeoportal#11685](https://github.com/camptocamp/c2cgeoportal/pull/11685)
+
 ##### 2.9.rc.62
 
 - CI updates [c2cgeoportal#11681](https://github.com/camptocamp/c2cgeoportal/pull/11681)
