@@ -530,20 +530,21 @@ vars:
       - name: searchAlias
         type: list
         description: >
-          Comma separated list of search aliases (keywords) to be added to the tsearch.ts field for
-          the considered tree item (theme, layer group or layer), that is to say that considered
-          tree item will match when searching for the search aliases.
+          Comma-separated list of search aliases (keywords) to be added to the tsearch.ts field for
+          the specified tree item (theme, layer group or layer). The tree item will match when
+          searching for any of these aliases.
         relevant_for:
           - treeitem
       - name: searchLabelPattern
         description: >
-          Template string for the label of tree items in the search results, for example: "{name} ({theme})"
+          Template string for the label of tree items in search results, for example:
+          <code>{name} ({theme})</code>.
           Supported parameters:
           <ul>
-              <li>name (name of the tree item)</li>
-              <li>parent (parent of the item, may be a group, a block or a theme)</li>
-              <li>block (name of the block to which the item belongs)</li>
-              <li>theme (name of the theme to which the item belongs)</li>
+            <li>name (name of the tree item)</li>
+            <li>parent (parent of the item, may be a group, block or theme)</li>
+            <li>block (name of the block to which the item belongs)</li>
+            <li>theme (name of the theme to which the item belongs)</li>
           </ul>
         relevant_for:
           - treeitem
@@ -551,33 +552,33 @@ vars:
       - name: exclusiveGroup
         type: boolean
         description: >
-          Whether the group contains children that have to be mutually exclusive, meaning that only
-          one child may be ON at any time.
+          Indicate that the group has mutually exclusive layers or groups, meaning only one can be activated
+          at a time.
         relevant_for:
           - layergroup
       - name: isExpanded
         type: boolean
         description: >
-          Whether the layer group is expanded by default.
+          Indicates that the layer group should be expanded by default.
         relevant_for:
           - layergroup
       - name: printNativeAngle
         type: boolean
         description: >
-          Whether the print should rotate the symbols.
+          Indicate that the print should preserve symbol rotation.
         relevant_for:
           - layergroup
       # Layer
       - name: copyable
         type: boolean
         description: >
-          Whether the geometry from this data source can be copied to other data sources or not.
+          Indicate that geometries from this data source can be copied to other data sources.
         relevant_for:
           - layer_wms
       - name: legend
         type: boolean
         description: >
-          Display the legend of this layer.
+          Indicates whether to display the legend for this layer.
         relevant_for:
           - layer_wms
           - layer_wmts
@@ -585,21 +586,21 @@ vars:
       - name: isLegendExpanded
         type: boolean
         description: >
-          Whether the legend is expanded by default.
+          Indicate that the legend should be expanded by default.
         relevant_for:
           - layer_wms
           - layer_wmts
           - layer_cog
       - name: legendRule
         description: >
-          The WMS "RULE" parameter used to display the icon in the layer tree. "Short version" of
-          the "iconURL" metadata.
+          The WMS <code>RULE</code> parameter used to display the icon in the layer tree. This is a
+          "short version" of the <code>iconURL</code> metadata.
         relevant_for:
           - layer_wms
       - name: legendImage
         type: url
         description: >
-          The URL to the image used as a legend in the layer tree.
+          URL of the image to use as legend in the layer tree.
         relevant_for:
           - layer_wms
           - layer_wmts
@@ -607,9 +608,9 @@ vars:
       - name: hiDPILegendImages
         type: json
         description: >
-          The URLs to the hi DPI images used to print the legend of this layer.
-          It will contain a JSON mapping object with the DPI as key and the URL as value.
-          Note that the URL can't use the config scheme.
+          URLs of hi-DPI images used to print the layer legend.
+          JSON mapping object with DPI as key and URL as value.
+          Note: URLs cannot use the config scheme.
         relevant_for:
           - layer_wms
           - layer_wmts
@@ -617,7 +618,7 @@ vars:
       - name: iconUrl
         type: url
         description: >
-          The URL of the icon to display in the layer tree.
+          URL of the icon to display in the layer tree.
         relevant_for:
           - layer_wms
           - layer_wmts
@@ -625,7 +626,7 @@ vars:
       - name: metadataUrl
         type: url
         description: >
-          The URL to the information on this layer.
+          URL link to information about this layer.
         relevant_for:
           - layer_wms
           - layer_wmts
@@ -634,27 +635,27 @@ vars:
       - name: disclaimer
         translate: True
         description: >
-          The disclaimer text for this element.
+          Disclaimer text for this element.
         relevant_for:
           - treeitem
       - name: isChecked
         type: boolean
         description: >
-          Is the layer checked by default.
+          Indicate that the layer is checked by default.
         relevant_for:
           - layer_wms
           - layer_wmts
           - layer_cog
       - name: identifierAttributeField
         description: >
-          The field used in the "display query window" as feature title.
+          Field to use as feature title in the display query window.
         relevant_for:
           - layer_wms
       - name: maxResolution
         type: float
         description: >
-          The max resolution where the layer is visible. On WMTS layers it will
-          have an effect on the node in the layertree but not on the layertree directly.
+          Maximum resolution at which the layer is visible. On WMTS layers, affects
+          the layertree node but not the layer itself.
         relevant_for:
           - layer_wms
           - layer_wmts
@@ -662,8 +663,8 @@ vars:
       - name: minResolution
         type: float
         description: >
-          The min resolution where the layer is visible. On WMTS layers it will
-          have an effect on the node in the layertree but not on the layer directly.
+          Minimum resolution at which the layer is visible. On WMTS layers, affects
+          the layertree node but not the layer itself.
         relevant_for:
           - layer_wms
           - layer_wmts
@@ -671,7 +672,7 @@ vars:
       - name: opacity
         type: float
         description: >
-          Layer opacity. 1.0 means fully visible, 0 means invisible.
+          Layer opacity from <code>0</code> (invisible) to <code>1.0</code> (fully visible).
         relevant_for:
           - layer_wms
           - layer_wmts
@@ -679,50 +680,50 @@ vars:
       - name: thumbnail
         type: url
         description: >
-          The icon visible in the background selector.
+          Icon URL to display in the background selector.
         relevant_for:
           - layer_wms
           - layer_wmts
           - layer_cog
       - name: timeAttribute
         description: >
-          The name of the time attribute. For WMS(-T) layers.
+          Name of the time attribute for WMS(-T) layers.
         relevant_for:
           - layer_wms
       - name: geotablePrimaryKey
         description: >
-          The name of the primary key field for edition.
+          Name of the primary key field used for editing.
         relevant_for:
           - layer_wms
       - name: lastUpdateDateColumn
         description: >
-          Define a column which will be automatically filled with the date of the last edit.
+          Column to be automatically updated with the last modification date.
         relevant_for:
           - layer_wms
       - name: lastUpdateUserColumn
         description: >
-          Define a column which will be automatically filled with the user of the last edit.
+          Column to be automatically updated with the user who made the last edit.
         relevant_for:
           - layer_wms
       - name: snappingConfig
         type: json
         description: >
-          The snapping configuration for the layer. If set, even if empty, the layer is considered to be
-          "snappable" and snapping is activated by default. To disable snapping by default, set "activated"
-          to false. Example value: {"tolerance": 50, "edge": false}.
+          Snapping configuration for the layer. If defined (even if empty), the layer becomes
+          snappable with snapping enabled by default. Set <code>activated</code> to <code>false</code>
+          to disable default snapping. Example: <code>{"tolerance": 50, "edge": false}</code>.
         relevant_for:
           - layer_wms
       - name: geometryValidation
         type: boolean
         description: >
-          Force validation of the geometries according to the layer type (point, line, polygon),
-          for example, to prevent creation of a 2-point polygon.
+          Enable geometry validation according to layer type (point, line, polygon).
+          For example, prevents creation of 2-point polygons.
         relevant_for:
           - layer_wms
       - name: customOpenLayersOptions
         type: json
         description: >
-          The custom OpenLayers WMS layer options.
+          Custom OpenLayers options for WMS layers.
         relevant_for:
           - layer_wms
           - layer_wmts
@@ -730,108 +731,105 @@ vars:
       - name: editingAttributesOrder
         type: list
         description: >
-          Specify the order of the editable attributes in the edit interface.
+          Specify the order of editable attributes in the edit interface.
         relevant_for:
           - layer_wms
       - name: editingEnumerations
         type: json
         description: >
-          Specify the value column and the order column on the relationship's target table of the
-          enumeration.
+          Specify value column and order column for enumeration relationships.
         relevant_for:
           - layer_wms
       - name: readonlyAttributes
         type: list
         description: >
-          Set attributes as read only in the Editing form.
+          Comma separated list of attributes to make read-only in the editing form.
         relevant_for:
           - layer_wms
       - name: queryIconPosition
         type: list
         description: >
-          Values to define the shape (bbox) to use to query the layer. The values are used like a
-          padding in css with 1, 2, 3 or 4 comma separated values: all / top-bottom, left-right /
-          top, right-left, bottom / top, right, bottom, left.
+          Define query shape (bbox) padding values similar to CSS:
+          <code>all</code> or <code>top-bottom, left-right</code> or <code>top, right-left, bottom</code>
+          or <code>top, right, bottom, left</code>.
         relevant_for:
           - layer_wms
           - layer_wmts
           - layer_cog
       - name: editingSelectionAttribute
         description: >
-          The field used in the selector tooltip to name the layer when multiple ones are selected on the map.
+          Field shown in selector tooltip to identify the layer when multiple layers are selected.
         relevant_for:
           - layer_wms
       # WMS
       - name: directedFilterAttributes
         type: list
         description: >
-          List of attribute names which should have rules already ready when using the filter
-          tools.
+          Comma separated list of attributes names which should have rules already ready when using the
+          filter tools.
         relevant_for:
           - layer_wms
       - name: enumeratedAttributes
         type: list
         description: >
-          List of attribute names which have enumerated attribute values (for filters purpose).
+          Comma separated list of attributes that have enumerated values (for filtering).
         relevant_for:
           - layer_wms
       - name: protectedAttributes
         type: list
         description: >
-          For QGIS server: List of attribute names that are protected, to be used with the `allowed_attributes` functionality.
+          For QGIS server: Comma separated list of protected attributes for use with the
+          <code>allowed_attributes</code> functionality.
         relevant_for:
           - layer_wms
       # WMTS layers
       - name: ogcServer
         description: >
-          The corresponding OGC server for a WMTS layer.
+          The associated OGC server for WMTS layers, to be used with <code>wmsLayers</code>,
+          <code>printLayers</code> or <code>queryLayers</code>.
         relevant_for:
           - layer_wmts
           - layer_cog
       - name: wmsLayers
         description: >
-          Corresponding WMS/WFS layers (comma separated) that will be used instead of the WMTS layer
-          to do the query and for the print.
-          An OGCServer metadata must be set with the name of the OGC server.
-          See also printLayers and queryLayers metadata for more granularity.
+          Comma-separated list of WMS/WFS layers used instead of the WMTS layer for queries and printing.
+          Requires <code>OGCServer</code> metadata with server name.
+          See also <code>printLayers</code> and <code>queryLayers</code> for separate options.
         relevant_for:
           - layer_wmts
           - layer_cog
       - name: queryLayers
         description: >
-          Corresponding WFS layers (comma separated) that will be used instead of the WMTS layer
-          to do the query.
-          An OGCServer metadata must be set with the name of the OGC server.
+          Comma-separated list or WFS layers used instead of the WMTS layer for queries.
+          Requires <code>OGCServer</code> metadata with server name.
         relevant_for:
           - layer_wmts
           - layer_cog
       - name: printLayers
         description: >
-          Corresponding WMS layers (comma separated) that will be used instead of the WMTS layer
-          for the print.
-          Used to increase the quality of the printed layer, by using native rotation and
-          generating an image in hi-DPI.
-          An OGCServer metadata must be set with the name of the OGC server.
+          Comma-separated list of WMS layers used instead of the WMTS layer for printing.
+          Improves print quality with native rotation and hi-DPI support.
+          Requires <code>OGCServer</code> metadata with server name.
         relevant_for:
           - layer_wmts
           - layer_cog
       - name: maxQueryResolution
         type: float
         description: >
-          The max resolution where the layer is queryable.
+          Maximum resolution at which the layer is queryable.
         relevant_for:
           - layer_wmts
           - layer_cog
       - name: minQueryResolution
         type: float
         description: >
-          The min resolution where the layer is queryable.
+          Minimum resolution at which the layer is queryable.
         relevant_for:
           - layer_wmts
           - layer_cog
       - name: timeout
         type: float
-        description: The fetch capabilities timeout in seconds. Use `300` by default.
+        description: Fetch capabilities timeout in seconds (default <code>300</code>).
         relevant_for:
           - layer_wmts
 
@@ -841,49 +839,47 @@ vars:
       - name: default_basemap
         single: true
         description: >
-          The background layer to load when the user select this theme.
+          Background layer to load when this theme is selected.
         relevant_for:
           - theme
       - name: default_theme
         single: true
         description: >
-          The theme to load when the user log in.
+          Theme to load when user logs in.
         relevant_for:
           - role
       - name: print_template
         description: >
-          Grant access to considered print template.
+          Grant access to specific print templates.
         relevant_for:
           - role
       - name: mapserver_substitution
         relevant_for:
           - role
         description: >
-          MapServer substitution of a variable in the mapfile.
-          See the documentation here:
-          https://camptocamp.github.io/c2cgeoportal/{{cookiecutter.geomapfish_main_version}}/administrator/mapfile.html?highlight=mapserver_substitution#variable-substitution
+          MapServer variable substitution in mapfile.
+          Documentation: https://camptocamp.github.io/c2cgeoportal/{{cookiecutter.geomapfish_main_version}}/administrator/mapfile.html?highlight=mapserver_substitution#variable-substitution
       - name: filterable_layers
         description: >
-          Grant access for filtering considered layer.
+          Grant filtering access to specific layers.
         relevant_for:
           - role
       - name: preset_layer_filter
         single: true
         description: >
-          Name of the layer (data source) to select in the filter tool upon loading an application.
+          Name of layer to pre-select in filter tool when loading application.
         relevant_for:
           - role
       - name: open_panel
         single: true
         description: >
-          Name of a panel to open upon loading an application.
+          Name of panel to open when loading application.
         relevant_for:
           - role
       - name: allowed_attributes
         description: >
-          For QGIS server: List of protected attribute names that we can access, to be used with the `protectedAttributes` metadata.
-
-          Syntax: <WMS layer name>:<attribute name>,<attribute name>,...
+          For QGIS server: List of protected attributes (use with `protectedAttributes` metadata).
+          Format: `<WMS layer name>:<attribute name>,<attribute name>,...`
         relevant_for:
           - role
 
