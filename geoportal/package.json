@@ -10,7 +10,7 @@
   "dependencies": {
     "@snyk/protect": "1.1294.3",
     "ngeo": "2.9.0-version-2.9-latest.20250131T151041Z.c3ec32710.2.9",
-    "puppeteer": "23.11.1"
+    "puppeteer": "24.1.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "3.2.0",
