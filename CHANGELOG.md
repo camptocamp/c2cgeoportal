@@ -1,3 +1,6 @@
+##### 2.6.0.286
+* Lock file maintenance (2.6) [c2cgeoportal#11704](https://github.com/camptocamp/c2cgeoportal/pull/11704)
+* Lock file maintenance (2.6) [c2cgeoportal#11705](https://github.com/camptocamp/c2cgeoportal/pull/11705)
 ##### 2.6.0.285
 * [Backport 2.6] Fix small cache poisoning [c2cgeoportal#11645](https://github.com/camptocamp/c2cgeoportal/pull/11645)
 ##### 2.6.0.284
