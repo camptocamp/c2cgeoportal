@@ -149,17 +149,17 @@ aio = ["azure-core[aio] (>=1.30.0)"]
 
 [[package]]
 name = "babel"
-version = "2.16.0"
+version = "2.17.0"
 description = "Internationalization utilities"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "babel-2.16.0-py3-none-any.whl", hash = "sha256:368b5b98b37c06b7daf6696391c3240c938b37767d4584413e8438c5c435fa8b"},
-    {file = "babel-2.16.0.tar.gz", hash = "sha256:d1f3554ca26605fe173f3de0c65f750f5a42f924499bf134de6423582298e316"},
+    {file = "babel-2.17.0-py3-none-any.whl", hash = "sha256:4d0b53093fdfb4b21c92b5213dba5a1b23885afa8383709427046b21c366e5f2"},
+    {file = "babel-2.17.0.tar.gz", hash = "sha256:0c54cffb19f690cdcc52a3b50bcbf71e07a808d1c80d549f2459b9d2cf0afb9d"},
 ]
 
 [package.extras]
-dev = ["freezegun (>=1.0,<2.0)", "pytest (>=6.0)", "pytest-cov"]
+dev = ["backports.zoneinfo", "freezegun (>=1.0,<2.0)", "jinja2 (>=3.0)", "pytest (>=6.0)", "pytest-cov", "pytz", "setuptools", "tzdata"]
 
 [[package]]
 name = "bandit"
@@ -230,17 +230,18 @@ redis = "*"
 
 [[package]]
 name = "beautifulsoup4"
-version = "4.12.3"
+version = "4.13.1"
 description = "Screen-scraping library"
 optional = false
-python-versions = ">=3.6.0"
+python-versions = ">=3.7.0"
 files = [
-    {file = "beautifulsoup4-4.12.3-py3-none-any.whl", hash = "sha256:b80878c9f40111313e55da8ba20bdba06d8fa3969fc68304167741bbf9e082ed"},
-    {file = "beautifulsoup4-4.12.3.tar.gz", hash = "sha256:74e3d1928edc070d21748185c46e3fb33490f22f52a3addee9aee0f4f7781051"},
+    {file = "beautifulsoup4-4.13.1-py3-none-any.whl", hash = "sha256:72465267014897bb10ca749bb632bde6c2d20f3254afd5458544bd74e6c2e6d8"},
+    {file = "beautifulsoup4-4.13.1.tar.gz", hash = "sha256:741c8b6903a1e4ae8ba32b9c9ae7510dab7a197fdbadcf9fcdeb0891ef5ec66a"},
 ]
 
 [package.dependencies]
 soupsieve = ">1.2"
+typing-extensions = ">=4.0.0"
 
 [package.extras]
 cchardet = ["cchardet"]
@@ -1234,13 +1235,13 @@ six = ">=1.8.0"
 
 [[package]]
 name = "geoalchemy2"
-version = "0.16.0"
+version = "0.17.0"
 description = "Using SQLAlchemy with Spatial Databases"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "GeoAlchemy2-0.16.0-py3-none-any.whl", hash = "sha256:b0f27d5500ee757af4654c6262e0f834b7a843504d193653ec747ef1128d2ab5"},
-    {file = "geoalchemy2-0.16.0.tar.gz", hash = "sha256:df64bb72af70daafaac3f359492c96501c37ab85ed20f9510c99cc6d02881100"},
+    {file = "GeoAlchemy2-0.17.0-py3-none-any.whl", hash = "sha256:2218d7d5a8f123cc4b88cbf3f9595ef3b2741c26e417a2bff56ba96ac9208919"},
+    {file = "geoalchemy2-0.17.0.tar.gz", hash = "sha256:00e105e6a93cc2815914a29acb4fc129da5b2ebd500bf447b108e7904138c83f"},
 ]
 
 [package.dependencies]
@@ -2324,13 +2325,13 @@ testing = ["Paste", "pytest", "pytest-cov"]
 
 [[package]]
 name = "pastescript"
-version = "3.6.0"
+version = "3.7.0"
 description = "A pluggable command-line frontend, including commands to setup package file layouts"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "PasteScript-3.6.0-py2.py3-none-any.whl", hash = "sha256:2878ab6a78f0f804640e436a868cecaa16a3df0235cbc93228ce96cad3eec859"},
-    {file = "PasteScript-3.6.0.tar.gz", hash = "sha256:1c22d2b7cd5351646beed28c6f70eb4a2a4b925651d9afcaa3501d06cabb5171"},
+    {file = "PasteScript-3.7.0-py2.py3-none-any.whl", hash = "sha256:d34077a889b5dd13efc4aa377a1fab97fba0c71c41ba0a0d79b81506acca1d70"},
+    {file = "pastescript-3.7.0.tar.gz", hash = "sha256:536f028dfb6e5329c67b32299e1c9303f91264e49793cc6916eb0a73eb4a2521"},
 ]
 
 [package.dependencies]
@@ -2575,13 +2576,13 @@ files = [
 
 [[package]]
 name = "pre-commit"
-version = "4.0.1"
+version = "4.1.0"
 description = "A framework for managing and maintaining multi-language pre-commit hooks."
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "pre_commit-4.0.1-py2.py3-none-any.whl", hash = "sha256:efde913840816312445dc98787724647c65473daefe420785f885e8ed9a06878"},
-    {file = "pre_commit-4.0.1.tar.gz", hash = "sha256:80905ac375958c0444c65e9cebebd948b3cdb518f335a091a670a89d652139d2"},
+    {file = "pre_commit-4.1.0-py2.py3-none-any.whl", hash = "sha256:d29e7cb346295bcc1cc75fc3e92e343495e3ea0196c9ec6ba53f49f10ab6ae7b"},
+    {file = "pre_commit-4.1.0.tar.gz", hash = "sha256:ae3f018575a588e30dfddfab9a05448bfbd6b73d78709617b5a2b853549716d4"},
 ]
 
 [package.dependencies]
@@ -2607,13 +2608,13 @@ twisted = ["twisted"]
 
 [[package]]
 name = "prospector"
-version = "1.13.3"
+version = "1.14.1"
 description = "Prospector is a tool to analyse Python code by aggregating the result of other tools."
 optional = false
 python-versions = "<4.0,>=3.9"
 files = [
-    {file = "prospector-1.13.3-py3-none-any.whl", hash = "sha256:e7261c222ba54bc8aef8c9e31b2dcf5ed2a656c9b76fc0cceab294cd5ec3db6b"},
-    {file = "prospector-1.13.3.tar.gz", hash = "sha256:36ccb13f69aa27c5c4682afd4cc46219b9e0c80723e30dc64ff30c71f7b877a1"},
+    {file = "prospector-1.14.1-py3-none-any.whl", hash = "sha256:3cdb71c20c26a72a370e94de7f47f8492299d8843af3be5c5d7d5118d591e910"},
+    {file = "prospector-1.14.1.tar.gz", hash = "sha256:4f969c7d3df9f81c3c626e92ea25c243627da2d707285805ad36ed7c378ee3ec"},
 ]
 
 [package.dependencies]
@@ -2660,13 +2661,13 @@ files = [
 
 [[package]]
 name = "prospector-profile-utils"
-version = "1.15.1"
+version = "1.17.0"
 description = "Some utility Prospector profiles."
 optional = false
 python-versions = "<4.0,>=3.9"
 files = [
-    {file = "prospector_profile_utils-1.15.1-py3-none-any.whl", hash = "sha256:f2585466bb472c49133cfcb17c8a17c70e3aab7b8d594fa3e716c761d37b1b2c"},
-    {file = "prospector_profile_utils-1.15.1.tar.gz", hash = "sha256:1070e30518efbcf00d01d24898f798729fa62d04d8e5e2c3db1016826438e01e"},
+    {file = "prospector_profile_utils-1.17.0-py3-none-any.whl", hash = "sha256:0cb7fe9dfca2b49c21733bbc4d3aabd51c7c0890c5e636b8d2f7b81c342aef6e"},
+    {file = "prospector_profile_utils-1.17.0.tar.gz", hash = "sha256:ac75faf9b13a6b6c18173cad71e6879e6ac40c5f5fda57c69f064b8a955705bd"},
 ]
 
 [package.dependencies]
@@ -4566,13 +4567,13 @@ urllib3 = ">=2"
 
 [[package]]
 name = "types-setuptools"
-version = "75.6.0.20241223"
+version = "75.8.0.20250110"
 description = "Typing stubs for setuptools"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "types_setuptools-75.6.0.20241223-py3-none-any.whl", hash = "sha256:7cbfd3bf2944f88bbcdd321b86ddd878232a277be95d44c78a53585d78ebc2f6"},
-    {file = "types_setuptools-75.6.0.20241223.tar.gz", hash = "sha256:d9478a985057ed48a994c707f548e55aababa85fe1c9b212f43ab5a1fffd3211"},
+    {file = "types_setuptools-75.8.0.20250110-py3-none-any.whl", hash = "sha256:a9f12980bbf9bcdc23ecd80755789085bad6bfce4060c2275bc2b4ca9f2bc480"},
+    {file = "types_setuptools-75.8.0.20250110.tar.gz", hash = "sha256:96f7ec8bbd6e0a54ea180d66ad68ad7a1d7954e7281a710ea2de75e355545271"},
 ]
 
 [[package]]
@@ -4908,4 +4909,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "f77275077025ce7edca6a43611f4c02bf52e9b260bb7cfff00a87d0d1e48fc5b"
+content-hash = "eb5f415089280e1c62ddfee440005bde525ac18d255b3a9b30f3f94bf0ba20fd"
