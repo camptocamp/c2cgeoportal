@@ -2366,6 +2366,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_24_04/apt: 2.7.14build2
   ubuntu_24_04/base-passwd: 3.6.3build1
   ubuntu_24_04/bash: 5.2.21-2ubuntu4
+  ubuntu_24_04/bash-completion: 1:2.11-8
   ubuntu_24_04/binutils: 2.42-4ubuntu2.3
   ubuntu_24_04/binutils-common: 2.42-4ubuntu2.3
   ubuntu_24_04/binutils-x86-64-linux-gnu: 2.42-4ubuntu2.3
