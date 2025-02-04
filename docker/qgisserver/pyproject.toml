@@ -9,15 +9,15 @@ authors = []
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"
-c2cwsgiutils = { extras = ["broadcast"], version = "6.1.5" }
+c2cwsgiutils = { extras = ["broadcast"], version = "6.1.7" }
 papyrus = "2.6.2" # commons
 transaction = "5.0" # commons
 "c2c.template" = "2.4.2"
 GeoAlchemy2 = "0.17.0"
-SQLAlchemy = "2.0.36" # commons
+SQLAlchemy = "2.0.37" # commons
 "zope.event" = "5.0" # commons
 "zope.sqlalchemy" = "3.1" # commons
-shapely = "2.0.6"
+shapely = "2.0.7"
 cee-syslog-handler = "0.6.0"
 psycopg2 = "2.9.10"
 pytz = "2025.1"

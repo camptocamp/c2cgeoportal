@@ -151,17 +151,17 @@ test-tox-coverage = ["coverage (>=5.5)"]
 
 [[package]]
 name = "boto3"
-version = "1.36.12"
+version = "1.36.13"
 description = "The AWS SDK for Python"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "boto3-1.36.12-py3-none-any.whl", hash = "sha256:32cdf0967287f3ec25a9dc09df0d29cb86b8900c3e0546a63d672775d8127abf"},
-    {file = "boto3-1.36.12.tar.gz", hash = "sha256:287d84f49bba3255a17b374578127d42b6251e72f55914a62e0ad9ca78c0954b"},
+    {file = "boto3-1.36.13-py3-none-any.whl", hash = "sha256:20d97739cea1b0f549e9096c453ac727a350da28bd0451098714260b655a85ea"},
+    {file = "boto3-1.36.13.tar.gz", hash = "sha256:c8031aa1c4a7c331081b2d86c49a362654b86e0b89d0a41fa166a68b226f4aba"},
 ]
 
 [package.dependencies]
-botocore = ">=1.36.12,<1.37.0"
+botocore = ">=1.36.13,<1.37.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.11.0,<0.12.0"
 
@@ -170,13 +170,13 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.36.12"
+version = "1.36.13"
 description = "Low-level, data-driven core of boto 3."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "botocore-1.36.12-py3-none-any.whl", hash = "sha256:5ae1ed362c8ed908a6ced8cdd12b21e2196c100bc79f9e95c9c1fc7f9ea74f5a"},
-    {file = "botocore-1.36.12.tar.gz", hash = "sha256:86ed88beb4f244c96529435c868d3940073c2774116f0023fb7691f6e7053bd9"},
+    {file = "botocore-1.36.13-py3-none-any.whl", hash = "sha256:d644a814440bf8d55f4e29b1c0e6f021e2573b7784e0c91f55f4d9d689e08005"},
+    {file = "botocore-1.36.13.tar.gz", hash = "sha256:50a3ff292f8dfdde21074b5c916afe847b01e074ab16d9c9fe71b34960c77134"},
 ]
 
 [package.dependencies]
@@ -200,13 +200,13 @@ files = [
 
 [[package]]
 name = "c2cwsgiutils"
-version = "6.1.5"
+version = "6.1.7"
 description = "Common utilities for Camptocamp WSGI applications"
 optional = false
 python-versions = ">=3.10"
 files = [
-    {file = "c2cwsgiutils-6.1.5-py3-none-any.whl", hash = "sha256:37337c84004fcaabbaa18fcb711534926d7bea94c5719f9fbe8afe66b8f6b6c5"},
-    {file = "c2cwsgiutils-6.1.5.tar.gz", hash = "sha256:b5d8f8529a9b7bfb01b5f11aba6a3b60bc3f3f4aacf6fdb236b009d28643b59b"},
+    {file = "c2cwsgiutils-6.1.7-py3-none-any.whl", hash = "sha256:ca141a151a0dd19975f76aba91cac12c4a28aec69fb29cf665d8018d0ace6d61"},
+    {file = "c2cwsgiutils-6.1.7.tar.gz", hash = "sha256:21b43e9b476bc73540279817a2ad4eb69a08216f78c0cdecc4e5c979bf0795e4"},
 ]
 
 [package.dependencies]
@@ -1217,13 +1217,13 @@ files = [
 
 [[package]]
 name = "pygments"
-version = "2.19.0"
+version = "2.19.1"
 description = "Pygments is a syntax highlighting package written in Python."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pygments-2.19.0-py3-none-any.whl", hash = "sha256:4755e6e64d22161d5b61432c0600c923c5927214e7c956e31c23923c89251a9b"},
-    {file = "pygments-2.19.0.tar.gz", hash = "sha256:afc4146269910d4bdfabcd27c24923137a74d562a23a320a41a55ad303e19783"},
+    {file = "pygments-2.19.1-py3-none-any.whl", hash = "sha256:9ea1544ad55cecf4b8242fab6dd35a93bbce657034b0611ee383099054ab6d8c"},
+    {file = "pygments-2.19.1.tar.gz", hash = "sha256:61c16d2a8576dc0649d9f39e089b5f02bcd27fba10d8fb4dcc28173f7a45151f"},
 ]
 
 [package.extras]
@@ -2615,4 +2615,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "85ce6b5de5746f995f62fab410145b5bd169e61773bc3e9338a6cd7ae2669a04"
+content-hash = "18fd8af3458cb0d7bc3a4fc5386f3c346fe99949e0eed7f0372e8e665f70dd57"
