@@ -1,3 +1,7 @@
+##### 2.8.1.186
+
+- Update dependency pyjson5 to v1.6.8 (2.8) [ngeo#9595](https://github.com/camptocamp/ngeo/pull/9595)
+
 ##### 2.8.1.185
 
 - Fix unexpected error [c2cgeoportal#11680](https://github.com/camptocamp/c2cgeoportal/pull/11680)
