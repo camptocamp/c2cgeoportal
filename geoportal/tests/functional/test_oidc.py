@@ -12,8 +12,16 @@ from cryptography.hazmat.primitives.asymmetric import rsa
 from pyramid import testing
 
 from tests.functional import cleanup_db, create_dummy_request, setup_db
-from tests.functional import setup_common as setup_module  # noqa, pylint: disable=unused-import
-from tests.functional import teardown_common as teardown_module  # noqa, pylint: disable=unused-import
+from tests.functional import setup_common as setup_module
+from tests.functional import teardown_common as teardown_module
+
+
+def use(item):
+    pass
+
+
+use(setup_module)
+use(teardown_module)
 
 _OIDC_CONFIGURATION = {
     "issuer": "https://sso.example.com",

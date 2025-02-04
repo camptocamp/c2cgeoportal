@@ -39,8 +39,16 @@ import pytest
 import transaction
 
 from tests.functional import cleanup_db, create_dummy_request, init_registry
-from tests.functional import setup_common as setup_module  # pylint: disable=unused-import
-from tests.functional import teardown_common as teardown_module  # pylint: disable=unused-import
+from tests.functional import setup_common as setup_module
+from tests.functional import teardown_common as teardown_module
+
+
+def use(item):
+    pass
+
+
+use(setup_module)
+use(teardown_module)
 
 _LOG = logging.getLogger(__name__)
 
