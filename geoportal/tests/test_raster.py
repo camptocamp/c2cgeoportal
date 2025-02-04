@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2024, Camptocamp SA
+# Copyright (c) 2013-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -173,9 +173,7 @@ class TestRasterViews(TestCase):
         profile = Profile(request)
 
         request.params["nbPoints"] = "3"
-        request.params["geom"] = (
-            '{"type":"LineString",' '"coordinates":[[548009.5,215990],[547990,216009.5]]}'
-        )
+        request.params["geom"] = '{"type":"LineString","coordinates":[[548009.5,215990],[547990,216009.5]]}'
         result = profile.json()
         assert len(result["profile"]) == 4
         self.assertAlmostEqual(result["profile"][0]["y"], 215990)
@@ -220,7 +218,7 @@ class TestRasterViews(TestCase):
         self.assertAlmostEqual(result["profile"][3]["x"], 547990.0)
 
         # test length = 0
-        request.params["geom"] = '{"type":"LineString",' '"coordinates":[[548000,216000]]}'
+        request.params["geom"] = '{"type":"LineString","coordinates":[[548000,216000]]}'
         result = profile.json()
         assert len(result["profile"]) == 1
         self.assertAlmostEqual(result["profile"][0]["y"], 216000)
@@ -230,7 +228,7 @@ class TestRasterViews(TestCase):
 
         # test cur_nb_points < 1
         request.params["geom"] = (
-            '{"type":"LineString",' '"coordinates":[[548000,216000],[548001,216001],[548009,216009]]}'
+            '{"type":"LineString","coordinates":[[548000,216000],[548001,216001],[548009,216009]]}'
         )
         result = profile.json()
         assert len(result["profile"]) == 5

@@ -286,9 +286,9 @@ class TestEntryView(TestCase):
 
     def _assert_has_error(self, errors, error):
         self.assertIn(error, errors)
-        assert (
-            len([e for e in errors if e == error]) == 1
-        ), f"Error '{error}' more than one time in errors:\n{errors!r}"
+        assert len([e for e in errors if e == error]) == 1, (
+            f"Error '{error}' more than one time in errors:\n{errors!r}"
+        )
 
     def test_json_extent(self):
         from c2cgeoportal_commons.models import DBSession

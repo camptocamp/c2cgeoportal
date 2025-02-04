@@ -1,4 +1,4 @@
-# Copyright (c) 2014-2024, Camptocamp SA
+# Copyright (c) 2014-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -271,8 +271,8 @@ def downgrade() -> None:
     op.alter_column("layergroup", "is_internal_wms", new_column_name="isInternalWMS", schema=schema)
     op.alter_column("layergroup", "is_base_layer", new_column_name="isBaseLayer", schema=schema)
 
-    op.execute(f"UPDATE ONLY {schema}.theme AS t " 'SET "inDesktopViewer" = FALSE')
-    op.execute(f"UPDATE ONLY {schema}.layer AS t " 'SET "inDesktopViewer" = FALSE')
+    op.execute(f'UPDATE ONLY {schema}.theme AS t SET "inDesktopViewer" = FALSE')
+    op.execute(f'UPDATE ONLY {schema}.layer AS t SET "inDesktopViewer" = FALSE')
 
     op.execute(
         f"UPDATE ONLY {schema}.theme AS t "

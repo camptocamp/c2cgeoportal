@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2024, Camptocamp SA
+# Copyright (c) 2011-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -111,9 +111,7 @@ class PrintProxy(Proxy):
         """Create PDF."""
         return self._proxy_response(
             "print",
-            Url(
-                f"{ self.request.get_organization_print_url()}/report.{self.request.matchdict.get('format')}"
-            ),
+            Url(f"{self.request.get_organization_print_url()}/report.{self.request.matchdict.get('format')}"),
         )
 
     @view_config(route_name="printproxy_status")  # type: ignore[misc]

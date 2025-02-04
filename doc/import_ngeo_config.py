@@ -19,7 +19,7 @@ def _format_type(type_definition: dict[str, Any]) -> str:
     if type_definition["type"] == "reference":
         postfix = ""
         if "typeArguments" in type_definition:
-            postfix = f'\\<{", ".join([_format_type(t) for t in type_definition["typeArguments"]])}>'
+            postfix = f"\\<{', '.join([_format_type(t) for t in type_definition['typeArguments']])}>"
 
         return f":ref:`integrator_guide_ngeo_properties_{type_definition['name']}`{postfix}"
 

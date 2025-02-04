@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2024, Camptocamp SA
+# Copyright (c) 2017-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -40,7 +40,7 @@ from c2cgeoportal_commons.models import Base
 def usage(argv: list[str]) -> None:
     """Get the usage."""
     cmd = os.path.basename(argv[0])
-    print(f"usage: {cmd} <config_uri> [var=value]\n" '(example: "{cmd} development.ini")')
+    print(f'usage: {cmd} <config_uri> [var=value]\n(example: "{{cmd}} development.ini")')
     sys.exit(1)
 
 
