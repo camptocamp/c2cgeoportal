@@ -1,3 +1,7 @@
+##### 2.8.1.187
+
+- Update all patch versions (2.8) (patch) [ngeo#9594](https://github.com/camptocamp/ngeo/pull/9594)
+
 ##### 2.8.1.186
 
 - Update dependency pyjson5 to v1.6.8 (2.8) [ngeo#9595](https://github.com/camptocamp/ngeo/pull/9595)
