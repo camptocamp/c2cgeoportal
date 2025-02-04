@@ -1,3 +1,7 @@
+##### 2.8.1.188
+
+- Fix npm install on Ubuntu 24.04 [ngeo#9570](https://github.com/camptocamp/ngeo/pull/9570)
+
 ##### 2.8.1.187
 
 - Update all patch versions (2.8) (patch) [ngeo#9594](https://github.com/camptocamp/ngeo/pull/9594)
