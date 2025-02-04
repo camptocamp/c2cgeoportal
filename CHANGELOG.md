@@ -1,3 +1,15 @@
+##### 2.9.rc.68
+
+- Lock file maintenance (2.9) [c2cgeoportal#11690](https://github.com/camptocamp/c2cgeoportal/pull/11690)
+- Fix login icon [ngeo#9573](https://github.com/camptocamp/ngeo/pull/9573)
+- CI updates [ngeo#9582](https://github.com/camptocamp/ngeo/pull/9582)
+- Fix OIDC login on mobile [ngeo#9583](https://github.com/camptocamp/ngeo/pull/9583)
+- Add a link to user information on OIDC server [ngeo#9585](https://github.com/camptocamp/ngeo/pull/9585)
+- Disable tracking based on distance in pixel [ngeo#9586](https://github.com/camptocamp/ngeo/pull/9586)
+- [Backport 2.9] Remove double import of jquery-datepicker [ngeo#9596](https://github.com/camptocamp/ngeo/pull/9596)
+- [Backport 2.9] Move date-picker popover above the resize-panel-left button [ngeo#9598](https://github.com/camptocamp/ngeo/pull/9598)
+- [Backport 2.9] Fix npm install on Ubuntu 24.04 [ngeo#9601](https://github.com/camptocamp/ngeo/pull/9601)
+
 ##### 2.9.rc.67
 
 - Pin openlayers [c2cgeoportal#11708](https://github.com/camptocamp/c2cgeoportal/pull/11708)
