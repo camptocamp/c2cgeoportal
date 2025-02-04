@@ -1,4 +1,4 @@
-# Copyright (c) 2014-2024, Camptocamp SA
+# Copyright (c) 2014-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -210,11 +210,11 @@ class C2cUpgradeTool:
         )
         run_curl = f"Run `curl --insecure {headers} '{self.project['checker_url']}'` for more information."
         try:
-            requests.packages.urllib3.disable_warnings()  # type: ignore
+            requests.packages.urllib3.disable_warnings()  # pylint: disable=no-member,unrecognized-inline-option
             resp = requests.get(
                 self.project["checker_url"],
                 headers=self.project.get("checker_headers"),
-                verify=False,  # noqa: S501
+                verify=False,  # noqa: S501 # nosec
                 timeout=120,
             )
         except requests.exceptions.ConnectionError as exception:

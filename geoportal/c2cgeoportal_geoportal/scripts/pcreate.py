@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2024, Camptocamp SA
+# Copyright (c) 2021-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -181,7 +181,7 @@ class PCreateCommand:
         }
         context.update(self.read_project_file())
         if os.environ.get("CI") == "true":
-            context["authtkt_secret"] = "io7heoDui8xaikie1rushaeGeiph8Bequei6ohchaequob6viejei0xooWeuvohf"  # noqa: S105
+            context["authtkt_secret"] = "io7heoDui8xaikie1rushaeGeiph8Bequei6ohchaequob6viejei0xooWeuvohf"  # noqa: S105 # nosec
 
         self.get_var(context, "srid", "Spatial Reference System Identifier (e.g. 2056): ", int)
         srid = cast(int, context["srid"])

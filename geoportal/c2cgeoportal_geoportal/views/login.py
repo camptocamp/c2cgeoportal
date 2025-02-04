@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2024, Camptocamp SA
+# Copyright (c) 2011-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -538,7 +538,7 @@ class Login:
             self.request.method,
             self.request.body,
         )
-        headers, body, status = oauth2.get_oauth_client(
+        headers, body, status = oauth2.get_oauth_client(  # pylint: disable=no-member,unrecognized-inline-option
             self.request.registry.settings
         ).create_authorize_response(
             self.request.current_route_url(_query=self.request.GET),
