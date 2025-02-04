@@ -1,3 +1,7 @@
+##### 2.9.rc.67
+
+- Pin openlayers [c2cgeoportal#11708](https://github.com/camptocamp/c2cgeoportal/pull/11708)
+
 ##### 2.9.rc.66
 
 - Audit Dpkg 2.9 [c2cgeoportal#11711](https://github.com/camptocamp/c2cgeoportal/pull/11711)
