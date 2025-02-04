@@ -3,7 +3,6 @@ inherits:
   - utils:base
   - utils:fix
   - utils:no-design-checks
-  - utils:unsafe
 
 pyroma:
   run: False
@@ -11,3 +10,7 @@ pyroma:
 mypy:
   options:
     python_version: '3.10'
+
+pylint:
+  options:
+    extension-pkg-allow-list: qgis
