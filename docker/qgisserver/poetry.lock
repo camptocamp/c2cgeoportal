@@ -354,13 +354,13 @@ tqdm = ["tqdm"]
 
 [[package]]
 name = "geoalchemy2"
-version = "0.16.0"
+version = "0.17.0"
 description = "Using SQLAlchemy with Spatial Databases"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "GeoAlchemy2-0.16.0-py3-none-any.whl", hash = "sha256:b0f27d5500ee757af4654c6262e0f834b7a843504d193653ec747ef1128d2ab5"},
-    {file = "geoalchemy2-0.16.0.tar.gz", hash = "sha256:df64bb72af70daafaac3f359492c96501c37ab85ed20f9510c99cc6d02881100"},
+    {file = "GeoAlchemy2-0.17.0-py3-none-any.whl", hash = "sha256:2218d7d5a8f123cc4b88cbf3f9595ef3b2741c26e417a2bff56ba96ac9208919"},
+    {file = "geoalchemy2-0.17.0.tar.gz", hash = "sha256:00e105e6a93cc2815914a29acb4fc129da5b2ebd500bf447b108e7904138c83f"},
 ]
 
 [package.dependencies]
@@ -974,13 +974,13 @@ testing = ["pytest", "pytest-benchmark"]
 
 [[package]]
 name = "prospector"
-version = "1.13.3"
+version = "1.14.1"
 description = "Prospector is a tool to analyse Python code by aggregating the result of other tools."
 optional = false
 python-versions = "<4.0,>=3.9"
 files = [
-    {file = "prospector-1.13.3-py3-none-any.whl", hash = "sha256:e7261c222ba54bc8aef8c9e31b2dcf5ed2a656c9b76fc0cceab294cd5ec3db6b"},
-    {file = "prospector-1.13.3.tar.gz", hash = "sha256:36ccb13f69aa27c5c4682afd4cc46219b9e0c80723e30dc64ff30c71f7b877a1"},
+    {file = "prospector-1.14.1-py3-none-any.whl", hash = "sha256:3cdb71c20c26a72a370e94de7f47f8492299d8843af3be5c5d7d5118d591e910"},
+    {file = "prospector-1.14.1.tar.gz", hash = "sha256:4f969c7d3df9f81c3c626e92ea25c243627da2d707285805ad36ed7c378ee3ec"},
 ]
 
 [package.dependencies]
@@ -1026,13 +1026,13 @@ files = [
 
 [[package]]
 name = "prospector-profile-utils"
-version = "1.15.1"
+version = "1.17.0"
 description = "Some utility Prospector profiles."
 optional = false
 python-versions = "<4.0,>=3.9"
 files = [
-    {file = "prospector_profile_utils-1.15.1-py3-none-any.whl", hash = "sha256:f2585466bb472c49133cfcb17c8a17c70e3aab7b8d594fa3e716c761d37b1b2c"},
-    {file = "prospector_profile_utils-1.15.1.tar.gz", hash = "sha256:1070e30518efbcf00d01d24898f798729fa62d04d8e5e2c3db1016826438e01e"},
+    {file = "prospector_profile_utils-1.17.0-py3-none-any.whl", hash = "sha256:0cb7fe9dfca2b49c21733bbc4d3aabd51c7c0890c5e636b8d2f7b81c342aef6e"},
+    {file = "prospector_profile_utils-1.17.0.tar.gz", hash = "sha256:ac75faf9b13a6b6c18173cad71e6879e6ac40c5f5fda57c69f064b8a955705bd"},
 ]
 
 [package.dependencies]
@@ -2037,4 +2037,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "0a7cfb0b6319462a3bc68bf69600a3393b76118c28873415258f883713cb5bf2"
+content-hash = "5b5cb0a3710dfefd86b77f9435b3cd508e377f9b22ca021af713687cf37cf974"

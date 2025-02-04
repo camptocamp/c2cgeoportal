@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2024, Camptocamp SA
+# Copyright (c) 2011-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -324,7 +324,7 @@ class User(Base):  # type: ignore
     @staticmethod
     def __encrypt_password_legacy(password: str) -> str:
         """Hash the given password with SHA1."""
-        return sha1(password.encode("utf8")).hexdigest()  # noqa: S324
+        return sha1(password.encode("utf8")).hexdigest()  # noqa: S324 # nosec
 
     @staticmethod
     def __encrypt_password(password: str) -> str:

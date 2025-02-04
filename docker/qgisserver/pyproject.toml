@@ -13,7 +13,7 @@ c2cwsgiutils = { extras = ["broadcast"], version = "6.1.5" }
 papyrus = "2.6.2" # commons
 transaction = "5.0" # commons
 "c2c.template" = "2.4.2"
-GeoAlchemy2 = "0.16.0"
+GeoAlchemy2 = "0.17.0"
 SQLAlchemy = "2.0.36" # commons
 "zope.event" = "5.0" # commons
 "zope.sqlalchemy" = "3.1" # commons
@@ -23,8 +23,8 @@ psycopg2 = "2.9.10"
 pytz = "2025.1"
 
 [tool.poetry.dev-dependencies]
-prospector = { version = "1.13.3", extras = ["with_mypy", "with_bandit", "with_ruff"] }
+prospector = { version = "1.14.1", extras = ["with_mypy", "with_bandit", "with_ruff"] }
 prospector-profile-duplicated = "1.10.4"
-prospector-profile-utils  = "1.15.1"
+prospector-profile-utils  = "1.17.0"
 types-pyyaml = "6.0.12.20241230"
 pytest = "8.3.4"

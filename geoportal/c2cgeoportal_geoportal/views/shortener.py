@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2024, Camptocamp SA
+# Copyright (c) 2013-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -112,7 +112,7 @@ class Shortener:
         tries = 0
         while not shortened:
             ref = "".join(
-                random.choice(string.ascii_letters + string.digits)  # noqa: S311
+                random.choice(string.ascii_letters + string.digits)  # noqa: S311 # nosec
                 for i in range(self.settings.get("length", 4))
             )
             test_url = DBSession.query(static.Shorturl).filter(static.Shorturl.ref == ref).all()

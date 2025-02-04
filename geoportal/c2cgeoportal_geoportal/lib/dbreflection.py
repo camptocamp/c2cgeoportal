@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2024, Camptocamp SA
+# Copyright (c) 2011-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -206,7 +206,7 @@ def _create_class(
     # The randint is to fix the SAWarning: This declarative base already contains a class with the same
     # class name and module name
     cls = type(
-        f"{table.name.capitalize()}_{random.randint(0, 9999999)}",  # noqa: S311
+        f"{table.name.capitalize()}_{random.randint(0, 9999999)}",  # noqa: S311 # nosec
         (GeoInterface, Base),
         attributes,
     )

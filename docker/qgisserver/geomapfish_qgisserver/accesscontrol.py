@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2024, Camptocamp SA
+# Copyright (c) 2018-2025, Camptocamp SA
 # All rights reserved.
 
 # This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -322,7 +322,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
         try:
             if not self.initialized:
                 _LOG.error("Call on uninitialized plugin")
-                return str(random.randrange(1000000))  # noqa: S311
+                return str(random.randrange(1000000))  # noqa: S311 # nosec
             return self.get_ogcserver_accesscontrol().cacheKey()
         except Exception:
             _LOG.exception("Unhandled error")

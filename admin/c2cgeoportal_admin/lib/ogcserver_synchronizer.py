@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2024, Camptocamp SA
+# Copyright (c) 2020-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -40,7 +40,7 @@ from defusedxml import ElementTree
 from sqlalchemy.orm.session import Session
 
 
-class dry_run_transaction:  # noqa ignore=N801: class names should use CapWords convention
+class _DryRunTransaction:
     def __init__(self, dbsession: Session, dry_run: bool):
         self.dbsession = dbsession
         self.dry_run = dry_run
@@ -168,7 +168,7 @@ class OGCServerSynchronizer:
         dry_run
             When set to True, do not commit but roll back transaction at end of synchronization.
         """
-        with dry_run_transaction(self._request.dbsession, dry_run):
+        with _DryRunTransaction(self._request.dbsession, dry_run):
             self.do_synchronize()
             if dry_run:
                 self._logger.info("Rolling back transaction due to dry run")

@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2024, Camptocamp SA
+# Copyright (c) 2018-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -36,8 +36,16 @@ from pyramid import testing
 from pyramid.testing import testConfig
 
 from tests import DummyRequest
-from tests.functional import setup_common as setup_module  # pylint: disable=unused-import
-from tests.functional import teardown_common as teardown_module  # pylint: disable=unused-import
+from tests.functional import setup_common as setup_module
+from tests.functional import teardown_common as teardown_module
+
+
+def use(item):
+    pass
+
+
+use(setup_module)
+use(teardown_module)
 
 
 class TestDynamicView(TestCase):

@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2024, Camptocamp SA
+# Copyright (c) 2013-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -43,8 +43,16 @@ from tests.functional import (
     mapserv_url,
     setup_db,
 )
-from tests.functional import setup_common as setup_module  # noqa, pylint: disable=unused-import
-from tests.functional import teardown_common as teardown_module  # noqa, pylint: disable=unused-import
+from tests.functional import setup_common as setup_module
+from tests.functional import teardown_common as teardown_module
+
+
+def use(item):
+    pass
+
+
+use(setup_module)
+use(teardown_module)
 
 _LOG = logging.getLogger(__name__)
 

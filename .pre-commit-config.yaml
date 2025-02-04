@@ -115,16 +115,18 @@ repos:
             geoportal/c2cgeoportal_geoportal/scaffolds/advance_create/{{cookiecutter.project}}/geoportal/{{cookiecutter.package}}_geoportal/__init__\.py
           )$
   - repo: https://github.com/PyCQA/prospector
-    rev: v1.13.3
+    rev: v1.14.1
     hooks:
       - id: prospector
         args:
+          - --profile=.prospector.yaml
+          - --profile=utils:unsafe
           - --tool=ruff
           - --die-on-tool-error
           - --output-format=pylint
         additional_dependencies:
           - prospector-profile-duplicated==1.10.0 # pypi
-          - prospector-profile-utils==1.14.1 # pypi
+          - prospector-profile-utils==1.17.0 # pypi
           - ruff==0.8.4 # pypi
   - repo: https://github.com/sbrunner/jsonschema-validator
     rev: 1.0.0

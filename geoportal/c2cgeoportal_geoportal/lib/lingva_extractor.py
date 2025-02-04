@@ -176,7 +176,7 @@ class GeomapfishAngularExtractor(Extractor):  # type: ignore
         int_filename = filename
         if re.match("^" + re.escape(f"./{self.config['package']}/templates"), filename):
             try:
-                empty_template = Template("")  # noqa: S702
+                empty_template = Template("")  # noqa: S702 # nosec
 
                 class Lookup(TemplateLookup):  # type: ignore[misc]
                     def get_template(self, uri: str) -> Template:
@@ -190,9 +190,9 @@ class GeomapfishAngularExtractor(Extractor):  # type: ignore
                         options.update({"input_encoding": self.encoding})
                         lookup = Lookup(**kwargs)
                         if self.source:
-                            self.tpl = Template(self.source, lookup=lookup, **kwargs)  # noqa: S702
+                            self.tpl = Template(self.source, lookup=lookup, **kwargs)  # noqa: S702 # nosec
                         else:
-                            self.tpl = Template(  # noqa: S702
+                            self.tpl = Template(  # noqa: S702 # nosec
                                 uri=self.name, filename=self.filename, lookup=lookup, **kwargs
                             )
 
@@ -307,7 +307,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
         init_region({"backend": "dogpile.cache.memory"}, "obj")
 
         with open(filename, encoding="utf8") as config_file:
-            gmf_config = yaml.load(config_file, Loader=yaml.BaseLoader)  # noqa: S506
+            gmf_config = yaml.load(config_file, Loader=yaml.BaseLoader)  # noqa: S506 # nosec
             # For application config (config.yaml)
             if "vars" in gmf_config:
                 return self._collect_app_config(filename)
