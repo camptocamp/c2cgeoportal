@@ -135,7 +135,7 @@ def canvas_view(request: pyramid.request.Request, interface_config: dict[str, An
         "request": request,
         "header": f"""
 <meta name="dynamicUrl" content="{request.route_url("dynamic")}">
-<meta name="interface" content="{interface_config['name']}">
+<meta name="interface" content="{interface_config["name"]}">
 {css}""",
         "footer": "\n    ".join(
             [f'<script src="{request.static_url(js)}" crossorigin="anonymous"></script>' for js in js_files]

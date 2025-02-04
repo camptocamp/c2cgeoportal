@@ -825,6 +825,6 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             _LOG.error("Unknown values for roles: %s", roles)
             return f"{self.serverInterface().getEnv('HTTP_HOST')}-ROOT"
         return (
-            f'{self.serverInterface().getEnv("HTTP_HOST")}-'
-            f'{",".join(str(role.id) for role in sorted(roles, key=lambda role: role.id))}'
+            f"{self.serverInterface().getEnv('HTTP_HOST')}-"
+            f"{','.join(str(role.id) for role in sorted(roles, key=lambda role: role.id))}"
         )

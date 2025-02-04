@@ -40,7 +40,7 @@ from c2cgeoportal_commons.models import Base
 def usage(argv: list[str]) -> None:
     """Get the usage."""
     cmd = os.path.basename(argv[0])
-    print(f"usage: {cmd} <config_uri> [var=value]\n" '(example: "{cmd} development.ini")')
+    print(f'usage: {cmd} <config_uri> [var=value]\n(example: "{{cmd}} development.ini")')
     sys.exit(1)
 
 

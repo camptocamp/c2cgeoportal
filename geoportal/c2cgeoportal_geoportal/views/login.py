@@ -357,8 +357,7 @@ class Login:
         otp = self.request.POST.get("otp")
         if new_password is None or new_password_confirm is None or old_password is None:
             raise HTTPBadRequest(
-                "'oldPassword', 'newPassword' and 'confirmNewPassword' should be available in "
-                "request params."
+                "'oldPassword', 'newPassword' and 'confirmNewPassword' should be available in request params."
             )
         if self.two_factor_auth and otp is None:
             raise HTTPBadRequest("The second factor is missing.")

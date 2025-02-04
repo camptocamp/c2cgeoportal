@@ -101,7 +101,7 @@ def upgrade() -> None:
         Column("readwrite", Boolean, default=False),
         schema=schema,
     )
-    op.execute(f"SELECT AddGeometryColumn('{schema}', 'restrictionarea', " f"'area', {srid}, 'POLYGON', 2)")
+    op.execute(f"SELECT AddGeometryColumn('{schema}', 'restrictionarea', 'area', {srid}, 'POLYGON', 2)")
     op.create_table(
         "shorturl",
         Column("id", Integer, primary_key=True),
@@ -121,7 +121,7 @@ def upgrade() -> None:
         Column("description", Unicode),
         schema=schema,
     )
-    op.execute(f"SELECT AddGeometryColumn('{schema}', 'role', " f"'extent', {srid}, 'POLYGON', 2)")
+    op.execute(f"SELECT AddGeometryColumn('{schema}', 'role', 'extent', {srid}, 'POLYGON', 2)")
     role = Table("role", MetaData(), Column("name", Unicode, unique=True, nullable=False), schema=schema)
     op.bulk_insert(role, [{"name": "role_admin"}])
 
@@ -174,7 +174,7 @@ def upgrade() -> None:
         Column("params", Unicode, nullable=True),
         schema=schema,
     )
-    op.execute(f"SELECT AddGeometryColumn('{schema}', 'tsearch', 'the_geom', " f"{srid}, 'GEOMETRY', 2)")
+    op.execute(f"SELECT AddGeometryColumn('{schema}', 'tsearch', 'the_geom', {srid}, 'GEOMETRY', 2)")
     op.create_index("tsearch_ts_idx", "tsearch", ["ts"], schema=schema, postgresql_using="gin")
     op.create_table(
         "treegroup",
@@ -252,7 +252,7 @@ def upgrade() -> None:
         schema=schema,
     )
 
-    op.execute(f'INSERT INTO {schema}.treeitem (type, name, "order") ' "VALUES ('group', 'background', 0)")
+    op.execute(f"INSERT INTO {schema}.treeitem (type, name, \"order\") VALUES ('group', 'background', 0)")
     op.execute(f"INSERT INTO {schema}.treegroup (id) SELECT id FROM {schema}.treeitem")
     op.execute(f"INSERT INTO {schema}.layergroup (id) SELECT id FROM {schema}.treeitem")
 

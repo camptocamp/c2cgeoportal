@@ -53,10 +53,7 @@ def upgrade() -> None:
 
     op.add_column("layerv1", Column("layer", Unicode), schema=schema)
     op.execute(
-        f"UPDATE {schema}.layerv1 AS l1 "
-        "SET layer = name "
-        f"FROM {schema}.treeitem AS ti "
-        "WHERE l1.id = ti.id"
+        f"UPDATE {schema}.layerv1 AS l1 SET layer = name FROM {schema}.treeitem AS ti WHERE l1.id = ti.id"
     )
 
 

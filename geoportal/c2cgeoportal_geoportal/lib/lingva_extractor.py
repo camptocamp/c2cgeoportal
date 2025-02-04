@@ -918,8 +918,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
             except AttributeError:
                 print(
                     colorize(
-                        "ERROR! an error occurred while trying to "
-                        "read the Mapfile and recover the themes.",
+                        "ERROR! an error occurred while trying to read the Mapfile and recover the themes.",
                         Color.RED,
                     )
                 )

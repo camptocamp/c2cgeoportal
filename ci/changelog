@@ -247,7 +247,7 @@ def main() -> None:
                             md_file.write(f"##### {release}\n\n")
                             title = False
                         md_file.write(
-                            f'- {pull["title"].strip()} [{repo}#{pull["number"]}]({pull["html_url"]})\n'
+                            f"- {pull['title'].strip()} [{repo}#{pull['number']}]({pull['html_url']})\n"
                         )
 
     subprocess.run(["pre-commit", "run", "--file=CHANGELOG.md"])  # pylint: disable=subprocess-run-check

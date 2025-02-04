@@ -322,9 +322,9 @@ class TestOGCServerAccessControl:
             ]
             roles = [dbsession.query(Role).filter(Role.name == role_name).one() for role_name in role_names]
             ras = ogcserver_accesscontrol.get_restriction_areas(layers, rw, roles)
-            assert (
-                expected == ras
-            ), f"get_restriction_areas with {(layer_names, rw, role_names)} should return {expected}"
+            assert expected == ras, (
+                f"get_restriction_areas with {(layer_names, rw, role_names)} should return {expected}"
+            )
 
     def test_get_area(self, server_iface, DBSession, test_data):  # noqa: ignore=N803
         dbsession = DBSession()

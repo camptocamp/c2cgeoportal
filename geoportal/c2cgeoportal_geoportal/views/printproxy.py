@@ -111,9 +111,7 @@ class PrintProxy(Proxy):
         """Create PDF."""
         return self._proxy_response(
             "print",
-            Url(
-                f"{ self.request.get_organization_print_url()}/report.{self.request.matchdict.get('format')}"
-            ),
+            Url(f"{self.request.get_organization_print_url()}/report.{self.request.matchdict.get('format')}"),
         )
 
     @view_config(route_name="printproxy_status")  # type: ignore[misc]

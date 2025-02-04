@@ -276,9 +276,9 @@ def _phantomjs(settings: dict[str, Any], health_check: c2cwsgiutils.health_check
                 except subprocess.TimeoutExpired as exception:
                     raise Exception(  # pylint: disable=broad-exception-raised
                         f"""Timeout:
-command: {' '.join(exception.cmd)}
+command: {" ".join(exception.cmd)}
 output:
-{exception.output.decode('utf-8')}"""
+{exception.output.decode("utf-8")}"""
                     ) from exception
 
         name = "checker_phantomjs_" + route.get("checker_name", route["name"])

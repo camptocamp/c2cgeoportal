@@ -219,12 +219,12 @@ class _CapabilitiesFilter(XMLFilterBase):
         self._downstream = downstream
         self._accumulator: list[str] = []
 
-        assert (
-            layers_blacklist is not None or layers_whitelist is not None
-        ), "either layers_blacklist OR layers_whitelist must be set"
-        assert not (
-            layers_blacklist is not None and layers_whitelist is not None
-        ), "only either layers_blacklist OR layers_whitelist can be set"
+        assert layers_blacklist is not None or layers_whitelist is not None, (
+            "either layers_blacklist OR layers_whitelist must be set"
+        )
+        assert not (layers_blacklist is not None and layers_whitelist is not None), (
+            "only either layers_blacklist OR layers_whitelist can be set"
+        )
 
         if layers_blacklist is not None:
             layers_blacklist = {layer.lower() for layer in layers_blacklist}

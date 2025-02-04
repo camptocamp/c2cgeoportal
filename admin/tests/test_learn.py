@@ -45,9 +45,7 @@ class TestUser:
     def test_view_rendering_in_app(self, dbsession, test_app):
         res = test_app.get("/users_nb", status=200)
         expected = (
-            "['users len is: 1', <br/>,"
-            " 'first is: babar', <br/>,"
-            " 'project is: c2cgeoportal_admin', <br/>]"
+            "['users len is: 1', <br/>, 'first is: babar', <br/>, 'project is: c2cgeoportal_admin', <br/>]"
         )
         assert expected == str(res.html.contents)
 
@@ -56,9 +54,7 @@ class TestUser:
         res = test_app.get("/user_add", status=200)
         res = test_app.get("/users_nb", status=200)
         expected = (
-            "['users len is: 2', <br/>,"
-            " 'first is: babar', <br/>,"
-            " 'project is: c2cgeoportal_admin', <br/>]"
+            "['users len is: 2', <br/>, 'first is: babar', <br/>, 'project is: c2cgeoportal_admin', <br/>]"
         )
         assert expected == str(res.html.contents)
 
@@ -66,8 +62,6 @@ class TestUser:
     def test_commit_in_app_rollbacked(self, dbsession, test_app):
         res = test_app.get("/users_nb", status=200)
         expected = (
-            "['users len is: 1', <br/>,"
-            " 'first is: babar', <br/>,"
-            " 'project is: c2cgeoportal_admin', <br/>]"
+            "['users len is: 1', <br/>, 'first is: babar', <br/>, 'project is: c2cgeoportal_admin', <br/>]"
         )
         assert expected == str(res.html.contents)

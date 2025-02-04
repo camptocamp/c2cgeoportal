@@ -155,7 +155,7 @@ def upgrade() -> None:
     op.drop_table("layer_internal_wms", schema=schema)
 
     # update layer type in treeitems
-    op.execute(f"UPDATE {schema}.treeitem " "SET type='l_wms' " "WHERE type='l_int_wms' OR type='l_ext_wms'")
+    op.execute(f"UPDATE {schema}.treeitem SET type='l_wms' WHERE type='l_int_wms' OR type='l_ext_wms'")
 
 
 def downgrade() -> None:

@@ -55,7 +55,7 @@ def get_argparser() -> ArgumentParser:
         "--scaffold",
         dest="scaffold_names",
         action="append",
-        help=("Add a scaffold to the create process " "(multiple -s args accepted)"),
+        help=("Add a scaffold to the create process (multiple -s args accepted)"),
     )
     parser.add_argument(
         "-l",
@@ -84,7 +84,7 @@ def get_argparser() -> ArgumentParser:
         "output_directory",
         nargs="?",
         default=None,
-        help="The directory where the project will be " "created.",
+        help="The directory where the project will be created.",
     )
     return parser
 
