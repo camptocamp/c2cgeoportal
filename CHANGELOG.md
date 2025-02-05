@@ -1,3 +1,7 @@
+##### 2.9.rc.69
+
+- Improve the metadata and functionality descriptions [c2cgeoportal#11687](https://github.com/camptocamp/c2cgeoportal/pull/11687)
+
 ##### 2.9.rc.68
 
 - Lock file maintenance (2.9) [c2cgeoportal#11690](https://github.com/camptocamp/c2cgeoportal/pull/11690)
