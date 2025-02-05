@@ -7,7 +7,7 @@ authors = []
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"
 alabaster = "1.0.0" # theme
-Pygments = "2.19.0"
+Pygments = "2.19.1"
 Sphinx = "8.1.3"
 sphinx-prompt = "1.9.0"
 sphinx-jsonschema = "1.19.1"
@@ -16,4 +16,4 @@ Sphinx-Substitution-Extensions = { extras = ["prompt"], version = "2025.1.2" }
 sphinxcontrib-mermaid = "1.0.0"
 c2cwsgiutils = ">=6.0.0.dev148"
 tilecloud-chain = "1.22.0"
-boto3 = { version = "1.36.12", optional = true }
+boto3 = { version = "1.36.13", optional = true }
