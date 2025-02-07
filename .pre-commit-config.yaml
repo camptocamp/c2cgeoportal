@@ -17,6 +17,7 @@ repos:
           (?x)^(
             geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/{{cookiecutter\.project}}/
             |secrets\.yml$
+            |ci/changelog\.yaml$
           )
       - id: check-json
       - id: end-of-file-fixer
