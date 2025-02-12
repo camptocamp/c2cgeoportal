@@ -1,3 +1,5 @@
+##### 2.6.0.287
+* Audit Snyk check/fix 2.6 [c2cgeoportal#11724](https://github.com/camptocamp/c2cgeoportal/pull/11724)
 ##### 2.6.0.286
 * Lock file maintenance (2.6) [c2cgeoportal#11704](https://github.com/camptocamp/c2cgeoportal/pull/11704)
 * Lock file maintenance (2.6) [c2cgeoportal#11705](https://github.com/camptocamp/c2cgeoportal/pull/11705)
