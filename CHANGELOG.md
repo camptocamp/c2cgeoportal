@@ -1,3 +1,13 @@
+##### 2.9.rc.74
+
+- [Backport 2.9] Filter Mapillary images by organzation_id [ngeo#9555](https://github.com/camptocamp/ngeo/pull/9555)
+- [Backport 2.9] Move jquery import out of component [ngeo#9604](https://github.com/camptocamp/ngeo/pull/9604)
+- Store the tools panel size [ngeo#9605](https://github.com/camptocamp/ngeo/pull/9605)
+- Query: Fix max results message [ngeo#9607](https://github.com/camptocamp/ngeo/pull/9607)
+- Fix the check on Transifex send [ngeo#9609](https://github.com/camptocamp/ngeo/pull/9609)
+- Remove angular-ui - refactor time input [ngeo#9612](https://github.com/camptocamp/ngeo/pull/9612)
+- GSGMF-2138-time-input: handle angular part in angular [ngeo#9615](https://github.com/camptocamp/ngeo/pull/9615)
+
 ##### 2.9.rc.73
 
 - Audit Snyk check/fix 2.9 [c2cgeoportal#11726](https://github.com/camptocamp/c2cgeoportal/pull/11726)
