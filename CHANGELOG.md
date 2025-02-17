@@ -1,3 +1,7 @@
+##### 2.9.rc.75
+
+- Add workflow_dispatch in get-version [c2cgeoportal#11731](https://github.com/camptocamp/c2cgeoportal/pull/11731)
+
 ##### 2.9.rc.74
 
 - [Backport 2.9] Filter Mapillary images by organzation_id [ngeo#9555](https://github.com/camptocamp/ngeo/pull/9555)
