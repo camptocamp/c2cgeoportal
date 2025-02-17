@@ -4,6 +4,7 @@ on:
   repository_dispatch:
     types:
       - ngeo_2.9_updated
+  workflow_dispatch:
 
 jobs:
   main:
