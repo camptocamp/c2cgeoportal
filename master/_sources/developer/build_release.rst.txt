@@ -154,6 +154,7 @@ Copy the file ``.github/workflows/main.yaml`` from new version branch to master 
    +  repository_dispatch:
    +    types:
    +    - ngeo_<new version>_updated
+   +  workflow_dispatch:
 
     jobs:
    -  not-failed-backport:
@@ -175,16 +176,16 @@ Copy the file ``.github/workflows/main.yaml`` from new version branch to master 
         steps:
           ...
 
+          - uses: actions/checkout@v2
+            with:
+   +          ref: ${{ env.MAIN_BRANCH }}
+              fetch-depth: 0
+              token: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
+   -        if: env.HAS_SECRETS == 'HAS_SECRETS'
    -      - uses: actions/checkout@v2
    -        with:
    -          fetch-depth: 0
-   -          token: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
-   -        if: env.HAS_SECRETS == 'HAS_SECRETS'
-          - uses: actions/checkout@v2
-            with:
-              fetch-depth: 0
-   +          ref: ${{ env.MAIN_BRANCH }}
-            if: env.HAS_SECRETS != 'HAS_SECRETS'
+   -        if: env.HAS_SECRETS != 'HAS_SECRETS'
 
           ...
 

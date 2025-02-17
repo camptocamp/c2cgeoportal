@@ -161,6 +161,7 @@ span.prompt1:before {
 <span class="gi">+  repository_dispatch:</span>
 <span class="gi">+    types:</span>
 <span class="gi">+    - ngeo_&lt;new version&gt;_updated</span>
+<span class="gi">+  workflow_dispatch:</span>
 
 <span class="w"> </span>jobs:
 <span class="gd">-  not-failed-backport:</span>
@@ -182,16 +183,16 @@ span.prompt1:before {
 <span class="w"> </span>    steps:
 <span class="w"> </span>      ...
 
+<span class="w"> </span>      - uses: actions/checkout@v2
+<span class="w"> </span>        with:
+<span class="gi">+          ref: ${{ env.MAIN_BRANCH }}</span>
+<span class="w"> </span>          fetch-depth: 0
+<span class="w"> </span>          token: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
+<span class="gd">-        if: env.HAS_SECRETS == &#39;HAS_SECRETS&#39;</span>
 <span class="gd">-      - uses: actions/checkout@v2</span>
 <span class="gd">-        with:</span>
 <span class="gd">-          fetch-depth: 0</span>
-<span class="gd">-          token: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}</span>
-<span class="gd">-        if: env.HAS_SECRETS == &#39;HAS_SECRETS&#39;</span>
-<span class="w"> </span>      - uses: actions/checkout@v2
-<span class="w"> </span>        with:
-<span class="w"> </span>          fetch-depth: 0
-<span class="gi">+          ref: ${{ env.MAIN_BRANCH }}</span>
-<span class="w"> </span>        if: env.HAS_SECRETS != &#39;HAS_SECRETS&#39;
+<span class="gd">-        if: env.HAS_SECRETS != &#39;HAS_SECRETS&#39;</span>
 
 <span class="w"> </span>      ...
 
