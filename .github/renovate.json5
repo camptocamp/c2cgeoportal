@@ -51,7 +51,7 @@
       ],
       matchStrings: ['POSTGRES_TAG=(?<currentValue>[0-9]+\\-postgis\\-[0-9]+)'],
       datasourceTemplate: 'docker-tags',
-      depNameTemplate: 'camptocamp/postgres',
+      depNameTemplate: 'ghcr.io/camptocamp/postgres',
     },
   ],
   packageRules: [
@@ -69,9 +69,9 @@
       matchDatasources: ['docker'],
       versioning: 'regex:^(?<major>\\d+)\\.(?<minor>\\d+)(-(?<compatibility>.*))?$',
       matchDepNames: [
-        'camptocamp/mapfish_print',
-        'camptocamp/tilecloud-chain',
-        'camptocamp/mapserver',
+        'ghcr.io/camptocamp/mapfish_print',
+        'ghcr.io/camptocamp/tilecloud-chain',
+        'ghcr.io/camptocamp/mapserver',
         'redis',
         'haproxy',
       ],
@@ -85,7 +85,7 @@
     {
       matchDatasources: ['docker'],
       versioning: 'regex:^(?<major>\\d+)-(?<compatibility>.*)-(?<minor>\\d+)?$',
-      matchDepNames: ['camptocamp/postgres'],
+      matchDepNames: ['ghcr.io/camptocamp/postgres'],
     },
     /** Auto merge the dev dependency update */
     {

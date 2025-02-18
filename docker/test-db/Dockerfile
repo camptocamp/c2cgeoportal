@@ -1,4 +1,4 @@
-FROM camptocamp/postgres:17-postgis-3
+FROM ghcr.io/camptocamp/postgres:17-postgis-3
 
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
