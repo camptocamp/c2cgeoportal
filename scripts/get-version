@@ -78,6 +78,8 @@ if tag:
     full = tag + ".0"
 elif last_tag.startswith(major_version):
     full = last_tag + "." + minor
+elif major_version == "dev":
+    full = last_tag + "." + minor + ".dev"
 elif main_branch == "master":
     full = "latest"
 else:

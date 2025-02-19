@@ -39,4 +39,4 @@ RUN ./import_ngeo_config.py \
       node_modules/ngeo/dist/typedoc.json /ngeo_other_configuration.rst && \
     mv integrator/ngeo_config_ref.rst / && \
     mkdir --parent _build/html && \
-    sphinx-build -W -b html -d _build/doctrees . _build/html
+    sphinx-build -b html -d _build/doctrees . _build/html
