@@ -40,35 +40,46 @@
   <section id="tilecloud-chain-usage">
 <span id="integrator-tilegeneration-usage"></span><h1>TileCloud-chain Usage<a class="headerlink" href="#tilecloud-chain-usage" title="Permalink to this headline">¶</a></h1>
 <p>Upstream documentation:</p>
-<section id="configure">
-<h2>Configure<a class="headerlink" href="#configure" title="Permalink to this headline">¶</a></h2>
+<section id="configuration">
+<h2>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h2>
+<p>This guide covers configuration options for tilecloud-chain, a tool for generating and serving map tiles.</p>
 <section id="configure-grids">
-<h3>Configure grids<a class="headerlink" href="#configure-grids" title="Permalink to this headline">¶</a></h3>
-<p>The <code class="docutils literal notranslate"><span class="pre">grid</span></code> describes how the tiles are arranged.</p>
-<p>Especially on <code class="docutils literal notranslate"><span class="pre">s3</span></code> or <code class="docutils literal notranslate"><span class="pre">azure</span></code> be careful to choose every of the grid settings before generating the
-tiles. If you change one of them you must regenerate all the tiles.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">resolutions</span></code> in [px/m] describes all the resolutions available for this layer. For a raster layer, have
-a look to the maximum resolution of the source files. It is not needed to generate tiles at smaller
-resolutions than the sources, it is preferable to use the OpenLayers client zoom. Note that you can add a
-resolution in the end without regenerating all the tiles.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">bbox</span></code> should match the resolution of the extent. <strong>CAREFUL: you will have big issue if you use this
-parameter to generate the tile on a restricted area</strong>: use the <code class="docutils literal notranslate"><span class="pre">bbox</span></code> on the layer instead.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">srs</span></code> specifies the code of the projection.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">unit</span></code> is the unit used by the projection.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">tile_size</span></code> is the tile size in [px], defaults to 256.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">matrix_identifier</span></code> is <code class="docutils literal notranslate"><span class="pre">zoom</span></code> by default and can also be set to <code class="docutils literal notranslate"><span class="pre">resolution</span></code>. It specifies how the z
-index is build to store the tiles, for example, for the resolutions <code class="docutils literal notranslate"><span class="pre">[2,</span> <span class="pre">1,</span> <span class="pre">0.5]</span></code> the used values are
-<code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">2]</span></code> based on the zoom and <code class="docutils literal notranslate"><span class="pre">[2,</span> <span class="pre">1,</span> <span class="pre">0_5]</span></code> based on the resolution. The second has the advantage of
-allowing to add a new resolution without regenerating all the tiles, but it does not work with MapCache.</p>
+<h3>Configure Grids<a class="headerlink" href="#configure-grids" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">grid</span></code> configuration describes how map tiles are arranged in your tileset.</p>
+<p>For cloud storage backends like <code class="docutils literal notranslate"><span class="pre">s3</span></code> or <code class="docutils literal notranslate"><span class="pre">azure</span></code>, carefully consider grid settings before generating tiles, as changing them later requires regenerating all tiles.</p>
+<p>Key grid settings:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">resolutions</span></code>: Tile resolutions in pixels/meter. For raster layers, consider the maximum resolution of source files. OpenLayers client zoom can handle display at smaller resolutions.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">bbox</span></code>: Bounding box that matches resolution extent. Warning: Do not use this to restrict tile generation area - use layer <code class="docutils literal notranslate"><span class="pre">bbox</span></code> instead.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">srs</span></code>: Projection code (e.g. <code class="docutils literal notranslate"><span class="pre">EPSG:3857</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">unit</span></code>: Unit used by projection (e.g. <code class="docutils literal notranslate"><span class="pre">meters</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tile_size</span></code>: Tile dimensions in pixels (default: <code class="docutils literal notranslate"><span class="pre">256</span></code>)</p></li>
+<li><dl>
+<dt><code class="docutils literal notranslate"><span class="pre">matrix_identifier</span></code>: How z-index is built for tile storage:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">zoom</span></code> (default): Uses zoom levels <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">2]</span></code> for the resolutions <code class="docutils literal notranslate"><span class="pre">[2,</span> <span class="pre">1,</span> <span class="pre">0.5]</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">resolution</span></code>: Uses resolution values <code class="docutils literal notranslate"><span class="pre">[2,</span> <span class="pre">1,</span> <span class="pre">0_5]</span></code> for the same resolutions</p></li>
+</ul>
+<p>Resolution-based indexing allows adding resolutions without regenerating tiles, but is incompatible with MapCache.</p>
+</dd>
+</dl>
+</li>
+</ul>
 </section>
 <section id="configure-caches">
-<h3>Configure caches<a class="headerlink" href="#configure-caches" title="Permalink to this headline">¶</a></h3>
-<p>The available tile caches are: <code class="docutils literal notranslate"><span class="pre">s3</span></code>, <code class="docutils literal notranslate"><span class="pre">azure</span></code>, <code class="docutils literal notranslate"><span class="pre">bsddb</span></code>, <code class="docutils literal notranslate"><span class="pre">mbtile</span></code> and <code class="docutils literal notranslate"><span class="pre">filesystem</span></code>.</p>
-<p>The best solution to store the tiles, <code class="docutils literal notranslate"><span class="pre">s3</span></code>, <code class="docutils literal notranslate"><span class="pre">azure</span></code>, <code class="docutils literal notranslate"><span class="pre">mbtiles</span></code> and <code class="docutils literal notranslate"><span class="pre">bsddb</span></code>, have the advantage of using only one
-file per layer - style dimensions. To serve the <code class="docutils literal notranslate"><span class="pre">mbtile</span></code> and the <code class="docutils literal notranslate"><span class="pre">bsddb</span></code> see Distribute the tiles.</p>
-<p><code class="docutils literal notranslate"><span class="pre">s3</span></code> needs a <code class="docutils literal notranslate"><span class="pre">bucket</span></code> and a <code class="docutils literal notranslate"><span class="pre">folder</span></code> (defaults to ‘’).</p>
-<p><code class="docutils literal notranslate"><span class="pre">azure</span></code> needs a <code class="docutils literal notranslate"><span class="pre">container</span></code>.</p>
-<p><code class="docutils literal notranslate"><span class="pre">mbtiles</span></code>, <code class="docutils literal notranslate"><span class="pre">bsddb</span></code> and <code class="docutils literal notranslate"><span class="pre">filesystem</span></code> just need a <code class="docutils literal notranslate"><span class="pre">folder</span></code>.</p>
+<h3>Configure Caches<a class="headerlink" href="#configure-caches" title="Permalink to this headline">¶</a></h3>
+<p>Available tile cache backends:</p>
+<ul class="simple">
+<li><p>Cloud storage: <code class="docutils literal notranslate"><span class="pre">s3</span></code>, <code class="docutils literal notranslate"><span class="pre">azure</span></code></p></li>
+<li><p>Local storage: <code class="docutils literal notranslate"><span class="pre">bsddb</span></code>, <code class="docutils literal notranslate"><span class="pre">mbtiles</span></code>, <code class="docutils literal notranslate"><span class="pre">filesystem</span></code></p></li>
+</ul>
+<p>Cache configuration:</p>
+<p><code class="docutils literal notranslate"><span class="pre">s3</span></code> requires:
+- <code class="docutils literal notranslate"><span class="pre">bucket</span></code>: S3 bucket name
+- <code class="docutils literal notranslate"><span class="pre">folder</span></code>: Path prefix (default: ‘’)</p>
+<p><code class="docutils literal notranslate"><span class="pre">azure</span></code> requires:
+- <code class="docutils literal notranslate"><span class="pre">container</span></code>: Azure container name</p>
+<p><code class="docutils literal notranslate"><span class="pre">mbtiles</span></code>, <code class="docutils literal notranslate"><span class="pre">bsddb</span></code>, <code class="docutils literal notranslate"><span class="pre">filesystem</span></code> require:
+- <code class="docutils literal notranslate"><span class="pre">folder</span></code>: Storage directory path</p>
 <p>On all the caches we can add some information to generate the URL where the tiles are available. This is
 needed to generate the capabilities. We can specify:</p>
 <ul class="simple">
@@ -564,7 +575,7 @@ mode we don’t catch exceptions, and we don’t log time messages.</p>
 </section>
 <section id="mutualized">
 <h2>Mutualized<a class="headerlink" href="#mutualized" title="Permalink to this headline">¶</a></h2>
-<p>The mutualized mode consist by having multiple project files with the projects related configurations
+<p>The multi-tenant mode consist by having multiple project files with the projects related configurations
 (layers, cache, …) and one main configuration file with the global configuration (number of process,
 log format, redis, …).</p>
 <p>Configuration keys which should be set in the main configuration file are identified in property’s
@@ -580,35 +591,59 @@ change them we should regenerate all the tiles).</p>
 </section>
 <section id="environment-variables">
 <h2>Environment variables<a class="headerlink" href="#environment-variables" title="Permalink to this headline">¶</a></h2>
+<section id="environment-variables-reference">
+<h3>Environment Variables Reference<a class="headerlink" href="#environment-variables-reference" title="Permalink to this headline">¶</a></h3>
+<p>Configuration can be customized through the following environment variables:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">TILEGENERATION_CONFIGFILE</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">/etc/tilegeneration/config.yaml</span></code>, the all in one
-configuration file to use.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">TILEGENERATION_MAIN_CONFIGFILE</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">/etc/tilegeneration/config.yaml</span></code>, the main
-configuration file to use.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">TILEGENERATION_HOSTSFILE</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">/etc/tilegeneration/hosts.yaml</span></code>, the hosts to config file
-mapping file to use.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">TILEGENERATION_MAX_GENERATION_TIME</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">60</span></code>, the maximum time to generate the tiles (lock timeout) in second.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">TILE_NB_THREAD</span></code>: Default is <code class="docutils literal notranslate"><span class="pre">2</span></code>, the number of thread used to generate the tiles (If we use meta tiles)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">METATILE_NB_THREAD</span></code>: Default is <code class="docutils literal notranslate"><span class="pre">25</span></code>, the number of thread used to generate the meta tiles (If we use
-meta tiles, also to generate the tiles)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">SERVER_NB_THREAD</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">10</span></code>, the number of thread used to generate the meta tiles in the server.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">TILE_QUEUE_SIZE</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">2</span></code>, the queue size just after the Redis queue</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">TILE_CHUNK_SIZE</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">1</span></code>, the chunk size to process the tiles after the meta tiles.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN_MAX_OUTPUT_LENGTH</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">1000</span></code>, the maximum number of character of the
-output to be display in the admin interface.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN_CONCURRENT_GET_LEGEND</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">10</span></code>, the number of concurrent request to get the
-legend images during the generation of the capabilities.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">LOG_TYPE</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">console</span></code>, can also be <code class="docutils literal notranslate"><span class="pre">json</span></code> to log in JSON for <code class="docutils literal notranslate"><span class="pre">Logstash</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN_LOG_LEVEL</span></code> Default to <code class="docutils literal notranslate"><span class="pre">INFO</span></code>,
-<code class="docutils literal notranslate"><span class="pre">TILECLOUD_LOG_LEVEL</span></code> Default to <code class="docutils literal notranslate"><span class="pre">INFO</span></code>,
-<code class="docutils literal notranslate"><span class="pre">C2CWSGI_LOG_LEVEL</span></code> Default to <code class="docutils literal notranslate"><span class="pre">WARN</span></code>,
-<code class="docutils literal notranslate"><span class="pre">OTHER_LOG_LEVEL</span></code> Default to <code class="docutils literal notranslate"><span class="pre">WARN</span></code>, the logging level of deferent components, can be <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code>,
-<code class="docutils literal notranslate"><span class="pre">INFO</span></code>, <code class="docutils literal notranslate"><span class="pre">WARN</span></code>, <code class="docutils literal notranslate"><span class="pre">ERROR</span></code> or <code class="docutils literal notranslate"><span class="pre">CRITICAL</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">TILE_SERVER_LOGLEVEL</span></code> Default to <code class="docutils literal notranslate"><span class="pre">quiet</span></code> the log level used in the server part.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">TILE_MAPCACHE_LOGLEVEL``Default</span> <span class="pre">to</span> <span class="pre">``verbose</span></code> the log level used in the internal mapcache.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">DEVELOPMENT</span></code>: Default to <code class="docutils literal notranslate"><span class="pre">0</span></code> set it to <code class="docutils literal notranslate"><span class="pre">1</span></code> to have the Pyramid development options.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">VISIBLE_ENTRY_POINT</span></code> Default to <code class="docutils literal notranslate"><span class="pre">/tiles/</span></code> the entrypoint path.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILEGENERATION_CONFIGFILE</span></code>: Path to the main configuration file
+(default: <code class="docutils literal notranslate"><span class="pre">/etc/tilegeneration/config.yaml</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILEGENERATION_MAIN_CONFIGFILE</span></code>: Path to the main configuration file when using multi-tenant mode
+(default: <code class="docutils literal notranslate"><span class="pre">/etc/tilegeneration/config.yaml</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILEGENERATION_HOSTSFILE</span></code>: Path to hosts mapping configuration
+(default: <code class="docutils literal notranslate"><span class="pre">/etc/tilegeneration/hosts.yaml</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILEGENERATION_MAX_GENERATION_TIME</span></code>: Maximum tile generation time in seconds before timeout
+(default: <code class="docutils literal notranslate"><span class="pre">60</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILE_NB_THREAD</span></code>: Number of threads for tile generation when using metatiles
+(default: <code class="docutils literal notranslate"><span class="pre">2</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">METATILE_NB_THREAD</span></code>: Number of threads for metatile generation
+(default: <code class="docutils literal notranslate"><span class="pre">25</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SERVER_NB_THREAD</span></code>: Number of server threads for metatile generation
+(default: <code class="docutils literal notranslate"><span class="pre">10</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILE_QUEUE_SIZE</span></code>: Size of post-Redis queue
+(default: <code class="docutils literal notranslate"><span class="pre">2</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILE_CHUNK_SIZE</span></code>: Number of tiles to process in one chunk after metatile generation
+(default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN_MAX_OUTPUT_LENGTH</span></code>: Maximum output length shown in admin interface
+(default: <code class="docutils literal notranslate"><span class="pre">1000</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN_CONCURRENT_GET_LEGEND</span></code>: Number of concurrent legend image requests
+(default: <code class="docutils literal notranslate"><span class="pre">10</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">LOG_TYPE</span></code>: Logging output format, either <code class="docutils literal notranslate"><span class="pre">console</span></code> or <code class="docutils literal notranslate"><span class="pre">json</span></code> for Logstash
+(default: <code class="docutils literal notranslate"><span class="pre">console</span></code>)</p></li>
 </ul>
+<p>Logging Configuration:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN_LOG_LEVEL</span></code>: Log level for TileCloud Chain
+(default: <code class="docutils literal notranslate"><span class="pre">INFO</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_LOG_LEVEL</span></code>: Log level for TileCloud core
+(default: <code class="docutils literal notranslate"><span class="pre">INFO</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">C2CWSGI_LOG_LEVEL</span></code>: Log level for C2C WSGI
+(default: <code class="docutils literal notranslate"><span class="pre">WARN</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">OTHER_LOG_LEVEL</span></code>: Log level for other components
+(default: <code class="docutils literal notranslate"><span class="pre">WARN</span></code>)</p></li>
+</ul>
+<p>Valid log levels: <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code>, <code class="docutils literal notranslate"><span class="pre">INFO</span></code>, <code class="docutils literal notranslate"><span class="pre">WARN</span></code>, <code class="docutils literal notranslate"><span class="pre">ERROR</span></code>, <code class="docutils literal notranslate"><span class="pre">CRITICAL</span></code></p>
+<p>Server Configuration:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TILE_SERVER_LOG_LEVEL</span></code>: Server component log verbosity
+(default: <code class="docutils literal notranslate"><span class="pre">quiet</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILE_MAPCACHE_LOG_LEVEL</span></code>: Internal MapCache log verbosity
+(default: <code class="docutils literal notranslate"><span class="pre">verbose</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DEVELOPMENT</span></code>: Enable Pyramid development features if set to <code class="docutils literal notranslate"><span class="pre">1</span></code>
+(default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">VISIBLE_ENTRY_POINT</span></code>: Base URL path for tile access
+(default: <code class="docutils literal notranslate"><span class="pre">/tiles/</span></code>)</p></li>
+</ul>
+</section>
 </section>
 <section id="admin-and-test-pages">
 <h2>Admin and test pages<a class="headerlink" href="#admin-and-test-pages" title="Permalink to this headline">¶</a></h2>
