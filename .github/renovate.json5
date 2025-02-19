@@ -47,10 +47,10 @@
     /** Upgrade the postgres version in the env values */
     {
       fileMatch: [
-        '^geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}/env\.default$',
+        '^geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}/env\\.default$',
       ],
       matchStrings: ['POSTGRES_TAG=(?<currentValue>[0-9]+\\-postgis\\-[0-9]+)'],
-      datasourceTemplate: 'docker-tags',
+      datasourceTemplate: 'docker',
       depNameTemplate: 'ghcr.io/camptocamp/postgres',
     },
   ],
