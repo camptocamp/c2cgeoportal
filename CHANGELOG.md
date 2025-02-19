@@ -1,3 +1,7 @@
+##### 2.9.rc.76
+
+- Audit Dpkg 2.9 [c2cgeoportal#11737](https://github.com/camptocamp/c2cgeoportal/pull/11737)
+
 ##### 2.9.rc.75
 
 - Add workflow_dispatch in get-version [c2cgeoportal#11731](https://github.com/camptocamp/c2cgeoportal/pull/11731)
