@@ -1,3 +1,7 @@
+##### 2.8.1.189
+
+- Be able to build [ngeo#9617](https://github.com/camptocamp/ngeo/pull/9617)
+
 ##### 2.8.1.188
 
 - Fix npm install on Ubuntu 24.04 [ngeo#9570](https://github.com/camptocamp/ngeo/pull/9570)
