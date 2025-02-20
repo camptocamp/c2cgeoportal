@@ -1,3 +1,7 @@
+##### 2.7.1.160
+
+- Audit Snyk check/fix 2.7 [c2cgeoportal#11725](https://github.com/camptocamp/c2cgeoportal/pull/11725)
+
 ##### 2.7.1.159
 
 - Fix build 2.7 [c2cgeoportal#11735](https://github.com/camptocamp/c2cgeoportal/pull/11735)
