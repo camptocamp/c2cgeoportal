@@ -1,2 +1,5 @@
 c2cciutils==1.1.*
 cryptography>=44.0.1 # not directly required, pinned by Snyk to avoid a vulnerability
+black>=24.3.0 # not directly required, pinned by Snyk to avoid a vulnerability
+pip>=23.3 # not directly required, pinned by Snyk to avoid a vulnerability
+virtualenv>=20.26.6 # not directly required, pinned by Snyk to avoid a vulnerability
