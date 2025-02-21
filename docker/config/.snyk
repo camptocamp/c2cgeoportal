@@ -1,10 +1,9 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.25.0
+version: v1.25.1
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
-    SNYK-PYTHON-FIONA-7462744:
-        - '*':
-              reason: Currently fix is in alpha version
-              expires: 2024-09-14T05:36:35.129Z
-              created: 2024-08-15T05:36:35.132Z
+  SNYK-PYTHON-VIRTUALENV-8136228:
+    - '*':
+        reason: Not compatible with used version of Poetry
+        created: 2025-02-21T09:27:13.566Z
 patch: {}
