@@ -1113,6 +1113,7 @@ vars:
           style-src {content_security_policy_admin_style_src};
           img-src {content_security_policy_admin_img_src};
           worker-src {content_security_policy_admin_worker_src}'
+        Cache-Control: no-cache
     - pattern: '^/getitfixed.*'
       headers: *c2cgeoform_headers
     - pattern: '^/static/.*'
