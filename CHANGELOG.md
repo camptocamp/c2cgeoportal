@@ -1,3 +1,7 @@
+##### 2.9.rc.79
+
+- Avoid cache issue on admin interface [c2cgeoportal#11743](https://github.com/camptocamp/c2cgeoportal/pull/11743)
+
 ##### 2.9.rc.78
 
 - Audit Dpkg 2.9 [c2cgeoportal#11742](https://github.com/camptocamp/c2cgeoportal/pull/11742)
