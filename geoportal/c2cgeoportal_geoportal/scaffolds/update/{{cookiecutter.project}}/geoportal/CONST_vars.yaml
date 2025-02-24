@@ -530,8 +530,8 @@ vars:
       - name: searchAlias
         type: list
         description: >
-          Comma-separated list of search aliases (keywords) to be added to the tsearch.ts field for
-          the specified tree item (theme, layer group or layer). The tree item will match when
+          Comma-separated list of search aliases (keywords) to be added to the <code>tsearch.ts</code> field
+          for the specified tree item (theme, layer group or layer). The tree item will match when
           searching for any of these aliases.
         relevant_for:
           - treeitem
@@ -541,10 +541,10 @@ vars:
           <code>{name} ({theme})</code>.
           Supported parameters:
           <ul>
-            <li>name (name of the tree item)</li>
-            <li>parent (parent of the item, may be a group, block or theme)</li>
-            <li>block (name of the block to which the item belongs)</li>
-            <li>theme (name of the theme to which the item belongs)</li>
+            <li><code>name</code> (name of the tree item)</li>
+            <li><code>parent</code> (parent of the item, may be a group, block or theme)</li>
+            <li><code>block</code> (name of the block to which the item belongs)</li>
+            <li><code>theme</code> (name of the theme to which the item belongs)</li>
           </ul>
         relevant_for:
           - treeitem
@@ -610,7 +610,7 @@ vars:
         description: >
           URLs of hi-DPI images used to print the layer legend.
           JSON mapping object with DPI as key and URL as value.
-          Note: URLs cannot use the config scheme.
+          Note: URLs cannot use the <code>config</code> scheme.
         relevant_for:
           - layer_wms
           - layer_wmts
@@ -655,7 +655,7 @@ vars:
         type: float
         description: >
           Maximum resolution at which the layer is visible. On WMTS layers, affects
-          the layertree node but not the layer itself.
+          the layer tree node but not the layer itself.
         relevant_for:
           - layer_wms
           - layer_wmts
@@ -664,7 +664,7 @@ vars:
         type: float
         description: >
           Minimum resolution at which the layer is visible. On WMTS layers, affects
-          the layertree node but not the layer itself.
+          the layer tree node but not the layer itself.
         relevant_for:
           - layer_wms
           - layer_wmts
@@ -672,7 +672,7 @@ vars:
       - name: opacity
         type: float
         description: >
-          Layer opacity from <code>0</code> (invisible) to <code>1.0</code> (fully visible).
+          Layer opacity, value from <code>0</code> (invisible) to <code>1.0</code> (fully visible).
         relevant_for:
           - layer_wms
           - layer_wmts
@@ -697,12 +697,12 @@ vars:
           - layer_wms
       - name: lastUpdateDateColumn
         description: >
-          Column to be automatically updated with the last modification date.
+          Column name to be automatically updated with the last modification date.
         relevant_for:
           - layer_wms
       - name: lastUpdateUserColumn
         description: >
-          Column to be automatically updated with the user who made the last edit.
+          Column name to be automatically updated with the user who made the last edit.
         relevant_for:
           - layer_wms
       - name: snappingConfig
@@ -743,14 +743,14 @@ vars:
       - name: readonlyAttributes
         type: list
         description: >
-          Comma separated list of attributes to make read-only in the editing form.
+          Comma-separated list of attributes to make read-only in the editing form.
         relevant_for:
           - layer_wms
       - name: queryIconPosition
         type: list
         description: >
           Define query shape (bbox) padding values similar to CSS:
-          <code>all</code> or <code>top-bottom, left-right</code> or <code>top, right-left, bottom</code>
+          <code>all</code> or <code>top-bottom, left-right</code> or <code>top, left-right, bottom</code>
           or <code>top, right, bottom, left</code>.
         relevant_for:
           - layer_wms
@@ -765,20 +765,20 @@ vars:
       - name: directedFilterAttributes
         type: list
         description: >
-          Comma separated list of attributes names which should have rules already ready when using the
+          Comma-separated list of attributes names which should have rules already ready when using the
           filter tools.
         relevant_for:
           - layer_wms
       - name: enumeratedAttributes
         type: list
         description: >
-          Comma separated list of attributes that have enumerated values (for filtering).
+          Comma-separated list of attributes that have enumerated values (for filtering).
         relevant_for:
           - layer_wms
       - name: protectedAttributes
         type: list
         description: >
-          For QGIS server: Comma separated list of protected attributes for use with the
+          For QGIS server: Comma-separated list of protected attributes for use with the
           <code>allowed_attributes</code> functionality.
         relevant_for:
           - layer_wms
@@ -793,15 +793,15 @@ vars:
       - name: wmsLayers
         description: >
           Comma-separated list of WMS/WFS layers used instead of the WMTS layer for queries and printing.
-          Requires <code>OGCServer</code> metadata with server name.
+          Requires <code>OGCServer</code> metadata with OGC server name.
           See also <code>printLayers</code> and <code>queryLayers</code> for separate options.
         relevant_for:
           - layer_wmts
           - layer_cog
       - name: queryLayers
         description: >
-          Comma-separated list or WFS layers used instead of the WMTS layer for queries.
-          Requires <code>OGCServer</code> metadata with server name.
+          Comma-separated list of WFS layers used instead of the WMTS layer for queries.
+          Requires <code>OGCServer</code> metadata with OGC server name.
         relevant_for:
           - layer_wmts
           - layer_cog
@@ -809,7 +809,7 @@ vars:
         description: >
           Comma-separated list of WMS layers used instead of the WMTS layer for printing.
           Improves print quality with native rotation and hi-DPI support.
-          Requires <code>OGCServer</code> metadata with server name.
+          Requires <code>OGCServer</code> metadata with OGC server name.
         relevant_for:
           - layer_wmts
           - layer_cog
@@ -873,7 +873,7 @@ vars:
       - name: open_panel
         single: true
         description: >
-          Name of panel to open when loading application.
+          Name of the tool panel that should be opened when loading the application.
         relevant_for:
           - role
       - name: allowed_attributes
