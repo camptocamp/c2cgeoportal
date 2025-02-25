@@ -211,7 +211,7 @@ class TestUser(AbstractViewsTests):
     @patch("c2cgeoportal_admin.views.users.pwgenerator.generate")
     def test_duplicate(self, pw_gen_mock, smtp_mock, users_test_data, test_app, dbsession):
         sender_mock = MagicMock()
-        smtp_mock.return_value = sender_mock
+        smtp_mock.return_value.__enter__.return_value = sender_mock
         pw_gen_mock.return_value = "basile"
         from c2cgeoportal_commons.models.static import User
 
@@ -256,7 +256,7 @@ class TestUser(AbstractViewsTests):
         from c2cgeoportal_commons.models.static import Log, User
 
         sender_mock = MagicMock()
-        smtp_mock.return_value = sender_mock
+        smtp_mock.return_value.__enter__.return_value = sender_mock
         pw_gen_mock.return_value = "basile"
 
         roles = users_test_data["roles"]
