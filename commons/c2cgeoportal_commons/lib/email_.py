@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2024, Camptocamp SA
+# Copyright (c) 2013-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -74,15 +74,11 @@ def send_email(
     msg["Subject"] = subject
     msg.attach(MIMEText(body, "plain", "utf-8"))
 
-    # Connect to server
-    if smtp_config.get("ssl", False):
-        smtp: smtplib.SMTP = smtplib.SMTP_SSL(smtp_config["host"])
-    else:
-        smtp = smtplib.SMTP(smtp_config["host"])
-    if smtp_config.get("starttls", False):
-        smtp.starttls()
-    if smtp_config.get("user", False):
-        smtp.login(smtp_config["user"], smtp_config["password"])
+    SMTPClass = smtplib.SMTP_SSL if smtp_config.get("ssl", False) else smtplib.SMTP
+    with SMTPClass(smtp_config["host"]) as smtp:
+        if smtp_config.get("starttls", False):
+            smtp.starttls()
+        if smtp_config.get("user", False):
+            smtp.login(smtp_config["user"], smtp_config["password"])
 
-    smtp.sendmail(from_addr, to_address, msg.as_string())
-    smtp.close()
+        smtp.sendmail(from_addr, to_address, msg.as_string())
