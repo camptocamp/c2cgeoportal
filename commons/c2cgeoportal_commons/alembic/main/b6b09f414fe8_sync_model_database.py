@@ -1,4 +1,4 @@
-# Copyright (c) 2024, Camptocamp SA
+# Copyright (c) 2024-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -83,6 +83,18 @@ def upgrade() -> None:
     op.execute(f"UPDATE {schema}.restrictionarea SET readwrite = false WHERE readwrite IS NULL")
     op.alter_column("restrictionarea", "readwrite", existing_type=sa.BOOLEAN(), nullable=False, schema=schema)
     # Add missing index
+    # Remove it if he al ready exists
+    connection = op.get_bind()
+    if op.get_context().dialect.has_index(
+        connection,
+        index_name="idx_restrictionarea_area",
+        table_name="restrictionarea",
+        schema=schema,
+    ):
+        op.drop_index(
+            "idx_restrictionarea_area", table_name="restrictionarea", schema=schema, postgresql_using="gist"
+        )
+
     op.create_index(
         "idx_restrictionarea_area",
         "restrictionarea",
@@ -135,9 +147,6 @@ def downgrade() -> None:
         schema=schema,
     )
     op.alter_column("tsearch", "label", existing_type=sa.VARCHAR(), nullable=True, schema=schema)
-    op.drop_index(
-        "idx_restrictionarea_area", table_name="restrictionarea", schema=schema, postgresql_using="gist"
-    )
     op.alter_column("restrictionarea", "readwrite", existing_type=sa.BOOLEAN(), nullable=True, schema=schema)
     op.alter_column("restrictionarea", "name", existing_type=sa.VARCHAR(), nullable=True, schema=schema)
     op.alter_column(
