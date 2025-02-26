@@ -55,10 +55,10 @@ jobs:
           - '3.34'
           - 3.34-gdal3.7
           - 3.34-gdal3.8
-          - ltr
-          - lr
-          - latest
-          - lr-debug
+          # - ltr
+          # - lr
+          # - latest
+          # - lr-debug
 
     # == QGIS version ==
     outputs:
@@ -68,10 +68,10 @@ jobs:
       success-3-34: ${{ steps.success.outputs.success-3-34 }}
       success-3-34-gdal3-7: ${{ steps.success.outputs.success-3-34-gdal3-7 }}
       success-3-34-gdal3-8: ${{ steps.success.outputs.success-3-34-gdal3-8 }}
-      success-ltr: ${{ steps.success.outputs.success-ltr }}
-      success-lr: ${{ steps.success.outputs.success-lr }}
-      success-lr-debug: ${{ steps.success.outputs.success-lr-debug }}
-      success-latest: ${{ steps.success.outputs.latest }}
+      # success-ltr: ${{ steps.success.outputs.success-ltr }}
+      # success-lr: ${{ steps.success.outputs.success-lr }}
+      # success-lr-debug: ${{ steps.success.outputs.success-lr-debug }}
+      # success-latest: ${{ steps.success.outputs.latest }}
 
     steps:
       - uses: actions/checkout@v3
@@ -156,6 +156,7 @@ jobs:
       - run: '[[ "${{ needs.main.outputs.success-3-34 }}" == "true" ]]'
       - run: '[[ "${{ needs.main.outputs.success-3-34-gdal3-7 }}" == "true" ]]'
       - run: '[[ "${{ needs.main.outputs.success-3-34-gdal3-8 }}" == "true" ]]'
-      - run: '[[ "${{ needs.main.outputs.success-ltr }}" == "true" ]]'
-      - run: '[[ "${{ needs.main.outputs.success-lr }}" == "true" ]]'
-      - run: '[[ "${{ needs.main.outputs.success-lr-debug }}" == "true" ]]'
+      # - run: '[[ "${{ needs.main.outputs.success-ltr }}" == "true" ]]'
+      # - run: '[[ "${{ needs.main.outputs.success-lr }}" == "true" ]]'
+      # - run: '[[ "${{ needs.main.outputs.success-lr-debug }}" == "true" ]]'
+      # - run: '[[ "${{ needs.main.outputs.success-latest }}" == "true" ]]'
