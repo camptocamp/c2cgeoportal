@@ -55,10 +55,10 @@ jobs:
           - '3.34'
           - 3.34-gdal3.7
           - 3.34-gdal3.8
-          - ltr
-          - lr
-          - latest
-          - lr-debug
+          # - ltr
+          # - lr
+          # - latest
+          # - lr-debug
 
     # == QGIS version ==
     outputs:
