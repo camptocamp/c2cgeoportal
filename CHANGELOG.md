@@ -1,3 +1,7 @@
+##### 2.9.rc.82
+
+- Audit Dpkg 2.9 [c2cgeoportal#11753](https://github.com/camptocamp/c2cgeoportal/pull/11753)
+
 ##### 2.9.rc.81
 
 - Use with statement for the SMTP connection [c2cgeoportal#11745](https://github.com/camptocamp/c2cgeoportal/pull/11745)
