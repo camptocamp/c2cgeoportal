@@ -58,6 +58,43 @@ Information
    role and when we have a reverse proxy with cache. Now it's always set to private for all the endpoints
    that use the authentication.
 
+Changes to apply
+================
+
+1. In the Scss file named `geoportal/geomapfish_geoportal/static-ngeo/js/apps/sass/<interface>.scss`
+   be sure that you import the `gmf/controller/<interface>.scss` at the top of the file, before you
+   can't use the variables.
+
+2. The environment variable TILECLOUD_CHAIN_SESSION_SECRET and TILECLOUD_CHAIN_SESSION_SALT from the file
+   `env.project` should be uncomment and filled with a strong secret, e.g. with `pwgen --secure 16`.
+
+3. Nginject migration:
+   the @ngInject annotation is no more used, you should pass an array in the function or use the $inject property.
+   e.g. before:
+   ```javascript
+   class Controller {
+     /**
+      * ...
+      * @ngInject
+      */
+     constructor($scope, $injector) {
+       ...
+     }
+   }
+   ```
+   e.g. after:
+   ```javascript
+   class Controller {
+     /**
+      * ...
+      */
+     constructor($scope, $injector) {
+       ...
+     }
+   }
+   Controller.$inject = ['$scope', '$injector'];
+   ```
+
 
 =============
 Version 2.8.0
