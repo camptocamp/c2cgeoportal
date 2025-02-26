@@ -1,3 +1,7 @@
+##### 2.8.1.190
+
+- Pin QGIS version used in tests [c2cgeoportal#11751](https://github.com/camptocamp/c2cgeoportal/pull/11751)
+
 ##### 2.8.1.189
 
 - Be able to build [ngeo#9617](https://github.com/camptocamp/ngeo/pull/9617)
