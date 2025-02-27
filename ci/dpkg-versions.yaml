@@ -2769,7 +2769,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/libcom-err2: 1.47.0-2.4~exp1ubuntu4.1
   ubuntu_24_04/libcrypt-dev: 1:4.4.36-4build1
   ubuntu_24_04/libcrypt1: 1:4.4.36-4build1
-  ubuntu_24_04/libcryptsetup12: 2:2.7.0-1ubuntu4.1
+  ubuntu_24_04/libcryptsetup12: 2:2.7.0-1ubuntu4.2
   ubuntu_24_04/libctf-nobfd0: 2.42-4ubuntu2.4
   ubuntu_24_04/libctf0: 2.42-4ubuntu2.4
   ubuntu_24_04/libcups2t64: 2.4.7-1.2ubuntu7.3
@@ -2780,7 +2780,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/libdbus-1-3: 1.14.10-4ubuntu4.1
   ubuntu_24_04/libdebconfclient0: 0.271ubuntu3
   ubuntu_24_04/libdeflate0: 1.19-1build1.1
-  ubuntu_24_04/libdevmapper1.02.1: 2:1.02.185-3ubuntu3.1
+  ubuntu_24_04/libdevmapper1.02.1: 2:1.02.185-3ubuntu3.2
   ubuntu_24_04/libdrm-amdgpu1: 2.4.122-1~ubuntu0.24.04.1
   ubuntu_24_04/libdrm-common: 2.4.122-1~ubuntu0.24.04.1
   ubuntu_24_04/libdrm-intel1: 2.4.122-1~ubuntu0.24.04.1
@@ -3516,7 +3516,7 @@ camptocamp/geomapfish:latest:
   ubuntu_24_04/libcom-err2: 1.47.0-2.4~exp1ubuntu4.1
   ubuntu_24_04/libcrypt-dev: 1:4.4.36-4build1
   ubuntu_24_04/libcrypt1: 1:4.4.36-4build1
-  ubuntu_24_04/libcryptsetup12: 2:2.7.0-1ubuntu4.1
+  ubuntu_24_04/libcryptsetup12: 2:2.7.0-1ubuntu4.2
   ubuntu_24_04/libcups2t64: 2.4.7-1.2ubuntu7.3
   ubuntu_24_04/libcurl3t64-gnutls: 8.5.0-2ubuntu10.6
   ubuntu_24_04/libcurl4t64: 8.5.0-2ubuntu10.6
@@ -3525,7 +3525,7 @@ camptocamp/geomapfish:latest:
   ubuntu_24_04/libdbus-1-3: 1.14.10-4ubuntu4.1
   ubuntu_24_04/libdebconfclient0: 0.271ubuntu3
   ubuntu_24_04/libdeflate0: 1.19-1build1.1
-  ubuntu_24_04/libdevmapper1.02.1: 2:1.02.185-3ubuntu3.1
+  ubuntu_24_04/libdevmapper1.02.1: 2:1.02.185-3ubuntu3.2
   ubuntu_24_04/libdrm-amdgpu1: 2.4.122-1~ubuntu0.24.04.1
   ubuntu_24_04/libdrm-common: 2.4.122-1~ubuntu0.24.04.1
   ubuntu_24_04/libdrm-intel1: 2.4.122-1~ubuntu0.24.04.1
@@ -4205,7 +4205,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_24_04/libcom-err2: 1.47.0-2.4~exp1ubuntu4.1
   ubuntu_24_04/libcrypt-dev: 1:4.4.36-4build1
   ubuntu_24_04/libcrypt1: 1:4.4.36-4build1
-  ubuntu_24_04/libcryptsetup12: 2:2.7.0-1ubuntu4.1
+  ubuntu_24_04/libcryptsetup12: 2:2.7.0-1ubuntu4.2
   ubuntu_24_04/libcups2t64: 2.4.7-1.2ubuntu7.3
   ubuntu_24_04/libcurl3t64-gnutls: 8.5.0-2ubuntu10.6
   ubuntu_24_04/libcurl4t64: 8.5.0-2ubuntu10.6
@@ -4214,7 +4214,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_24_04/libdbus-1-3: 1.14.10-4ubuntu4.1
   ubuntu_24_04/libdebconfclient0: 0.271ubuntu3
   ubuntu_24_04/libdeflate0: 1.19-1build1.1
-  ubuntu_24_04/libdevmapper1.02.1: 2:1.02.185-3ubuntu3.1
+  ubuntu_24_04/libdevmapper1.02.1: 2:1.02.185-3ubuntu3.2
   ubuntu_24_04/libdrm-amdgpu1: 2.4.122-1~ubuntu0.24.04.1
   ubuntu_24_04/libdrm-common: 2.4.122-1~ubuntu0.24.04.1
   ubuntu_24_04/libdrm-intel1: 2.4.122-1~ubuntu0.24.04.1
