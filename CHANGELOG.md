@@ -1,3 +1,7 @@
+##### 2.9.rc.83
+
+- Fill the changelog, some small bug fix [c2cgeoportal#11752](https://github.com/camptocamp/c2cgeoportal/pull/11752)
+
 ##### 2.9.rc.82
 
 - Audit Dpkg 2.9 [c2cgeoportal#11753](https://github.com/camptocamp/c2cgeoportal/pull/11753)
