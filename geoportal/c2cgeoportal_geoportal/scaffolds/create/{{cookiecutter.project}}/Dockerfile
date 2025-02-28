@@ -21,7 +21,9 @@ COPY . /tmp/config/
 ARG SIMPLE
 ENV SIMPLE=$SIMPLE
 
-RUN build-l10n "{{cookiecutter.package}}"
+RUN npm view commander version \
+    && npm info commander version \
+    && build-l10n "{{cookiecutter.package}}"
 
 ARG PGSCHEMA
 ENV PGSCHEMA=$PGSCHEMA
