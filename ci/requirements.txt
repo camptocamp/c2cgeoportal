@@ -1,2 +1,2 @@
-c2cciutils==1.1.47
+c2cciutils==1.1.48
 setuptools>=65.5.1
