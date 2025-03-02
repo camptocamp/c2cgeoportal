@@ -2607,13 +2607,13 @@ twisted = ["twisted"]
 
 [[package]]
 name = "prospector"
-version = "1.14.1"
+version = "1.15.2"
 description = "Prospector is a tool to analyse Python code by aggregating the result of other tools."
 optional = false
 python-versions = "<4.0,>=3.9"
 files = [
-    {file = "prospector-1.14.1-py3-none-any.whl", hash = "sha256:3cdb71c20c26a72a370e94de7f47f8492299d8843af3be5c5d7d5118d591e910"},
-    {file = "prospector-1.14.1.tar.gz", hash = "sha256:4f969c7d3df9f81c3c626e92ea25c243627da2d707285805ad36ed7c378ee3ec"},
+    {file = "prospector-1.15.2-py3-none-any.whl", hash = "sha256:06f8986e96a2d7f82904821710745418496e5c163241a922cac8dc3e3bc7dd43"},
+    {file = "prospector-1.15.2.tar.gz", hash = "sha256:e080667fc33baa93f5b2ab3d88650bbef201a9edcb1982a3ccf6b0696e1f4ab0"},
 ]
 
 [package.dependencies]
@@ -2660,17 +2660,17 @@ files = [
 
 [[package]]
 name = "prospector-profile-utils"
-version = "1.17.0"
+version = "1.21.8"
 description = "Some utility Prospector profiles."
 optional = false
-python-versions = "<4.0,>=3.9"
+python-versions = "*"
 files = [
-    {file = "prospector_profile_utils-1.17.0-py3-none-any.whl", hash = "sha256:0cb7fe9dfca2b49c21733bbc4d3aabd51c7c0890c5e636b8d2f7b81c342aef6e"},
-    {file = "prospector_profile_utils-1.17.0.tar.gz", hash = "sha256:ac75faf9b13a6b6c18173cad71e6879e6ac40c5f5fda57c69f064b8a955705bd"},
+    {file = "prospector_profile_utils-1.21.8-py2.py3-none-any.whl", hash = "sha256:22f9672ccededdbd182af535344377333984124b81f8a33db385c65f10a2f9ea"},
+    {file = "prospector_profile_utils-1.21.8.tar.gz", hash = "sha256:dfec081aa1fd4ec5a963c4019416b4c199bfdd4fb820eaa216be6ca47e9da70e"},
 ]
 
 [package.dependencies]
-prospector = ">=1.13.0"
+prospector = {version = ">=1.14.0", extras = ["with-mypy", "with-ruff"]}
 
 [[package]]
 name = "protobuf"
@@ -4910,4 +4910,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "85f02236b095a1dfd7a59102d0968a72ba0de80a780437a12221edb94ed5aa8e"
+content-hash = "e1218a9d3394d4b8c09b817c35c89b2f2546586b096c90c61bea8907ec00e44a"
