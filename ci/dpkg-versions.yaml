@@ -2638,6 +2638,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_24_04/tar: 1.35+dfsg-3build1
   ubuntu_24_04/tzdata: 2024b-0ubuntu0.24.04.1
   ubuntu_24_04/ubuntu-keyring: 2023.11.28.1
+  ubuntu_24_04/unminimize: 0.2.1
   ubuntu_24_04/unzip: 6.0-28ubuntu4.1
   ubuntu_24_04/util-linux: 2.39.3-9ubuntu6.2
   ubuntu_24_04/x11-common: 1:7.7+23ubuntu3
