@@ -1,3 +1,8 @@
+##### 2.8.1.194
+
+- Fallback tiles without WebGL [ngeo#9619](https://github.com/camptocamp/ngeo/pull/9619)
+- Update dependency rxjs to v7.8.2 (2.8) [ngeo#9624](https://github.com/camptocamp/ngeo/pull/9624)
+
 ##### 2.8.1.191
 
 - [Backport 2.8] Use with statement for the SMTP connection [c2cgeoportal#11748](https://github.com/camptocamp/c2cgeoportal/pull/11748)
