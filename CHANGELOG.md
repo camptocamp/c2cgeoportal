@@ -1,3 +1,8 @@
+##### 2.9.rc.87
+
+- Audit Snyk check/fix 2.9 [ngeo#9625](https://github.com/camptocamp/ngeo/pull/9625)
+- [Backport 2.9] Fallback tiles without WebGL [ngeo#9627](https://github.com/camptocamp/ngeo/pull/9627)
+
 ##### 2.9.rc.86
 
 - Audit Snyk check/fix 2.9 [c2cgeoportal#11772](https://github.com/camptocamp/c2cgeoportal/pull/11772)
