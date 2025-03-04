@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2024, Camptocamp SA
+# Copyright (c) 2011-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -899,6 +899,7 @@ class Theme:
     ) -> tuple[xml.etree.ElementTree.Element | None, set[str]]:  # pylint: disable=c-extension-no-member
         errors = set()
 
+        wfs_url = wfs_url.clone()
         wfs_url.add_query(
             {
                 "SERVICE": "WFS",
