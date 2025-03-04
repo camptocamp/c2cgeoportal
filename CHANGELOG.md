@@ -1,3 +1,7 @@
+##### 2.8.1.195
+
+- Audit Snyk check/fix 2.8 [c2cgeoportal#11776](https://github.com/camptocamp/c2cgeoportal/pull/11776)
+
 ##### 2.8.1.194
 
 - Fallback tiles without WebGL [ngeo#9619](https://github.com/camptocamp/ngeo/pull/9619)
