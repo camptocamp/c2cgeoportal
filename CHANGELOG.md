@@ -1,3 +1,7 @@
+##### 2.9.rc.90
+
+- Don't add and ignore apihelp phantomjs check [c2cgeoportal#11779](https://github.com/camptocamp/c2cgeoportal/pull/11779)
+
 ##### 2.9.rc.89
 
 - Don't alter the URL when adding the query [c2cgeoportal#11775](https://github.com/camptocamp/c2cgeoportal/pull/11775)
