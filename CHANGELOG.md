@@ -1,3 +1,7 @@
+##### 2.9.rc.91
+
+- Audit Dpkg 2.9 [c2cgeoportal#11780](https://github.com/camptocamp/c2cgeoportal/pull/11780)
+
 ##### 2.9.rc.90
 
 - Don't add and ignore apihelp phantomjs check [c2cgeoportal#11779](https://github.com/camptocamp/c2cgeoportal/pull/11779)
