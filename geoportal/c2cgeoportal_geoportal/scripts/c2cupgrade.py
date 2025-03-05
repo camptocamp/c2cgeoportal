@@ -867,7 +867,7 @@ class C2cUpgradeTool:
         print("")
         branch = check_output(["git", "rev-parse", "--abbrev-ref", "HEAD"]).decode("utf-8").strip()
         print("Now all your files are committed; you should do a git push:")
-        print(f"git push {self.options.git_remote} {branch}.")
+        print(f"git push {self.options.git_remote} {branch}")
 
 
 def check_git_status_output(args: list[str] | None = None) -> str:

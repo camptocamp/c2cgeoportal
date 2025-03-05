@@ -290,8 +290,6 @@ vars:
     #         longitudeFirst: True
     #         layers: []
     #       legend: {}
-    phantomjs:
-      disable: [apihelp]
 
   check_collector:
     hosts: []
