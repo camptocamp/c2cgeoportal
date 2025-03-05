@@ -1233,9 +1233,6 @@ vars:
             no_redirect: 'true'
           environment: *phantomjs-env
           level: 6
-        - name: apihelp
-          environment: *phantomjs-env
-          level: 6
     routes:
       disable: []
       routes:
