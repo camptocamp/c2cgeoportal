@@ -769,6 +769,7 @@ vars:
           An OGCServer metadata must be set with the name of the OGC server.
         relevant_for:
           - layer_wmts
+          - layer_wms
       - name: printLayers
         description: >
           Corresponding WMS layers (comma separated) that will be used instead of the WMTS layer
