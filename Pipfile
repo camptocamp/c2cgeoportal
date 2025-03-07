@@ -81,7 +81,7 @@ idna = "==3.7"
 importlib-metadata = "==4.11.4"
 importlib-resources = "==5.4.0"
 iso8601 = "==1.0.2"
-jinja2 = "==3.1.5"
+jinja2 = "==3.1.6"
 jinja2-time = "==0.2.0"
 jmespath = "==0.10.0"
 lingua = "==4.15.0"
@@ -138,7 +138,7 @@ zipp = "==3.19.3"
 "zope.interface" = "==5.4.0"
 "zope.sqlalchemy" = "==1.6"
 cryptography = "==44.0.1"
-msal = "==1.24.1"
+msal = "==1.27.0"
 
 [dev-packages]
 awscli = "==0.7.0"  # Work with Object storage
