@@ -42,4 +42,12 @@ ignore:
     - '*':
         reason: Not compatible with Python 3.6
         created: 2025-01-07T07:59:18.004Z
+  SNYK-PYTHON-JINJA2-9292516:
+    - '*':
+        reason: Not compatible with Python 3.6
+        created: 2025-03-07T10:42:30.614Z
+  SNYK-PYTHON-JINJA2-*:
+    - '*':
+        reason: Not compatible with Python 3.6
+        created: 2025-03-07T10:43:31.804Z
 patch: {}
