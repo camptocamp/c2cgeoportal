@@ -1,3 +1,7 @@
+##### 2.8.1.197
+
+- The queryLayers metadata is also valid on a WMS layer [c2cgeoportal#11785](https://github.com/camptocamp/c2cgeoportal/pull/11785)
+
 ##### 2.8.1.196
 
 - Audit Snyk check/fix 2.8 [c2cgeoportal#11783](https://github.com/camptocamp/c2cgeoportal/pull/11783)
