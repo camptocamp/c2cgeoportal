@@ -1,3 +1,8 @@
+##### 2.9.rc.93
+
+- Set the c2cciutils version in the schema [c2cgeoportal#11788](https://github.com/camptocamp/c2cgeoportal/pull/11788)
+- Fix alembic logging [c2cgeoportal#11789](https://github.com/camptocamp/c2cgeoportal/pull/11789)
+
 ##### 2.9.rc.92
 
 - Audit Snyk check/fix 2.9 [c2cgeoportal#11784](https://github.com/camptocamp/c2cgeoportal/pull/11784)
