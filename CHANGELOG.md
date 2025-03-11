@@ -1,3 +1,7 @@
+##### 2.9.rc.94
+
+- [Backport 2.9] The queryLayers metadata is also valid on a WMS layer [c2cgeoportal#11787](https://github.com/camptocamp/c2cgeoportal/pull/11787)
+
 ##### 2.9.rc.93
 
 - Set the c2cciutils version in the schema [c2cgeoportal#11788](https://github.com/camptocamp/c2cgeoportal/pull/11788)
