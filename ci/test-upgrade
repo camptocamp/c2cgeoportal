@@ -94,6 +94,7 @@ function upgrade {
     cp CONST_create_template/project.yaml .
     if [ -e .UPGRADE10 ]; then
         # Workaround
+        git add project.yaml
         git status > /dev/null
         git apply --3way create.diff
         git add --all
