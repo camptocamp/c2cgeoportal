@@ -805,6 +805,7 @@ vars:
         relevant_for:
           - layer_wmts
           - layer_cog
+          - layer_wms
       - name: printLayers
         description: >
           Comma-separated list of WMS layers used instead of the WMTS layer for printing.
