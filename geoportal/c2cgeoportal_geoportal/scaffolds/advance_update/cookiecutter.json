@@ -5,6 +5,8 @@
   "extent": "",
   "extent_mapserver": "",
   "authtkt_secret": "",
+  "tilecloud_chain_session_secret": "",
+  "tilecloud_chain_session_salt": "",
   "unsafe_long_version": false,
   "geomapfish_version": "",
   "geomapfish_main_version": "",

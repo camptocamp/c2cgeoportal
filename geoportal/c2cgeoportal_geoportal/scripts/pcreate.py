@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2024, Camptocamp SA
+# Copyright (c) 2021-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -178,7 +178,9 @@ class PCreateCommand:
         context: dict[str, str | int] = {
             "project": project_name,
             "package": pkg_name,
-            "authtkt_secret": gen_authtkt_secret(),
+            "authtkt_secret": gen_secret(),
+            "tilecloud_chain_session_secret": "secret" if os.environ.get("CI") == "true" else gen_secret(),
+            "tilecloud_chain_session_salt": "secret" if os.environ.get("CI") == "true" else gen_secret(16),
         }
         context.update(self.read_project_file())
         if os.environ.get("CI") == "true":
@@ -287,9 +289,13 @@ class PCreateCommand:
         return None
 
 
-def gen_authtkt_secret() -> str:
-    """Generate a random authtkt secret."""
-    return subprocess.run(["pwgen", "64"], stdout=subprocess.PIPE, check=True).stdout.decode().strip()
+def gen_secret(length: int = 64) -> str:
+    """Generate a random secret."""
+    return (
+        subprocess.run(["pwgen", "--secure", str(length)], stdout=subprocess.PIPE, check=True)
+        .stdout.decode()
+        .strip()
+    )
 
 
 if __name__ == "__main__":  # pragma: no cover
