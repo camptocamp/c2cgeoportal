@@ -842,6 +842,7 @@ vars:
           Background layer to load when this theme is selected.
         relevant_for:
           - theme
+          - role
       - name: default_theme
         single: true
         description: >
