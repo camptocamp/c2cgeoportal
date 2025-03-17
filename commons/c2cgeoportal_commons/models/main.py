@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2024, Camptocamp SA
+# Copyright (c) 2011-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -748,7 +748,9 @@ class OGCServer(Base):  # type: ignore
             "colanderalchemy": {
                 "title": _("Name"),
                 "description": _(
-                    "The name of the OGC Server, should contains only no unaccentuated letters, numbers and _"
+                    "The name of the OGC Server, should contains only no unaccentuated letters, numbers and _. "
+                    "When you rename it don't miss to update the <code>ogcServer<code> metadata on the "
+                    "WMTS and COG layers."
                 ),
             }
         },
@@ -758,7 +760,7 @@ class OGCServer(Base):  # type: ignore
         info={
             "colanderalchemy": {
                 "title": _("Description"),
-                "description": _("A description"),
+                "description": _("An optional description."),
             }
         },
     )
@@ -768,7 +770,7 @@ class OGCServer(Base):  # type: ignore
         info={
             "colanderalchemy": {
                 "title": _("Basic URL"),
-                "description": _("The server URL"),
+                "description": _("The server URL."),
             }
         },
     )
@@ -1121,7 +1123,7 @@ class LayerWMTS(DimensionLayer):
         info={
             "colanderalchemy": {
                 "title": _("WMTS layer name"),
-                "description": _("The name of the WMTS layer to use"),
+                "description": _("The name of the WMTS layer to use."),
                 "column": 2,
             }
         },
@@ -1324,7 +1326,7 @@ class LayerVectorTiles(DimensionLayer):
                 "title": _("Style"),
                 "description": _(
                     """
-                    The path to a Mapbox Style file (version 8 or higher). Example: https://url/style.json
+                    The path to a Mapbox Style file (version 8 or higher). Example: https://url/style.json.
                     """
                 ),
                 "column": 2,
@@ -1338,11 +1340,7 @@ class LayerVectorTiles(DimensionLayer):
         info={
             "colanderalchemy": {
                 "title": _("SQL query"),
-                "description": _(
-                    """
-                    A SQL query to get the vector tiles data.
-                    """
-                ),
+                "description": _("A SQL query to get the vector tiles data."),
                 "column": 2,
                 "widget": TextAreaWidget(rows=15),
             }
@@ -1411,7 +1409,7 @@ class RestrictionArea(Base):  # type: ignore
         info={
             "colanderalchemy": {
                 "title": _("Description"),
-                "description": _("An optional description"),
+                "description": _("An optional description."),
             }
         },
     )
