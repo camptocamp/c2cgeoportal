@@ -1,3 +1,7 @@
+##### 2.9.rc.96
+
+- OGC server metadata update [c2cgeoportal#11795](https://github.com/camptocamp/c2cgeoportal/pull/11795)
+
 ##### 2.9.rc.95
 
 - Add missing TileCloud-chain secret generation and forward [c2cgeoportal#11791](https://github.com/camptocamp/c2cgeoportal/pull/11791)
