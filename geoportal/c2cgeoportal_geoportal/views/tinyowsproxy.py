@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2024, Camptocamp SA
+# Copyright (c) 2015-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -30,6 +30,7 @@ import logging
 from typing import Any
 
 import pyramid.request
+import sqlalchemy.exc
 from defusedxml import ElementTree
 from pyramid.httpexceptions import HTTPBadRequest, HTTPForbidden, HTTPInternalServerError, HTTPUnauthorized
 from pyramid.view import view_config
@@ -59,11 +60,16 @@ class TinyOWSProxy(OGCProxy):
         self.settings = request.registry.settings.get("tinyowsproxy", {})
 
         assert "tinyows_url" in self.settings, "tinyowsproxy.tinyows_url must be set"
-        self.ogc_server = (
-            models.DBSession.query(main.OGCServer)
-            .filter(main.OGCServer.name == self.settings["ogc_server"])
-            .one()
-        )
+        try:
+            self.ogc_server = (
+                models.DBSession.query(main.OGCServer)
+                .filter(main.OGCServer.name == self.settings["ogc_server"])
+                .one()
+            )
+        except sqlalchemy.exc.NoResultFound:
+            raise HTTPBadRequest(  # pylint: disable=raise-missing-from
+                f"OGC server {self.settings['ogc_server']} not found"
+            )
 
         self.user = self.request.user
 
