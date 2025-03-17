@@ -1,4 +1,4 @@
-# Copyright (c) 2024, Camptocamp SA
+# Copyright (c) 2024-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -57,6 +57,9 @@ def upgrade() -> None:
     op.execute(
         f"UPDATE {schema}.ogc_server SET url = 'config://mapserver/mapserv_proxy/MapServer?MAP=MapServer' WHERE url = 'config://mapserver'"
     )
+    op.execute(
+        f"UPDATE {schema}.metadata SET value = 'MapServer' WHERE value = 'source for image/png' and name = 'ogcServer'"
+    )
 
 
 def downgrade() -> None:
@@ -68,4 +71,7 @@ def downgrade() -> None:
     op.execute(f"UPDATE {schema}.ogc_server SET name = 'source for image/jpeg' WHERE name = 'MapServer_JPEG'")
     op.execute(
         f"UPDATE {schema}.ogc_server SET url = 'config://mapserver' WHERE url = 'config://mapserver/mapserv_proxy/MapServer?MAP=MapServer'"
+    )
+    op.execute(
+        f"UPDATE {schema}.metadata SET value = 'source for image/png' WHERE value = 'MapServer' and name = 'ogcServer'"
     )
