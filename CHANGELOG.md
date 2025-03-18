@@ -1,3 +1,8 @@
+##### 2.9.rc.98
+
+- Audit Snyk check/fix 2.9 [ngeo#9628](https://github.com/camptocamp/ngeo/pull/9628)
+- Fix Font Awesome moving icon [ngeo#9629](https://github.com/camptocamp/ngeo/pull/9629)
+
 ##### 2.9.rc.97
 
 - Audit Dpkg 2.9 [c2cgeoportal#11798](https://github.com/camptocamp/c2cgeoportal/pull/11798)
