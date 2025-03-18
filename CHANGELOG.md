@@ -1,3 +1,7 @@
+##### 2.9.rc.99
+
+- Remove extra char [ngeo#9630](https://github.com/camptocamp/ngeo/pull/9630)
+
 ##### 2.9.rc.98
 
 - Audit Snyk check/fix 2.9 [ngeo#9628](https://github.com/camptocamp/ngeo/pull/9628)
