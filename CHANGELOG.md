@@ -1,3 +1,7 @@
+##### 2.9.rc.97
+
+- Audit Dpkg 2.9 [c2cgeoportal#11798](https://github.com/camptocamp/c2cgeoportal/pull/11798)
+
 ##### 2.9.rc.96
 
 - OGC server metadata update [c2cgeoportal#11795](https://github.com/camptocamp/c2cgeoportal/pull/11795)
