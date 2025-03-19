@@ -1,3 +1,7 @@
+##### 2.9.rc.102
+
+- Audit Dpkg 2.9 [c2cgeoportal#11804](https://github.com/camptocamp/c2cgeoportal/pull/11804)
+
 ##### 2.9.rc.101
 
 - Fix publish version from the Update ngeo workflows [c2cgeoportal#11802](https://github.com/camptocamp/c2cgeoportal/pull/11802)
