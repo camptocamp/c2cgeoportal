@@ -130,6 +130,10 @@ if os.environ.get("GITHUB_WORKFLOW", "").startswith("Rebuild"):
     branch = main_branch
     versions = [major_minor, major_version]
     snyk_version = major_minor
+elif os.environ.get("GITHUB_WORKFLOW", "").startswith("Update ngeo "):
+    branch = main_branch
+    versions = [major_minor, major_version, full]
+    snyk_version = major_minor
 else:
     if os.environ.get("GITHUB_REF", "").startswith("refs/heads/"):
         branch = os.environ["GITHUB_REF"][11:]
