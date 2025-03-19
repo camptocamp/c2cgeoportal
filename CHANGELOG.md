@@ -1,3 +1,7 @@
+##### 2.9.rc.101
+
+- Fix publish version from the Update ngeo workflows [c2cgeoportal#11802](https://github.com/camptocamp/c2cgeoportal/pull/11802)
+
 ##### 2.9.rc.100
 
 - Better error on missing OGC Server [c2cgeoportal#11796](https://github.com/camptocamp/c2cgeoportal/pull/11796)
