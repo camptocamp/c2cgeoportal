@@ -1,3 +1,7 @@
+##### 2.8.1.199
+
+- [Backport 2.8] Fix black outline on drawn polygon with annotation [ngeo#9635](https://github.com/camptocamp/ngeo/pull/9635)
+
 ##### 2.8.1.198
 
 - Audit Snyk check/fix 2.8 [c2cgeoportal#11794](https://github.com/camptocamp/c2cgeoportal/pull/11794)
