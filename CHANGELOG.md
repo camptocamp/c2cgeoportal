@@ -1,3 +1,7 @@
+##### 2.9.rc.100
+
+- Better error on missing OGC Server [c2cgeoportal#11796](https://github.com/camptocamp/c2cgeoportal/pull/11796)
+
 ##### 2.9.rc.99
 
 - Remove extra char [ngeo#9630](https://github.com/camptocamp/ngeo/pull/9630)
