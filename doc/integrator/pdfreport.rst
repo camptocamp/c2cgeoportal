@@ -25,7 +25,7 @@ The service is configured in the main ``vars.yaml`` file of the project, as show
         pdfreport:
             print_url: '{print_url}'
             layer-defaults: &pdfreport-layer-default
-                ogcserver: source for image/png
+                ogcserver: MapServer
                 check_credentials: True
                 srs: EPSG:2056
                 map:
