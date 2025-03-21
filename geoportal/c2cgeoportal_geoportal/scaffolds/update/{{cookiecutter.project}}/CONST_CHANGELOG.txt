@@ -95,6 +95,13 @@ Changes to apply
    Controller.$inject = ['$scope', '$injector'];
    ```
 
+4. The OGC Server 'source for image/png' is renamed to 'MapServer' and
+   'source for image/jpeg' is renamed to 'MapServer_JPEG'.
+   This is done to be able to add them in the URL path, for OGC API compatibility.
+   If you use one of them in the `vars.yaml` you have to update them. Concerned variables are:
+   `main_ogc_server`, `api.ogc_server`, `tinyowsproxy.ogc_server`,
+   `interfaces_config.<interface>.routes.ngeoPermalinkOgcserverUrl.params.ogcserver`.
+
 
 =============
 Version 2.8.0
