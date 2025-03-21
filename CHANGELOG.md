@@ -1,3 +1,7 @@
+##### 2.9.rc.103
+
+- Update the changelog for the OGC API renaming [c2cgeoportal#11805](https://github.com/camptocamp/c2cgeoportal/pull/11805)
+
 ##### 2.9.rc.102
 
 - Audit Dpkg 2.9 [c2cgeoportal#11804](https://github.com/camptocamp/c2cgeoportal/pull/11804)
