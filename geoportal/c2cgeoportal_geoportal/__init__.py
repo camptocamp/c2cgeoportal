@@ -445,7 +445,7 @@ def create_get_user_from_request(
                     request.user_ = (
                         DBSession.query(User)
                         .filter_by(username=username, deactivated=False)
-                        .options(joinedload(User.roles))
+                        .options(joinedload(User.roles), joinedload(User.settings_role))
                         .first()
                     )
 
