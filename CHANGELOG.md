@@ -1,3 +1,10 @@
+##### 2.9.rc.106
+
+- Audit Snyk check/fix 2.9 [c2cgeoportal#11809](https://github.com/camptocamp/c2cgeoportal/pull/11809)
+- Fix black outline on drawn polygon with annotation [ngeo#9633](https://github.com/camptocamp/ngeo/pull/9633)
+- Audit Snyk check/fix 2.9 [ngeo#9636](https://github.com/camptocamp/ngeo/pull/9636)
+- Audit Snyk check/fix 2.9 [ngeo#9637](https://github.com/camptocamp/ngeo/pull/9637)
+
 ##### 2.9.rc.105
 
 - Audit Snyk check/fix 2.9 [c2cgeoportal#11808](https://github.com/camptocamp/c2cgeoportal/pull/11808)
