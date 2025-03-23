@@ -1,3 +1,7 @@
+##### 2.9.rc.107
+
+- Audit Snyk check/fix 2.9 [ngeo#9638](https://github.com/camptocamp/ngeo/pull/9638)
+
 ##### 2.9.rc.106
 
 - Audit Snyk check/fix 2.9 [c2cgeoportal#11809](https://github.com/camptocamp/c2cgeoportal/pull/11809)
