@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "1541e0e1cfd2088b5fb5318ca98fce8a258d7e69e64d7cef9c2a47a78523c0ee"
+            "sha256": "192c62cfa5be76f19de1b26e140e731057a6af004379cb6f65c7c5611deac005"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -394,11 +394,11 @@
         },
         "gunicorn": {
             "hashes": [
-                "sha256:350679f91b24062c86e386e198a15438d53a7a8207235a78ba1b53df4c4378d9",
-                "sha256:4a0b436239ff76fb33f11c07a16482c521a7e09c1ce3cc293c2330afe01bec63"
+                "sha256:ec400d38950de4dfd418cff8328b2c8faed0edb0d517d3394e457c317908ca4d",
+                "sha256:f014447a0101dc57e294f6c18ca6b40227a4c90e9bdb586042628030cba004ec"
             ],
             "index": "pypi",
-            "version": "==22.0.0"
+            "version": "==23.0.0"
         },
         "hupper": {
             "hashes": [
@@ -2397,7 +2397,7 @@
                 "sha256:3fba9dd15ebe048e2795a02ac19baee79dc12cc50b074ef70f2958cd651b59a9",
                 "sha256:ce5c714e984a2d185399e4e1dd1f8b2feacb7cecfc576f1522425643a36a57ea"
             ],
-            "markers": "python_version < '4' and python_full_version >= '3.6.2'",
+            "markers": "python_full_version >= '3.6.2' and python_full_version < '4.0.0'",
             "version": "==12.0.1"
         },
         "rsa": {
