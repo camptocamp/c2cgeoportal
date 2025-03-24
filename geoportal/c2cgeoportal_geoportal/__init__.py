@@ -433,6 +433,8 @@ def create_get_user_from_request(
                         .options(joinedload(User.roles), joinedload(User.settings_role))
                         .first()
                     )
+        elif isinstance(request.user_, User):
+            DBSession.add(request.user_)
 
         return cast(User, request.user_)
 

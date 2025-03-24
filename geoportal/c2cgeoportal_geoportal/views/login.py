@@ -81,9 +81,6 @@ class Login:
 
     def _functionality(self) -> dict[str, list[str | int | float | bool | list[Any] | dict[str, Any]]]:
         functionality = {}
-        if hasattr(self.request, "user_") and self.request.user_ is not None and models.DBSession is not None:
-            models.DBSession.add(self.request.user_)
-
         for func_ in get_setting(self.settings, ("functionalities", "available_in_templates"), []):
             functionality[func_] = get_functionality(func_, self.request, is_intranet(self.request))
         return functionality
