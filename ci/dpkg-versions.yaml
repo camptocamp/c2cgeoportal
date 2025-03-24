@@ -488,7 +488,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libxxhash0: 0.8.1-1
   ubuntu_22_04/libzip4: 1.7.3-1ubuntu2
   ubuntu_22_04/libzstd1: 1.4.8+dfsg-3build1
-  ubuntu_22_04/linux-libc-dev: 5.15.0-134.145
+  ubuntu_22_04/linux-libc-dev: 5.15.0-135.146
   ubuntu_22_04/login: 1:4.8.1-2ubuntu2.2
   ubuntu_22_04/logsave: 1.46.5-2ubuntu1.2
   ubuntu_22_04/lsb-base: 11.1.0ubuntu4
@@ -935,7 +935,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libxxhash0: 0.8.1-1
   ubuntu_22_04/libzip4: 1.7.3-1ubuntu2
   ubuntu_22_04/libzstd1: 1.4.8+dfsg-3build1
-  ubuntu_22_04/linux-libc-dev: 5.15.0-134.145
+  ubuntu_22_04/linux-libc-dev: 5.15.0-135.146
   ubuntu_22_04/login: 1:4.8.1-2ubuntu2.2
   ubuntu_22_04/logsave: 1.46.5-2ubuntu1.2
   ubuntu_22_04/lsb-base: 11.1.0ubuntu4
@@ -1350,7 +1350,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_24_04/libzip4t64: 1.7.3-1.1ubuntu2
   ubuntu_24_04/libzstd1: 1.5.5+dfsg2-2build1.1
   ubuntu_24_04/lighttpd: 1.4.74-1ubuntu3
-  ubuntu_24_04/linux-libc-dev: 6.8.0-55.57
+  ubuntu_24_04/linux-libc-dev: 6.8.0-56.58
   ubuntu_24_04/login: 1:4.13+dfsg1-4ubuntu3.2
   ubuntu_24_04/logsave: 1.47.0-2.4~exp1ubuntu4.1
   ubuntu_24_04/mawk: 1.3.4.20240123-1build1
@@ -1767,7 +1767,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_24_04/libzip4t64: 1.7.3-1.1ubuntu2
   ubuntu_24_04/libzstd1: 1.5.5+dfsg2-2build1.1
   ubuntu_24_04/lighttpd: 1.4.74-1ubuntu3
-  ubuntu_24_04/linux-libc-dev: 6.8.0-55.57
+  ubuntu_24_04/linux-libc-dev: 6.8.0-56.58
   ubuntu_24_04/login: 1:4.13+dfsg1-4ubuntu3.2
   ubuntu_24_04/logsave: 1.47.0-2.4~exp1ubuntu4.1
   ubuntu_24_04/mawk: 1.3.4.20240123-1build1
@@ -2178,7 +2178,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/libzip4t64: 1.7.3-1.1ubuntu2
   ubuntu_24_04/libzstd1: 1.5.5+dfsg2-2build1.1
   ubuntu_24_04/lighttpd: 1.4.74-1ubuntu3
-  ubuntu_24_04/linux-libc-dev: 6.8.0-55.57
+  ubuntu_24_04/linux-libc-dev: 6.8.0-56.58
   ubuntu_24_04/login: 1:4.13+dfsg1-4ubuntu3.2
   ubuntu_24_04/logsave: 1.47.0-2.4~exp1ubuntu4.1
   ubuntu_24_04/mawk: 1.3.4.20240123-1build1
@@ -2588,7 +2588,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_24_04/libzip4t64: 1.7.3-1.1ubuntu2
   ubuntu_24_04/libzstd1: 1.5.5+dfsg2-2build1.1
   ubuntu_24_04/lighttpd: 1.4.74-1ubuntu3
-  ubuntu_24_04/linux-libc-dev: 6.8.0-55.57
+  ubuntu_24_04/linux-libc-dev: 6.8.0-56.58
   ubuntu_24_04/login: 1:4.13+dfsg1-4ubuntu3.2
   ubuntu_24_04/logsave: 1.47.0-2.4~exp1ubuntu4.1
   ubuntu_24_04/mawk: 1.3.4.20240123-1build1
@@ -3013,7 +3013,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/libyaml-0-2: 0.2.5-1build1
   ubuntu_24_04/libzix-0-0: 0.4.2-2build1
   ubuntu_24_04/libzstd1: 1.5.5+dfsg2-2build1.1
-  ubuntu_24_04/linux-libc-dev: 6.8.0-55.57
+  ubuntu_24_04/linux-libc-dev: 6.8.0-56.58
   ubuntu_24_04/login: 1:4.13+dfsg1-4ubuntu3.2
   ubuntu_24_04/logsave: 1.47.0-2.4~exp1ubuntu4.1
   ubuntu_24_04/lsb-release: 12.0-2
