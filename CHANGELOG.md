@@ -1,3 +1,7 @@
+##### 2.9.rc.110
+
+- [Backport 2.9] The default_basemap is also valid on role [c2cgeoportal#11815](https://github.com/camptocamp/c2cgeoportal/pull/11815)
+
 ##### 2.9.rc.109
 
 - Audit Dpkg 2.9 [c2cgeoportal#11812](https://github.com/camptocamp/c2cgeoportal/pull/11812)
