@@ -1,0 +1,12 @@
+Backport of #11793 to 2.9
+
+Error on cherry-picking: eb47d01da0e3676fa0b8b153d8c894a8b6b86595
+
+To continue do:
+```bash
+git fetch && \
+  git checkout ghci/backport/11793-to-2.9 && \
+  git reset --hard HEAD^ && \
+  git cherry-pick eb47d01da0e3676fa0b8b153d8c894a8b6b86595
+git push origin ghci/backport/11793-to-2.9 --force
+```
