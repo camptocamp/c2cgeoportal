@@ -1,3 +1,9 @@
+##### 2.9.rc.111
+
+- [Backport 2.9] Disable modifying geometry if 'geom' is part of readonlyAttributes [ngeo#9642](https://github.com/camptocamp/ngeo/pull/9642)
+- Fix syntax error on iOS [ngeo#9643](https://github.com/camptocamp/ngeo/pull/9643)
+- Audit Snyk check/fix 2.9 [ngeo#9645](https://github.com/camptocamp/ngeo/pull/9645)
+
 ##### 2.9.rc.110
 
 - [Backport 2.9] The default_basemap is also valid on role [c2cgeoportal#11815](https://github.com/camptocamp/c2cgeoportal/pull/11815)
