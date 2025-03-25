@@ -1,3 +1,7 @@
+##### 2.8.1.200
+
+- The default_basemap is also valid on role [c2cgeoportal#11793](https://github.com/camptocamp/c2cgeoportal/pull/11793)
+
 ##### 2.8.1.199
 
 - [Backport 2.8] Fix black outline on drawn polygon with annotation [ngeo#9635](https://github.com/camptocamp/ngeo/pull/9635)
