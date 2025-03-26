@@ -6,7 +6,6 @@ on:
 
 # To publish the images to be used on Kubernetes
 # env:
-#   PROJECT: {{cookiecutter.package}}
 #   HAS_SECRETS: ${{'{{'}} secrets.HAS_SECRETS }}
 
 jobs:
@@ -19,6 +18,7 @@ jobs:
       - uses: actions/checkout@v4
 
       # To publish the images to be used on Kubernetes
+      # Requires CI_GPG_PRIVATE_KEY and GOPASS_CI_GITHUB_TOKEN secrets.
       # - uses: camptocamp/initialise-gopass-summon-action@v2
       #   with:
       #     ci-gpg-private-key: ${{'{{'}} secrets.CI_GPG_PRIVATE_KEY }}
