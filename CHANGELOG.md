@@ -1,3 +1,7 @@
+##### 2.9.rc.112
+
+- Cleanup the project workflows [c2cgeoportal#11817](https://github.com/camptocamp/c2cgeoportal/pull/11817)
+
 ##### 2.9.rc.111
 
 - [Backport 2.9] Disable modifying geometry if 'geom' is part of readonlyAttributes [ngeo#9642](https://github.com/camptocamp/ngeo/pull/9642)
