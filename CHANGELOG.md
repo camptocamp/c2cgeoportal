@@ -1,3 +1,7 @@
+##### 2.9.rc.113
+
+- Audit Dpkg 2.9 [c2cgeoportal#11821](https://github.com/camptocamp/c2cgeoportal/pull/11821)
+
 ##### 2.9.rc.112
 
 - Cleanup the project workflows [c2cgeoportal#11817](https://github.com/camptocamp/c2cgeoportal/pull/11817)
