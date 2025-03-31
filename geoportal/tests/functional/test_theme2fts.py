@@ -217,7 +217,9 @@ class TestImport:
         Import(dbsession, settings, options())
 
         # languages * interfaces * (themes + groups + layers)
-        total = 4 * 2 * (2 + 2 + 2)
+        total = 4 * 2 * (1 + 1 + 1)
+        # private: languages * interfaces * (themes + layers) * roles
+        total += 4 * 2 * (1 + 1) * 5
         assert dbsession.query(main.FullTextSearch).count() == total
 
         for lang in settings["available_locale_names"]:
