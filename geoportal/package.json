@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@snyk/protect": "1.1295.2",
-    "ngeo": "2.9.0-version-2.9-latest.20250217T102837Z.71410b4b6.2.9",
+    "ngeo": "2.10.0-latest.20250324T163358Z.c27872b62",
     "ol": "10.3.1",
     "puppeteer": "24.1.1"
   },
@@ -20,7 +20,7 @@
     "@sentry/browser": "8.54.0",
     "angular-gettext-tools": "2.5.3",
     "angular-mocks": "1.8.3",
-    "commander": "13.1.0",
+    "commander": "12.1.0",
     "copy-webpack-plugin": "12.0.2",
     "css-loader": "7.1.2",
     "cy-mobile-commands": "0.3.0",

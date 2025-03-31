@@ -74,7 +74,7 @@ minor = str(ci["minor"])
 
 last_tag = subprocess.check_output(["git", "describe", "--abbrev=0", "--tags"]).decode().strip()
 main_branch = os.environ.get("MAIN_BRANCH", "master")
-major_version = os.environ.get("MAJOR_VERSION", "2.9")
+major_version = os.environ.get("MAJOR_VERSION", "2.10")
 patch = ""
 if tag:
     patch = tag
