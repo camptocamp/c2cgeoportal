@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2024, Camptocamp SA
+# Copyright (c) 2020-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -200,7 +200,9 @@ class TestImport:
         Import(dbsession_old, settings, options())
 
         # languages * interfaces * (themes + groups + layers)
-        total = 4 * 2 * (2 + 2 + 2)
+        total = 4 * 2 * (1 + 1 + 1)
+        # private: languages * interfaces * (themes + layers) * roles
+        total += 4 * 2 * (1 + 1) * 5
         assert dbsession_old.query(main.FullTextSearch).count() == total
 
         for lang in settings["available_locale_names"]:
