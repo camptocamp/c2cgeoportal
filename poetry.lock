@@ -4532,13 +4532,13 @@ files = [
 
 [[package]]
 name = "types-pytz"
-version = "2024.2.0.20241221"
+version = "2025.2.0.20250326"
 description = "Typing stubs for pytz"
 optional = false
-python-versions = ">=3.8"
+python-versions = ">=3.9"
 files = [
-    {file = "types_pytz-2024.2.0.20241221-py3-none-any.whl", hash = "sha256:8fc03195329c43637ed4f593663df721fef919b60a969066e22606edf0b53ad5"},
-    {file = "types_pytz-2024.2.0.20241221.tar.gz", hash = "sha256:06d7cde9613e9f7504766a0554a270c369434b50e00975b3a4a0f6eed0f2c1a9"},
+    {file = "types_pytz-2025.2.0.20250326-py3-none-any.whl", hash = "sha256:3c397fd1b845cd2b3adc9398607764ced9e578a98a5d1fbb4a9bc9253edfb162"},
+    {file = "types_pytz-2025.2.0.20250326.tar.gz", hash = "sha256:deda02de24f527066fc8d6a19e284ab3f3ae716a42b4adb6b40e75e408c08d36"},
 ]
 
 [[package]]
@@ -4910,4 +4910,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "85f02236b095a1dfd7a59102d0968a72ba0de80a780437a12221edb94ed5aa8e"
+content-hash = "dfaa56f42461f783911e7b1c8f56f27097070fbbef312e09e03cb168a2379153"
