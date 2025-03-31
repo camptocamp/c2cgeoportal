@@ -27,6 +27,7 @@
 
 # pylint: disable=missing-docstring
 
+import logging
 from collections import namedtuple
 from unittest.mock import patch
 
@@ -34,6 +35,8 @@ import pytest
 from c2c.template.config import config as configuration
 
 from tests.functional import setup_common as setup_module
+
+_LOGGER = logging.getLogger(__name__)
 
 
 @pytest.fixture(scope="module")
@@ -203,7 +206,12 @@ class TestImport:
         total = 4 * 2 * (1 + 1 + 1)
         # private: languages * interfaces * (themes + layers) * roles
         total += 4 * 2 * (1 + 1) * 5
-        assert dbsession_old.query(main.FullTextSearch).count() == total
+        assert dbsession_old.query(main.FullTextSearch).count() == total, "\n".join(
+            [
+                ", ".join((fts.label, str(fts.lang), str(fts.interface), str(fts.public), str(fts.role)))
+                for fts in dbsession.query(main.FullTextSearch).all()
+            ]
+        )
 
         for lang in settings["available_locale_names"]:
             for interface in test_data["interfaces"].values():
