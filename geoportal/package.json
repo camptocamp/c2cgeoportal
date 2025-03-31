@@ -17,7 +17,7 @@
     "@eslint/eslintrc": "3.2.0",
     "@eslint/js": "9.19.0",
     "@popperjs/core": "2.11.8",
-    "@sentry/browser": "8.54.0",
+    "@sentry/browser": "9.10.1",
     "angular-gettext-tools": "2.5.3",
     "angular-mocks": "1.8.3",
     "commander": "12.1.0",
