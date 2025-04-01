@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2023, Camptocamp SA
+# Copyright (c) 2020-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,6 +27,7 @@
 
 # pylint: disable=missing-docstring
 
+import logging
 from collections import namedtuple
 from unittest.mock import patch
 
@@ -34,6 +35,8 @@ import pytest
 from c2c.template.config import config as configuration
 from sqlalchemy import func
 from tests.functional import setup_common as setup_module
+
+_LOGGER = logging.getLogger(__name__)
 
 
 @pytest.fixture(scope="module")
@@ -217,8 +220,15 @@ class TestImport:
         Import(dbsession, settings, options())
 
         # languages * interfaces * (themes + groups + layers)
-        total = 4 * 2 * (2 + 2 + 2)
-        assert dbsession.query(main.FullTextSearch).count() == total
+        total = 4 * 2 * (1 + 1 + 1)
+        # private: languages * interfaces * (themes + layers) * roles
+        total += 4 * 2 * (1 + 1) * 5
+        assert dbsession.query(main.FullTextSearch).count() == total, "\n".join(
+            [
+                ", ".join((fts.label, str(fts.lang), str(fts.interface), str(fts.public), str(fts.role)))
+                for fts in dbsession.query(main.FullTextSearch).all()
+            ]
+        )
 
         for lang in settings["available_locale_names"]:
             for interface in test_data["interfaces"].values():
