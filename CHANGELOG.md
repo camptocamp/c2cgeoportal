@@ -1,3 +1,7 @@
+##### 2.9.rc.115
+
+- Audit Dpkg 2.9 [c2cgeoportal#11827](https://github.com/camptocamp/c2cgeoportal/pull/11827)
+
 ##### 2.9.rc.114
 
 - Theme2fts: Add missing public layer included in private theme [c2cgeoportal#11823](https://github.com/camptocamp/c2cgeoportal/pull/11823)
