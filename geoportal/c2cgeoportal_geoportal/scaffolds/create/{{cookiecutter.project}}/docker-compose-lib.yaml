@@ -69,7 +69,7 @@ services:
       - HAPROXY_LOGGING_OPTIONS
 
   print:
-    image: camptocamp/mapfish_print:3.30
+    image: camptocamp/mapfish_print:3.30.11
     user: www-data
     restart: unless-stopped
     environment:
@@ -77,7 +77,7 @@ services:
       - PGOPTIONS
 
   mapserver:
-    image: camptocamp/mapserver:8.0-gdal3.7
+    image: camptocamp/mapserver:8.0.0
     user: www-data
     restart: unless-stopped
     entrypoint: []
@@ -181,7 +181,7 @@ services:
       - MASTER=redis_master
 
   tilecloudchain:
-    image: &tilecloudchain-image camptocamp/tilecloud-chain:1.17
+    image: &tilecloudchain-image camptocamp/tilecloud-chain:1.17.4
     user: www-data
     restart: unless-stopped
     environment:

@@ -1,4 +1,4 @@
-FROM camptocamp/mapserver:8.0-gdal3.6
+FROM camptocamp/mapserver:8.0.0
 LABEL maintainer Camptocamp "info@camptocamp.com"
 
 RUN --mount=type=cache,target=/var/lib/apt/lists \
