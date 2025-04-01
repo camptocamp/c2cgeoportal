@@ -70,7 +70,7 @@ repos:
       - id: check-github-workflows
       - id: check-renovate
         additional_dependencies:
-          - pyjson5==1.6.7 # pypi
+          - pyjson5==1.6.8 # pypi
       - id: check-github-actions
       - id: check-jsonschema
         name: Check GitHub Workflows set timeout-minutes
@@ -81,7 +81,7 @@ repos:
           - --builtin-schema
           - github-workflows-require-timeout
   - repo: https://github.com/sirwart/ripsecrets
-    rev: v0.1.8
+    rev: v0.1.9
     hooks:
       - id: ripsecrets
         exclude: (^docker/config/haproxy_dev/localhost\.pem$|geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter\.project}}/mapserver/data/TM_EUROPE_BORDERS-0.3\.sql)
