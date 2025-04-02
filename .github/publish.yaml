@@ -124,7 +124,7 @@ docker:
       tags:
         - gmf{version}-qgislr-debug
     - name: camptocamp/geomapfish-qgisserver
-      group: qgis-mater
+      group: qgis-master
       tags:
         - gmf{version}-qgismaster
 pypi:

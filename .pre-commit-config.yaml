@@ -34,7 +34,7 @@ repos:
       - id: check-symlinks
       - id: fix-byte-order-marker
   - repo: https://github.com/sbrunner/hooks
-    rev: 1.2.1
+    rev: 1.4.0
     hooks:
       - id: copyright
       - id: workflows-require-timeout

@@ -257,8 +257,8 @@ jobs:
       - run: git reset --hard
       - name: Publish
         run: >
-          tag-publish --docker-versions=${{ steps.version.outputs.versions }} --snyk-version=${{ steps.version.outputs.snyk_version
-          }}
+          tag-publish --docker-versions=${{ steps.version.outputs.versions }}
+          --snyk-version=${{ steps.version.outputs.snyk_version }}
         if: >
           env.HAS_SECRETS == 'HAS_SECRETS'
           && steps.version.outputs.versions != ''
