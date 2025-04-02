@@ -4,6 +4,7 @@ line-length = 110
 
 [tool.ruff.lint.pydocstyle]
 convention = "numpy"
+
 [tool.poetry]
 name = "c2cgeoportal"
 version = "0.0.0"

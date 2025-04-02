@@ -227,7 +227,8 @@ jobs:
       - run: docker compose version
 
       - name: Init Git
-        run: git remote set-url origin https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository
+        run:
+          git remote set-url origin https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository
           }}
       - run: make build-tools
       - run: make build-runner

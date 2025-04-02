@@ -278,10 +278,7 @@ class Import:
             return True
         if role is None:
             return False
-        for restrictionarea in layer.restrictionareas:
-            if role in restrictionarea.roles:
-                return True
-        return False
+        return any(role in restrictionarea.roles for restrictionarea in layer.restrictionareas)
 
     def _add_layer(
         self,
