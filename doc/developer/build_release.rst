@@ -204,9 +204,8 @@ Copy the file ``.github/workflows/main.yaml`` from new version branch to master 
 
           - name: Publish
             run: >
-              c2cciutils-publish
+              tag-publish
               --docker-versions=${{ steps.version.outputs.versions }}
-              --snyk-version=${{ steps.version.outputs.snyk_version }}
    +          --type=rebuild
 
    -      - name: Publish version branch to pypi

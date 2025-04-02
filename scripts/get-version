@@ -124,22 +124,18 @@ if (
 
 versions = []
 
-snyk_version = ""
 upgrade_version = ""
 if os.environ.get("GITHUB_WORKFLOW", "").startswith("Rebuild"):
     branch = main_branch
     versions = [major_minor, major_version]
-    snyk_version = major_minor
 elif os.environ.get("GITHUB_WORKFLOW", "").startswith("Update ngeo "):
     branch = main_branch
     versions = [major_minor, major_version, full]
-    snyk_version = major_minor
 else:
     if os.environ.get("GITHUB_REF", "").startswith("refs/heads/"):
         branch = os.environ["GITHUB_REF"][11:]
         if branch == "master":
             versions = [major_minor, major_version, "master"]
-            snyk_version = major_minor
             upgrade_version = "master"
         elif branch == main_branch:
             versions = [major_minor, major_version, full]
@@ -147,7 +143,6 @@ else:
                 versions.append(patch)
             if latest:
                 versions.append("latest")
-            snyk_version = major_minor
             upgrade_version = full
         elif "/" not in branch:
             versions = [branch]
@@ -161,7 +156,6 @@ print(f"major_minor: {major_minor}")
 print(f"minor: {minor}")
 print(f"upgrade_version: {upgrade_version}")
 print("versions: {versions}".format(versions=",".join(versions)))
-print(f"snyk_version: {snyk_version}")
 if args.github:
     with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output_file:
         output_file.write(f"full={full}\n")
@@ -170,4 +164,3 @@ if args.github:
         output_file.write(f"minor={minor}\n")
         output_file.write(f"upgrade_version={upgrade_version}\n")
         output_file.write("versions={versions}\n".format(versions=",".join(versions)))
-        output_file.write(f"snyk_version={snyk_version}\n")

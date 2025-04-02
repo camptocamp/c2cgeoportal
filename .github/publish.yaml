@@ -1,0 +1,140 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/camptocamp/tag-publish/1.0.1/tag_publish/schema.json
+
+docker:
+  images:
+    - name: camptocamp/geomapfish
+    - name: camptocamp/geomapfish-config
+    - name: camptocamp/geomapfish-tools
+    - name:
+        camptocamp/geomapfishapp-geoportal
+        # 2.4
+    - name: camptocamp/geomapfish-qgisserver
+      group: qgis-old
+      tags:
+        - gmf{version}-qgis3.10
+    - name: camptocamp/geomapfish-qgisserver
+      group: qgis-old
+      tags:
+        - gmf{version}-qgis3.16
+    - name: camptocamp/geomapfish-qgisserver
+      group: qgis-old
+      tags:
+        - gmf{version}-qgis3.20
+    - name: camptocamp/geomapfish-qgisserver
+      group: qgis-old
+      tags:
+        - gmf{version}-qgis3.22
+    - name: camptocamp/geomapfish-qgisserver
+      group: qgis-old
+      tags:
+        - gmf{version}-qgis3.28-gdal3.6
+    - name: camptocamp/geomapfish-qgisserver
+      group: qgis-old
+      tags:
+        - gmf{version}-qgis3.28-gdal3.7
+    - name: camptocamp/geomapfish-qgisserver
+      group: qgis-old
+      tags:
+        - gmf{version}-qgis3.28
+    - name: camptocamp/geomapfish-qgisserver
+      group: qgis-old
+      tags:
+        - gmf{version}-qgislatest
+    - name: camptocamp/geomapfish-qgisserver
+      group: qgis-master
+      tags:
+        - gmf{version}-qgismaster
+        # The group qgis-old is required for the clean workflow
+        # 2.4, 2.5
+    - name: camptocamp/geomapfish-qgisserver
+      group: qgis-old
+      tags:
+        - gmf{version}-qgis3.4
+        # 2.5
+    - name: camptocamp/geomapfish-qgisserver
+      group: qgis-old
+      tags:
+        - gmf{version}-qgis3.12
+        # 2.5
+    - name: camptocamp/geomapfish-qgisserver
+      group: qgis-old
+      tags:
+        - gmf{version}-qgis3.14
+      # 2.7
+    - name: camptocamp/geomapfish-qgisserver
+      group: qgis-old
+      tags:
+        - gmf{version}-qgis3.22
+    - name: camptocamp/geomapfish-qgisserver
+      group: qgis-old
+      tags:
+        - gmf{version}-qgis3.28
+    - name: camptocamp/geomapfish-qgisserver
+      group: qgis-old
+      tags:
+        - gmf{version}-qgis3.28-gdal3.6
+    - name: camptocamp/geomapfish-qgisserver
+      group: qgis-old
+      tags:
+        - gmf{version}-qgis3.28-gdal3.7
+    - name: camptocamp/geomapfish-qgisserver
+      group: qgis-old
+      tags:
+        - gmf{version}-qgisltr
+      # 2.8
+    - name: camptocamp/geomapfish-qgisserver
+      group: qgis-old
+      tags:
+        - gmf{version}-qgis3.28-gdal3.6
+    - name: camptocamp/geomapfish-qgisserver
+      group: qgis-old
+      tags:
+        - gmf{version}-qgis3.28-gdal3.7
+    - name: camptocamp/geomapfish-qgisserver
+      group: qgis-old
+      tags:
+        - gmf{version}-qgis3.28
+    - name: camptocamp/geomapfish-qgisserver
+      group: qgis-3.34-gdal3.7
+      tags:
+        - gmf{version}-qgis3.34-gdal3.7
+    - name: camptocamp/geomapfish-qgisserver
+      group: qgis-latest
+      tags:
+        - gmf{version}-qgislatest
+      # master
+    - name: camptocamp/geomapfish-qgisserver
+      group: qgis-3.34-gdal3.8
+      tags:
+        - gmf{version}-qgis3.34-gdal3.8
+    - name: camptocamp/geomapfish-qgisserver
+      group: qgis-3.34
+      tags:
+        - gmf{version}-qgis3.34
+    - name: camptocamp/geomapfish-qgisserver
+      group: qgis-ltr
+      tags:
+        - gmf{version}-qgisltr
+    - name: camptocamp/geomapfish-qgisserver
+      group: qgis-lr
+      tags:
+        - gmf{version}-qgislr
+    - name: camptocamp/geomapfish-qgisserver
+      group: qgis-lr-debug
+      tags:
+        - gmf{version}-qgislr-debug
+    - name: camptocamp/geomapfish-qgisserver
+      group: qgis-master
+      tags:
+        - gmf{version}-qgismaster
+pypi:
+  packages:
+    - folder: commons
+      group: pypi
+    - folder: geoportal
+      group: pypi
+    - folder: admin
+      group: pypi
+
+dispatch:
+  - {}

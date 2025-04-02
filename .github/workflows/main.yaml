@@ -81,8 +81,8 @@ jobs:
           path: ~/.cache/pre-commit
           key: pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
           restore-keys: "pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}\npre-commit-"
-      - run: pre-commit run --all-files
-      - run: git diff --exit-code --patch > /tmp/pre-commit.patch || true
+      - run: pre-commit run --all-files --color=always
+      - run: git diff --exit-code --patch > /tmp/pre-commit.patch; git diff --color; git reset --hard || true
         if: failure()
       - uses: actions/upload-artifact@v4
         with:
@@ -257,21 +257,22 @@ jobs:
 
       - run: git reset --hard
       - name: Publish
-        run: >
-          c2cciutils-publish
-          --docker-versions=${{ steps.version.outputs.versions }}
-          --snyk-version=${{ steps.version.outputs.snyk_version }}
+        run: tag-publish --docker-versions=${{ steps.version.outputs.versions }}
         if: >
           env.HAS_SECRETS == 'HAS_SECRETS'
           && steps.version.outputs.versions != ''
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish version branch to pypi
         run: |
-          c2cciutils-publish --group=pypi --type=version_tag --version=${{ steps.version.outputs.full }}
+          tag-publish --group=pypi --type=version_tag --version=${{ steps.version.outputs.full }}
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && env.HAS_SECRETS == 'HAS_SECRETS'
           && env.MAIN_BRANCH != 'master'
-      - run: git diff --exit-code --patch > /tmp/dpkg-versions.patch || true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: git diff --exit-code --patch > /tmp/dpkg-versions.patch; git diff --color; git reset --hard || true
         if: failure()
       - uses: actions/upload-artifact@v4
         with:
@@ -320,3 +321,6 @@ jobs:
         if: always()
       - run: df -h
         if: always()
+permissions:
+  contents: write
+  packages: write

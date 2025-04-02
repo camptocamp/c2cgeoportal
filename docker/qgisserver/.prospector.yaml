@@ -4,13 +4,12 @@ inherits:
   - utils:fix
   - utils:no-design-checks
 
-pyroma:
-  run: False
-
+pylint:
+  options:
+    extension-pkg-allow-list: qgis
 mypy:
   options:
     python_version: '3.10'
 
-pylint:
-  options:
-    extension-pkg-allow-list: qgis
+pyroma:
+  run: false

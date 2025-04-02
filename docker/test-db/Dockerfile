@@ -1,6 +1,6 @@
 FROM ghcr.io/camptocamp/postgres:17-postgis-3
 
-LABEL maintainer Camptocamp "info@camptocamp.com"
+LABEL org.opencontainers.image.authors="Camptocamp <info@camptocamp.com>"
 
 COPY *.sql /docker-entrypoint-initdb.d/
 

@@ -1,33 +1,22 @@
 {
-  'extends': ['config:base'],
-  timezone: 'Europe/Zurich',
-  schedule: 'after 5pm on the first day of the month',
-  semanticCommits: 'disabled',
-  labels: ['dependencies'],
-  separateMajorMinor: true,
-  separateMinorPatch: true,
-  prHourlyLimit: 0,
-  prConcurrentLimit: 0,
-  lockFileMaintenance: {enabled: true, automerge: true, schedule: 'after 5pm on the first day of the month'},
+  'extends': [
+    'github>camptocamp/gs-renovate-config-preset:base.json5#0.9.0',
+    'github>camptocamp/gs-renovate-config-preset:group.json5#0.9.0',
+    'github>camptocamp/gs-renovate-config-preset:stabilization-branches.json5#0.9.0',
+    'github>camptocamp/gs-renovate-config-preset:ci.json5#0.9.0',
+    'github>camptocamp/gs-renovate-config-preset:preset.json5#0.9.0',
+    'github>camptocamp/gs-renovate-config-preset:pre-commit.json5#0.9.0',
+    'github>camptocamp/gs-renovate-config-preset:docker.json5#0.9.0',
+    'github>camptocamp/gs-renovate-config-preset:own.json5#0.9.0',
+    'github>camptocamp/gs-renovate-config-preset:json-schema.json5#0.9.0',
+    'github>camptocamp/gs-renovate-config-preset:shellcheck.json5#0.9.0',
+  ],
   baseBranches: ['master', '2.6', '2.7', '2.8', '2.9'],
-  'pre-commit': {enabled: true},
-  regexManagers: [
-    /** Do updates on pre-commit additional dependencies */
-    {
-      fileMatch: ['^\\.pre\\-commit\\-config\\.yaml$'],
-      matchStrings: [" +- '?(?<depName>[^' @=]+)(@|==)(?<currentValue>[^' @=]+)'? # (?<datasource>.+)"],
-    },
+  customManagers: [
     {
       fileMatch: ['^ci/applications-versions.yaml$'],
       matchStrings: ['(?<depName>[^\\s]+): (?<currentValue>[^\\s]+) # (?<datasource>[^\\s]+)'],
-    },
-    /** Do update on the schema present in the ci/config.yaml */
-    {
-      fileMatch: ['^ci/config\\.yaml$'],
-      matchStrings: [
-        '.*https://raw\\.githubusercontent\\.com/(?<depName>[^\\s]+)/(?<currentValue>[0-9\\.]+)/.*',
-      ],
-      datasourceTemplate: 'github-tags',
+      customType: 'regex',
     },
     /** Do update on the schema present in the projects ci/config.yaml */
     {
@@ -36,13 +25,7 @@
         '.*https://raw\\.githubusercontent\\.com/(?<depName>[^\\s]+)/(?<currentValue>[0-9\\.]+)/.*',
       ],
       datasourceTemplate: 'github-tags',
-    },
-    /** Python version in actions/setup-python action */
-    {
-      fileMatch: ['^\\.github/workflows/.*\\.yaml$'],
-      matchStrings: [' python-version: [\'"](?<currentValue>[0-9\\.]+)[\'"]'],
-      datasourceTemplate: 'python-version',
-      depNameTemplate: 'python',
+      customType: 'regex',
     },
     /** Upgrade the postgres version in the env values */
     {
@@ -52,6 +35,7 @@
       matchStrings: ['POSTGRES_TAG=(?<currentValue>[0-9]+\\-postgis\\-[0-9]+)'],
       datasourceTemplate: 'docker',
       depNameTemplate: 'ghcr.io/camptocamp/postgres',
+      customType: 'regex',
     },
   ],
   packageRules: [
@@ -87,32 +71,6 @@
       versioning: 'regex:^(?<major>\\d+)-(?<compatibility>.*)-(?<minor>\\d+)?$',
       matchDepNames: ['ghcr.io/camptocamp/postgres'],
     },
-    /** Auto merge the dev dependency update */
-    {
-      matchDepTypes: ['devDependencies'],
-      automerge: true,
-    },
-    /** Group and auto merge the patch updates */
-    {
-      matchUpdateTypes: ['patch'],
-      groupName: 'all patch versions',
-      automerge: true,
-    },
-    /** Group and auto merge the minor updates */
-    {
-      matchUpdateTypes: ['minor'],
-      groupName: 'all minor versions',
-      automerge: true,
-    },
-    /** Group Poetry packages */
-    {
-      matchPackagePrefixes: ['poetry-'],
-      groupName: 'Poetry',
-      automerge: true,
-      separateMajorMinor: false,
-      separateMinorPatch: false,
-      matchDepNames: ['poetry', 'pip'],
-    },
     /** Ungroup OWSLib */
     {
       matchDepNames: ['OWSLib'],
@@ -143,11 +101,6 @@
       matchBaseBranches: ['/^[0-9]+\\.[0-9]+$/'],
       matchUpdateTypes: ['major', 'minor', 'pin', 'digest', 'rollback', 'bump'],
       enabled: false,
-    },
-    /** Support the 4 parts of shellcheck-py version with a v prefix */
-    {
-      versioning: 'regex:^v(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)\\.(?<build>\\d+)$',
-      matchDepNames: ['shellcheck-py/shellcheck-py'],
     },
     /** Don't update the project minimal requirements */
     {
@@ -215,12 +168,6 @@
       separateMajorMinor: false,
       separateMinorPatch: false,
     },
-    /** Group and auto merge the CI dependencies */
-    {
-      matchFileNames: ['.github/**', '.pre-commit-config.yaml', 'ci/**'],
-      groupName: 'CI dependencies',
-      automerge: true,
-    },
     /** Group and auto merge the projects CI dependencies */
     {
       matchFileNames: [
@@ -269,15 +216,11 @@
       ],
       enabled: false,
     },
-    /** Ungroup Python dependencies */
-    {
-      matchDepNames: ['python'],
-      groupName: 'Python',
-    },
     /** In file `.python-version`, use the `<major>.<minor>` version */
     {
       matchFileNames: ['.python-version'],
       versioning: 'regex:^(?<major>\\d+)\\.(?<minor>\\d+)$',
     },
   ],
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
 }

@@ -125,13 +125,14 @@ jobs:
 
       - name: Publish
         run: >
-          c2cciutils-publish
+          tag-publish
           --group=qgis-${{ matrix.version }}
           --docker-versions=${{ steps.version.outputs.versions }}
-          --snyk-version=${{ steps.version.outputs.snyk_version }}
         if: >
           env.HAS_SECRETS == 'HAS_SECRETS'
           && steps.version.outputs.versions != ''
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - run: git diff --exit-code --patch > /tmp/dpkg-versions.patch || true
         if: failure()
