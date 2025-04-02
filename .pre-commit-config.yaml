@@ -43,6 +43,7 @@ repos:
         additional_dependencies:
           - poetry==2.0.1 # pypi
       - id: npm-lock
+      - id: canonicalize
   - repo: https://github.com/codespell-project/codespell
     rev: v2.4.1
     hooks:
@@ -83,9 +84,6 @@ repos:
     rev: 0.31.1
     hooks:
       - id: check-github-workflows
-      - id: check-renovate
-        additional_dependencies:
-          - pyjson5==1.6.8 # pypi
       - id: check-github-actions
       - id: check-jsonschema
         name: Check GitHub Workflows set timeout-minutes
@@ -111,9 +109,7 @@ repos:
         args:
           - --line-length=110
         exclude: |-
-          (?x)^(
-            geoportal/c2cgeoportal_geoportal/scaffolds/advance_create/{{cookiecutter.project}}/geoportal/{{cookiecutter.package}}_geoportal/__init__\.py
-          )$
+          ^geoportal/c2cgeoportal_geoportal/scaffolds/advance_create/{{cookiecutter.project}}/geoportal/{{cookiecutter.package}}_geoportal/__init__\.py$
   - repo: https://github.com/PyCQA/prospector
     rev: v1.14.1
     hooks:
@@ -132,7 +128,14 @@ repos:
     rev: 1.0.0
     hooks:
       - id: jsonschema-validator
-        files: ^ci/config\.yaml$
+        files: |-
+          (?x)^(
+            ci/config\.yaml
+            |geoportal/c2cgeoportal_geoportal/scaffolds/advance_create/ci/config\.yaml
+            |geoportal/c2cgeoportal_geoportal/scaffolds/create/\{\{cookiecutter\.project\}\}/ci/config\.yaml
+            |ci/applications\.yaml
+            |\.github/publish\.yaml
+          )$
   - repo: https://github.com/renovatebot/pre-commit-hooks
     rev: 39.159.0
     hooks:
