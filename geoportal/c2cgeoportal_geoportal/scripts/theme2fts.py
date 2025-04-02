@@ -1,4 +1,4 @@
-# Copyright (c) 2014-2024, Camptocamp SA
+# Copyright (c) 2014-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -271,8 +271,13 @@ class Import:
 
     @staticmethod
     def _layer_visible(
-        layer: "c2cgeoportal_commons.models.main.Layer", role: "c2cgeoportal_commons.models.main.Role"
+        layer: "c2cgeoportal_commons.models.main.Layer",
+        role: Optional["c2cgeoportal_commons.models.main.Role"],
     ) -> bool:
+        if layer.public:
+            return True
+        if role is None:
+            return False
         for restrictionarea in layer.restrictionareas:
             if role in restrictionarea.roles:
                 return True
@@ -284,10 +289,7 @@ class Import:
         interface: "c2cgeoportal_commons.models.main.Interface",
         role: Optional["c2cgeoportal_commons.models.main.Role"],
     ) -> bool:
-        if role is None:
-            fill = layer.public and interface in layer.interfaces
-        else:
-            fill = interface in layer.interfaces and not layer.public and self._layer_visible(layer, role)
+        fill = interface in layer.interfaces and self._layer_visible(layer, role)
 
         if fill and self.options.layers:
             self._add_fts(layer, interface, "add_layer", role)
