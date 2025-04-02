@@ -1,3 +1,7 @@
+##### 2.9.rc.117
+
+- Update dependency magic-comments-loader to v2.1.6 (2.9) [c2cgeoportal#11841](https://github.com/camptocamp/c2cgeoportal/pull/11841)
+
 ##### 2.9.rc.116
 
 - Update all patch versions (2.9) (patch) [c2cgeoportal#11842](https://github.com/camptocamp/c2cgeoportal/pull/11842)
