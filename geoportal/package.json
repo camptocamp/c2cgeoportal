@@ -36,7 +36,7 @@
     "file-loader": "6.2.0",
     "html-webpack-plugin": "5.6.3",
     "loader-utils": "3.3.1",
-    "magic-comments-loader": "2.1.5",
+    "magic-comments-loader": "2.1.6",
     "mini-css-extract-plugin": "2.9.2",
     "minify-html-literals-loader": "1.1.1",
     "neat-csv": "7.0.0",
