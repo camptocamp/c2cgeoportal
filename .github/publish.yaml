@@ -129,11 +129,11 @@ docker:
         - gmf{version}-qgismaster
 pypi:
   packages:
-    - path: commons
+    - folder: commons
       group: pypi
-    - path: geoportal
+    - folder: geoportal
       group: pypi
-    - path: admin
+    - folder: admin
       group: pypi
 
 dispatch:
