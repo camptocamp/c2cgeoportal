@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2024, Camptocamp SA
+# Copyright (c) 2022-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -274,7 +274,7 @@ class TestThemesView(TestCase):
             "c2cgeoportal_geoportal.lib|_get_intranet_networks",
         }
         assert set(self.ogc_cache.keys()) == {
-            "c2cgeoportal_geoportal.views.theme|_get_features_attributes_cache|http://mapserver:8080/?SERVICE=WFS&VERSION=1.0.0&REQUEST=DescribeFeatureType&ROLE_IDS=0&USER_ID=0|__test_ogc_server",
+            "c2cgeoportal_geoportal.views.theme|_get_features_attributes_cache|http://mapserver:8080/|__test_ogc_server",
             f"c2cgeoportal_geoportal.views.theme|build_web_map_service|{ogc_server.id}",
             "c2cgeoportal_geoportal.views.theme|do_get_http_cached|http://mapserver:8080/?SERVICE=WFS&VERSION=1.0.0&REQUEST=DescribeFeatureType&ROLE_IDS=0&USER_ID=0",
             "c2cgeoportal_geoportal.views.theme|do_get_http_cached|http://mapserver:8080/?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetCapabilities&ROLE_IDS=0&USER_ID=0",
@@ -314,7 +314,7 @@ class TestThemesView(TestCase):
             "c2cgeoportal_geoportal.lib|_get_intranet_networks",
         }
         assert set(self.ogc_cache.keys()) == {
-            "c2cgeoportal_geoportal.views.theme|_get_features_attributes_cache|http://mapserver:8080/?SERVICE=WFS&VERSION=1.0.0&REQUEST=DescribeFeatureType&ROLE_IDS=0&USER_ID=0|__test_ogc_server",
+            "c2cgeoportal_geoportal.views.theme|_get_features_attributes_cache|http://mapserver:8080/|__test_ogc_server",
             f"c2cgeoportal_geoportal.views.theme|build_web_map_service|{ogc_server.id}",
             "c2cgeoportal_geoportal.views.theme|do_get_http_cached|http://mapserver:8080/?SERVICE=WFS&VERSION=1.0.0&REQUEST=DescribeFeatureType&ROLE_IDS=0&USER_ID=0",
             "c2cgeoportal_geoportal.views.theme|do_get_http_cached|http://mapserver:8080/?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetCapabilities&ROLE_IDS=0&USER_ID=0",
