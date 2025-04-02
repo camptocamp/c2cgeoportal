@@ -10,6 +10,8 @@ template_vars:
   srid: {{cookiecutter.srid}}
   extent: {{cookiecutter.extent}}
   authtkt_secret: {{cookiecutter.authtkt_secret}}
+  tilecloud_chain_session_secret: {{cookiecutter.tilecloud_chain_session_secret}}
+  tilecloud_chain_session_salt: {{cookiecutter.tilecloud_chain_session_salt}}
 env:
   files:
     - env.default
