@@ -804,6 +804,7 @@ vars:
           Requires <code>OGCServer</code> metadata with OGC server name.
         relevant_for:
           - layer_wmts
+          - layer_wms
           - layer_cog
       - name: printLayers
         description: >
