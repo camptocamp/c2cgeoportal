@@ -9,7 +9,7 @@ authors = []
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"
-alembic = "1.14.1" # geoportal
+alembic = "1.15.2" # geoportal
 "c2c.template" = "2.4.2" # geoportal
 c2cgeoform = "2.4.4" # commons
 colander = "2.0" # commons, admin
@@ -28,7 +28,7 @@ OWSLib = "0.33.0" # geoportal
 papyrus = "2.6.2" # commons, geoportal
 passwordgenerator = "1.5.1" # geoportal
 psycopg2 = "2.9.10" # geoportal
-pycryptodome = "3.21.0" # geoportal
+pycryptodome = "3.22.0" # geoportal
 pyproj = "3.7.0" # admin, other?
 pyotp = "2.9.0" # geoportal
 pyramid = "2.0.2" # geoportal
@@ -50,14 +50,14 @@ translationstring = "1.4" # admin
 c2cwsgiutils = { version = "6.1.7", extras = ["broadcast", "standard", "oauth2", "debug"] }
 oauthlib = "3.2.2"
 tilecloud = "1.12.6" # geoportal
-azure-storage-blob = "12.24.1"
+azure-storage-blob = "12.25.1"
 # simple_openid_connect = '1.0.1' # geoportal
 simple_openid_connect = { git = "https://github.com/sbrunner/py_simple_openid_connect.git", branch = "allows-pkce" } # geoportal
 pkce = '1.0.3' # geoportal
 basicauth = "1.0.0"
-prospector = { version = "1.14.1", extras = ["with_mypy", "with_bandit", "with_pyroma", "with_ruff"] }
+prospector = { version = "1.16.1", extras = ["with_mypy", "with_bandit", "with_pyroma", "with_ruff"] }
 prospector-profile-duplicated = "1.10.4"
-prospector-profile-utils  = "1.17.0"
+prospector-profile-utils  = "1.22.3"
 beautifulsoup4 = "4.13.3"
 
 [tool.poetry.group.dev.dependencies]
@@ -78,7 +78,7 @@ types-setuptools = "75.8.0.20250110"
 mappyfile = "1.0.2"
 # To be able to upgrade project from version <= 2.8
 c2cciutils = { version = "1.5.8", extras = ["checks"] }
-pre-commit = "4.1.0"
+pre-commit = "4.2.0"
 mapbox-vector-tile = "2.1.0"
 responses = "0.25.6"
 waitress = "3.0.2"

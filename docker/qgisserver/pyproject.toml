@@ -20,11 +20,11 @@ SQLAlchemy = "2.0.37" # commons
 shapely = "2.0.7"
 cee-syslog-handler = "0.6.0"
 psycopg2 = "2.9.10"
-pytz = "2025.1"
+pytz = "2025.2"
 
 [tool.poetry.dev-dependencies]
-prospector = { version = "1.14.1", extras = ["with_mypy", "with_bandit", "with_ruff"] }
+prospector = { version = "1.16.1", extras = ["with_mypy", "with_bandit", "with_ruff"] }
 prospector-profile-duplicated = "1.10.4"
-prospector-profile-utils  = "1.17.0"
+prospector-profile-utils  = "1.22.3"
 types-pyyaml = "6.0.12.20241230"
 pytest = "8.3.4"
