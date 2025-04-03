@@ -41,7 +41,7 @@
     "minify-html-literals-loader": "1.1.1",
     "neat-csv": "7.0.0",
     "parse-absolute-css-unit": "1.0.2",
-    "sass": "1.86.1",
+    "sass": "1.86.2",
     "sass-loader": "16.0.5",
     "simple-html-tokenizer": "0.5.11",
     "svgo": "3.3.2",
