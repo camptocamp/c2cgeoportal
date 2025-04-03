@@ -9,7 +9,7 @@ Babel = "==2.9.1"  # i18n
 bandit = "==1.7.10"  # lint
 beautifulsoup4 = "==4.9.3"  # admin tests
 coverage = "==5.4"  # Build coverage XML for Codacy
-Jinja2 = "==3.1.5"  # c2c.template
+Jinja2 = "==3.1.6"  # c2c.template
 lingua = "==4.14"  # i18n
 PasteScript = "==3.2.1"  # geoportal pcreate
 polib = "==1.1.1"  # i18n
@@ -30,8 +30,8 @@ docopt = "==0.6.2"
 docutils = "==0.15.2"
 dodgy = "==0.2.1"
 flake8-polyfill = "==1.0.2"
-gitdb = "==4.0.11"
-gitpython = "==3.1.43"
+gitdb = "==4.0.12"
+gitpython = "==3.1.44"
 idna = "==2.10"
 iniconfig = "==1.1.1"
 isort = "==4.3.21"
