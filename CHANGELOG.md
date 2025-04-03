@@ -1,3 +1,7 @@
+##### 2.9.rc.119
+
+- Audit Dpkg 2.9 [c2cgeoportal#11863](https://github.com/camptocamp/c2cgeoportal/pull/11863)
+
 ##### 2.9.rc.118
 
 - Update dependency prettier-plugin-toml to v2.0.2 (2.9) [c2cgeoportal#11854](https://github.com/camptocamp/c2cgeoportal/pull/11854)
