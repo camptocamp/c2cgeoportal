@@ -1,3 +1,8 @@
+##### 2.9.rc.118
+
+- Update dependency prettier-plugin-toml to v2.0.2 (2.9) [c2cgeoportal#11854](https://github.com/camptocamp/c2cgeoportal/pull/11854)
+- Update dependency types-pyyaml to v6.0.12.20250326 (2.9) [c2cgeoportal#11855](https://github.com/camptocamp/c2cgeoportal/pull/11855)
+
 ##### 2.9.rc.117
 
 - Update dependency magic-comments-loader to v2.1.6 (2.9) [c2cgeoportal#11841](https://github.com/camptocamp/c2cgeoportal/pull/11841)
