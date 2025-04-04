@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2024, Camptocamp SA
+# Copyright (c) 2013-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -46,7 +46,7 @@ from tests.functional import teardown_common as teardown_module  # noqa
 
 
 class TestThemeEditing(TestCase):
-    def setup_method(self, _):
+    def setup_method(self, _) -> None:
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
@@ -118,7 +118,7 @@ class TestThemeEditing(TestCase):
 
         transaction.commit()
 
-    def teardown_method(self, _):
+    def teardown_method(self, _) -> None:
         testing.tearDown()
 
         cleanup_db()
@@ -155,7 +155,7 @@ class TestThemeEditing(TestCase):
 
         return request
 
-    def test_themev2_noauth_edit_permission(self):
+    def test_themev2_noauth_edit_permission(self) -> None:
         from c2cgeoportal_geoportal.views.theme import Theme
 
         request = self._create_request_obj()
@@ -165,7 +165,7 @@ class TestThemeEditing(TestCase):
         assert set(themes["errors"]) == set()
         assert [t["name"] for t in themes["themes"]] == []
 
-    def test_themev2_auth_no_edit_permission(self):
+    def test_themev2_auth_no_edit_permission(self) -> None:
         from c2cgeoportal_geoportal.views.theme import Theme
 
         request = self._create_request_obj(username="__test_user1")
@@ -180,7 +180,7 @@ class TestThemeEditing(TestCase):
         assert [l["name"] for l in layers] == ["__test_private_layer"]
         assert "editable" not in layers[0]
 
-    def test_themev2_auth_edit_permission(self):
+    def test_themev2_auth_edit_permission(self) -> None:
         from c2cgeoportal_geoportal.views.theme import Theme
 
         request = self._create_request_obj(username="__test_user2", params={"min_levels": "0"})

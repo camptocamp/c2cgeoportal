@@ -12,8 +12,7 @@ from shapely.geometry import Polygon, box, shape
 from .test_treegroup import TestTreeGroup
 
 
-@pytest.fixture(scope="function")
-@pytest.mark.usefixtures("dbsession", "transact")
+@pytest.fixture
 def roles_test_data(dbsession, transact):
     del transact
 
@@ -59,7 +58,7 @@ def roles_test_data(dbsession, transact):
 
     dbsession.flush()
 
-    yield {
+    return {
         "functionalities": functionalities,
         "restrictionareas": restrictionareas,
         "users": users,
@@ -71,7 +70,7 @@ def roles_test_data(dbsession, transact):
 class TestRole(TestTreeGroup):
     _prefix = "/admin/roles"
 
-    def test_index_rendering(self, test_app):
+    def test_index_rendering(self, test_app) -> None:
         resp = self.get(test_app)
 
         self.check_left_menu(resp, "Roles")
@@ -87,7 +86,7 @@ class TestRole(TestTreeGroup):
         self.check_grid_headers(resp, expected)
 
     @pytest.mark.skip(reason="Translation seems not available in tests")
-    def test_index_rendering_fr(self, test_app):
+    def test_index_rendering_fr(self, test_app) -> None:
         resp = self.get(test_app, locale="fr")
 
         self.check_left_menu(resp, "Rôles")
@@ -102,7 +101,7 @@ class TestRole(TestTreeGroup):
         ]
         self.check_grid_headers(resp, expected, new="Nouveau")
 
-    def test_submit_new(self, dbsession, test_app, roles_test_data):
+    def test_submit_new(self, dbsession, test_app, roles_test_data) -> None:
         from c2cgeoportal_commons.models.main import Log, LogAction, Role
 
         roles_test_data["roles"]
@@ -162,7 +161,7 @@ class TestRole(TestTreeGroup):
         assert log.element_name == role.name
         assert log.username == "test_user"
 
-    def test_edit(self, dbsession, test_app, roles_test_data):
+    def test_edit(self, dbsession, test_app, roles_test_data) -> None:
         from c2cgeoportal_commons.models.main import Log, LogAction
 
         role = roles_test_data["roles"][10]
@@ -291,7 +290,7 @@ class TestRole(TestTreeGroup):
         assert log.element_name == role.name
         assert log.username == "test_user"
 
-    def test_duplicate(self, roles_test_data, test_app, dbsession):
+    def test_duplicate(self, roles_test_data, test_app, dbsession) -> None:
         from c2cgeoportal_commons.models.main import Role
 
         role_proto = roles_test_data["roles"][7]
@@ -314,7 +313,7 @@ class TestRole(TestTreeGroup):
         assert set(role_proto.restrictionareas) == set(role.restrictionareas)
         assert set(role_proto.users) == set(role.users)
 
-    def test_delete(self, test_app, dbsession):
+    def test_delete(self, test_app, dbsession) -> None:
         from c2cgeoportal_commons.models.main import Log, LogAction, Role
 
         role = dbsession.query(Role).first()
@@ -329,7 +328,7 @@ class TestRole(TestTreeGroup):
         assert log.element_name == role.name
         assert log.username == "test_user"
 
-    def test_unicity_validator(self, roles_test_data, test_app):
+    def test_unicity_validator(self, roles_test_data, test_app) -> None:
         role_proto = roles_test_data["roles"][7]
         resp = test_app.get(f"/admin/roles/{role_proto.id}/duplicate", status=200)
 
@@ -338,7 +337,7 @@ class TestRole(TestTreeGroup):
         self._check_submission_problem(resp, f"{role_proto.name} is already used.")
 
     @pytest.mark.usefixtures("raise_db_error_on_query")
-    def test_grid_dberror(self, dbsession):
+    def test_grid_dberror(self, dbsession) -> None:
         from c2cgeoportal_admin.views.roles import RoleViews
 
         request = DummyRequest(dbsession=dbsession, params={"offset": 0, "limit": 10})

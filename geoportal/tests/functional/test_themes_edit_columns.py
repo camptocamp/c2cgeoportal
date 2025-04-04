@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2024, Camptocamp SA
+# Copyright (c) 2013-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -197,7 +197,7 @@ class TestThemesEditColumns(TestCase):
                 layer.metadatas = metadatas
 
             DBSession.add(self.layer_group_1)
-            self.layer_group_1.children = self.layer_group_1.children + [layer]
+            self.layer_group_1.children = [*self.layer_group_1.children, layer]
 
             DBSession.add(self.layer_group_1)
 

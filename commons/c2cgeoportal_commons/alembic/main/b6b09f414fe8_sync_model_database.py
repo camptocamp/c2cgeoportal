@@ -59,7 +59,11 @@ def upgrade() -> None:
     op.alter_column("layer", "public", existing_type=sa.BOOLEAN(), nullable=False, schema=schema)
     op.execute(f"UPDATE {schema}.layergroup_treeitem SET ordering = 0 WHERE ordering IS NULL")
     op.alter_column(
-        "layergroup_treeitem", "ordering", existing_type=sa.INTEGER(), nullable=False, schema=schema
+        "layergroup_treeitem",
+        "ordering",
+        existing_type=sa.INTEGER(),
+        nullable=False,
+        schema=schema,
     )
     op.alter_column("metadata", "name", existing_type=sa.VARCHAR(), nullable=False, schema=schema)
     op.execute(f"UPDATE {schema}.ogc_server SET wfs_support = false WHERE wfs_support IS NULL")
@@ -92,7 +96,10 @@ def upgrade() -> None:
         schema=schema,
     ):
         op.drop_index(
-            "idx_restrictionarea_area", table_name="restrictionarea", schema=schema, postgresql_using="gist"
+            "idx_restrictionarea_area",
+            table_name="restrictionarea",
+            schema=schema,
+            postgresql_using="gist",
         )
 
     op.create_index(
@@ -167,7 +174,11 @@ def downgrade() -> None:
     )
     op.alter_column("metadata", "name", existing_type=sa.VARCHAR(), nullable=True, schema=schema)
     op.alter_column(
-        "layergroup_treeitem", "ordering", existing_type=sa.INTEGER(), nullable=True, schema=schema
+        "layergroup_treeitem",
+        "ordering",
+        existing_type=sa.INTEGER(),
+        nullable=True,
+        schema=schema,
     )
     op.alter_column("layer", "public", existing_type=sa.BOOLEAN(), nullable=True, schema=schema)
     op.alter_column("interface", "name", existing_type=sa.VARCHAR(), nullable=True, schema=schema)

@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2024, Camptocamp SA
+# Copyright (c) 2017-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,6 +27,7 @@
 
 
 from functools import partial
+from typing import Any
 
 import colander
 import sqlalchemy.orm.query
@@ -58,8 +59,9 @@ base_schema.add_before("extent", restrictionareas_schema_node(Role.restrictionar
 base_schema.add_unique_validator(Role.name, Role.id)
 
 
-def users(node, kw):  # pylint: disable=unused-argument
+def users(node: Any, kw: Any) -> list[dict[str, Any]]:  # pylint: disable=unused-argument
     """Get the user serializable metadata."""
+    del node  # unused
     dbsession = kw["request"].dbsession
     query = dbsession.query(User).order_by(User.username)
     return [
@@ -101,7 +103,7 @@ base_schema.add(
         description=Role.users.info["colanderalchemy"]["description"],
         candidates=colander.deferred(users),
         widget=ChildrenWidget(child_input_name="id", orderable=False, category="structural"),
-    )
+    ),
 )
 # Not possible to overwrite this in constructor.
 base_schema["users"].children[0].description = ""
@@ -111,7 +113,7 @@ base_schema["users"].children[0].description = ""
 class RoleViews(LoggedViews[Role]):
     """The roles administration view."""
 
-    _list_fields = [
+    _list_fields = [  # noqa: RUF012
         _list_field("id"),
         _list_field("name"),
         _list_field("description"),
@@ -120,7 +122,8 @@ class RoleViews(LoggedViews[Role]):
             renderer=lambda role: ", ".join([f"{f.name}={f.value}" for f in role.functionalities]),
         ),
         _list_field(
-            "restrictionareas", renderer=lambda role: ", ".join([r.name or "" for r in role.restrictionareas])
+            "restrictionareas",
+            renderer=lambda role: ", ".join([r.name or "" for r in role.restrictionareas]),
         ),
     ]
     _id_field = "id"
@@ -157,7 +160,9 @@ class RoleViews(LoggedViews[Role]):
         return super().delete()
 
     @view_config(  # type: ignore[misc]
-        route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2"
+        route_name="c2cgeoform_item_duplicate",
+        request_method="GET",
+        renderer="../templates/edit.jinja2",
     )
     def duplicate(self) -> ObjectResponse:
         return super().duplicate()

@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2024, Camptocamp SA
+# Copyright (c) 2019-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -52,7 +52,7 @@ def upgrade() -> None:
     op.execute(
         f"DELETE from {schema}.layer_restrictionarea WHERE layer_id IN ("
         f"SELECT id from {schema}.treeitem WHERE type = 'layerv1'"
-        ");"
+        ");",
     )
     op.execute(f"DELETE from {schema}.treeitem WHERE type = 'layerv1';")
 

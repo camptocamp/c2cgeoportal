@@ -7,8 +7,7 @@ import pytest
 from . import AbstractViewsTests
 
 
-@pytest.fixture(scope="function")
-@pytest.mark.usefixtures("dbsession", "transact")
+@pytest.fixture
 def edit_url_test_data(dbsession, transact):
     del transact
 
@@ -78,7 +77,7 @@ def edit_url_test_data(dbsession, transact):
 
     dbsession.flush()
 
-    yield {
+    return {
         "ogc_server": ogc_server,
         "layers_wmts": layers_wmts,
         "layers_wms": layers_wms,
@@ -103,22 +102,22 @@ class TestUrlEdit(AbstractViewsTests):
         assert re.match(rf"http://localhost/admin/{table}/\d+", link["href"]) is not None
         test_app.get(link.get("href"), status=status)
 
-    def test_layer_wms_edit(self, edit_url_test_data, test_app):
+    def test_layer_wms_edit(self, edit_url_test_data, test_app) -> None:
         resp = self._get(test_app, "admin/layers_wms", edit_url_test_data["layers_wms"][0].id)
         self._check_link(test_app, resp, "restrictionareas", "restriction_areas", 200)
         self._check_link(test_app, resp, "interfaces", "interfaces", 200)
 
-    def test_layer_wmts_edit(self, edit_url_test_data, test_app):
+    def test_layer_wmts_edit(self, edit_url_test_data, test_app) -> None:
         resp = self._get(test_app, "admin/layers_wmts", edit_url_test_data["layers_wmts"][0].id)
         self._check_link(test_app, resp, "restrictionareas", "restriction_areas", 200)
         self._check_link(test_app, resp, "interfaces", "interfaces", 200)
 
-    def test_roles_edit(self, edit_url_test_data, test_app):
+    def test_roles_edit(self, edit_url_test_data, test_app) -> None:
         resp = self._get(test_app, "admin/roles", edit_url_test_data["roles"][0].id)
         self._check_link(test_app, resp, "functionalities", "functionalities", 200)
         self._check_link(test_app, resp, "restrictionareas", "restriction_areas", 200)
 
-    def test_themes_edit(self, edit_url_test_data, test_app):
+    def test_themes_edit(self, edit_url_test_data, test_app) -> None:
         resp = self._get(test_app, "admin/themes", edit_url_test_data["themes"][0].id)
         self._check_link(test_app, resp, "functionalities", "functionalities", 200)
         self._check_link(test_app, resp, "interfaces", "interfaces", 200)

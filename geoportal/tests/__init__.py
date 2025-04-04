@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2024, Camptocamp SA
+# Copyright (c) 2011-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -42,7 +42,7 @@ with warnings.catch_warnings():
 
 
 class DummyRequest(PyramidDummyRequest):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.client_addr = "1.1.1.1"
         self.referrer = None
@@ -50,7 +50,7 @@ class DummyRequest(PyramidDummyRequest):
             self.registry.settings = {}
 
 
-def setup_common():
+def setup_common() -> None:
     logging.getLogger("c2cgeoportal_geoportal").setLevel(logging.DEBUG)
 
     caching.init_region({"backend": "dogpile.cache.null"}, "std")

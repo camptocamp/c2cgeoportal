@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2024, Camptocamp SA
+# Copyright (c) 2018-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -52,9 +52,7 @@ def _get_layers_query(request: Request, what: sqlalchemy.orm.Mapper[Any] | type[
     q = DBSession.query(what)
     q = q.join(main.Layer.restrictionareas)
     q = q.join(main.RestrictionArea.roles)
-    q = q.filter(main.Role.id.in_(get_roles_id(request)))
-
-    return q
+    return q.filter(main.Role.id.in_(get_roles_id(request)))
 
 
 def get_protected_layers_query(

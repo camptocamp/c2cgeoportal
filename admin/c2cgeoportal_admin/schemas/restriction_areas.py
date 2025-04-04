@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2024, Camptocamp SA
+# Copyright (c) 2017-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -50,7 +50,9 @@ def restrictionareas_schema_node(
             "name",
             order_by="name",
             edit_url=lambda request, value: request.route_url(
-                "c2cgeoform_item", table="restriction_areas", id=value
+                "c2cgeoform_item",
+                table="restriction_areas",
+                id=value,
             ),
         ),
         validator=manytomany_validator,

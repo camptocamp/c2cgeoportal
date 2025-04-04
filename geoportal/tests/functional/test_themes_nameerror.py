@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2024, Camptocamp SA
+# Copyright (c) 2013-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -39,7 +39,7 @@ from tests.functional import teardown_common as teardown_module  # noqa
 
 
 class TestThemesNameErrorView(TestCase):
-    def setup_method(self, _):
+    def setup_method(self, _) -> None:
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
@@ -71,7 +71,7 @@ class TestThemesNameErrorView(TestCase):
         DBSession.add(theme)
         transaction.commit()
 
-    def teardown_method(self, _):
+    def teardown_method(self, _) -> None:
         testing.tearDown()
 
         from c2cgeoportal_commons.models import DBSession
@@ -109,7 +109,7 @@ class TestThemesNameErrorView(TestCase):
 
         return Theme(self._create_request_obj(**kwargs))
 
-    def test_error(self):
+    def test_error(self) -> None:
         from c2cgeoportal_geoportal.views.theme import Theme
 
         theme_view = Theme(self._create_request_obj(params={"version": "2"}))

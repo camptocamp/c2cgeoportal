@@ -47,7 +47,7 @@ from tests.functional import setup_common as setup_module
 from tests.functional import teardown_common as teardown_module
 
 
-def use(item):
+def use(item) -> None:
     pass
 
 
@@ -58,7 +58,7 @@ _LOG = logging.getLogger(__name__)
 
 
 class TestThemeEntryView(TestCase):
-    def setup_method(self, _):
+    def setup_method(self, _) -> None:
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None  # pylint: disable=invalid-name
@@ -230,7 +230,7 @@ class TestThemeEntryView(TestCase):
 
         transaction.commit()
 
-    def teardown_method(self, _):
+    def teardown_method(self, _) -> None:
         testing.tearDown()
 
         cleanup_db()
@@ -252,7 +252,7 @@ class TestThemeEntryView(TestCase):
 
         return request
 
-    async def test_theme(self):
+    async def test_theme(self) -> None:
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
         from c2cgeoportal_geoportal.views.theme import Theme
@@ -280,7 +280,7 @@ class TestThemeEntryView(TestCase):
         layers = {l["name"] for l in themes[0]["children"][0]["children"]}
         assert layers == {"__test_private_layer_edit", "__test_public_layer", "__test_private_layer"}
 
-    async def test_no_layers(self):
+    async def test_no_layers(self) -> None:
         # mapfile error
         from c2cgeoportal_geoportal.views.theme import Theme
 
@@ -295,7 +295,7 @@ class TestThemeEntryView(TestCase):
             "The layer '__test_public_layer_no_layers' do not have any layers"
         }
 
-    async def test_not_in_mapfile(self):
+    async def test_not_in_mapfile(self) -> None:
         # mapfile error
         from c2cgeoportal_geoportal.views.theme import Theme
 
@@ -308,7 +308,7 @@ class TestThemeEntryView(TestCase):
             "The layer '__test_public_layer_not_in_mapfile' (__test_public_layer_not_in_mapfile) is not"
         }
 
-    async def test_notmapfile(self):
+    async def test_notmapfile(self) -> None:
         # mapfile error
         from c2cgeoportal_geoportal.views.theme import Theme
 
@@ -321,7 +321,7 @@ class TestThemeEntryView(TestCase):
             "GetCapabilities from URL 'http://mapserver:8080/?map=not_a_mapfile&SERVICE=WMS&VERSION=1.1",
         }
 
-    async def test_theme_geoserver(self):
+    async def test_theme_geoserver(self) -> None:
         from c2cgeoportal_geoportal.views.theme import Theme
 
         request = self._create_request_obj()

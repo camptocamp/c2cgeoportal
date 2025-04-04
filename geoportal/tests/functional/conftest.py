@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2024, Camptocamp SA
+# Copyright (c) 2021-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -57,7 +57,7 @@ if TYPE_CHECKING:
 @pytest.fixture
 def settings():
     setup_module()
-    yield {**configuration.get_config()}
+    return {**configuration.get_config()}
 
 
 @pytest.fixture
@@ -138,7 +138,7 @@ def default_ogcserver(dbsession_old, transact_old) -> "main.OGCServer":
     dbsession_old.add(ogcserver)
     dbsession_old.flush()
 
-    yield ogcserver
+    return ogcserver
 
 
 @pytest.fixture
@@ -151,7 +151,7 @@ def some_user(dbsession_old, transact_old) -> "static.User":
     dbsession_old.add(user)
     dbsession_old.flush()
 
-    yield user
+    return user
 
 
 @pytest.fixture
@@ -166,12 +166,11 @@ def admin_user(dbsession_old, transact_old) -> "static.User":
     dbsession_old.add_all([role, user])
     dbsession_old.flush()
 
-    yield user
+    return user
 
 
-@pytest.fixture()
-@pytest.mark.usefixtures("dbsession")
-def default_ogcserver(dbsession: Session) -> "main.OGCServer":
+@pytest.fixture
+def default_ogcserver_2(dbsession: Session) -> "main.OGCServer":
     from c2cgeoportal_commons.models.main import OGCServer
 
     dbsession.flush()

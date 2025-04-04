@@ -11,8 +11,7 @@ from shapely.geometry import Polygon, box, shape
 from .test_treegroup import TestTreeGroup
 
 
-@pytest.fixture(scope="function")
-@pytest.mark.usefixtures("dbsession", "transact")
+@pytest.fixture
 def restriction_area_test_data(dbsession, transact):
     del transact
     from c2cgeoportal_commons.models.main import (
@@ -46,7 +45,7 @@ def restriction_area_test_data(dbsession, transact):
         restrictionareas.append(restrictionarea)
 
     dbsession.flush()
-    yield {
+    return {
         "layers": layers,
         "restriction_areas": restrictionareas,
         "roles": roles,
@@ -57,7 +56,7 @@ def restriction_area_test_data(dbsession, transact):
 class TestRestrictionAreaViews(TestTreeGroup):
     _prefix = "/admin/restriction_areas"
 
-    def test_index_rendering(self, test_app):
+    def test_index_rendering(self, test_app) -> None:
         resp = self.get(test_app)
 
         self.check_left_menu(resp, "Restriction areas")
@@ -73,10 +72,10 @@ class TestRestrictionAreaViews(TestTreeGroup):
         ]
         self.check_grid_headers(resp, expected)
 
-    def test_grid_search(self, test_app):
+    def test_grid_search(self, test_app) -> None:
         self.check_search(test_app, "restrictionarea_1", total=1)
 
-    def test_submit_new(self, dbsession, test_app, restriction_area_test_data):
+    def test_submit_new(self, dbsession, test_app, restriction_area_test_data) -> None:
         from c2cgeoportal_commons.models.main import Log, LogAction, RestrictionArea
 
         roles = restriction_area_test_data["roles"]
@@ -128,7 +127,7 @@ class TestRestrictionAreaViews(TestTreeGroup):
         assert log.element_name == restriction_area.name
         assert log.username == "test_user"
 
-    def test_unicity_validator(self, restriction_area_test_data, test_app):
+    def test_unicity_validator(self, restriction_area_test_data, test_app) -> None:
         restriction_area = restriction_area_test_data["restriction_areas"][2]
 
         resp = test_app.get(f"/admin/restriction_areas/{restriction_area.id}/duplicate", status=200)
@@ -136,7 +135,7 @@ class TestRestrictionAreaViews(TestTreeGroup):
 
         self._check_submission_problem(resp, f"{restriction_area.name} is already used.")
 
-    def test_edit(self, test_app, restriction_area_test_data, dbsession):
+    def test_edit(self, test_app, restriction_area_test_data, dbsession) -> None:
         from c2cgeoportal_commons.models.main import Log, LogAction
 
         restriction_area = restriction_area_test_data["restriction_areas"][0]
@@ -186,7 +185,7 @@ class TestRestrictionAreaViews(TestTreeGroup):
         assert log.element_name == restriction_area.name
         assert log.username == "test_user"
 
-    def test_delete(self, test_app, restriction_area_test_data, dbsession):
+    def test_delete(self, test_app, restriction_area_test_data, dbsession) -> None:
         from c2cgeoportal_commons.models.main import Log, LogAction, RestrictionArea
 
         restriction_area = restriction_area_test_data["restriction_areas"][0]
@@ -202,7 +201,7 @@ class TestRestrictionAreaViews(TestTreeGroup):
         assert log.element_name == restriction_area.name
         assert log.username == "test_user"
 
-    def test_duplicate(self, restriction_area_test_data, test_app, dbsession):
+    def test_duplicate(self, restriction_area_test_data, test_app, dbsession) -> None:
         from c2cgeoportal_commons.models.main import RestrictionArea
 
         restriction_area = restriction_area_test_data["restriction_areas"][3]

@@ -2,7 +2,6 @@ import base64
 import re
 import types
 import urllib.parse
-from http.client import responses
 from unittest import TestCase
 
 import jwt
@@ -16,7 +15,7 @@ from tests.functional import setup_common as setup_module
 from tests.functional import teardown_common as teardown_module
 
 
-def use(item):
+def use(item) -> None:
     pass
 
 
@@ -50,22 +49,22 @@ _OIDC_KEYS = {
 }
 
 
-def includeme(request):
+def includeme(request) -> None:
     request.get_remember_from_user_info = types.MethodType(oidc.get_remember_from_user_info, request)
     request.get_user_from_remember = types.MethodType(oidc.get_user_from_remember, request)
 
 
 class TestLogin(TestCase):
-    def setUp(self):
+    def setUp(self) -> None:
         setup_db()
         self.config = testing.setUp()
 
-    def tearDown(self):
+    def tearDown(self) -> None:
         testing.tearDown()
         cleanup_db()
 
     @responses.activate
-    def test_login(self):
+    def test_login(self) -> None:
         from c2cgeoportal_geoportal.views.login import Login
 
         request = create_dummy_request(
@@ -113,7 +112,7 @@ class TestLogin(TestCase):
         )
 
     @responses.activate
-    def test_callback(self):
+    def test_callback(self) -> None:
         from c2cgeoportal_geoportal.views.login import Login
 
         request = create_dummy_request(

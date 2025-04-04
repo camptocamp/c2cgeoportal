@@ -22,10 +22,10 @@ class TestI18n(TestCase):
         "c2cgeoportal_geoportal.lib.i18n.os.path.isdir",
         side_effect=[locale[1] for locale in example_locale_content],
     )
-    def test_available_locale_names(self, isdir_mock, listdir_mock, exists_mock):
+    def test_available_locale_names(self, isdir_mock, listdir_mock, exists_mock) -> None:
         locales = available_locale_names()
-        self.assertEqual(set(locales), {"de", "en", "fr"})
+        assert set(locales) == {"de", "en", "fr"}
 
-    def test_available_locale_names_no_dir(self):
+    def test_available_locale_names_no_dir(self) -> None:
         locales = available_locale_names()
         assert locales == []

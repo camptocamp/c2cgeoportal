@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2024, Camptocamp SA
+# Copyright (c) 2019-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -71,12 +71,12 @@ def upgrade() -> None:
             op.execute(
                 f"DELETE FROM {schema}.interface_theme it "
                 f"USING {schema}.interface i "
-                f"WHERE it.interface_id = i.id AND i.name = '{interface_name}'"
+                f"WHERE it.interface_id = i.id AND i.name = '{interface_name}'",
             )
             op.execute(
                 f"DELETE FROM {schema}.interface_layer il "
                 f"USING {schema}.interface i "
-                f"WHERE il.interface_id = i.id AND i.name = '{interface_name}'"
+                f"WHERE il.interface_id = i.id AND i.name = '{interface_name}'",
             )
             op.execute(f"DELETE FROM {schema}.interface WHERE name='{interface_name}'")
 
@@ -104,11 +104,11 @@ def downgrade() -> None:
             op.execute(
                 f"DELETE FROM {schema}.interface_theme it "
                 f"USING {schema}.interface i "
-                f"WHERE it.interface_id = i.id AND i.name = '{interface_name}'"
+                f"WHERE it.interface_id = i.id AND i.name = '{interface_name}'",
             )
             op.execute(
                 f"DELETE FROM {schema}.interface_layer il "
                 f"USING {schema}.interface i "
-                f"WHERE il.interface_id = i.id AND i.name = '{interface_name}'"
+                f"WHERE il.interface_id = i.id AND i.name = '{interface_name}'",
             )
             op.execute(f"DELETE FROM {schema}.interface WHERE name='{interface_name}'")

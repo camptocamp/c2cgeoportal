@@ -72,18 +72,20 @@ def wms_structure(request: pyramid.request.Request, wms_url: Url, host: str) -> 
         headers["Host"] = host
     try:
         response = requests.get(
-            url.url(), headers=headers, **request.registry.settings.get("http_options", {})
+            url.url(),
+            headers=headers,
+            **request.registry.settings.get("http_options", {}),
         )
     except Exception:
         _LOG.exception("Unable to GetCapabilities from wms_url '%s'", wms_url)
         raise HTTPBadGateway(  # pylint: disable=raise-missing-from
-            "Unable to GetCapabilities, see logs for details"
+            "Unable to GetCapabilities, see logs for details",
         )
 
     if not response.ok:
         raise HTTPBadGateway(
             f"GetCapabilities from wms_url {url.url()} return the error: "
-            f"{response.status_code:d} {response.reason}"
+            f"{response.status_code:d} {response.reason}",
         )
 
     try:
@@ -100,7 +102,6 @@ def wms_structure(request: pyramid.request.Request, wms_url: Url, host: str) -> 
 
         for layer in list(wms.contents.values()):
             _fill(layer.name, layer.parent)
-        return result
 
     except AttributeError:
         error = "WARNING! an error occurred while trying to read the mapfile and recover the themes."
@@ -114,9 +115,16 @@ def wms_structure(request: pyramid.request.Request, wms_url: Url, host: str) -> 
         _LOG.exception(error)
         raise HTTPBadGateway(error)  # pylint: disable=raise-missing-from
 
+    else:
+        return result
+
 
 def filter_capabilities(
-    request: pyramid.request.Request, content: str, wms: bool, url: Url, headers: dict[str, str]
+    request: pyramid.request.Request,
+    content: str,
+    wms: bool,
+    url: Url,
+    headers: dict[str, str],
 ) -> str:
     """Filter the WMS/WFS capabilities."""
     wms_structure_ = wms_structure(request, url, headers.get("Host"))
@@ -146,13 +154,16 @@ def filter_capabilities(
 
     parser = defusedxml.expatreader.create_parser(forbid_external=False)
     # skip inclusion of DTDs
-    parser.setFeature(xml.sax.handler.feature_external_ges, False)
-    parser.setFeature(xml.sax.handler.feature_external_pes, False)
+    parser.setFeature(xml.sax.handler.feature_external_ges, state=False)
+    parser.setFeature(xml.sax.handler.feature_external_pes, state=False)
 
     result = StringIO()
     downstream_handler = XMLGenerator(result, "utf-8")
     filter_handler = _CapabilitiesFilter(
-        parser, downstream_handler, "Layer" if wms else "FeatureType", layers_blacklist=private_layers
+        parser,
+        downstream_handler,
+        "Layer" if wms else "FeatureType",
+        layers_blacklist=private_layers,
     )
     filter_handler.parse(StringIO(content))
     return result.getvalue()
@@ -177,20 +188,23 @@ def filter_wfst_capabilities(content: str, wfs_url: Url, request: pyramid.reques
 
     parser = defusedxml.expatreader.create_parser(forbid_external=False)
     # skip inclusion of DTDs
-    parser.setFeature(xml.sax.handler.feature_external_ges, False)
-    parser.setFeature(xml.sax.handler.feature_external_pes, False)
+    parser.setFeature(xml.sax.handler.feature_external_ges, state=False)
+    parser.setFeature(xml.sax.handler.feature_external_pes, state=False)
 
     result = StringIO()
     downstream_handler = XMLGenerator(result, "utf-8")
     filter_handler = _CapabilitiesFilter(
-        parser, downstream_handler, "FeatureType", layers_whitelist=writable_layers
+        parser,
+        downstream_handler,
+        "FeatureType",
+        layers_whitelist=writable_layers,
     )
     filter_handler.parse(StringIO(content))
     return result.getvalue()
 
 
 class _Layer:
-    def __init__(self, self_hidden: bool = False):
+    def __init__(self, self_hidden: bool = False) -> None:
         self.accumulator: list[Callable[[], None]] = []
         self.hidden = True
         self.self_hidden = self_hidden
@@ -214,7 +228,7 @@ class _CapabilitiesFilter(XMLFilterBase):
         tag_name: str,
         layers_blacklist: set[str] | None = None,
         layers_whitelist: set[str] | None = None,
-    ):
+    ) -> None:
         XMLFilterBase.__init__(self, upstream)
         self._downstream = downstream
         self._accumulator: list[str] = []
@@ -305,7 +319,10 @@ class _CapabilitiesFilter(XMLFilterBase):
             self.in_name = False
 
     def startElementNS(  # noqa: ignore=N802
-        self, name: tuple[str, str], qname: str, attrs: xml.sax.xmlreader.AttributesNSImpl
+        self,
+        name: tuple[str, str],
+        qname: str,
+        attrs: xml.sax.xmlreader.AttributesNSImpl,
     ) -> None:
         self._do(lambda: self._downstream.startElementNS(name, qname, attrs))
 

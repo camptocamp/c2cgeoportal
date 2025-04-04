@@ -15,5 +15,5 @@ class TestUrl:
             "config://internal/mapserv",
         ],
     )
-    def test_valid_url(self, valid_url):
+    def test_valid_url(self, valid_url) -> None:
         url(None, valid_url)

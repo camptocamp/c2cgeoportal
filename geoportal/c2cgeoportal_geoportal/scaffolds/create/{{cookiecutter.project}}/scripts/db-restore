@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (c) 2021-2024, Camptocamp SA
+# Copyright (c) 2021-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -38,7 +38,9 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Restore the database backup.")
     parser.add_argument("--verbose", action="store_true", help="Print the command that is executed.")
     parser.add_argument(
-        "--dry-run", action="store_true", help="Only print the command that would be executed."
+        "--dry-run",
+        action="store_true",
+        help="Only print the command that would be executed.",
     )
     parser.add_argument(
         "--env",
@@ -102,12 +104,13 @@ def main() -> None:
                         "camptocamp/postgres:{}".format(env["POSTGRES_TAG"]),
                         "pg_restore",
                         "--version",
-                    ]
+                    ],
+                    check=False,
                 )
                 print(shlex.join([*command1, *command2_annon, *command3]))
             if args.dry_run:
                 sys.exit(0)
-            sys.exit(subprocess.run([*command1, *command2, *command3], stdin=file_in).returncode)
+            sys.exit(subprocess.run([*command1, *command2, *command3], stdin=file_in, check=False).returncode)
         else:
             command = [
                 "docker",
@@ -121,11 +124,11 @@ def main() -> None:
                 'pg_restore --dbname="$PGDATABASE" ' + " ".join(args.arg),
             ]
             if args.verbose or args.dry_run:
-                subprocess.run(["docker", "compose", "exec", "tools", "pg_restore", "--version"])
+                subprocess.run(["docker", "compose", "exec", "tools", "pg_restore", "--version"], check=False)
                 print(shlex.join(command))
             if args.dry_run:
                 sys.exit(0)
-            sys.exit(subprocess.run(command, stdin=file_in).returncode)
+            sys.exit(subprocess.run(command, stdin=file_in, check=False).returncode)
 
 
 if __name__ == "__main__":

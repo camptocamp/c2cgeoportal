@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2024, Camptocamp SA
+# Copyright (c) 2017-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,6 +27,7 @@
 
 
 from functools import partial
+from typing import Any
 
 import colander
 import sqlalchemy.orm.query
@@ -56,8 +57,9 @@ base_schema.add_before("area", roles_schema_node(RestrictionArea.roles))
 base_schema.add_unique_validator(RestrictionArea.name, RestrictionArea.id)
 
 
-def layers(node, kw):  # pylint: disable=unused-argument
+def layers(node: Any, kw: Any) -> list[dict[str, Any]]:  # pylint: disable=unused-argument
     """Get the layers serializable representation."""
+    del node  # unused
     dbsession = kw["request"].dbsession
     query = dbsession.query(Layer).order_by(Layer.name)
     return [
@@ -91,7 +93,7 @@ base_schema.add(
         description=RestrictionArea.layers.info["colanderalchemy"]["description"],
         candidates=colander.deferred(layers),
         widget=ChildrenWidget(child_input_name="id", orderable=False),
-    )
+    ),
 )
 
 
@@ -99,13 +101,14 @@ base_schema.add(
 class RestrictionAreaViews(LoggedViews[RestrictionArea]):
     """The restriction area administration view."""
 
-    _list_fields = [
+    _list_fields = [  # noqa: RUF012
         _list_field("id"),
         _list_field("name"),
         _list_field("description"),
         _list_field("readwrite"),
         _list_field(
-            "roles", renderer=lambda restriction_area: ", ".join(r.name for r in restriction_area.roles)
+            "roles",
+            renderer=lambda restriction_area: ", ".join(r.name for r in restriction_area.roles),
         ),
         _list_field(
             "layers",
@@ -148,7 +151,9 @@ class RestrictionAreaViews(LoggedViews[RestrictionArea]):
         return super().delete()
 
     @view_config(  # type: ignore[misc]
-        route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2"
+        route_name="c2cgeoform_item_duplicate",
+        request_method="GET",
+        renderer="../templates/edit.jinja2",
     )
     def duplicate(self) -> ObjectResponse:
         return super().duplicate()

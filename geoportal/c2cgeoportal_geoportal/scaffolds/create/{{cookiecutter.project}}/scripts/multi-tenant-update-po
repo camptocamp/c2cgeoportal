@@ -14,7 +14,7 @@ def _main() -> None:
                 "Update the po files in multi tenants mode",
                 "",
                 "Using the information available in the tenants.yaml file.",
-            ]
+            ],
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )

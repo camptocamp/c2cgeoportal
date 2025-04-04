@@ -260,7 +260,7 @@ texinfo_documents = [
         "c2cgeoportal",
         "One line description of project.",
         "Miscellaneous",
-    )
+    ),
 ]
 
 # Documents to append as an appendix to all manuals.

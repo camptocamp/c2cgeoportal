@@ -5,8 +5,7 @@ import pytest
 from . import AbstractViewsTests
 
 
-@pytest.fixture(scope="function")
-@pytest.mark.usefixtures("dbsession", "transact")
+@pytest.fixture
 def left_menu_test_data(dbsession, transact):
     del transact
 
@@ -19,19 +18,19 @@ def left_menu_test_data(dbsession, transact):
 
     dbsession.flush()
 
-    yield {"roles": roles}
+    return {"roles": roles}
 
 
 @pytest.mark.usefixtures("test_app")
 class TestLeftMenu(AbstractViewsTests):
     _prefix = "/admin/roles"
 
-    def test_index(self, test_app):
+    def test_index(self, test_app) -> None:
         resp = test_app.get("/admin/roles", status=200)
         self.check_left_menu(resp, "Roles")
 
     @pytest.mark.usefixtures("left_menu_test_data")
-    def test_edit(self, test_app, left_menu_test_data):
+    def test_edit(self, test_app, left_menu_test_data) -> None:
         role = left_menu_test_data["roles"][0]
         resp = self.get_item(test_app, role.id)
         self.check_left_menu(resp, "Roles")

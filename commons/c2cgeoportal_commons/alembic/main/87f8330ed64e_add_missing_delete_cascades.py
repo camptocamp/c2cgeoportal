@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2024, Camptocamp SA
+# Copyright (c) 2020-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -51,7 +51,10 @@ def upgrade() -> None:
     schema = config["schema"]
 
     op.drop_constraint(
-        "interface_layer_interface_id_fkey", "interface_layer", schema=schema, type_="foreignkey"
+        "interface_layer_interface_id_fkey",
+        "interface_layer",
+        schema=schema,
+        type_="foreignkey",
     )
     op.create_foreign_key(
         "interface_layer_interface_id_fkey",
@@ -65,7 +68,10 @@ def upgrade() -> None:
     )
 
     op.drop_constraint(
-        "interface_theme_interface_id_fkey", "interface_theme", schema=schema, type_="foreignkey"
+        "interface_theme_interface_id_fkey",
+        "interface_theme",
+        schema=schema,
+        type_="foreignkey",
     )
     op.drop_constraint("interface_theme_theme_id_fkey", "interface_theme", schema=schema, type_="foreignkey")
     op.create_foreign_key(
@@ -96,7 +102,10 @@ def upgrade() -> None:
         type_="foreignkey",
     )
     op.drop_constraint(
-        "layer_restrictionarea_layer_id_fkey", "layer_restrictionarea", schema=schema, type_="foreignkey"
+        "layer_restrictionarea_layer_id_fkey",
+        "layer_restrictionarea",
+        schema=schema,
+        type_="foreignkey",
     )
     op.create_foreign_key(
         "layer_restrictionarea_layer_id_fkey",
@@ -120,10 +129,16 @@ def upgrade() -> None:
     )
 
     op.drop_constraint(
-        "restricted_role_theme_theme_id_fkey", "restricted_role_theme", schema=schema, type_="foreignkey"
+        "restricted_role_theme_theme_id_fkey",
+        "restricted_role_theme",
+        schema=schema,
+        type_="foreignkey",
     )
     op.drop_constraint(
-        "restricted_role_theme_role_id_fkey", "restricted_role_theme", schema=schema, type_="foreignkey"
+        "restricted_role_theme_role_id_fkey",
+        "restricted_role_theme",
+        schema=schema,
+        type_="foreignkey",
     )
     op.create_foreign_key(
         "restricted_role_theme_theme_id_fkey",
@@ -147,7 +162,10 @@ def upgrade() -> None:
     )
 
     op.drop_constraint(
-        "role_restrictionarea_role_id_fkey", "role_restrictionarea", schema=schema, type_="foreignkey"
+        "role_restrictionarea_role_id_fkey",
+        "role_restrictionarea",
+        schema=schema,
+        type_="foreignkey",
     )
     op.drop_constraint(
         "role_restrictionarea_restrictionarea_id_fkey",
@@ -192,7 +210,10 @@ def downgrade() -> None:
         type_="foreignkey",
     )
     op.drop_constraint(
-        "role_restrictionarea_role_id_fkey", "role_restrictionarea", schema=schema, type_="foreignkey"
+        "role_restrictionarea_role_id_fkey",
+        "role_restrictionarea",
+        schema=schema,
+        type_="foreignkey",
     )
     op.create_foreign_key(
         "role_restrictionarea_restrictionarea_id_fkey",
@@ -214,10 +235,16 @@ def downgrade() -> None:
     )
 
     op.drop_constraint(
-        "restricted_role_theme_role_id_fkey", "restricted_role_theme", schema=schema, type_="foreignkey"
+        "restricted_role_theme_role_id_fkey",
+        "restricted_role_theme",
+        schema=schema,
+        type_="foreignkey",
     )
     op.drop_constraint(
-        "restricted_role_theme_theme_id_fkey", "restricted_role_theme", schema=schema, type_="foreignkey"
+        "restricted_role_theme_theme_id_fkey",
+        "restricted_role_theme",
+        schema=schema,
+        type_="foreignkey",
     )
     op.create_foreign_key(
         "restricted_role_theme_role_id_fkey",
@@ -241,7 +268,10 @@ def downgrade() -> None:
     op.alter_column("ogc_server", "name", existing_type=sa.VARCHAR(), nullable=False, schema=schema)
 
     op.drop_constraint(
-        "layer_restrictionarea_layer_id_fkey", "layer_restrictionarea", schema=schema, type_="foreignkey"
+        "layer_restrictionarea_layer_id_fkey",
+        "layer_restrictionarea",
+        schema=schema,
+        type_="foreignkey",
     )
     op.drop_constraint(
         "layer_restrictionarea_restrictionarea_id_fkey",
@@ -270,7 +300,10 @@ def downgrade() -> None:
 
     op.drop_constraint("interface_theme_theme_id_fkey", "interface_theme", schema=schema, type_="foreignkey")
     op.drop_constraint(
-        "interface_theme_interface_id_fkey", "interface_theme", schema=schema, type_="foreignkey"
+        "interface_theme_interface_id_fkey",
+        "interface_theme",
+        schema=schema,
+        type_="foreignkey",
     )
     op.create_foreign_key(
         "interface_theme_theme_id_fkey",
@@ -292,7 +325,10 @@ def downgrade() -> None:
     )
 
     op.drop_constraint(
-        "interface_layer_interface_id_fkey", "interface_layer", schema=schema, type_="foreignkey"
+        "interface_layer_interface_id_fkey",
+        "interface_layer",
+        schema=schema,
+        type_="foreignkey",
     )
     op.create_foreign_key(
         "interface_layer_interface_id_fkey",

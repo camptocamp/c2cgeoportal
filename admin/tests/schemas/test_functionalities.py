@@ -2,7 +2,7 @@ import pytest
 
 
 @pytest.mark.usefixtures("settings")
-def test_functionality_definitions():
+def test_functionality_definitions() -> None:
     from c2cgeoportal_admin.schemas.functionalities import available_functionalities_for
     from c2cgeoportal_commons.models.main import Role, Theme
 

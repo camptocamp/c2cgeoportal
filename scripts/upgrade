@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (c) 2019-2024, Camptocamp SA
+# Copyright (c) 2019-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,8 @@ import sys
 
 parser = argparse.ArgumentParser(description="Upgrade the project")
 parser.add_argument(
-    "--debug", help="Path to c2cgeoportal source folder to be able to debug the upgrade procedure"
+    "--debug",
+    help="Path to c2cgeoportal source folder to be able to debug the upgrade procedure",
 )
 parser.add_argument("version", help="the version to upgrade to (master or x.y.z)")
 parser.add_argument("step", nargs="?", help="the step to run")
@@ -50,9 +51,9 @@ if len(sys.argv) >= 2 and sys.argv[1] == "--finalize":
     args = parser_finalize.parse_args()
 
     if platform.system() == "Windows":
-        code = subprocess.call(["python", "build"] + args.build_arg)
+        code = subprocess.call(["python", "build", *args.build_arg])
     else:
-        code = subprocess.call(["./build"] + args.build_arg)
+        code = subprocess.call(["./build", *args.build_arg])
     if code != 0:
         sys.exit(code)
 
@@ -73,7 +74,7 @@ if len(sys.argv) >= 2 and sys.argv[1] == "--finalize":
             "--config=alembic.ini",
             "upgrade",
             "head",
-        ]
+        ],
     )
 
 else:
@@ -95,7 +96,7 @@ else:
                     "docker",
                     "pull",
                     f"camptocamp/geomapfish:{major_version}",
-                ]
+                ],
             )
             subprocess.check_call(["docker", "pull", f"camptocamp/geomapfish-tools:{args.version}"])
             subprocess.check_call(
@@ -103,14 +104,12 @@ else:
                     "docker",
                     "pull",
                     f"camptocamp/geomapfish-config:{major_version}",
-                ]
+                ],
             )
 
     debug_volumes = (
         [
-            "--volume={debug}/geoportal/c2cgeoportal_geoportal/scripts/c2cupgrade.py:".format(
-                debug=args.debug
-            ),
+            f"--volume={args.debug}/geoportal/c2cgeoportal_geoportal/scripts/c2cupgrade.py:",
             "/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/scripts/c2cupgrade.py",
         ]
         if args.debug
@@ -126,9 +125,7 @@ else:
                 "--rm",
                 "--env=CI",
                 f"--volume={os.getcwd()}:/src",
-            ]
-            + debug_volumes
-            + [
+                *debug_volumes,
                 f"camptocamp/geomapfish-tools:{args.version}",
                 "run-git",
                 subprocess.check_output(["git", "config", "--get", "user.name"]).decode().strip(),
@@ -137,7 +134,7 @@ else:
                 "" if win else subprocess.check_output(["id", "-g"]).decode().strip(),
                 "/src",
                 "c2cupgrade",
-            ]
-            + c2cupgrade_args
-        )
+                *c2cupgrade_args,
+            ],
+        ),
     )
