@@ -5,7 +5,7 @@ import pytest
 
 @pytest.mark.usefixtures("transact")
 class TestInterface:
-    def test_delete_cascade_to_tsearch(self, dbsession):
+    def test_delete_cascade_to_tsearch(self, dbsession) -> None:
         from c2cgeoportal_commons.models.main import FullTextSearch, Interface
         from sqlalchemy import func
 

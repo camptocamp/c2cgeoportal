@@ -5,29 +5,28 @@ import pytest
 from .test_treegroup import TestTreeGroup
 
 
-@pytest.fixture(scope="function")
-@pytest.mark.usefixtures("dbsession", "transact")
+@pytest.fixture
 def themes_ordering_test_data(dbsession, transact):
     del transact
 
     from c2cgeoportal_commons.models.main import Theme
 
     themes = []
-    for i in range(0, 25):
+    for i in range(25):
         theme = Theme(name=f"theme_{i}", ordering=100)
         dbsession.add(theme)
         themes.append(theme)
 
     dbsession.flush()
 
-    yield {"themes": themes}
+    return {"themes": themes}
 
 
 @pytest.mark.usefixtures("themes_ordering_test_data", "test_app")
 class TestThemesOrdering(TestTreeGroup):
     _prefix = "/admin/layertree/ordering"
 
-    def test_edit(self, test_app, themes_ordering_test_data):
+    def test_edit(self, test_app, themes_ordering_test_data) -> None:
         resp = self.get(test_app, status=200)
         form = resp.form
 

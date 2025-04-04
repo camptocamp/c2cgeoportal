@@ -15,28 +15,28 @@ from shapely.geometry import box
 from geomapfish_qgisserver.accesscontrol import (
     Access,
     GeoMapFishAccessControl,
-    GMFException,
+    GMFError,
     OGCServerAccessControl,
 )
 
 area1 = box(485869.5728, 76443.1884, 837076.5648, 299941.7864)
 
 
-def set_request_parameters(server_iface, params, env=None):
+def set_request_parameters(server_iface, params, env=None) -> None:
     if env is None:
         env = {}
     server_iface.configure_mock(
         **{
             "configFilePath.return_value": params.get("MAP", None),
             "requestHandler.return_value": Mock(
-                **{"parameterMap.return_value": params, "parameter.side_effect": lambda key: params[key]}
+                **{"parameterMap.return_value": params, "parameter.side_effect": lambda key: params[key]},
             ),
             "getEnv.side_effect": lambda key: env.get(key, ""),
-        }
+        },
     )
 
 
-def add_node_in_qgis_project(project, parent_node, node_def):
+def add_node_in_qgis_project(project, parent_node, node_def) -> None:
     if node_def["type"] == "layer":
         vlayer = QgsVectorLayer("Point", node_def["name"], "memory")
         if "shortName" in node_def:
@@ -131,7 +131,7 @@ def test_data(clean_dbsession):
                     "children": [{"name": "private_layer3", "type": "layer", "shortName": "pl3"}],
                 },
             ],
-        }
+        },
     ]:
         add_node_in_qgis_project(project, project.layerTreeRoot(), node)
 
@@ -161,7 +161,7 @@ def test_data(clean_dbsession):
             private_layer2,
             private_group3,
             private_layer3,
-        )
+        ),
     )
 
     ra1 = RestrictionArea(
@@ -199,7 +199,7 @@ def test_data(clean_dbsession):
     dbsession.commit()
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def wms_use_layer_ids(test_data):
     """Activate WMSUseLayerIDs."""
     project = test_data["project"]
@@ -221,17 +221,25 @@ def project_mock(test_data):
 
 @pytest.mark.usefixtures("server_iface", "qgs_access_control_filter", "test_data", "project_mock")
 class TestOGCServerAccessControl:
-    def test_init(self, server_iface, DBSession, test_data):  # noqa: ignore=N803
+    def test_init(self, server_iface, DBSession, test_data) -> None:  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
-            server_iface, "qgisserver1", "no_project", 21781, lambda: dbsession
+            server_iface,
+            "qgisserver1",
+            "no_project",
+            21781,
+            lambda: dbsession,
         )
         assert ogcserver_accesscontrol.ogcserver.name == "qgisserver1"
 
-    def test_ogc_layer_name(self, server_iface, DBSession, test_data):  # noqa: ignore=N803
+    def test_ogc_layer_name(self, server_iface, DBSession, test_data) -> None:  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
-            server_iface, "qgisserver1", "no_project", 21781, lambda: dbsession
+            server_iface,
+            "qgisserver1",
+            "no_project",
+            21781,
+            lambda: dbsession,
         )
         for layer_name, expected in (
             ("private_layer1", "private_layer1"),
@@ -241,18 +249,26 @@ class TestOGCServerAccessControl:
             assert expected == ogcserver_accesscontrol.ogc_layer_name(layer)
 
     @pytest.mark.usefixtures("wms_use_layer_ids")
-    def test_ogc_layer_with_wms_use_layer_ids(self, server_iface, DBSession, test_data):  # noqa: ignore=N803
+    def test_ogc_layer_with_wms_use_layer_ids(self, server_iface, DBSession, test_data) -> None:  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
-            server_iface, "qgisserver1", "no_project", 21781, lambda: dbsession
+            server_iface,
+            "qgisserver1",
+            "no_project",
+            21781,
+            lambda: dbsession,
         )
         layer = test_data["project"].mapLayersByName("private_layer1")[0]
         assert layer.id() == ogcserver_accesscontrol.ogc_layer_name(layer)
 
-    def test_get_layers(self, server_iface, DBSession, test_data):  # noqa: ignore=N803
+    def test_get_layers(self, server_iface, DBSession, test_data) -> None:  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
-            server_iface, "qgisserver1", "no_project", 21781, lambda: dbsession
+            server_iface,
+            "qgisserver1",
+            "no_project",
+            21781,
+            lambda: dbsession,
         )
 
         expected = {
@@ -270,10 +286,14 @@ class TestOGCServerAccessControl:
         for key in expected:
             assert set(expected[key]) == {layer.name for layer in layers[key]}
 
-    def test_get_roles(self, server_iface, DBSession, test_data):  # noqa: ignore=N803
+    def test_get_roles(self, server_iface, DBSession, test_data) -> None:  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
-            server_iface, "qgisserver1", "no_project", 21781, lambda: dbsession
+            server_iface,
+            "qgisserver1",
+            "no_project",
+            21781,
+            lambda: dbsession,
         )
 
         set_request_parameters(server_iface, {"USER_ID": "0"})
@@ -298,12 +318,16 @@ class TestOGCServerAccessControl:
             }
             assert expected_roles == {role.id for role in ogcserver_accesscontrol.get_roles(dbsession)}
 
-    def test_get_restriction_areas(self, server_iface, DBSession, test_data):  # noqa: ignore=N803
+    def test_get_restriction_areas(self, server_iface, DBSession, test_data) -> None:  # noqa: ignore=N803
         from c2cgeoportal_commons.models.main import LayerWMS, Role
 
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
-            server_iface, "qgisserver1", "no_project", 21781, lambda: dbsession
+            server_iface,
+            "qgisserver1",
+            "no_project",
+            21781,
+            lambda: dbsession,
         )
 
         assert ogcserver_accesscontrol.get_restriction_areas(
@@ -326,10 +350,14 @@ class TestOGCServerAccessControl:
                 f"get_restriction_areas with {(layer_names, rw, role_names)} should return {expected}"
             )
 
-    def test_get_area(self, server_iface, DBSession, test_data):  # noqa: ignore=N803
+    def test_get_area(self, server_iface, DBSession, test_data) -> None:  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
-            server_iface, "qgisserver1", "no_project", 21781, lambda: dbsession
+            server_iface,
+            "qgisserver1",
+            "no_project",
+            21781,
+            lambda: dbsession,
         )
 
         for user_name, layer_name, expected in [
@@ -357,7 +385,11 @@ class TestOGCServerAccessControl:
     def test_layer_permissions(server_iface, DBSession, test_data):  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
-            server_iface, "qgisserver1", "no_project", 21781, lambda: dbsession
+            server_iface,
+            "qgisserver1",
+            "no_project",
+            21781,
+            lambda: dbsession,
         )
 
         for user_name, layer_name, expected in (
@@ -391,7 +423,11 @@ class TestOGCServerAccessControl:
     def test_cache_key(server_iface, DBSession, test_data):  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
-            server_iface, "qgisserver1", "no_project", 21781, lambda: dbsession
+            server_iface,
+            "qgisserver1",
+            "no_project",
+            21781,
+            lambda: dbsession,
         )
 
         set_request_parameters(server_iface, {"USER_ID": "0"}, {"HTTP_HOST": "example.com"})
@@ -419,25 +455,37 @@ class TestOGCServerAccessControl:
     "test_data",
 )
 class TestUnavailableOGCServerAccessControl:
-    def test_init(self, server_iface, DBSession):  # noqa: ignore=N803
+    def test_init(self, server_iface, DBSession) -> None:  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
-            server_iface, "unavailable", "no_project", 21781, lambda: dbsession
+            server_iface,
+            "unavailable",
+            "no_project",
+            21781,
+            lambda: dbsession,
         )
         assert ogcserver_accesscontrol.ogcserver is None
 
-    def test_get_layers(self, server_iface, DBSession):  # noqa: ignore=N803
+    def test_get_layers(self, server_iface, DBSession) -> None:  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
-            server_iface, "unavailable", "no_project", 21781, lambda: dbsession
+            server_iface,
+            "unavailable",
+            "no_project",
+            21781,
+            lambda: dbsession,
         )
 
         assert ogcserver_accesscontrol.get_layers(dbsession) == {}
 
-    def test_layer_permissions(self, server_iface, DBSession, test_data):  # noqa: ignore=N803
+    def test_layer_permissions(self, server_iface, DBSession, test_data) -> None:  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
-            server_iface, "unavailable", "no_project", 21781, lambda: dbsession
+            server_iface,
+            "unavailable",
+            "no_project",
+            21781,
+            lambda: dbsession,
         )
 
         for user_name, layer_name, expected in (
@@ -460,10 +508,14 @@ class TestUnavailableOGCServerAccessControl:
             for key, value in expected.items():
                 assert value == getattr(permissions, key)
 
-    def test_layer_filter_subset_string(self, server_iface, DBSession, test_data):  # noqa: ignore=N803
+    def test_layer_filter_subset_string(self, server_iface, DBSession, test_data) -> None:  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
-            server_iface, "unavailable", "no_project", 21781, lambda: dbsession
+            server_iface,
+            "unavailable",
+            "no_project",
+            21781,
+            lambda: dbsession,
         )
 
         for user_name, layer_name, expected in (
@@ -475,10 +527,14 @@ class TestUnavailableOGCServerAccessControl:
             layer = test_data["project"].mapLayersByName(layer_name)[0]
             assert ogcserver_accesscontrol.layerFilterSubsetString(layer) == expected
 
-    def test_layer_filter_expression(self, server_iface, DBSession, test_data):  # noqa: ignore=N803
+    def test_layer_filter_expression(self, server_iface, DBSession, test_data) -> None:  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
-            server_iface, "unavailable", "no_project", 21781, lambda: dbsession
+            server_iface,
+            "unavailable",
+            "no_project",
+            21781,
+            lambda: dbsession,
         )
 
         for user_name, layer_name, expected in (
@@ -494,7 +550,7 @@ class TestUnavailableOGCServerAccessControl:
 
 @pytest.mark.usefixtures("server_iface", "qgs_access_control_filter", "single_ogc_server_env", "test_data")
 class TestGeoMapFishAccessControlSingleOGCServer:
-    def test_init(self, server_iface):
+    def test_init(self, server_iface) -> None:
         plugin = GeoMapFishAccessControl(server_iface)
         assert plugin.single is True
         assert isinstance(plugin.ogcserver_accesscontrol, OGCServerAccessControl)
@@ -506,7 +562,7 @@ class TestGeoMapFishAccessControlSingleOGCServer:
     "test_data",
 )
 class TestGeoMapFishAccessControlMultipleOGCServer:
-    def test_init(self, server_iface, test_data):
+    def test_init(self, server_iface, test_data) -> None:
         plugin = GeoMapFishAccessControl(server_iface)
         assert plugin.single is False
 
@@ -522,7 +578,7 @@ class TestGeoMapFishAccessControlMultipleOGCServer:
 
         set_request_parameters(server_iface, {"MAP": "unavailable"})
         assert plugin.serverInterface().requestHandler().parameterMap()["MAP"] == "unavailable"
-        with pytest.raises(GMFException):
+        with pytest.raises(GMFError):
             plugin.get_ogcserver_accesscontrol()
 
 
@@ -532,7 +588,7 @@ class TestGeoMapFishAccessControlMultipleOGCServer:
     "test_data",
 )
 class TestGeoMapFishAccessControlAutoMultiOGCServer:
-    def test_init(self, server_iface, test_data):
+    def test_init(self, server_iface, test_data) -> None:
         plugin = GeoMapFishAccessControl(server_iface)
         assert plugin.single is False
 
@@ -549,7 +605,7 @@ class TestGeoMapFishAccessControlAutoMultiOGCServer:
     "test_data",
 )
 class TestGeoMapFishAccessControlAutoSingleOGCServer:
-    def test_init(self, server_iface, test_data):
+    def test_init(self, server_iface, test_data) -> None:
         plugin = GeoMapFishAccessControl(server_iface)
         assert plugin.single is True
         assert isinstance(plugin.ogcserver_accesscontrol, OGCServerAccessControl)

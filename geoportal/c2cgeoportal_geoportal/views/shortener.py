@@ -26,10 +26,10 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import datetime
 import logging
 import random
 import string
-from datetime import datetime
 from typing import cast
 from urllib.parse import urlparse
 
@@ -47,13 +47,13 @@ from pyramid.view import view_config
 from c2cgeoportal_geoportal import is_allowed_url
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
 
-logger = logging.getLogger(__name__)
+_LOGGER = logging.getLogger(__name__)
 
 
 class Shortener:
     """All the views conserne the shortener."""
 
-    def __init__(self, request: pyramid.request.Request):
+    def __init__(self, request: pyramid.request.Request) -> None:
         self.request = request
         self.settings = request.registry.settings.get("shortener", {})
         self.short_bases = [self.request.route_url("shortener_get", ref="")]
@@ -71,7 +71,7 @@ class Shortener:
             raise HTTPNotFound(f"Ref '{ref!s}' not found")
 
         short_urls[0].nb_hits += 1
-        short_urls[0].last_hit = datetime.now()
+        short_urls[0].last_hit = datetime.datetime.now(datetime.timezone.utc)
 
         set_common_headers(self.request, "shortener", Cache.PUBLIC_NO)
         return HTTPFound(location=short_urls[0].url)
@@ -97,7 +97,7 @@ class Shortener:
                 f"is not the current host '{self.request.host}' "
                 f"or part of allowed hosts: {', '.join(allowed_hosts)}"
             )
-            logging.debug(message)
+            _LOGGER.debug(message)
             raise HTTPBadRequest(message)
 
         shortened = False
@@ -121,17 +121,17 @@ class Shortener:
             tries += 1
             if tries > 20:
                 message = "No free ref found, considered to increase the length"
-                logger.error(message)
+                _LOGGER.error(message)
                 raise HTTPInternalServerError(message)
 
-        user_email = cast(static.User, self.request.user).email if self.request.user is not None else None
+        user_email = cast("static.User", self.request.user).email if self.request.user is not None else None
         email = self.request.params.get("email")
         if not shortened:
             short_url = static.Shorturl()
             short_url.url = url
             short_url.ref = ref
             short_url.creator_email = user_email
-            short_url.creation = datetime.now()
+            short_url.creation = datetime.datetime.now(tz=datetime.timezone.utc)
             short_url.nb_hits = 0
 
             DBSession.add(short_url)

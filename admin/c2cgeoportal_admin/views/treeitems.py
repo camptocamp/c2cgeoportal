@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2024, Camptocamp SA
+# Copyright (c) 2017-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -52,30 +52,31 @@ _T = TypeVar("_T", bound=TreeItem)
 class TreeItemViews(LoggedViews[_T], Generic[_T]):
     """The admin tree item view."""
 
-    _list_fields = [
+    _list_fields = [  # noqa: RUF012
         _list_field("id"),
         _list_field("name"),
         _list_field("description"),
     ]
 
-    _extra_list_fields_no_parents = [
+    _extra_list_fields_no_parents = [  # noqa: RUF012
         _list_field(
             "metadatas",
             renderer=lambda treeitem: ", ".join([f"{m.name}: {m.value}" or "" for m in treeitem.metadatas]),
             filter_column=concat(Metadata.name, ": ", Metadata.value).label("metadata"),
-        )
+        ),
     ]
-    _extra_list_fields = [
+    _extra_list_fields = [  # noqa: RUF012
         _list_field(
             "parents_relation",
             renderer=lambda layer_wms: ", ".join(
                 [
                     p.treegroup.name or ""
                     for p in sorted(layer_wms.parents_relation, key=lambda p: p.treegroup.name or "")
-                ]
+                ],
             ),
-        )
-    ] + _extra_list_fields_no_parents
+        ),
+        *_extra_list_fields_no_parents,
+    ]
 
     @view_config(route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2")  # type: ignore[misc]
     def save(self) -> SaveResponse:

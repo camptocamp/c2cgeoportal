@@ -8,8 +8,7 @@ import pytest
 from . import AbstractViewsTests
 
 
-@pytest.fixture(scope="function")
-@pytest.mark.usefixtures("dbsession", "transact")
+@pytest.fixture
 def ogc_server_test_data(dbsession, transact):
     del transact
 
@@ -17,7 +16,7 @@ def ogc_server_test_data(dbsession, transact):
 
     auth = ["No auth", "Standard auth", "Geoserver auth", "Proxy"]
     servers = []
-    for i in range(0, 8):
+    for i in range(8):
         server = OGCServer(name=f"server_{i}", description=f"description_{i}")
         server.url = f"https://somebasicurl_{i}.com"
         server.image_type = "image/jpeg" if i % 2 == 0 else "image/png"
@@ -27,14 +26,14 @@ def ogc_server_test_data(dbsession, transact):
 
     dbsession.flush()
 
-    yield {"ogc_servers": servers}
+    return {"ogc_servers": servers}
 
 
 @pytest.mark.usefixtures("ogc_server_test_data", "test_app")
 class TestOGCServer(AbstractViewsTests):
     _prefix = "/admin/ogc_servers"
 
-    def test_index_rendering(self, test_app):
+    def test_index_rendering(self, test_app) -> None:
         resp = self.get(test_app)
 
         self.check_left_menu(resp, "OGC Servers")
@@ -54,11 +53,11 @@ class TestOGCServer(AbstractViewsTests):
         ]
         self.check_grid_headers(resp, expected)
 
-    def test_grid_search(self, test_app):
+    def test_grid_search(self, test_app) -> None:
         # search on ogc_server name
         self.check_search(test_app, "server_0", total=1)
 
-    def test_submit_new(self, dbsession, test_app):
+    def test_submit_new(self, dbsession, test_app) -> None:
         from c2cgeoportal_commons.models.main import Log, LogAction, OGCServer
 
         with patch("c2cgeoportal_admin.views.ogc_servers.OGCServerViews._update_cache"):
@@ -76,7 +75,8 @@ class TestOGCServer(AbstractViewsTests):
             )
         ogc_server = dbsession.query(OGCServer).filter(OGCServer.name == "new_name").one()
         assert str(ogc_server.id) == re.match(
-            r"http://localhost/admin/ogc_servers/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/ogc_servers/(.*)\?msg_col=submit_ok",
+            resp.location,
         ).group(1)
         assert ogc_server.name == "new_name"
 
@@ -88,7 +88,7 @@ class TestOGCServer(AbstractViewsTests):
         assert log.element_name == ogc_server.name
         assert log.username == "test_user"
 
-    def test_edit(self, test_app, ogc_server_test_data, dbsession):
+    def test_edit(self, test_app, ogc_server_test_data, dbsession) -> None:
         from c2cgeoportal_commons.models.main import Log, LogAction
 
         ogc_server = ogc_server_test_data["ogc_servers"][0]
@@ -110,7 +110,7 @@ class TestOGCServer(AbstractViewsTests):
         assert log.element_name == ogc_server.name
         assert log.username == "test_user"
 
-    def test_delete(self, test_app, ogc_server_test_data, dbsession):
+    def test_delete(self, test_app, ogc_server_test_data, dbsession) -> None:
         from c2cgeoportal_commons.models.main import Log, LogAction, OGCServer
 
         ogc_server = ogc_server_test_data["ogc_servers"][0]
@@ -125,7 +125,7 @@ class TestOGCServer(AbstractViewsTests):
         assert log.element_name == ogc_server.name
         assert log.username == "test_user"
 
-    def test_duplicate(self, ogc_server_test_data, test_app, dbsession):
+    def test_duplicate(self, ogc_server_test_data, test_app, dbsession) -> None:
         from c2cgeoportal_commons.models.main import OGCServer
 
         ogc_server = ogc_server_test_data["ogc_servers"][3]
@@ -138,10 +138,11 @@ class TestOGCServer(AbstractViewsTests):
         assert resp.status_int == 302
         server = dbsession.query(OGCServer).filter(OGCServer.name == "clone").one()
         assert str(server.id) == re.match(
-            r"http://localhost/admin/ogc_servers/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/ogc_servers/(.*)\?msg_col=submit_ok",
+            resp.location,
         ).group(1)
 
-    def test_unicity_validator(self, ogc_server_test_data, test_app):
+    def test_unicity_validator(self, ogc_server_test_data, test_app) -> None:
         ogc_server = ogc_server_test_data["ogc_servers"][3]
         resp = test_app.get(f"/admin/ogc_servers/{ogc_server.id}/duplicate", status=200)
 
@@ -149,7 +150,7 @@ class TestOGCServer(AbstractViewsTests):
 
         self._check_submission_problem(resp, f"{ogc_server.name} is already used.")
 
-    def test_check_success(self, ogc_server_test_data, test_app):
+    def test_check_success(self, ogc_server_test_data, test_app) -> None:
         ogc_server = ogc_server_test_data["ogc_servers"][3]
         ogc_server.url = "config://mapserver"
         resp = test_app.get(f"/admin/ogc_servers/{ogc_server.id}/synchronize", status=200)
@@ -157,10 +158,10 @@ class TestOGCServer(AbstractViewsTests):
         resp = resp.forms["form-check"].submit("check")
 
         assert list(resp.html.find("div", class_="alert-success").stripped_strings) == [
-            "OGC Server has been successfully synchronized."
+            "OGC Server has been successfully synchronized.",
         ]
 
-    def test_dry_run_success(self, ogc_server_test_data, test_app):
+    def test_dry_run_success(self, ogc_server_test_data, test_app) -> None:
         ogc_server = ogc_server_test_data["ogc_servers"][3]
         ogc_server.url = "config://mapserver"
         resp = test_app.get(f"/admin/ogc_servers/{ogc_server.id}/synchronize", status=200)
@@ -168,10 +169,10 @@ class TestOGCServer(AbstractViewsTests):
         resp = resp.forms["form-dry-run"].submit("dry-run")
 
         assert list(resp.html.find("div", class_="alert-success").stripped_strings) == [
-            "OGC Server has been successfully synchronized."
+            "OGC Server has been successfully synchronized.",
         ]
 
-    def test_synchronize_success(self, ogc_server_test_data, test_app, dbsession):
+    def test_synchronize_success(self, ogc_server_test_data, test_app, dbsession) -> None:
         from c2cgeoportal_commons.models.main import Log, LogAction
 
         ogc_server = ogc_server_test_data["ogc_servers"][3]
@@ -189,7 +190,7 @@ class TestOGCServer(AbstractViewsTests):
         assert log.username == "test_user"
 
         assert list(resp.html.find("div", class_="alert-success").stripped_strings) == [
-            "OGC Server has been successfully synchronized."
+            "OGC Server has been successfully synchronized.",
         ]
 
         form = resp.forms["form-synchronize"]
@@ -200,5 +201,5 @@ class TestOGCServer(AbstractViewsTests):
         resp = form.submit("synchronize")
 
         assert list(resp.html.find("div", class_="alert-success").stripped_strings) == [
-            "OGC Server has been successfully synchronized."
+            "OGC Server has been successfully synchronized.",
         ]

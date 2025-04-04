@@ -1,4 +1,4 @@
-# Copyright (c) 2014-2024, Camptocamp SA
+# Copyright (c) 2014-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -54,12 +54,12 @@ def upgrade() -> None:
     op.add_column("layergroup_treeitem", Column("ordering", Integer), schema=schema)
     op.execute(
         f'UPDATE ONLY {schema}.layergroup_treeitem AS lt SET ordering = ti."order" '
-        f"FROM {schema}.treeitem AS ti WHERE ti.id = lt.treeitem_id "
+        f"FROM {schema}.treeitem AS ti WHERE ti.id = lt.treeitem_id ",
     )
     op.add_column("theme", Column("ordering", Integer), schema=schema)
     op.execute(
         f'UPDATE ONLY {schema}.theme AS t SET ordering = ti."order" '
-        f"FROM {schema}.treeitem AS ti WHERE ti.id = t.id "
+        f"FROM {schema}.treeitem AS ti WHERE ti.id = t.id ",
     )
     op.drop_column("treeitem", "order", schema=schema)
 
@@ -70,15 +70,18 @@ def downgrade() -> None:
     op.add_column("treeitem", Column("order", Integer), schema=schema)
     op.execute(
         f'UPDATE ONLY {schema}.treeitem AS ti SET "order" = lt.ordering '
-        f"FROM {schema}.layergroup_treeitem AS lt WHERE ti.id = lt.treeitem_id "
+        f"FROM {schema}.layergroup_treeitem AS lt WHERE ti.id = lt.treeitem_id ",
     )
     op.execute(
         f'UPDATE ONLY {schema}.treeitem AS ti SET "order" = t.ordering '
-        f"FROM {schema}.theme AS t WHERE ti.id = t.id "
+        f"FROM {schema}.theme AS t WHERE ti.id = t.id ",
     )
     op.drop_column("theme", "ordering", schema=schema)
     op.drop_column("layergroup_treeitem", "ordering", schema=schema)
     op.drop_column("layergroup_treeitem", "id", schema=schema)
     op.create_primary_key(
-        "layergroup_treeitem_pkey", "layergroup_treeitem", ["treegroup_id", "treeitem_id"], schema=schema
+        "layergroup_treeitem_pkey",
+        "layergroup_treeitem",
+        ["treegroup_id", "treeitem_id"],
+        schema=schema,
     )

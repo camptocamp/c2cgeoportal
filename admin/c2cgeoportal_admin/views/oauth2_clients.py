@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2024, Camptocamp SA
+# Copyright (c) 2021-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,7 +27,9 @@
 
 
 from functools import partial
+from typing import cast
 
+import sqlalchemy
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import (
     DeleteResponse,
@@ -52,7 +54,7 @@ base_schema.add_unique_validator(OAuth2Client.client_id, OAuth2Client.id)
 class OAuth2ClientViews(LoggedViews[OAuth2Client]):
     """The oAuth2 client administration view."""
 
-    _list_fields = [
+    _list_fields = [  # noqa: RUF012
         _list_field("id"),
         _list_field("client_id"),
         _list_field("secret"),
@@ -64,8 +66,8 @@ class OAuth2ClientViews(LoggedViews[OAuth2Client]):
     _log_model = Log
     _name_field = "client_id"
 
-    def _base_query(self):
-        return self._request.dbsession.query(OAuth2Client)
+    def _base_query(self) -> sqlalchemy.orm.query.Query[OAuth2Client]:
+        return cast("sqlalchemy.orm.Session", self._request.dbsession).query(OAuth2Client)
 
     @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")  # type: ignore[misc]
     def index(self) -> IndexResponse:
@@ -76,7 +78,9 @@ class OAuth2ClientViews(LoggedViews[OAuth2Client]):
         return super().grid()
 
     @view_config(  # type: ignore[misc]
-        route_name="c2cgeoform_item", request_method="GET", renderer="../templates/edit.jinja2"
+        route_name="c2cgeoform_item",
+        request_method="GET",
+        renderer="../templates/edit.jinja2",
     )
     def view(self) -> ObjectResponse:
         return super().edit()
@@ -90,7 +94,9 @@ class OAuth2ClientViews(LoggedViews[OAuth2Client]):
         return super().delete()
 
     @view_config(  # type: ignore[misc]
-        route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2"
+        route_name="c2cgeoform_item_duplicate",
+        request_method="GET",
+        renderer="../templates/edit.jinja2",
     )
     def duplicate(self) -> ObjectResponse:
         return super().duplicate()

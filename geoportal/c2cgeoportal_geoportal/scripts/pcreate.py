@@ -125,7 +125,7 @@ class PCreateCommand:
 
     @property
     def output_path(self) -> str:
-        return cast(str, os.path.abspath(os.path.normpath(self.args.output_directory)))
+        return cast("str", os.path.abspath(os.path.normpath(self.args.output_directory)))
 
     def render_scaffolds(self) -> int:
         verbose = True
@@ -136,8 +136,7 @@ class PCreateCommand:
 
         for scaffold_name in self.args.scaffold_names:
             # Needed to be backward compatible for the `test-upgrade init` command
-            if scaffold_name.startswith("c2cgeoportal_"):
-                scaffold_name = scaffold_name[len("c2cgeoportal_") :]
+            scaffold_name = scaffold_name.removeprefix("c2cgeoportal_")  # noqa: PLW2901
             self.out(f"Rendering scaffold: {scaffold_name}")
             cookiecutter(
                 template=os.path.join(SCAFFOLDS_DIR, scaffold_name),
@@ -186,7 +185,7 @@ class PCreateCommand:
             context["authtkt_secret"] = "io7heoDui8xaikie1rushaeGeiph8Bequei6ohchaequob6viejei0xooWeuvohf"  # noqa: S105 # nosec
 
         self.get_var(context, "srid", "Spatial Reference System Identifier (e.g. 2056): ", int)
-        srid = cast(int, context["srid"])
+        srid = cast("int", context["srid"])
         extent = self.epsg2bbox(srid)
         self.get_var(
             context,
@@ -200,7 +199,7 @@ class PCreateCommand:
         )
         match = re.match(
             r"([\d.]+)[,; ] *([\d.]+)[,; ] *([\d.]+)[,; ] *([\d.]+)",
-            cast(str, context["extent"]),
+            cast("str", context["extent"]),
         )
         if match is not None:
             extent = [match.group(n + 1) for n in range(4)]
@@ -212,7 +211,7 @@ class PCreateCommand:
             raise ValueError(
                 "Sorry, you may not name your package 'site'. "
                 "The package name 'site' has a special meaning in "
-                "Python.  Please name it anything except 'site'."
+                "Python.  Please name it anything except 'site'.",
             )
 
         package_logger = context["package"]
@@ -244,7 +243,7 @@ class PCreateCommand:
         if os.path.exists(project_file):
             with open(project_file, encoding="utf8") as f:
                 project = yaml.safe_load(f)
-                return cast(dict[str, str | int], project.get("template_vars", {}))
+                return cast("dict[str, str | int]", project.get("template_vars", {}))
         else:
             return {}
 
@@ -282,7 +281,7 @@ class PCreateCommand:
             c2 = transformer.transform(crs.area_of_use.bounds[3], crs.area_of_use.bounds[2])
             return [c1[0], c1[1], c2[0], c2[1]]
         except Exception as exception:  # pylint: disable=broad-exception-caught
-            print(f"Unexpected error: {str(exception)}")
+            print(f"Unexpected error: {exception!s}")
         return None
 
 

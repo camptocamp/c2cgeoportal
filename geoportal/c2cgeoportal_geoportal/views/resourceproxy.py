@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2024, Camptocamp SA
+# Copyright (c) 2011-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -43,7 +43,7 @@ _LOG = logging.getLogger(__name__)
 class ResourceProxy(Proxy):
     """All the views concerned the resources (it's a kind of proxy)."""
 
-    def __init__(self, request: pyramid.request.Request):
+    def __init__(self, request: pyramid.request.Request) -> None:
         Proxy.__init__(self, request)
         self.request = request
         self.settings = request.registry.settings.get("resourceproxy", {})
@@ -63,7 +63,11 @@ class ResourceProxy(Proxy):
             content_type = response.headers["Content-Type"]
 
             response = self._build_response(
-                response, response.content, cache_control, "externalresource", content_type=content_type
+                response,
+                response.content,
+                cache_control,
+                "externalresource",
+                content_type=content_type,
             )
             for header in response.headers:
                 if header not in self.settings["allowed_headers"]:

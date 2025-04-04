@@ -96,7 +96,7 @@ def upgrade() -> None:
         "  'true' AS wfs_support "
         "FROM ("
         "  SELECT UNNEST(ARRAY['image/jpeg', 'image/png']) AS image_type"
-        ") AS foo"
+        ") AS foo",
     )
     # other custom image types
     op.execute(
@@ -111,7 +111,7 @@ def upgrade() -> None:
         "FROM ("
         f"  SELECT DISTINCT(image_type) FROM {schema}.layer_internal_wms "
         "  WHERE image_type NOT IN ('image/jpeg', 'image/png')"
-        ") as foo"
+        ") as foo",
     )
 
     # layers for internal
@@ -122,7 +122,7 @@ def upgrade() -> None:
         "  time_mode, time_widget) "
         "SELECT layer.id, so.id, layer, style, time_mode, time_widget "
         f"FROM {schema}.layer_internal_wms AS layer, {schema}.server_ogc AS so "
-        "WHERE layer.image_type=so.image_type AND so.type IS NOT NULL"
+        "WHERE layer.image_type=so.image_type AND so.type IS NOT NULL",
     )
     # internal with null image_type
     op.execute(
@@ -130,7 +130,7 @@ def upgrade() -> None:
         "  time_mode, time_widget) "
         "SELECT layer.id, so.id, layer, style, time_mode, time_widget "
         f"FROM {schema}.layer_internal_wms AS layer, {schema}.server_ogc AS so "
-        "WHERE layer.image_type IS NULL AND so.image_type='image/png'"
+        "WHERE layer.image_type IS NULL AND so.image_type='image/png'",
     )
 
     # ocg for externals
@@ -138,7 +138,7 @@ def upgrade() -> None:
         f"INSERT INTO {schema}.server_ogc (name, url, type, image_type, auth, is_single_tile) "
         "SELECT 'source for ' || url, url, 'mapserver' AS type, image_type, 'none', CASE "
         "WHEN is_single_tile IS TRUE THEN TRUE ELSE FALSE END as is_single_tile "
-        f"FROM {schema}.layer_external_wms GROUP BY url, image_type, is_single_tile"
+        f"FROM {schema}.layer_external_wms GROUP BY url, image_type, is_single_tile",
     )
 
     # layers for external
@@ -148,7 +148,7 @@ def upgrade() -> None:
         "SELECT layer.id, so.id, layer, style, time_mode, time_widget "
         f"FROM {schema}.layer_external_wms as layer, {schema}.server_ogc as so "
         "WHERE layer.url=so.url AND layer.is_single_tile=so.is_single_tile "
-        "AND layer.image_type=so.image_type"
+        "AND layer.image_type=so.image_type",
     )
 
     op.drop_table("layer_external_wms", schema=schema)
@@ -196,7 +196,7 @@ def downgrade() -> None:
         "  time_mode, time_widget) "
         "SELECT w.id, layer, image_type, style, time_mode, time_widget "
         f"FROM {schema}.layer_wms AS w, {schema}.server_ogc AS o "
-        "WHERE w.server_ogc_id=o.id AND o.type IS NOT NULL"
+        "WHERE w.server_ogc_id=o.id AND o.type IS NOT NULL",
     )
 
     # external (type is null)
@@ -205,7 +205,7 @@ def downgrade() -> None:
         "  is_single_tile, time_mode, time_widget) "
         "SELECT w.id, url, layer, image_type, style, is_single_tile, time_mode, time_widget "
         f"FROM {schema}.layer_wms AS w, {schema}.server_ogc AS o "
-        "WHERE w.server_ogc_id=o.id AND o.type IS NULL"
+        "WHERE w.server_ogc_id=o.id AND o.type IS NULL",
     )
 
     # drop table AFTER moving data back
@@ -218,12 +218,12 @@ def downgrade() -> None:
         f"UPDATE {schema}.treeitem "
         "SET type='l_int_wms' "
         f"FROM {schema}.layer_internal_wms as w "
-        f"WHERE {schema}.treeitem.id=w.id"
+        f"WHERE {schema}.treeitem.id=w.id",
     )
     # external
     op.execute(
         f"UPDATE {schema}.treeitem "
         "SET type='l_ext_wms' "
         f"FROM {schema}.layer_external_wms as w "
-        f"WHERE {schema}.treeitem.id=w.id"
+        f"WHERE {schema}.treeitem.id=w.id",
     )

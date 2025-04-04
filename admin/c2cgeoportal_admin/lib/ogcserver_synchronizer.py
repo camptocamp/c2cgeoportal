@@ -29,7 +29,8 @@
 import functools
 import logging
 from io import StringIO
-from typing import Any, cast
+from types import TracebackType
+from typing import cast
 from xml.etree.ElementTree import Element  # nosec
 
 import pyramid.request
@@ -41,7 +42,7 @@ from sqlalchemy.orm.session import Session
 
 
 class _DryRunTransaction:
-    def __init__(self, dbsession: Session, dry_run: bool):
+    def __init__(self, dbsession: Session, dry_run: bool) -> None:
         self.dbsession = dbsession
         self.dry_run = dry_run
 
@@ -49,7 +50,13 @@ class _DryRunTransaction:
         if self.dry_run:
             self.dbsession.begin_nested()
 
-    def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None:
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: TracebackType | None,
+    ) -> None:
+        del exc_type, exc_val, exc_tb
         if self.dry_run:
             self.dbsession.rollback()
 
@@ -93,7 +100,7 @@ class OGCServerSynchronizer:
         self._default_wms = main.LayerWMS()
         self._interfaces = None
 
-        self._logger = logging.Logger(str(self), logging.INFO)
+        self._logger = logging.Logger(str(self), logging.INFO)  # noqa: LOG001
         self._log = StringIO()
         self._log_handler = logging.StreamHandler(self._log)
         self._logger.addHandler(self._log_handler)
@@ -117,7 +124,7 @@ class OGCServerSynchronizer:
     def check_layers(self) -> None:
         capabilities = ElementTree.fromstring(self.wms_capabilities())
         layers = self._request.dbsession.query(main.LayerWMS).filter(
-            main.LayerWMS.ogc_server == self._ogc_server
+            main.LayerWMS.ogc_server == self._ogc_server,
         )
         items = 0
         invalids = 0
@@ -182,7 +189,8 @@ class OGCServerSynchronizer:
         self._layers_removed = 0
 
         self._default_wms = cast(
-            main.LayerWMS, main.LayerWMS.get_default(self._request.dbsession) or main.LayerWMS()
+            "main.LayerWMS",
+            main.LayerWMS.get_default(self._request.dbsession) or main.LayerWMS(),
         )
         self._interfaces = self._request.dbsession.query(main.Interface).all()
 
@@ -224,8 +232,9 @@ class OGCServerSynchronizer:
             external_children = [item for item in tree_item.children if item not in server_children]
             children = server_children + external_children
             if tree_item.children != children:
-                tree_item._set_children(  # pylint: disable=protected-access
-                    server_children + external_children, order=True
+                tree_item._set_children(  # pylint: disable=protected-access # noqa: SLF001
+                    server_children + external_children,
+                    order=True,
                 )
                 self._logger.info("Children of %s have been sorted", tree_item.name)
 
@@ -237,7 +246,7 @@ class OGCServerSynchronizer:
         name = name_el.text
 
         theme = cast(
-            main.Theme | None,
+            "main.Theme | None",
             self._request.dbsession.query(main.Theme).filter(main.Theme.name == name).one_or_none(),
         )
 
@@ -262,7 +271,7 @@ class OGCServerSynchronizer:
         assert name is not None
 
         group = cast(
-            main.LayerGroup | None,
+            "main.LayerGroup | None",
             (
                 self._request.dbsession.query(main.LayerGroup)
                 .filter(main.LayerGroup.name == name)
@@ -293,7 +302,7 @@ class OGCServerSynchronizer:
         assert name is not None
 
         layer = cast(
-            main.LayerWMS | None,
+            "main.LayerWMS | None",
             self._request.dbsession.query(main.LayerWMS).filter(main.LayerWMS.name == name).one_or_none(),
         )
 
@@ -367,7 +376,7 @@ class OGCServerSynchronizer:
             errors,
         )
         if url is None:
-            raise Exception("\n".join(errors))  # pylint: disable=broad-exception-raised
+            raise Exception("\n".join(errors))  # pylint: disable=broad-exception-raised # noqa: TRY002
 
         # Add functionality params
         # sparams = get_mapserver_substitution_params(self.request)
@@ -401,9 +410,9 @@ class OGCServerSynchronizer:
             "application/vnd.ogc.wms_xml",
             "text/xml",
         ]:
-            raise Exception(  # pylint: disable=broad-exception-raised
+            raise Exception(  # pylint: disable=broad-exception-raised # noqa: TRY002
                 f"GetCapabilities from URL '{url}' returns a wrong Content-Type: "
-                f"{response.headers.get('Content-Type', '')}\n{response.text}"
+                f"{response.headers.get('Content-Type', '')}\n{response.text}",
             )
 
         return response.content

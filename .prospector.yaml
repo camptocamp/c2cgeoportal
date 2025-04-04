@@ -16,9 +16,30 @@ ignore-paths:
 
 mypy:
   options:
-    python_version: '3.10'
+    python-version: '3.10'
+
+bandit:
+  disable:
+    - B603 # subprocess call - check for execution of untrusted input
+    - B607 # Starting a process with a partial executable path
 
 ruff:
   disable:
+    - PTH # Path
+    - ARG005 # Unused lambda argument: `request`
     - D102 # Missing docstring in public method
     - D107 # Missing docstring in `__init__`
+    - BLE001 # Do not catch blind exception: `Exception`
+    - FIX001 # Line contains FIXME, consider resolving the issue
+    - TD001 # Invalid TODO tag: `FIXME`
+    - TD003 # Missing issue link for this TODO
+    - TRY003 # Avoid specifying long messages outside the exception class
+    - B904 # Within an `except` clause, raise exceptions with `raise ... from err` or `raise ... from None` to distinguish them from errors in exception handling
+    - E722 # Do not use bare `except`
+    - S603 # `subprocess` call: check for execution of untrusted input
+    - S607 # Starting a process with a partial executable path
+    - S110 # `try`-`except`-`pass` detected, consider logging the exception
+
+pycodestyle:
+  disable:
+    - N815 # variable '{}' in class scope should not be mixedCase

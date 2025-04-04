@@ -38,7 +38,7 @@ repos:
     hooks:
       - id: copyright
       - id: workflows-require-timeout
-      - id: poetry-lock
+      - id: poetry2-lock
         exclude: ^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/{{cookiecutter\.project}}/
         additional_dependencies:
           - poetry==2.0.1 # pypi
@@ -111,19 +111,40 @@ repos:
         exclude: |-
           ^geoportal/c2cgeoportal_geoportal/scaffolds/advance_create/{{cookiecutter.project}}/geoportal/{{cookiecutter.package}}_geoportal/__init__\.py$
   - repo: https://github.com/PyCQA/prospector
-    rev: v1.14.1
+    rev: v1.15.1
     hooks:
       - id: prospector
         args:
           - --profile=.prospector.yaml
-          - --profile=utils:unsafe
+          - --profile=utils:autofix
           - --tool=ruff
           - --die-on-tool-error
           - --output-format=pylint
         additional_dependencies:
-          - prospector-profile-duplicated==1.10.4 # pypi
-          - prospector-profile-utils==1.17.0 # pypi
-          - ruff==0.9.4 # pypi
+          - prospector-profile-duplicated==1.10.5 # pypi
+          - prospector-profile-utils==1.22.3 # pypi
+          - ruff==0.11.3 # pypi
+        exclude: |-
+          (?x)(
+            ^tests?/?
+            |/tests?(/|$)
+            |.*/tests(/|$)
+            |(^|/)test_[_a-zA-Z0-9]+.py$
+            |(^|/)[_a-zA-Z0-9]+_tests?.py$
+            |(^|/)tests?.py$
+            |^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/\{\{cookiecutter.project\}\}/
+          )
+      - id: prospector
+        args:
+          - --die-on-tool-error
+          - --output-format=pylint
+          - --profile=.prospector-test.yaml
+        additional_dependencies:
+          - prospector-profile-utils==1.22.3 # pypi
+        exclude: |-
+          (?x)^(
+            geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/\{\{cookiecutter.project\}\}/.*
+          )$
   - repo: https://github.com/sbrunner/jsonschema-validator
     rev: 1.0.0
     hooks:

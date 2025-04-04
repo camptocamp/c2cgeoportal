@@ -44,20 +44,20 @@ with open("ci/changelog.yaml", encoding="utf-8") as cl_file:
     changelog = yaml.load(cl_file, Loader=yaml.SafeLoader)
 
 
-def save() -> None:
+def _save() -> None:
     with open("ci/changelog.yaml", "w", encoding="utf-8") as cl_file_w:
         cl_file_w.write(yaml.dump(changelog, Dumper=yaml.SafeDumper))
     subprocess.run(["pre-commit", "run", "--file=ci/changelog.yaml"])  # pylint: disable=subprocess-run-check
 
 
-def output(cmd: list[str]) -> bytes | None:
+def _output(cmd: list[str]) -> bytes | None:
     with subprocess.Popen(cmd, stdout=subprocess.PIPE) as proc:
         if proc.stdout is None:
             return None
         return proc.stdout.read()
 
 
-def get_any(repo: str, ref: str, section: str, url: str) -> tuple[bool, Any]:
+def _get_any(repo: str, ref: str, section: str, url: str) -> tuple[bool, Any]:
     if section not in changelog:
         changelog[section] = {}
     if repo not in changelog[section]:
@@ -84,8 +84,8 @@ def get_any(repo: str, ref: str, section: str, url: str) -> tuple[bool, Any]:
     return True, json_stuff
 
 
-def get_commit(repo: str, ref: str) -> Any:
-    dirty, commit = get_any(repo, ref, "commits", "https://api.github.com/repos/camptocamp/{}/commits/{}")
+def _get_commit(repo: str, ref: str) -> Any:
+    dirty, commit = _get_any(repo, ref, "commits", "https://api.github.com/repos/camptocamp/{}/commits/{}")
     if "sha" not in commit:
         print(f"Error on commit {ref}.")
         print(commit)
@@ -99,12 +99,12 @@ def get_commit(repo: str, ref: str) -> Any:
         changelog["commits"][repo][commit["sha"]] = commit
         dirty = True
     if dirty:
-        save()
+        _save()
     return commit
 
 
-def get_pulls(repo: str, ref: str) -> list[Any]:
-    dirty, pulls = get_any(repo, ref, "pulls", "https://api.github.com/repos/camptocamp/{}/commits/{}/pulls")
+def _get_pulls(repo: str, ref: str) -> list[Any]:
+    dirty, pulls = _get_any(repo, ref, "pulls", "https://api.github.com/repos/camptocamp/{}/commits/{}/pulls")
     if not isinstance(pulls, list):
         print(f"Error on commit {ref}.")
         print(pulls)
@@ -136,21 +136,21 @@ def get_pulls(repo: str, ref: str) -> list[Any]:
             if pull["state"] == "closed" and pull["base_ref"] != "master"
         ]
 
-        save()
+        _save()
 
     return [pull for pull in pulls if pull["state"] == "closed"]
 
 
-def add_new_release() -> None:
+def _add_new_release() -> None:
     """
-    Add a new release in the releases list
+    Add a new release in the releases list.
     """
     if len(sys.argv) == 2:
         if len([e for e in changelog["releases"] if e["name"] == sys.argv[1]]) > 0:
             return
 
         npm_list = json.loads(
-            output(
+            _output(
                 [
                     "docker",
                     "run",
@@ -160,8 +160,8 @@ def add_new_release() -> None:
                     "npm",
                     "list",
                     "--json",
-                ]
-            ).decode()
+                ],
+            ).decode(),
         )
 
         print("Found npm dependencies:")
@@ -179,24 +179,24 @@ def add_new_release() -> None:
         )
 
         changelog["releases"].append(
-            {"ngeo": ngeo_ref, "c2cgeoportal": c2cgeoportal_ref, "name": sys.argv[1]}
+            {"ngeo": ngeo_ref, "c2cgeoportal": c2cgeoportal_ref, "name": sys.argv[1]},
         )
 
 
-def add_commit(commits: Any, all_pulls: Any, repo: str, ref: str) -> None:
+def _add_commit(commits: Any, all_pulls: Any, repo: str, ref: str) -> None:
     if ref in commits:
         return
-    commit = get_commit(repo, ref)
+    commit = _get_commit(repo, ref)
     if commit["sha"] not in commits:
-        pulls = get_pulls(repo, ref)
+        pulls = _get_pulls(repo, ref)
         for pull in pulls:
             all_pulls[pull["number"]] = pull
         commits[commit["sha"]] = True
         # Get only the first parent to don't go in the pull request
-        add_commit(commits, all_pulls, repo, commit["parents"][0]["sha"])
+        _add_commit(commits, all_pulls, repo, commit["parents"][0]["sha"])
 
 
-def main() -> None:
+def _main() -> None:
     if os.environ.get("MAIN_BRANCH") == "master":
         print("Ignored for master main branch")
         return
@@ -209,7 +209,7 @@ def main() -> None:
             releases.append(release)
             releases_names.append(release["name"])
     changelog["releases"] = releases
-    add_new_release()
+    _add_new_release()
 
     first = True
     release_pulls: dict[str, Any] = {}
@@ -221,7 +221,7 @@ def main() -> None:
     for release in changelog["releases"]:
         if first:
             for repo in REPOS:
-                commits[repo][get_commit(repo, release[repo])["sha"]] = True
+                commits[repo][_get_commit(repo, release[repo])["sha"]] = True
             first = False
             continue
 
@@ -229,7 +229,7 @@ def main() -> None:
         release_pulls[release["name"]] = {}
         for repo in REPOS:
             release_pulls[release["name"]][repo] = {}
-            add_commit(commits[repo], release_pulls[release["name"]][repo], repo, release[repo])
+            _add_commit(commits[repo], release_pulls[release["name"]][repo], repo, release[repo])
 
     with open("CHANGELOG.md", "w", encoding="utf-8") as md_file:
         first = True
@@ -247,11 +247,11 @@ def main() -> None:
                             md_file.write(f"##### {release}\n\n")
                             title = False
                         md_file.write(
-                            f"- {pull['title'].strip()} [{repo}#{pull['number']}]({pull['html_url']})\n"
+                            f"- {pull['title'].strip()} [{repo}#{pull['number']}]({pull['html_url']})\n",
                         )
 
     subprocess.run(["pre-commit", "run", "--file=CHANGELOG.md"])  # pylint: disable=subprocess-run-check
 
 
 if __name__ == "__main__":
-    main()
+    _main()

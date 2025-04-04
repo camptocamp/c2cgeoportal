@@ -48,7 +48,7 @@ def factory_build_layers(layer_builder, dbsession, add_dimension=True):
         RestrictionArea,
     )
 
-    restrictionareas = [RestrictionArea(name=f"restrictionarea_{i}") for i in range(0, 5)]
+    restrictionareas = [RestrictionArea(name=f"restrictionarea_{i}") for i in range(5)]
 
     interfaces = [Interface(name) for name in ["desktop", "mobile", "edit", "routing"]]
 
@@ -60,10 +60,10 @@ def factory_build_layers(layer_builder, dbsession, add_dimension=True):
         ("snappingConfig", '{"tolerance": 50}'),
     ]
 
-    groups = [LayerGroup(name=f"layer_group_{i}") for i in range(0, 5)]
+    groups = [LayerGroup(name=f"layer_group_{i}") for i in range(5)]
 
     layers = []
-    for i in range(0, 25):
+    for i in range(25):
         layer = layer_builder(i)
 
         if add_dimension:
@@ -85,12 +85,18 @@ def factory_build_layers(layer_builder, dbsession, add_dimension=True):
         layer.restrictionareas = [restrictionareas[i % 5], restrictionareas[(i + 2) % 5]]
 
         dbsession.add(
-            LayergroupTreeitem(group=groups[i % 5], item=layer, ordering=len(groups[i % 5].children_relation))
+            LayergroupTreeitem(
+                group=groups[i % 5],
+                item=layer,
+                ordering=len(groups[i % 5].children_relation),
+            ),
         )
         dbsession.add(
             LayergroupTreeitem(
-                group=groups[(i + 3) % 5], item=layer, ordering=len(groups[(i + 3) % 5].children_relation)
-            )
+                group=groups[(i + 3) % 5],
+                item=layer,
+                ordering=len(groups[(i + 3) % 5].children_relation),
+            ),
         )
 
         dbsession.add(layer)
@@ -112,19 +118,21 @@ class AbstractViewsTests:
     def get_item(self, test_app, item_id, **kwargs):
         return self.get(test_app, f"/{item_id}", **kwargs)
 
-    def check_left_menu(self, resp, title):
+    def check_left_menu(self, resp, title) -> None:
         link = resp.html.select_one(".navbar li.active a")
         assert f"http://localhost{self._prefix}" == link.attrs["href"]
         assert title == link.getText()
 
-    def check_grid_headers(self, resp, expected_col_headers, new="New"):
+    def check_grid_headers(self, resp, expected_col_headers, new="New") -> None:
         pp = pprint.PrettyPrinter(indent=4)
         effective_cols = [
             (th.attrs["data-field"], th.getText(), th.attrs["data-sortable"]) for th in resp.html.select("th")
         ]
-        expected_col_headers = [(x[0], x[1], len(x) == 3 and x[2] or "true") for x in expected_col_headers]
+        expected_col_headers = [(x[0], x[1], (len(x) == 3 and x[2]) or "true") for x in expected_col_headers]
         assert expected_col_headers == effective_cols, str.format(
-            "\n\n{}\n\n differs from \n\n{}", pp.pformat(expected_col_headers), pp.pformat(effective_cols)
+            "\n\n{}\n\n differs from \n\n{}",
+            pp.pformat(expected_col_headers),
+            pp.pformat(effective_cols),
         )
         actions = resp.html.select_one('th[data-field="actions"]')
         assert actions.attrs["data-sortable"] == "false"
@@ -141,7 +149,7 @@ class AbstractViewsTests:
             assert total == json["total"]
         return json
 
-    def check_checkboxes(self, form, name, expected):
+    def check_checkboxes(self, form, name, expected) -> None:
         for i, exp in enumerate(expected):
             field = form.get(name, index=i)
             checkbox = form.html.select_one(f"#{field.id}")
@@ -183,7 +191,7 @@ class AbstractViewsTests:
     def get_first_field_named(self, form, name):
         return form.fields.get(name)[0]
 
-    def set_first_field_named(self, form, name, value):
+    def set_first_field_named(self, form, name, value) -> None:
         form.fields.get(name)[0].value__set(value)
 
     def _check_sequence(self, sequence, expected):

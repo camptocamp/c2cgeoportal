@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2024, Camptocamp SA
+# Copyright (c) 2013-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -38,26 +38,26 @@ from pyramid.threadlocal import get_current_registry
 class TestMapserverproxyRoutePredicate(TestCase):
     predicate = MapserverproxyRoutePredicate(None, None)
 
-    def test_hide_capabilities_unset(self):
+    def test_hide_capabilities_unset(self) -> None:
         request = Request.blank("/test")
         request.registry = get_current_registry()
         request.registry.settings = {}
-        self.assertTrue(self.predicate(None, request))
+        assert self.predicate(None, request)
 
-    def test_hide_capabilities_set_no_request_param(self):
+    def test_hide_capabilities_set_no_request_param(self) -> None:
         request = Request.blank("/test")
         request.registry = get_current_registry()
         request.registry.settings = {"hide_capabilities": True}
-        self.assertTrue(self.predicate(None, request))
+        assert self.predicate(None, request)
 
-    def test_hide_capabilities_set_not_get_capabilities_request(self):
+    def test_hide_capabilities_set_not_get_capabilities_request(self) -> None:
         request = Request.blank("/test?REQUEST=GetMap")
         request.registry = get_current_registry()
         request.registry.settings = {"hide_capabilities": True}
-        self.assertTrue(self.predicate(None, request))
+        assert self.predicate(None, request)
 
-    def test_hide_capabilities_set_get_capabilities_request(self):
+    def test_hide_capabilities_set_get_capabilities_request(self) -> None:
         request = Request.blank("/test?REQUEST=GetCapabilities")
         request.registry = get_current_registry()
         request.registry.settings = {"hide_capabilities": True}
-        self.assertFalse(self.predicate(None, request))
+        assert not self.predicate(None, request)

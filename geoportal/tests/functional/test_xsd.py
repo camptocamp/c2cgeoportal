@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2024, Camptocamp SA
+# Copyright (c) 2018-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -38,7 +38,7 @@ from tests.functional import teardown_common as teardown_module  # noqa
 class TestXSDGenerator(TestCase):
     _tables = None
 
-    def setup_method(self, _):
+    def setup_method(self, _) -> None:
         setup_module()
 
         import transaction
@@ -60,7 +60,7 @@ class TestXSDGenerator(TestCase):
             name = Column(types.Unicode)
             custom_order = Column(types.Integer)
 
-            def __init__(self, name, custom_order):
+            def __init__(self, name, custom_order) -> None:
                 self.name = name
                 self.custom_order = custom_order
 
@@ -87,7 +87,7 @@ class TestXSDGenerator(TestCase):
         self.metadata = Base.metadata
         self.cls = Parent
 
-    def teardown_method(self, _):
+    def teardown_method(self, _) -> None:
         import transaction
         from c2cgeoportal_commons.models import DBSession
 
@@ -98,7 +98,7 @@ class TestXSDGenerator(TestCase):
                 table.drop(bind=DBSession.c2c_rw_bind)
 
     @patch("c2cgeoportal_geoportal.lib.xsd.XSDGenerator.add_column_property_xsd")
-    def test_add_class_properties_xsd_column_order(self, column_mock):
+    def test_add_class_properties_xsd_column_order(self, column_mock) -> None:
         from c2cgeoportal_geoportal.lib.xsd import XSDGenerator
 
         tb = Mock()
@@ -113,7 +113,7 @@ class TestXSDGenerator(TestCase):
 
     @patch("c2cgeoportal_geoportal.lib.xsd.XSDGenerator.add_association_proxy_xsd")
     @patch("c2cgeoportal_geoportal.lib.xsd.PapyrusXSDGenerator.add_column_property_xsd")
-    def test_add_column_property_xsd(self, column_mock, proxy_mock):
+    def test_add_column_property_xsd(self, column_mock, proxy_mock) -> None:
         from c2cgeoportal_geoportal.lib.xsd import XSDGenerator
         from sqlalchemy.orm.util import class_mapper
 
@@ -130,7 +130,7 @@ class TestXSDGenerator(TestCase):
         gen.add_column_property_xsd(tb, p)
         column_mock.assert_called_once_with(tb, p)
 
-    def test_add_column_readonly(self):
+    def test_add_column_readonly(self) -> None:
         from xml.etree.ElementTree import TreeBuilder, tostring
 
         from c2cgeoportal_geoportal.lib.xsd import XSDGenerator
@@ -144,18 +144,18 @@ class TestXSDGenerator(TestCase):
         gen.add_column_property_xsd(tb, p)
         e = tb.close()
 
-        self.assertEqual(
-            '<xsd:element name="readonly" minOccurs="0" nillable="true" type="xsd:string">'
+        assert (
+            tostring(e).decode("utf-8")
+            == '<xsd:element name="readonly" minOccurs="0" nillable="true" type="xsd:string">'
             "<xsd:annotation>"
             "<xsd:appinfo>"
             '<readonly value="true" />'
             "</xsd:appinfo>"
             "</xsd:annotation>"
-            "</xsd:element>",
-            tostring(e).decode("utf-8"),
+            "</xsd:element>"
         )
 
-    def test_add_association_proxy_xsd(self):
+    def test_add_association_proxy_xsd(self) -> None:
         from xml.etree.ElementTree import TreeBuilder, tostring
 
         from c2cgeoportal_geoportal.lib.xsd import XSDGenerator
@@ -169,8 +169,8 @@ class TestXSDGenerator(TestCase):
         gen.add_association_proxy_xsd(tb, mapper.attrs["child1_id"])
         e = tb.close()
 
-        self.assertEqual(
-            '<xsd:element minOccurs="0" nillable="true" name="child1">'
+        assert (
+            tostring(e).decode("utf-8") == '<xsd:element minOccurs="0" nillable="true" name="child1">'
             "<xsd:simpleType>"
             '<xsd:restriction base="xsd:string">'
             '<xsd:enumeration value="foo" />'
@@ -178,8 +178,7 @@ class TestXSDGenerator(TestCase):
             '<xsd:enumeration value="bar" />'
             "</xsd:restriction>"
             "</xsd:simpleType>"
-            "</xsd:element>",
-            tostring(e).decode("utf-8"),
+            "</xsd:element>"
         )
 
         # Test child2 enumeration is ordered by Child.custom_order
@@ -187,8 +186,8 @@ class TestXSDGenerator(TestCase):
         gen.add_association_proxy_xsd(tb, mapper.attrs["child2_id"])
         e = tb.close()
 
-        self.assertEqual(
-            '<xsd:element name="child2">'
+        assert (
+            tostring(e).decode("utf-8") == '<xsd:element name="child2">'
             "<xsd:simpleType>"
             '<xsd:restriction base="xsd:string">'
             '<xsd:enumeration value="zad" />'
@@ -196,6 +195,5 @@ class TestXSDGenerator(TestCase):
             '<xsd:enumeration value="bar" />'
             "</xsd:restriction>"
             "</xsd:simpleType>"
-            "</xsd:element>",
-            tostring(e).decode("utf-8"),
+            "</xsd:element>"
         )

@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2024, Camptocamp SA
+# Copyright (c) 2013-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -36,50 +36,41 @@ from tests import DummyRequest
 
 
 class TestExportCSVView(TestCase):
-    def test_build_url_docker(self):
+    def test_build_url_docker(self) -> None:
         request = DummyRequest()
         request.registry.settings = {"checker": {"base_internal_url": "http://localhost:8080"}}
-        self.assertEqual(
-            build_url("Test", "/toto?titi#tutu", request),
-            {"url": "http://localhost:8080/toto?titi#tutu", "headers": {"Cache-Control": "no-cache"}},
-        )
-
-    def test_build_url_http(self):
-        request = DummyRequest()
-        request.registry.settings = {
-            "checker": {"base_internal_url": "http://localhost", "forward_host": True}
+        assert build_url("Test", "/toto?titi#tutu", request) == {
+            "url": "http://localhost:8080/toto?titi#tutu",
+            "headers": {"Cache-Control": "no-cache"},
         }
-        self.assertEqual(
-            build_url("Test", "/toto?titi#tutu", request),
-            {
-                "url": "http://localhost/toto?titi#tutu",
-                "headers": {"Cache-Control": "no-cache", "Host": "example.com:80"},
-            },
-        )
 
-    def test_build_url_https(self):
+    def test_build_url_http(self) -> None:
         request = DummyRequest()
         request.registry.settings = {
-            "checker": {"base_internal_url": "https://localhost", "forward_host": True}
+            "checker": {"base_internal_url": "http://localhost", "forward_host": True},
         }
-        self.assertEqual(
-            build_url("Test", "/toto?titi#tutu", request),
-            {
-                "url": "https://localhost/toto?titi#tutu",
-                "headers": {"Cache-Control": "no-cache", "Host": "example.com:80"},
-            },
-        )
+        assert build_url("Test", "/toto?titi#tutu", request) == {
+            "url": "http://localhost/toto?titi#tutu",
+            "headers": {"Cache-Control": "no-cache", "Host": "example.com:80"},
+        }
 
-    def test_build_url_forward_headers(self):
+    def test_build_url_https(self) -> None:
         request = DummyRequest()
         request.registry.settings = {
-            "checker": {"base_internal_url": "http://localhost", "forward_headers": ["Cookie"]}
+            "checker": {"base_internal_url": "https://localhost", "forward_host": True},
+        }
+        assert build_url("Test", "/toto?titi#tutu", request) == {
+            "url": "https://localhost/toto?titi#tutu",
+            "headers": {"Cache-Control": "no-cache", "Host": "example.com:80"},
+        }
+
+    def test_build_url_forward_headers(self) -> None:
+        request = DummyRequest()
+        request.registry.settings = {
+            "checker": {"base_internal_url": "http://localhost", "forward_headers": ["Cookie"]},
         }
         request.headers["Cookie"] = "test"
-        self.assertEqual(
-            build_url("Test", "/toto?titi#tutu", request),
-            {
-                "url": "http://localhost/toto?titi#tutu",
-                "headers": {"Cache-Control": "no-cache", "Cookie": "test"},
-            },
-        )
+        assert build_url("Test", "/toto?titi#tutu", request) == {
+            "url": "http://localhost/toto?titi#tutu",
+            "headers": {"Cache-Control": "no-cache", "Cookie": "test"},
+        }

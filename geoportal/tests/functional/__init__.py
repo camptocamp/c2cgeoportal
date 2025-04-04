@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2024, Camptocamp SA
+# Copyright (c) 2013-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,6 @@ import c2cgeoportal_geoportal
 import c2cgeoportal_geoportal.lib
 import pyramid.registry
 import pyramid.request
-import sqlalchemy.exc
 import transaction
 import webob.acceptparse
 from c2c.template.config import config as configuration
@@ -204,7 +203,12 @@ def init_registry(registry=None):
 
 
 def testing_legacySecurityPolicy(
-    config, userid=None, groupids=(), permissive=True, remember_result=None, forget_result=None
+    config,
+    userid=None,
+    groupids=(),
+    permissive=True,
+    remember_result=None,
+    forget_result=None,
 ):
     """Compatibility mode for deprecated AuthorizationPolicy and AuthenticationPolicy in our tests."""
     from pyramid.interfaces import (
@@ -225,7 +229,11 @@ def testing_legacySecurityPolicy(
 
 
 def create_dummy_request(
-    additional_settings=None, authentication=True, user=None, *args: Any, **kargs: Any
+    additional_settings=None,
+    authentication=True,
+    user=None,
+    *args: Any,
+    **kargs: Any,
 ) -> pyramid.request.Request:
     from c2cgeoportal_geoportal import create_get_user_from_request
     from c2cgeoportal_geoportal.lib.authentication import create_authentication
@@ -259,7 +267,7 @@ def create_dummy_request(
     )
 
     request.accept_language = webob.acceptparse.create_accept_language_header(
-        "fr-CH,fr;q=0.8,en;q=0.5,en-US;q=0.3"
+        "fr-CH,fr;q=0.8,en;q=0.5,en-US;q=0.3",
     )
     request.registry.settings.update(additional_settings)
     request.referrer = "http://example.com/app"
@@ -284,7 +292,9 @@ def create_dummy_request(
     elif user is not None:
         config.testing_securitypolicy(user)
     request.set_property(
-        create_get_user_from_request({"authorized_referers": [request.referrer]}), name="user", reify=True
+        create_get_user_from_request({"authorized_referers": [request.referrer]}),
+        name="user",
+        reify=True,
     )
 
     return request

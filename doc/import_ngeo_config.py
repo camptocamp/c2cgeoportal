@@ -8,7 +8,7 @@ from typing import Any, cast
 def _format_type(type_definition: dict[str, Any]) -> str:
     """Get the type definition as a ReStructuredText (name or ref)."""
     if type_definition["type"] == "intrinsic":
-        return cast(str, type_definition["name"])
+        return cast("str", type_definition["name"])
 
     if type_definition["type"] == "array":
         return f"{_format_type(type_definition['elementType'])}\\[]"

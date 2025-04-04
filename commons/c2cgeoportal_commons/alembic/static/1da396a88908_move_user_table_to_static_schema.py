@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2024, Camptocamp SA
+# Copyright (c) 2015-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -56,7 +56,9 @@ def upgrade() -> None:
     engine = op.get_bind().engine
     with engine.connect() as connection:
         if type(engine).__name__ != "MockConnection" and op.get_context().dialect.has_table(
-            connection, "user", schema=staticschema
+            connection,
+            "user",
+            schema=staticschema,
         ):
             return
 
@@ -88,14 +90,14 @@ def upgrade() -> None:
             f"u.is_password_changed, r.name{parent_select} "
             f"FROM {schema}.user AS u "
             f"LEFT OUTER JOIN {schema}.role AS r ON (r.id = u.role_id) {parent_join}"
-            ")"
+            ")",
         )
         op.drop_table("user", schema=schema)
     except Exception:  # pylint: disable=broad-exception-caught
         op.execute(
-            "INSERT INTO %(staticschema)s.user (type, username, email, password, role) "
+            "INSERT INTO %(staticschema)s.user (type, username, email, password, role) "  # noqa: UP031
             "VALUES ( 'user', 'admin', 'info@example.com', '%(pass)s', 'role_admin')"
-            % {"staticschema": staticschema, "pass": sha1(b"admin").hexdigest()}  # nosec
+            % {"staticschema": staticschema, "pass": sha1(b"admin").hexdigest()},  # nosec
         )
 
 
@@ -121,7 +123,9 @@ def downgrade() -> None:
     parent_join = ""
     if parentschema is not None and parentschema != "":
         op.add_column(
-            "user", Column("parent_role_id", Integer, ForeignKey(parentschema + ".role.id")), schema=schema
+            "user",
+            Column("parent_role_id", Integer, ForeignKey(parentschema + ".role.id")),
+            schema=schema,
         )
         parent_column = ", parent_role_id"
         parent_select = ", pr.id"
@@ -134,7 +138,7 @@ def downgrade() -> None:
         f"u.is_password_changed, r.id{parent_select} "
         f"FROM {staticschema}.user AS u "
         f"LEFT OUTER JOIN {schema}.role AS r ON (r.name = u.role_name) {parent_join}"
-        ")"
+        ")",
     )
 
     op.drop_table("user", schema=staticschema)

@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2024, Camptocamp SA
+# Copyright (c) 2017-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -67,37 +67,35 @@ base_schema.add_unique_validator(Theme.name, Theme.id)
 class ThemeViews(TreeItemViews[Theme]):
     """The theme administration view."""
 
-    _list_fields = (
-        TreeItemViews._list_fields  # type: ignore[misc] # pylint: disable=protected-access
-        + [
-            _list_field("ordering"),
-            _list_field("public"),
-            _list_field("icon"),
-            _list_field(
-                "functionalities",
-                renderer=lambda themes: ", ".join(
-                    [
-                        f"{f.name}={f.value}"
-                        for f in sorted(themes.functionalities, key=lambda f: cast(str, f.name))
-                    ]
-                ),
-                filter_column=concat(Functionality.name, "=", Functionality.value),
+    _list_fields = [  # noqa: RUF012
+        *TreeItemViews._list_fields,  # type: ignore[misc] # pylint: disable=protected-access # noqa: SLF001
+        _list_field("ordering"),
+        _list_field("public"),
+        _list_field("icon"),
+        _list_field(
+            "functionalities",
+            renderer=lambda themes: ", ".join(
+                [
+                    f"{f.name}={f.value}"
+                    for f in sorted(themes.functionalities, key=lambda f: cast("str", f.name))
+                ],
             ),
-            _list_field(
-                "restricted_roles",
-                renderer=lambda themes: ", ".join([r.name or "" for r in themes.restricted_roles]),
-                filter_column=Role.name,
+            filter_column=concat(Functionality.name, "=", Functionality.value),
+        ),
+        _list_field(
+            "restricted_roles",
+            renderer=lambda themes: ", ".join([r.name or "" for r in themes.restricted_roles]),
+            filter_column=Role.name,
+        ),
+        _list_field(
+            "interfaces",
+            renderer=lambda themes: ", ".join(
+                [i.name or "" for i in sorted(themes.interfaces, key=lambda i: cast("str", i.name))],
             ),
-            _list_field(
-                "interfaces",
-                renderer=lambda themes: ", ".join(
-                    [i.name or "" for i in sorted(themes.interfaces, key=lambda i: cast(str, i.name))]
-                ),
-                filter_column=Interface.name,
-            ),
-        ]
-        + TreeItemViews._extra_list_fields_no_parents  # pylint: disable=protected-access
-    )
+            filter_column=Interface.name,
+        ),
+        *TreeItemViews._extra_list_fields_no_parents,  # pylint: disable=protected-access # noqa: SLF001
+    ]
 
     _id_field = "id"
     _model = Theme
@@ -112,7 +110,7 @@ class ThemeViews(TreeItemViews[Theme]):
             .outerjoin(Theme.functionalities)
             .options(subqueryload(Theme.functionalities))
             .options(subqueryload(Theme.restricted_roles))
-            .options(subqueryload(Theme.interfaces))
+            .options(subqueryload(Theme.interfaces)),
         )
 
     def _sub_query(self, query: sqlalchemy.orm.query.Query[Theme]) -> sqlalchemy.orm.query.Query[Theme]:
@@ -140,7 +138,9 @@ class ThemeViews(TreeItemViews[Theme]):
         return super().delete()
 
     @view_config(  # type: ignore[misc]
-        route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2"
+        route_name="c2cgeoform_item_duplicate",
+        request_method="GET",
+        renderer="../templates/edit.jinja2",
     )
     def duplicate(self) -> ObjectResponse:
         return super().duplicate()

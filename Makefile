@@ -38,15 +38,24 @@ prospector: build-checks ## Run the prospector checker
 	@docker run --rm camptocamp/geomapfish-checks:$(DOCKER_TAG) pylint --version --rcfile=/dev/null
 	@docker run --rm camptocamp/geomapfish-checks:$(DOCKER_TAG) pyflakes --version
 	docker run --rm --volume=$(shell pwd):/opt/c2cgeoportal camptocamp/geomapfish-checks:$(DOCKER_TAG) \
-		prospector --without=ruff --output-format=pylint --die-on-tool-error
+		prospector --without=mypy --output-format=pylint --die-on-tool-error
+	docker run --rm --volume=$(shell pwd):/opt/c2cgeoportal camptocamp/geomapfish-checks:$(DOCKER_TAG) \
+		prospector --tool=mypy --output-format=pylint --die-on-tool-error -I 'bin/.*' -I 'ci/.*' -I 'scripts/.*'
 
 .PHONY: poetry-dev
 poetry-dev:
-	poetry install --with=dev
+	poetry install --with=dev --no-root
+
+.PHONY: prospector-poetry-nomypy
+prospector-poetry-nomypy: poetry-dev
+	poetry run prospector --without=mypy --output-format=pylint --die-on-tool-error
+
+.PHONY: prospector-poetry-mypy
+prospector-poetry-mypy: poetry-dev
+	poetry run prospector --tool=mypy --output-format=pylint --die-on-tool-error -I 'bin/.*' -I 'ci/.*' -I 'scripts/.*'
 
 .PHONY: prospector-poetry
-prospector-poetry: poetry-dev
-	poetry run prospector --without=ruff --output-format=pylint --die-on-tool-error
+prospector-poetry: prospector-poetry-nomypy prospector-poetry-mypy
 
 .PHONY: additionallint
 additionallint: ## Check that we should replace some strings in the code
@@ -101,7 +110,10 @@ build-qgisserver-tests:
 
 .PHONY: prospector-qgisserver
 prospector-qgisserver: build-qgisserver-tests
-	docker run --rm --volume=$(shell pwd)/docker/qgisserver:/src camptocamp/geomapfish-qgisserver-tests prospector --without=ruff --output-format=pylint --die-on-tool-error
+	docker run --rm --volume=$(shell pwd)/docker/qgisserver:/src camptocamp/geomapfish-qgisserver-tests \
+		prospector --without=mypy --output-format=pylint --die-on-tool-error
+	docker run --rm --volume=$(shell pwd)/docker/qgisserver:/src camptocamp/geomapfish-qgisserver-tests \
+		prospector --tool=mypy --output-format=pylint --die-on-tool-error -I 'acceptance-tests/.*'
 
 .PHONY: build-test-db
 build-test-db:

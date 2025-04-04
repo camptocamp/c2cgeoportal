@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2024, Camptocamp SA
+# Copyright (c) 2011-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -47,7 +47,7 @@ class OGCProxy(Proxy):
     Then load the corresponding OGCServer.
     """
 
-    def __init__(self, request: pyramid.request.Request, has_default_ogc_server: bool = False):
+    def __init__(self, request: pyramid.request.Request, has_default_ogc_server: bool = False) -> None:
         Proxy.__init__(self, request)
 
         # params hold the parameters we"re going to send to backend
@@ -82,12 +82,13 @@ class OGCProxy(Proxy):
         try:
             result = DBSession.query(main.OGCServer).filter(main.OGCServer.name == name).one()
             DBSession.expunge(result)
-            return result
         except NoResultFound:
             raise HTTPBadRequest(  # pylint: disable=raise-missing-from
                 f"The OGC Server '{name}' does not exist (existing: "
-                f"{','.join([t[0] for t in DBSession.query(main.OGCServer.name).all()])})."
+                f"{','.join([t[0] for t in DBSession.query(main.OGCServer.name).all()])}).",
             )
+        else:
+            return result
 
     def _get_wms_url(self, errors: set[str]) -> Url | None:
         ogc_server = self.ogc_server
@@ -115,6 +116,6 @@ class OGCProxy(Proxy):
                 headers["X-Qgis-Service-Url"] = self.request.current_route_url(path=[], _query={})
             else:
                 headers["X-Qgis-Service-Url"] = self.request.current_route_url(
-                    _query={"ogcserver": self.ogc_server.name}
+                    _query={"ogcserver": self.ogc_server.name},
                 )
         return headers

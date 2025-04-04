@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2024, Camptocamp SA
+# Copyright (c) 2022-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -38,7 +38,7 @@ from tests.functional import teardown_common as teardown_module  # noqa
 
 
 class TestOGCProxy(TestCase):
-    def setup_method(self, _):
+    def setup_method(self, _) -> None:
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
@@ -55,10 +55,10 @@ class TestOGCProxy(TestCase):
 
         transaction.commit()
 
-    def teardown_method(self, _):
+    def teardown_method(self, _) -> None:
         cleanup_db()
 
-    def test_ogcserver(self):
+    def test_ogcserver(self) -> None:
         from c2cgeoportal_commons.models.main import OGCServer
         from c2cgeoportal_geoportal.views.ogcproxy import OGCProxy
 

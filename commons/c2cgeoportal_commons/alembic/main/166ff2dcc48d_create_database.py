@@ -72,7 +72,9 @@ def upgrade() -> None:
     engine = op.get_bind().engine
     with engine.connect() as connection:
         if type(engine).__name__ != "MockConnection" and op.get_context().dialect.has_table(
-            connection, "functionality", schema=schema
+            connection,
+            "functionality",
+            schema=schema,
         ):
             return
 
@@ -195,13 +197,15 @@ def upgrade() -> None:
     )
     if parentschema is not None and parentschema != "":
         op.add_column(
-            "user", Column("parent_role_id", Integer, ForeignKey(parentschema + ".role.id")), schema=schema
+            "user",
+            Column("parent_role_id", Integer, ForeignKey(parentschema + ".role.id")),
+            schema=schema,
         )
     op.execute(
-        "INSERT INTO %(schema)s.user (type, username, email, password, role_id) "
+        "INSERT INTO %(schema)s.user (type, username, email, password, role_id) "  # noqa: UP031
         "(SELECT 'user', 'admin', 'info@example.com', '%(pass)s', r.id "
         "FROM %(schema)s.role AS r "
-        "WHERE r.name = 'role_admin')" % {"schema": schema, "pass": sha1(b"admin").hexdigest()}  # nosec
+        "WHERE r.name = 'role_admin')" % {"schema": schema, "pass": sha1(b"admin").hexdigest()},  # nosec
     )
 
     op.create_table(

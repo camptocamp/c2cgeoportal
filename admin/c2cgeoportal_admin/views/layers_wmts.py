@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2024, Camptocamp SA
+# Copyright (c) 2017-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -76,17 +76,15 @@ base_schema.add(parent_id_node(LayerGroup))
 class LayerWmtsViews(DimensionLayerViews[LayerWMTS]):
     """The WMTS layer administration view."""
 
-    _list_fields = (
-        DimensionLayerViews._list_fields  # pylint: disable=protected-access
-        + [
-            _list_field("url"),
-            _list_field("layer"),
-            _list_field("style"),
-            _list_field("matrix_set"),
-            _list_field("image_type"),
-        ]
-        + DimensionLayerViews._extra_list_fields  # pylint: disable=protected-access
-    )
+    _list_fields = [  # noqa: RUF012
+        *DimensionLayerViews._list_fields,  # type: ignore[misc] # pylint: disable=protected-access # noqa: SLF001
+        _list_field("url"),
+        _list_field("layer"),
+        _list_field("style"),
+        _list_field("matrix_set"),
+        _list_field("image_type"),
+        *DimensionLayerViews._extra_list_fields,  # pylint: disable=protected-access # noqa: SLF001
+    ]
     _id_field = "id"
     _model = LayerWMTS
     _base_schema = base_schema
@@ -95,7 +93,8 @@ class LayerWmtsViews(DimensionLayerViews[LayerWMTS]):
         return super()._sub_query(self._request.dbsession.query(LayerWMTS).distinct())
 
     def _sub_query(
-        self, query: sqlalchemy.orm.query.Query[LayerWMTS]
+        self,
+        query: sqlalchemy.orm.query.Query[LayerWMTS],
     ) -> sqlalchemy.orm.query.Query[LayerWMTS]:
         del query
         return self._base_query()
@@ -125,7 +124,9 @@ class LayerWmtsViews(DimensionLayerViews[LayerWMTS]):
         return actions
 
     @view_config(  # type: ignore[misc]
-        route_name="c2cgeoform_item", request_method="GET", renderer="../templates/edit.jinja2"
+        route_name="c2cgeoform_item",
+        request_method="GET",
+        renderer="../templates/edit.jinja2",
     )
     def view(self) -> ObjectResponse:
         if self._is_new():
@@ -136,7 +137,9 @@ class LayerWmtsViews(DimensionLayerViews[LayerWMTS]):
         return super().edit()
 
     @view_config(  # type: ignore[misc]
-        route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2"
+        route_name="c2cgeoform_item",
+        request_method="POST",
+        renderer="../templates/edit.jinja2",
     )
     def save(self) -> SaveResponse:
         return super().save()
@@ -146,7 +149,9 @@ class LayerWmtsViews(DimensionLayerViews[LayerWMTS]):
         return super().delete()
 
     @view_config(  # type: ignore[misc]
-        route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2"
+        route_name="c2cgeoform_item_duplicate",
+        request_method="GET",
+        renderer="../templates/edit.jinja2",
     )
     def duplicate(self) -> ObjectResponse:
         return super().duplicate()

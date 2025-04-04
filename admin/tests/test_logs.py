@@ -8,8 +8,7 @@ import pytest
 from . import AbstractViewsTests
 
 
-@pytest.fixture(scope="function")
-@pytest.mark.usefixtures("dbsession", "transact")
+@pytest.fixture
 def logs_test_data(dbsession, transact):
     del transact
 
@@ -18,7 +17,7 @@ def logs_test_data(dbsession, transact):
     from c2cgeoportal_commons.models.static import Log as StaticLog
 
     logs = []
-    for i in range(0, 5):
+    for i in range(5):
         log = MainLog(
             date=datetime.datetime.now(timezone.utc),
             action=[LogAction.INSERT, LogAction.UPDATE, LogAction.DELETE][i % 3],
@@ -45,7 +44,7 @@ def logs_test_data(dbsession, transact):
 
     dbsession.flush()
 
-    yield {
+    return {
         "logs": logs,
     }
 
@@ -54,7 +53,7 @@ def logs_test_data(dbsession, transact):
 class TestLog(AbstractViewsTests):
     _prefix = "/admin/logs"
 
-    def test_index_rendering(self, test_app):
+    def test_index_rendering(self, test_app) -> None:
         resp = self.get(test_app)
 
         self.check_left_menu(resp, "Logs")
@@ -71,7 +70,7 @@ class TestLog(AbstractViewsTests):
         ]
         self.check_grid_headers(resp, expected, new=False)
 
-    def test_grid_default_sort_on_date_desc(self, test_app, logs_test_data):
+    def test_grid_default_sort_on_date_desc(self, test_app, logs_test_data) -> None:
         json = self.check_search(test_app)
         expected_ids = [
             log.id
@@ -84,7 +83,7 @@ class TestLog(AbstractViewsTests):
         result_ids = [int(row["_id_"]) for row in json["rows"]]
         assert result_ids == expected_ids
 
-    def test_grid_sort_on_element_type(self, test_app, logs_test_data):
+    def test_grid_sort_on_element_type(self, test_app, logs_test_data) -> None:
         json = self.check_search(test_app, sort="element_type")
         expected_ids = [
             log.id
@@ -96,6 +95,6 @@ class TestLog(AbstractViewsTests):
         result_ids = [int(row["_id_"]) for row in json["rows"]]
         assert result_ids == expected_ids
 
-    def test_grid_search(self, test_app):
+    def test_grid_search(self, test_app) -> None:
         self.check_search(test_app, "role", total=5)
         self.check_search(test_app, "user_2", total=1)

@@ -33,7 +33,6 @@ import subprocess  # nosec
 import traceback
 from collections.abc import Callable
 from typing import TYPE_CHECKING, Any, cast
-from xml.dom import Node
 from xml.parsers.expat import ExpatError
 
 import pyramid.threadlocal
@@ -60,12 +59,14 @@ from c2cgeoportal_geoportal.lib.caching import init_region
 from c2cgeoportal_geoportal.views.layers import Layers, get_layer_class
 
 if TYPE_CHECKING:
+    from xml.dom import Node
+
     from c2cgeoportal_commons.models import (
         main,  # pylint: disable=ungrouped-imports,useless-suppression
     )
 
 
-class LinguaExtractorException(Exception):
+class LinguaExtractorError(Exception):
     """Exception raised when an error occurs during the extraction."""
 
 
@@ -78,7 +79,7 @@ def _get_config(key: str, default: str | None = None) -> str | None:
     """
     request = pyramid.threadlocal.get_current_request()
     if request is not None:
-        return cast(str | None, request.params.get(key.lower(), default))
+        return cast("str | None", request.params.get(key.lower(), default))
 
     return os.environ.get(key, default)
 
@@ -97,9 +98,9 @@ class _Registry:
 
 
 class _Request:
-    params: dict[str, str] = {}
-    matchdict: dict[str, str] = {}
-    GET: dict[str, str] = {}
+    params: dict[str, str] = {}  # noqa: RUF012
+    matchdict: dict[str, str] = {}  # noqa: RUF012
+    GET: dict[str, str] = {}  # noqa: RUF012
 
     def __init__(self, settings: dict[str, Any] | None = None) -> None:
         self.registry: _Registry = _Registry(settings)
@@ -129,10 +130,10 @@ class _Request:
         return ""
 
 
-class GeomapfishAngularExtractor(Extractor):  # type: ignore
+class GeomapfishAngularExtractor(Extractor):  # type: ignore[misc]
     """GeoMapFish angular extractor."""
 
-    extensions = [".js", ".html"]
+    extensions = [".js", ".html"]  # noqa: RUF012
 
     def __init__(self) -> None:
         super().__init__()
@@ -193,7 +194,10 @@ class GeomapfishAngularExtractor(Extractor):  # type: ignore
                             self.tpl = Template(self.source, lookup=lookup, **kwargs)  # noqa: S702 # nosec
                         else:
                             self.tpl = Template(  # noqa: S702 # nosec
-                                uri=self.name, filename=self.filename, lookup=lookup, **kwargs
+                                uri=self.name,
+                                filename=self.filename,
+                                lookup=lookup,
+                                **kwargs,
                             )
 
                 try:
@@ -236,15 +240,20 @@ class GeomapfishAngularExtractor(Extractor):  # type: ignore
             messages = []
             for contexts, message in json.loads(message_str):
                 assert message is not None
-                message = cleaner(message)
-                for context in contexts.split(", "):
-                    messages.append(Message(None, message, None, [], "", "", context.split(":")))
-            return messages
+                message = cleaner(message)  # noqa: PLW2901
+                messages.extend(
+                    [
+                        Message(None, message, None, [], "", "", context.split(":"))
+                        for context in contexts.split(", ")
+                    ],
+                )
         except Exception:
             print(colorize("An error occurred", Color.RED))
             print(colorize(message_str, Color.RED))
             print("------")
             raise
+        else:
+            return messages
 
 
 def init_db(settings: dict[str, Any]) -> None:
@@ -270,7 +279,7 @@ def init_db(settings: dict[str, Any]) -> None:
         # Init db sessions
 
         class R:
-            settings: dict[str, Any] = {}
+            settings: dict[str, Any] = {}  # noqa: RUF012
 
         class C:
             registry = R()
@@ -287,10 +296,10 @@ def init_db(settings: dict[str, Any]) -> None:
         c2cgeoportal_geoportal.init_db_sessions(settings, config_)
 
 
-class GeomapfishConfigExtractor(Extractor):  # type: ignore
+class GeomapfishConfigExtractor(Extractor):  # type: ignore[misc]
     """GeoMapFish config extractor (raster layers, and print templates)."""
 
-    extensions = [".yaml", ".tmpl"]
+    extensions = [".yaml", ".tmpl"]  # noqa: RUF012
 
     def __call__(
         self,
@@ -314,7 +323,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
             # For the print config
             if "templates" in gmf_config:
                 return self._collect_print_config(gmf_config, filename)
-            raise Exception("Not a known config file")  # pylint: disable=broad-exception-raised
+            raise Exception("Not a known config file")  # pylint: disable=broad-exception-raised # noqa: TRY002
 
     def _collect_app_config(self, filename: str) -> list[Message]:
         config.init(filename)
@@ -376,7 +385,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
         interfaces_messages = []
         for interface, interface_config in config["interfaces_config"].items():
             for ds_index, datasource in enumerate(
-                interface_config.get("constants", {}).get("gmfSearchOptions", {}).get("datasources", [])
+                interface_config.get("constants", {}).get("gmfSearchOptions", {}).get("datasources", []),
             ):
                 for a_index, action in enumerate(datasource.get("groupActions", [])):
                     location = (
@@ -385,7 +394,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
                     )
                     assert action["title"] is not None
                     interfaces_messages.append(
-                        Message(None, action["title"], None, [], "", "", (filename, location))
+                        Message(None, action["title"], None, [], "", "", (filename, location)),
                     )
 
             for merge_tab in (
@@ -409,7 +418,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
         fieldname: str,
     ) -> set[tuple[str, ...]]:
         dbname = layerinfos.get("dbsession", "dbsession")
-        translate = cast(dict[str, Any], layerinfos["attributes"]).get(fieldname, {}).get("translate", True)
+        translate = cast("dict[str, Any]", layerinfos["attributes"]).get(fieldname, {}).get("translate", True)
         if not translate:
             return set()
         try:
@@ -417,13 +426,13 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
             assert dbsession is not None
             return Layers.query_enumerate_attribute_values(dbsession, layerinfos, fieldname)
         except Exception as e:
-            table = cast(dict[str, Any], layerinfos["attributes"]).get(fieldname, {}).get("table")
+            table = cast("dict[str, Any]", layerinfos["attributes"]).get(fieldname, {}).get("table")
             print(
                 colorize(
                     "ERROR! Unable to collect enumerate attributes for "
                     f"db: {dbname}, table: {table}, column: {fieldname} ({e!s})",
                     Color.RED,
-                )
+                ),
             )
             if _get_config_str("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
                 return set()
@@ -432,7 +441,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
     @staticmethod
     def _collect_print_config(print_config: dict[str, Any], filename: str) -> list[Message]:
         result = []
-        for template_ in list(cast(dict[str, Any], print_config.get("templates")).keys()):
+        for template_ in list(cast("dict[str, Any]", print_config.get("templates")).keys()):
             assert template_ is not None
             result.append(Message(None, template_, None, [], "", "", (filename, f"template/{template_}")))
             assert not [
@@ -455,13 +464,13 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
         return result
 
 
-class GeomapfishThemeExtractor(Extractor):  # type: ignore
+class GeomapfishThemeExtractor(Extractor):  # type: ignore[misc]
     """GeoMapFish theme extractor."""
 
     # Run on the development.ini file
-    extensions = [".ini"]
-    featuretype_cache: dict[str, dict[str, Any] | None] = {}
-    wms_capabilities_cache: dict[str, WebMapService] = {}
+    extensions = [".ini"]  # noqa: RUF012
+    featuretype_cache: dict[str, dict[str, Any] | None] = {}  # noqa: RUF012
+    wms_capabilities_cache: dict[str, WebMapService] = {}  # noqa: RUF012
 
     def __init__(self) -> None:
         super().__init__()
@@ -475,9 +484,13 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
         self.env = None
 
     def __call__(
-        self, filename: str, options: dict[str, Any], fileobj: str | None = None, lineno: int = 0
+        self,
+        filename: str,
+        options: dict[str, Any],
+        fileobj: str | None = None,
+        lineno: int = 0,
     ) -> list[Message]:
-        del fileobj, lineno
+        del fileobj, lineno, options
 
         print(f"Running {self.__class__.__name__} on {filename}")
 
@@ -534,7 +547,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                                 "",
                                 "",
                                 ("fts", layer_name.encode("ascii", errors="replace")),
-                            )
+                            ),
                         )
 
                 for (actions,) in db_session.query(FullTextSearch.actions).distinct().all():
@@ -550,7 +563,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                                     "",
                                     "",
                                     ("fts", action["data"].encode("ascii", errors="replace")),
-                                )
+                                ),
                             )
             except ProgrammingError as e:
                 print(
@@ -558,7 +571,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                         "ERROR! The database is probably not up to date "
                         "(should be ignored when happen during the upgrade)",
                         Color.RED,
-                    )
+                    ),
                 )
                 print(colorize(str(e), Color.RED))
                 if _get_config_str("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
@@ -569,7 +582,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                     "ERROR! The schema didn't seem to exists "
                     "(should be ignored when happen during the deploy)",
                     Color.RED,
-                )
+                ),
             )
             print(colorize(str(e), Color.RED))
             if _get_config_str("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
@@ -580,7 +593,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                     "ERROR! The database didn't seem to exists "
                     "(should be ignored when happen during the deploy)",
                     Color.RED,
-                )
+                ),
             )
             print(colorize(str(e), Color.RED))
             if _get_config_str("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
@@ -625,7 +638,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                         "",
                         "",
                         (item.item_type, item.name.encode("ascii", errors="replace")),
-                    )
+                    ),
                 )
 
             if callback is not None:
@@ -665,14 +678,14 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                                     "",
                                     "",
                                     (".".join(["edit", layer.item_type, str(layer.id)]), layer.name),
-                                )
+                                ),
                             )
             except NoSuchTableError:
                 print(
                     colorize(
                         f"ERROR! No such table '{layer.geo_table}' for layer '{layer.name}'.",
                         Color.RED,
-                    )
+                    ),
                 )
                 print(colorize(traceback.format_exc(), Color.RED))
                 if _get_config_str("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
@@ -711,13 +724,18 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                             f"ERROR! the OGC server '{server[0]}' from the "
                             f"WMTS layer '{layer.name}' does not exist.",
                             Color.RED,
-                        )
+                        ),
                     )
                     if _get_config_str("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
                         raise
 
     def _import_layer_attributes(
-        self, url: str, layer: "main.Layer", item_type: str, name: str, messages: list[str]
+        self,
+        url: str,
+        layer: "main.Layer",
+        item_type: str,
+        name: str,
+        messages: list[str],
     ) -> None:
         attributes, layers = self._layer_attributes(url, layer)
         for sub_layer in layers:
@@ -730,8 +748,8 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                     [],
                     "",
                     "",
-                    (".".join([item_type, name]), sub_layer.encode("ascii", "replace")),
-                )
+                    (f"{item_type}.{name}", sub_layer.encode("ascii", "replace")),
+                ),
             )
         for attribute in attributes:
             assert attribute is not None
@@ -743,8 +761,8 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                     [],
                     "",
                     "",
-                    (".".join([item_type, name]), layer.encode("ascii", "replace")),
-                )
+                    (f"{item_type}.{name}", layer.encode("ascii", "replace")),
+                ),
             )
 
     def _build_url(self, url: Url) -> tuple[Url, dict[str, str], dict[str, Any]]:
@@ -792,7 +810,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                         "REQUEST": "GetCapabilities",
                         "ROLE_IDS": "0",
                         "USER_ID": "0",
-                    }
+                    },
                 )
                 .url()
             )
@@ -801,7 +819,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                     [
                         f"{h}={v if h not in ('Authorization', 'Cookie') else '***'}"
                         for h, v in headers.items()
-                    ]
+                    ],
                 )
                 print(f"Get WMS GetCapabilities for URL {wms_getcap_url},\nwith headers: {rendered_headers}")
                 response = requests.get(wms_getcap_url, headers=headers, timeout=60, **kwargs)
@@ -815,7 +833,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                                 "ERROR! an error occurred while trying to parse "
                                 "the GetCapabilities document.",
                                 Color.RED,
-                            )
+                            ),
                         )
                         print(colorize(str(e), Color.RED))
                         print(f"URL: {wms_getcap_url}\nxml:\n{response.text}")
@@ -827,25 +845,25 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                             f"ERROR! Unable to GetCapabilities from URL: {wms_getcap_url},\n"
                             f"with headers: {rendered_headers}",
                             Color.RED,
-                        )
+                        ),
                     )
                     print(f"Response: {response.status_code} {response.reason}\n{response.text}")
                     if _get_config_str("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
-                        raise LinguaExtractorException(response.reason)
+                        raise LinguaExtractorError(response.reason)  # noqa: TRY301
             except Exception as e:  # pylint: disable=broad-exception-caught
                 print(colorize(str(e), Color.RED))
                 rendered_headers = " ".join(
                     [
                         f"{h}={v if h not in ('Authorization', 'Cookie') else '***'}"
                         for h, v in headers.items()
-                    ]
+                    ],
                 )
                 print(
                     colorize(
                         f"ERROR! Unable to GetCapabilities from URL: {wms_getcap_url},\n"
                         f"with headers: {rendered_headers}",
                         Color.RED,
-                    )
+                    ),
                 )
                 if _get_config_str("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
                     raise
@@ -865,7 +883,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                         "REQUEST": "DescribeFeatureType",
                         "ROLE_IDS": "0",
                         "USER_ID": "0",
-                    }
+                    },
                 )
                 .url()
             )
@@ -877,7 +895,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                     colorize(
                         f"ERROR! Unable to DescribeFeatureType from URL: {wfs_describe_feature_url}",
                         Color.RED,
-                    )
+                    ),
                 )
                 if _get_config_str("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
                     return [], []
@@ -889,26 +907,27 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                         f"ERROR! DescribeFeatureType from URL {wfs_describe_feature_url} return the error: "
                         f"{response.status_code:d} {response.reason}",
                         Color.RED,
-                    )
+                    ),
                 )
                 if _get_config_str("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
                     return [], []
-                raise Exception("Aborted")  # pylint: disable=broad-exception-raised
+                raise Exception("Aborted")  # pylint: disable=broad-exception-raised # noqa: TRY002
 
             try:
                 describe = parseString(response.text)
                 featurestype: dict[str, Node] | None = {}
                 self.featuretype_cache[url] = featurestype
                 for type_element in describe.getElementsByTagNameNS(
-                    "http://www.w3.org/2001/XMLSchema", "complexType"
+                    "http://www.w3.org/2001/XMLSchema",
+                    "complexType",
                 ):
-                    cast(dict[str, Node], featurestype)[type_element.getAttribute("name")] = type_element
+                    cast("dict[str, Node]", featurestype)[type_element.getAttribute("name")] = type_element
             except ExpatError as e:
                 print(
                     colorize(
                         "ERROR! an error occurred while trying to parse the DescribeFeatureType document.",
                         Color.RED,
-                    )
+                    ),
                 )
                 print(colorize(str(e), Color.RED))
                 print(f"URL: {wfs_describe_feature_url}\nxml:\n{response.text}")
@@ -920,7 +939,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                     colorize(
                         "ERROR! an error occurred while trying to read the Mapfile and recover the themes.",
                         Color.RED,
-                    )
+                    ),
                 )
                 print(f"URL: {wfs_describe_feature_url}\nxml:\n{response.text}")
                 if _get_config_str("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
@@ -943,10 +962,13 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
             # Should probably be adapted for other king of servers
             type_element = featurestype.get(f"{sub_layer}Type")
             if type_element is not None:
-                for element in type_element.getElementsByTagNameNS(
-                    "http://www.w3.org/2001/XMLSchema", "element"
-                ):
-                    if not element.getAttribute("type").startswith("gml:"):
-                        attributes.append(element.getAttribute("name"))
+                attributes.extend(
+                    element.getAttribute("name")
+                    for element in type_element.getElementsByTagNameNS(
+                        "http://www.w3.org/2001/XMLSchema",
+                        "element",
+                    )
+                    if not element.getAttribute("type").startswith("gml:")
+                )
 
         return attributes, layers

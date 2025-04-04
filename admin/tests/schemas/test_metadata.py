@@ -2,7 +2,7 @@ import pytest
 
 
 @pytest.mark.usefixtures("settings")
-def test_get_relevant_for():
+def test_get_relevant_for() -> None:
     from c2cgeoportal_admin.schemas.metadata import get_relevant_for
     from c2cgeoportal_commons.models.main import LayerGroup, LayerWMS
 
@@ -10,7 +10,7 @@ def test_get_relevant_for():
     assert get_relevant_for(LayerWMS) == {"layer_wms", "layer", "treeitem"}
 
 
-def test_metadata_definitions():
+def test_metadata_definitions() -> None:
     from c2cgeoportal_admin.schemas.metadata import (
         metadata_definitions,
     )
@@ -42,8 +42,8 @@ def test_metadata_definitions():
                     "name": "layer_wms_and_wmts",
                     "relevant_for": ["layer_wms", "layer_wmts"],
                 },
-            ]
-        }
+            ],
+        },
     }
 
     assert [m["name"] for m in metadata_definitions(settings, LayerGroup)] == [

@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2024, Camptocamp SA
+# Copyright (c) 2021-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -25,18 +25,20 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+import datetime
 import logging
-from datetime import datetime, timedelta
-from typing import Any, TypedDict
+from typing import TYPE_CHECKING, Any, TypedDict
 
 import basicauth
-import c2cgeoportal_commons
 import oauthlib.common
 import oauthlib.oauth2
 import pyramid.threadlocal
 from pyramid.httpexceptions import HTTPBadRequest
 
 from c2cgeoportal_geoportal.lib.caching import get_region
+
+if TYPE_CHECKING:
+    import c2cgeoportal_commons
 
 _LOG = logging.getLogger(__name__)
 _OBJECT_CACHE_REGION = get_region("obj")
@@ -49,7 +51,7 @@ class _Token(TypedDict):
     state: str | None
 
 
-class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
+class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore[misc]
     """The oauth2 request validator implementation."""
 
     def __init__(self, authorization_expires_in: int) -> None:
@@ -90,7 +92,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         .. _`HTTP Basic Authentication Scheme`: https://tools.ietf.org/html/rfc1945#section-11.1
 
         """
-        del args, kwargs
+        del args, kwargs, request  # unused
 
         _LOG.debug("authenticate_client => unimplemented")
 
@@ -198,7 +200,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         client_id: str,
         code: str,
         redirect_uri: str,
-        client: "c2cgeoportal_commons.models.static.OAuth2Client",  # noqa: F821
+        client: "c2cgeoportal_commons.models.static.OAuth2Client",
         *args: Any,
         **kwargs: Any,
     ) -> bool:
@@ -230,7 +232,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
             - Authorization Code Grant (during token request)
 
         """
-        del args, kwargs
+        del args, kwargs, client  # unused
 
         _LOG.debug("confirm_redirect_uri %s %s", client_id, redirect_uri)
 
@@ -247,7 +249,9 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
             .filter(static.OAuth2AuthorizationCode.code == code)
             .filter(static.OAuth2Client.client_id == client_id)
             .filter(static.OAuth2AuthorizationCode.redirect_uri == redirect_uri)
-            .filter(static.OAuth2AuthorizationCode.expire_at > datetime.now())
+            .filter(
+                static.OAuth2AuthorizationCode.expire_at > datetime.datetime.now(tz=datetime.timezone.utc),
+            )
             .one_or_none()
         )
         _LOG.debug("confirm_redirect_uri => %s", authorization_code is not None)
@@ -437,7 +441,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
             .filter(static.OAuth2AuthorizationCode.code == code)
             .filter(static.OAuth2Client.client_id == client_id)
             .filter(static.OAuth2AuthorizationCode.user_id == request.user.id)
-            .one()
+            .one(),
         )
 
     def is_within_original_scope(
@@ -594,12 +598,16 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         )
 
         if authorization_code is not None:
-            authorization_code.expire_at = datetime.now() + timedelta(minutes=self.authorization_expires_in)
+            authorization_code.expire_at = datetime.datetime.now(
+                tz=datetime.timezone.utc,
+            ) + datetime.timedelta(minutes=self.authorization_expires_in)
         else:
             authorization_code = static.OAuth2AuthorizationCode()
             authorization_code.client_id = request.client.id
             authorization_code.user_id = user.id
-            authorization_code.expire_at = datetime.now() + timedelta(minutes=self.authorization_expires_in)
+            authorization_code.expire_at = datetime.datetime.now(
+                tz=datetime.timezone.utc,
+            ) + datetime.timedelta(minutes=self.authorization_expires_in)
             authorization_code.state = code.get("state")
 
         authorization_code.code = code["code"]
@@ -694,7 +702,9 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
         bearer_token.access_token = token["access_token"]
         bearer_token.refresh_token = token["refresh_token"]
-        bearer_token.expire_at = datetime.now() + timedelta(seconds=float(token["expires_in"]))
+        bearer_token.expire_at = datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(
+            seconds=float(token["expires_in"]),
+        )
         bearer_token.state = token.get("state")
 
     def validate_bearer_token(
@@ -768,7 +778,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
             DBSession.query(static.OAuth2BearerToken)
             .join(static.User)
             .filter(static.OAuth2BearerToken.access_token == token)
-            .filter(static.OAuth2BearerToken.expire_at > datetime.now())
+            .filter(static.OAuth2BearerToken.expire_at > datetime.datetime.now(tz=datetime.timezone.utc))
         ).one_or_none()
 
         if bearer_token is not None:
@@ -827,7 +837,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         self,
         client_id: str,
         code: str,
-        client: "c2cgeoportal_commons.models.static.OAuth2Client",  # noqa: F821
+        client: "c2cgeoportal_commons.models.static.OAuth2Client",
         request: oauthlib.common.Request,
         *args: Any,
         **kwargs: Any,
@@ -874,11 +884,13 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
             .join(static.OAuth2AuthorizationCode.client)
             .filter(static.OAuth2AuthorizationCode.code == code)
             .filter(static.OAuth2AuthorizationCode.client_id == client.id)
-            .filter(static.OAuth2AuthorizationCode.expire_at > datetime.now())
+            .filter(
+                static.OAuth2AuthorizationCode.expire_at > datetime.datetime.now(tz=datetime.timezone.utc),
+            )
         )
         if client.state_required:
             authorization_code_query = authorization_code_query.filter(
-                static.OAuth2AuthorizationCode.state == request.state
+                static.OAuth2AuthorizationCode.state == request.state,
             )
 
         authorization_code = authorization_code_query.one_or_none()
@@ -983,7 +995,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
     def validate_refresh_token(
         self,
         refresh_token: str,
-        client: "c2cgeoportal_commons.models.static.OAuth2Client",  # noqa: F821
+        client: "c2cgeoportal_commons.models.static.OAuth2Client",
         request: oauthlib.common.Request,
         *args: Any,
         **kwargs: Any,
@@ -1101,7 +1113,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         self,
         username: str,
         password: str,
-        client: "c2cgeoportal_commons.models.static.OAuth2Client",  # noqa: F821
+        client: "c2cgeoportal_commons.models.static.OAuth2Client",
         request: oauthlib.common.Request,
         *args: Any,
         **kwargs: Any,
@@ -1159,6 +1171,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
 
 
         """
+        del request  # unused
         from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
             DBSession,
             static,
@@ -1172,7 +1185,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
             .one_or_none()
         )
 
-        return client and client.pkce_required  # type: ignore
+        return client and client.pkce_required  # type: ignore[return-value]
 
     def get_code_challenge(self, code: str, request: oauthlib.common.Request) -> str | None:
         """
@@ -1203,6 +1216,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
                 Authorization Code Grant - when PKCE is active
 
         """
+        del request  # unused
         from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
             DBSession,
             static,
@@ -1247,6 +1261,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
                 Authorization Code Grant - when PKCE is active
 
         """
+        del request  # unused
         from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
             DBSession,
             static,
@@ -1278,7 +1293,8 @@ def get_oauth_client(settings: dict[str, Any]) -> oauthlib.oauth2.WebApplication
 
 @_OBJECT_CACHE_REGION.cache_on_arguments()
 def _get_oauth_client_cache(
-    authorization_expire_minutes: int, token_expire_minutes: int
+    authorization_expire_minutes: int,
+    token_expire_minutes: int,
 ) -> oauthlib.oauth2.WebApplicationServer:
     """Get the oauth2 client, with a cache."""
     return oauthlib.oauth2.WebApplicationServer(

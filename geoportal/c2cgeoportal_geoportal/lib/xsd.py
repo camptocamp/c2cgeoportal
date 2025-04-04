@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2024, Camptocamp SA
+# Copyright (c) 2018-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -26,7 +26,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import xml.etree.ElementTree  # nosec
+import xml.etree.ElementTree  # nosec  # noqa: ICN001
 from collections.abc import Callable
 from io import BytesIO
 from typing import Any, cast
@@ -46,7 +46,7 @@ def _element_callback(tb: str, column: sqlalchemy.sql.elements.NamedColumn[Any])
             pass
 
 
-class XSDGenerator(PapyrusXSDGenerator):  # type: ignore
+class XSDGenerator(PapyrusXSDGenerator):  # type: ignore[misc]
     """Extends the PapyrusXSDGenerator."""
 
     def __init__(
@@ -156,13 +156,15 @@ class XSD:
         )
 
     def __call__(self, table: str) -> Callable[[type[str] | type[bytes], dict[str, Any]], bytes | None]:
+        del table  # unused
+
         def _render(cls: type[str] | type[bytes], system: dict[str, Any]) -> bytes | None:
             request = system.get("request")
             if request is not None:
                 response = request.response
                 response.content_type = "application/xml"
                 io = self.generator.get_class_xsd(BytesIO(), cls)
-                return cast(bytes, io.getvalue())
+                return cast("bytes", io.getvalue())
             return None
 
         return _render

@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2024, Camptocamp SA
+# Copyright (c) 2018-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -80,7 +80,7 @@ def generate_mappers() -> None:
     """Initialize the model for a Pyramid app."""
     # import or define all models here to ensure they are attached to the
     # Base.metadata prior to any initialization routines
-    import c2cgeoportal_commons.models.main  # pylint: disable=unused-import,import-outside-toplevel # noqa: F401
+    import c2cgeoportal_commons.models.main  # pylint: disable=unused-import,import-outside-toplevel
     import c2cgeoportal_commons.models.static  # pylint: disable=import-outside-toplevel # noqa: F401
 
     # run configure_mappers after defining all of the models to ensure
@@ -89,7 +89,9 @@ def generate_mappers() -> None:
 
 
 def get_session(
-    settings: dict[str, Any], transaction_manager: TransactionManager, prefix: str = "sqlalchemy."
+    settings: dict[str, Any],
+    transaction_manager: TransactionManager,
+    prefix: str = "sqlalchemy.",
 ) -> Session:
     """Get the session."""
     configure_mappers()

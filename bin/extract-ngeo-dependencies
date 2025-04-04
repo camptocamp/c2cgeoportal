@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
+# pylint: disable=invalid-name
 
-# Copyright (c) 2018-2024, Camptocamp SA
+# Copyright (c) 2018-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -38,9 +39,9 @@ for pathname in (
     "geoportal/node_modules/ngeo/contribs/gmf/src/**/*.js",
 ):
     for filename in glob.glob(pathname, recursive=True):
-        with open(filename) as js:
-            js = js.read().split("\n")
-            js = [e for e in js if "import" in e]
+        with open(filename, encoding="utf-8") as js:
+            js = js.read().split("\n")  # noqa: PLW2901
+            js = [e for e in js if "import" in e]  # noqa: PLW2901
             for line in js:
                 match = IMPORT_FROM.match(line)
                 if match:

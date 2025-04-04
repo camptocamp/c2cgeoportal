@@ -5,7 +5,7 @@ import requests
 
 
 @pytest.mark.parametrize(
-    "url,params,timeout",
+    ("url", "params", "timeout"),
     [
         ("https://front/", {}, 10),
         ("https://front/themes", {}, 120),

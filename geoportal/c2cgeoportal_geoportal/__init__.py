@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2024, Camptocamp SA
+# Copyright (c) 2011-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -102,14 +102,14 @@ _GEOJSON_CONTENT_TYPE = r"Content-Type:application/geo\+json"
 class AssetRendererFactory:
     """Get a renderer for the assets."""
 
-    def __init__(self, info: Any):
+    def __init__(self, info: Any) -> None:
         del info  # unused
         self.resolver = AssetResolver("c2cgeoportal_geoportal")
 
     def __call__(self, value: Any, system: dict[str, str]) -> bytes:
         del value
         asset = self.resolver.resolve(system["renderer_name"])
-        return cast(bytes, asset.stream().read())
+        return cast("bytes", asset.stream().read())
 
 
 INTERFACE_TYPE_NGEO = "ngeo"
@@ -190,7 +190,11 @@ def add_interface_ngeo(
         request_method="GET",
     )
     config.add_view(
-        Entry, attr="get_ngeo_index_vars", route_name=route_name, renderer=renderer, permission=permission
+        Entry,
+        attr="get_ngeo_index_vars",
+        route_name=route_name,
+        renderer=renderer,
+        permission=permission,
     )
     config.add_view(
         Entry,
@@ -315,7 +319,9 @@ def _get_netlocs(hosts: list[str]) -> set[str]:
 
 
 def is_allowed_url(
-    request: pyramid.request.Request, url: str, allowed_hosts: list[str]
+    request: pyramid.request.Request,
+    url: str,
+    allowed_hosts: list[str],
 ) -> tuple[str | None, bool]:
     """
     Check if the URL is allowed.
@@ -361,7 +367,8 @@ def create_get_user_from_request(
     """Get the get_user_from_request function."""
 
     def get_user_from_request(
-        request: pyramid.request.Request, username: str | None = None
+        request: pyramid.request.Request,
+        username: str | None = None,
     ) -> Optional["static.User"]:
         """
         Return the User object for the request.
@@ -412,21 +419,23 @@ def create_get_user_from_request(
                     del username
                     if "access_token_expires" in user_info_remember:
                         access_token_expires = dateutil.parser.isoparse(
-                            user_info_remember["access_token_expires"]
+                            user_info_remember["access_token_expires"],
                         )
-                        if access_token_expires < datetime.datetime.now():
+                        if access_token_expires < datetime.datetime.now(tz=datetime.timezone.utc):
                             if user_info_remember["refresh_token_expires"] is None:
                                 return None
                             refresh_token_expires = dateutil.parser.isoparse(
-                                user_info_remember["refresh_token_expires"]
+                                user_info_remember["refresh_token_expires"],
                             )
-                            if refresh_token_expires < datetime.datetime.now():
+                            if refresh_token_expires < datetime.datetime.now(tz=datetime.timezone.utc):
                                 return None
                             token_response = oidc.get_oidc_client(
-                                request, request.host
+                                request,
+                                request.host,
                             ).exchange_refresh_token(user_info_remember["refresh_token"])
                             user_info_remember = oidc.OidcRemember(request).remember(
-                                token_response, request.host
+                                token_response,
+                                request.host,
                             )
 
                     request.user_ = request.get_user_from_remember(user_info_remember)
@@ -440,13 +449,14 @@ def create_get_user_from_request(
                         .first()
                     )
 
-        return cast(User, request.user_)
+        return cast("User", request.user_)
 
     return get_user_from_request
 
 
 def set_user_validator(
-    config: pyramid.config.Configurator, user_validator: Callable[[pyramid.request.Request, str, str], str]
+    config: pyramid.config.Configurator,
+    user_validator: Callable[[pyramid.request.Request, str, str], str],
 ) -> None:
     """
     Call this function to register a user validator function.
@@ -536,7 +546,8 @@ def add_cors_route(config: pyramid.config.Configurator, pattern: str, service: s
 
 
 def error_handler(
-    http_exception: HTTPException, request: pyramid.request.Request
+    http_exception: HTTPException,
+    request: pyramid.request.Request,
 ) -> pyramid.response.Response:
     """View callable for handling all the exceptions that are not already handled."""
     _LOG.warning("%s returned status code %s", request.url, http_exception.status_code)
@@ -572,7 +583,8 @@ def includeme(config: pyramid.config.Configurator) -> None:
     config.add_request_method(lambda request, role_type: role_type, name="get_organization_role")
     # - Organization print URL
     config.add_request_method(
-        lambda request: request.registry.settings["print_url"], name="get_organization_print_url"
+        lambda request: request.registry.settings["print_url"],
+        name="get_organization_print_url",
     )
     # - Organization interface name (in the config and in the admin interface)
     config.add_request_method(lambda request, interface: interface, name="get_organization_interface")
@@ -612,7 +624,9 @@ def includeme(config: pyramid.config.Configurator) -> None:
             "HybridRedisBackend",
         )  # type: ignore[no-untyped-call]
         register_backend(
-            "c2cgeoportal.hybridsentinel", "c2cgeoportal_geoportal.lib.caching", "HybridRedisSentinelBackend"
+            "c2cgeoportal.hybridsentinel",
+            "c2cgeoportal_geoportal.lib.caching",
+            "HybridRedisSentinelBackend",
         )  # type: ignore[no-untyped-call]
         for name, cache_config in settings["cache"].items():
             caching.init_region(cache_config, name)
@@ -794,11 +808,16 @@ def includeme(config: pyramid.config.Configurator) -> None:
         pregenerator=C2CPregenerator(role=True),
     )
     config.add_route(
-        "layers_read_many", "/layers/{layer_id:\\d+,?(\\d+,)*\\d*$}", request_method="GET"
+        "layers_read_many",
+        "/layers/{layer_id:\\d+,?(\\d+,)*\\d*$}",
+        request_method="GET",
     )  # supports URLs like /layers/1,2,3
     config.add_route("layers_read_one", "/layers/{layer_id:\\d+}/{feature_id}", request_method="GET")
     config.add_route(
-        "layers_create", "/layers/{layer_id:\\d+}", request_method="POST", header=_GEOJSON_CONTENT_TYPE
+        "layers_create",
+        "/layers/{layer_id:\\d+}",
+        request_method="POST",
+        header=_GEOJSON_CONTENT_TYPE,
     )
     config.add_route(
         "layers_update",
@@ -834,7 +853,7 @@ def includeme(config: pyramid.config.Configurator) -> None:
             "c2cgeoportal_geoportal.lib",
             "c2cgeoportal_geoportal.scaffolds",
             "c2cgeoportal_geoportal.scripts",
-        ]
+        ],
     )
 
     admin_interface = (
@@ -843,11 +862,10 @@ def includeme(config: pyramid.config.Configurator) -> None:
     )
     if admin_interface:
         add_admin_interface(config)
+    elif not config.get_settings().get("enable_admin_interface", False):
+        _LOG.info("Admin interface disabled by configuration")
     else:
-        if not config.get_settings().get("enable_admin_interface", False):
-            _LOG.info("Admin interface disabled by configuration")
-        else:
-            _LOG.info("Admin interface disabled because c2cgeoportal_admin is not installed")
+        _LOG.info("Admin interface disabled because c2cgeoportal_admin is not installed")
     add_getitfixed(config)
 
     # Add the project static view with cache buster
@@ -899,26 +917,28 @@ def includeme(config: pyramid.config.Configurator) -> None:
             '<a href="../tiles/c2c/">TileCloud chain c2c tools</a><br>',
             '<a href="../invalidate">Invalidate the cache</a><br>',
             '<a href="../memory">Memory status</a><br>',
-        ]
+        ],
     )
     if admin_interface:
         c2cwsgiutils.index.additional_noauth.append('<a href="../admin/">Admin</a><br>')
 
     c2cwsgiutils.index.additional_noauth.append(
-        '</div></div><div class="row"><div class="col-lg-3"><h3>Interfaces</h3></div><div class="col-lg">'
+        '</div></div><div class="row"><div class="col-lg-3"><h3>Interfaces</h3></div><div class="col-lg">',
     )
     c2cwsgiutils.index.additional_noauth.append('<a href="../">Default</a><br>')
     for interface in config.get_settings().get("interfaces", []):
         if not interface.get("default", False):
             c2cwsgiutils.index.additional_noauth.append(
-                '<a href="../{interface}">{interface}</a><br>'.format(interface=interface["name"])
+                '<a href="../{interface}">{interface}</a><br>'.format(interface=interface["name"]),
             )
     c2cwsgiutils.index.additional_noauth.append('<a href="../apihelp/index.html">API help</a><br>')
     c2cwsgiutils.index.additional_noauth.append("</div></div><hr>")
 
 
 def init_db_sessions(
-    settings: dict[str, Any], config: Configurator, health_check: HealthCheck | None = None
+    settings: dict[str, Any],
+    config: Configurator,
+    health_check: HealthCheck | None = None,
 ) -> None:
     """Initialize the database sessions."""
     db_chooser = settings.get("db_chooser", {})
@@ -928,7 +948,11 @@ def init_db_sessions(
     slave_prefix = "sqlalchemy_slave" if "sqlalchemy_slave.url" in settings else None
 
     c2cgeoportal_commons.models.DBSession, rw_bind, _ = c2cwsgiutils.db.setup_session(  # type: ignore[assignment]
-        config, "sqlalchemy", slave_prefix, force_master=master_paths, force_slave=slave_paths
+        config,
+        "sqlalchemy",
+        slave_prefix,
+        force_master=master_paths,
+        force_slave=slave_paths,
     )
     c2cgeoportal_commons.models.Base.metadata.bind = rw_bind  # type: ignore[attr-defined]
     assert c2cgeoportal_commons.models.DBSession is not None
@@ -936,7 +960,9 @@ def init_db_sessions(
 
     for dbsession_name, dbsession_config in settings.get("dbsessions", {}).items():  # pragma: nocover
         c2cgeoportal_commons.models.DBSessions[dbsession_name] = c2cwsgiutils.db.create_session(  # type: ignore[assignment]
-            config, dbsession_name, **dbsession_config
+            config,
+            dbsession_name,
+            **dbsession_config,
         )
 
     c2cgeoportal_commons.models.Base.metadata.clear()

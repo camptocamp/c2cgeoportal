@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2024, Camptocamp SA
+# Copyright (c) 2017-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -26,6 +26,8 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from typing import Any
+
 import colander
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import AbstractViews, ObjectResponse, SaveResponse
@@ -42,15 +44,15 @@ from c2cgeoportal_admin.widgets import ChildrenWidget, ChildWidget
 class ThemeOrderSchema(GeoFormSchemaNode):  # pylint: disable=abstract-method
     """The theme order schema."""
 
-    def objectify(self, dict_, context=None):
+    def objectify(self, dict_: dict[str, Any], context: Any = None) -> Any:
         context = self.dbsession.query(Theme).get(dict_["id"])
-        context = super().objectify(dict_, context)
-        return context
+        return super().objectify(dict_, context)
 
 
-@colander.deferred
-def themes(node, kw):  # pylint: disable=unused-argument
+@colander.deferred  # type: ignore[misc]
+def themes(node: Any, kw: Any) -> list[dict[str, Any]]:  # pylint: disable=unused-argument
     """Get some theme metadata."""
+    del node  # unused
     query = kw["dbsession"].query(Theme).order_by(Theme.ordering, Theme.name)
     return [
         {"id": item.id, "label": item.name, "icon_class": f"icon-{item.item_type}", "group": "All"}
@@ -58,7 +60,7 @@ def themes(node, kw):  # pylint: disable=unused-argument
     ]
 
 
-def themes_validator(node, cstruct):
+def themes_validator(node: Any, cstruct: Any) -> None:
     """Validate the theme."""
     for dict_ in cstruct:
         if dict_["id"] not in [item["id"] for item in node.candidates]:
@@ -103,7 +105,7 @@ class ThemesOrdering(AbstractViews[ThemesOrderingSchema]):
             "themes": [
                 form.schema["themes"].children[0].dictify(theme)
                 for theme in self._request.dbsession.query(Theme).order_by(Theme.ordering)
-            ]
+            ],
         }
         return {
             "title": form.title,
@@ -126,7 +128,7 @@ class ThemesOrdering(AbstractViews[ThemesOrderingSchema]):
             self._request.dbsession.flush()
             return HTTPFound(self._request.route_url("layertree"))
         except ValidationFailure as e:
-            # FIXME see https://github.com/Pylons/deform/pull/243 # pylint: disable=fixme
+            # FIXME: see https://github.com/Pylons/deform/pull/243 # pylint: disable=fixme
             self._populate_widgets(form.schema)
             return {
                 "title": form.title,

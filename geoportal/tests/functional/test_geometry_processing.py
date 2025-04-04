@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2024, Camptocamp SA
+# Copyright (c) 2013-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,7 @@ from tests.functional import teardown_common as teardown_module  # noqa
 
 
 class TestGeometryProcessing(TestCase):
-    def test_difference(self):
+    def test_difference(self) -> None:
         from c2cgeoportal_geoportal.views.geometry_processing import GeometryProcessing
 
         request = create_dummy_request()

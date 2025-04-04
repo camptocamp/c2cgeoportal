@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2024, Camptocamp SA
+# Copyright (c) 2011-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -54,7 +54,7 @@ def init(config: pyramid.config.Configurator, health_check: c2cwsgiutils.health_
     for host in settings["hosts"]:
 
         class Check:
-            def __init__(self, host: dict[str, Any]):
+            def __init__(self, host: dict[str, Any]) -> None:
                 self.host = host
 
             def __call__(self, request: pyramid.request.Request) -> dict[str, Any] | None:
@@ -69,12 +69,14 @@ def init(config: pyramid.config.Configurator, health_check: c2cwsgiutils.health_
                     r = requests.get(
                         params={"max_level": str(self.host.get("max_level", max_level))},
                         timeout=120,
-                        **url_headers,  # type: ignore
+                        **url_headers,  # type: ignore[arg-type]
                     )
                     r.raise_for_status()
-                    return cast(dict[str, Any], r.json())
+                    return cast("dict[str, Any]", r.json())
                 return None
 
         health_check.add_custom_check(
-            name="check_collector_" + host["display"], check_cb=Check(host), level=settings["level"]
+            name="check_collector_" + host["display"],
+            check_cb=Check(host),
+            level=settings["level"],
         )

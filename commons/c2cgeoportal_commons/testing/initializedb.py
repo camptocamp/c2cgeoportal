@@ -48,16 +48,10 @@ def schema_exists(connection: Connection, schema_name: str) -> bool:
     """Get if the schema exist."""
     del schema_name
 
-    sql = " ".join(
-        [  # noqa: S608
-            "SELECT count(*) AS count",
-            "FROM information_schema.schemata",
-            "WHERE schema_name = '{schema_name}';",
-        ]
-    )
+    sql = "SELECT count(*) AS count FROM information_schema.schemata WHERE schema_name = '{schema_name}';"
     result = connection.execute(sqlalchemy.text(sql))
     row = result.first()
-    return cast(bool, row[0] == 1)  # type: ignore[index]
+    return cast("bool", row[0] == 1)  # type: ignore[index]
 
 
 def truncate_tables(connection: Connection) -> None:
@@ -79,8 +73,8 @@ def setup_test_data(dbsession: Session) -> None:
     role_user = dbsession.merge(Role(name="role_user"))
 
     dbsession.merge(
-        User(username="admin", email="admin@camptocamp.com", settings_role=role_admin, roles=[role_admin])
+        User(username="admin", email="admin@camptocamp.com", settings_role=role_admin, roles=[role_admin]),
     )
     dbsession.merge(
-        User(username="user", email="user@camptocamp.com", settings_role=role_user, roles=[role_user])
+        User(username="user", email="user@camptocamp.com", settings_role=role_user, roles=[role_user]),
     )

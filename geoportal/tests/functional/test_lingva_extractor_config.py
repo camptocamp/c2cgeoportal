@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2024, Camptocamp SA
+# Copyright (c) 2020-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -81,7 +81,7 @@ def settings():
         yield settings
 
 
-@pytest.fixture()
+@pytest.fixture
 def dbsession_db1(settings, dbsession_old):
     from c2cgeoportal_commons.models import DBSession, DBSessions
 
@@ -91,8 +91,8 @@ def dbsession_db1(settings, dbsession_old):
         yield DBSession
 
 
-@pytest.fixture(scope="function")
-def test_data(dbsession_db1, transact_old):
+@pytest.fixture
+def test_data(dbsession_db1, transact_old) -> None:
     from c2cgeoportal_commons.models import main
     from sqlalchemy import text
 
@@ -101,8 +101,8 @@ def test_data(dbsession_db1, transact_old):
             """
 INSERT INTO geodata.testpoint (name)
 VALUES ('testpoint_name1');
-"""
-        )
+""",
+        ),
     )
 
     theme = main.Theme(name="test_theme")
@@ -110,7 +110,7 @@ VALUES ('testpoint_name1');
         main.Metadata(
             name="metadata1",
             value="metadata1_value",
-        )
+        ),
     ]
     dbsession_db1.add(theme)
     dbsession_db1.flush()
@@ -122,7 +122,7 @@ class TestGeomapfishConfigExtractor:
         "c2cgeoportal_geoportal.lib.lingva_extractor.open",
         mock_open(read_data="vars:"),
     )
-    def test_extract_config(self, settings, dbsession_db1):
+    def test_extract_config(self, settings, dbsession_db1) -> None:
         extractor = GeomapfishConfigExtractor()
 
         options = Mock()

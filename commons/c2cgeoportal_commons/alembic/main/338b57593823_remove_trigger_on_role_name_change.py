@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2024, Camptocamp SA
+# Copyright (c) 2018-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -70,9 +70,9 @@ def downgrade() -> None:
         RETURN NEW;
         END;
         $$
-        LANGUAGE plpgsql"""
+        LANGUAGE plpgsql""",
     )
     op.execute(
         f"CREATE TRIGGER on_role_name_change AFTER UPDATE ON {schema}.role FOR EACH ROW "
-        f"EXECUTE PROCEDURE {schema}.on_role_name_change()"
+        f"EXECUTE PROCEDURE {schema}.on_role_name_change()",
     )

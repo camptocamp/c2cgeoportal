@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (c) 2019-2024, Camptocamp SA
+# Copyright (c) 2019-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -35,109 +35,112 @@ import re
 import subprocess  # nosec
 import sys
 
-parser = argparse.ArgumentParser(description="Upgrade the project")
-parser.add_argument(
-    "--debug", help="Path to c2cgeoportal source folder to be able to debug the upgrade procedure"
-)
-parser.add_argument("version", help="the version to upgrade to (master or x.y.z)")
-parser.add_argument("step", nargs="?", help="the step to run")
-parser_finalize = argparse.ArgumentParser(description="Upgrade the project", add_help=False)
-parser_finalize.add_argument("--finalize", action="store_true", help="finalize the upgrade")
-parser_finalize.add_argument("--help", action="help", help="show this help message and exit")
-parser_finalize.add_argument("build_arg", nargs="*", help="build arguments")
 
-if len(sys.argv) >= 2 and sys.argv[1] == "--finalize":
-    args = parser_finalize.parse_args()
-
-    if platform.system() == "Windows":
-        code = subprocess.call(["python", "build"] + args.build_arg)
-    else:
-        code = subprocess.call(["./build"] + args.build_arg)
-    if code != 0:
-        sys.exit(code)
-
-    subprocess.call(["docker", "compose", "down", "--remove-orphans"])
-    subprocess.call(
-        ["docker", "compose", "pull", "--ignore-pull-failures"],
-        env={**os.environ, "DOCKER_TAG": "unexisting"},
+def _main() -> None:
+    parser = argparse.ArgumentParser(description="Upgrade the project")
+    parser.add_argument(
+        "--debug",
+        help="Path to c2cgeoportal source folder to be able to debug the upgrade procedure",
     )
-    subprocess.check_call(["docker", "compose", "up", "-d"])
-    subprocess.check_call(
-        [
-            "docker",
-            "compose",
-            "exec",
-            "geoportal",
-            "alembic",
-            "--name=main",
-            "--config=alembic.ini",
-            "upgrade",
-            "head",
-        ]
-    )
+    parser.add_argument("version", help="the version to upgrade to (master or x.y.z)")
+    parser.add_argument("step", nargs="?", help="the step to run")
+    parser_finalize = argparse.ArgumentParser(description="Upgrade the project", add_help=False)
+    parser_finalize.add_argument("--finalize", action="store_true", help="finalize the upgrade")
+    parser_finalize.add_argument("--help", action="help", help="show this help message and exit")
+    parser_finalize.add_argument("build_arg", nargs="*", help="build arguments")
 
-else:
-    args = parser.parse_args()
+    if len(sys.argv) >= 2 and sys.argv[1] == "--finalize":
+        args = parser_finalize.parse_args()
 
-    c2cupgrade_args = ["--step", args.step] if args.step is not None else []
+        if platform.system() == "Windows":
+            code = subprocess.call(["python", "build", *args.build_arg])
+        else:
+            code = subprocess.call(["./build", *args.build_arg])
+        if code != 0:
+            sys.exit(code)
 
-    if os.environ.get("CI") != "true" and args.step is None:
-        major_version = args.version
-        match = re.match(r"^([0-9]+\.[0-9]+)\.[0-9]+$", args.version)
-        if match is not None:
-            major_version = match.group(1)
-        match = re.match(r"^([0-9]+\.[0-9]+)\.[0-9a-z]+\.[0-9]+$", args.version)
-        if match is not None:
-            major_version = match.group(1)
-        if not args.debug:
-            subprocess.check_call(
-                [
-                    "docker",
-                    "pull",
-                    f"camptocamp/geomapfish:{major_version}",
-                ]
-            )
-            subprocess.check_call(["docker", "pull", f"camptocamp/geomapfish-tools:{args.version}"])
-            subprocess.check_call(
-                [
-                    "docker",
-                    "pull",
-                    f"camptocamp/geomapfish-config:{major_version}",
-                ]
-            )
-
-    debug_volumes = (
-        [
-            "--volume={debug}/geoportal/c2cgeoportal_geoportal/scripts/c2cupgrade.py:".format(
-                debug=args.debug
-            ),
-            "/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/scripts/c2cupgrade.py",
-        ]
-        if args.debug
-        else []
-    )
-
-    win = platform.system() == "Windows"
-    sys.exit(
+        subprocess.call(["docker", "compose", "down", "--remove-orphans"])
         subprocess.call(
+            ["docker", "compose", "pull", "--ignore-pull-failures"],
+            env={**os.environ, "DOCKER_TAG": "unexisting"},
+        )
+        subprocess.check_call(["docker", "compose", "up", "-d"])
+        subprocess.check_call(
             [
                 "docker",
-                "run",
-                "--rm",
-                "--env=CI",
-                f"--volume={os.getcwd()}:/src",
-            ]
-            + debug_volumes
-            + [
-                f"camptocamp/geomapfish-tools:{args.version}",
-                "run-git",
-                subprocess.check_output(["git", "config", "--get", "user.name"]).decode().strip(),
-                subprocess.check_output(["git", "config", "--get", "user.email"]).decode().strip(),
-                "" if win else subprocess.check_output(["id", "-u"]).decode().strip(),
-                "" if win else subprocess.check_output(["id", "-g"]).decode().strip(),
-                "/src",
-                "c2cupgrade",
-            ]
-            + c2cupgrade_args
+                "compose",
+                "exec",
+                "geoportal",
+                "alembic",
+                "--name=main",
+                "--config=alembic.ini",
+                "upgrade",
+                "head",
+            ],
         )
-    )
+
+    else:
+        args = parser.parse_args()
+
+        c2cupgrade_args = ["--step", args.step] if args.step is not None else []
+
+        if os.environ.get("CI") != "true" and args.step is None:
+            major_version = args.version
+            match = re.match(r"^([0-9]+\.[0-9]+)\.[0-9]+$", args.version)
+            if match is not None:
+                major_version = match.group(1)
+            match = re.match(r"^([0-9]+\.[0-9]+)\.[0-9a-z]+\.[0-9]+$", args.version)
+            if match is not None:
+                major_version = match.group(1)
+            if not args.debug:
+                subprocess.check_call(
+                    [
+                        "docker",
+                        "pull",
+                        f"camptocamp/geomapfish:{major_version}",
+                    ],
+                )
+                subprocess.check_call(["docker", "pull", f"camptocamp/geomapfish-tools:{args.version}"])
+                subprocess.check_call(
+                    [
+                        "docker",
+                        "pull",
+                        f"camptocamp/geomapfish-config:{major_version}",
+                    ],
+                )
+
+        debug_volumes = (
+            [
+                f"--volume={args.debug}/geoportal/c2cgeoportal_geoportal/scripts/c2cupgrade.py:",
+                "/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/scripts/c2cupgrade.py",
+            ]
+            if args.debug
+            else []
+        )
+
+        win = platform.system() == "Windows"
+        sys.exit(
+            subprocess.call(
+                [
+                    "docker",
+                    "run",
+                    "--rm",
+                    "--env=CI",
+                    f"--volume={os.getcwd()}:/src",
+                    *debug_volumes,
+                    f"camptocamp/geomapfish-tools:{args.version}",
+                    "run-git",
+                    subprocess.check_output(["git", "config", "--get", "user.name"]).decode().strip(),
+                    subprocess.check_output(["git", "config", "--get", "user.email"]).decode().strip(),
+                    "" if win else subprocess.check_output(["id", "-u"]).decode().strip(),
+                    "" if win else subprocess.check_output(["id", "-g"]).decode().strip(),
+                    "/src",
+                    "c2cupgrade",
+                    *c2cupgrade_args,
+                ],
+            ),
+        )
+
+
+if __name__ == "__main__":
+    _main()

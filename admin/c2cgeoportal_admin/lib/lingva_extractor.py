@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2024, Camptocamp SA
+# Copyright (c) 2011-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -33,10 +33,10 @@ import yaml
 from lingva.extractors import Extractor, Message
 
 
-class GeomapfishConfigExtractor(Extractor):  # type: ignore
+class GeomapfishConfigExtractor(Extractor):  # type: ignore[misc]
     """GeoMapFish config extractor (raster layers, and print templates)."""
 
-    extensions = [".yaml"]
+    extensions = [".yaml"]  # noqa: RUF012
 
     def __call__(
         self,
@@ -63,7 +63,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
             if "description" in elem:
                 location = f"admin_interface/available_metadata/{elem.get('name', '')}"
                 available_metadata.append(
-                    Message(None, elem["description"].strip(), None, [], "", "", (filename, location))
+                    Message(None, elem["description"].strip(), None, [], "", "", (filename, location)),
                 )
 
         available_functionalities = []
@@ -71,7 +71,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
             if "description" in elem:
                 location = f"admin_interface/available_functionalities/{elem.get('name', '')}"
                 available_functionalities.append(
-                    Message(None, elem["description"].strip(), None, [], "", "", (filename, location))
+                    Message(None, elem["description"].strip(), None, [], "", "", (filename, location)),
                 )
 
         return available_metadata + available_functionalities

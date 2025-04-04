@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2024, Camptocamp SA
+# Copyright (c) 2013-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -39,7 +39,7 @@ from tests.functional import teardown_common as teardown_module  # noqa
 
 
 class TestMapserverproxyViewGroup(TestCase):
-    def setup_method(self, _):
+    def setup_method(self, _) -> None:
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import (
             Interface,
@@ -76,7 +76,7 @@ class TestMapserverproxyViewGroup(TestCase):
 
         transaction.commit()
 
-    def teardown_method(self, _):
+    def teardown_method(self, _) -> None:
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import (
             Interface,
@@ -118,7 +118,7 @@ class TestMapserverproxyViewGroup(TestCase):
         request.params.update({"ogcserver": "__test_ogc_server"})
         return request
 
-    def test_wms_get_capabilities(self):
+    def test_wms_get_capabilities(self) -> None:
         from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_getcap_request()
@@ -142,7 +142,7 @@ class TestMapserverproxyViewGroup(TestCase):
         assert "<Name>testpoint_group</Name>" in response.body.decode("utf-8")
         assert "<Name>testpoint_group_2</Name>" in response.body.decode("utf-8")
 
-    def test_wfs_get_capabilities(self):
+    def test_wfs_get_capabilities(self) -> None:
         from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_getcap_request()

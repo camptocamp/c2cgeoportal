@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2021, Camptocamp SA
+# Copyright (c) 2017-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -31,7 +31,7 @@ from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config
 
 
-@view_config(route_name="admin")  # type: ignore  # type: ignore
+@view_config(route_name="admin")  # type: ignore[misc]
 def home_view(request: pyramid.request.Request) -> HTTPFound:
     """Get the main administration view, redirect to the layertree."""
     return HTTPFound(request.route_url("layertree", application="admin"))

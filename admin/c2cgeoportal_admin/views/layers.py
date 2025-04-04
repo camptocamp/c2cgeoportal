@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2024, Camptocamp SA
+# Copyright (c) 2017-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -45,17 +45,18 @@ _T = TypeVar("_T", bound=Layer)
 class LayerViews(TreeItemViews[_T], Generic[_T]):
     """The layer administration view."""
 
-    _list_fields = TreeItemViews._list_fields + [  # type: ignore[misc] # pylint: disable=protected-access
+    _list_fields = [  # noqa: RUF012
+        *TreeItemViews._list_fields,  # type: ignore[misc] # pylint: disable=protected-access # noqa: SLF001
         _list_field("public"),
         _list_field("geo_table"),
         _list_field("exclude_properties"),
     ]
 
-    _extra_list_fields = [
+    _extra_list_fields = [  # noqa: RUF012
         _list_field(
             "interfaces",
             renderer=lambda layer_wms: ", ".join(
-                [i.name or "" for i in sorted(layer_wms.interfaces, key=lambda i: cast(str, i.name))]
+                [i.name or "" for i in sorted(layer_wms.interfaces, key=lambda i: cast("str", i.name))],
             ),
             sort_column=Interface.name,
             filter_column=Interface.name,
@@ -63,14 +64,15 @@ class LayerViews(TreeItemViews[_T], Generic[_T]):
         _list_field(
             "restrictionareas",
             renderer=lambda layer_wms: ", ".join(
-                [r.name or "" for r in sorted(layer_wms.restrictionareas, key=lambda r: cast(str, r.name))]
+                [r.name or "" for r in sorted(layer_wms.restrictionareas, key=lambda r: cast("str", r.name))],
             ),
         ),
-    ] + TreeItemViews._extra_list_fields  # pylint: disable=protected-access
+        *TreeItemViews._extra_list_fields,  # pylint: disable=protected-access # noqa: SLF001
+    ]
 
     def _sub_query(self, query: sqlalchemy.orm.query.Query[Layer]) -> sqlalchemy.orm.query.Query[Layer]:
         return super()._sub_query(
             query.outerjoin(Layer.interfaces)
             .options(subqueryload(Layer.interfaces))
-            .options(subqueryload(Layer.restrictionareas))
+            .options(subqueryload(Layer.restrictionareas)),
         )

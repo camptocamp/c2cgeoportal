@@ -47,7 +47,7 @@ _CACHE_REGION = get_region("std")
 class Proxy:
     """Some methods used by all the proxy."""
 
-    def __init__(self, request: pyramid.request.Request):
+    def __init__(self, request: pyramid.request.Request) -> None:
         self.request = request
         self.host_forward_host = request.registry.settings.get("host_forward_host", [])
         self.headers_whitelist = request.registry.settings.get("headers_whitelist", [])
@@ -65,7 +65,7 @@ class Proxy:
     ) -> requests.models.Response:
         # Get query string
         params = dict(self.request.params) if params is None else params
-        url = url.clone().add_query(params, True)
+        url = url.clone().add_query(params, force=True)
 
         _LOG.debug("Send query to URL:\n%s.", url)
 
@@ -99,7 +99,7 @@ class Proxy:
                 key, value = element.split("=")
                 header_key = f"X-Forwarded-{key.capitalize()}"
                 header_value = headers.get(header_key)
-                headers[header_key] = value if header_value is None else ", ".join([header_value, value])
+                headers[header_key] = value if header_value is None else f"{header_value}, {value}"
 
         if not cache:
             headers["Cache-Control"] = "no-cache"
@@ -112,7 +112,11 @@ class Proxy:
         try:
             if method in ("POST", "PUT"):
                 response = requests.request(
-                    method, url.url(), data=body, headers=headers, **self.http_options
+                    method,
+                    url.url(),
+                    data=body,
+                    headers=headers,
+                    **self.http_options,
                 )
             else:
                 response = requests.request(method, url.url(), headers=headers, **self.http_options)
@@ -126,7 +130,7 @@ class Proxy:
                     [
                         f"{h}: {v if h not in ('Authorization', 'Cookie') else '***'}"
                         for h, v in list(headers.items())
-                    ]
+                    ],
                 ),
             ]
             if method in ("POST", "PUT") and body is not None:
@@ -135,7 +139,7 @@ class Proxy:
             _LOG.exception("\n".join(errors), *args1)
 
             raise HTTPBadGateway(  # pylint: disable=raise-missing-from
-                "Error on backend, See logs for detail"
+                "Error on backend, See logs for detail",
             )
 
         if not response.ok:
@@ -156,7 +160,7 @@ class Proxy:
                     [
                         f"{h}: {v if h not in ('Authorization', 'Cookie') else '***'}"
                         for h, v in list(headers.items())
-                    ]
+                    ],
                 ),
             ]
             if method in ("POST", "PUT") and body is not None:
@@ -202,7 +206,11 @@ class Proxy:
             else (Cache.PUBLIC_NO if public else Cache.PRIVATE_NO)
         )
         return self._build_response(
-            response, response.content, cache_control, service_name, headers_update=headers_update
+            response,
+            response.content,
+            cache_control,
+            service_name,
+            headers_update=headers_update,
         )
 
     def _build_response(
@@ -245,7 +253,11 @@ class Proxy:
         response = pyramid.response.Response(content, status=response.status_code, headers=headers)
 
         return set_common_headers(
-            self.request, service_name, cache_control, response=response, content_type=content_type
+            self.request,
+            service_name,
+            cache_control,
+            response=response,
+            content_type=content_type,
         )
 
     @staticmethod

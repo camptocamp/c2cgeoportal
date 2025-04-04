@@ -11,8 +11,7 @@ from pyramid.testing import DummyRequest
 from . import AbstractViewsTests
 
 
-@pytest.fixture(scope="function")
-@pytest.mark.usefixtures("dbsession", "transact")
+@pytest.fixture
 def users_test_data(dbsession, transact):
     del transact
 
@@ -20,11 +19,11 @@ def users_test_data(dbsession, transact):
     from c2cgeoportal_commons.models.static import User
 
     roles = []
-    for i in range(0, 4):
+    for i in range(4):
         roles.append(Role(f"secretary_{i}"))
         dbsession.add(roles[i])
     users = []
-    for i in range(0, 23):
+    for i in range(23):
         user = User(
             f"babar_{i}",
             email=f"mail{i}@valid.net",
@@ -38,7 +37,7 @@ def users_test_data(dbsession, transact):
 
     dbsession.flush()
 
-    yield {"roles": roles, "users": users}
+    return {"roles": roles, "users": users}
 
 
 EXPECTED_WELCOME_MAIL = (
@@ -51,7 +50,7 @@ EXPECTED_WELCOME_MAIL = (
 class TestUser(AbstractViewsTests):
     _prefix = "/admin/users"
 
-    def test_index_rendering(self, test_app):
+    def test_index_rendering(self, test_app) -> None:
         resp = self.get(test_app)
 
         self.check_left_menu(resp, "Users")
@@ -72,7 +71,7 @@ class TestUser(AbstractViewsTests):
         self.check_grid_headers(resp, expected)
 
     @pytest.mark.skip(reason="Translations seems not available in tests")
-    def test_index_rendering_fr(self, test_app):
+    def test_index_rendering_fr(self, test_app) -> None:
         resp = self.get(test_app, locale="fr")
 
         self.check_left_menu(resp, "Utilisateurs")
@@ -90,7 +89,7 @@ class TestUser(AbstractViewsTests):
         ]
         self.check_grid_headers(resp, expected, new="Nouveau")
 
-    def test_view_edit(self, test_app, users_test_data, dbsession):
+    def test_view_edit(self, test_app, users_test_data, dbsession) -> None:
         from c2cgeoportal_commons.models.main import LogAction
         from c2cgeoportal_commons.models.static import Log
 
@@ -134,7 +133,7 @@ class TestUser(AbstractViewsTests):
         assert log.element_name == user.username
         assert log.username == "test_user"
 
-    def test_delete(self, test_app, users_test_data, dbsession):
+    def test_delete(self, test_app, users_test_data, dbsession) -> None:
         from c2cgeoportal_commons.models.main import LogAction
         from c2cgeoportal_commons.models.static import Log, User, user_role
 
@@ -154,7 +153,7 @@ class TestUser(AbstractViewsTests):
 
     @patch("c2cgeoportal_commons.lib.email_.smtplib.SMTP")
     @patch("c2cgeoportal_admin.views.users.pwgenerator.generate")
-    def test_submit_update(self, pw_gen_mock, smtp_mock, dbsession, test_app, users_test_data):
+    def test_submit_update(self, pw_gen_mock, smtp_mock, dbsession, test_app, users_test_data) -> None:
         user = users_test_data["users"][11]
         roles = users_test_data["roles"]
 
@@ -189,7 +188,7 @@ class TestUser(AbstractViewsTests):
         assert not pw_gen_mock.called, "method should not have been called"
         assert not smtp_mock.called, "method should not have been called"
 
-    def test_unicity_validator(self, users_test_data, test_app):
+    def test_unicity_validator(self, users_test_data, test_app) -> None:
         user = users_test_data["users"][11]
         roles = users_test_data["roles"]
 
@@ -212,7 +211,7 @@ class TestUser(AbstractViewsTests):
 
     @patch("c2cgeoportal_commons.lib.email_.smtplib.SMTP")
     @patch("c2cgeoportal_admin.views.users.pwgenerator.generate")
-    def test_duplicate(self, pw_gen_mock, smtp_mock, users_test_data, test_app, dbsession):
+    def test_duplicate(self, pw_gen_mock, smtp_mock, users_test_data, test_app, dbsession) -> None:
         sender_mock = MagicMock()
         smtp_mock.return_value.__enter__.return_value = sender_mock
         pw_gen_mock.return_value = "basile"
@@ -237,7 +236,8 @@ class TestUser(AbstractViewsTests):
         new_user = dbsession.query(User).filter(User.username == "clone").one()
 
         assert str(new_user.id) == re.match(
-            r"http://localhost/admin/users/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/users/(.*)\?msg_col=submit_ok",
+            resp.location,
         ).group(1)
         assert user.id != new_user.id
         assert user.settings_role_id == new_user.settings_role_id
@@ -247,14 +247,14 @@ class TestUser(AbstractViewsTests):
 
         parts = list(email.message_from_string(sender_mock.sendmail.mock_calls[0][1][2]).walk())
         assert EXPECTED_WELCOME_MAIL.format("clone", "clone", "basile") == parts[1].get_payload(
-            decode=True
+            decode=True,
         ).decode("utf8")
         assert parts[0].items()[3][1] == "mail7@valid.net"
 
     @patch("c2cgeoportal_commons.lib.email_.smtplib.SMTP")
     @patch("c2cgeoportal_admin.views.users.pwgenerator.generate")
     @pytest.mark.usefixtures("test_app")
-    def test_submit_new(self, pw_gen_mock, smtp_mock, dbsession, test_app, users_test_data):
+    def test_submit_new(self, pw_gen_mock, smtp_mock, dbsession, test_app, users_test_data) -> None:
         from c2cgeoportal_commons.models.main import LogAction
         from c2cgeoportal_commons.models.static import Log, User
 
@@ -283,21 +283,23 @@ class TestUser(AbstractViewsTests):
         user = dbsession.query(User).filter(User.username == "new_user").one()
 
         assert str(user.id) == re.match(
-            r"http://localhost/admin/users/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/users/(.*)\?msg_col=submit_ok",
+            resp.location,
         ).group(1)
 
         assert user.username == "new_user"
         assert user.display_name == "New user"
         assert user.email == "valid@email.net"
         assert user.settings_role_id == roles[2].id
-        assert user.password is not None and len(user.password)
+        assert user.password is not None
+        assert len(user.password)
         assert user.password.startswith("$")
         assert user.temp_password is None
         assert user.is_password_changed is False
 
         parts = list(email.message_from_string(sender_mock.sendmail.mock_calls[0][1][2]).walk())
         assert EXPECTED_WELCOME_MAIL.format("new_user", "new_user", "basile") == parts[1].get_payload(
-            decode=True
+            decode=True,
         ).decode("utf8")
         assert parts[0].items()[3][1] == "valid@email.net"
 
@@ -309,7 +311,7 @@ class TestUser(AbstractViewsTests):
         assert log.element_name == user.username
         assert log.username == "test_user"
 
-    def test_invalid_email(self, test_app):
+    def test_invalid_email(self, test_app) -> None:
         resp = test_app.post(
             "/admin/users/new",
             {
@@ -331,14 +333,14 @@ class TestUser(AbstractViewsTests):
         self._check_submission_problem(resp, "Invalid email address")
 
     @pytest.mark.usefixtures("raise_db_error_on_query")
-    def test_grid_dberror(self, dbsession):
+    def test_grid_dberror(self, dbsession) -> None:
         from c2cgeoportal_admin.views.users import UserViews
 
         request = DummyRequest(dbsession=dbsession, params={"offset": 0, "limit": 10})
         with pytest.raises(pyramid.httpexceptions.HTTPInternalServerError):
             UserViews(request).grid()
 
-    def test_grid_settings_role_none(self, dbsession, test_app):
+    def test_grid_settings_role_none(self, dbsession, test_app) -> None:
         """Grid view must work even if a user's settings_role is None."""
         from c2cgeoportal_commons.models.static import User
 

@@ -43,7 +43,10 @@ _LOG = logging.getLogger(__name__)
 
 
 def build_url(
-    name: str, path: str, request: pyramid.request.Request, headers: dict[str, str] | None = None
+    name: str,
+    path: str,
+    request: pyramid.request.Request,
+    headers: dict[str, str] | None = None,
 ) -> dict[str, str | dict[str, str]]:
     """Build an URL and headers for the checkers."""
     base_internal_url = request.registry.settings["checker"]["base_internal_url"]
@@ -87,10 +90,10 @@ def _routes(settings: dict[str, Any], health_check: c2cwsgiutils.health_check.He
                     return build_url("route", request.route_path(self.route_name), request)[self.type]
 
             health_check.add_url_check(
-                url=GetRequest(route["name"], "url"),  # type: ignore
+                url=GetRequest(route["name"], "url"),  # type: ignore[arg-type]
                 name=name,
                 params=route.get("params", None),
-                headers=GetRequest(route["name"], "headers"),  # type: ignore
+                headers=GetRequest(route["name"], "headers"),  # type: ignore[arg-type]
                 level=route["level"],
                 timeout=30,
             )
@@ -106,7 +109,7 @@ def _pdf3(settings: dict[str, Any], health_check: c2cwsgiutils.health_check.Heal
         url_headers = build_url("Check the printproxy request (create)", path, request)
 
         session = requests.session()
-        resp = session.post(json=print_settings["spec"], timeout=30, **url_headers)  # type: ignore
+        resp = session.post(json=print_settings["spec"], timeout=30, **url_headers)  # type: ignore[arg-type]
         resp.raise_for_status()
 
         job = resp.json()
@@ -116,19 +119,19 @@ def _pdf3(settings: dict[str, Any], health_check: c2cwsgiutils.health_check.Heal
         done = False
         while not done:
             sleep(1)
-            resp = session.get(timeout=30, **url_headers)  # type: ignore
+            resp = session.get(timeout=30, **url_headers)  # type: ignore[arg-type]
             resp.raise_for_status()
 
             status = resp.json()
             if "error" in status:
-                raise Exception(  # pylint: disable=broad-exception-raised
+                raise Exception(  # pylint: disable=broad-exception-raised # noqa: TRY002
                     f"Failed to do the printing: {status['error']}",
                 )
             done = status["done"]
 
         path = request.route_path("printproxy_report_get", ref=job["ref"])
         url_headers = build_url("Check the printproxy pdf retrieve", path, request)
-        resp = session.get(timeout=30, **url_headers)  # type: ignore
+        resp = session.get(timeout=30, **url_headers)  # type: ignore[arg-type]
         resp.raise_for_status()
 
     health_check.add_custom_check(name="checker_print", check_cb=check, level=print_settings["level"])
@@ -147,8 +150,8 @@ def _fts(settings: dict[str, Any], health_check: c2cwsgiutils.health_check.Healt
 
     health_check.add_url_check(
         name="checker_fulltextsearch",
-        url=lambda r: get_both(r)["url"],  # type: ignore[misc]
-        headers=lambda r: get_both(r)["headers"],  # type: ignore[misc]
+        url=lambda r: get_both(r)["url"],  # type: ignore[return-value,arg-type]
+        headers=lambda r: get_both(r)["headers"],  # type: ignore[return-value,arg-type]
         params={"query": fts_settings["search"], "limit": "1"},
         check_cb=check,
         level=fts_settings["level"],
@@ -180,13 +183,14 @@ def _themes_errors(settings: dict[str, Any], health_check: c2cwsgiutils.health_c
 
             interface_url_headers = build_url("checker_themes " + interface, path, request)
 
-            response = session.get(params=params, timeout=120, **interface_url_headers)  # type: ignore
+            response = session.get(params=params, timeout=120, **interface_url_headers)  # type: ignore[arg-type]
             response.raise_for_status()
 
             result = response.json()
             if result["errors"]:
                 raise c2cwsgiutils.health_check.JsonCheckException(
-                    f"Interface '{interface}' has error in Theme.", result["errors"]
+                    f"Interface '{interface}' has error in Theme.",
+                    result["errors"],
                 )
 
     health_check.add_custom_check(name="checker_themes", check_cb=check, level=themes_settings["level"])
@@ -211,7 +215,7 @@ def _lang_files(
             if type_ == "ngeo":
                 url = f"/etc/geomapfish/static/{lang}.json"
             else:
-                raise Exception(  # pylint: disable=broad-exception-raised
+                raise Exception(  # pylint: disable=broad-exception-raised # noqa: TRY002
                     f"Your language type value '{type_}' is not valid, available values [ngeo]",
                 )
 
@@ -230,15 +234,15 @@ def _lang_files(
                     return build_url(
                         self.name,
                         request.static_path(
-                            self.url.format(package=global_settings["package"], lang=self.lang)
+                            self.url.format(package=global_settings["package"], lang=self.lang),
                         ),
                         request,
                     )[self.type]
 
             health_check.add_url_check(
                 name=name,
-                url=GetRequest(name, url, lang, "url"),  # type: ignore
-                headers=GetRequest(name, url, lang, "headers"),  # type: ignore
+                url=GetRequest(name, url, lang, "url"),  # type: ignore[arg-type]
+                headers=GetRequest(name, url, lang, "headers"),  # type: ignore[arg-type]
                 level=lang_settings["level"],
             )
 
@@ -255,30 +259,30 @@ def _phantomjs(settings: dict[str, Any], health_check: c2cwsgiutils.health_check
 
             def __call__(self, request: pyramid.request.Request) -> None:
                 path = request.route_path(self.route["name"], _query=self.route.get("params", {}))
-                url: str = cast(str, build_url("Check", path, request)["url"])
+                url: str = cast("str", build_url("Check", path, request)["url"])
 
                 cmd: list[str] = ["check-example", url]
                 env = dict(os.environ)
                 for name, value in self.route.get("environment", {}).items():
                     if isinstance(value, list | dict):
-                        value = json.dumps(value)
+                        value = json.dumps(value)  # noqa: PLW2901
                     elif not isinstance(value, str):
-                        value = str(value)
+                        value = str(value)  # noqa: PLW2901
                     env[name] = value
 
                 try:
                     subprocess.check_output(cmd, env=env, timeout=70)
                 except subprocess.CalledProcessError as exception:
-                    raise Exception(  # pylint: disable=broad-exception-raised
+                    raise Exception(  # pylint: disable=broad-exception-raised # noqa: TRY002
                         f"{' '.join(exception.cmd)} exit with code: {exception.returncode}\n"
-                        f"{exception.output.decode('utf-8')[:10000]}"
+                        f"{exception.output.decode('utf-8')[:10000]}",
                     ) from exception
                 except subprocess.TimeoutExpired as exception:
-                    raise Exception(  # pylint: disable=broad-exception-raised
+                    raise Exception(  # pylint: disable=broad-exception-raised # noqa: TRY002
                         f"""Timeout:
 command: {" ".join(exception.cmd)}
 output:
-{exception.output.decode("utf-8")}"""
+{exception.output.decode("utf-8")}""",
                     ) from exception
 
         name = "checker_phantomjs_" + route.get("checker_name", route["name"])

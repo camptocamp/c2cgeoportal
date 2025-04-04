@@ -24,17 +24,20 @@
 
 import argparse
 import sys
+from typing import Any
 
 import yaml
 
 
-def print_flat(data, path="", result=[]):
+def _print_flat(data: Any, path: str = "", result: list[str] | None = None) -> list[str]:
+    if result is None:
+        result = []
     if isinstance(data, dict):
         for key, value in data.items():
-            print_flat(value, f"{path}.{key}" if path else key)
+            _print_flat(value, f"{path}.{key}" if path else key)
     elif isinstance(data, list):
         for value in data:
-            print_flat(value, path)
+            _print_flat(value, path)
     else:
         result.append(f"{path}={data}")
     return result
@@ -42,7 +45,7 @@ def print_flat(data, path="", result=[]):
 
 def main() -> None:
     """
-    yamlutlis: print a yaml file as lines such as
+    yamlutlis: print a yaml file as lines such as.
 
     example:
     --------
@@ -100,12 +103,12 @@ def main() -> None:
     parser.add_argument("file", nargs="?", help="file to read")
     args = parser.parse_args()
     if args.file:
-        with open(args.file) as yaml_file:
+        with open(args.file, encoding="utf-8") as yaml_file:
             document = yaml_file.read()
     else:
         document = "\n".join(sys.stdin.readlines())
 
-    yaml_content = print_flat(yaml.load(document, Loader=yaml.SafeLoader))
+    yaml_content = _print_flat(yaml.load(document, Loader=yaml.SafeLoader))
     sys.stdout.write(str("\n".join(yaml_content)))
 
 

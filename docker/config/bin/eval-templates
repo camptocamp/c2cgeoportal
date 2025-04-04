@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# pylint: disable=invalid-name
 
 import argparse
 import glob
@@ -33,9 +34,8 @@ class RasterBase:
 
 def _evaluate(filename: str) -> None:
     print("Evaluate: " + filename)
-    with open(filename, encoding="utf-8") as in_:
-        with open(filename[:-5], "w", encoding="utf-8") as out:
-            subprocess.check_call(["envsubst"], stdin=in_, stdout=out)
+    with open(filename, encoding="utf-8") as in_, open(filename[:-5], "w", encoding="utf-8") as out:
+        subprocess.check_call(["envsubst"], stdin=in_, stdout=out)
 
 
 def _convert_location(location: str, raster_base: RasterBase, verify_first: bool = False) -> str:
@@ -50,8 +50,8 @@ def _convert_location(location: str, raster_base: RasterBase, verify_first: bool
 
 def _convert_qgis_project(project: bytes, raster_base: RasterBase) -> bytes:
     if len(raster_base.split) < 2:
-        raise Exception(
-            f"Invalid raster base '{raster_base.value}' should have at lease 2 parts like '/vsiaz/container/'"
+        raise Exception(  # noqa: TRY002
+            f"Invalid raster base '{raster_base.value}' should have at lease 2 parts like '/vsiaz/container/'",
         )
 
     xml = ElementTree.fromstring(project)
@@ -61,7 +61,7 @@ def _convert_qgis_project(project: bytes, raster_base: RasterBase) -> bytes:
             and "source" in layer.attrib
             and layer.attrib["providerKey"] == "gdal"
         ):
-            layer.attrib["source"] = _convert_location(layer.attrib["source"], raster_base, True)
+            layer.attrib["source"] = _convert_location(layer.attrib["source"], raster_base, verify_first=True)
 
     for layer in xml.iter("maplayer"):
         provider_element = layer.find("provider")
@@ -71,15 +71,19 @@ def _convert_qgis_project(project: bytes, raster_base: RasterBase) -> bytes:
             and datasource_element is not None
             and provider_element.text == "gdal"
         ):
-            datasource_element.text = _convert_location(datasource_element.text, raster_base, True)
+            datasource_element.text = _convert_location(
+                datasource_element.text,
+                raster_base,
+                verify_first=True,
+            )
 
-    return cast(bytes, ElementTree.tostring(xml))
+    return cast("bytes", ElementTree.tostring(xml))
 
 
 def _main() -> None:
     parser = argparse.ArgumentParser(
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="\n".join(
+        epilog="\n".join(  # noqa: FLY002
             [
                 "This command is used to evaluate the templates files `<filename>.tmpl` to `<filename>` "
                 "using the `envsubst` command witch will replace the variable in bash syntax `$NAME` "
@@ -103,25 +107,25 @@ def _main() -> None:
                 "If the `RASTER_BASE_PATH` environment variable is set, the raster layers in the QGIS project and "
                 "Mapserver tile index will be converted to use the raster base path, if an empty file "
                 "`*.qgs.raster`, `*.qgz.raster` (for QGIS server) or `*.raster` (for MapServer tile index) is found.",
-            ]
+            ],
         ),
     )
     parser.parse_args()
 
     os.environ["DOLLAR"] = "$"
-    os.environ["CACHE_VERSION"] = str(random.randint(0, 999999))  # nosec
+    os.environ["CACHE_VERSION"] = str(random.randint(0, 999999))  # noqa: S311 # nosec
     if os.environ.get("VISIBLE_WEB_HOST"):
         os.environ["VISIBLE_WEB_HOST_RE_ESCAPED"] = re.escape(os.environ["VISIBLE_WEB_HOST"])
     if os.environ.get("VISIBLE_ENTRY_POINT"):
         os.environ["VISIBLE_ENTRY_POINT_RE_ESCAPED"] = re.escape(os.environ["VISIBLE_ENTRY_POINT"])
-    os.environ["MAPSERVER_DATA_SUBSELECT"] = (
+    os.environ["MAPSERVER_DATA_SUBSELECT"] = (  # noqa: S608
         "SELECT {ST_JOIN}(ra.area) "  # nosec
         "FROM {PGSCHEMA}.restrictionarea AS ra, {PGSCHEMA}.role_restrictionarea AS rra, "
         "{PGSCHEMA}.layer_restrictionarea AS lra, {PGSCHEMA}.treeitem AS la "
         "WHERE rra.role_id in (%role_ids%) AND rra.restrictionarea_id = ra.id "
         "AND lra.restrictionarea_id = ra.id AND lra.layer_id = la.id AND la.name = "
     ).format(PGSCHEMA=os.environ["PGSCHEMA"], ST_JOIN=os.environ.get("ST_JOIN", "ST_Collect"))
-    os.environ["MAPSERVER_DATA_NOAREA_SUBSELECT"] = (
+    os.environ["MAPSERVER_DATA_NOAREA_SUBSELECT"] = (  # noqa: S608
         "SELECT rra.role_id "  # nosec
         "FROM {PGSCHEMA}.restrictionarea AS ra, {PGSCHEMA}.role_restrictionarea AS rra, "
         "{PGSCHEMA}.layer_restrictionarea AS lra, {PGSCHEMA}.treeitem AS la "
@@ -140,7 +144,9 @@ def _main() -> None:
     for name in ("GEOPORTAL", "TILECLOUDCHAIN"):
         if name + "_INTERNAL_URL" in os.environ:
             url = urllib.parse.urlparse(os.environ[name + "_INTERNAL_URL"])
-            os.environ[name + "_INTERNAL_HOST"] = url.hostname
+            hostname = url.hostname
+            assert hostname is not None
+            os.environ[name + "_INTERNAL_HOST"] = hostname
             os.environ[name + "_INTERNAL_PORT"] = str(url.port or SCHEME_PORT.get(url.scheme, "NULL"))
 
     if (
@@ -169,12 +175,11 @@ def _main() -> None:
         for filename in glob.glob("/etc/mapserver/**/*.raster", recursive=True):
             base = filename[:-7]
             print(f"{base}.shp")
-            with fiona.open(f"{base}.shp") as src:
-                with fiona.open(f"{base}.shp", "w", **src.meta) as dst:
-                    for row in src:
-                        properties = row["properties"]
-                        properties["location"] = _convert_location(properties["location"], raster_base)
-                        dst.write(row)
+            with fiona.open(f"{base}.shp") as src, fiona.open(f"{base}.shp", "w", **src.meta) as dst:
+                for row in src:
+                    properties = row["properties"]
+                    properties["location"] = _convert_location(properties["location"], raster_base)
+                    dst.write(row)
 
         for tag_file in glob.glob("/etc/qgisserver/**/*.qgs.raster", recursive=True):
             filename = tag_file[:-7]
