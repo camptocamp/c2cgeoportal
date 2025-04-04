@@ -172,7 +172,7 @@ DFT = """<?xml version='1.0' encoding="UTF-8" ?>
 
 
 class TestThemesView(TestCase):
-    def setup_method(self, _):
+    def setup_method(self, _) -> None:
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
@@ -211,7 +211,7 @@ class TestThemesView(TestCase):
 
         transaction.commit()
 
-    def teardown_method(self, _):
+    def teardown_method(self, _) -> None:
         testing.tearDown()
 
         from c2cgeoportal_commons.models import DBSession
@@ -322,7 +322,7 @@ class TestThemesView(TestCase):
 
 
 @pytest.mark.parametrize(
-    "came_from,host,allowed_hosts,expected",
+    ("came_from", "host", "allowed_hosts", "expected"),
     [
         ("http://example.com", "example.com", [], True),
         ("http://example.com", "other.com", ["example.com"], True),
@@ -331,7 +331,7 @@ class TestThemesView(TestCase):
 )
 def test_ogc_server_cache_clean_wrong_host(
     default_ogcserver, admin_user, came_from, host, allowed_hosts, expected
-):
+) -> None:
     from c2cgeoportal_geoportal.views.theme import Theme
 
     request = create_dummy_request(user=admin_user.username)
@@ -359,7 +359,7 @@ def test_ogc_server_cache_clean_wrong_host(
         theme.ogc_server_clear_cache_view()
 
 
-def test_ogc_server_cache_clean_wrong_host_non_admin_user(some_user):
+def test_ogc_server_cache_clean_wrong_host_non_admin_user(some_user) -> None:
     from c2cgeoportal_geoportal.views.theme import Theme
 
     request = create_dummy_request(user=some_user.username)
@@ -369,7 +369,7 @@ def test_ogc_server_cache_clean_wrong_host_non_admin_user(some_user):
         theme.ogc_server_clear_cache_view()
 
 
-def test_ogc_server_cache_clean_wrong_host_no_user():
+def test_ogc_server_cache_clean_wrong_host_no_user() -> None:
     from c2cgeoportal_geoportal.views.theme import Theme
 
     request = create_dummy_request()

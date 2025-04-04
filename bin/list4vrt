@@ -28,7 +28,7 @@ from typing import Any
 import boto3
 
 
-def main():
+def _main() -> None:
     parser = argparse.ArgumentParser(description="Get the list of geotiff files for `gdalbuildvrt`")
     parser.add_argument("bucket")
     parser.add_argument("prefix")
@@ -57,4 +57,4 @@ def main():
             break
 
 
-main()
+_main()

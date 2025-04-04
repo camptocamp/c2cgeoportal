@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2024, Camptocamp SA
+# Copyright (c) 2012-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -33,9 +33,12 @@ import time
 from typing import cast
 
 from Crypto.Cipher import AES  # nosec
-from Crypto.Cipher.ChaCha20_Poly1305 import ChaCha20Poly1305Cipher  # nosec
+from git import TYPE_CHECKING  # nosec
 
 from c2cgeoportal_geoportal.scripts import fill_arguments, get_appsettings
+
+if TYPE_CHECKING:
+    from Crypto.Cipher.ChaCha20_Poly1305 import ChaCha20Poly1305Cipher  # nosec
 
 
 def create_token(aeskey: str, user: str, password: str, valid: bool) -> str:
@@ -45,7 +48,7 @@ def create_token(aeskey: str, user: str, password: str, valid: bool) -> str:
     if aeskey is None:
         print("urllogin is not configured")
         sys.exit(1)
-    cipher = cast(ChaCha20Poly1305Cipher, AES.new(aeskey.encode("ascii"), AES.MODE_EAX))
+    cipher = cast("ChaCha20Poly1305Cipher", AES.new(aeskey.encode("ascii"), AES.MODE_EAX))
     data = json.dumps(auth)
     mod_len = len(data) % 16
     if mod_len != 0:

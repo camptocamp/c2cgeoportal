@@ -1,4 +1,4 @@
-# Copyright (c) 2024, Camptocamp SA
+# Copyright (c) 2024-2025, Camptocamp SA
 # All rights reserved.
 
 # This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -41,7 +41,7 @@ def qgis_project():
     ]:
         add_node_in_qgis_project(project, project.layerTreeRoot(), node)
 
-    yield {
+    return {
         "project": project,
     }
 
@@ -177,7 +177,7 @@ def test_data_protected(clean_dbsession):
     "qgis_project",
 )
 class TestNotProtectedAttributes:
-    def test_restricted_attribute(self, server_iface, test_data_not_protected, qgis_project):
+    def test_restricted_attribute(self, server_iface, test_data_not_protected, qgis_project) -> None:
         with patch(
             "geomapfish_qgisserver.accesscontrol.OGCServerAccessControl.project",
             return_value=qgis_project["project"],
@@ -231,7 +231,7 @@ class TestNotProtectedAttributes:
     "qgis_project",
 )
 class TestProtectedAttributes:
-    def test_restricted_attribute(self, server_iface, test_data_protected, qgis_project):
+    def test_restricted_attribute(self, server_iface, test_data_protected, qgis_project) -> None:
         with patch(
             "geomapfish_qgisserver.accesscontrol.OGCServerAccessControl.project",
             return_value=qgis_project["project"],

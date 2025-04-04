@@ -47,7 +47,7 @@ from tests.functional import setup_common as setup_module
 from tests.functional import teardown_common as teardown_module
 
 
-def use(item):
+def use(item) -> None:
     pass
 
 
@@ -58,7 +58,7 @@ _LOG = logging.getLogger(__name__)
 
 
 class TestEntryView(TestCase):
-    def setup_method(self, _):
+    def setup_method(self, _) -> None:
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None  # pylint: disable=invalid-name
@@ -230,7 +230,7 @@ class TestEntryView(TestCase):
 
         transaction.commit()
 
-    def teardown_method(self, _):
+    def teardown_method(self, _) -> None:
         testing.tearDown()
 
         cleanup_db()
@@ -285,12 +285,12 @@ class TestEntryView(TestCase):
         return entry, request
 
     def _assert_has_error(self, errors, error):
-        self.assertIn(error, errors)
+        assert error in errors
         assert len([e for e in errors if e == error]) == 1, (
             f"Error '{error}' more than one time in errors:\n{errors!r}"
         )
 
-    def test_json_extent(self):
+    def test_json_extent(self) -> None:
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import Role
 

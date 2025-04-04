@@ -74,7 +74,7 @@ class Access(Enum):
 class GeoMapFishAccessControl(QgsAccessControlFilter):
     """Implements GeoMapFish access restriction."""
 
-    def __init__(self, server_iface: qgis.server.QgsServerInterface):
+    def __init__(self, server_iface: qgis.server.QgsServerInterface) -> None:
         """Initialize the plugin."""
         super().__init__(server_iface)
 
@@ -90,7 +90,8 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             assert configuration is not None
 
             DBSession = create_session_factory(  # pylint: disable=invalid-name
-                config.get("sqlalchemy_slave.url"), configuration.get("sqlalchemy", {})
+                config.get("sqlalchemy_slave.url"),
+                configuration.get("sqlalchemy", {}),
             )
 
             if "GEOMAPFISH_OGCSERVER" in os.environ:
@@ -113,7 +114,11 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
 
                 for map_, map_config in ac_config.get("map_config").items():
                     map_config["access_control"] = OGCServerAccessControl(
-                        server_iface, map_config["ogc_server"], map_, config.get("srid"), DBSession
+                        server_iface,
+                        map_config["ogc_server"],
+                        map_,
+                        config.get("srid"),
+                        DBSession,
                     )
                     self.ogcserver_accesscontrols[map_] = map_config
                 _LOG.info("Use config '%s'.", os.environ["GEOMAPFISH_ACCESSCONTROL_CONFIG"])
@@ -194,13 +199,13 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
                         if os.environ.get("QGIS_PROJECT_FILE"):
                             _LOG.error(
                                 "We have OGC servers with and without parameter MAP and a value in "
-                                "QGIS_PROJECT_FILE, fallback to single OGC server mode."
+                                "QGIS_PROJECT_FILE, fallback to single OGC server mode.",
                             )
                             self.ogcserver_accesscontrols = {}
                         else:
                             _LOG.error(
                                 "We have OGC servers with and without parameter MAP but no value in "
-                                "QGIS_PROJECT_FILE, fallback to multiple OGC server mode."
+                                "QGIS_PROJECT_FILE, fallback to multiple OGC server mode.",
                             )
                             single_ogc_server = None
                     if single_ogc_server is not None:
@@ -235,7 +240,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
         """Get the config."""
         if self.single:
             raise GMFException(
-                "The method 'get_ogcserver_accesscontrol_config' can't be called on 'single' server"
+                "The method 'get_ogcserver_accesscontrol_config' can't be called on 'single' server",
             )
 
     def get_ogcserver_accesscontrol(self) -> "OGCServerAccessControl":
@@ -252,7 +257,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
         if config_file not in self.ogcserver_accesscontrols:
             raise GMFException(
                 f"The map '{config_file}' is not found possible values: "
-                f"{', '.join(self.ogcserver_accesscontrols.keys())}"
+                f"{', '.join(self.ogcserver_accesscontrols.keys())}",
             )
         return cast("OGCServerAccessControl", self.ogcserver_accesscontrols[config_file]["access_control"])
 
@@ -279,7 +284,8 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             raise
 
     def layerPermissions(  # pylint: disable=invalid-name
-        self, layer: QgsVectorLayer
+        self,
+        layer: QgsVectorLayer,
     ) -> qgis.server.QgsAccessControlFilter.LayerPermissions:
         """Return the layer rights."""
         try:
@@ -294,7 +300,9 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             raise
 
     def authorizedLayerAttributes(  # pylint: disable=invalid-name
-        self, layer: QgsVectorLayer, attributes: list[str]
+        self,
+        layer: QgsVectorLayer,
+        attributes: list[str],
     ) -> list[str]:
         """Return the authorized layer attributes."""
         try:
@@ -342,7 +350,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         srid: int,
         DBSession: sessionmaker,  # pylint: disable=invalid-name
         ogcserver: Optional["main.OGCServer"] = None,
-    ):
+    ) -> None:
         """Initialize the plugin."""
         super().__init__(server_iface)
 
@@ -444,11 +452,11 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                     nodes[ogc_name].append(name)
 
                 for layer in node.children():
-                    browse(path + [ogc_name], layer)
+                    browse([*path, ogc_name], layer)
 
             browse([], self.project().layerTreeRoot())
 
-            for ogc_layer_name, _ in nodes.items():
+            for ogc_layer_name in nodes:
                 _LOG.debug("QGIS layer: %s", ogc_layer_name)
 
             # Transform ancestor names in LayerWMS instances
@@ -595,7 +603,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         if gmf_layers is None:
             raise Exception(  # pylint: disable=broad-exception-raised
                 f"Access to an unknown layer '{ogc_name}', "
-                f"from [{', '.join(self.get_layers(session).keys())}]"
+                f"from [{', '.join(self.get_layers(session).keys())}]",
             )
 
         access, restriction_areas = self.get_restriction_areas(gmf_layers, read_write, roles=roles)
@@ -691,7 +699,8 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             raise
 
     def layerPermissions(  # pylint: disable=invalid-name
-        self, layer: QgsVectorLayer
+        self,
+        layer: QgsVectorLayer,
     ) -> qgis.server.QgsAccessControlFilter.LayerPermissions:
         """Get the layer rights."""
         _LOG.debug("layerPermissions %s", layer.name())
@@ -735,7 +744,9 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             raise
 
     def authorizedLayerAttributes(  # pylint: disable=invalid-name
-        self, layer: QgsVectorLayer, attributes: list[str]
+        self,
+        layer: QgsVectorLayer,
+        attributes: list[str],
     ) -> list[str]:
         """Get the authorized layer attributes."""
         roles = self.get_roles(self.DBSession())

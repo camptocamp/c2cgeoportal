@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2024, Camptocamp SA
+# Copyright (c) 2013-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -40,7 +40,7 @@ from tests.functional import teardown_common as teardown_module  # noqa
 
 
 class TestLoopTheme(TestCase):
-    def setup_method(self, _):
+    def setup_method(self, _) -> None:
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
@@ -71,7 +71,7 @@ class TestLoopTheme(TestCase):
         DBSession.add_all([layer, layer_group, theme])
         transaction.commit()
 
-    def teardown_method(self, _):
+    def teardown_method(self, _) -> None:
         testing.tearDown()
 
         from c2cgeoportal_commons.models import DBSession
@@ -92,7 +92,7 @@ class TestLoopTheme(TestCase):
 
         transaction.commit()
 
-    async def test_theme(self):
+    async def test_theme(self) -> None:
         from c2cgeoportal_geoportal.views.theme import Theme
 
         request = DummyRequest()
@@ -102,6 +102,4 @@ class TestLoopTheme(TestCase):
         request.user = None
         theme_view = Theme(request)
         _, errors = await theme_view._themes("desktop2", True, 2)
-        self.assertEqual(
-            len([e for e in errors if e == "Too many recursions with group '__test_layer_group'"]), 1
-        )
+        assert len([e for e in errors if e == "Too many recursions with group '__test_layer_group'"]) == 1

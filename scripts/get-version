@@ -34,6 +34,7 @@ import re
 import subprocess  # nosec
 import sys
 
+import c2cciutils
 import requests
 import yaml
 
@@ -102,7 +103,6 @@ if args.full:
     print(full)
     sys.exit(0)
 
-import c2cciutils
 
 latest = False
 security_response = requests.get(

@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024, Camptocamp SA
+# Copyright (c) 2023-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -26,6 +26,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 from functools import partial
+from typing import Any
 
 from c2cgeoform import JSONDict
 from c2cgeoform.views.abstract_views import (
@@ -48,7 +49,7 @@ class LogViews(AbstractViews[AbstractLog]):
 
     # We pass labels explicitly because actually we are not able to get info
     # from InstrumentedAttribute created from AbstractConcreteBase.
-    _list_fields = [
+    _list_fields = [  # noqa: RUF012
         _list_field("id"),
         _list_field("date", label=_("Date")),
         _list_field("username", label=_("Username")),
@@ -57,7 +58,7 @@ class LogViews(AbstractViews[AbstractLog]):
         _list_field("element_id", label=_("Element identifier")),
         _list_field("element_name", label=_("Element name")),
     ]
-    _list_ordered_fields = [AbstractLog.date.desc()]
+    _list_ordered_fields = [AbstractLog.date.desc()]  # noqa: RUF012
 
     _id_field = "id"
     _model = AbstractLog
@@ -70,7 +71,7 @@ class LogViews(AbstractViews[AbstractLog]):
     def grid(self) -> GridResponse:
         return super().grid()
 
-    def _grid_actions(self):
+    def _grid_actions(self) -> list[ItemAction]:
         return []
 
     def _grid_item_actions(self, item: AbstractLog) -> JSONDict:
@@ -88,9 +89,10 @@ class LogViews(AbstractViews[AbstractLog]):
                     label=_("Edit element"),
                     icon="glyphicon glyphicon-pencil",
                     url=element_url,
-                ).to_dict(self._request)
+                ).to_dict(self._request),
             ],
         }
 
-    def _item_actions(self, item, readonly=False):
+    def _item_actions(self, item: Any, readonly: bool = False) -> list[ItemAction]:
+        del item, readonly  # unused
         return []
