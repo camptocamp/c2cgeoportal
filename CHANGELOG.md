@@ -1,3 +1,8 @@
+##### 2.7.1.166
+
+- Update all patch/minor versions (2.7) [c2cgeoportal#11861](https://github.com/camptocamp/c2cgeoportal/pull/11861)
+- Update dependency @types/jqueryui to v1.12.24 (2.7) [ngeo#9655](https://github.com/camptocamp/ngeo/pull/9655)
+
 ##### 2.7.1.165
 
 - Audit Snyk check/fix 2.7 [c2cgeoportal#11811](https://github.com/camptocamp/c2cgeoportal/pull/11811)
