@@ -74,7 +74,10 @@ class TestThemesEditColumns(TestCase):
 
         self.role = Role(name="__test_role")
         self.user = User(
-            username="__test_user", password="__test_user", settings_role=self.role, roles=[self.role]
+            username="__test_user",
+            password="__test_user",
+            settings_role=self.role,
+            roles=[self.role],
         )
         self.main = Interface(name="main")
 
@@ -281,7 +284,7 @@ class TestThemesEditColumns(TestCase):
                         "name": "child",
                         "enumeration": ["c1\xe9", "c2\xe9"],
                     },
-                ]
+                ],
             ],
         )
 
@@ -344,6 +347,6 @@ class TestThemesEditColumns(TestCase):
                         "name": "child",
                         "enumeration": ["c1\xe9", "c2\xe9"],
                     },
-                ]
+                ],
             ],
         )

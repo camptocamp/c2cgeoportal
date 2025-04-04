@@ -46,7 +46,7 @@ class TestRasterViews(TestCase):
                 "dem1": {"file": "/opt/c2cgeoportal/geoportal/tests/data/dem.shp", "round": 0.1},
                 "dem2": {"file": "/opt/c2cgeoportal/geoportal/tests/data/dem.shp", "round": 1},
                 "dem3": {"file": "/opt/c2cgeoportal/geoportal/tests/data/dem.shp"},
-            }
+            },
         }
         raster = Raster(request)
 
@@ -88,8 +88,8 @@ class TestRasterViews(TestCase):
                     "file": "/opt/c2cgeoportal/geoportal/tests/data/dem4.bt",
                     "type": "gdal",
                     "round": 0.01,
-                }
-            }
+                },
+            },
         }
         raster = Raster(request)
 
@@ -133,8 +133,8 @@ class TestRasterViews(TestCase):
                     "file": "/opt/c2cgeoportal/geoportal/tests/data/dem4.vrt",
                     "type": "gdal",
                     "round": 0.01,
-                }
-            }
+                },
+            },
         }
         raster = Raster(request)
 
@@ -168,7 +168,7 @@ class TestRasterViews(TestCase):
             "raster": {
                 "dem": {"file": "/opt/c2cgeoportal/geoportal/tests/data/dem.shp", "round": 4},
                 "dem2": {"file": "/opt/c2cgeoportal/geoportal/tests/data/dem.shp", "round": 4},
-            }
+            },
         }
         profile = Profile(request)
 

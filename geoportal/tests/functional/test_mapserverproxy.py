@@ -170,7 +170,10 @@ class TestMapserverproxyView(TestCase):
         role4 = Role(name="__test_role4", description="__test_role4", functionalities=[pt1, pt2])
         role5 = Role(name="__test_role5", description="__test_role5", functionalities=[pt1, pt2])
         user4 = User(
-            username="__test_user4", password="__test_user4", settings_role=role3, roles=[role4, role5]
+            username="__test_user4",
+            password="__test_user4",
+            settings_role=role3,
+            roles=[role4, role5],
         )
 
         main = Interface(name="main")
@@ -224,7 +227,7 @@ class TestMapserverproxyView(TestCase):
                 restricted_area3,
                 restricted_area4,
                 restricted_area5,
-            ]
+            ],
         )
         DBSession.flush()
 
@@ -251,8 +254,8 @@ class TestMapserverproxyView(TestCase):
                     "available_functionalities": [
                         {"name": "mapserver_substitution"},
                         {"name": "print_template"},
-                    ]
-                }
+                    ],
+                },
             },
             user=username,
         )
@@ -279,7 +282,7 @@ class TestMapserverproxyView(TestCase):
                 srs="EPSG:21781",
                 format="image/png",
                 extraparam="with spéciàl chârs",
-            )
+            ),
         )
         response = MapservProxy(request).proxy()
         assert not response.cache_control.public
@@ -290,7 +293,7 @@ class TestMapserverproxyView(TestCase):
 
         request = self._create_dummy_request()
         request.registry.settings.update(
-            {"headers": {"mapserver": {"cache_control_max_age": 0, "access_control_allow_origin": "*"}}}
+            {"headers": {"mapserver": {"cache_control_max_age": 0, "access_control_allow_origin": "*"}}},
         )
         request.params.update(
             dict(
@@ -301,7 +304,7 @@ class TestMapserverproxyView(TestCase):
                 srs="EPSG:21781",
                 format="image/png",
                 extraparam="with spéciàl chârs",
-            )
+            ),
         )
         response = MapservProxy(request).proxy()
         assert response.headers["Cache-Control"] == "max-age=10, no-store, public"
@@ -325,7 +328,7 @@ class TestMapserverproxyView(TestCase):
                 height="400",
                 x="0",
                 y="400",
-            )
+            ),
         )
         response = MapservProxy(request).proxy()
 
@@ -382,7 +385,7 @@ class TestMapserverproxyView(TestCase):
                 height="400",
                 srs="EPSG:21781",
                 format="image/png",
-            )
+            ),
         )
         response = MapservProxy(request).proxy()
 
@@ -407,7 +410,7 @@ class TestMapserverproxyView(TestCase):
                 height="400",
                 srs="EPSG:21781",
                 format="image/png",
-            )
+            ),
         )
         response = MapservProxy(request).proxy()
 
@@ -432,7 +435,7 @@ class TestMapserverproxyView(TestCase):
                 height="400",
                 srs="EPSG:21781",
                 format="image/png",
-            )
+            ),
         )
         response = MapservProxy(request).proxy()
 
@@ -457,7 +460,7 @@ class TestMapserverproxyView(TestCase):
                 height="400",
                 srs="EPSG:21781",
                 format="image/png",
-            )
+            ),
         )
         response = MapservProxy(request).proxy()
 
@@ -482,7 +485,7 @@ class TestMapserverproxyView(TestCase):
                 height="400",
                 srs="EPSG:21781",
                 format="image/png",
-            )
+            ),
         )
         response = MapservProxy(request).proxy()
 
@@ -507,7 +510,7 @@ class TestMapserverproxyView(TestCase):
                 height="400",
                 srs="EPSG:21781",
                 format="image/png",
-            )
+            ),
         )
         response = MapservProxy(request).proxy()
 
@@ -531,7 +534,7 @@ class TestMapserverproxyView(TestCase):
                 height="400",
                 srs="EPSG:21781",
                 format="image/png",
-            )
+            ),
         )
         response = MapservProxy(request).proxy()
 
@@ -556,7 +559,7 @@ class TestMapserverproxyView(TestCase):
                 height="400",
                 srs="EPSG:21781",
                 format="image/png",
-            )
+            ),
         )
         response = MapservProxy(request).proxy()
 
@@ -581,7 +584,7 @@ class TestMapserverproxyView(TestCase):
                 height="400",
                 srs="EPSG:21781",
                 format="image/png",
-            )
+            ),
         )
         response = MapservProxy(request).proxy()
 
@@ -710,7 +713,11 @@ class TestMapserverproxyView(TestCase):
         assert "123" in response.body.decode("utf-8")
 
     def _get_feature_is_not_equal_to(
-        self, value, propertyname="name", layername="testpoint_unprotected", username=None
+        self,
+        value,
+        propertyname="name",
+        layername="testpoint_unprotected",
+        username=None,
     ):
         from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
@@ -834,7 +841,9 @@ class TestMapserverproxyView(TestCase):
         request = self._create_dummy_request()
 
         featureid = "{typename!s}.{fid1!s},{typename!s}.{fid2!s}".format(
-            typename="testpoint_unprotected", fid1=self.id_lausanne, fid2=self.id_paris
+            typename="testpoint_unprotected",
+            fid1=self.id_lausanne,
+            fid2=self.id_paris,
         )
         request.params.update(
             dict(
@@ -843,7 +852,7 @@ class TestMapserverproxyView(TestCase):
                 request="getfeature",
                 typename="testpoint_unprotected",
                 featureid=featureid,
-            )
+            ),
         )
         response = MapservProxy(request).proxy()
         assert "Lausanne" in response.body.decode("utf-8")
@@ -858,7 +867,9 @@ class TestMapserverproxyView(TestCase):
         request = self._create_dummy_request()
 
         featureid = "{typename!s}.{fid1!s},{typename!s}.{fid2!s}".format(
-            typename="testpoint_unprotected", fid1=self.id_lausanne, fid2=self.id_paris
+            typename="testpoint_unprotected",
+            fid1=self.id_lausanne,
+            fid2=self.id_paris,
         )
         request.params.update(
             dict(
@@ -867,7 +878,7 @@ class TestMapserverproxyView(TestCase):
                 request="getfeature",
                 typename="testpoint_unprotected",
                 featureid=featureid,
-            )
+            ),
         )
         response = MapservProxy(request).proxy()
 
@@ -933,7 +944,9 @@ class TestMapserverproxyView(TestCase):
         assert "Swiss" in response.body.decode("utf-8")
 
         fill_tech_user_functionality(
-            "anonymous", [("mapserver_substitution", e) for e in ["cols=name", "cols=city"]], DBSession
+            "anonymous",
+            [("mapserver_substitution", e) for e in ["cols=name", "cols=city"]],
+            DBSession,
         )
         response = MapservProxy(request).proxy()
         assert response.status_int, 200
@@ -941,7 +954,9 @@ class TestMapserverproxyView(TestCase):
         assert "Swiss" not in response.body.decode("utf-8")
 
         fill_tech_user_functionality(
-            "anonymous", [("mapserver_substitution", e) for e in ["cols=name", "cols=country"]], DBSession
+            "anonymous",
+            [("mapserver_substitution", e) for e in ["cols=name", "cols=country"]],
+            DBSession,
         )
         response = MapservProxy(request).proxy()
         assert response.status_int, 200
@@ -949,7 +964,9 @@ class TestMapserverproxyView(TestCase):
         assert "Swiss" in response.body.decode("utf-8")
 
         fill_tech_user_functionality(
-            "anonymous", [("mapserver_substitution", e) for e in ["cols=name"]], DBSession
+            "anonymous",
+            [("mapserver_substitution", e) for e in ["cols=name"]],
+            DBSession,
         )
         response = MapservProxy(request).proxy()
         assert response.status_int, 200
@@ -958,7 +975,7 @@ class TestMapserverproxyView(TestCase):
 
         request = self._create_dummy_request()
         request.registry.settings["admin_interface"] = {
-            "available_functionalities": [{"name": "mapserver_substitution"}]
+            "available_functionalities": [{"name": "mapserver_substitution"}],
         }
         request.method = "POST"
         request.body = SUBSTITUTION_GETFEATURE_REQUEST
@@ -982,6 +999,6 @@ class TestMapserverproxyView(TestCase):
 
         request = self._create_getcap_request()
         request.params.update(
-            dict(service="wms", version="1.1.1", request="getcapabilities", authentication_required="true")
+            dict(service="wms", version="1.1.1", request="getcapabilities", authentication_required="true"),
         )
         self.assertRaises(HTTPForbidden, MapservProxy(request).proxy)

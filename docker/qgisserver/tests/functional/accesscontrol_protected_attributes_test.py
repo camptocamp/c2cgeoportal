@@ -37,7 +37,7 @@ def qgis_project():
                 },
                 {"name": "ows_private_layer2", "type": "layer"},
             ],
-        }
+        },
     ]:
         add_node_in_qgis_project(project, project.layerTreeRoot(), node)
 

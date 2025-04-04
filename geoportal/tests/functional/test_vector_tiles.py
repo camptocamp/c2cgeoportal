@@ -43,16 +43,28 @@ def test_data(dbsession_old, transact_old):
 
     points = {
         "p1": PointTest(
-            geom=WKTElement("POINT(599910 199955)", srid=21781), name="foo", city="Lausanne", country="Swiss"
+            geom=WKTElement("POINT(599910 199955)", srid=21781),
+            name="foo",
+            city="Lausanne",
+            country="Swiss",
         ),
         "p2": PointTest(
-            geom=WKTElement("POINT(599910 200045)", srid=21781), name="bar", city="Chambéry", country="France"
+            geom=WKTElement("POINT(599910 200045)", srid=21781),
+            name="bar",
+            city="Chambéry",
+            country="France",
         ),
         "p3": PointTest(
-            geom=WKTElement("POINT(600090 200045)", srid=21781), name="éàè", city="Paris", country="France"
+            geom=WKTElement("POINT(600090 200045)", srid=21781),
+            name="éàè",
+            city="Paris",
+            country="France",
         ),
         "p4": PointTest(
-            geom=WKTElement("POINT(600090 199955)", srid=21781), name="123", city="Londre", country="UK"
+            geom=WKTElement("POINT(600090 199955)", srid=21781),
+            name="123",
+            city="Londre",
+            country="UK",
         ),
     }
     dbsession_old.add_all(points.values())
@@ -72,7 +84,7 @@ def test_data(dbsession_old, transact_old):
                 WHERE ST_Intersects("geom", {envelope})
             ) AS q
             """,
-        )
+        ),
     }
     dbsession_old.add_all(layers.values())
 

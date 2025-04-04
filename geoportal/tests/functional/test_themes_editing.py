@@ -106,12 +106,16 @@ class TestThemeEditing(TestCase):
         theme.interfaces = [main]
 
         DBSession.add(
-            RestrictionArea(name="__test_ra1", description="", layers=[private_layer], roles=[role1])
+            RestrictionArea(name="__test_ra1", description="", layers=[private_layer], roles=[role1]),
         )
         DBSession.add(
             RestrictionArea(
-                name="__test_ra2", description="", layers=[private_layer], roles=[role2], readwrite=True
-            )
+                name="__test_ra2",
+                description="",
+                layers=[private_layer],
+                roles=[role2],
+                readwrite=True,
+            ),
         )
 
         DBSession.add_all([user1, user2, role1, role2, theme, group, private_layer])

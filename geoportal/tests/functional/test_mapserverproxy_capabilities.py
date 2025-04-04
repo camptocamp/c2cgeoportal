@@ -131,14 +131,14 @@ class TestMapserverproxyCapabilities(TestCase):
                     "available_functionalities": [
                         {"name": "mapserver_substitution"},
                         {"name": "print_template"},
-                    ]
+                    ],
                 },
                 "servers": {"srv": "http://example.com"},
             },
             user=username,
         )
         request.params.update(
-            dict(service=service, version="1.1.1", request="getcapabilities", ogcserver=ogcserver)
+            dict(service=service, version="1.1.1", request="getcapabilities", ogcserver=ogcserver),
         )
         return MapservProxy(request).proxy()
 
@@ -152,14 +152,14 @@ class TestMapserverproxyCapabilities(TestCase):
                     "available_functionalities": [
                         {"name": "mapserver_substitution"},
                         {"name": "print_template"},
-                    ]
+                    ],
                 },
                 "servers": {"srv": "http://example.com"},
             },
             user=username,
         )
         request.params.update(
-            dict(service=service, version="1.1.1", request="getcapabilities", ogcserver=ogcserver)
+            dict(service=service, version="1.1.1", request="getcapabilities", ogcserver=ogcserver),
         )
         return MapservProxy(request).proxy()
 

@@ -150,7 +150,7 @@ class TestThemesViewMetadata(TestCase):
     def _get_filtered_errors(themes):
         errors = themes["errors"]
         regex1 = re.compile(
-            r"The (GeoMapFish|WMS) layer name '[a-z0-9_.]*', cannot be two times in the same block \(first level group\)."
+            r"The (GeoMapFish|WMS) layer name '[a-z0-9_.]*', cannot be two times in the same block \(first level group\).",
         )
         regex2 = re.compile(r"Error \'.*\' on reading DescribeFeatureType from URL .*")
         errors = [
@@ -191,7 +191,7 @@ class TestThemesViewMetadata(TestCase):
                 "package": "tests",
                 "servers": {"server": "http://example.com/test"},
                 "admin_interface": {"available_metadata": types},
-            }
+            },
         )
 
         def route_url(url, **kwargs):
@@ -259,10 +259,10 @@ class TestThemesViewMetadata(TestCase):
                                     "url8": "http://example.com/test/index.html",
                                     "url9": "/dummy/static/icon.png",
                                     "url10": "dummy/static/icon.png",
-                                }
-                            }
+                                },
+                            },
                         ],
-                    }
+                    },
                 ],
-            }
+            },
         ]

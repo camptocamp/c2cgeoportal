@@ -130,7 +130,11 @@ class TestAccessControlAllowToEdit:
     def test_allow_to_edit(self, server_iface, DBSession, test_data2) -> None:  # noqa: ignore=N803
         session = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
-            server_iface, "qgisserver", "no_project", 21781, lambda: session
+            server_iface,
+            "qgisserver",
+            "no_project",
+            21781,
+            lambda: session,
         )
 
         for user_name, expected, geometry in [

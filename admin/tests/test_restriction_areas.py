@@ -22,20 +22,20 @@ def restriction_area_test_data(dbsession, transact):
     )
 
     roles = []
-    for i in range(0, 4):
+    for i in range(4):
         roles.append(Role("secretary_" + str(i)))
     dbsession.add_all(roles)
 
     ogc_server = OGCServer(name="test_server")
     layers = []
-    for i in range(0, 4):
+    for i in range(4):
         layer = LayerWMS(name=f"layer_{i}", layer=f"layer_{i}", public=False)
         layer.ogc_server = ogc_server
         layers.append(layer)
     dbsession.add_all(layers)
 
     restrictionareas = []
-    for i in range(0, 4):
+    for i in range(4):
         restrictionarea = RestrictionArea(name=f"restrictionarea_{i}")
         restrictionarea.area = from_shape(box(485869.5728, 76443.1884, 837076.5648, 299941.7864), srid=21781)
         restrictionarea.description = f"description_{i}"
@@ -110,7 +110,8 @@ class TestRestrictionAreaViews(TestTreeGroup):
 
         restriction_area = dbsession.query(RestrictionArea).filter(RestrictionArea.name == "new_name").one()
         assert str(restriction_area.id) == re.match(
-            r"http://localhost/admin/restriction_areas/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/restriction_areas/(.*)\?msg_col=submit_ok",
+            resp.location,
         ).group(1)
 
         assert restriction_area.name == "new_name"
@@ -156,7 +157,7 @@ class TestRestrictionAreaViews(TestTreeGroup):
                 (658348.6696383564, 6080273.63626964),
                 (664577.4194513536, 5753148.2510447875),
                 (1167544.3397631699, 5748064.729594703),
-            ]
+            ],
         )
         assert expected.almost_equals(shape(json.loads(form["area"].value)), decimal=0)
         self._check_roles(form, roles, restriction_area)
@@ -170,12 +171,12 @@ class TestRestrictionAreaViews(TestTreeGroup):
         )
 
         form["description"] = "new_description"
-        form["roles"] = [roles[i].id for i in range(0, 3)]
+        form["roles"] = [roles[i].id for i in range(3)]
         form.submit("submit")
 
         dbsession.expire(restriction_area)
         assert restriction_area.description == "new_description"
-        assert set(restriction_area.roles) == {roles[i] for i in range(0, 3)}
+        assert set(restriction_area.roles) == {roles[i] for i in range(3)}
 
         log = dbsession.query(Log).one()
         assert log.date is not None
@@ -229,5 +230,6 @@ class TestRestrictionAreaViews(TestTreeGroup):
         assert resp.status_int == 302
         restriction_area = dbsession.query(RestrictionArea).filter(RestrictionArea.name == "clone").one()
         assert str(restriction_area.id) == re.match(
-            r"http://localhost/admin/restriction_areas/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/restriction_areas/(.*)\?msg_col=submit_ok",
+            resp.location,
         ).group(1)

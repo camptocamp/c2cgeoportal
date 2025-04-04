@@ -83,19 +83,25 @@ class TestThemesView(TestCase):
         layer_internal_wms.ogc_server = ogc_server_internal
 
         layer_external_wms = LayerWMS(
-            name="__test_layer_external_wms", layer="ch.swisstopo.dreiecksvermaschung", public=True
+            name="__test_layer_external_wms",
+            layer="ch.swisstopo.dreiecksvermaschung",
+            public=True,
         )
         layer_external_wms.interfaces = [main]
         layer_external_wms.ogc_server = ogc_server_external
 
         layer_valid_wms_version = LayerWMS(
-            name="__test_valid_wms_version", layer="testpoint_unprotected", public=True
+            name="__test_valid_wms_version",
+            layer="testpoint_unprotected",
+            public=True,
         )
         layer_valid_wms_version.interfaces = [main]
         layer_valid_wms_version.ogc_server = ogc_server_valid_wms_version
 
         layer_invalid_wms_version = LayerWMS(
-            name="__test_invalid_wms_version", layer="testpoint_unprotected", public=True
+            name="__test_invalid_wms_version",
+            layer="testpoint_unprotected",
+            public=True,
         )
         layer_invalid_wms_version.interfaces = [main]
         layer_invalid_wms_version.ogc_server = ogc_server_invalid_wms_version
@@ -208,7 +214,7 @@ class TestThemesView(TestCase):
         errors = themes["errors"]
 
         regex = re.compile(
-            r"The (GeoMapFish|WMS) layer name '[a-z0-9_]*', cannot be two times in the same block \(first level group\)."
+            r"The (GeoMapFish|WMS) layer name '[a-z0-9_]*', cannot be two times in the same block \(first level group\).",
         )
         errors = [e for e in errors if not regex.match(e)]
 
@@ -220,7 +226,7 @@ class TestThemesView(TestCase):
         theme_view = self._create_theme_obj(params={"interface": "main"})
         themes = theme_view.themes()
         assert self._get_filtered_errors(themes) == {
-            "WARNING! an error 'The WMS version (1.0.0) you requested is not implemented. Please use 1.1.1 or 1.3"
+            "WARNING! an error 'The WMS version (1.0.0) you requested is not implemented. Please use 1.1.1 or 1.3",
         }
         assert [self._only_name(t, ["name", "mixed"]) for t in themes["themes"]] == [
             {
@@ -311,5 +317,5 @@ class TestThemesView(TestCase):
                     },
                 ],
                 "name": "__test_theme",
-            }
+            },
         ]

@@ -70,7 +70,9 @@ def themes_setup(dbsession, transact, default_ogcserver):
     layer_internal_wms.ogc_server = default_ogcserver
 
     layer_external_wms = LayerWMS(
-        name="__test_layer_external_wms", layer="ch.swisstopo.dreiecksvermaschung", public=True
+        name="__test_layer_external_wms",
+        layer="ch.swisstopo.dreiecksvermaschung",
+        public=True,
     )
     layer_external_wms.interfaces = [main]
     layer_external_wms.metadatas = [Metadata("test", "external_wms")]
@@ -125,7 +127,7 @@ def themes_setup(dbsession, transact, default_ogcserver):
             theme_layer,
             functionality1,
             functionality2,
-        ]
+        ],
     )
 
     yield None
@@ -153,8 +155,7 @@ def _create_request_obj(params=None, **kwargs):
         del kwargs  # Unused
         if _query is None:
             return "http://localhost/ci/mapserv"
-        else:
-            return "http://localhost/ci/mapserv?" + "&".join(["=".join(i) for i in list(_query.items())])
+        return "http://localhost/ci/mapserv?" + "&".join(["=".join(i) for i in list(_query.items())])
 
     request.route_url = route_url
     request.params = params
@@ -220,7 +221,7 @@ def test_group(dbsession, transact, themes_setup) -> None:
                     {"name": "__test_layer_internal_wms"},
                     {"name": "__test_layer_external_wms"},
                 ],
-            }
+            },
         ],
     }
 
@@ -248,7 +249,7 @@ def test_min_levels(dbsession, transact, themes_setup) -> None:
     theme_view = _create_theme_obj(params={"interface": "min_levels"})
     themes = theme_view.themes()
     assert _get_filtered_errors(themes) == {
-        "The Layer '__test_layer_internal_wms' cannot be directly in the theme '__test_theme_layer' (0/1)."
+        "The Layer '__test_layer_internal_wms' cannot be directly in the theme '__test_theme_layer' (0/1).",
     }
 
     theme_view = _create_theme_obj(params={"min_levels": "2"})
@@ -269,7 +270,7 @@ def test_theme_layer(dbsession, transact, themes_setup) -> None:
     themes = theme_view.themes()
     assert _get_filtered_errors(themes) == set()
     assert [_only_name(t) for t in themes["themes"]] == [
-        {"name": "__test_theme_layer", "children": [{"name": "__test_layer_internal_wms"}]}
+        {"name": "__test_theme_layer", "children": [{"name": "__test_layer_internal_wms"}]},
     ]
 
 
@@ -285,7 +286,7 @@ def test_interface(dbsession, transact, themes_setup) -> None:
                 {"name": "__test_layer_group_1", "children": [{"name": "__test_layer_wmts"}]},
                 {"name": "__test_layer_group_2", "children": [{"name": "__test_layer_wmts"}]},
             ],
-        }
+        },
     ]
 
 
@@ -317,7 +318,7 @@ def test_metadata(dbsession, transact, themes_setup) -> None:
                     ],
                 },
             ],
-        }
+        },
     ]
 
 
@@ -362,7 +363,7 @@ def test_ogc_server(dbsession, transact, themes_setup) -> None:
                         {"ogcServer": "__test_ogc_server"},
                         {"ogcServer": "__test_ogc_server_chtopo"},
                         {},
-                    ]
+                    ],
                 },
                 {
                     # order is important
@@ -370,10 +371,10 @@ def test_ogc_server(dbsession, transact, themes_setup) -> None:
                         {},
                         {"ogcServer": "__test_ogc_server"},
                         {"ogcServer": "__test_ogc_server_chtopo"},
-                    ]
+                    ],
                 },
-            ]
-        }
+            ],
+        },
     ]
 
 
@@ -384,7 +385,7 @@ def test_dimensions(dbsession, transact, themes_setup) -> None:
     assert _get_filtered_errors(themes) == set()
     assert _only_name(themes["group"], "dimensions") == {
         # order is important
-        "children": [{"dimensions": {"year": "2015"}}, {"dimensions": {}}, {"dimensions": {}}]
+        "children": [{"dimensions": {"year": "2015"}}, {"dimensions": {}}, {"dimensions": {}}],
     }
 
 

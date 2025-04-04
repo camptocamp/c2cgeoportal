@@ -26,7 +26,7 @@ def theme_test_data(dbsession, transact):
     interfaces = [Interface(name) for name in ["desktop", "mobile", "edit", "routing"]]
     dbsession.add_all(interfaces)
 
-    groups = [LayerGroup(name=f"layer_group_{i}") for i in range(0, 5)]
+    groups = [LayerGroup(name=f"layer_group_{i}") for i in range(5)]
     dbsession.add_all(groups)
 
     layer = LayerWMS(name="layer_wms")
@@ -38,11 +38,11 @@ def theme_test_data(dbsession, transact):
     functionalities = [
         Functionality(name=name, value=f"value_{v}")
         for name in ("default_basemap", "default_theme")
-        for v in range(0, 4)
+        for v in range(4)
     ]
     dbsession.add_all(functionalities)
 
-    roles = [Role("secretary_" + str(i)) for i in range(0, 4)]
+    roles = [Role("secretary_" + str(i)) for i in range(4)]
     dbsession.add_all(roles)
 
     metadatas_protos = [
@@ -51,7 +51,7 @@ def theme_test_data(dbsession, transact):
         ("snappingConfig", '{"tolerance": 50}'),
     ]
     themes = []
-    for i in range(0, 25):
+    for i in range(25):
         theme = Theme(name=f"theme_{i}", ordering=1, icon=f"icon_{i}")
         theme.public = i % 2 == 1
         theme.interfaces = [interfaces[i % 4], interfaces[(i + 2) % 4]]
@@ -65,12 +65,18 @@ def theme_test_data(dbsession, transact):
         theme.restricted_roles = [roles[i % 4], roles[(i + 2) % 4]]
 
         dbsession.add(
-            LayergroupTreeitem(group=theme, item=groups[i % 5], ordering=len(groups[i % 5].children_relation))
+            LayergroupTreeitem(
+                group=theme,
+                item=groups[i % 5],
+                ordering=len(groups[i % 5].children_relation),
+            ),
         )
         dbsession.add(
             LayergroupTreeitem(
-                group=theme, item=groups[(i + 3) % 5], ordering=len(groups[(i + 3) % 5].children_relation)
-            )
+                group=theme,
+                item=groups[(i + 3) % 5],
+                ordering=len(groups[(i + 3) % 5].children_relation),
+            ),
         )
 
         dbsession.add(theme)
@@ -219,7 +225,8 @@ class TestTheme(TestTreeGroup):
 
         resp = form.submit("submit")
         assert str(theme.id) == re.match(
-            r"http://localhost/admin/themes/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/themes/(.*)\?msg_col=submit_ok",
+            resp.location,
         ).group(1)
 
         dbsession.expire(theme)
@@ -303,7 +310,8 @@ class TestTheme(TestTreeGroup):
         theme = dbsession.query(Theme).filter(Theme.name == "new_with_children").one()
 
         assert str(theme.id) == re.match(
-            r"http://localhost/admin/themes/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/themes/(.*)\?msg_col=submit_ok",
+            resp.location,
         ).group(1)
 
         assert [groups[1].id, groups[3].id, groups[4].id] == [
@@ -402,7 +410,8 @@ class TestTheme(TestTreeGroup):
         duplicated = dbsession.query(Theme).filter(Theme.name == "duplicated").one()
 
         assert str(duplicated.id) == re.match(
-            rf"http://localhost{self._prefix}/(.*)\?msg_col=submit_ok", resp.location
+            rf"http://localhost{self._prefix}/(.*)\?msg_col=submit_ok",
+            resp.location,
         ).group(1)
         assert duplicated.id != theme.id
         assert duplicated.children_relation[0].id != theme.children_relation[0].id

@@ -12,7 +12,7 @@ def themes_ordering_test_data(dbsession, transact):
     from c2cgeoportal_commons.models.main import Theme
 
     themes = []
-    for i in range(0, 25):
+    for i in range(25):
         theme = Theme(name=f"theme_{i}", ordering=100)
         dbsession.add(theme)
         themes.append(theme)

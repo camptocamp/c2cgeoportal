@@ -50,7 +50,10 @@ class TestFunctionalities(TestCase):
         role3 = Role(name="__test_role3")
         role4 = Role(name="__test_role4")
         user3 = User(
-            username="__test_user3", password="__test_user3", roles=[role3, role4], settings_role=role3
+            username="__test_user3",
+            password="__test_user3",
+            roles=[role3, role4],
+            settings_role=role3,
         )
 
         functionality1 = Functionality("__test_s", "db")
@@ -108,8 +111,8 @@ class TestFunctionalities(TestCase):
                     {"name": "__test_a"},
                     {"name": "__test_b", "single": True},
                     {"name": "__test_s", "single": True},
-                ]
-            }
+                ],
+            },
         }
         request.registry.settings.update(settings)
         request1.registry.settings.update(settings)
@@ -126,10 +129,12 @@ class TestFunctionalities(TestCase):
         assert get_functionality("__test_b", request3, False) == []
 
         fill_tech_user_functionality(
-            "registered", (("__test_s", "registered"), ("__test_a", "r1"), ("__test_a", "r2")), DBSession
+            "registered",
+            (("__test_s", "registered"), ("__test_a", "r1"), ("__test_a", "r2")),
+            DBSession,
         )
         settings = {
-            "admin_interface": {"available_functionalities": [{"name": "__test_a"}, {"name": "__test_s"}]}
+            "admin_interface": {"available_functionalities": [{"name": "__test_a"}, {"name": "__test_s"}]},
         }
         request.registry.settings.update(settings)
         request1.registry.settings.update(settings)
@@ -146,10 +151,12 @@ class TestFunctionalities(TestCase):
 
         fill_tech_user_functionality("registered", [], DBSession)
         fill_tech_user_functionality(
-            "anonymous", (("__test_s", "anonymous"), ("__test_a", "a1"), ("__test_a", "a2")), DBSession
+            "anonymous",
+            (("__test_s", "anonymous"), ("__test_a", "a1"), ("__test_a", "a2")),
+            DBSession,
         )
         settings = {
-            "admin_interface": {"available_functionalities": [{"name": "__test_a"}, {"name": "__test_s"}]}
+            "admin_interface": {"available_functionalities": [{"name": "__test_a"}, {"name": "__test_s"}]},
         }
         request.registry.settings.update(settings)
         request1.registry.settings.update(settings)
@@ -165,13 +172,17 @@ class TestFunctionalities(TestCase):
         assert set(get_functionality("__test_a", request2, False)) == {"db1", "db2"}
 
         fill_tech_user_functionality(
-            "registered", (("__test_s", "registered"), ("__test_a", "r1"), ("__test_a", "r2")), DBSession
+            "registered",
+            (("__test_s", "registered"), ("__test_a", "r1"), ("__test_a", "r2")),
+            DBSession,
         )
         fill_tech_user_functionality(
-            "anonymous", (("__test_s", "anonymous"), ("__test_a", "a1"), ("__test_a", "a2")), DBSession
+            "anonymous",
+            (("__test_s", "anonymous"), ("__test_a", "a1"), ("__test_a", "a2")),
+            DBSession,
         )
         settings = {
-            "admin_interface": {"available_functionalities": [{"name": "__test_a"}, {"name": "__test_s"}]}
+            "admin_interface": {"available_functionalities": [{"name": "__test_a"}, {"name": "__test_s"}]},
         }
         request.registry.settings.update(settings)
         request1.registry.settings.update(settings)
@@ -202,10 +213,14 @@ class TestFunctionalities(TestCase):
         request2.user = DBSession.query(User).filter(User.username == "__test_user2").one()
 
         fill_tech_user_functionality(
-            "registered", (("__test_s", "registered"), ("__test_a", "r1"), ("__test_a", "r2")), DBSession
+            "registered",
+            (("__test_s", "registered"), ("__test_a", "r1"), ("__test_a", "r2")),
+            DBSession,
         )
         fill_tech_user_functionality(
-            "anonymous", (("__test_s", "anonymous"), ("__test_a", "a1"), ("__test_a", "a2")), DBSession
+            "anonymous",
+            (("__test_s", "anonymous"), ("__test_a", "a1"), ("__test_a", "a2")),
+            DBSession,
         )
         settings = {
             "functionalities": {"available_in_templates": ["__test_s", "__test_a"]},

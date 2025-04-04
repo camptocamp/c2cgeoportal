@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2024, Camptocamp SA
+# Copyright (c) 2015-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -53,7 +53,7 @@ def upgrade() -> None:
     op.execute(
         f"UPDATE {schema}.layer as l1 SET exclude_properties = l2.exclude_properties "
         f"FROM {schema}.layerv1 as l2 "
-        "WHERE l1.id = l2.id"
+        "WHERE l1.id = l2.id",
     )
     op.drop_column("layerv1", "exclude_properties", schema=schema)
 
@@ -66,6 +66,6 @@ def downgrade() -> None:
     op.execute(
         f"UPDATE {schema}.layerv1 as l1 SET exclude_properties = l2.exclude_properties "
         f"FROM {schema}.layer as l2 "
-        "WHERE l1.id = l2.id"
+        "WHERE l1.id = l2.id",
     )
     op.drop_column("layer", "exclude_properties", schema=schema)

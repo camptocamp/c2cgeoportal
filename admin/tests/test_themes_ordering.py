@@ -12,7 +12,7 @@ def theme_test_data(dbsession, transact):
     from c2cgeoportal_commons.models.main import Theme
 
     themes = []
-    for i in range(0, 3):
+    for i in range(3):
         theme = Theme(name=f"theme_{i}", ordering=i, icon=f"icon_{i}")
 
         dbsession.add(theme)

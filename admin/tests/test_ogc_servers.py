@@ -16,7 +16,7 @@ def ogc_server_test_data(dbsession, transact):
 
     auth = ["No auth", "Standard auth", "Geoserver auth", "Proxy"]
     servers = []
-    for i in range(0, 8):
+    for i in range(8):
         server = OGCServer(name=f"server_{i}", description=f"description_{i}")
         server.url = f"https://somebasicurl_{i}.com"
         server.image_type = "image/jpeg" if i % 2 == 0 else "image/png"
@@ -75,7 +75,8 @@ class TestOGCServer(AbstractViewsTests):
             )
         ogc_server = dbsession.query(OGCServer).filter(OGCServer.name == "new_name").one()
         assert str(ogc_server.id) == re.match(
-            r"http://localhost/admin/ogc_servers/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/ogc_servers/(.*)\?msg_col=submit_ok",
+            resp.location,
         ).group(1)
         assert ogc_server.name == "new_name"
 
@@ -137,7 +138,8 @@ class TestOGCServer(AbstractViewsTests):
         assert resp.status_int == 302
         server = dbsession.query(OGCServer).filter(OGCServer.name == "clone").one()
         assert str(server.id) == re.match(
-            r"http://localhost/admin/ogc_servers/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/ogc_servers/(.*)\?msg_col=submit_ok",
+            resp.location,
         ).group(1)
 
     def test_unicity_validator(self, ogc_server_test_data, test_app) -> None:
@@ -156,7 +158,7 @@ class TestOGCServer(AbstractViewsTests):
         resp = resp.forms["form-check"].submit("check")
 
         assert list(resp.html.find("div", class_="alert-success").stripped_strings) == [
-            "OGC Server has been successfully synchronized."
+            "OGC Server has been successfully synchronized.",
         ]
 
     def test_dry_run_success(self, ogc_server_test_data, test_app) -> None:
@@ -167,7 +169,7 @@ class TestOGCServer(AbstractViewsTests):
         resp = resp.forms["form-dry-run"].submit("dry-run")
 
         assert list(resp.html.find("div", class_="alert-success").stripped_strings) == [
-            "OGC Server has been successfully synchronized."
+            "OGC Server has been successfully synchronized.",
         ]
 
     def test_synchronize_success(self, ogc_server_test_data, test_app, dbsession) -> None:
@@ -188,7 +190,7 @@ class TestOGCServer(AbstractViewsTests):
         assert log.username == "test_user"
 
         assert list(resp.html.find("div", class_="alert-success").stripped_strings) == [
-            "OGC Server has been successfully synchronized."
+            "OGC Server has been successfully synchronized.",
         ]
 
         form = resp.forms["form-synchronize"]
@@ -199,5 +201,5 @@ class TestOGCServer(AbstractViewsTests):
         resp = form.submit("synchronize")
 
         assert list(resp.html.find("div", class_="alert-success").stripped_strings) == [
-            "OGC Server has been successfully synchronized."
+            "OGC Server has been successfully synchronized.",
         ]

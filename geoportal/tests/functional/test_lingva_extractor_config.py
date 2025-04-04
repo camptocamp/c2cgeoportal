@@ -101,8 +101,8 @@ def test_data(dbsession_db1, transact_old) -> None:
             """
 INSERT INTO geodata.testpoint (name)
 VALUES ('testpoint_name1');
-"""
-        )
+""",
+        ),
     )
 
     theme = main.Theme(name="test_theme")
@@ -110,7 +110,7 @@ VALUES ('testpoint_name1');
         main.Metadata(
             name="metadata1",
             value="metadata1_value",
-        )
+        ),
     ]
     dbsession_db1.add(theme)
     dbsession_db1.flush()

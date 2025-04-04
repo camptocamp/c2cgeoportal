@@ -97,7 +97,10 @@ class TestLayerVectortiles(AbstractViewsTests):
         assert form["public"].checked
 
     def test_edit(
-        self, test_app: WebTestApp, layer_cog_test_data: dict[str, Any], dbsession: Session
+        self,
+        test_app: WebTestApp,
+        layer_cog_test_data: dict[str, Any],
+        dbsession: Session,
     ) -> None:
         from c2cgeoportal_commons.models.main import Log, LogAction
 
@@ -139,7 +142,8 @@ class TestLayerVectortiles(AbstractViewsTests):
 
         resp = form.submit("submit")
         assert str(layer.id) == re.match(
-            rf"http://localhost{self._prefix}/(.*)\?msg_col=submit_ok", resp.location
+            rf"http://localhost{self._prefix}/(.*)\?msg_col=submit_ok",
+            resp.location,
         ).group(1)
 
         dbsession.expire(layer)
@@ -160,7 +164,10 @@ class TestLayerVectortiles(AbstractViewsTests):
         assert log.username == "test_user"
 
     def test_submit_new(
-        self, dbsession: Session, test_app: WebTestApp, layer_cog_test_data: dict[str, Any]
+        self,
+        dbsession: Session,
+        test_app: WebTestApp,
+        layer_cog_test_data: dict[str, Any],
     ) -> None:
         from c2cgeoportal_commons.models.main import LayerCOG, Log, LogAction
 
@@ -177,7 +184,8 @@ class TestLayerVectortiles(AbstractViewsTests):
 
         layer = dbsession.query(LayerCOG).filter(LayerCOG.name == "new_name").one()
         assert str(layer.id) == re.match(
-            r"http://localhost/admin/layers_cog/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/layers_cog/(.*)\?msg_col=submit_ok",
+            resp.location,
         ).group(1)
 
         log = dbsession.query(Log).one()
@@ -189,7 +197,10 @@ class TestLayerVectortiles(AbstractViewsTests):
         assert log.username == "test_user"
 
     def test_duplicate(
-        self, layer_cog_test_data: dict[str, Any], test_app: WebTestApp, dbsession: Session
+        self,
+        layer_cog_test_data: dict[str, Any],
+        test_app: WebTestApp,
+        dbsession: Session,
     ) -> None:
         from c2cgeoportal_commons.models.main import LayerCOG
 
@@ -215,7 +226,8 @@ class TestLayerVectortiles(AbstractViewsTests):
 
         layer = dbsession.query(LayerCOG).filter(LayerCOG.name == "clone").one()
         assert str(layer.id) == re.match(
-            r"http://localhost/admin/layers_cog/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/layers_cog/(.*)\?msg_col=submit_ok",
+            resp.location,
         ).group(1)
 
         assert layer.id == layer.metadatas[0].item_id

@@ -204,7 +204,7 @@ class TestThemesView(TestCase):
     @staticmethod
     def _get_filtered_errors(themes):
         regex = re.compile(
-            r"^The layer '__[a-z0-9_]+' \(__[a-z0-9_]+\) is not defined in WMS capabilities from '__test_ogc_server'$"
+            r"^The layer '__[a-z0-9_]+' \(__[a-z0-9_]+\) is not defined in WMS capabilities from '__test_ogc_server'$",
         )
         return {e for e in themes["errors"] if regex.search(e) is None}
 
@@ -266,11 +266,11 @@ class TestThemesView(TestCase):
                             {
                                 "name": "__test_layer_wms_7",
                                 "dimensionsFilters": {"FLOOR": {"field": "floor", "value": None}},
-                            }
+                            },
                         ],
                         "dimensions": {},
                     },
                 ],
                 "name": "__test_theme",
-            }
+            },
         ]

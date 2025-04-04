@@ -19,11 +19,11 @@ def users_test_data(dbsession, transact):
     from c2cgeoportal_commons.models.static import User
 
     roles = []
-    for i in range(0, 4):
+    for i in range(4):
         roles.append(Role(f"secretary_{i}"))
         dbsession.add(roles[i])
     users = []
-    for i in range(0, 23):
+    for i in range(23):
         user = User(
             f"babar_{i}",
             email=f"mail{i}@valid.net",
@@ -236,7 +236,8 @@ class TestUser(AbstractViewsTests):
         new_user = dbsession.query(User).filter(User.username == "clone").one()
 
         assert str(new_user.id) == re.match(
-            r"http://localhost/admin/users/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/users/(.*)\?msg_col=submit_ok",
+            resp.location,
         ).group(1)
         assert user.id != new_user.id
         assert user.settings_role_id == new_user.settings_role_id
@@ -246,7 +247,7 @@ class TestUser(AbstractViewsTests):
 
         parts = list(email.message_from_string(sender_mock.sendmail.mock_calls[0][1][2]).walk())
         assert EXPECTED_WELCOME_MAIL.format("clone", "clone", "basile") == parts[1].get_payload(
-            decode=True
+            decode=True,
         ).decode("utf8")
         assert parts[0].items()[3][1] == "mail7@valid.net"
 
@@ -282,7 +283,8 @@ class TestUser(AbstractViewsTests):
         user = dbsession.query(User).filter(User.username == "new_user").one()
 
         assert str(user.id) == re.match(
-            r"http://localhost/admin/users/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/users/(.*)\?msg_col=submit_ok",
+            resp.location,
         ).group(1)
 
         assert user.username == "new_user"
@@ -297,7 +299,7 @@ class TestUser(AbstractViewsTests):
 
         parts = list(email.message_from_string(sender_mock.sendmail.mock_calls[0][1][2]).walk())
         assert EXPECTED_WELCOME_MAIL.format("new_user", "new_user", "basile") == parts[1].get_payload(
-            decode=True
+            decode=True,
         ).decode("utf8")
         assert parts[0].items()[3][1] == "valid@email.net"
 

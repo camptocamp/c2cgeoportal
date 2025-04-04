@@ -158,7 +158,8 @@ class TestUrl(TestCase):
             "https://example.com/test/icon.png",
         )
         self.assertEqual(
-            get_url2("test", "config://full_url", request, set()).url(), "https://example.com/test.xml"
+            get_url2("test", "config://full_url", request, set()).url(),
+            "https://example.com/test.xml",
         )
         self.assertEqual(
             get_url2("test", "http://example.com/icon.png", request, set()).url(),
@@ -181,7 +182,8 @@ class TestUrl(TestCase):
             "https://example.com/icon.png",
         )
         self.assertEqual(
-            get_url2("test", "config://srv_no_path", request, errors=errors).url(), "https://example.com"
+            get_url2("test", "config://srv_no_path", request, errors=errors).url(),
+            "https://example.com",
         )
 
     def test_get_url2_dict(self) -> None:

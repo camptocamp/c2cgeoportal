@@ -23,11 +23,11 @@ def edit_url_test_data(dbsession, transact):
         Theme,
     )
 
-    restrictionareas = [RestrictionArea(name=f"restrictionarea_{i}") for i in range(0, 5)]
+    restrictionareas = [RestrictionArea(name=f"restrictionarea_{i}") for i in range(5)]
     functionalities = {}
     for name in ("default_basemap", "default_theme"):
         functionalities[name] = []
-        for v in range(0, 4):
+        for v in range(4):
             functionality = Functionality(name=name, value=f"value_{v}")
             dbsession.add(functionality)
             functionalities[name].append(functionality)
@@ -36,7 +36,7 @@ def edit_url_test_data(dbsession, transact):
     ogc_server = OGCServer(name="ogc_server")
 
     layers_wmts = []
-    for i in range(0, 5):
+    for i in range(5):
         name = f"layer_wmts_{i}"
         layer_wmts = LayerWMTS(name=name)
         layer_wmts.layer = name
@@ -50,7 +50,7 @@ def edit_url_test_data(dbsession, transact):
         layers_wmts.append(layer_wmts)
 
     layers_wms = []
-    for i in range(0, 5):
+    for i in range(5):
         layer_wms = LayerWMS(name=f"layer_wms_{i}")
         layer_wms.layer = f"wms_layer_{i}"
         layer_wms.ogc_server = ogc_server
@@ -59,7 +59,7 @@ def edit_url_test_data(dbsession, transact):
         layers_wms.append(layer_wms)
 
     roles = []
-    for i in range(0, 5):
+    for i in range(5):
         role = Role("secretary_" + str(i))
         role.functionalities = [
             functionalities["default_theme"][0],

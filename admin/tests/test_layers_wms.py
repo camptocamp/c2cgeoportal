@@ -13,7 +13,7 @@ def layer_wms_test_data(dbsession, transact):
 
     from c2cgeoportal_commons.models.main import LayerWMS, OGCServer
 
-    servers = [OGCServer(name=f"server_{i}") for i in range(0, 4)]
+    servers = [OGCServer(name=f"server_{i}") for i in range(4)]
     for i, server in enumerate(servers):
         server.url = f"http://wms.geo.admin.ch_{i}"
         server.image_type = "image/jpeg" if i % 2 == 0 else "image/png"
@@ -86,7 +86,7 @@ class TestLayerWMSViews(AbstractViewsTests):
     def test_grid_sort_on_ogc_server(self, test_app, layer_wms_test_data) -> None:
         json = self.check_search(test_app, sort="ogc_server")
         for i, layer in enumerate(
-            sorted(layer_wms_test_data["layers"], key=lambda layer: (layer.ogc_server.name, layer.id))
+            sorted(layer_wms_test_data["layers"], key=lambda layer: (layer.ogc_server.name, layer.id)),
         ):
             if i == 10:
                 break
@@ -200,7 +200,8 @@ class TestLayerWMSViews(AbstractViewsTests):
 
         resp = form.submit("submit")
         assert str(layer.id) == re.match(
-            rf"http://localhost{self._prefix}/(.*)\?msg_col=submit_ok", resp.location
+            rf"http://localhost{self._prefix}/(.*)\?msg_col=submit_ok",
+            resp.location,
         ).group(1)
 
         dbsession.expire(layer)
@@ -242,7 +243,8 @@ class TestLayerWMSViews(AbstractViewsTests):
 
         layer = dbsession.query(LayerWMS).filter(LayerWMS.name == "new_name").one()
         assert str(layer.id) == re.match(
-            r"http://localhost/admin/layers_wms/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/layers_wms/(.*)\?msg_col=submit_ok",
+            resp.location,
         ).group(1)
 
         log = dbsession.query(Log).one()
@@ -288,7 +290,8 @@ class TestLayerWMSViews(AbstractViewsTests):
 
         layer = dbsession.query(LayerWMS).filter(LayerWMS.name == "clone").one()
         assert str(layer.id) == re.match(
-            r"http://localhost/admin/layers_wms/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/layers_wms/(.*)\?msg_col=submit_ok",
+            resp.location,
         ).group(1)
         assert layer.id == layer.dimensions[0].layer_id
         assert layer.id == layer.metadatas[0].item_id
@@ -378,7 +381,10 @@ class TestLayerWMSViews(AbstractViewsTests):
         self._check_submission_problem(resp, f"{layer.name} is already used.")
 
     def test_unicity_validator_does_not_matter_amongst_cousin(
-        self, layer_wms_test_data, test_app, dbsession
+        self,
+        layer_wms_test_data,
+        test_app,
+        dbsession,
     ) -> None:
         from c2cgeoportal_commons.models.main import LayerGroup, LayerWMS
 

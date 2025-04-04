@@ -52,7 +52,9 @@ def upgrade() -> None:
     engine = op.get_bind().engine
     with engine.connect() as connection:
         if type(engine).__name__ != "MockConnection" and op.get_context().dialect.has_table(
-            connection, "interface", schema=schema
+            connection,
+            "interface",
+            schema=schema,
         ):
             return
 
@@ -126,7 +128,7 @@ def upgrade() -> None:
         '"minResolution" AS min_resolution, "maxResolution" AS max_resolution, disclaimer, '
         '"identifierAttributeField" AS identifier_attribute_field, '
         '"excludeProperties" AS exclude_properties, "timeMode" AS time_mode '
-        f"FROM {schema}.layer)"
+        f"FROM {schema}.layer)",
     )
 
     op.drop_column("layer", "isChecked", schema=schema)
@@ -160,26 +162,26 @@ def upgrade() -> None:
         f"INSERT INTO {schema}.interface_layer (layer_id, interface_id) "
         "(SELECT l.id AS layer_id, i.id AS interface_id "
         f"FROM {schema}.layer AS l, {schema}.interface AS i "
-        "WHERE i.name in ('main', 'edit', 'routing') AND l.\"inDesktopViewer\")"
+        "WHERE i.name in ('main', 'edit', 'routing') AND l.\"inDesktopViewer\")",
     )
     op.execute(
         f"INSERT INTO {schema}.interface_layer (layer_id, interface_id) "
         "(SELECT l.id AS layer_id, i.id AS interface_id "
         f"FROM {schema}.layer AS l, {schema}.interface AS i "
-        "WHERE i.name = 'mobile' AND l.\"inMobileViewer\")"
+        "WHERE i.name = 'mobile' AND l.\"inMobileViewer\")",
     )
 
     op.execute(
         f"INSERT INTO {schema}.interface_theme (theme_id, interface_id) "
         "(SELECT l.id AS theme_id, i.id AS interface_id "
         f"FROM {schema}.theme AS l, {schema}.interface AS i "
-        "WHERE i.name in ('main', 'edit', 'routing') AND l.\"inDesktopViewer\")"
+        "WHERE i.name in ('main', 'edit', 'routing') AND l.\"inDesktopViewer\")",
     )
     op.execute(
         f"INSERT INTO {schema}.interface_theme (theme_id, interface_id) "
         "(SELECT l.id AS theme_id, i.id AS interface_id "
         f"FROM {schema}.theme AS l, {schema}.interface AS i "
-        "WHERE i.name = 'mobile' AND l.\"inMobileViewer\")"
+        "WHERE i.name = 'mobile' AND l.\"inMobileViewer\")",
     )
 
     op.drop_column("layer", "inMobileViewer", schema=schema)
@@ -278,25 +280,25 @@ def downgrade() -> None:
         f"UPDATE ONLY {schema}.theme AS t "
         'SET "inMobileViewer" = TRUE '
         f"FROM {schema}.interface AS i, {schema}.interface_theme AS it "
-        "WHERE i.name = 'mobile' AND i.id = it.interface_id AND it.theme_id = t.id"
+        "WHERE i.name = 'mobile' AND i.id = it.interface_id AND it.theme_id = t.id",
     )
     op.execute(
         f"UPDATE ONLY {schema}.theme AS t "
         'SET "inDesktopViewer" = TRUE '
         f"FROM {schema}.interface AS i, {schema}.interface_theme AS it "
-        "WHERE i.name = 'main' AND i.id = it.interface_id AND it.theme_id = t.id"
+        "WHERE i.name = 'main' AND i.id = it.interface_id AND it.theme_id = t.id",
     )
     op.execute(
         f"UPDATE ONLY {schema}.layer AS l "
         'SET "inMobileViewer" = TRUE '
         f"FROM {schema}.interface AS i, {schema}.interface_layer AS il "
-        "WHERE i.name = 'mobile' AND i.id = il.interface_id AND il.layer_id = l.id"
+        "WHERE i.name = 'mobile' AND i.id = il.interface_id AND il.layer_id = l.id",
     )
     op.execute(
         f"UPDATE ONLY {schema}.layer AS l "
         'SET "inDesktopViewer" = TRUE '
         f"FROM {schema}.interface AS i, {schema}.interface_layer AS il "
-        "WHERE i.name = 'main' AND i.id = il.interface_id AND il.layer_id = l.id"
+        "WHERE i.name = 'main' AND i.id = il.interface_id AND il.layer_id = l.id",
     )
 
     op.add_column("layer", Column("timeMode", Unicode(8)), schema=schema)
@@ -335,7 +337,7 @@ def downgrade() -> None:
         "o.legend, o.legend_image, o.legend_rule, o.is_legend_expanded, o.min_resolution, "
         "o.max_resolution, o.disclaimer, o.identifier_attribute_field, o.exclude_properties, "
         "o.time_mode "
-        f") FROM {schema}.layerv1 AS o WHERE o.id = l.id"
+        f") FROM {schema}.layerv1 AS o WHERE o.id = l.id",
     )
 
     op.drop_table("layerv1", schema=schema)

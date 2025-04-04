@@ -72,7 +72,7 @@ class Test2faView(TestCase):
 
         request = create_dummy_request(authentication=True, **kwargs)
         request.registry.settings.update(
-            {"authentication": {"two_factor": True, "two_factor_issuer_name": "CI"}}
+            {"authentication": {"two_factor": True, "two_factor_issuer_name": "CI"}},
         )
 
         if username is not None:
@@ -107,7 +107,7 @@ class Test2faView(TestCase):
                 "newPassword": "1234",
                 "confirmNewPassword": "1234",
                 "otp": totp.now(),
-            }
+            },
         )
         response = Login(request).change_password()
         assert "Set-Cookie" in dict(response.headers)
@@ -124,7 +124,7 @@ class Test2faView(TestCase):
         }
 
         request = self._create_request_obj(
-            POST={"login": "__test_user", "password": "1234", "otp": totp.now()}
+            POST={"login": "__test_user", "password": "1234", "otp": totp.now()},
         )
         response = Login(request).login()
         assert "Set-Cookie" in dict(response.headers)
@@ -153,7 +153,7 @@ class Test2faView(TestCase):
         _, _, password, error = Login(request)._loginresetpassword()
 
         request = self._create_request_obj(
-            POST={"login": "__test_user", "password": password, "otp": totp.now()}
+            POST={"login": "__test_user", "password": password, "otp": totp.now()},
         )
         response = Login(request).login()
         response_json = json.loads(response.body.decode("utf-8"))
@@ -174,7 +174,7 @@ class Test2faView(TestCase):
                 "newPassword": "1234",
                 "confirmNewPassword": "1234",
                 "otp": totp.now(),
-            }
+            },
         )
         response = Login(request).change_password()
         assert "Set-Cookie" in dict(response.headers)
@@ -191,7 +191,7 @@ class Test2faView(TestCase):
         }
 
         request = self._create_request_obj(
-            POST={"login": "__test_user", "password": "1234", "otp": totp.now()}
+            POST={"login": "__test_user", "password": "1234", "otp": totp.now()},
         )
         response = Login(request).login()
         assert "Set-Cookie" in dict(response.headers)
@@ -240,7 +240,7 @@ class Test2faView(TestCase):
         }
 
         request = self._create_request_obj(
-            POST={"login": "__test_user", "password": "1234", "otp": totp.now()}
+            POST={"login": "__test_user", "password": "1234", "otp": totp.now()},
         )
         response = Login(request).login()
         assert "Set-Cookie" in dict(response.headers)
@@ -301,13 +301,13 @@ class Test2faView(TestCase):
             Login(request).login()
 
         request = self._create_request_obj(
-            POST={"login": "__test_user", "password": "toto", "otp": totp.now()}
+            POST={"login": "__test_user", "password": "toto", "otp": totp.now()},
         )
         with pytest.raises(pyramid.httpexceptions.HTTPUnauthorized):
             Login(request).login()
 
         request = self._create_request_obj(
-            POST={"login": "__test_user", "password": "__test_user", "otp": "toto"}
+            POST={"login": "__test_user", "password": "__test_user", "otp": "toto"},
         )
         with pytest.raises(pyramid.httpexceptions.HTTPUnauthorized):
             Login(request).login()
@@ -332,7 +332,7 @@ class Test2faView(TestCase):
                 "newPassword": "1234",
                 "confirmNewPassword": "1234",
                 "otp": totp.now(),
-            }
+            },
         )
         with pytest.raises(pyramid.httpexceptions.HTTPBadRequest):
             Login(request).change_password()
@@ -343,7 +343,7 @@ class Test2faView(TestCase):
                 "newPassword": "1234",
                 "confirmNewPassword": "1234",
                 "otp": totp.now(),
-            }
+            },
         )
         with pytest.raises(pyramid.httpexceptions.HTTPBadRequest):
             Login(request).change_password()
@@ -354,7 +354,7 @@ class Test2faView(TestCase):
                 "oldPassword": "__test_user",
                 "confirmNewPassword": "1234",
                 "otp": totp.now(),
-            }
+            },
         )
         with pytest.raises(pyramid.httpexceptions.HTTPBadRequest):
             Login(request).change_password()
@@ -365,7 +365,7 @@ class Test2faView(TestCase):
                 "oldPassword": "__test_user",
                 "newPassword": "1234",
                 "otp": totp.now(),
-            }
+            },
         )
         with pytest.raises(pyramid.httpexceptions.HTTPBadRequest):
             Login(request).change_password()
@@ -376,7 +376,7 @@ class Test2faView(TestCase):
                 "oldPassword": "__test_user",
                 "newPassword": "1234",
                 "confirmNewPassword": "1234",
-            }
+            },
         )
         with pytest.raises(pyramid.httpexceptions.HTTPBadRequest):
             Login(request).change_password()
@@ -388,7 +388,7 @@ class Test2faView(TestCase):
                 "newPassword": "1234",
                 "confirmNewPassword": "1234",
                 "otp": totp.now(),
-            }
+            },
         )
         with pytest.raises(pyramid.httpexceptions.HTTPUnauthorized):
             Login(request).change_password()
@@ -400,7 +400,7 @@ class Test2faView(TestCase):
                 "newPassword": "1234",
                 "confirmNewPassword": "1234",
                 "otp": totp.now(),
-            }
+            },
         )
         with pytest.raises(pyramid.httpexceptions.HTTPUnauthorized):
             Login(request).change_password()
@@ -412,7 +412,7 @@ class Test2faView(TestCase):
                 "newPassword": "111",
                 "confirmNewPassword": "222",
                 "otp": totp.now(),
-            }
+            },
         )
         with pytest.raises(pyramid.httpexceptions.HTTPBadRequest):
             Login(request).change_password()
@@ -424,7 +424,7 @@ class Test2faView(TestCase):
                 "newPassword": "1234",
                 "confirmNewPassword": "1234",
                 "otp": "wrong",
-            }
+            },
         )
         with pytest.raises(pyramid.httpexceptions.HTTPUnauthorized):
             Login(request).change_password()
@@ -439,19 +439,22 @@ class Test2faView(TestCase):
         user.is_password_changed = True
 
         request = self._create_request_obj(
-            username="__test_user", POST={"newPassword": "1234", "confirmNewPassword": "1234"}
+            username="__test_user",
+            POST={"newPassword": "1234", "confirmNewPassword": "1234"},
         )
         with pytest.raises(pyramid.httpexceptions.HTTPBadRequest):
             Login(request).change_password()
 
         request = self._create_request_obj(
-            username="__test_user", POST={"oldPassword": "__test_user", "confirmNewPassword": "1234"}
+            username="__test_user",
+            POST={"oldPassword": "__test_user", "confirmNewPassword": "1234"},
         )
         with pytest.raises(pyramid.httpexceptions.HTTPBadRequest):
             Login(request).change_password()
 
         request = self._create_request_obj(
-            username="__test_user", POST={"oldPassword": "__test_user", "newPassword": "1234"}
+            username="__test_user",
+            POST={"oldPassword": "__test_user", "newPassword": "1234"},
         )
         with pytest.raises(pyramid.httpexceptions.HTTPBadRequest):
             Login(request).change_password()

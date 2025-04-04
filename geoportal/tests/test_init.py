@@ -70,7 +70,7 @@ class TestIncludeme(TestCase):
                     "raster_data": False,
                     "total_python_object_memory": False,
                 },
-            }
+            },
         )
         config.init("/opt/c2cgeoportal/geoportal/tests/config.yaml")
 

@@ -42,8 +42,8 @@ def test_metadata_definitions() -> None:
                     "name": "layer_wms_and_wmts",
                     "relevant_for": ["layer_wms", "layer_wmts"],
                 },
-            ]
-        }
+            ],
+        },
     }
 
     assert [m["name"] for m in metadata_definitions(settings, LayerGroup)] == [

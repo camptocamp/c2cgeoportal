@@ -48,7 +48,7 @@ def factory_build_layers(layer_builder, dbsession, add_dimension=True):
         RestrictionArea,
     )
 
-    restrictionareas = [RestrictionArea(name=f"restrictionarea_{i}") for i in range(0, 5)]
+    restrictionareas = [RestrictionArea(name=f"restrictionarea_{i}") for i in range(5)]
 
     interfaces = [Interface(name) for name in ["desktop", "mobile", "edit", "routing"]]
 
@@ -60,10 +60,10 @@ def factory_build_layers(layer_builder, dbsession, add_dimension=True):
         ("snappingConfig", '{"tolerance": 50}'),
     ]
 
-    groups = [LayerGroup(name=f"layer_group_{i}") for i in range(0, 5)]
+    groups = [LayerGroup(name=f"layer_group_{i}") for i in range(5)]
 
     layers = []
-    for i in range(0, 25):
+    for i in range(25):
         layer = layer_builder(i)
 
         if add_dimension:
@@ -85,12 +85,18 @@ def factory_build_layers(layer_builder, dbsession, add_dimension=True):
         layer.restrictionareas = [restrictionareas[i % 5], restrictionareas[(i + 2) % 5]]
 
         dbsession.add(
-            LayergroupTreeitem(group=groups[i % 5], item=layer, ordering=len(groups[i % 5].children_relation))
+            LayergroupTreeitem(
+                group=groups[i % 5],
+                item=layer,
+                ordering=len(groups[i % 5].children_relation),
+            ),
         )
         dbsession.add(
             LayergroupTreeitem(
-                group=groups[(i + 3) % 5], item=layer, ordering=len(groups[(i + 3) % 5].children_relation)
-            )
+                group=groups[(i + 3) % 5],
+                item=layer,
+                ordering=len(groups[(i + 3) % 5].children_relation),
+            ),
         )
 
         dbsession.add(layer)
@@ -122,9 +128,11 @@ class AbstractViewsTests:
         effective_cols = [
             (th.attrs["data-field"], th.getText(), th.attrs["data-sortable"]) for th in resp.html.select("th")
         ]
-        expected_col_headers = [(x[0], x[1], len(x) == 3 and x[2] or "true") for x in expected_col_headers]
+        expected_col_headers = [(x[0], x[1], (len(x) == 3 and x[2]) or "true") for x in expected_col_headers]
         assert expected_col_headers == effective_cols, str.format(
-            "\n\n{}\n\n differs from \n\n{}", pp.pformat(expected_col_headers), pp.pformat(effective_cols)
+            "\n\n{}\n\n differs from \n\n{}",
+            pp.pformat(expected_col_headers),
+            pp.pformat(effective_cols),
         )
         actions = resp.html.select_one('th[data-field="actions"]')
         assert actions.attrs["data-sortable"] == "false"

@@ -127,7 +127,7 @@ class TestFulltextsearchView(TestCase):
                 entry71,
                 entry70,
                 entry7,
-            ]
+            ],
         )
         transaction.commit()
 

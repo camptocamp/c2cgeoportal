@@ -145,13 +145,14 @@ class TestXSDGenerator(TestCase):
         e = tb.close()
 
         assert (
-            '<xsd:element name="readonly" minOccurs="0" nillable="true" type="xsd:string">'
+            tostring(e).decode("utf-8")
+            == '<xsd:element name="readonly" minOccurs="0" nillable="true" type="xsd:string">'
             "<xsd:annotation>"
             "<xsd:appinfo>"
             '<readonly value="true" />'
             "</xsd:appinfo>"
             "</xsd:annotation>"
-            "</xsd:element>" == tostring(e).decode("utf-8")
+            "</xsd:element>"
         )
 
     def test_add_association_proxy_xsd(self) -> None:
@@ -169,7 +170,7 @@ class TestXSDGenerator(TestCase):
         e = tb.close()
 
         assert (
-            '<xsd:element minOccurs="0" nillable="true" name="child1">'
+            tostring(e).decode("utf-8") == '<xsd:element minOccurs="0" nillable="true" name="child1">'
             "<xsd:simpleType>"
             '<xsd:restriction base="xsd:string">'
             '<xsd:enumeration value="foo" />'
@@ -177,7 +178,7 @@ class TestXSDGenerator(TestCase):
             '<xsd:enumeration value="bar" />'
             "</xsd:restriction>"
             "</xsd:simpleType>"
-            "</xsd:element>" == tostring(e).decode("utf-8")
+            "</xsd:element>"
         )
 
         # Test child2 enumeration is ordered by Child.custom_order
@@ -186,7 +187,7 @@ class TestXSDGenerator(TestCase):
         e = tb.close()
 
         assert (
-            '<xsd:element name="child2">'
+            tostring(e).decode("utf-8") == '<xsd:element name="child2">'
             "<xsd:simpleType>"
             '<xsd:restriction base="xsd:string">'
             '<xsd:enumeration value="zad" />'
@@ -194,5 +195,5 @@ class TestXSDGenerator(TestCase):
             '<xsd:enumeration value="bar" />'
             "</xsd:restriction>"
             "</xsd:simpleType>"
-            "</xsd:element>" == tostring(e).decode("utf-8")
+            "</xsd:element>"
         )

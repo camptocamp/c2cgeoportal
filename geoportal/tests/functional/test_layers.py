@@ -37,7 +37,7 @@ from tests.functional import (
     create_dummy_request,
     setup_db,
 )
-from tests.functional import setup_common as setup_module  # noqa
+from tests.functional import setup_common as setup_module
 from tests.functional import teardown_common as teardown_module  # noqa
 
 if TYPE_CHECKING:
@@ -66,7 +66,10 @@ class TestLayers(TestCase):
 
         self.role = Role(name="__test_role")
         self.user = User(
-            username="__test_user", password="__test_user", settings_role=self.role, roles=[self.role]
+            username="__test_user",
+            password="__test_user",
+            settings_role=self.role,
+            roles=[self.role],
         )
         self.main = Interface(name="main")
 
@@ -184,7 +187,9 @@ class TestLayers(TestCase):
             connection.execute(ins)
             if attr_list:
                 ins = table2.insert().values(
-                    child_id=c2_id, name="aaa,bbb,foo", geom=WKTElement("POINT(6 46)", 21781)
+                    child_id=c2_id,
+                    name="aaa,bbb,foo",
+                    geom=WKTElement("POINT(6 46)", 21781),
                 )
                 connection.execute(ins)
 
@@ -376,7 +381,7 @@ class TestLayers(TestCase):
         layer_id = self._create_layer()
         request = self._get_request(layer_id)
         request.method = "POST"
-        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # noqa
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.create)
 
@@ -387,7 +392,7 @@ class TestLayers(TestCase):
         layer_id = self._create_layer()
         request = self._get_request(layer_id, username="__test_user")
         request.method = "POST"
-        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [4, 44]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # noqa
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [4, 44]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.create)
 
@@ -398,7 +403,7 @@ class TestLayers(TestCase):
         layer_id = self._create_layer()
         request = self._get_request(layer_id, username="__test_user")
         request.method = "POST"
-        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # noqa
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'
         layers = Layers(request)
         collection = layers.create()
         assert isinstance(collection, FeatureCollection)
@@ -410,7 +415,7 @@ class TestLayers(TestCase):
         layer_id = self._create_layer()
         request = self._get_request(layer_id, username="__test_user")
         request.method = "POST"
-        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"email": "novalidemail", "name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # noqa
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"email": "novalidemail", "name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'
         layers = Layers(request)
         response = layers.create()
         assert request.response.status_int == 400
@@ -436,7 +441,7 @@ class TestLayers(TestCase):
         layer_id = self._create_layer(metadatas=metadatas)
         request = self._get_request(layer_id, username="__test_user")
         request.method = "POST"
-        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # noqa
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'
         layers = Layers(request)
         collection = layers.create()
         assert request.response.status_int == 201
@@ -455,7 +460,7 @@ class TestLayers(TestCase):
         layer_id = self._create_layer()
         request = self._get_request(layer_id, username="__test_user")
         request.method = "POST"
-        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "LineString", "coordinates": [[5, 45], [5, 45]]}}]}'  # noqa
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "LineString", "coordinates": [[5, 45], [5, 45]]}}]}'
         layers = Layers(request)
         response = layers.create()
         assert request.response.status_int == 400
@@ -473,7 +478,7 @@ class TestLayers(TestCase):
         layer_id = self._create_layer(metadatas=metadatas, geom_type=False)
         request = self._get_request(layer_id, username="__test_user")
         request.method = "POST"
-        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "LineString", "coordinates": [[5, 45], [5, 45]]}}]}'  # noqa
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "LineString", "coordinates": [[5, 45], [5, 45]]}}]}'
         layers = Layers(request)
         collection = layers.create()
         assert request.response.status_int == 201
@@ -488,7 +493,7 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id)
         request.matchdict["feature_id"] = 1
         request.method = "PUT"
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # noqa
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.update)
 
@@ -500,7 +505,7 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id, username="__test_user")
         request.matchdict["feature_id"] = 1
         request.method = "PUT"
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [4, 44]}}'  # noqa
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [4, 44]}}'
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.update)
 
@@ -512,7 +517,7 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id, username="__test_user")
         request.matchdict["feature_id"] = 2
         request.method = "PUT"
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # noqa
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.update)
 
@@ -523,7 +528,7 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id, username="__test_user")
         request.matchdict["feature_id"] = 1
         request.method = "PUT"
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # noqa
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'
         layers = Layers(request)
         feature = layers.update()
         assert feature.id == 1
@@ -544,7 +549,7 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id, username="__test_user")
         request.matchdict["feature_id"] = 1
         request.method = "PUT"
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # noqa
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'
         layers = Layers(request)
         feature = layers.update()
         assert feature.id == 1
@@ -558,7 +563,7 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id, username="__test_user")
         request.matchdict["feature_id"] = 1
         request.method = "PUT"
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "LineString", "coordinates": [[5, 45], [5, 45]]}}'  # noqa
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "LineString", "coordinates": [[5, 45], [5, 45]]}}'
         layers = Layers(request)
         response = layers.update()
         assert request.response.status_int == 400
@@ -574,7 +579,7 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id, username="__test_user")
         request.matchdict["feature_id"] = 1
         request.method = "PUT"
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "LineString", "coordinates": [[5, 45], [6, 45], [5, 45]]}}'  # noqa
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "LineString", "coordinates": [[5, 45], [6, 45], [5, 45]]}}'
         layers = Layers(request)
         response = layers.update()
         assert request.response.status_int == 400
@@ -590,7 +595,7 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id, username="__test_user")
         request.matchdict["feature_id"] = 1
         request.method = "PUT"
-        request.body = '{"type": "Feature", "id": 1, "properties": {"email": "novalidemail"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # noqa
+        request.body = '{"type": "Feature", "id": 1, "properties": {"email": "novalidemail"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'
         layers = Layers(request)
         response = layers.update()
         assert request.response.status_int == 400
@@ -607,7 +612,7 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id, username="__test_user")
         request.matchdict["feature_id"] = 1
         request.method = "PUT"
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "LineString", "coordinates": [[5, 45], [5, 45]]}}'  # noqa
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "LineString", "coordinates": [[5, 45], [5, 45]]}}'
         layers = Layers(request)
         feature = layers.update()
         assert feature.id == 1
@@ -821,7 +826,7 @@ class TestLayers(TestCase):
         layer_id = self._create_layer(none_area=True)
         request = self._get_request(layer_id)
         request.method = "POST"
-        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # noqa
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.create)
 
@@ -832,7 +837,7 @@ class TestLayers(TestCase):
         layer_id = self._create_layer(none_area=True)
         request = self._get_request(layer_id, username="__test_user")
         request.method = "POST"
-        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # noqa
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'
         layers = Layers(request)
         collection = layers.create()
         assert isinstance(collection, FeatureCollection)
@@ -846,7 +851,7 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id)
         request.matchdict["feature_id"] = 1
         request.method = "PUT"
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # noqa
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.update)
 
@@ -857,7 +862,7 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id, username="__test_user")
         request.matchdict["feature_id"] = 1
         request.method = "PUT"
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # noqa
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'
         layers = Layers(request)
         feature = layers.update()
         assert feature.id == 1
@@ -893,8 +898,10 @@ class TestLayers(TestCase):
         tablename = f"table_{layer_id:d}"
         settings = {
             "layers": {
-                "enum": {"layer_test": {"attributes": {"label": {"table": tablename, "column_name": "name"}}}}
-            }
+                "enum": {
+                    "layer_test": {"attributes": {"label": {"table": tablename, "column_name": "name"}}},
+                },
+            },
         }
 
         request = self._get_request(layer_id)
@@ -914,10 +921,12 @@ class TestLayers(TestCase):
             "layers": {
                 "enum": {
                     "layer_test": {
-                        "attributes": {"label": {"table": tablename, "column_name": "name", "separator": ","}}
-                    }
-                }
-            }
+                        "attributes": {
+                            "label": {"table": tablename, "column_name": "name", "separator": ","},
+                        },
+                    },
+                },
+            },
         }
 
         request = self._get_request(layer_id)

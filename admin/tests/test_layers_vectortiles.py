@@ -141,7 +141,8 @@ class TestLayerVectortiles(AbstractViewsTests):
 
         resp = form.submit("submit")
         assert str(layer.id) == re.match(
-            rf"http://localhost{self._prefix}/(.*)\?msg_col=submit_ok", resp.location
+            rf"http://localhost{self._prefix}/(.*)\?msg_col=submit_ok",
+            resp.location,
         ).group(1)
 
         dbsession.expire(layer)
@@ -178,7 +179,8 @@ class TestLayerVectortiles(AbstractViewsTests):
 
         layer = dbsession.query(LayerVectorTiles).filter(LayerVectorTiles.name == "new_name").one()
         assert str(layer.id) == re.match(
-            r"http://localhost/admin/layers_vectortiles/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/layers_vectortiles/(.*)\?msg_col=submit_ok",
+            resp.location,
         ).group(1)
 
         log = dbsession.query(Log).one()
@@ -215,7 +217,8 @@ class TestLayerVectortiles(AbstractViewsTests):
 
         layer = dbsession.query(LayerVectorTiles).filter(LayerVectorTiles.name == "clone").one()
         assert str(layer.id) == re.match(
-            r"http://localhost/admin/layers_vectortiles/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/layers_vectortiles/(.*)\?msg_col=submit_ok",
+            resp.location,
         ).group(1)
 
         assert layer.id == layer.metadatas[0].item_id

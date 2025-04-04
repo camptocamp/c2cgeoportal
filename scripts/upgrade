@@ -37,7 +37,8 @@ import sys
 
 parser = argparse.ArgumentParser(description="Upgrade the project")
 parser.add_argument(
-    "--debug", help="Path to c2cgeoportal source folder to be able to debug the upgrade procedure"
+    "--debug",
+    help="Path to c2cgeoportal source folder to be able to debug the upgrade procedure",
 )
 parser.add_argument("version", help="the version to upgrade to (master or x.y.z)")
 parser.add_argument("step", nargs="?", help="the step to run")
@@ -73,7 +74,7 @@ if len(sys.argv) >= 2 and sys.argv[1] == "--finalize":
             "--config=alembic.ini",
             "upgrade",
             "head",
-        ]
+        ],
     )
 
 else:
@@ -95,7 +96,7 @@ else:
                     "docker",
                     "pull",
                     f"camptocamp/geomapfish:{major_version}",
-                ]
+                ],
             )
             subprocess.check_call(["docker", "pull", f"camptocamp/geomapfish-tools:{args.version}"])
             subprocess.check_call(
@@ -103,13 +104,13 @@ else:
                     "docker",
                     "pull",
                     f"camptocamp/geomapfish-config:{major_version}",
-                ]
+                ],
             )
 
     debug_volumes = (
         [
             "--volume={debug}/geoportal/c2cgeoportal_geoportal/scripts/c2cupgrade.py:".format(
-                debug=args.debug
+                debug=args.debug,
             ),
             "/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/scripts/c2cupgrade.py",
         ]

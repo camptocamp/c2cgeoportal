@@ -39,13 +39,13 @@ _OIDC_KEYS = {
             "kty": "RSA",
             "alg": "RS256",
             "n": base64.urlsafe_b64encode(
-                _PRIVATE_KEY.public_key().public_numbers().n.to_bytes(64, byteorder="big")
+                _PRIVATE_KEY.public_key().public_numbers().n.to_bytes(64, byteorder="big"),
             ).decode(),
             "e": "AQAB",
             # _PRIVATE_KEY.public_key().public_bytes(encoding=serialization.Encoding.DER, format=serialization.PublicFormat.SubjectPublicKeyInfo),
             # PKCS8EncodedKeySpec
-        }
-    ]
+        },
+    ],
 }
 
 
@@ -74,8 +74,8 @@ class TestLogin(TestCase):
                         "enabled": True,
                         "url": "https://sso.example.com",
                         "client_id": "client_id_1",
-                    }
-                }
+                    },
+                },
             },
             params={"came_from": "/came_from"},
         )
@@ -123,8 +123,8 @@ class TestLogin(TestCase):
                         "provide_roles": True,
                         "url": "https://sso.example.com",
                         "client_id": "client_id_123",
-                    }
-                }
+                    },
+                },
             },
             params={"code": "code_123"},
             cookies={

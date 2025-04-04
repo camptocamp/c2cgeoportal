@@ -14,14 +14,14 @@ def interface_test_data(dbsession, transact):
     from c2cgeoportal_commons.models.main import Interface, LayerWMS, OGCServer, Theme
 
     themes = []
-    for i in range(0, 5):
+    for i in range(5):
         theme = Theme(name=f"theme_{i}", ordering=1)
         themes.append(theme)
 
-    servers = [OGCServer(name=f"server_{i}") for i in range(0, 4)]
+    servers = [OGCServer(name=f"server_{i}") for i in range(4)]
 
     layers = []
-    for i in range(0, 15):
+    for i in range(15):
         layer = LayerWMS(name=f"layer_wms_{i}")
         layer.public = i % 2 == 1
         layer.ogc_server = servers[i % 4]
@@ -29,7 +29,7 @@ def interface_test_data(dbsession, transact):
         layers.append(layer)
 
     interfaces = []
-    for i in range(0, 5):
+    for i in range(5):
         interface = Interface(name=f"interface_{i}", description=f"description_{i}")
         interface.themes = [themes[i % 2], themes[(i + 5) % 5]]
         interface.layers = [layers[i % 2], layers[(i + 4) % 5]]
@@ -83,12 +83,15 @@ class TestInterface(AbstractViewsTests):
         from c2cgeoportal_commons.models.main import Interface, Log, LogAction
 
         resp = test_app.post(
-            "/admin/interfaces/new", {"name": "new_name", "description": "new description"}, status=302
+            "/admin/interfaces/new",
+            {"name": "new_name", "description": "new description"},
+            status=302,
         )
 
         interface = dbsession.query(Interface).filter(Interface.name == "new_name").one()
         assert str(interface.id) == re.match(
-            r"http://localhost/admin/interfaces/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/interfaces/(.*)\?msg_col=submit_ok",
+            resp.location,
         ).group(1)
         assert interface.name == "new_name"
 
@@ -105,7 +108,8 @@ class TestInterface(AbstractViewsTests):
 
         interface = interface_test_data["interfaces"][0]
         descriptions = "{}, {}".format(
-            interface_test_data["interfaces"][0].description, interface_test_data["interfaces"][1].description
+            interface_test_data["interfaces"][0].description,
+            interface_test_data["interfaces"][1].description,
         )
         resp = test_app.get(f"/admin/interfaces/{interface.id}", status=200)
         form = resp.form

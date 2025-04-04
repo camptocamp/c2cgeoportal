@@ -24,7 +24,7 @@ def layer_groups_test_data(dbsession, transact):
     ]
 
     groups = []
-    for i in range(0, 12):
+    for i in range(12):
         group = LayerGroup(name=f"groups_{i:02d}")
         group.metadatas = [
             Metadata(name=metadatas_protos[id][0], value=metadatas_protos[id][1])
@@ -41,8 +41,10 @@ def layer_groups_test_data(dbsession, transact):
     def add_relation(parent_idx, child_idx):
         dbsession.add(
             LayergroupTreeitem(
-                group=groups[parent_idx], item=groups[child_idx], ordering=len(group.children_relation)
-            )
+                group=groups[parent_idx],
+                item=groups[child_idx],
+                ordering=len(group.children_relation),
+            ),
         )
 
     def flatten_tree(key, value):
@@ -128,7 +130,8 @@ class TestLayersGroups(TestTreeGroup):
 
         resp = form.submit("submit")
         assert str(group.id) == re.match(
-            r"http://localhost/admin/layer_groups/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/layer_groups/(.*)\?msg_col=submit_ok",
+            resp.location,
         ).group(1)
 
         dbsession.expire(group)
@@ -207,7 +210,8 @@ class TestLayersGroups(TestTreeGroup):
         group = dbsession.query(LayerGroup).filter(LayerGroup.name == "new_with_children").one()
 
         assert str(group.id) == re.match(
-            r"http://localhost/admin/layer_groups/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/layer_groups/(.*)\?msg_col=submit_ok",
+            resp.location,
         ).group(1)
 
         assert [groups[3].id, groups[4].id, groups[5].id] == [
@@ -277,7 +281,8 @@ class TestLayersGroups(TestTreeGroup):
         duplicated = dbsession.query(LayerGroup).filter(LayerGroup.name == "duplicated").one()
 
         assert str(duplicated.id) == re.match(
-            rf"http://localhost{self._prefix}/(.*)\?msg_col=submit_ok", resp.location
+            rf"http://localhost{self._prefix}/(.*)\?msg_col=submit_ok",
+            resp.location,
         ).group(1)
         assert duplicated.id != group.id
         assert duplicated.children_relation[0].id != group.children_relation[0].id

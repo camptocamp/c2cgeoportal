@@ -51,7 +51,7 @@ def settings():
                 "en": "english",
                 "de": "german",
                 "it": "italian",
-            }
+            },
         },
     }
 
@@ -164,7 +164,8 @@ def dummy_translation():
         return Translation(languages[0])
 
     with patch(
-        "c2cgeoportal_geoportal.scripts.theme2fts.gettext.translation", side_effect=translation
+        "c2cgeoportal_geoportal.scripts.theme2fts.gettext.translation",
+        side_effect=translation,
     ) as tr_mock:
         yield tr_mock
 
@@ -210,7 +211,7 @@ class TestImport:
             [
                 ", ".join((fts.label, str(fts.lang), str(fts.interface), str(fts.public), str(fts.role)))
                 for fts in dbsession_old.query(main.FullTextSearch).all()
-            ]
+            ],
         )
 
         for lang in settings["available_locale_names"]:

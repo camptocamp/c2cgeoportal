@@ -158,7 +158,9 @@ class TestSetCorsHeaders(TestCase):
         #    header as value, and add a single Access-Control-Allow-Credentials
         #    header with the case-sensitive string "true" as value.
         assert self._do(
-            "OPTIONS", {"Origin": self.ORIGIN1, "Access-Control-Request-Method": "GET"}, credentials=True
+            "OPTIONS",
+            {"Origin": self.ORIGIN1, "Access-Control-Request-Method": "GET"},
+            credentials=True,
         ) == {
             "Content-Length": "0",
             "Content-Type": "text/html; charset=UTF-8",

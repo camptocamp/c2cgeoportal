@@ -14,7 +14,7 @@ def functionality_test_data(dbsession, transact, settings):
     from c2cgeoportal_commons.models.main import Functionality
 
     functionalities = []
-    for i in range(0, 4):
+    for i in range(4):
         functionality = Functionality(
             settings["admin_interface"]["available_functionalities"][i]["name"],
             value=f"value_{i}",
@@ -60,7 +60,8 @@ class TestFunctionality(AbstractViewsTests):
         )
         functionality = dbsession.query(Functionality).filter(Functionality.name == "new_name").one()
         assert str(functionality.id) == re.match(
-            r"http://localhost/admin/functionalities/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/functionalities/(.*)\?msg_col=submit_ok",
+            resp.location,
         ).group(1)
         assert functionality.name == "new_name"
 
@@ -131,5 +132,6 @@ class TestFunctionality(AbstractViewsTests):
             .one()
         )
         assert str(functionality.id) == re.match(
-            r"http://localhost/admin/functionalities/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/functionalities/(.*)\?msg_col=submit_ok",
+            resp.location,
         ).group(1)

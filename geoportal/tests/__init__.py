@@ -79,7 +79,7 @@ def create_dummy_request(additional_settings=None, *args, **kargs):
         + urllib.parse.urlencode(kwargs.get("_query", {}))
     )
     request.current_route_url = lambda **kwargs: "http://example.com/current/view?" + urllib.parse.urlencode(
-        kwargs.get("_query", {})
+        kwargs.get("_query", {}),
     )
     request.get_organization_role = lambda role_type: role_type
     request.get_organization_interface = lambda interface: interface

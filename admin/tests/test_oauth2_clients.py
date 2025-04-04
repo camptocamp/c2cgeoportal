@@ -77,7 +77,8 @@ class TestOAuth2Client(TestTreeGroup):
 
         oauth2_client = dbsession.query(OAuth2Client).filter(OAuth2Client.client_id == "qgis2").one()
         assert str(oauth2_client.id) == re.match(
-            r"http://localhost/admin/oauth2_clients/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/oauth2_clients/(.*)\?msg_col=submit_ok",
+            resp.location,
         ).group(1)
 
         assert oauth2_client.client_id == "qgis2"
@@ -114,7 +115,8 @@ class TestOAuth2Client(TestTreeGroup):
         resp = form.submit("submit")
 
         assert str(oauth2_client.id) == re.match(
-            r"http://localhost/admin/oauth2_clients/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/oauth2_clients/(.*)\?msg_col=submit_ok",
+            resp.location,
         ).group(1)
 
         dbsession.expire(oauth2_client)
@@ -148,7 +150,8 @@ class TestOAuth2Client(TestTreeGroup):
 
         oauth2_client = dbsession.query(OAuth2Client).filter(OAuth2Client.client_id == "clone").one()
         assert str(oauth2_client.id) == re.match(
-            r"http://localhost/admin/oauth2_clients/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/oauth2_clients/(.*)\?msg_col=submit_ok",
+            resp.location,
         ).group(1)
         assert oauth2_client_proto.id != oauth2_client.id
 

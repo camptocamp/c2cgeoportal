@@ -115,7 +115,8 @@ class TestLoginView(TestCase):
         user.is_password_changed = True
 
         request = self._create_request_obj(
-            params={"came_from": "/came_from"}, POST={"login": "__test_user1", "password": "__test_user1"}
+            params={"came_from": "/came_from"},
+            POST={"login": "__test_user1", "password": "__test_user1"},
         )
         response = Login(request).login()
         assert response.status_int == 302, response.body
@@ -191,7 +192,7 @@ class TestLoginView(TestCase):
                 "oldPassword": password,
                 "newPassword": "1234",
                 "confirmNewPassword": "1234",
-            }
+            },
         )
         response = Login(request).change_password()
 

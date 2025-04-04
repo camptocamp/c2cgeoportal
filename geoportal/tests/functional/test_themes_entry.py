@@ -127,7 +127,9 @@ class TestThemeEntryView(TestCase):
 
         interface_not_in_mapfile = Interface(name="interface_not_in_mapfile")
         public_layer_not_in_mapfile = LayerWMS(
-            name="__test_public_layer_not_in_mapfile", layer="__test_public_layer_not_in_mapfile", public=True
+            name="__test_public_layer_not_in_mapfile",
+            layer="__test_public_layer_not_in_mapfile",
+            public=True,
         )
         public_layer_not_in_mapfile.interfaces = [interface_not_in_mapfile]
         public_layer_not_in_mapfile.ogc_server = ogcserver
@@ -136,7 +138,9 @@ class TestThemeEntryView(TestCase):
         ogcserver_notmapfile = OGCServer(name="__test_ogc_server_notmapfile")
         ogcserver_notmapfile.url = mapserv_url + "?map=not_a_mapfile"
         public_layer_not_mapfile = LayerWMS(
-            name="__test_public_layer_notmapfile", layer="__test_public_layer_notmapfile", public=True
+            name="__test_public_layer_notmapfile",
+            layer="__test_public_layer_notmapfile",
+            public=True,
         )
         public_layer_not_mapfile.interfaces = [interface_notmapfile]
         public_layer_not_mapfile.ogc_server = ogcserver_notmapfile
@@ -147,7 +151,9 @@ class TestThemeEntryView(TestCase):
         ogcserver_geoserver.type = OGCSERVER_TYPE_GEOSERVER
         ogcserver_geoserver.auth = OGCSERVER_AUTH_GEOSERVER
         public_layer_geoserver = LayerWMS(
-            name="__test_public_layer_geoserver", layer="testpoint_unprotected", public=True
+            name="__test_public_layer_geoserver",
+            layer="testpoint_unprotected",
+            public=True,
         )
         public_layer_geoserver.interfaces = [interface_geoserver]
         public_layer_geoserver.ogc_server = ogcserver_geoserver
@@ -292,7 +298,7 @@ class TestThemeEntryView(TestCase):
         themes, errors = await theme_view._themes("interface_no_layers")
         assert themes == []
         assert {e[:90] for e in errors} == {
-            "The layer '__test_public_layer_no_layers' do not have any layers"
+            "The layer '__test_public_layer_no_layers' do not have any layers",
         }
 
     async def test_not_in_mapfile(self) -> None:
@@ -305,7 +311,7 @@ class TestThemeEntryView(TestCase):
         themes, errors = await theme_view._themes("interface_not_in_mapfile")
         assert len(themes) == 0
         assert {e[:90] for e in errors} == {
-            "The layer '__test_public_layer_not_in_mapfile' (__test_public_layer_not_in_mapfile) is not"
+            "The layer '__test_public_layer_not_in_mapfile' (__test_public_layer_not_in_mapfile) is not",
         }
 
     async def test_notmapfile(self) -> None:

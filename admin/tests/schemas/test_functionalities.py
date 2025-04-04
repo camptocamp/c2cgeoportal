@@ -20,8 +20,8 @@ def test_functionality_definitions() -> None:
                     "name": "theme",
                     "relevant_for": ["theme"],
                 },
-            ]
-        }
+            ],
+        },
     }
 
     assert [m["name"] for m in available_functionalities_for(settings, Theme)] == [

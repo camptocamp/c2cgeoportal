@@ -123,7 +123,14 @@ class TestLayerTreeView(AbstractViewsTests):
         assert (expected_factory_domain + "_{}_").format(item.name) == node["translated_name"]
 
     def check_new_action(
-        self, test_app, nodes, parent_id, action_name, label, route_table, required_fields
+        self,
+        test_app,
+        nodes,
+        parent_id,
+        action_name,
+        label,
+        route_table,
+        required_fields,
     ) -> None:
         node = next(n for n in nodes if n["id"] == parent_id)
         action = next(a for a in node["actions"] if a["name"] == action_name)

@@ -38,15 +38,18 @@ prospector: build-checks ## Run the prospector checker
 	@docker run --rm camptocamp/geomapfish-checks:$(DOCKER_TAG) pylint --version --rcfile=/dev/null
 	@docker run --rm camptocamp/geomapfish-checks:$(DOCKER_TAG) pyflakes --version
 	docker run --rm --volume=$(shell pwd):/opt/c2cgeoportal camptocamp/geomapfish-checks:$(DOCKER_TAG) \
-		prospector --without=ruff --output-format=pylint --die-on-tool-error
+		prospector --without=mypy --output-format=pylint --die-on-tool-error
+	docker run --rm --volume=$(shell pwd):/opt/c2cgeoportal camptocamp/geomapfish-checks:$(DOCKER_TAG) \
+		prospector --tool=mypy --output-format=pylint --die-on-tool-error -I 'bin/.*' -I 'ci/.*' -I 'scripts/.*'
 
 .PHONY: poetry-dev
 poetry-dev:
-	poetry install --with=dev
+	poetry install --with=dev --no-root
 
 .PHONY: prospector-poetry
 prospector-poetry: poetry-dev
-	poetry run prospector --without=ruff --output-format=pylint --die-on-tool-error
+	poetry run prospector --without=mypy --output-format=pylint --die-on-tool-error
+	poetry run prospector --tool=mypy --output-format=pylint --die-on-tool-error -I 'bin/.*' -I 'ci/.*' -I 'scripts/.*'
 
 .PHONY: additionallint
 additionallint: ## Check that we should replace some strings in the code

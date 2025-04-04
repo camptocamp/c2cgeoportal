@@ -100,7 +100,7 @@ class TestMobileDesktop(TestCase):
                 mobile_only_theme,
                 desktop_only_theme,
                 mobile_private_theme,
-            ]
+            ],
         )
         transaction.commit()
 

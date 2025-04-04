@@ -202,11 +202,13 @@ class TestThemesView(TestCase):
         caching.MEMORY_CACHE_DICT.clear()
 
         caching.init_region(
-            {"backend": "dogpile.cache.memory", "arguments": {"cache_dict": self.std_cache}}, "std"
+            {"backend": "dogpile.cache.memory", "arguments": {"cache_dict": self.std_cache}},
+            "std",
         )
         caching.init_region({"backend": "dogpile.cache.memory"}, "obj")
         caching.init_region(
-            {"backend": "dogpile.cache.memory", "arguments": {"cache_dict": self.ogc_cache}}, "ogc-server"
+            {"backend": "dogpile.cache.memory", "arguments": {"cache_dict": self.ogc_cache}},
+            "ogc-server",
         )
 
         transaction.commit()
@@ -330,7 +332,12 @@ class TestThemesView(TestCase):
     ],
 )
 def test_ogc_server_cache_clean_wrong_host(
-    default_ogcserver, admin_user, came_from, host, allowed_hosts, expected
+    default_ogcserver,
+    admin_user,
+    came_from,
+    host,
+    allowed_hosts,
+    expected,
 ) -> None:
     from c2cgeoportal_geoportal.views.theme import Theme
 
@@ -354,7 +361,7 @@ def test_ogc_server_cache_clean_wrong_host(
         body=DFT.format(name2="police2"),
     )
     with pytest.raises(
-        pyramid.httpexceptions.HTTPFound if expected else pyramid.httpexceptions.HTTPBadRequest
+        pyramid.httpexceptions.HTTPFound if expected else pyramid.httpexceptions.HTTPBadRequest,
     ):
         theme.ogc_server_clear_cache_view()
 

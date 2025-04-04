@@ -55,10 +55,10 @@ def upgrade() -> None:
     op.execute(f"UPDATE {schema}.ogc_server SET name = 'MapServer' WHERE name = 'source for image/png'")
     op.execute(f"UPDATE {schema}.ogc_server SET name = 'MapServer_JPEG' WHERE name = 'source for image/jpeg'")
     op.execute(
-        f"UPDATE {schema}.ogc_server SET url = 'config://mapserver/mapserv_proxy/MapServer?MAP=MapServer' WHERE url = 'config://mapserver'"
+        f"UPDATE {schema}.ogc_server SET url = 'config://mapserver/mapserv_proxy/MapServer?MAP=MapServer' WHERE url = 'config://mapserver'",
     )
     op.execute(
-        f"UPDATE {schema}.metadata SET value = 'MapServer' WHERE value = 'source for image/png' and name = 'ogcServer'"
+        f"UPDATE {schema}.metadata SET value = 'MapServer' WHERE value = 'source for image/png' and name = 'ogcServer'",
     )
 
 
@@ -70,8 +70,8 @@ def downgrade() -> None:
     op.execute(f"UPDATE {schema}.ogc_server SET name = 'source for image/png' WHERE name = 'MapServer'")
     op.execute(f"UPDATE {schema}.ogc_server SET name = 'source for image/jpeg' WHERE name = 'MapServer_JPEG'")
     op.execute(
-        f"UPDATE {schema}.ogc_server SET url = 'config://mapserver' WHERE url = 'config://mapserver/mapserv_proxy/MapServer?MAP=MapServer'"
+        f"UPDATE {schema}.ogc_server SET url = 'config://mapserver' WHERE url = 'config://mapserver/mapserv_proxy/MapServer?MAP=MapServer'",
     )
     op.execute(
-        f"UPDATE {schema}.metadata SET value = 'source for image/png' WHERE value = 'MapServer' and name = 'ogcServer'"
+        f"UPDATE {schema}.metadata SET value = 'source for image/png' WHERE value = 'MapServer' and name = 'ogcServer'",
     )

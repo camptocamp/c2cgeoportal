@@ -47,7 +47,7 @@ class TestExportCSVView(TestCase):
     def test_build_url_http(self) -> None:
         request = DummyRequest()
         request.registry.settings = {
-            "checker": {"base_internal_url": "http://localhost", "forward_host": True}
+            "checker": {"base_internal_url": "http://localhost", "forward_host": True},
         }
         assert build_url("Test", "/toto?titi#tutu", request) == {
             "url": "http://localhost/toto?titi#tutu",
@@ -57,7 +57,7 @@ class TestExportCSVView(TestCase):
     def test_build_url_https(self) -> None:
         request = DummyRequest()
         request.registry.settings = {
-            "checker": {"base_internal_url": "https://localhost", "forward_host": True}
+            "checker": {"base_internal_url": "https://localhost", "forward_host": True},
         }
         assert build_url("Test", "/toto?titi#tutu", request) == {
             "url": "https://localhost/toto?titi#tutu",
@@ -67,7 +67,7 @@ class TestExportCSVView(TestCase):
     def test_build_url_forward_headers(self) -> None:
         request = DummyRequest()
         request.registry.settings = {
-            "checker": {"base_internal_url": "http://localhost", "forward_headers": ["Cookie"]}
+            "checker": {"base_internal_url": "http://localhost", "forward_headers": ["Cookie"]},
         }
         request.headers["Cookie"] = "test"
         assert build_url("Test", "/toto?titi#tutu", request) == {

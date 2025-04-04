@@ -127,7 +127,9 @@ class TestEntryView(TestCase):
 
         interface_not_in_mapfile = Interface(name="interface_not_in_mapfile")
         public_layer_not_in_mapfile = LayerWMS(
-            name="__test_public_layer_not_in_mapfile", layer="__test_public_layer_not_in_mapfile", public=True
+            name="__test_public_layer_not_in_mapfile",
+            layer="__test_public_layer_not_in_mapfile",
+            public=True,
         )
         public_layer_not_in_mapfile.interfaces = [interface_not_in_mapfile]
         public_layer_not_in_mapfile.ogc_server = ogcserver
@@ -136,7 +138,9 @@ class TestEntryView(TestCase):
         ogcserver_notmapfile = OGCServer(name="__test_ogc_server_notmapfile")
         ogcserver_notmapfile.url = mapserv_url + "?map=not_a_mapfile"
         public_layer_not_mapfile = LayerWMS(
-            name="__test_public_layer_notmapfile", layer="__test_public_layer_notmapfile", public=True
+            name="__test_public_layer_notmapfile",
+            layer="__test_public_layer_notmapfile",
+            public=True,
         )
         public_layer_not_mapfile.interfaces = [interface_notmapfile]
         public_layer_not_mapfile.ogc_server = ogcserver_notmapfile
@@ -147,7 +151,9 @@ class TestEntryView(TestCase):
         ogcserver_geoserver.type = OGCSERVER_TYPE_GEOSERVER
         ogcserver_geoserver.auth = OGCSERVER_AUTH_GEOSERVER
         public_layer_geoserver = LayerWMS(
-            name="__test_public_layer_geoserver", layer="__test_public_layer_geoserver", public=True
+            name="__test_public_layer_geoserver",
+            layer="__test_public_layer_geoserver",
+            public=True,
         )
         public_layer_geoserver.interfaces = [interface_geoserver]
         public_layer_geoserver.ogc_server = ogcserver_geoserver
@@ -264,7 +270,7 @@ class TestEntryView(TestCase):
     @staticmethod
     def _get_filtered_errors(errors):
         regex = re.compile(
-            r"The layer \'[a-z0-9_]*\' \([a-z0-9_]*\) is not defined in WMS capabilities from \'[a-z0-9_]*\'"
+            r"The layer \'[a-z0-9_]*\' \([a-z0-9_]*\) is not defined in WMS capabilities from \'[a-z0-9_]*\'",
         )
         errors = [e for e in errors if not regex.match(e)]
         return set(errors)
@@ -277,7 +283,7 @@ class TestEntryView(TestCase):
             {
                 "layers": {"enum": {"layer_test": {"attributes": {"label": None}}}},
                 "api": {"ogc_server": "__test_ogc_server"},
-            }
+            },
         )
         request.matchdict = {"themes": ["theme"]}
         entry = Entry(request)

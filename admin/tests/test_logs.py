@@ -17,7 +17,7 @@ def logs_test_data(dbsession, transact):
     from c2cgeoportal_commons.models.static import Log as StaticLog
 
     logs = []
-    for i in range(0, 5):
+    for i in range(5):
         log = MainLog(
             date=datetime.datetime.now(timezone.utc),
             action=[LogAction.INSERT, LogAction.UPDATE, LogAction.DELETE][i % 3],

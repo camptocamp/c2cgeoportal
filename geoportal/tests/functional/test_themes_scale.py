@@ -136,8 +136,8 @@ class TestThemesScale(TestCase):
                     "available_metadata": [
                         {"name": "minResolution", "type": "float"},
                         {"name": "maxResolution", "type": "float"},
-                    ]
-                }
+                    ],
+                },
             },
             **kwargs,
         )
@@ -186,7 +186,7 @@ class TestThemesScale(TestCase):
                                         "name": "test_noscale",
                                         "maxResolutionHint": 999999999.0,
                                         "queryable": True,
-                                    }
+                                    },
                                 ],
                                 "maxResolutionHint": 999999999.0,
                                 "minResolutionHint": 0.0,
@@ -199,7 +199,7 @@ class TestThemesScale(TestCase):
                                         "name": "test_minscale",
                                         "maxResolutionHint": 999999999.0,
                                         "queryable": True,
-                                    }
+                                    },
                                 ],
                                 "maxResolutionHint": 999999999.0,
                                 "minResolutionHint": 1.76,
@@ -212,7 +212,7 @@ class TestThemesScale(TestCase):
                                         "name": "test_maxscale",
                                         "maxResolutionHint": 8.82,
                                         "queryable": True,
-                                    }
+                                    },
                                 ],
                                 "maxResolutionHint": 8.82,
                                 "minResolutionHint": 0.0,
@@ -225,7 +225,7 @@ class TestThemesScale(TestCase):
                                         "name": "test_boothscale",
                                         "maxResolutionHint": 8.82,
                                         "queryable": True,
-                                    }
+                                    },
                                 ],
                                 "maxResolutionHint": 8.82,
                                 "minResolutionHint": 1.76,
@@ -238,14 +238,14 @@ class TestThemesScale(TestCase):
                                         "name": "test_boothscale",
                                         "maxResolutionHint": 8.82,
                                         "queryable": True,
-                                    }
+                                    },
                                 ],
                                 "maxResolutionHint": 1000.0,
                                 "minResolutionHint": 100.0,
                                 "name": "__test_layer_metadatascale",
                             },
                         ],
-                    }
+                    },
                 ],
-            }
+            },
         ]

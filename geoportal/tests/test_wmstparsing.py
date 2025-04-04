@@ -176,32 +176,32 @@ class TestParseDuration(TestCase):
     def test_year(self) -> None:
         from c2cgeoportal_geoportal.lib.wmstparsing import _parse_duration
 
-        assert (2, 0, 0, 0) == _parse_duration("P2Y")
+        assert _parse_duration("P2Y") == (2, 0, 0, 0)
 
     def test_month(self) -> None:
         from c2cgeoportal_geoportal.lib.wmstparsing import _parse_duration
 
-        assert (0, 2, 0, 0) == _parse_duration("P2M")
+        assert _parse_duration("P2M") == (0, 2, 0, 0)
 
     def test_day(self) -> None:
         from c2cgeoportal_geoportal.lib.wmstparsing import _parse_duration
 
-        assert (0, 0, 2, 0) == _parse_duration("P2D")
+        assert _parse_duration("P2D") == (0, 0, 2, 0)
 
     def test_hour(self) -> None:
         from c2cgeoportal_geoportal.lib.wmstparsing import _parse_duration
 
-        assert (0, 0, 0, 3600) == _parse_duration("PT1H")
+        assert _parse_duration("PT1H") == (0, 0, 0, 3600)
 
     def test_minute(self) -> None:
         from c2cgeoportal_geoportal.lib.wmstparsing import _parse_duration
 
-        assert (0, 0, 0, 600) == _parse_duration("PT10M")
+        assert _parse_duration("PT10M") == (0, 0, 0, 600)
 
     def test_second(self) -> None:
         from c2cgeoportal_geoportal.lib.wmstparsing import _parse_duration
 
-        assert (0, 0, 0, 10) == _parse_duration("PT10S")
+        assert _parse_duration("PT10S") == (0, 0, 0, 10)
 
     def test_invalid(self) -> None:
         from c2cgeoportal_geoportal.lib.wmstparsing import _parse_duration

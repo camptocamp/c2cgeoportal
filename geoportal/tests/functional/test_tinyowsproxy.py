@@ -56,8 +56,8 @@ def _create_dummy_request(username=None):
                 "ogc_server": "__test_ogc_server",
                 # "online_resource": "http://domain.com/tinyows_proxy",
                 # "proxy_online_resource": "http://domain.com/tinyows"
-            }
-        }
+            },
+        },
     )
     request.user = None if username is None else DBSession.query(User).filter_by(username=username).one()
     return request
@@ -242,10 +242,10 @@ class TestTinyOWSProxyView(TestCase):
             {
                 "tinyows_host": "demo.gmf.org",
                 "tinyows_url": "http://example.com",
-            }
+            },
         )
         request.params.update(
-            dict(service="wfs", version="1.1.0", request="DescribeFeatureType", typename="tows:layer_1")
+            dict(service="wfs", version="1.1.0", request="DescribeFeatureType", typename="tows:layer_1"),
         )
 
         responses.get(
@@ -263,7 +263,7 @@ class TestTinyOWSProxyView(TestCase):
 
         request = _create_dummy_request(username="__test_user1")
         request.params.update(
-            dict(service="wfs", version="1.1.0", request="DescribeFeatureType", typename="tows:layer_3")
+            dict(service="wfs", version="1.1.0", request="DescribeFeatureType", typename="tows:layer_3"),
         )
 
         with pytest.raises(HTTPForbidden):

@@ -64,7 +64,10 @@ class TestFilterCapabilities(TestCase):
         result = StringIO()
         downstream_handler = XMLGenerator(result, "utf-8")
         filter_handler = _CapabilitiesFilter(
-            parser, downstream_handler, tag_name, layers_whitelist=layers_whitelist
+            parser,
+            downstream_handler,
+            tag_name,
+            layers_whitelist=layers_whitelist,
         )
         filter_handler.parse(StringIO(xml))
         return result.getvalue()

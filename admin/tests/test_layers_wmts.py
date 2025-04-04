@@ -148,7 +148,8 @@ class TestLayerWMTS(AbstractViewsTests):
 
         resp = form.submit("submit")
         assert str(layer.id) == re.match(
-            rf"http://localhost{self._prefix}/(.*)\?msg_col=submit_ok", resp.location
+            rf"http://localhost{self._prefix}/(.*)\?msg_col=submit_ok",
+            resp.location,
         ).group(1)
 
         dbsession.expire(layer)
@@ -194,7 +195,8 @@ class TestLayerWMTS(AbstractViewsTests):
 
         layer = dbsession.query(LayerWMTS).filter(LayerWMTS.name == "clone").one()
         assert str(layer.id) == re.match(
-            r"http://localhost/admin/layers_wmts/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/layers_wmts/(.*)\?msg_col=submit_ok",
+            resp.location,
         ).group(1)
 
     def test_delete(self, test_app, dbsession) -> None:

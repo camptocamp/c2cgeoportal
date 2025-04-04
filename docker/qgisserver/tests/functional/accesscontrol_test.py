@@ -29,10 +29,10 @@ def set_request_parameters(server_iface, params, env=None) -> None:
         **{
             "configFilePath.return_value": params.get("MAP", None),
             "requestHandler.return_value": Mock(
-                **{"parameterMap.return_value": params, "parameter.side_effect": lambda key: params[key]}
+                **{"parameterMap.return_value": params, "parameter.side_effect": lambda key: params[key]},
             ),
             "getEnv.side_effect": lambda key: env.get(key, ""),
-        }
+        },
     )
 
 
@@ -131,7 +131,7 @@ def test_data(clean_dbsession):
                     "children": [{"name": "private_layer3", "type": "layer", "shortName": "pl3"}],
                 },
             ],
-        }
+        },
     ]:
         add_node_in_qgis_project(project, project.layerTreeRoot(), node)
 
@@ -161,7 +161,7 @@ def test_data(clean_dbsession):
             private_layer2,
             private_group3,
             private_layer3,
-        )
+        ),
     )
 
     ra1 = RestrictionArea(
@@ -224,14 +224,22 @@ class TestOGCServerAccessControl:
     def test_init(self, server_iface, DBSession, test_data) -> None:  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
-            server_iface, "qgisserver1", "no_project", 21781, lambda: dbsession
+            server_iface,
+            "qgisserver1",
+            "no_project",
+            21781,
+            lambda: dbsession,
         )
         assert ogcserver_accesscontrol.ogcserver.name == "qgisserver1"
 
     def test_ogc_layer_name(self, server_iface, DBSession, test_data) -> None:  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
-            server_iface, "qgisserver1", "no_project", 21781, lambda: dbsession
+            server_iface,
+            "qgisserver1",
+            "no_project",
+            21781,
+            lambda: dbsession,
         )
         for layer_name, expected in (
             ("private_layer1", "private_layer1"),
@@ -244,7 +252,11 @@ class TestOGCServerAccessControl:
     def test_ogc_layer_with_wms_use_layer_ids(self, server_iface, DBSession, test_data) -> None:  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
-            server_iface, "qgisserver1", "no_project", 21781, lambda: dbsession
+            server_iface,
+            "qgisserver1",
+            "no_project",
+            21781,
+            lambda: dbsession,
         )
         layer = test_data["project"].mapLayersByName("private_layer1")[0]
         assert layer.id() == ogcserver_accesscontrol.ogc_layer_name(layer)
@@ -252,7 +264,11 @@ class TestOGCServerAccessControl:
     def test_get_layers(self, server_iface, DBSession, test_data) -> None:  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
-            server_iface, "qgisserver1", "no_project", 21781, lambda: dbsession
+            server_iface,
+            "qgisserver1",
+            "no_project",
+            21781,
+            lambda: dbsession,
         )
 
         expected = {
@@ -273,7 +289,11 @@ class TestOGCServerAccessControl:
     def test_get_roles(self, server_iface, DBSession, test_data) -> None:  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
-            server_iface, "qgisserver1", "no_project", 21781, lambda: dbsession
+            server_iface,
+            "qgisserver1",
+            "no_project",
+            21781,
+            lambda: dbsession,
         )
 
         set_request_parameters(server_iface, {"USER_ID": "0"})
@@ -303,7 +323,11 @@ class TestOGCServerAccessControl:
 
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
-            server_iface, "qgisserver1", "no_project", 21781, lambda: dbsession
+            server_iface,
+            "qgisserver1",
+            "no_project",
+            21781,
+            lambda: dbsession,
         )
 
         assert ogcserver_accesscontrol.get_restriction_areas(
@@ -329,7 +353,11 @@ class TestOGCServerAccessControl:
     def test_get_area(self, server_iface, DBSession, test_data) -> None:  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
-            server_iface, "qgisserver1", "no_project", 21781, lambda: dbsession
+            server_iface,
+            "qgisserver1",
+            "no_project",
+            21781,
+            lambda: dbsession,
         )
 
         for user_name, layer_name, expected in [
@@ -357,7 +385,11 @@ class TestOGCServerAccessControl:
     def test_layer_permissions(server_iface, DBSession, test_data):  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
-            server_iface, "qgisserver1", "no_project", 21781, lambda: dbsession
+            server_iface,
+            "qgisserver1",
+            "no_project",
+            21781,
+            lambda: dbsession,
         )
 
         for user_name, layer_name, expected in (
@@ -391,7 +423,11 @@ class TestOGCServerAccessControl:
     def test_cache_key(server_iface, DBSession, test_data):  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
-            server_iface, "qgisserver1", "no_project", 21781, lambda: dbsession
+            server_iface,
+            "qgisserver1",
+            "no_project",
+            21781,
+            lambda: dbsession,
         )
 
         set_request_parameters(server_iface, {"USER_ID": "0"}, {"HTTP_HOST": "example.com"})
@@ -422,14 +458,22 @@ class TestUnavailableOGCServerAccessControl:
     def test_init(self, server_iface, DBSession) -> None:  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
-            server_iface, "unavailable", "no_project", 21781, lambda: dbsession
+            server_iface,
+            "unavailable",
+            "no_project",
+            21781,
+            lambda: dbsession,
         )
         assert ogcserver_accesscontrol.ogcserver is None
 
     def test_get_layers(self, server_iface, DBSession) -> None:  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
-            server_iface, "unavailable", "no_project", 21781, lambda: dbsession
+            server_iface,
+            "unavailable",
+            "no_project",
+            21781,
+            lambda: dbsession,
         )
 
         assert ogcserver_accesscontrol.get_layers(dbsession) == {}
@@ -437,7 +481,11 @@ class TestUnavailableOGCServerAccessControl:
     def test_layer_permissions(self, server_iface, DBSession, test_data) -> None:  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
-            server_iface, "unavailable", "no_project", 21781, lambda: dbsession
+            server_iface,
+            "unavailable",
+            "no_project",
+            21781,
+            lambda: dbsession,
         )
 
         for user_name, layer_name, expected in (
@@ -463,7 +511,11 @@ class TestUnavailableOGCServerAccessControl:
     def test_layer_filter_subset_string(self, server_iface, DBSession, test_data) -> None:  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
-            server_iface, "unavailable", "no_project", 21781, lambda: dbsession
+            server_iface,
+            "unavailable",
+            "no_project",
+            21781,
+            lambda: dbsession,
         )
 
         for user_name, layer_name, expected in (
@@ -478,7 +530,11 @@ class TestUnavailableOGCServerAccessControl:
     def test_layer_filter_expression(self, server_iface, DBSession, test_data) -> None:  # noqa: ignore=N803
         dbsession = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
-            server_iface, "unavailable", "no_project", 21781, lambda: dbsession
+            server_iface,
+            "unavailable",
+            "no_project",
+            21781,
+            lambda: dbsession,
         )
 
         for user_name, layer_name, expected in (
