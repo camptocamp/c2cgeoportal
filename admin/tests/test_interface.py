@@ -7,7 +7,7 @@ import pytest
 from . import AbstractViewsTests
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def interface_test_data(dbsession, transact):
     del transact
 
@@ -46,7 +46,7 @@ def interface_test_data(dbsession, transact):
 class TestInterface(AbstractViewsTests):
     _prefix = "/admin/interfaces"
 
-    def test_index_rendering(self, test_app):
+    def test_index_rendering(self, test_app) -> None:
         resp = self.get(test_app)
 
         self.check_left_menu(resp, "Interfaces")
@@ -61,7 +61,7 @@ class TestInterface(AbstractViewsTests):
         ]
         self.check_grid_headers(resp, expected)
 
-    def test_grid_complex_column_val(self, test_app, interface_test_data):
+    def test_grid_complex_column_val(self, test_app, interface_test_data) -> None:
         json = self.check_search(test_app)
 
         first_row = json["rows"][0]
@@ -75,11 +75,11 @@ class TestInterface(AbstractViewsTests):
         assert len(first_interface.themes) == 2
         assert first_interface.themes[1].name == "theme_0"
 
-    def test_grid_search(self, test_app):
+    def test_grid_search(self, test_app) -> None:
         # search on interface name
         self.check_search(test_app, "interface_0", total=1)
 
-    def test_submit_new(self, dbsession, test_app):
+    def test_submit_new(self, dbsession, test_app) -> None:
         from c2cgeoportal_commons.models.main import Interface, Log, LogAction
 
         resp = test_app.post(
@@ -100,7 +100,7 @@ class TestInterface(AbstractViewsTests):
         assert log.element_name == interface.name
         assert log.username == "test_user"
 
-    def test_edit(self, test_app, interface_test_data, dbsession):
+    def test_edit(self, test_app, interface_test_data, dbsession) -> None:
         from c2cgeoportal_commons.models.main import Interface, Log, LogAction
 
         interface = interface_test_data["interfaces"][0]
@@ -124,7 +124,7 @@ class TestInterface(AbstractViewsTests):
         assert log.element_name == interface.name
         assert log.username == "test_user"
 
-    def test_delete(self, test_app, interface_test_data, dbsession):
+    def test_delete(self, test_app, interface_test_data, dbsession) -> None:
         from c2cgeoportal_commons.models.main import Interface, Log, LogAction
 
         interface = interface_test_data["interfaces"][0]
@@ -139,7 +139,7 @@ class TestInterface(AbstractViewsTests):
         assert log.element_name == interface.name
         assert log.username == "test_user"
 
-    def test_duplicate(self, interface_test_data, test_app):
+    def test_duplicate(self, interface_test_data, test_app) -> None:
         interface = interface_test_data["interfaces"][3]
         resp = test_app.get(f"/admin/interfaces/{interface.id}/duplicate", status=200)
         form = resp.form

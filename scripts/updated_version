@@ -34,20 +34,21 @@ import subprocess  # nosec
 from packaging.version import Version
 
 
-def output(cmd: list[str]) -> bytes:
+def _output(cmd: list[str]) -> bytes:
     try:
         return subprocess.check_output(cmd)
     except subprocess.CalledProcessError as error:
-        assert error.output is not None
+        assert error.output is not None  # noqa: PT017
         return error.output
 
 
-def _get_postgresql_version(deb_versions: dict[str, str]) -> str:
+def _get_postgresql_version(deb_versions: dict[str, str]) -> str | None:
     if "postgresql-client" in deb_versions:
         return deb_versions["postgresql-client"]
     deb_version = {k: v for k, v in deb_versions.items() if k.startswith("postgresql-client-")}
     if deb_version:
         return max(deb_version.values())
+    return None
 
 
 def _get_versions(
@@ -211,7 +212,7 @@ def _get_npm_versions(version_str: str) -> dict[str, dict[str, str]]:
     version = Version("999!9" if version_str == "latest" else version_str)
     if version >= Version("2.10.0"):
         return json.loads(
-            output(
+            _output(
                 [
                     "docker",
                     "run",
@@ -227,7 +228,7 @@ def _get_npm_versions(version_str: str) -> dict[str, dict[str, str]]:
             ),
         )["dependencies"]
     return json.loads(
-        output(
+        _output(
             [
                 "docker",
                 "run",
@@ -244,7 +245,7 @@ def _get_npm_versions(version_str: str) -> dict[str, dict[str, str]]:
     )["dependencies"]
 
 
-def print_package_update(package_old: dict[str, str], package_new: dict[str, str]) -> None:
+def _print_package_update(package_old: dict[str, str], package_new: dict[str, str]) -> None:
     print("New packages:")
     for name, version in package_new.items():
         if name not in package_old:
@@ -252,29 +253,27 @@ def print_package_update(package_old: dict[str, str], package_new: dict[str, str
 
     print()
     print("Removed packages:")
-    for name, version in package_old.items():
+    for name in package_old:
         if name not in package_new:
             print(f"* {name}")
 
     print()
     print("Major updates:")
     for name, version in package_new.items():
-        if name in package_old:
-            if version.split(".")[0] != package_old[name].split(".")[0]:
-                print(f"* {name} from {package_old[name]} to {version}")
+        if name in package_old and version.split(".")[0] != package_old[name].split(".")[0]:
+            print(f"* {name} from {package_old[name]} to {version}")
 
     print()
     print("Minor updates:")
     for name, version in package_new.items():
-        if name in package_old:
-            if (
-                version.split(".")[0] == package_old[name].split(".")[0]
-                and version.split(".")[1] != package_old[name].split(".")[1]
-            ):
-                print(f"* {name} from {package_old[name]} to {version}")
+        if name in package_old and (
+            version.split(".")[0] == package_old[name].split(".")[0]
+            and version.split(".")[1] != package_old[name].split(".")[1]
+        ):
+            print(f"* {name} from {package_old[name]} to {version}")
 
 
-def main() -> None:
+def _main() -> None:
     parser = argparse.ArgumentParser(description="Get the upgraded version.")
     parser.add_argument("old_version", metavar="OLD", help="The old GeoMapFish version")
     parser.add_argument("new_version", metavar="NEW", help="The new GeoMapFish version")
@@ -294,14 +293,14 @@ def main() -> None:
     print("Python packages updates")
     print("---------------------")
 
-    print_package_update(python_old, python_new)
+    _print_package_update(python_old, python_new)
 
     print()
     print("Npm packages updates")
     print("------------------")
 
-    print_package_update(npm_old, npm_new)
+    _print_package_update(npm_old, npm_new)
 
 
 if __name__ == "__main__":
-    main()
+    _main()

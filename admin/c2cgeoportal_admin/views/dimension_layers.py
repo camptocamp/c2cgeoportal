@@ -45,7 +45,7 @@ _T = TypeVar("_T", bound=DimensionLayer)
 class DimensionLayerViews(LayerViews[_T], Generic[_T]):
     """The layer with dimensions administration view."""
 
-    _extra_list_fields = [
+    _extra_list_fields = [  # noqa: RUF005
         _list_field(
             "dimensions",
             renderer=lambda layer_wms: "; ".join(
@@ -55,7 +55,7 @@ class DimensionLayerViews(LayerViews[_T], Generic[_T]):
                 ],
             ),
         ),
-    ] + LayerViews._extra_list_fields  # pylint: disable=protected-access
+    ] + LayerViews._extra_list_fields  # pylint: disable=protected-access # noqa: SLF001
 
     def _sub_query(
         self,

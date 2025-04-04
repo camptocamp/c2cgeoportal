@@ -102,7 +102,7 @@ _GEOJSON_CONTENT_TYPE = r"Content-Type:application/geo\+json"
 class AssetRendererFactory:
     """Get a renderer for the assets."""
 
-    def __init__(self, info: Any):
+    def __init__(self, info: Any) -> None:
         del info  # unused
         self.resolver = AssetResolver("c2cgeoportal_geoportal")
 
@@ -421,13 +421,13 @@ def create_get_user_from_request(
                         access_token_expires = dateutil.parser.isoparse(
                             user_info_remember["access_token_expires"],
                         )
-                        if access_token_expires < datetime.datetime.now():
+                        if access_token_expires < datetime.datetime.now(tz=datetime.timezone.utc):
                             if user_info_remember["refresh_token_expires"] is None:
                                 return None
                             refresh_token_expires = dateutil.parser.isoparse(
                                 user_info_remember["refresh_token_expires"],
                             )
-                            if refresh_token_expires < datetime.datetime.now():
+                            if refresh_token_expires < datetime.datetime.now(tz=datetime.timezone.utc):
                                 return None
                             token_response = oidc.get_oidc_client(
                                 request,

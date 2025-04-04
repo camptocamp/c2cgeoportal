@@ -69,7 +69,7 @@ class Login:
     Also manage the 2fa.
     """
 
-    def __init__(self, request: pyramid.request.Request):
+    def __init__(self, request: pyramid.request.Request) -> None:
         self.request = request
         self.settings = request.registry.settings
         self.lang = request.locale_name
@@ -668,7 +668,7 @@ class Login:
                 "login",
                 Cache.PRIVATE_NO,
                 response=Response(
-                    # TODO respect the user interface... # pylint: disable=fixme
+                    # TODO: respect the user interface... # pylint: disable=fixme
                     json.dumps(
                         {
                             "username": user.display_name,

@@ -69,7 +69,7 @@ _LOG = logging.getLogger(__name__)
 class OGCServerViews(LoggedViews[OGCServer]):
     """The OGC server administration view."""
 
-    _list_fields = [
+    _list_fields = [  # noqa: RUF012
         _list_field("id"),
         _list_field("name"),
         _list_field("description"),
@@ -85,7 +85,7 @@ class OGCServerViews(LoggedViews[OGCServer]):
     _model = OGCServer
     _base_schema = base_schema
 
-    MSG_COL = {
+    MSG_COL = {  # noqa: RUF012
         **AbstractViews.MSG_COL,
         "cannot_delete": UserMessage(
             _("Impossible to delete this server while it contains WMS layers."),

@@ -90,7 +90,7 @@ def _fill_arguments() -> ArgumentParser:
     return parser
 
 
-class InteruptedException(Exception):
+class UpgradeInterruptedError(Exception):
     """The interrupted exception."""
 
 
@@ -100,8 +100,8 @@ _CURRENT_STEP_NUMBER = 0
 class Step:
     """Decorator used for en upgrade step."""
 
-    def __init__(self, step_number: int, file_marker: bool = True):
-        global _CURRENT_STEP_NUMBER  # pylint: disable=global-statement
+    def __init__(self, step_number: int, file_marker: bool = True) -> None:
+        global _CURRENT_STEP_NUMBER  # pylint: disable=global-statement # noqa: PLW0603
         _CURRENT_STEP_NUMBER = step_number
         self.step_number = step_number
         self.file_marker = file_marker
@@ -129,7 +129,7 @@ class Step:
                     prompt="Fix the error and run the step again:",
                 )
                 sys.exit(1)
-            except InteruptedException as exception:
+            except UpgradeInterruptedError as exception:
                 c2cupgradetool.print_step(
                     self.step_number,
                     error=True,
@@ -161,7 +161,7 @@ class C2cUpgradeTool:
 
     color_bar = colorize("================================================================", Color.GREEN)
 
-    def __init__(self, options: Namespace):
+    def __init__(self, options: Namespace) -> None:
         self.options = options
         self.project = self.get_project()
 
@@ -243,7 +243,7 @@ class C2cUpgradeTool:
                     ),
                 )
 
-            return False, "\n".join(["Checker error:", run_curl])
+            return False, f"Checker error:\n{run_curl}"
 
         return True, None
 
@@ -254,15 +254,17 @@ class C2cUpgradeTool:
     def step0(self, step: int) -> None:
         project_template_keys = list(cast("dict[str, Any]", self.project.get("template_vars")).keys())
         messages = []
-        for required in REQUIRED_TEMPLATE_KEYS:
-            if required not in project_template_keys:
-                messages.append(
-                    "The element '{required}' is missing in the `template_vars` of "
-                    "the file 'project.yaml', you should have for example: {required}: {template}.".format(
-                        required=required,
-                        template=TEMPLATE_EXAMPLE.get("required", ""),
-                    ),
+        messages.extend(
+            [
+                "The element '{required}' is missing in the `template_vars` of "
+                "the file 'project.yaml', you should have for example: {required}: {template}.".format(
+                    required=required,
+                    template=TEMPLATE_EXAMPLE.get(required, ""),
                 )
+                for required in REQUIRED_TEMPLATE_KEYS
+                if required not in project_template_keys
+            ],
+        )
         if self.project.get("managed_files") is None:
             messages.append(
                 "The element `managed_files` is missing in the file 'project.yaml', "
@@ -407,7 +409,7 @@ class C2cUpgradeTool:
         changed_after_style = changed_files()
         to_checkout = [file for file in changed_after_style if file not in changed_before_style]
         if to_checkout:
-            subprocess.run(["git", "checkout"] + to_checkout, check=True)
+            subprocess.run(["git", "checkout", *to_checkout], check=True)
 
         check_call(["git", "add", "--all", "CONST_create_template/"])
         check_call(["git", "clean", "-Xf", "CONST_create_template/"])
@@ -631,10 +633,10 @@ class C2cUpgradeTool:
     def files_to_get(self, step: int, pre: bool = False) -> bool:
         error = False
         for root, _, files in os.walk("CONST_create_template"):
-            root = root[len("CONST_create_template/") :]
+            root = root[len("CONST_create_template/") :]  # noqa: PLW2901
             for file_ in files:
                 destination = os.path.join(root, file_)
-                managed = self.is_managed(destination, True)
+                managed = self.is_managed(destination, files_to_get=True)
                 source = os.path.join("CONST_create_template", destination)
                 if not managed and (not os.path.exists(destination) or not filecmp.cmp(source, destination)):
                     print(colorize(f"Get the file '{destination}' from the create template.", Color.GREEN))
@@ -695,8 +697,7 @@ class C2cUpgradeTool:
             matcher = re.compile(f"CONST_create_template/{pattern}$")
             status = [s for s in status if not matcher.match(s)]
         status = [s for s in status if os.path.exists(s[len("CONST_create_template/") :])]
-        status = [s for s in status if not filecmp.cmp(s, s[len("CONST_create_template/") :])]
-        return status
+        return [s for s in status if not filecmp.cmp(s, s[len("CONST_create_template/") :])]
 
     @Step(9)
     def step9(self, step: int) -> None:
@@ -711,7 +712,7 @@ class C2cUpgradeTool:
         with open("ngeo.diff", "w", encoding="utf8") as diff_file:
             if status:
                 check_call(
-                    ["git", "diff", "--relative=CONST_create_template", "--staged", "--"] + status,
+                    ["git", "diff", "--relative=CONST_create_template", "--staged", "--", *status],
                     stdout=diff_file,
                 )
 
@@ -744,7 +745,7 @@ class C2cUpgradeTool:
             with open("create.diff", "w", encoding="utf8") as diff_file:
                 if status:
                     check_call(
-                        ["git", "diff", "--relative=CONST_create_template", "--staged", "--"] + status,
+                        ["git", "diff", "--relative=CONST_create_template", "--staged", "--", *status],
                         stdout=diff_file,
                     )
 

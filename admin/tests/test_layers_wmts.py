@@ -7,7 +7,7 @@ import pytest
 from . import AbstractViewsTests, factory_build_layers, get_test_default_layers
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def layer_wmts_test_data(dbsession, transact):
     del transact
 
@@ -40,7 +40,7 @@ def layer_wmts_test_data(dbsession, transact):
 class TestLayerWMTS(AbstractViewsTests):
     _prefix = "/admin/layers_wmts"
 
-    def test_index_rendering(self, test_app):
+    def test_index_rendering(self, test_app) -> None:
         resp = self.get(test_app)
 
         self.check_left_menu(resp, "WMTS Layers")
@@ -66,7 +66,7 @@ class TestLayerWMTS(AbstractViewsTests):
         ]
         self.check_grid_headers(resp, expected)
 
-    def test_grid_complex_column_val(self, test_app, layer_wmts_test_data):
+    def test_grid_complex_column_val(self, test_app, layer_wmts_test_data) -> None:
         json = self.check_search(test_app, sort="name")
 
         row = json["rows"][0]
@@ -75,7 +75,7 @@ class TestLayerWMTS(AbstractViewsTests):
         assert layer.id == int(row["_id_"])
         assert layer.name == row["name"]
 
-    def test_new_no_default(self, test_app, layer_wmts_test_data, dbsession):
+    def test_new_no_default(self, test_app, layer_wmts_test_data, dbsession) -> None:
         default_wmts = layer_wmts_test_data["default"]["wmts"]
         default_wmts.name = "so_can_I_not_be found"
         dbsession.flush()
@@ -88,7 +88,7 @@ class TestLayerWMTS(AbstractViewsTests):
         assert self.get_first_field_named(form, "url").value == ""
         assert self.get_first_field_named(form, "matrix_set").value == ""
 
-    def test_new_default(self, test_app, layer_wmts_test_data):
+    def test_new_default(self, test_app, layer_wmts_test_data) -> None:
         default_wmts = layer_wmts_test_data["default"]["wmts"]
 
         form = self.get_item(test_app, "new").form
@@ -99,7 +99,7 @@ class TestLayerWMTS(AbstractViewsTests):
         assert default_wmts.url == self.get_first_field_named(form, "url").value
         assert default_wmts.matrix_set == self.get_first_field_named(form, "matrix_set").value
 
-    def test_edit(self, test_app, layer_wmts_test_data, dbsession):
+    def test_edit(self, test_app, layer_wmts_test_data, dbsession) -> None:
         from c2cgeoportal_commons.models.main import Log, LogAction
 
         layer = layer_wmts_test_data["layers"][0]
@@ -168,7 +168,7 @@ class TestLayerWMTS(AbstractViewsTests):
         assert log.element_name == layer.name
         assert log.username == "test_user"
 
-    def test_duplicate(self, layer_wmts_test_data, test_app, dbsession):
+    def test_duplicate(self, layer_wmts_test_data, test_app, dbsession) -> None:
         from c2cgeoportal_commons.models.main import LayerWMTS
 
         layer = layer_wmts_test_data["layers"][3]
@@ -197,7 +197,7 @@ class TestLayerWMTS(AbstractViewsTests):
             r"http://localhost/admin/layers_wmts/(.*)\?msg_col=submit_ok", resp.location
         ).group(1)
 
-    def test_delete(self, test_app, dbsession):
+    def test_delete(self, test_app, dbsession) -> None:
         from c2cgeoportal_commons.models.main import (
             Layer,
             LayerWMTS,
@@ -222,7 +222,7 @@ class TestLayerWMTS(AbstractViewsTests):
         assert log.element_name == layer.name
         assert log.username == "test_user"
 
-    def test_unicity_validator(self, layer_wmts_test_data, test_app):
+    def test_unicity_validator(self, layer_wmts_test_data, test_app) -> None:
         layer = layer_wmts_test_data["layers"][2]
         resp = test_app.get(f"/admin/layers_wmts/{layer.id}/duplicate", status=200)
 
@@ -230,7 +230,7 @@ class TestLayerWMTS(AbstractViewsTests):
 
         self._check_submission_problem(resp, f"{layer.name} is already used.")
 
-    def test_convert_common_fields_copied(self, layer_wmts_test_data, test_app, dbsession):
+    def test_convert_common_fields_copied(self, layer_wmts_test_data, test_app, dbsession) -> None:
         from c2cgeoportal_commons.models.main import LayerWMS, LayerWMTS
 
         layer = layer_wmts_test_data["layers"][3]
@@ -269,7 +269,7 @@ class TestLayerWMTS(AbstractViewsTests):
             == "Your submission has been taken into account."
         )
 
-    def test_convert_without_wms_defaults(self, test_app, layer_wmts_test_data, dbsession):
+    def test_convert_without_wms_defaults(self, test_app, layer_wmts_test_data, dbsession) -> None:
         from c2cgeoportal_commons.models.main import LayerWMS, Log, LogAction
 
         dbsession.delete(LayerWMS.get_default(dbsession))

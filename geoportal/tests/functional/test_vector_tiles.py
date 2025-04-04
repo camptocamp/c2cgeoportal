@@ -85,7 +85,7 @@ def test_data(dbsession_old, transact_old):
 
 
 class TestVectorTilesViews:
-    def test_vector_tiles_success(self, dummy_request, test_data):
+    def test_vector_tiles_success(self, dummy_request, test_data) -> None:
         from c2cgeoportal_geoportal.views.vector_tiles import VectorTilesViews
 
         request = dummy_request
@@ -102,7 +102,7 @@ class TestVectorTilesViews:
         data = mapbox_vector_tile.decode(resp.body)
         assert data["mvt_routes"]["features"][0]["properties"]["city"] == test_data["points"]["p1"].city
 
-    def test_vector_tiles_layer_not_found(self, dummy_request, test_data):
+    def test_vector_tiles_layer_not_found(self, dummy_request, test_data) -> None:
         from c2cgeoportal_geoportal.views.vector_tiles import VectorTilesViews
 
         request = dummy_request

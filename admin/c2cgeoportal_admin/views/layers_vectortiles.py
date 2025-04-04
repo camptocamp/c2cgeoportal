@@ -69,9 +69,10 @@ class LayerVectorTilesViews(DimensionLayerViews[LayerVectorTiles]):
     """The vector tiles administration view."""
 
     _list_fields = (
-        DimensionLayerViews._list_fields  # typer: ignore[misc] # pylint: disable=protected-access
-        + [_list_field("style"), _list_field("xyz")]
-        + DimensionLayerViews._extra_list_fields  # pylint: disable=protected-access
+        *DimensionLayerViews._list_fields,  # typer: ignore[misc] # pylint: disable=protected-access # noqa: SLF001
+        _list_field("style"),
+        _list_field("xyz"),
+        *DimensionLayerViews._extra_list_fields,  # pylint: disable=protected-access # noqa: SLF001
     )
 
     _id_field = "id"

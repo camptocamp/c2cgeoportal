@@ -50,7 +50,7 @@ _CACHE_REGION = get_region("std")
 class PrintProxy(Proxy):
     """All the view concerned the print."""
 
-    def __init__(self, request: pyramid.request.Request):
+    def __init__(self, request: pyramid.request.Request) -> None:
         Proxy.__init__(self, request)
 
     @view_config(route_name="printproxy_capabilities")  # type: ignore[misc]
@@ -102,9 +102,9 @@ class PrintProxy(Proxy):
                 _LOG.exception("Unable to parse capabilities: %s", response.text)
                 raise HTTPBadGateway(response.text)  # pylint: disable=raise-missing-from
 
-            capabilities["layouts"] = list(
+            capabilities["layouts"] = [
                 layout for layout in capabilities["layouts"] if layout["name"] in templates
-            )
+            ]
 
             pretty = self.request.params.get("pretty", "false") == "true"
             content = json.dumps(

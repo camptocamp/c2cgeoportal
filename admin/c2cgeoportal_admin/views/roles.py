@@ -27,6 +27,7 @@
 
 
 from functools import partial
+from typing import Any
 
 import colander
 import sqlalchemy.orm.query
@@ -58,8 +59,9 @@ base_schema.add_before("extent", restrictionareas_schema_node(Role.restrictionar
 base_schema.add_unique_validator(Role.name, Role.id)
 
 
-def users(node, kw):  # pylint: disable=unused-argument
+def users(node: Any, kw: Any) -> list[dict[str, Any]]:  # pylint: disable=unused-argument
     """Get the user serializable metadata."""
+    del node  # unused
     dbsession = kw["request"].dbsession
     query = dbsession.query(User).order_by(User.username)
     return [
@@ -111,7 +113,7 @@ base_schema["users"].children[0].description = ""
 class RoleViews(LoggedViews[Role]):
     """The roles administration view."""
 
-    _list_fields = [
+    _list_fields = [  # noqa: RUF012
         _list_field("id"),
         _list_field("name"),
         _list_field("description"),

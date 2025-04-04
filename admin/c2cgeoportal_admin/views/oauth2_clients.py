@@ -28,6 +28,7 @@
 
 from functools import partial
 
+import sqlalchemy
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import (
     DeleteResponse,
@@ -52,7 +53,7 @@ base_schema.add_unique_validator(OAuth2Client.client_id, OAuth2Client.id)
 class OAuth2ClientViews(LoggedViews[OAuth2Client]):
     """The oAuth2 client administration view."""
 
-    _list_fields = [
+    _list_fields = [  # noqa: RUF012
         _list_field("id"),
         _list_field("client_id"),
         _list_field("secret"),
@@ -64,7 +65,7 @@ class OAuth2ClientViews(LoggedViews[OAuth2Client]):
     _log_model = Log
     _name_field = "client_id"
 
-    def _base_query(self):
+    def _base_query(self) -> sqlalchemy.orm.query.Query[OAuth2Client]:
         return self._request.dbsession.query(OAuth2Client)
 
     @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")  # type: ignore[misc]

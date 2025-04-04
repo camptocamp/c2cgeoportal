@@ -112,12 +112,12 @@ class AbstractViewsTests:
     def get_item(self, test_app, item_id, **kwargs):
         return self.get(test_app, f"/{item_id}", **kwargs)
 
-    def check_left_menu(self, resp, title):
+    def check_left_menu(self, resp, title) -> None:
         link = resp.html.select_one(".navbar li.active a")
         assert f"http://localhost{self._prefix}" == link.attrs["href"]
         assert title == link.getText()
 
-    def check_grid_headers(self, resp, expected_col_headers, new="New"):
+    def check_grid_headers(self, resp, expected_col_headers, new="New") -> None:
         pp = pprint.PrettyPrinter(indent=4)
         effective_cols = [
             (th.attrs["data-field"], th.getText(), th.attrs["data-sortable"]) for th in resp.html.select("th")
@@ -141,7 +141,7 @@ class AbstractViewsTests:
             assert total == json["total"]
         return json
 
-    def check_checkboxes(self, form, name, expected):
+    def check_checkboxes(self, form, name, expected) -> None:
         for i, exp in enumerate(expected):
             field = form.get(name, index=i)
             checkbox = form.html.select_one(f"#{field.id}")
@@ -183,7 +183,7 @@ class AbstractViewsTests:
     def get_first_field_named(self, form, name):
         return form.fields.get(name)[0]
 
-    def set_first_field_named(self, form, name, value):
+    def set_first_field_named(self, form, name, value) -> None:
         form.fields.get(name)[0].value__set(value)
 
     def _check_sequence(self, sequence, expected):

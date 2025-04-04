@@ -48,16 +48,16 @@ registry.set_css_resources(
 
 
 # temporary workaround for https://github.com/Pylons/deform/pull/369
-widget.DateTimeInputWidget._pstruct_schema = SchemaNode(  # pylint: disable=protected-access
+widget.DateTimeInputWidget._pstruct_schema = SchemaNode(  # pylint: disable=protected-access # noqa: SLF001
     Mapping(),
-    SchemaNode(widget._StrippedString(), name="date"),  # pylint: disable=protected-access
-    SchemaNode(widget._StrippedString(), name="time"),  # pylint: disable=protected-access
-    SchemaNode(widget._StrippedString(), name="date_submit", missing=""),  # pylint: disable=protected-access
-    SchemaNode(widget._StrippedString(), name="time_submit", missing=""),  # pylint: disable=protected-access
+    SchemaNode(widget._StrippedString(), name="date"),  # pylint: disable=protected-access # noqa: SLF001
+    SchemaNode(widget._StrippedString(), name="time"),  # pylint: disable=protected-access # noqa: SLF001
+    SchemaNode(widget._StrippedString(), name="date_submit", missing=""),  # pylint: disable=protected-access # noqa: SLF001
+    SchemaNode(widget._StrippedString(), name="time_submit", missing=""),  # pylint: disable=protected-access # noqa: SLF001
 )
 
 
-class ChildWidget(MappingWidget):  # type: ignore
+class ChildWidget(MappingWidget):  # type: ignore[misc]
     """
     Extension of the widget ````deform.widget.MappingWidget``.
 
@@ -106,7 +106,7 @@ class ChildWidget(MappingWidget):  # type: ignore
         del child
         return None
 
-    def serialize(self, field, cstruct, **kw):
+    def serialize(self, field: Any, cstruct: Any, **kw: Any) -> dict[str, Any]:
         if cstruct[self.input_name] == colander.null:
             kw["child"] = self.model()
         else:
@@ -114,7 +114,7 @@ class ChildWidget(MappingWidget):  # type: ignore
         return super().serialize(field, cstruct, **kw)
 
 
-class ChildrenWidget(SequenceWidget):  # type: ignore
+class ChildrenWidget(SequenceWidget):  # type: ignore[misc]
     """
     Extension of the widget ````deform.widget.SequenceWidget``.
 
@@ -145,14 +145,14 @@ class ChildrenWidget(SequenceWidget):  # type: ignore
     add_subitem = True
     orderable = True
     child_input_name = "treeitem_id"
-    requirements = SequenceWidget.requirements + (("magicsuggest", None),)
+    requirements = (*SequenceWidget.requirements, ("magicsuggest", None))
 
-    def deserialize(self, field, pstruct):
+    def deserialize(self, field: Any, pstruct: Any) -> Any:
         if self.orderable and pstruct != colander.null:
             for i, dict_ in enumerate(pstruct):
                 dict_["ordering"] = str(i)
         return super().deserialize(field, pstruct)
 
-    def serialize(self, field, cstruct, **kw):
+    def serialize(self, field: Any, cstruct: Any, **kw: Any) -> dict[str, Any]:
         kw["candidates"] = field.schema.candidates
         return super().serialize(field, cstruct, **kw)

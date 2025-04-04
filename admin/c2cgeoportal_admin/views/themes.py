@@ -68,35 +68,33 @@ class ThemeViews(TreeItemViews[Theme]):
     """The theme administration view."""
 
     _list_fields = (
-        TreeItemViews._list_fields  # type: ignore[misc] # pylint: disable=protected-access
-        + [
-            _list_field("ordering"),
-            _list_field("public"),
-            _list_field("icon"),
-            _list_field(
-                "functionalities",
-                renderer=lambda themes: ", ".join(
-                    [
-                        f"{f.name}={f.value}"
-                        for f in sorted(themes.functionalities, key=lambda f: cast("str", f.name))
-                    ],
-                ),
-                filter_column=concat(Functionality.name, "=", Functionality.value),
+        *TreeItemViews._list_fields,  # type: ignore[misc] # pylint: disable=protected-access # noqa: SLF001
+        _list_field("ordering"),
+        _list_field("public"),
+        _list_field("icon"),
+        _list_field(
+            "functionalities",
+            renderer=lambda themes: ", ".join(
+                [
+                    f"{f.name}={f.value}"
+                    for f in sorted(themes.functionalities, key=lambda f: cast("str", f.name))
+                ],
             ),
-            _list_field(
-                "restricted_roles",
-                renderer=lambda themes: ", ".join([r.name or "" for r in themes.restricted_roles]),
-                filter_column=Role.name,
+            filter_column=concat(Functionality.name, "=", Functionality.value),
+        ),
+        _list_field(
+            "restricted_roles",
+            renderer=lambda themes: ", ".join([r.name or "" for r in themes.restricted_roles]),
+            filter_column=Role.name,
+        ),
+        _list_field(
+            "interfaces",
+            renderer=lambda themes: ", ".join(
+                [i.name or "" for i in sorted(themes.interfaces, key=lambda i: cast("str", i.name))],
             ),
-            _list_field(
-                "interfaces",
-                renderer=lambda themes: ", ".join(
-                    [i.name or "" for i in sorted(themes.interfaces, key=lambda i: cast("str", i.name))],
-                ),
-                filter_column=Interface.name,
-            ),
-        ]
-        + TreeItemViews._extra_list_fields_no_parents  # pylint: disable=protected-access
+            filter_column=Interface.name,
+        ),
+        *TreeItemViews._extra_list_fields_no_parents,  # pylint: disable=protected-access # noqa: SLF001
     )
 
     _id_field = "id"

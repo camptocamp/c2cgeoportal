@@ -51,7 +51,7 @@ base_schema = GeoFormSchemaNode(Interface)
 class InterfacesViews(LoggedViews[Interface]):
     """The interface administration view."""
 
-    _list_fields = [
+    _list_fields = [  # noqa: RUF012
         _list_field("id"),
         _list_field("name"),
         _list_field("description"),

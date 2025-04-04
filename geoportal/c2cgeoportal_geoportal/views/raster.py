@@ -36,7 +36,7 @@ import urllib.parse
 from json.decoder import JSONDecodeError
 from typing import TYPE_CHECKING, Any
 
-import numpy
+import numpy as np
 import pyramid.request
 import requests
 import zope.event.classhandler
@@ -56,16 +56,16 @@ _LOG = logging.getLogger(__name__)
 class Raster:
     """All the view concerned the raster (point, not the profile profile)."""
 
-    data: dict[str, "fiona.collection.Collection"] = {}
+    data: dict[str, "fiona.collection.Collection"] = {}  # noqa: RUF012
 
-    def __init__(self, request: pyramid.request.Request):
+    def __init__(self, request: pyramid.request.Request) -> None:
         self.request = request
         self.rasters = self.request.registry.settings["raster"]
 
-        @zope.event.classhandler.handler(InvalidateCacheEvent)  # type: ignore
+        @zope.event.classhandler.handler(InvalidateCacheEvent)  # type: ignore[m]
         def handle(event: InvalidateCacheEvent) -> None:
             del event
-            for _, v in Raster.data.items():
+            for v in Raster.data.values():
                 v.close()
             Raster.data = {}
 
@@ -178,11 +178,11 @@ class Raster:
         dataset: DatasetReader,
         lon: float,
         lat: float,
-    ) -> numpy.float32 | None:
+    ) -> np.float32 | None:
         index = dataset.index(lon, lat)
 
         shape = dataset.shape
-        result: numpy.float32 | None
+        result: np.float32 | None
         if 0 <= index[0] < shape[0] and 0 <= index[1] < shape[1]:
 
             def get_index(index_: int) -> tuple[int, int]:
@@ -236,7 +236,7 @@ class Raster:
         return {layer: result}
 
     @staticmethod
-    def _round(value: numpy.float32, round_to: float) -> decimal.Decimal | None:
+    def _round(value: np.float32, round_to: float) -> decimal.Decimal | None:
         if value is not None:
             decimal_value = decimal.Decimal(str(value))
             try:

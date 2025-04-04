@@ -48,13 +48,7 @@ def schema_exists(connection: Connection, schema_name: str) -> bool:
     """Get if the schema exist."""
     del schema_name
 
-    sql = " ".join(
-        [
-            "SELECT count(*) AS count",
-            "FROM information_schema.schemata",
-            "WHERE schema_name = '{schema_name}';",
-        ],
-    )
+    sql = "SELECT count(*) AS count FROM information_schema.schemata WHERE schema_name = '{schema_name}';"
     result = connection.execute(sqlalchemy.text(sql))
     row = result.first()
     return cast("bool", row[0] == 1)  # type: ignore[index]

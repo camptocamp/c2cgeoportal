@@ -73,7 +73,7 @@ except ModuleNotFoundError:
     class GenericClass:
         """Fallback class implementation."""
 
-        def __init__(self, *args: Any, **kwargs: Any):
+        def __init__(self, *args: Any, **kwargs: Any) -> None:
             pass
 
     CheckboxWidget = GenericClass
@@ -111,7 +111,7 @@ if "map_srid" not in _admin_config and view_srid_match is not None:
     _admin_config["map_srid"] = view_srid_match.group(1)
 
 
-class FullTextSearch(GeoInterface, Base):  # type: ignore
+class FullTextSearch(GeoInterface, Base):  # type: ignore[misc]
     """The tsearch table representation."""
 
     __tablename__ = "tsearch"
@@ -148,14 +148,14 @@ class FullTextSearch(GeoInterface, Base):  # type: ignore
         return f"{self.label}[{self.id}]"
 
 
-class Functionality(Base):  # type: ignore
+class Functionality(Base):  # type: ignore[misc]
     """The functionality table representation."""
 
     __tablename__ = "functionality"
-    __table_args__ = {"schema": _schema}
-    __colanderalchemy_config__ = {"title": _("Functionality"), "plural": _("Functionalities")}
+    __table_args__ = {"schema": _schema}  # noqa: RUF012
+    __colanderalchemy_config__ = {"title": _("Functionality"), "plural": _("Functionalities")}  # noqa: RUF012
 
-    __c2cgeoform_config__ = {"duplicate": True}
+    __c2cgeoform_config__ = {"duplicate": True}  # noqa: RUF012
 
     id: Mapped[int] = mapped_column(
         Integer,
@@ -244,13 +244,13 @@ theme_functionality = Table(
 )
 
 
-class Role(Base):  # type: ignore
+class Role(Base):  # type: ignore[misc]
     """The role table representation."""
 
     __tablename__ = "role"
-    __table_args__ = {"schema": _schema}
-    __colanderalchemy_config__ = {"title": _("Role"), "plural": _("Roles")}
-    __c2cgeoform_config__ = {"duplicate": True}
+    __table_args__ = {"schema": _schema}  # noqa: RUF012
+    __colanderalchemy_config__ = {"title": _("Role"), "plural": _("Roles")}  # noqa: RUF012
+    __c2cgeoform_config__ = {"duplicate": True}  # noqa: RUF012
 
     id: Mapped[int] = mapped_column(
         Integer,
@@ -332,7 +332,7 @@ event.listen(Role.functionalities, "append", cache_invalidate_cb)
 event.listen(Role.functionalities, "remove", cache_invalidate_cb)
 
 
-class TreeItem(Base):  # type: ignore
+class TreeItem(Base):  # type: ignore[misc]
     """The treeitem table representation."""
 
     __tablename__ = "treeitem"
@@ -346,7 +346,7 @@ class TreeItem(Base):  # type: ignore
         nullable=False,
         info={"colanderalchemy": {"exclude": True}},
     )
-    __mapper_args__ = {"polymorphic_on": item_type}
+    __mapper_args__ = {"polymorphic_on": item_type}  # noqa: RUF012
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(
@@ -401,11 +401,11 @@ event.listen(TreeItem, "after_delete", cache_invalidate_cb, propagate=True)
 
 
 # association table TreeGroup <> TreeItem
-class LayergroupTreeitem(Base):  # type: ignore
+class LayergroupTreeitem(Base):  # type: ignore[misc]
     """The layergroup_treeitem table representation."""
 
     __tablename__ = "layergroup_treeitem"
-    __table_args__ = {"schema": _schema}
+    __table_args__ = {"schema": _schema}  # noqa: RUF012
 
     # required by formalchemy
     id: Mapped[int] = mapped_column(
@@ -475,8 +475,8 @@ class TreeGroup(TreeItem):
     """The treegroup table representation."""
 
     __tablename__ = "treegroup"
-    __table_args__ = {"schema": _schema}
-    __mapper_args__ = {"polymorphic_identity": "treegroup"}  # type: ignore[dict-item] # needed for _identity_class
+    __table_args__ = {"schema": _schema}  # noqa: RUF012
+    __mapper_args__ = {"polymorphic_identity": "treegroup"}  # type: ignore[dict-item] # needed for _identity_class  # noqa: RUF012
 
     id: Mapped[int] = mapped_column(
         Integer,
@@ -529,8 +529,8 @@ class LayerGroup(TreeGroup):
     """The layergroup table representation."""
 
     __tablename__ = "layergroup"
-    __table_args__ = {"schema": _schema}
-    __colanderalchemy_config__ = {
+    __table_args__ = {"schema": _schema}  # noqa: RUF012
+    __colanderalchemy_config__ = {  # noqa: RUF012
         "title": _("Layers group"),
         "plural": _("Layers groups"),
         "description": c2cgeoportal_commons.lib.literal.Literal(
@@ -546,8 +546,8 @@ class LayerGroup(TreeGroup):
             ),
         ),
     }
-    __mapper_args__ = {"polymorphic_identity": "group"}  # type: ignore[dict-item]
-    __c2cgeoform_config__ = {"duplicate": True}
+    __mapper_args__ = {"polymorphic_identity": "group"}  # type: ignore[dict-item]  # noqa: RUF012
+    __c2cgeoform_config__ = {"duplicate": True}  # noqa: RUF012
 
     id: Mapped[int] = mapped_column(
         Integer,
@@ -574,10 +574,10 @@ class Theme(TreeGroup):
     """The theme table representation."""
 
     __tablename__ = "theme"
-    __table_args__ = {"schema": _schema}
-    __colanderalchemy_config__ = {"title": _("Theme"), "plural": _("Themes")}
-    __mapper_args__ = {"polymorphic_identity": "theme"}  # type: ignore[dict-item]
-    __c2cgeoform_config__ = {"duplicate": True}
+    __table_args__ = {"schema": _schema}  # noqa: RUF012
+    __colanderalchemy_config__ = {"title": _("Theme"), "plural": _("Themes")}  # noqa: RUF012
+    __mapper_args__ = {"polymorphic_identity": "theme"}  # type: ignore[dict-item]  # noqa: RUF012
+    __c2cgeoform_config__ = {"duplicate": True}  # noqa: RUF012
 
     id: Mapped[int] = mapped_column(
         Integer,
@@ -656,8 +656,8 @@ class Layer(TreeItem):
     """The layer table representation."""
 
     __tablename__ = "layer"
-    __table_args__ = {"schema": _schema}
-    __mapper_args__ = {"polymorphic_identity": "layer"}  # type: ignore[dict-item] # needed for _identity_class
+    __table_args__ = {"schema": _schema}  # noqa: RUF012
+    __mapper_args__ = {"polymorphic_identity": "layer"}  # type: ignore[dict-item] # needed for _identity_class  # noqa: RUF012
 
     id: Mapped[int] = mapped_column(
         Integer,
@@ -710,7 +710,7 @@ class Layer(TreeItem):
 class DimensionLayer(Layer):
     """The intermediate class for the leyser with dimension."""
 
-    __mapper_args__ = {"polymorphic_identity": "dimensionlayer"}  # type: ignore[dict-item] # needed for _identity_class
+    __mapper_args__ = {"polymorphic_identity": "dimensionlayer"}  # type: ignore[dict-item] # needed for _identity_class  # noqa: RUF012
 
 
 OGCServerType = Literal["mapserver", "qgisserver", "geoserver", "arcgis", "other"]
@@ -733,12 +733,12 @@ TimeMode = Literal["disabled", "value", "range"]
 TimeWidget = Literal["slider", "datepicker"]
 
 
-class OGCServer(Base):  # type: ignore
+class OGCServer(Base):  # type: ignore[misc]
     """The ogc_server table representation."""
 
     __tablename__ = "ogc_server"
-    __table_args__ = {"schema": _schema}
-    __colanderalchemy_config__ = {
+    __table_args__ = {"schema": _schema}  # noqa: RUF012
+    __colanderalchemy_config__ = {  # noqa: RUF012
         "title": _("OGC Server"),
         "plural": _("OGC Servers"),
         "description": c2cgeoportal_commons.lib.literal.Literal(
@@ -755,7 +755,7 @@ class OGCServer(Base):  # type: ignore
             ),
         ),
     }
-    __c2cgeoform_config__ = {"duplicate": True}
+    __c2cgeoform_config__ = {"duplicate": True}  # noqa: RUF012
     id: Mapped[int] = mapped_column(
         Integer,
         primary_key=True,
@@ -813,7 +813,7 @@ class OGCServer(Base):  # type: ignore
                 "description": _(
                     "The server type which is used to know which custom attribute will be used.",
                 ),
-                "widget": SelectWidget(values=list((e, e) for e in get_args(OGCServerType))),
+                "widget": SelectWidget(values=[(e, e) for e in get_args(OGCServerType)]),
             },
         },
     )
@@ -824,7 +824,7 @@ class OGCServer(Base):  # type: ignore
             "colanderalchemy": {
                 "title": _("Image type"),
                 "description": _("The MIME type of the images (e.g.: ``image/png``)."),
-                "widget": SelectWidget(values=list((e, e) for e in get_args(ImageType))),
+                "widget": SelectWidget(values=[(e, e) for e in get_args(ImageType)]),
                 "column": 2,
             },
         },
@@ -836,7 +836,7 @@ class OGCServer(Base):  # type: ignore
             "colanderalchemy": {
                 "title": _("Authentication type"),
                 "description": "The kind of authentication to use.",
-                "widget": SelectWidget(values=list((e, e) for e in get_args(OGCServerAuth))),
+                "widget": SelectWidget(values=[(e, e) for e in get_args(OGCServerAuth)]),
                 "column": 2,
             },
         },
@@ -904,8 +904,8 @@ class LayerWMS(DimensionLayer):
     """The layer_wms table representation."""
 
     __tablename__ = "layer_wms"
-    __table_args__ = {"schema": _schema}
-    __colanderalchemy_config__ = {
+    __table_args__ = {"schema": _schema}  # noqa: RUF012
+    __colanderalchemy_config__ = {  # noqa: RUF012
         "title": _("WMS Layer"),
         "plural": _("WMS Layers"),
         "description": c2cgeoportal_commons.lib.literal.Literal(
@@ -922,9 +922,9 @@ class LayerWMS(DimensionLayer):
         ),
     }
 
-    __c2cgeoform_config__ = {"duplicate": True}
+    __c2cgeoform_config__ = {"duplicate": True}  # noqa: RUF012
 
-    __mapper_args__ = {"polymorphic_identity": "l_wms"}  # type: ignore[dict-item]
+    __mapper_args__ = {"polymorphic_identity": "l_wms"}  # type: ignore[dict-item]  # noqa: RUF012
 
     id: Mapped[int] = mapped_column(
         Integer,
@@ -1071,8 +1071,8 @@ class LayerWMTS(DimensionLayer):
     """The layer_wmts table representation."""
 
     __tablename__ = "layer_wmts"
-    __table_args__ = {"schema": _schema}
-    __colanderalchemy_config__ = {
+    __table_args__ = {"schema": _schema}  # noqa: RUF012
+    __colanderalchemy_config__ = {  # noqa: RUF012
         "title": _("WMTS Layer"),
         "plural": _("WMTS Layers"),
         "description": c2cgeoportal_commons.lib.literal.Literal(
@@ -1122,8 +1122,8 @@ class LayerWMTS(DimensionLayer):
             ),
         ),
     }
-    __c2cgeoform_config__ = {"duplicate": True}
-    __mapper_args__ = {"polymorphic_identity": "l_wmts"}  # type: ignore[dict-item]
+    __c2cgeoform_config__ = {"duplicate": True}  # noqa: RUF012
+    __mapper_args__ = {"polymorphic_identity": "l_wmts"}  # type: ignore[dict-item]  # noqa: RUF012
 
     id: Mapped[int] = mapped_column(
         Integer,
@@ -1194,7 +1194,7 @@ class LayerWMTS(DimensionLayer):
                     ),
                 ),
                 "column": 2,
-                "widget": SelectWidget(values=list((e, e) for e in get_args(ImageType))),
+                "widget": SelectWidget(values=[(e, e) for e in get_args(ImageType)]),
             },
         },
     )
@@ -1244,8 +1244,8 @@ class LayerCOG(Layer):
     """The Cloud Optimized GeoTIFF layer table representation."""
 
     __tablename__ = "layer_cog"
-    __table_args__ = {"schema": _schema}
-    __colanderalchemy_config__ = {
+    __table_args__ = {"schema": _schema}  # noqa: RUF012
+    __colanderalchemy_config__ = {  # noqa: RUF012
         "title": _("COG Layer"),
         "plural": _("COG Layers"),
         "description": c2cgeoportal_commons.lib.literal.Literal(
@@ -1261,8 +1261,8 @@ class LayerCOG(Layer):
             ),
         ),
     }
-    __c2cgeoform_config__ = {"duplicate": True}
-    __mapper_args__ = {"polymorphic_identity": "l_cog"}  # type: ignore[dict-item]
+    __c2cgeoform_config__ = {"duplicate": True}  # noqa: RUF012
+    __mapper_args__ = {"polymorphic_identity": "l_cog"}  # type: ignore[dict-item]  # noqa: RUF012
 
     id: Mapped[int] = mapped_column(
         Integer,
@@ -1296,8 +1296,8 @@ class LayerVectorTiles(DimensionLayer):
     """The layer_vectortiles table representation."""
 
     __tablename__ = "layer_vectortiles"
-    __table_args__ = {"schema": _schema}
-    __colanderalchemy_config__ = {
+    __table_args__ = {"schema": _schema}  # noqa: RUF012
+    __colanderalchemy_config__ = {  # noqa: RUF012
         "title": _("Vector Tiles Layer"),
         "plural": _("Vector Tiles Layers"),
         "description": c2cgeoportal_commons.lib.literal.Literal(
@@ -1332,9 +1332,9 @@ class LayerVectorTiles(DimensionLayer):
         ),
     }
 
-    __c2cgeoform_config__ = {"duplicate": True}
+    __c2cgeoform_config__ = {"duplicate": True}  # noqa: RUF012
 
-    __mapper_args__ = {"polymorphic_identity": "l_mvt"}  # type: ignore[dict-item]
+    __mapper_args__ = {"polymorphic_identity": "l_mvt"}  # type: ignore[dict-item]  # noqa: RUF012
 
     id: Mapped[int] = mapped_column(
         Integer,
@@ -1409,13 +1409,13 @@ class LayerVectorTiles(DimensionLayer):
         return url.url() if url else "\n".join(errors)
 
 
-class RestrictionArea(Base):  # type: ignore
+class RestrictionArea(Base):  # type: ignore[misc]
     """The restrictionarea table representation."""
 
     __tablename__ = "restrictionarea"
-    __table_args__ = {"schema": _schema}
-    __colanderalchemy_config__ = {"title": _("Restriction area"), "plural": _("Restriction areas")}
-    __c2cgeoform_config__ = {"duplicate": True}
+    __table_args__ = {"schema": _schema}  # noqa: RUF012
+    __colanderalchemy_config__ = {"title": _("Restriction area"), "plural": _("Restriction areas")}  # noqa: RUF012
+    __c2cgeoform_config__ = {"duplicate": True}  # noqa: RUF012
     id: Mapped[int] = mapped_column(
         Integer,
         primary_key=True,
@@ -1578,13 +1578,13 @@ interface_theme = Table(
 )
 
 
-class Interface(Base):  # type: ignore
+class Interface(Base):  # type: ignore[misc]
     """The interface table representation."""
 
     __tablename__ = "interface"
-    __table_args__ = {"schema": _schema}
-    __c2cgeoform_config__ = {"duplicate": True}
-    __colanderalchemy_config__ = {"title": _("Interface"), "plural": _("Interfaces")}
+    __table_args__ = {"schema": _schema}  # noqa: RUF012
+    __c2cgeoform_config__ = {"duplicate": True}  # noqa: RUF012
+    __colanderalchemy_config__ = {"title": _("Interface"), "plural": _("Interfaces")}  # noqa: RUF012
 
     id: Mapped[int] = mapped_column(
         Integer,
@@ -1652,12 +1652,12 @@ class Interface(Base):  # type: ignore
         return f"{self.name}[{self.id}]"
 
 
-class Metadata(Base):  # type: ignore
+class Metadata(Base):  # type: ignore[misc]
     """The metadata table representation."""
 
     __tablename__ = "metadata"
-    __table_args__ = {"schema": _schema}
-    __colanderalchemy_config__ = {
+    __table_args__ = {"schema": _schema}  # noqa: RUF012
+    __colanderalchemy_config__ = {  # noqa: RUF012
         "title": _("Metadata"),
         "plural": _("Metadatas"),
     }
@@ -1764,12 +1764,12 @@ event.listen(Metadata, "after_update", cache_invalidate_cb, propagate=True)
 event.listen(Metadata, "after_delete", cache_invalidate_cb, propagate=True)
 
 
-class Dimension(Base):  # type: ignore
+class Dimension(Base):  # type: ignore[misc]
     """The dimension table representation."""
 
     __tablename__ = "dimension"
-    __table_args__ = {"schema": _schema}
-    __colanderalchemy_config__ = {
+    __table_args__ = {"schema": _schema}  # noqa: RUF012
+    __colanderalchemy_config__ = {  # noqa: RUF012
         "title": _("Dimension"),
         "plural": _("Dimensions"),
     }
@@ -1882,11 +1882,11 @@ class LogAction(enum.Enum):
     CONVERT_TO_WMS = enum.auto()
 
 
-class AbstractLog(AbstractConcreteBase, Base):  # type: ignore
+class AbstractLog(AbstractConcreteBase, Base):  # type: ignore[misc]
     """The abstract log table representation."""
 
     strict_attrs = True
-    __colanderalchemy_config__ = {
+    __colanderalchemy_config__ = {  # noqa: RUF012
         "title": _("Log"),
         "plural": _("Logs"),
     }
@@ -1961,8 +1961,8 @@ class Log(AbstractLog):
     """The main log table representation."""
 
     __tablename__ = "log"
-    __table_args__ = {"schema": _schema}
-    __mapper_args__ = {
+    __table_args__ = {"schema": _schema}  # noqa: RUF012
+    __mapper_args__ = {  # noqa: RUF012
         "polymorphic_identity": "main",
         "concrete": True,
     }

@@ -69,9 +69,9 @@ class LayerCOGViews(LayerViews[LayerCOG]):
     """The vector tiles administration view."""
 
     _list_fields = (
-        LayerViews._list_fields  # typer: ignore[misc] # pylint: disable=protected-access
-        + [_list_field("url")]
-        + LayerViews._extra_list_fields  # pylint: disable=protected-access
+        *LayerViews._list_fields,  # typer: ignore[misc] # pylint: disable=protected-access # noqa: SLF001
+        _list_field("url"),
+        *LayerViews._extra_list_fields,  # pylint: disable=protected-access # noqa: SLF001
     )
 
     _id_field = "id"

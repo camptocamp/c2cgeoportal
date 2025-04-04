@@ -117,7 +117,7 @@ class Import:
     Done by interface and by language.
     """
 
-    def __init__(self, session: Session, settings: pyramid.config.Configurator, options: Namespace):
+    def __init__(self, session: Session, settings: pyramid.config.Configurator, options: Namespace) -> None:
         self.options = options
         self.imported: set[Any] = set()
         package = settings["package"]

@@ -219,7 +219,7 @@ def get_user_from_remember(
 class OidcRemember:
     """Build the abject that we want to remember in the cookie."""
 
-    def __init__(self, request: pyramid.request.Request):
+    def __init__(self, request: pyramid.request.Request) -> None:
         self.request = request
         self.authentication_settings = request.registry.settings.get("authentication", {})
 
@@ -250,14 +250,16 @@ class OidcRemember:
         remember_object: OidcRememberObject = {
             "access_token": token_response.access_token,
             "access_token_expires": (
-                datetime.datetime.now() + datetime.timedelta(seconds=token_response.expires_in)
+                datetime.datetime.now(tz=datetime.timezone.utc)
+                + datetime.timedelta(seconds=token_response.expires_in)
             ).isoformat(),
             "refresh_token": token_response.refresh_token,
             "refresh_token_expires": (
                 None
                 if token_response.refresh_expires_in is None
                 else (
-                    datetime.datetime.now() + datetime.timedelta(seconds=token_response.refresh_expires_in)
+                    datetime.datetime.now(tz=datetime.timezone.utc)
+                    + datetime.timedelta(seconds=token_response.refresh_expires_in)
                 ).isoformat()
             ),
             "username": None,

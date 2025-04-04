@@ -47,7 +47,7 @@ _CACHE_REGION = get_region("std")
 class Proxy:
     """Some methods used by all the proxy."""
 
-    def __init__(self, request: pyramid.request.Request):
+    def __init__(self, request: pyramid.request.Request) -> None:
         self.request = request
         self.host_forward_host = request.registry.settings.get("host_forward_host", [])
         self.headers_whitelist = request.registry.settings.get("headers_whitelist", [])
@@ -65,7 +65,7 @@ class Proxy:
     ) -> requests.models.Response:
         # Get query string
         params = dict(self.request.params) if params is None else params
-        url = url.clone().add_query(params, True)
+        url = url.clone().add_query(params, force=True)
 
         _LOG.debug("Send query to URL:\n%s.", url)
 
@@ -99,7 +99,7 @@ class Proxy:
                 key, value = element.split("=")
                 header_key = f"X-Forwarded-{key.capitalize()}"
                 header_value = headers.get(header_key)
-                headers[header_key] = value if header_value is None else ", ".join([header_value, value])
+                headers[header_key] = value if header_value is None else f"{header_value}, {value}"
 
         if not cache:
             headers["Cache-Control"] = "no-cache"

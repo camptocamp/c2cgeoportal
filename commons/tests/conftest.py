@@ -1,5 +1,6 @@
 import os
 from logging.config import fileConfig
+from typing import NoReturn
 
 import plaster
 import pytest
@@ -25,7 +26,7 @@ def dbsession(settings):
     return session
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def transact(dbsession):
     t = dbsession.begin_nested()
     yield
@@ -42,11 +43,11 @@ def settings():
     return settings
 
 
-def raise_db_error(_):
+def raise_db_error(_) -> NoReturn:
     raise DBAPIError("this is a test !", None, None)
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def raise_db_error_on_query(dbsession):
     query = dbsession.query
     dbsession.query = raise_db_error

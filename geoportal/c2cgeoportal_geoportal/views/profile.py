@@ -51,7 +51,7 @@ _ = TranslationStringFactory("c2cgeoportal")
 class Profile(Raster):
     """All the view concerned the profile."""
 
-    def __init__(self, request: pyramid.request.Request):
+    def __init__(self, request: pyramid.request.Request) -> None:
         Raster.__init__(self, request)
 
     @staticmethod
@@ -187,8 +187,9 @@ class Profile(Raster):
                 cur_nb_points = max(int(nb_points * cur_length / total_length + 0.5), 1)
                 dx = (coord[0] - prev_coord[0]) / float(cur_nb_points)
                 dy = (coord[1] - prev_coord[1]) / float(cur_nb_points)
-                for i in range(1, cur_nb_points + 1):
-                    result.append((prev_coord[0] + dx * i, prev_coord[1] + dy * i))
+                result.extend(
+                    [(prev_coord[0] + dx * i, prev_coord[1] + dy * i) for i in range(1, cur_nb_points + 1)],
+                )
             else:
                 result.append((coord[0], coord[1]))
             prev_coord = coord

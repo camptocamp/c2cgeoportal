@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2024, Camptocamp SA
+# Copyright (c) 2013-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,7 @@ from tests.functional import teardown_common as teardown_module  # noqa
 
 
 class TestFunctionalities(TestCase):
-    def setup_method(self, _):
+    def setup_method(self, _) -> None:
         import transaction
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import Functionality, Role
@@ -64,7 +64,7 @@ class TestFunctionalities(TestCase):
         DBSession.add_all([user1, user2, user3, role1, role2])
         transaction.commit()
 
-    def teardown_method(self, _):
+    def teardown_method(self, _) -> None:
         import transaction
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import Functionality, OGCServer, Role
@@ -86,7 +86,7 @@ class TestFunctionalities(TestCase):
 
         transaction.commit()
 
-    def test_functionalities(self):
+    def test_functionalities(self) -> None:
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
         from c2cgeoportal_geoportal.lib.functionality import get_functionality
@@ -115,15 +115,15 @@ class TestFunctionalities(TestCase):
         request1.registry.settings.update(settings)
         request2.registry.settings.update(settings)
         request3.registry.settings.update(settings)
-        self.assertEqual(get_functionality("__test_s", request, False), [])
-        self.assertEqual(get_functionality("__test_a", request, False), [])
-        self.assertEqual(get_functionality("__test_s", request1, False), [])
-        self.assertEqual(get_functionality("__test_a", request1, False), [])
-        self.assertEqual(get_functionality("__test_s", request2, False), ["db"])
-        self.assertEqual(set(get_functionality("__test_a", request2, False)), {"db1", "db2"})
-        self.assertEqual(get_functionality("__test_s", request3, False), ["db"])
-        self.assertEqual(set(get_functionality("__test_a", request3, False)), {"db1", "db2"})
-        self.assertEqual(get_functionality("__test_b", request3, False), [])
+        assert get_functionality("__test_s", request, False) == []
+        assert get_functionality("__test_a", request, False) == []
+        assert get_functionality("__test_s", request1, False) == []
+        assert get_functionality("__test_a", request1, False) == []
+        assert get_functionality("__test_s", request2, False) == ["db"]
+        assert set(get_functionality("__test_a", request2, False)) == {"db1", "db2"}
+        assert get_functionality("__test_s", request3, False) == ["db"]
+        assert set(get_functionality("__test_a", request3, False)) == {"db1", "db2"}
+        assert get_functionality("__test_b", request3, False) == []
 
         fill_tech_user_functionality(
             "registered", (("__test_s", "registered"), ("__test_a", "r1"), ("__test_a", "r2")), DBSession
@@ -137,12 +137,12 @@ class TestFunctionalities(TestCase):
         request1.user = DBSession.query(User).filter(User.username == "__test_user1").one()
         request2.user = DBSession.query(User).filter(User.username == "__test_user2").one()
         request3.user = DBSession.query(User).filter(User.username == "__test_user3").one()
-        self.assertEqual(get_functionality("__test_s", request, False), [])
-        self.assertEqual(get_functionality("__test_a", request, False), [])
-        self.assertEqual(get_functionality("__test_s", request1, False), ["registered"])
-        self.assertEqual(set(get_functionality("__test_a", request1, False)), {"r1", "r2"})
-        self.assertEqual(get_functionality("__test_s", request2, False), ["db"])
-        self.assertEqual(set(get_functionality("__test_a", request2, False)), {"db1", "db2"})
+        assert get_functionality("__test_s", request, False) == []
+        assert get_functionality("__test_a", request, False) == []
+        assert get_functionality("__test_s", request1, False) == ["registered"]
+        assert set(get_functionality("__test_a", request1, False)) == {"r1", "r2"}
+        assert get_functionality("__test_s", request2, False) == ["db"]
+        assert set(get_functionality("__test_a", request2, False)) == {"db1", "db2"}
 
         fill_tech_user_functionality("registered", [], DBSession)
         fill_tech_user_functionality(
@@ -157,12 +157,12 @@ class TestFunctionalities(TestCase):
         request1.user = DBSession.query(User).filter(User.username == "__test_user1").one()
         request2.user = DBSession.query(User).filter(User.username == "__test_user2").one()
         request3.user = DBSession.query(User).filter(User.username == "__test_user3").one()
-        self.assertEqual(get_functionality("__test_s", request, False), ["anonymous"])
-        self.assertEqual(set(get_functionality("__test_a", request, False)), {"a1", "a2"})
-        self.assertEqual(get_functionality("__test_s", request1, False), ["anonymous"])
-        self.assertEqual(set(get_functionality("__test_a", request1, False)), {"a1", "a2"})
-        self.assertEqual(get_functionality("__test_s", request2, False), ["db"])
-        self.assertEqual(set(get_functionality("__test_a", request2, False)), {"db1", "db2"})
+        assert get_functionality("__test_s", request, False) == ["anonymous"]
+        assert set(get_functionality("__test_a", request, False)) == {"a1", "a2"}
+        assert get_functionality("__test_s", request1, False) == ["anonymous"]
+        assert set(get_functionality("__test_a", request1, False)) == {"a1", "a2"}
+        assert get_functionality("__test_s", request2, False) == ["db"]
+        assert set(get_functionality("__test_a", request2, False)) == {"db1", "db2"}
 
         fill_tech_user_functionality(
             "registered", (("__test_s", "registered"), ("__test_a", "r1"), ("__test_a", "r2")), DBSession
@@ -179,14 +179,14 @@ class TestFunctionalities(TestCase):
         request1.user = DBSession.query(User).filter(User.username == "__test_user1").one()
         request2.user = DBSession.query(User).filter(User.username == "__test_user2").one()
         request3.user = DBSession.query(User).filter(User.username == "__test_user3").one()
-        self.assertEqual(get_functionality("__test_s", request, False), ["anonymous"])
-        self.assertEqual(set(get_functionality("__test_a", request, False)), {"a1", "a2"})
-        self.assertEqual(get_functionality("__test_s", request1, False), ["registered"])
-        self.assertEqual(set(get_functionality("__test_a", request1, False)), {"r1", "r2"})
-        self.assertEqual(get_functionality("__test_s", request2, False), ["db"])
-        self.assertEqual(set(get_functionality("__test_a", request2, False)), {"db1", "db2"})
+        assert get_functionality("__test_s", request, False) == ["anonymous"]
+        assert set(get_functionality("__test_a", request, False)) == {"a1", "a2"}
+        assert get_functionality("__test_s", request1, False) == ["registered"]
+        assert set(get_functionality("__test_a", request1, False)) == {"r1", "r2"}
+        assert get_functionality("__test_s", request2, False) == ["db"]
+        assert set(get_functionality("__test_a", request2, False)) == {"db1", "db2"}
 
-    def test_web_client_functionalities(self):
+    def test_web_client_functionalities(self) -> None:
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
 

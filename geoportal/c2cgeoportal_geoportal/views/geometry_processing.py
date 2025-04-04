@@ -44,7 +44,7 @@ class GeometryProcessing:
     Currently only difference between geometries.
     """
 
-    def __init__(self, request: pyramid.request.Request):
+    def __init__(self, request: pyramid.request.Request) -> None:
         self.request = request
 
     @view_config(route_name="difference", renderer="geojson")  # type: ignore[misc]

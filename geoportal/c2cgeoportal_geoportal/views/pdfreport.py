@@ -49,7 +49,7 @@ class PdfReport(OGCProxy):
 
     layername = None
 
-    def __init__(self, request: pyramid.request.Request):
+    def __init__(self, request: pyramid.request.Request) -> None:
         OGCProxy.__init__(self, request)
         self.config = self.request.registry.settings.get("pdfreport", {})
 

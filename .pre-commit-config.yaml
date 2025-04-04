@@ -132,15 +132,19 @@ repos:
             |(^|/)test_[_a-zA-Z0-9]+.py$
             |(^|/)[_a-zA-Z0-9]+_tests?.py$
             |(^|/)tests?.py$
+            |^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/\{\{cookiecutter.project\}\}/
           )
       - id: prospector
         args:
           - --die-on-tool-error
           - --output-format=pylint
-          - --profile=utils:tests
-          - --profile=utils:pre-commit
+          - --profile=.prospector-test.yaml
         additional_dependencies:
           - prospector-profile-utils==1.22.3 # pypi
+        exclude: |-
+          (?x)^(
+            geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/\{\{cookiecutter.project\}\}/.*
+          )$
   - repo: https://github.com/sbrunner/jsonschema-validator
     rev: 1.0.0
     hooks:

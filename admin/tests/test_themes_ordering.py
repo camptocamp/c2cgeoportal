@@ -5,7 +5,7 @@ import pytest
 from .test_treegroup import TestTreeGroup
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def theme_test_data(dbsession, transact):
     del transact
 
@@ -29,7 +29,7 @@ def theme_test_data(dbsession, transact):
 class TestThemeOrdering(TestTreeGroup):
     _prefix = "/admin/layertree/ordering"
 
-    def test_edit(self, test_app, theme_test_data, dbsession):
+    def test_edit(self, test_app, theme_test_data, dbsession) -> None:
         themes = theme_test_data["themes"]
 
         resp = test_app.get(self._prefix, status=200)
@@ -44,7 +44,7 @@ class TestThemeOrdering(TestTreeGroup):
             ],
         )
 
-    def test_save(self, test_app, theme_test_data, dbsession):
+    def test_save(self, test_app, theme_test_data, dbsession) -> None:
         themes = theme_test_data["themes"]
 
         resp = test_app.post(

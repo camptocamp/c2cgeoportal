@@ -5,7 +5,7 @@ import pytest
 from .test_treegroup import TestTreeGroup
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def themes_ordering_test_data(dbsession, transact):
     del transact
 
@@ -26,7 +26,7 @@ def themes_ordering_test_data(dbsession, transact):
 class TestThemesOrdering(TestTreeGroup):
     _prefix = "/admin/layertree/ordering"
 
-    def test_edit(self, test_app, themes_ordering_test_data):
+    def test_edit(self, test_app, themes_ordering_test_data) -> None:
         resp = self.get(test_app, status=200)
         form = resp.form
 

@@ -58,7 +58,7 @@ _LOG = logging.getLogger(__name__)
 class TinyOWSProxy(OGCProxy):
     """Proxy for the tiny OWN server."""
 
-    def __init__(self, request: pyramid.request.Request):
+    def __init__(self, request: pyramid.request.Request) -> None:
         OGCProxy.__init__(self, request, has_default_ogc_server=True)
 
         assert models.DBSession is not None
@@ -123,7 +123,7 @@ class TinyOWSProxy(OGCProxy):
 
         url = Url(self.settings.get("tinyows_url"))
 
-        response = self._proxy_callback(
+        return self._proxy_callback(
             operation,
             cache_control,
             url=url,
@@ -132,7 +132,6 @@ class TinyOWSProxy(OGCProxy):
             headers=self._get_headers(),
             body=self.request.body,
         )
-        return response
 
     def _is_allowed(self, typenames: set[str]) -> bool:
         """Check if the current user has the rights to access the given type-names."""
@@ -163,7 +162,7 @@ class TinyOWSProxy(OGCProxy):
         url = super()._get_wfs_url(errors)
         if url is None:
             _LOG.error("Error getting the URL:\n%s", "\n".join(errors))
-            raise HTTPInternalServerError()
+            raise HTTPInternalServerError
 
         if operation == "getcapabilities":
             content = filter_wfst_capabilities(content, url, self.request)

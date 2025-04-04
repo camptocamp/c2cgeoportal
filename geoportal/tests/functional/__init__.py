@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2024, Camptocamp SA
+# Copyright (c) 2013-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,6 @@ import c2cgeoportal_geoportal
 import c2cgeoportal_geoportal.lib
 import pyramid.registry
 import pyramid.request
-import sqlalchemy.exc
 import transaction
 import webob.acceptparse
 from c2c.template.config import config as configuration

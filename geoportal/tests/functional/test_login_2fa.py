@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2024, Camptocamp SA
+# Copyright (c) 2013-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -44,7 +44,7 @@ _LOG = logging.getLogger(__name__)
 
 
 class Test2faView(TestCase):
-    def setup_method(self, _):
+    def setup_method(self, _) -> None:
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None  # pylint: disable=invalid-name
@@ -61,7 +61,7 @@ class Test2faView(TestCase):
         testing.setUp().testing_securitypolicy(remember_result=[("Cookie", "Test")])
         transaction.commit()
 
-    def teardown_method(self, _):
+    def teardown_method(self, _) -> None:
         testing.tearDown()
         cleanup_db()
 
@@ -80,7 +80,7 @@ class Test2faView(TestCase):
 
         return request
 
-    def test_new_user(self):
+    def test_new_user(self) -> None:
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
         from c2cgeoportal_geoportal.views.login import Login
@@ -138,7 +138,7 @@ class Test2faView(TestCase):
             "functionalities": {},
         }
 
-    def test_user_reset_password(self):
+    def test_user_reset_password(self) -> None:
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
         from c2cgeoportal_geoportal.views.login import Login
@@ -205,7 +205,7 @@ class Test2faView(TestCase):
             "functionalities": {},
         }
 
-    def test_change_password(self):
+    def test_change_password(self) -> None:
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
         from c2cgeoportal_geoportal.views.login import Login
@@ -254,7 +254,7 @@ class Test2faView(TestCase):
             "functionalities": {},
         }
 
-    def test_admin_reset(self):
+    def test_admin_reset(self) -> None:
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
 
@@ -266,7 +266,7 @@ class Test2faView(TestCase):
 
         assert original_2fa_totp_secret != user.tech_data["2fa_totp_secret"]
 
-    def test_wrong_firstlogin(self):
+    def test_wrong_firstlogin(self) -> None:
         from c2cgeoportal_geoportal.views.login import Login
 
         request = self._create_request_obj(POST={"login": "__test_user"})
@@ -281,7 +281,7 @@ class Test2faView(TestCase):
         with pytest.raises(pyramid.httpexceptions.HTTPUnauthorized):
             Login(request).login()
 
-    def test_wrong_login(self):
+    def test_wrong_login(self) -> None:
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
         from c2cgeoportal_geoportal.views.login import Login
@@ -316,7 +316,7 @@ class Test2faView(TestCase):
         with pytest.raises(pyramid.httpexceptions.HTTPBadRequest):
             Login(request).login()
 
-    def test_wrong_change_password(self):
+    def test_wrong_change_password(self) -> None:
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
         from c2cgeoportal_geoportal.views.login import Login
@@ -429,7 +429,7 @@ class Test2faView(TestCase):
         with pytest.raises(pyramid.httpexceptions.HTTPUnauthorized):
             Login(request).change_password()
 
-    def test_wrong_login_change_password(self):
+    def test_wrong_login_change_password(self) -> None:
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
         from c2cgeoportal_geoportal.views.login import Login
@@ -463,7 +463,7 @@ class Test2faView(TestCase):
         with pytest.raises(pyramid.httpexceptions.HTTPBadRequest):
             Login(request).change_password()
 
-    def test_wrong_loginresetpassword(self):
+    def test_wrong_loginresetpassword(self) -> None:
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
         from c2cgeoportal_geoportal.views.login import Login

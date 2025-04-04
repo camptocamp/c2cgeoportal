@@ -57,7 +57,7 @@ ITEM_TYPE_ROUTE_MAP = {
 class ChildSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
     """Schema of the child nodes."""
 
-    def objectify(self, dict_, context=None):
+    def objectify(self, dict_: Any, context: Any = None) -> Any:
         if dict_.get("id", None):
             context = self.dbsession.query(LayergroupTreeitem).get(dict_["id"])
         context = super().objectify(dict_, context)
@@ -123,7 +123,7 @@ def treeitems(
     ]
 
 
-def children_validator(node, cstruct):
+def children_validator(node: Any, cstruct: Any) -> None:
     """Get the validator on the children nodes."""
     for dict_ in cstruct:
         if dict_["treeitem_id"] not in [item["id"] for item in node.candidates]:
@@ -136,11 +136,12 @@ def children_validator(node, cstruct):
             )
 
 
-def base_deferred_parent_id_validator(node, kw, model):
+def base_deferred_parent_id_validator(node: Any, kw: Any, model: Any) -> colander.deferred:
     """Get the validator on the parent node ID."""
     del node
 
-    def validator(node, cstruct):
+    def validator(node: Any, cstruct: Any) -> None:
+        """Validate the parent ID."""
         if kw["dbsession"].query(model).filter(model.id == cstruct).count() == 0:
             raise colander.Invalid(node, f"Value {cstruct} does not exist in table {model.__tablename__}")
 
@@ -155,7 +156,7 @@ def treeitem_edit_url(request: pyramid.request.Request, treeitem: TreeGroup) -> 
     if table is None:
         _LOG.warning("%s not found in ITEM_TYPE_ROUTE_MAP", treeitem.item_type)
         return None
-    return request.route_url(  # type: ignore
+    return request.route_url(  # type: ignore[m]
         "c2cgeoform_item",
         table=ITEM_TYPE_ROUTE_MAP[treeitem.item_type],
         id=treeitem.id,

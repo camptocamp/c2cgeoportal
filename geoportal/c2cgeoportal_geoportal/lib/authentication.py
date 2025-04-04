@@ -56,7 +56,7 @@ _HEX_RE = re.compile(r"^[0-9a-fA-F]+$")
 
 
 @implementer(IAuthenticationPolicy)
-class UrlAuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
+class UrlAuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore[misc]
     """An authentication policy based on information given in the URL."""
 
     def __init__(
@@ -64,7 +64,7 @@ class UrlAuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
         aes_key: str,
         callback: Callable[[str, Any], list[str]] | None = None,
         debug: bool = False,
-    ):
+    ) -> None:
         self.aeskey = aes_key
         self.callback = callback
         self.debug = debug
@@ -123,7 +123,7 @@ class UrlAuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
 
 
 @implementer(IAuthenticationPolicy)
-class OAuth2AuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
+class OAuth2AuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore[misc]
     """The oauth2 authentication policy."""
 
     @staticmethod
@@ -166,7 +166,7 @@ class OAuth2AuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
 
 
 @implementer(IAuthenticationPolicy)
-class DevAuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
+class DevAuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore[misc]
     """An authentication policy for the dev base on an environment variable."""
 
     @staticmethod
@@ -192,7 +192,7 @@ def create_authentication(settings: dict[str, Any]) -> MultiAuthenticationPolicy
     secret = settings["authtkt_secret"]
     basicauth = settings.get("basicauth", "False").lower() in ("true", "yes", "1")
     if len(secret) < 64:
-        raise Exception(  # pylint: disable=broad-exception-raised
+        raise Exception(  # pylint: disable=broad-exception-raised # noqa: TRY002
             '"authtkt_secret should be at least 64 characters.'
             "See https://docs.pylonsproject.org/projects/pyramid/en/latest/api/session.html",
         )

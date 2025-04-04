@@ -29,7 +29,8 @@
 import functools
 import logging
 from io import StringIO
-from typing import Any, cast
+from types import TracebackType
+from typing import cast
 from xml.etree.ElementTree import Element  # nosec
 
 import pyramid.request
@@ -41,7 +42,7 @@ from sqlalchemy.orm.session import Session
 
 
 class _DryRunTransaction:
-    def __init__(self, dbsession: Session, dry_run: bool):
+    def __init__(self, dbsession: Session, dry_run: bool) -> None:
         self.dbsession = dbsession
         self.dry_run = dry_run
 
@@ -49,7 +50,13 @@ class _DryRunTransaction:
         if self.dry_run:
             self.dbsession.begin_nested()
 
-    def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None:
+    def __exit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc_val: BaseException | None,
+        exc_tb: TracebackType | None,
+    ) -> None:
+        del exc_type, exc_val, exc_tb
         if self.dry_run:
             self.dbsession.rollback()
 
@@ -93,7 +100,7 @@ class OGCServerSynchronizer:
         self._default_wms = main.LayerWMS()
         self._interfaces = None
 
-        self._logger = logging.Logger(str(self), logging.INFO)
+        self._logger = logging.Logger(str(self), logging.INFO)  # noqa: LOG001
         self._log = StringIO()
         self._log_handler = logging.StreamHandler(self._log)
         self._logger.addHandler(self._log_handler)
@@ -225,7 +232,7 @@ class OGCServerSynchronizer:
             external_children = [item for item in tree_item.children if item not in server_children]
             children = server_children + external_children
             if tree_item.children != children:
-                tree_item._set_children(  # pylint: disable=protected-access
+                tree_item._set_children(  # pylint: disable=protected-access # noqa: SLF001
                     server_children + external_children,
                     order=True,
                 )
@@ -369,7 +376,7 @@ class OGCServerSynchronizer:
             errors,
         )
         if url is None:
-            raise Exception("\n".join(errors))  # pylint: disable=broad-exception-raised
+            raise Exception("\n".join(errors))  # pylint: disable=broad-exception-raised # noqa: TRY002
 
         # Add functionality params
         # sparams = get_mapserver_substitution_params(self.request)
@@ -403,7 +410,7 @@ class OGCServerSynchronizer:
             "application/vnd.ogc.wms_xml",
             "text/xml",
         ]:
-            raise Exception(  # pylint: disable=broad-exception-raised
+            raise Exception(  # pylint: disable=broad-exception-raised # noqa: TRY002
                 f"GetCapabilities from URL '{url}' returns a wrong Content-Type: "
                 f"{response.headers.get('Content-Type', '')}\n{response.text}",
             )

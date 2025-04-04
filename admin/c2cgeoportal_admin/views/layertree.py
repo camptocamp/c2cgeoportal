@@ -56,7 +56,7 @@ itemtypes_tables = {
 class LayerTreeViews:
     """The layer tree administration view."""
 
-    def __init__(self, request: pyramid.request.Request):
+    def __init__(self, request: pyramid.request.Request) -> None:
         self._request = request
         self._dbsession = request.dbsession
 
@@ -200,7 +200,7 @@ class LayerTreeViews:
             .one_or_none()
         )
         if link is None:
-            raise HTTPNotFound()
+            raise HTTPNotFound
         self._request.dbsession.delete(link)
         self._request.dbsession.flush()
         return {"success": True, "redirect": self._request.route_url("layertree")}
@@ -210,7 +210,7 @@ class LayerTreeViews:
         item_id = self._request.matchdict.get("item_id")
         item = self._request.dbsession.query(TreeItem).get(item_id)
         if item is None:
-            raise HTTPNotFound()
+            raise HTTPNotFound
         self._request.dbsession.delete(item)
         self._request.dbsession.flush()
         return {"success": True, "redirect": self._request.route_url("layertree")}

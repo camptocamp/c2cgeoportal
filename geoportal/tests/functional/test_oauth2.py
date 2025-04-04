@@ -43,7 +43,7 @@ from tests.functional import setup_common as setup_module
 from tests.functional import teardown_common as teardown_module
 
 
-def use(item):
+def use(item) -> None:
     pass
 
 

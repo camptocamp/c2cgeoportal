@@ -78,7 +78,7 @@ base_schema = GeoFormSchemaNode(
 class FunctionalityViews(LoggedViews[Functionality]):
     """The functionality administration view."""
 
-    _list_fields = [_list_field("id"), _list_field("name"), _list_field("description"), _list_field("value")]
+    _list_fields = [_list_field("id"), _list_field("name"), _list_field("description"), _list_field("value")]  # noqa: RUF012
     _id_field = "id"
     _model = Functionality
     _base_schema = base_schema

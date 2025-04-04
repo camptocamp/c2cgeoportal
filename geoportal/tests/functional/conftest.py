@@ -170,7 +170,7 @@ def admin_user(dbsession_old, transact_old) -> "static.User":
 
 
 @pytest.fixture
-def default_ogcserver(dbsession: Session) -> "main.OGCServer":
+def default_ogcserver_2(dbsession: Session) -> "main.OGCServer":
     from c2cgeoportal_commons.models.main import OGCServer
 
     dbsession.flush()

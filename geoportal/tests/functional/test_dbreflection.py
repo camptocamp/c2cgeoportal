@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2024, Camptocamp SA
+# Copyright (c) 2013-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -39,14 +39,14 @@ from tests.functional import teardown_common as teardown_module  # noqa
 class TestReflection(TestCase):
     _tables = None
 
-    def setup_method(self, _):
+    def setup_method(self, _) -> None:
         setup_module()
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
         self.metadata = None
 
-    def teardown_method(self, _):
+    def teardown_method(self, _) -> None:
         from c2cgeoportal_commons.models import DBSession
 
         if self._tables is not None:
@@ -102,13 +102,13 @@ class TestReflection(TestCase):
 
         self.metadata = Base.metadata
 
-    def test_get_class_nonexisting_table(self):
+    def test_get_class_nonexisting_table(self) -> None:
         from c2cgeoportal_geoportal.lib.dbreflection import get_class
         from sqlalchemy.exc import NoSuchTableError
 
         self.assertRaises(NoSuchTableError, get_class, "nonexisting")
 
-    def test_get_class(self):
+    def test_get_class(self) -> None:
         from c2cgeoportal_geoportal.lib.dbreflection import _AssociationProxy, get_class
         from geoalchemy2 import Geometry
 
@@ -124,18 +124,18 @@ class TestReflection(TestCase):
         assert modelclass.__table__.name == "table_a"
         assert modelclass.__table__.schema == "public"
 
-        self.assertTrue(isinstance(modelclass.point.type, Geometry))
-        self.assertTrue(isinstance(modelclass.linestring.type, Geometry))
-        self.assertTrue(isinstance(modelclass.polygon.type, Geometry))
-        self.assertTrue(isinstance(modelclass.multipoint.type, Geometry))
-        self.assertTrue(isinstance(modelclass.multilinestring.type, Geometry))
-        self.assertTrue(isinstance(modelclass.multipolygon.type, Geometry))
+        assert isinstance(modelclass.point.type, Geometry)
+        assert isinstance(modelclass.linestring.type, Geometry)
+        assert isinstance(modelclass.polygon.type, Geometry)
+        assert isinstance(modelclass.multipoint.type, Geometry)
+        assert isinstance(modelclass.multilinestring.type, Geometry)
+        assert isinstance(modelclass.multipolygon.type, Geometry)
 
-        self.assertTrue(isinstance(modelclass.child1, _AssociationProxy))
-        self.assertTrue(modelclass.child1.nullable)
+        assert isinstance(modelclass.child1, _AssociationProxy)
+        assert modelclass.child1.nullable
         assert modelclass.child1_id.info.get("association_proxy") == "child1"
-        self.assertTrue(isinstance(modelclass.child2, _AssociationProxy))
-        self.assertFalse(modelclass.child2.nullable)
+        assert isinstance(modelclass.child2, _AssociationProxy)
+        assert not modelclass.child2.nullable
         assert modelclass.child2_id.info.get("association_proxy") == "child2"
 
         child1_asso_proxy = getattr(modelclass, modelclass.child1_id.info["association_proxy"])
@@ -144,15 +144,15 @@ class TestReflection(TestCase):
 
         # test the Table object
         table = modelclass.__table__
-        self.assertTrue("id" in table.c)
-        self.assertTrue("child1_id" in table.c)
-        self.assertTrue("child2_id" in table.c)
-        self.assertTrue("point" in table.c)
-        self.assertTrue("linestring" in table.c)
-        self.assertTrue("polygon" in table.c)
-        self.assertTrue("multipoint" in table.c)
-        self.assertTrue("multilinestring" in table.c)
-        self.assertTrue("multipolygon" in table.c)
+        assert "id" in table.c
+        assert "child1_id" in table.c
+        assert "child2_id" in table.c
+        assert "point" in table.c
+        assert "linestring" in table.c
+        assert "polygon" in table.c
+        assert "multipoint" in table.c
+        assert "multilinestring" in table.c
+        assert "multipolygon" in table.c
         col_child1_id = table.c["child1_id"]
         assert col_child1_id.name == "child1_id"
         col_child2_id = table.c["child2_id"]
@@ -178,7 +178,7 @@ class TestReflection(TestCase):
 
         assert get_class("table_a") is modelclass
 
-    def test_get_class_dotted_notation(self):
+    def test_get_class_dotted_notation(self) -> None:
         from c2cgeoportal_geoportal.lib.dbreflection import get_class
 
         self._create_table("table_b")
@@ -188,7 +188,7 @@ class TestReflection(TestCase):
         assert modelclass.__table__.name == "table_b"
         assert modelclass.__table__.schema == "public"
 
-    def test_mixing_get_class_and_queries(self):
+    def test_mixing_get_class_and_queries(self) -> None:
         """This test shows that we can mix the use of DBSession and the db reflection API."""
         import transaction
         from c2cgeoportal_commons.models import DBSession
@@ -207,13 +207,13 @@ class TestReflection(TestCase):
         # which will block forever if the transaction is not committed.
         transaction.commit()
 
-    def test_get_class_exclude_properties(self):
+    def test_get_class_exclude_properties(self) -> None:
         from c2cgeoportal_geoportal.lib.dbreflection import get_class
 
         self._create_table("table_d")
         assert get_class("table_d", exclude_properties=["foo", "bar"]) is not None
 
-    def test_get_class_attributes_order(self):
+    def test_get_class_attributes_order(self) -> None:
         from c2cgeoportal_geoportal.lib.dbreflection import get_class
 
         attributes_order = ["child1_id", "point", "child2_id"]
@@ -223,7 +223,7 @@ class TestReflection(TestCase):
 
         assert attributes_order == cls.__attributes_order__
 
-    def test_get_class_enumerations_config(self):
+    def test_get_class_enumerations_config(self) -> None:
         from c2cgeoportal_geoportal.lib.dbreflection import get_class
 
         enumerations_config = {"child1_id": {"value": "id", "order_by": "name"}}
@@ -244,7 +244,7 @@ class TestReflection(TestCase):
         assert association_proxy.value_attr == "id"
         assert association_proxy.order_by == "id"
 
-    def test_get_class_readonly_attributes(self):
+    def test_get_class_readonly_attributes(self) -> None:
         from c2cgeoportal_geoportal.lib.dbreflection import get_class
 
         readonly_attributes = ["child1_id", "point"]

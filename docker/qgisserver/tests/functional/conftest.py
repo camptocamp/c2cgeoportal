@@ -58,7 +58,7 @@ def clean_dbsession(DBSession):  # noqa: ignore=N803
     clean()
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def server_iface():
     result = Mock(spec=QgsServerInterface)
     return result
@@ -74,7 +74,7 @@ def qgs_access_control_filter():
     """
 
     class DummyQgsAccessControlFilter:
-        def __init__(self, server_iface):
+        def __init__(self, server_iface) -> None:
             self.server_iface = server_iface
 
         def serverInterface(self):  # noqa: ignore=N806

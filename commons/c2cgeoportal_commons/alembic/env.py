@@ -1,3 +1,4 @@
+# noqa: INP001, EXE002
 # Copyright (c) 2014-2025, Camptocamp SA
 # All rights reserved.
 
@@ -87,7 +88,7 @@ def run_migrations_offline() -> None:
     script output.
     """
     conf = get_config()
-    context.configure(url=conf["sqlalchemy.url"], **conf)  # type: ignore
+    context.configure(url=conf["sqlalchemy.url"], **conf)  # type: ignore[m]
 
     with context.begin_transaction():
         context.run_migrations()
@@ -109,7 +110,7 @@ def run_migrations_online() -> None:
         static,
     )
 
-    _schema = main._schema if alembic_name == "main" else static._schema  # pylint: disable=protected-access
+    _schema = main._schema if alembic_name == "main" else static._schema  # pylint: disable=protected-access # noqa: SLF001
 
     def include_object(
         obj: sqlalchemy.ext.declarative.ConcreteBase,

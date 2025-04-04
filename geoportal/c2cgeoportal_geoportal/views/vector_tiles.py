@@ -81,3 +81,4 @@ class VectorTilesViews:
             response.content_type = "application/vnd.mapbox-vector-tile"
             response.body = row[0].tobytes()
             return response
+        return None

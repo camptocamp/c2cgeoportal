@@ -65,7 +65,7 @@ _OPENID_CONNECT_ENABLED = os.environ.get("OPENID_CONNECT_ENABLED", "false").lowe
 class UserViews(LoggedViews[User]):
     """The admin user view."""
 
-    _list_fields = [
+    _list_fields = [  # noqa: RUF012
         _list_field("id"),
         *([_list_field("username")] if not _OPENID_CONNECT_ENABLED else []),
         _list_field("display_name"),
@@ -93,7 +93,7 @@ class UserViews(LoggedViews[User]):
     _log_model = Log
     _name_field = "username"
 
-    def _base_query(self):
+    def _base_query(self) -> User:
         return (
             self._request.dbsession.query(User)
             .distinct()

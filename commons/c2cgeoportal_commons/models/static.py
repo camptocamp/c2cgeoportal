@@ -56,7 +56,7 @@ except ModuleNotFoundError:
     class GenericClass:
         """Generic class."""
 
-        def __init__(self, *args: Any, **kwargs: Any):
+        def __init__(self, *args: Any, **kwargs: Any) -> None:
             pass
 
     Email = GenericClass
@@ -81,12 +81,12 @@ user_role = Table(
 )
 
 
-class User(Base):  # type: ignore
+class User(Base):  # type: ignore[misc]
     """The user table representation."""
 
     __tablename__ = "user"
-    __table_args__ = {"schema": _schema}
-    __colanderalchemy_config__ = {
+    __table_args__ = {"schema": _schema}  # noqa: RUF012
+    __colanderalchemy_config__ = {  # noqa: RUF012
         "title": _("User"),
         "plural": _("Users"),
         "description": Literal(
@@ -123,14 +123,14 @@ class User(Base):  # type: ignore
             ),
         ),
     }
-    __c2cgeoform_config__ = {"duplicate": True}
+    __c2cgeoform_config__ = {"duplicate": True}  # noqa: RUF012
     item_type: Mapped[str] = mapped_column(
         "type",
         String(10),
         nullable=False,
         info={"colanderalchemy": {"widget": HiddenWidget()}},
     )
-    __mapper_args__ = {"polymorphic_on": item_type, "polymorphic_identity": "user"}
+    __mapper_args__ = {"polymorphic_on": item_type, "polymorphic_identity": "user"}  # noqa: RUF012
 
     id: Mapped[int] = mapped_column(
         Integer,
@@ -384,11 +384,11 @@ class User(Base):  # type: ignore
         return self.username or ""
 
 
-class Shorturl(Base):  # type: ignore
+class Shorturl(Base):  # type: ignore[misc]
     """The shorturl table representation."""
 
     __tablename__ = "shorturl"
-    __table_args__ = {"schema": _schema}
+    __table_args__ = {"schema": _schema}  # noqa: RUF012
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     url: Mapped[str] = mapped_column(Unicode)
     ref: Mapped[str] = mapped_column(String(20), index=True, unique=True, nullable=False)
@@ -398,13 +398,13 @@ class Shorturl(Base):  # type: ignore
     nb_hits: Mapped[int] = mapped_column(Integer)
 
 
-class OAuth2Client(Base):  # type: ignore
+class OAuth2Client(Base):  # type: ignore[misc]
     """The oauth2_client table representation."""
 
     __tablename__ = "oauth2_client"
-    __table_args__ = {"schema": _schema}
-    __colanderalchemy_config__ = {"title": _("OAuth2 Client"), "plural": _("OAuth2 Clients")}
-    __c2cgeoform_config__ = {"duplicate": True}
+    __table_args__ = {"schema": _schema}  # noqa: RUF012
+    __colanderalchemy_config__ = {"title": _("OAuth2 Client"), "plural": _("OAuth2 Clients")}  # noqa: RUF012
+    __c2cgeoform_config__ = {"duplicate": True}  # noqa: RUF012
     id: Mapped[int] = mapped_column(
         Integer,
         primary_key=True,
@@ -472,7 +472,7 @@ class OAuth2Client(Base):  # type: ignore
     )
 
 
-class OAuth2BearerToken(Base):  # type: ignore
+class OAuth2BearerToken(Base):  # type: ignore[misc]
     """The oauth2_bearertoken table representation."""
 
     __tablename__ = "oauth2_bearertoken"
@@ -501,7 +501,7 @@ class OAuth2BearerToken(Base):  # type: ignore
     state = mapped_column(String, nullable=True)
 
 
-class OAuth2AuthorizationCode(Base):  # type: ignore
+class OAuth2AuthorizationCode(Base):  # type: ignore[misc]
     """The oauth2_authorizationcode table representation."""
 
     __tablename__ = "oauth2_authorizationcode"
@@ -536,8 +536,8 @@ class Log(AbstractLog):
     """The static log table representation."""
 
     __tablename__ = "log"
-    __table_args__ = {"schema": _schema}
-    __mapper_args__ = {
+    __table_args__ = {"schema": _schema}  # noqa: RUF012
+    __mapper_args__ = {  # noqa: RUF012
         "polymorphic_identity": "static",
         "concrete": True,
     }

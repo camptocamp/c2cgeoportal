@@ -47,7 +47,7 @@ _CACHE_REGION = get_region("std")
 class Entry:
     """All the entry points views."""
 
-    def __init__(self, request: pyramid.request.Request):
+    def __init__(self, request: pyramid.request.Request) -> None:
         self.request = request
 
     @view_config(route_name="testi18n", renderer="testi18n.html")  # type: ignore[misc]

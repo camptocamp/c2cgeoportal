@@ -10,7 +10,7 @@ from pyramid.testing import DummyRequest
 from .test_treegroup import TestTreeGroup
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def oauth2_clients_test_data(dbsession, transact):
     del transact
 
@@ -37,7 +37,7 @@ def oauth2_clients_test_data(dbsession, transact):
 class TestOAuth2Client(TestTreeGroup):
     _prefix = "/admin/oauth2_clients"
 
-    def test_index_rendering(self, test_app):
+    def test_index_rendering(self, test_app) -> None:
         resp = self.get(test_app)
 
         self.check_left_menu(resp, "OAuth2 Clients")
@@ -51,13 +51,13 @@ class TestOAuth2Client(TestTreeGroup):
         ]
         self.check_grid_headers(resp, expected)
 
-    def test_grid_search(self, test_app, oauth2_clients_test_data):
+    def test_grid_search(self, test_app, oauth2_clients_test_data) -> None:
         self.check_search(test_app, "", total=23)
 
         client = oauth2_clients_test_data["oauth2_clients"][0]
         self.check_search(test_app, client.client_id, total=1)
 
-    def test_submit_new(self, dbsession, test_app, oauth2_clients_test_data):
+    def test_submit_new(self, dbsession, test_app, oauth2_clients_test_data) -> None:
         from c2cgeoportal_commons.models.main import LogAction
         from c2cgeoportal_commons.models.static import Log, OAuth2Client
 
@@ -92,7 +92,7 @@ class TestOAuth2Client(TestTreeGroup):
         assert log.element_name == oauth2_client.client_id
         assert log.username == "test_user"
 
-    def test_edit_then_save(self, dbsession, test_app, oauth2_clients_test_data):
+    def test_edit_then_save(self, dbsession, test_app, oauth2_clients_test_data) -> None:
         from c2cgeoportal_commons.models.main import LogAction
         from c2cgeoportal_commons.models.static import Log
 
@@ -131,7 +131,7 @@ class TestOAuth2Client(TestTreeGroup):
         assert log.element_name == oauth2_client.client_id
         assert log.username == "test_user"
 
-    def test_duplicate(self, oauth2_clients_test_data, test_app, dbsession):
+    def test_duplicate(self, oauth2_clients_test_data, test_app, dbsession) -> None:
         from c2cgeoportal_commons.models.static import OAuth2Client
 
         oauth2_client_proto = oauth2_clients_test_data["oauth2_clients"][7]
@@ -152,7 +152,7 @@ class TestOAuth2Client(TestTreeGroup):
         ).group(1)
         assert oauth2_client_proto.id != oauth2_client.id
 
-    def test_delete(self, test_app, dbsession):
+    def test_delete(self, test_app, dbsession) -> None:
         from c2cgeoportal_commons.models.main import LogAction
         from c2cgeoportal_commons.models.static import Log, OAuth2Client
 
@@ -168,7 +168,7 @@ class TestOAuth2Client(TestTreeGroup):
         assert log.element_name == oauth2_client.client_id
         assert log.username == "test_user"
 
-    def test_unicity_validator(self, oauth2_clients_test_data, test_app):
+    def test_unicity_validator(self, oauth2_clients_test_data, test_app) -> None:
         oauth2_client_proto = oauth2_clients_test_data["oauth2_clients"][7]
         resp = test_app.get(f"/admin/oauth2_clients/{oauth2_client_proto.id}/duplicate", status=200)
 
@@ -177,7 +177,7 @@ class TestOAuth2Client(TestTreeGroup):
         self._check_submission_problem(resp, f"{oauth2_client_proto.client_id} is already used.")
 
     @pytest.mark.usefixtures("raise_db_error_on_query")
-    def test_grid_dberror(self, dbsession):
+    def test_grid_dberror(self, dbsession) -> None:
         from c2cgeoportal_admin.views.oauth2_clients import OAuth2ClientViews
 
         request = DummyRequest(dbsession=dbsession, params={"offset": 0, "limit": 10})

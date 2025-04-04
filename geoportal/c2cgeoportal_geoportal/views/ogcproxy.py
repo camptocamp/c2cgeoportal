@@ -47,7 +47,7 @@ class OGCProxy(Proxy):
     Then load the corresponding OGCServer.
     """
 
-    def __init__(self, request: pyramid.request.Request, has_default_ogc_server: bool = False):
+    def __init__(self, request: pyramid.request.Request, has_default_ogc_server: bool = False) -> None:
         Proxy.__init__(self, request)
 
         # params hold the parameters we"re going to send to backend
@@ -82,12 +82,13 @@ class OGCProxy(Proxy):
         try:
             result = DBSession.query(main.OGCServer).filter(main.OGCServer.name == name).one()
             DBSession.expunge(result)
-            return result
         except NoResultFound:
             raise HTTPBadRequest(  # pylint: disable=raise-missing-from
                 f"The OGC Server '{name}' does not exist (existing: "
                 f"{','.join([t[0] for t in DBSession.query(main.OGCServer.name).all()])}).",
             )
+        else:
+            return result
 
     def _get_wms_url(self, errors: set[str]) -> Url | None:
         ogc_server = self.ogc_server

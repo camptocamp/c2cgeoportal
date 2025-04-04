@@ -63,7 +63,7 @@ class CachebusterTween:
         self,
         handler: Callable[[pyramid.request.Request], pyramid.response.Response],
         registry: pyramid.registry.Registry,
-    ):
+    ) -> None:
         self.handler = handler
         self.cache_path = registry.settings["cache_path"]
 
@@ -71,7 +71,7 @@ class CachebusterTween:
         path = request.path_info.split("/", 3)
         if len(path) > 1 and path[1] in self.cache_path:
             if len(path) == 2:
-                raise pyramid.httpexceptions.HTTPNotFound()
+                raise pyramid.httpexceptions.HTTPNotFound
             # Remove the cache buster
             path.pop(2)
             request.path_info = "/".join(path)

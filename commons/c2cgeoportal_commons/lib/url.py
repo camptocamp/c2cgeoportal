@@ -42,10 +42,10 @@ class Url:
     _hostname: str | None = None
     _port: int | None = None
     path = ""
-    query: dict[str, str] = {}
+    query: dict[str, str] = {}  # noqa: RUF012
     fragment = ""
 
-    def __init__(self, url: str | None = None):
+    def __init__(self, url: str | None = None) -> None:
         if url:
             url_split = urllib.parse.urlsplit(url)
             self.scheme = url_split.scheme

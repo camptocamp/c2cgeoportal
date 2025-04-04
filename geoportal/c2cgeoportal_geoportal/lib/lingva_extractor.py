@@ -33,7 +33,6 @@ import subprocess  # nosec
 import traceback
 from collections.abc import Callable
 from typing import TYPE_CHECKING, Any, cast
-from xml.dom import Node
 from xml.parsers.expat import ExpatError
 
 import pyramid.threadlocal
@@ -60,12 +59,14 @@ from c2cgeoportal_geoportal.lib.caching import init_region
 from c2cgeoportal_geoportal.views.layers import Layers, get_layer_class
 
 if TYPE_CHECKING:
+    from xml.dom import Node
+
     from c2cgeoportal_commons.models import (
         main,  # pylint: disable=ungrouped-imports,useless-suppression
     )
 
 
-class LinguaExtractorException(Exception):
+class LinguaExtractorError(Exception):
     """Exception raised when an error occurs during the extraction."""
 
 
@@ -97,9 +98,9 @@ class _Registry:
 
 
 class _Request:
-    params: dict[str, str] = {}
-    matchdict: dict[str, str] = {}
-    GET: dict[str, str] = {}
+    params: dict[str, str] = {}  # noqa: RUF012
+    matchdict: dict[str, str] = {}  # noqa: RUF012
+    GET: dict[str, str] = {}  # noqa: RUF012
 
     def __init__(self, settings: dict[str, Any] | None = None) -> None:
         self.registry: _Registry = _Registry(settings)
@@ -129,10 +130,10 @@ class _Request:
         return ""
 
 
-class GeomapfishAngularExtractor(Extractor):  # type: ignore
+class GeomapfishAngularExtractor(Extractor):  # type: ignore[misc]
     """GeoMapFish angular extractor."""
 
-    extensions = [".js", ".html"]
+    extensions = [".js", ".html"]  # noqa: RUF012
 
     def __init__(self) -> None:
         super().__init__()
@@ -239,15 +240,20 @@ class GeomapfishAngularExtractor(Extractor):  # type: ignore
             messages = []
             for contexts, message in json.loads(message_str):
                 assert message is not None
-                message = cleaner(message)
-                for context in contexts.split(", "):
-                    messages.append(Message(None, message, None, [], "", "", context.split(":")))
-            return messages
+                message = cleaner(message)  # noqa: PLW2901
+                messages.extend(
+                    [
+                        Message(None, message, None, [], "", "", context.split(":"))
+                        for context in contexts.split(", ")
+                    ],
+                )
         except Exception:
             print(colorize("An error occurred", Color.RED))
             print(colorize(message_str, Color.RED))
             print("------")
             raise
+        else:
+            return messages
 
 
 def init_db(settings: dict[str, Any]) -> None:
@@ -273,7 +279,7 @@ def init_db(settings: dict[str, Any]) -> None:
         # Init db sessions
 
         class R:
-            settings: dict[str, Any] = {}
+            settings: dict[str, Any] = {}  # noqa: RUF012
 
         class C:
             registry = R()
@@ -290,10 +296,10 @@ def init_db(settings: dict[str, Any]) -> None:
         c2cgeoportal_geoportal.init_db_sessions(settings, config_)
 
 
-class GeomapfishConfigExtractor(Extractor):  # type: ignore
+class GeomapfishConfigExtractor(Extractor):  # type: ignore[misc]
     """GeoMapFish config extractor (raster layers, and print templates)."""
 
-    extensions = [".yaml", ".tmpl"]
+    extensions = [".yaml", ".tmpl"]  # noqa: RUF012
 
     def __call__(
         self,
@@ -317,7 +323,7 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
             # For the print config
             if "templates" in gmf_config:
                 return self._collect_print_config(gmf_config, filename)
-            raise Exception("Not a known config file")  # pylint: disable=broad-exception-raised
+            raise Exception("Not a known config file")  # pylint: disable=broad-exception-raised # noqa: TRY002
 
     def _collect_app_config(self, filename: str) -> list[Message]:
         config.init(filename)
@@ -458,13 +464,13 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore
         return result
 
 
-class GeomapfishThemeExtractor(Extractor):  # type: ignore
+class GeomapfishThemeExtractor(Extractor):  # type: ignore[misc]
     """GeoMapFish theme extractor."""
 
     # Run on the development.ini file
-    extensions = [".ini"]
-    featuretype_cache: dict[str, dict[str, Any] | None] = {}
-    wms_capabilities_cache: dict[str, WebMapService] = {}
+    extensions = [".ini"]  # noqa: RUF012
+    featuretype_cache: dict[str, dict[str, Any] | None] = {}  # noqa: RUF012
+    wms_capabilities_cache: dict[str, WebMapService] = {}  # noqa: RUF012
 
     def __init__(self) -> None:
         super().__init__()
@@ -484,7 +490,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
         fileobj: str | None = None,
         lineno: int = 0,
     ) -> list[Message]:
-        del fileobj, lineno
+        del fileobj, lineno, options
 
         print(f"Running {self.__class__.__name__} on {filename}")
 
@@ -742,7 +748,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                     [],
                     "",
                     "",
-                    (".".join([item_type, name]), sub_layer.encode("ascii", "replace")),
+                    (f"{item_type}.{name}", sub_layer.encode("ascii", "replace")),
                 ),
             )
         for attribute in attributes:
@@ -755,7 +761,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                     [],
                     "",
                     "",
-                    (".".join([item_type, name]), layer.encode("ascii", "replace")),
+                    (f"{item_type}.{name}", layer.encode("ascii", "replace")),
                 ),
             )
 
@@ -843,7 +849,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                     )
                     print(f"Response: {response.status_code} {response.reason}\n{response.text}")
                     if _get_config_str("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
-                        raise LinguaExtractorException(response.reason)
+                        raise LinguaExtractorError(response.reason)  # noqa: TRY301
             except Exception as e:  # pylint: disable=broad-exception-caught
                 print(colorize(str(e), Color.RED))
                 rendered_headers = " ".join(
@@ -905,7 +911,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                 )
                 if _get_config_str("IGNORE_I18N_ERRORS", "FALSE") == "TRUE":
                     return [], []
-                raise Exception("Aborted")  # pylint: disable=broad-exception-raised
+                raise Exception("Aborted")  # pylint: disable=broad-exception-raised # noqa: TRY002
 
             try:
                 describe = parseString(response.text)
@@ -956,11 +962,13 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
             # Should probably be adapted for other king of servers
             type_element = featurestype.get(f"{sub_layer}Type")
             if type_element is not None:
-                for element in type_element.getElementsByTagNameNS(
-                    "http://www.w3.org/2001/XMLSchema",
-                    "element",
-                ):
-                    if not element.getAttribute("type").startswith("gml:"):
-                        attributes.append(element.getAttribute("name"))
+                attributes.extend(
+                    element.getAttribute("name")
+                    for element in type_element.getElementsByTagNameNS(
+                        "http://www.w3.org/2001/XMLSchema",
+                        "element",
+                    )
+                    if not element.getAttribute("type").startswith("gml:")
+                )
 
         return attributes, layers

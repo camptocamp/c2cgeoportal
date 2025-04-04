@@ -7,7 +7,7 @@ import pytest
 from .test_treegroup import TestTreeGroup
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def layer_groups_test_data(dbsession, transact):
     del transact
 
@@ -65,7 +65,7 @@ def layer_groups_test_data(dbsession, transact):
 class TestLayersGroups(TestTreeGroup):
     _prefix = "/admin/layer_groups"
 
-    def test_index_rendering(self, test_app):
+    def test_index_rendering(self, test_app) -> None:
         resp = self.get(test_app)
 
         self.check_left_menu(resp, "Layers groups")
@@ -80,7 +80,7 @@ class TestLayersGroups(TestTreeGroup):
         ]
         self.check_grid_headers(resp, expected)
 
-    def test_grid_complex_column_val(self, test_app, layer_groups_test_data):
+    def test_grid_complex_column_val(self, test_app, layer_groups_test_data) -> None:
         json = self.check_search(test_app, sort="name")
 
         row = json["rows"][4]
@@ -91,11 +91,11 @@ class TestLayersGroups(TestTreeGroup):
         assert row["parents_relation"] == "groups_02, groups_06"
         assert row["metadatas"] == "disclaimer: © le momo, copyable: true"
 
-    def test_grid_search(self, test_app):
+    def test_grid_search(self, test_app) -> None:
         # search on metadatas
         self.check_search(test_app, "copyable", total=8)
 
-    def test_edit(self, test_app, layer_groups_test_data, dbsession):
+    def test_edit(self, test_app, layer_groups_test_data, dbsession) -> None:
         from c2cgeoportal_commons.models.main import Log, LogAction
 
         group = layer_groups_test_data["groups"][1]
@@ -146,7 +146,7 @@ class TestLayersGroups(TestTreeGroup):
         assert log.element_name == group.name
         assert log.username == "test_user"
 
-    def test_post_new_with_children_invalid(self, test_app, layer_groups_test_data):
+    def test_post_new_with_children_invalid(self, test_app, layer_groups_test_data) -> None:
         """Check there is no rendering error when validation fails."""
         groups = layer_groups_test_data["groups"]
         resp = test_app.post(
@@ -168,7 +168,7 @@ class TestLayersGroups(TestTreeGroup):
         )
         assert resp.html.select_one(".item-name .help-block").getText().strip() == "Required"
 
-    def test_post_new_with_children_success(self, test_app, dbsession, layer_groups_test_data):
+    def test_post_new_with_children_success(self, test_app, dbsession, layer_groups_test_data) -> None:
         from c2cgeoportal_commons.models.main import Log, LogAction
 
         groups = layer_groups_test_data["groups"]
@@ -222,7 +222,7 @@ class TestLayersGroups(TestTreeGroup):
         assert log.element_name == group.name
         assert log.username == "test_user"
 
-    def test_post_with_ancestor(self, layer_groups_test_data, test_app):
+    def test_post_with_ancestor(self, layer_groups_test_data, test_app) -> None:
         """Check that ancestors are refused to avoid cycles."""
         groups = layer_groups_test_data["groups"]
         resp = test_app.post(
@@ -248,7 +248,7 @@ class TestLayersGroups(TestTreeGroup):
             == resp.html.select_one(".item-children_relation + .help-block").getText().strip()
         )
 
-    def test_duplicate(self, layer_groups_test_data, test_app, dbsession):
+    def test_duplicate(self, layer_groups_test_data, test_app, dbsession) -> None:
         from c2cgeoportal_commons.models.main import LayerGroup
 
         group = layer_groups_test_data["groups"][1]
@@ -283,7 +283,7 @@ class TestLayersGroups(TestTreeGroup):
         assert duplicated.children_relation[0].id != group.children_relation[0].id
         assert duplicated.children_relation[0].treeitem.id == group.children_relation[0].treeitem.id
 
-    def test_unicity_validator(self, layer_groups_test_data, test_app):
+    def test_unicity_validator(self, layer_groups_test_data, test_app) -> None:
         group = layer_groups_test_data["groups"][1]
         resp = test_app.get(f"{self._prefix}/{group.id}/duplicate", status=200)
 
@@ -291,7 +291,7 @@ class TestLayersGroups(TestTreeGroup):
 
         self._check_submission_problem(resp, f"{group.name} is already used.")
 
-    def test_delete(self, test_app, dbsession, layer_groups_test_data):
+    def test_delete(self, test_app, dbsession, layer_groups_test_data) -> None:
         from c2cgeoportal_commons.models.main import (
             LayerGroup,
             LayergroupTreeitem,

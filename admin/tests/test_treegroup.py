@@ -4,7 +4,7 @@ from . import AbstractViewsTests
 
 
 class TestTreeGroup(AbstractViewsTests):
-    def check_children(self, form, group, expected):
+    def check_children(self, form, group, expected) -> None:
         form_group = form.html.select_one(f".item-{group}")
         items = form_group.select(".deform-seq-item")
         assert len(expected) == len(items)

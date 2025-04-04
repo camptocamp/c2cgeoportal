@@ -43,7 +43,7 @@ _LOG = logging.getLogger(__name__)
 class ResourceProxy(Proxy):
     """All the views concerned the resources (it's a kind of proxy)."""
 
-    def __init__(self, request: pyramid.request.Request):
+    def __init__(self, request: pyramid.request.Request) -> None:
         Proxy.__init__(self, request)
         self.request = request
         self.settings = request.registry.settings.get("resourceproxy", {})

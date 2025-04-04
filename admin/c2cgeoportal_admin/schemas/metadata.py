@@ -60,7 +60,7 @@ def metadata_definitions(settings: dict[str, Any], model: type[Any]) -> list[dic
     ]
 
 
-class MetadataSelectWidget(SelectWidget):  # type: ignore
+class MetadataSelectWidget(SelectWidget):  # type: ignore[misc]
     """
     Extends class SelectWidget to support undefined metadata.
 
@@ -79,7 +79,7 @@ class MetadataSelectWidget(SelectWidget):  # type: ignore
 def metadata_name_widget(model: type[Any]) -> colander.deferred:
     """Return a colander deferred which itself returns a widget for the metadata name field."""
 
-    def create_widget(node, kw):
+    def create_widget(node: Any, kw: Any) -> MetadataSelectWidget:
         del node
         return MetadataSelectWidget(
             values=[
@@ -94,7 +94,7 @@ def metadata_name_widget(model: type[Any]) -> colander.deferred:
     return colander.deferred(create_widget)
 
 
-def json_validator(node, value):
+def json_validator(node: Any, value: dict[str, Any]) -> None:
     """Validate the value to be a valid JSON."""
     try:
         json.loads(value)
@@ -102,7 +102,7 @@ def json_validator(node, value):
         raise colander.Invalid(node, _('Parser report: "{}"').format(str(e)))
 
 
-def regex_validator(node, value):
+def regex_validator(node: Any, value: dict[str, Any]) -> None:
     """Validate the value with a regexp."""
     definition = node.metadata_definitions.get(value["name"], {})
     if definition.get("type", "string") == "regex":
@@ -115,10 +115,10 @@ def regex_validator(node, value):
             raise error from e
 
 
-class BooleanMetadata(colander.Boolean):  # type: ignore
+class BooleanMetadata(colander.Boolean):  # type: ignore[misc]
     """Boolean metadata values are stored as string in database."""
 
-    def serialize(self, node, appstruct):
+    def serialize(self, node: Any, appstruct: str) -> Any:
         if appstruct == "true":
             appstruct = True
         elif appstruct == "false":
@@ -127,7 +127,7 @@ class BooleanMetadata(colander.Boolean):  # type: ignore
             appstruct = colander.null
         return super().serialize(node, appstruct)
 
-    def deserialize(self, node, cstruct):
+    def deserialize(self, node: Any, cstruct: Any) -> str | None:
         appstruct = super().deserialize(node, cstruct)
         if appstruct is True:
             return "true"
@@ -141,7 +141,7 @@ class MetadataSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
 
     metadata_definitions: dict[str, Any] | None = None
 
-    def __init__(self, *args: Any, **kw: Any):
+    def __init__(self, *args: Any, **kw: Any) -> None:
         super().__init__(*args, **kw)
 
         self.available_types: list[str] = []
@@ -173,12 +173,12 @@ class MetadataSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
         )
         self.available_types.append(type_name)
 
-    def objectify(self, dict_, context=None):
+    def objectify(self, dict_: dict[str, Any], context: Any = None) -> Any:
         # depending on the type get the value from the right widget
         dict_["value"] = dict_[self._ui_type(dict_["name"])]
         return super().objectify(dict_, context)
 
-    def dictify(self, obj):
+    def dictify(self, obj: Any) -> dict[str, Any]:
         dict_ = super().dictify(obj)
         value = obj.value or colander.null
         # depending on the type set the value in the right widget

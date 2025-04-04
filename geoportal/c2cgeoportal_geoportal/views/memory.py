@@ -86,5 +86,5 @@ def _process_dict(dict_: dict[str, Any], dogpile_cache: bool = False) -> dict[st
 def _memory() -> dict[str, Any]:
     result = {"raster_data": _process_dict(raster.Raster.data)}
     if os.environ.get("GEOMAPFISH_DEBUG_MEMORY_CACHE", "false").lower() in ("true", "1", "yes", "on"):
-        result["memory_cache"] = _process_dict(MEMORY_CACHE_DICT, True)
+        result["memory_cache"] = _process_dict(MEMORY_CACHE_DICT, dogpile_cache=True)
     return result

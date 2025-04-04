@@ -26,10 +26,11 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import pyramid.config
 from c2cgeoform.routes import register_route, register_routes
 
 
-def includeme(config):
+def includeme(config: pyramid.config.Configurator) -> None:
     """Initialize the Pyramid routes."""
     config.add_static_view("c2cgeoportal_admin_node_modules", "c2cgeoportal_admin:node_modules")
     config.override_asset(

@@ -192,7 +192,7 @@ def _get_filtered_errors(themes):
 
 
 @pytest.mark.usefixtures("dbsession", "transact", "themes_setup")
-def test_group(dbsession, transact, themes_setup):
+def test_group(dbsession, transact, themes_setup) -> None:
     theme_view = _create_theme_obj(params={"group": "__test_layer_group_3"})
     themes = theme_view.themes()
     assert _get_filtered_errors(themes) == set()
@@ -226,7 +226,7 @@ def test_group(dbsession, transact, themes_setup):
 
 
 @pytest.mark.usefixtures("dbsession", "transact", "themes_setup")
-def test_group_update(dbsession, transact, themes_setup):
+def test_group_update(dbsession, transact, themes_setup) -> None:
     from c2cgeoportal_commons.models.main import LayerGroup
 
     layer_group_3 = dbsession.query(LayerGroup).filter(LayerGroup.name == "__test_layer_group_3").one()
@@ -244,7 +244,7 @@ def test_group_update(dbsession, transact, themes_setup):
 
 
 @pytest.mark.usefixtures("dbsession", "transact", "themes_setup")
-def test_min_levels(dbsession, transact, themes_setup):
+def test_min_levels(dbsession, transact, themes_setup) -> None:
     theme_view = _create_theme_obj(params={"interface": "min_levels"})
     themes = theme_view.themes()
     assert _get_filtered_errors(themes) == {
@@ -264,7 +264,7 @@ def test_min_levels(dbsession, transact, themes_setup):
 
 
 @pytest.mark.usefixtures("dbsession", "transact", "themes_setup")
-def test_theme_layer(dbsession, transact, themes_setup):
+def test_theme_layer(dbsession, transact, themes_setup) -> None:
     theme_view = _create_theme_obj(params={"interface": "min_levels", "min_levels": "0"})
     themes = theme_view.themes()
     assert _get_filtered_errors(themes) == set()
@@ -274,7 +274,7 @@ def test_theme_layer(dbsession, transact, themes_setup):
 
 
 @pytest.mark.usefixtures("dbsession", "transact", "themes_setup")
-def test_interface(dbsession, transact, themes_setup):
+def test_interface(dbsession, transact, themes_setup) -> None:
     theme_view = _create_theme_obj(params={"interface": "mobile"})
     themes = theme_view.themes()
     assert _get_filtered_errors(themes) == set()
@@ -290,7 +290,7 @@ def test_interface(dbsession, transact, themes_setup):
 
 
 @pytest.mark.usefixtures("dbsession", "transact", "themes_setup")
-def test_metadata(dbsession, transact, themes_setup):
+def test_metadata(dbsession, transact, themes_setup) -> None:
     theme_view = _create_theme_obj()
     themes = theme_view.themes()
     assert _get_filtered_errors(themes) == set()
@@ -322,7 +322,7 @@ def test_metadata(dbsession, transact, themes_setup):
 
 
 @pytest.mark.usefixtures("dbsession", "transact", "themes_setup")
-def test_ogc_server(dbsession, transact, themes_setup):
+def test_ogc_server(dbsession, transact, themes_setup) -> None:
     theme_view = _create_theme_obj()
 
     themes = theme_view.themes()
@@ -378,7 +378,7 @@ def test_ogc_server(dbsession, transact, themes_setup):
 
 
 @pytest.mark.usefixtures("dbsession", "transact", "themes_setup")
-def test_dimensions(dbsession, transact, themes_setup):
+def test_dimensions(dbsession, transact, themes_setup) -> None:
     theme_view = _create_theme_obj(params={"group": "__test_layer_group_3"})
     themes = theme_view.themes()
     assert _get_filtered_errors(themes) == set()
@@ -389,7 +389,7 @@ def test_dimensions(dbsession, transact, themes_setup):
 
 
 @pytest.mark.usefixtures("dbsession", "transact", "themes_setup")
-def test_background(dbsession, transact, themes_setup):
+def test_background(dbsession, transact, themes_setup) -> None:
     theme_view = _create_theme_obj(params={"background": "__test_layer_group_3", "set": "background"})
     themes = theme_view.themes()
     assert _get_filtered_errors(themes) == set()

@@ -74,7 +74,7 @@ class Access(Enum):
 class GeoMapFishAccessControl(QgsAccessControlFilter):
     """Implements GeoMapFish access restriction."""
 
-    def __init__(self, server_iface: qgis.server.QgsServerInterface):
+    def __init__(self, server_iface: qgis.server.QgsServerInterface) -> None:
         """Initialize the plugin."""
         super().__init__(server_iface)
 
@@ -350,7 +350,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         srid: int,
         DBSession: sessionmaker,  # pylint: disable=invalid-name
         ogcserver: Optional["main.OGCServer"] = None,
-    ):
+    ) -> None:
         """Initialize the plugin."""
         super().__init__(server_iface)
 
@@ -452,11 +452,11 @@ class OGCServerAccessControl(QgsAccessControlFilter):
                     nodes[ogc_name].append(name)
 
                 for layer in node.children():
-                    browse(path + [ogc_name], layer)
+                    browse([*path, ogc_name], layer)
 
             browse([], self.project().layerTreeRoot())
 
-            for ogc_layer_name, _ in nodes.items():
+            for ogc_layer_name in nodes:
                 _LOG.debug("QGIS layer: %s", ogc_layer_name)
 
             # Transform ancestor names in LayerWMS instances

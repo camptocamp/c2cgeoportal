@@ -38,7 +38,7 @@ try:
     from pyramid.httpexceptions import HTTPInternalServerError
 except ModuleNotFoundError:
 
-    class HTTPInternalServerError(BaseException):  # type: ignore
+    class HTTPInternalServerError(BaseException):  # type: ignore[m]
         """Fallback class."""
 
 
@@ -78,7 +78,7 @@ def send_email(
     msg["Subject"] = subject
     msg.attach(MIMEText(body, "plain", "utf-8"))
 
-    SMTPClass = smtplib.SMTP_SSL if smtp_config.get("ssl", False) else smtplib.SMTP
+    SMTPClass = smtplib.SMTP_SSL if smtp_config.get("ssl", False) else smtplib.SMTP  # noqa: N806
     with SMTPClass(smtp_config["host"]) as smtp:
         if smtp_config.get("starttls", False):
             smtp.starttls()

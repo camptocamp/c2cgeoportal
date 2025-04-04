@@ -48,7 +48,7 @@ CACHE_REGION = get_region("std")
 class DynamicView:
     """The dynamic vies that provide the configuration of the client application."""
 
-    def __init__(self, request: pyramid.request.Request):
+    def __init__(self, request: pyramid.request.Request) -> None:
         self.request = request
         self.settings = request.registry.settings
         self.interfaces_config = self.settings["interfaces_config"]

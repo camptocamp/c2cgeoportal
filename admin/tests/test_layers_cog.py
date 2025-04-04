@@ -10,7 +10,7 @@ from webtest import TestApp as WebTestApp  # Avoid warning with pytest
 from . import AbstractViewsTests, factory_build_layers, get_test_default_layers
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def layer_cog_test_data(dbsession: Session, transact: SessionTransaction) -> dict[str, Any]:
     del transact
 

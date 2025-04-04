@@ -202,7 +202,7 @@ def upgrade() -> None:
             schema=schema,
         )
     op.execute(
-        "INSERT INTO %(schema)s.user (type, username, email, password, role_id) "
+        "INSERT INTO %(schema)s.user (type, username, email, password, role_id) "  # noqa: UP031
         "(SELECT 'user', 'admin', 'info@example.com', '%(pass)s', r.id "
         "FROM %(schema)s.role AS r "
         "WHERE r.name = 'role_admin')" % {"schema": schema, "pass": sha1(b"admin").hexdigest()},  # nosec

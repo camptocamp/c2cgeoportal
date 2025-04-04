@@ -136,7 +136,7 @@ class PCreateCommand:
 
         for scaffold_name in self.args.scaffold_names:
             # Needed to be backward compatible for the `test-upgrade init` command
-            scaffold_name = scaffold_name.removeprefix("c2cgeoportal_")
+            scaffold_name = scaffold_name.removeprefix("c2cgeoportal_")  # noqa: PLW2901
             self.out(f"Rendering scaffold: {scaffold_name}")
             cookiecutter(
                 template=os.path.join(SCAFFOLDS_DIR, scaffold_name),

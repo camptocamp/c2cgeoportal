@@ -33,10 +33,10 @@ import yaml
 from lingva.extractors import Extractor, Message
 
 
-class GeomapfishConfigExtractor(Extractor):  # type: ignore
+class GeomapfishConfigExtractor(Extractor):  # type: ignore[m]
     """GeoMapFish config extractor (raster layers, and print templates)."""
 
-    extensions = [".yaml"]
+    extensions = [".yaml"]  # noqa: RUF012
 
     def __call__(
         self,

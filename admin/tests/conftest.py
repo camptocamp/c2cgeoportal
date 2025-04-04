@@ -30,7 +30,7 @@ def dbsession(settings: dict[str, Any]) -> Session:
     return session
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def transact(dbsession: Session) -> SessionTransaction:
     t = dbsession.begin_nested()
     yield t
@@ -45,7 +45,7 @@ def raise_db_error(_: Any) -> None:
     raise DBAPIError("this is a test !", None, None)
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def raise_db_error_on_query(dbsession: Session) -> None:
     query = dbsession.query
     dbsession.query = raise_db_error

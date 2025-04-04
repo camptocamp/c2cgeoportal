@@ -23,7 +23,7 @@ def insert_users_test_data(dbsession):
 
 @pytest.mark.usefixtures("insert_users_test_data", "transact")
 class TestUser:
-    def test_select(self, dbsession):
+    def test_select(self, dbsession) -> None:
         from c2cgeoportal_commons.models.static import User
 
         users = dbsession.query(User).all()
@@ -31,7 +31,7 @@ class TestUser:
         assert users[0].username == "babar", "user from test data is babar"
         assert len(users[0].roles) == 2
 
-    def test_remove(self, dbsession):
+    def test_remove(self, dbsession) -> None:
         from c2cgeoportal_commons.models.static import User, user_role
 
         users = dbsession.query(User).all()
@@ -40,7 +40,7 @@ class TestUser:
         assert len(users) == 0, "removed a user"
         assert dbsession.query(user_role).count() == 0
 
-    def test_add(self, dbsession):
+    def test_add(self, dbsession) -> None:
         from c2cgeoportal_commons.models.main import Role
         from c2cgeoportal_commons.models.static import User, user_role
 

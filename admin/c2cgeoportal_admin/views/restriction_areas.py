@@ -27,6 +27,7 @@
 
 
 from functools import partial
+from typing import Any
 
 import colander
 import sqlalchemy.orm.query
@@ -56,8 +57,9 @@ base_schema.add_before("area", roles_schema_node(RestrictionArea.roles))
 base_schema.add_unique_validator(RestrictionArea.name, RestrictionArea.id)
 
 
-def layers(node, kw):  # pylint: disable=unused-argument
+def layers(node: Any, kw: Any) -> list[dict[str, Any]]:  # pylint: disable=unused-argument
     """Get the layers serializable representation."""
+    del node  # unused
     dbsession = kw["request"].dbsession
     query = dbsession.query(Layer).order_by(Layer.name)
     return [
@@ -99,7 +101,7 @@ base_schema.add(
 class RestrictionAreaViews(LoggedViews[RestrictionArea]):
     """The restriction area administration view."""
 
-    _list_fields = [
+    _list_fields = [  # noqa: RUF012
         _list_field("id"),
         _list_field("name"),
         _list_field("description"),

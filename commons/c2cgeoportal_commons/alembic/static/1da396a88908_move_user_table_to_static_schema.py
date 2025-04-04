@@ -95,7 +95,7 @@ def upgrade() -> None:
         op.drop_table("user", schema=schema)
     except Exception:  # pylint: disable=broad-exception-caught
         op.execute(
-            "INSERT INTO %(staticschema)s.user (type, username, email, password, role) "
+            "INSERT INTO %(staticschema)s.user (type, username, email, password, role) "  # noqa: UP031
             "VALUES ( 'user', 'admin', 'info@example.com', '%(pass)s', 'role_admin')"
             % {"staticschema": staticschema, "pass": sha1(b"admin").hexdigest()},  # nosec
         )

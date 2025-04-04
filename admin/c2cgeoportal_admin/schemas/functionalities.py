@@ -51,7 +51,8 @@ def available_functionalities_for(settings: dict[str, Any], model: type[Any]) ->
 def functionalities_widget(model: type[Any]) -> colander.deferred:
     """Return a colander deferred which itself returns a widget for the functionalities field."""
 
-    def create_widget(node, kw):
+    def create_widget(node: Any, kw: Any) -> RelationCheckBoxListWidget:
+        """Create a widget for the functionalities field."""
         del node
 
         return RelationCheckBoxListWidget(

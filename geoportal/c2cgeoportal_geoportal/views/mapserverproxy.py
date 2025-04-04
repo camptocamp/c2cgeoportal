@@ -55,7 +55,7 @@ _LOG = logging.getLogger(__name__)
 class MapservProxy(OGCProxy):
     """Proxy for OGC (WMS/WFS) servers."""
 
-    params: dict[str, str] = {}
+    params: dict[str, str] = {}  # noqa: RUF012
 
     def __init__(self, request: Request) -> None:
         OGCProxy.__init__(self, request)
@@ -111,7 +111,7 @@ class MapservProxy(OGCProxy):
 
         if _url is None:
             _LOG.error("Error getting the URL:\n%s", "\n".join(errors))
-            raise HTTPInternalServerError()
+            raise HTTPInternalServerError
 
         cache_control = (
             Cache.PRIVATE
@@ -191,7 +191,7 @@ class MapservProxy(OGCProxy):
 
         if _url is None:
             _LOG.error("Error getting the URL:\n%s", "\n".join(errors))
-            raise HTTPInternalServerError()
+            raise HTTPInternalServerError
 
         cache_control = Cache.PRIVATE_NO
 
@@ -201,7 +201,7 @@ class MapservProxy(OGCProxy):
             headers["sec-username"] = self.user.username
             headers["sec-roles"] = ";".join(get_roles_name(self.request))
 
-        response = self._proxy_callback(
+        return self._proxy_callback(
             cache_control,
             url=_url,
             params=self.params,
@@ -209,8 +209,6 @@ class MapservProxy(OGCProxy):
             headers=headers,
             body=self.request.body,
         )
-
-        return response
 
     def _proxy_callback(
         self,

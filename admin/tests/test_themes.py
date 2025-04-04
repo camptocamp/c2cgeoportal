@@ -7,7 +7,7 @@ import pytest
 from .test_treegroup import TestTreeGroup
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def theme_test_data(dbsession, transact):
     del transact
 
@@ -92,7 +92,7 @@ def theme_test_data(dbsession, transact):
 class TestTheme(TestTreeGroup):
     _prefix = "/admin/themes"
 
-    def test_index_rendering(self, test_app):
+    def test_index_rendering(self, test_app) -> None:
         resp = self.get(test_app)
 
         self.check_left_menu(resp, "Themes")
@@ -112,7 +112,7 @@ class TestTheme(TestTreeGroup):
         ]
         self.check_grid_headers(resp, expected)
 
-    def test_grid_complex_column_val(self, test_app, theme_test_data):
+    def test_grid_complex_column_val(self, test_app, theme_test_data) -> None:
         json = self.check_search(test_app)
 
         first_row = json["rows"][0]
@@ -125,7 +125,7 @@ class TestTheme(TestTreeGroup):
         assert first_row["interfaces"] == "desktop, edit"
         assert first_row["metadatas"] == 'copyable: true, snappingConfig: {"tolerance": 50}'
 
-    def test_grid_search(self, test_app):
+    def test_grid_search(self, test_app) -> None:
         # search on metadatas key and value parts
         self.check_search(test_app, "disclai ©", total=16)
 
@@ -147,7 +147,7 @@ class TestTheme(TestTreeGroup):
         # search on functionalities
         self.check_search(test_app, "default_basemap value_0", total=7)
 
-    def test_public_checkbox_edit(self, test_app, theme_test_data):
+    def test_public_checkbox_edit(self, test_app, theme_test_data) -> None:
         theme = theme_test_data["themes"][10]
         form10 = test_app.get(f"/admin/themes/{theme.id}", status=200).form
         assert not form10["public"].checked
@@ -155,7 +155,7 @@ class TestTheme(TestTreeGroup):
         form11 = test_app.get(f"/admin/themes/{theme.id}", status=200).form
         assert form11["public"].checked
 
-    def test_edit(self, test_app, theme_test_data, dbsession):
+    def test_edit(self, test_app, theme_test_data, dbsession) -> None:
         from c2cgeoportal_commons.models.main import Log, LogAction
 
         theme = theme_test_data["themes"][0]
@@ -240,7 +240,7 @@ class TestTheme(TestTreeGroup):
         assert log.element_name == theme.name
         assert log.username == "test_user"
 
-    def test_post_new_with_children_invalid(self, test_app, theme_test_data):
+    def test_post_new_with_children_invalid(self, test_app, theme_test_data) -> None:
         """Check there is no rendering error when validation fails."""
         groups = theme_test_data["groups"]
         resp = test_app.post(
@@ -263,7 +263,7 @@ class TestTheme(TestTreeGroup):
 
         self._check_submission_problem(resp, "Required")
 
-    def test_post_new_with_children_success(self, test_app, dbsession, theme_test_data):
+    def test_post_new_with_children_success(self, test_app, dbsession, theme_test_data) -> None:
         from c2cgeoportal_commons.models.main import Log, LogAction
 
         groups = theme_test_data["groups"]
@@ -318,7 +318,7 @@ class TestTheme(TestTreeGroup):
         assert log.element_name == theme.name
         assert log.username == "test_user"
 
-    def test_post_new_with_child_layer(self, theme_test_data, test_app):
+    def test_post_new_with_child_layer(self, theme_test_data, test_app) -> None:
         """Check layers are rejected by the validator (also means that they are not proposed to the user)."""
         layers = theme_test_data["layers"]
         resp = test_app.post(
@@ -346,7 +346,7 @@ class TestTheme(TestTreeGroup):
             == resp.html.select_one(".item-children_relation + .help-block").getText().strip()
         )
 
-    def test_duplicate(self, theme_test_data, test_app, dbsession):
+    def test_duplicate(self, theme_test_data, test_app, dbsession) -> None:
         from c2cgeoportal_commons.models.main import Theme
 
         theme = theme_test_data["themes"][1]
@@ -408,7 +408,7 @@ class TestTheme(TestTreeGroup):
         assert duplicated.children_relation[0].id != theme.children_relation[0].id
         assert duplicated.children_relation[0].treeitem.id == theme.children_relation[0].treeitem.id
 
-    def test_delete(self, test_app, dbsession):
+    def test_delete(self, test_app, dbsession) -> None:
         from c2cgeoportal_commons.models.main import Log, LogAction, Theme
 
         theme = dbsession.query(Theme).first()
@@ -423,7 +423,7 @@ class TestTheme(TestTreeGroup):
         assert log.element_name == theme.name
         assert log.username == "test_user"
 
-    def test_unicity_validator(self, theme_test_data, test_app):
+    def test_unicity_validator(self, theme_test_data, test_app) -> None:
         theme = theme_test_data["themes"][1]
         resp = test_app.get(f"{self._prefix}/{theme.id}/duplicate", status=200)
 

@@ -33,8 +33,7 @@ import os
 import re
 import sys
 import time
-import xml.etree
-import xml.etree.ElementTree  # nosec
+import xml.etree.ElementTree  # nosec # noqa: ICN001
 from collections import Counter
 from math import sqrt
 from typing import Any, cast
@@ -167,7 +166,7 @@ class DimensionInformation:
 class Theme:
     """All the views concerning the themes."""
 
-    def __init__(self, request: pyramid.request.Request):
+    def __init__(self, request: pyramid.request.Request) -> None:
         self.request = request
         self.settings = request.registry.settings
         self.http_options = self.settings.get("http_options", {})
@@ -285,7 +284,7 @@ class Theme:
         if errors or preload:
             return None, errors
 
-        return build_web_map_service.refresh(ogc_server.id)  # type: ignore
+        return build_web_map_service.refresh(ogc_server.id)  # type: ignore[m]
 
     async def _wms_getcap_cached(
         self,
@@ -367,9 +366,7 @@ class Theme:
         if interface is not None:
             query3 = query3.join(main.Layer.interfaces)
             query3 = query3.filter(main.Interface.name == interface)
-        query = query.union(query3)
-
-        return query
+        return query.union(query3)
 
     def _get_layer_metadata_urls(self, layer: main.Layer) -> list[str]:
         metadata_urls: list[str] = []
@@ -646,7 +643,7 @@ class Theme:
             ogc_servers.add(group.ogc_server.name)
 
         if isinstance(group, main.LayerWMTS):
-            ogc_servers.add(False)
+            ogc_servers.add(element=False)
 
         return ogc_servers
 
@@ -1061,7 +1058,7 @@ class Theme:
     ) -> None:
         if ogc_server.wfs_support:
             await self._get_features_attributes(url_internal_wfs, ogc_server, cache=cache)
-        await self._wms_getcap(ogc_server, False, cache=cache)
+        await self._wms_getcap(ogc_server, preload=False, cache=cache)
 
     async def _get_features_attributes(
         self,
@@ -1161,7 +1158,12 @@ class Theme:
             if result != dogpile.cache.api.NO_VALUE:
                 return result  # type: ignore[no-any-return]
 
-        feature_type, errors = await self._wfs_get_features_type(url_internal_wfs, ogc_server, False, cache)
+        feature_type, errors = await self._wfs_get_features_type(
+            url_internal_wfs,
+            ogc_server,
+            preload=False,
+            cache=cache,
+        )
 
         return _get_features_attributes_cache.refresh(  # type: ignore[attr-defined,no-any-return]
             url_internal_wfs,
@@ -1259,7 +1261,7 @@ class Theme:
                     "attributes": attributes,
                 }
             if export_themes:
-                themes, errors = await self._themes(interface, True, min_levels)
+                themes, errors = await self._themes(interface, filter_themes=True, min_levels=min_levels)
 
                 result["themes"] = themes
                 all_errors |= errors
@@ -1335,11 +1337,11 @@ class Theme:
         assert models.DBSession is not None
 
         if not self.request.user:
-            raise pyramid.httpexceptions.HTTPForbidden()
+            raise pyramid.httpexceptions.HTTPForbidden
 
         admin_roles = [r for r in self.request.user.roles if r.name == ("role_admin")]
         if not admin_roles:
-            raise pyramid.httpexceptions.HTTPForbidden()
+            raise pyramid.httpexceptions.HTTPForbidden
 
         self._ogc_server_clear_cache(
             models.DBSession.query(main.OGCServer).filter_by(id=self.request.matchdict.get("id")).one(),
@@ -1380,6 +1382,6 @@ class Theme:
         url_internal_wfs: Url,
     ) -> None:
         # Fill the cache
-        await self.preload_ogc_server(ogc_server, url_internal_wfs, False)
+        await self.preload_ogc_server(ogc_server, url_internal_wfs, cache=False)
 
         cache_invalidate_cb()

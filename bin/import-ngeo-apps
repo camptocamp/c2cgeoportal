@@ -93,7 +93,7 @@ def main() -> None:
                 )
                 data = _sub(
                     "</gmf-([a-z]+)-canvas>.*</body>$",
-                    "\n".join(
+                    "\n".join(  # noqa: FLY002
                         [
                             "</gmf-\\1-canvas>",
                             "    <script nomodule>",

@@ -102,7 +102,6 @@ def wms_structure(request: pyramid.request.Request, wms_url: Url, host: str) -> 
 
         for layer in list(wms.contents.values()):
             _fill(layer.name, layer.parent)
-        return result
 
     except AttributeError:
         error = "WARNING! an error occurred while trying to read the mapfile and recover the themes."
@@ -115,6 +114,9 @@ def wms_structure(request: pyramid.request.Request, wms_url: Url, host: str) -> 
         error = f"{error}\nurl: {wms_url}\nxml:\n{response.text}"
         _LOG.exception(error)
         raise HTTPBadGateway(error)  # pylint: disable=raise-missing-from
+
+    else:
+        return result
 
 
 def filter_capabilities(
@@ -152,8 +154,8 @@ def filter_capabilities(
 
     parser = defusedxml.expatreader.create_parser(forbid_external=False)
     # skip inclusion of DTDs
-    parser.setFeature(xml.sax.handler.feature_external_ges, False)
-    parser.setFeature(xml.sax.handler.feature_external_pes, False)
+    parser.setFeature(xml.sax.handler.feature_external_ges, state=False)
+    parser.setFeature(xml.sax.handler.feature_external_pes, state=False)
 
     result = StringIO()
     downstream_handler = XMLGenerator(result, "utf-8")
@@ -186,8 +188,8 @@ def filter_wfst_capabilities(content: str, wfs_url: Url, request: pyramid.reques
 
     parser = defusedxml.expatreader.create_parser(forbid_external=False)
     # skip inclusion of DTDs
-    parser.setFeature(xml.sax.handler.feature_external_ges, False)
-    parser.setFeature(xml.sax.handler.feature_external_pes, False)
+    parser.setFeature(xml.sax.handler.feature_external_ges, state=False)
+    parser.setFeature(xml.sax.handler.feature_external_pes, state=False)
 
     result = StringIO()
     downstream_handler = XMLGenerator(result, "utf-8")
@@ -202,7 +204,7 @@ def filter_wfst_capabilities(content: str, wfs_url: Url, request: pyramid.reques
 
 
 class _Layer:
-    def __init__(self, self_hidden: bool = False):
+    def __init__(self, self_hidden: bool = False) -> None:
         self.accumulator: list[Callable[[], None]] = []
         self.hidden = True
         self.self_hidden = self_hidden
@@ -226,7 +228,7 @@ class _CapabilitiesFilter(XMLFilterBase):
         tag_name: str,
         layers_blacklist: set[str] | None = None,
         layers_whitelist: set[str] | None = None,
-    ):
+    ) -> None:
         XMLFilterBase.__init__(self, upstream)
         self._downstream = downstream
         self._accumulator: list[str] = []

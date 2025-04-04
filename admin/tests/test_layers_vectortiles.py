@@ -7,7 +7,7 @@ import pytest
 from . import AbstractViewsTests, factory_build_layers, get_test_default_layers
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def layer_vectortiles_test_data(dbsession, transact):
     del transact
 
@@ -34,7 +34,7 @@ def layer_vectortiles_test_data(dbsession, transact):
 class TestLayerVectortiles(AbstractViewsTests):
     _prefix = "/admin/layers_vectortiles"
 
-    def test_index_rendering(self, test_app):
+    def test_index_rendering(self, test_app) -> None:
         resp = self.get(test_app)
 
         self.check_left_menu(resp, "Vector Tiles Layers")
@@ -57,7 +57,7 @@ class TestLayerVectortiles(AbstractViewsTests):
         ]
         self.check_grid_headers(resp, expected)
 
-    def test_grid_complex_column_val(self, test_app, layer_vectortiles_test_data):
+    def test_grid_complex_column_val(self, test_app, layer_vectortiles_test_data) -> None:
         json = self.check_search(test_app, sort="name")
 
         row = json["rows"][0]
@@ -66,7 +66,7 @@ class TestLayerVectortiles(AbstractViewsTests):
         assert layer.id == int(row["_id_"])
         assert layer.name == row["name"]
 
-    def test_new(self, test_app, layer_vectortiles_test_data, dbsession):
+    def test_new(self, test_app, layer_vectortiles_test_data, dbsession) -> None:
         default_vectortiles = layer_vectortiles_test_data["default"]["vectortiles"]
         default_vectortiles.name = "so can I not be found"
         dbsession.flush()
@@ -78,10 +78,10 @@ class TestLayerVectortiles(AbstractViewsTests):
         assert self.get_first_field_named(form, "style").value == ""
         assert self.get_first_field_named(form, "xyz").value == ""
 
-    def test_grid_search(self, test_app):
+    def test_grid_search(self, test_app) -> None:
         self.check_search(test_app, "layer_vectortiles_10", total=1)
 
-    def test_base_edit(self, test_app, layer_vectortiles_test_data):
+    def test_base_edit(self, test_app, layer_vectortiles_test_data) -> None:
         layer = layer_vectortiles_test_data["layers"][10]
 
         form = self.get_item(test_app, layer.id).form
@@ -89,7 +89,7 @@ class TestLayerVectortiles(AbstractViewsTests):
         assert self.get_first_field_named(form, "name").value == "layer_vectortiles_10"
         assert self.get_first_field_named(form, "description").value == ""
 
-    def test_public_checkbox_edit(self, test_app, layer_vectortiles_test_data):
+    def test_public_checkbox_edit(self, test_app, layer_vectortiles_test_data) -> None:
         layer = layer_vectortiles_test_data["layers"][10]
         form = self.get_item(test_app, layer.id).form
         assert not form["public"].checked
@@ -98,7 +98,7 @@ class TestLayerVectortiles(AbstractViewsTests):
         form = self.get_item(test_app, layer.id).form
         assert form["public"].checked
 
-    def test_edit(self, test_app, layer_vectortiles_test_data, dbsession):
+    def test_edit(self, test_app, layer_vectortiles_test_data, dbsession) -> None:
         from c2cgeoportal_commons.models.main import Log, LogAction
 
         layer = layer_vectortiles_test_data["layers"][0]
@@ -161,7 +161,7 @@ class TestLayerVectortiles(AbstractViewsTests):
         assert log.element_name == layer.name
         assert log.username == "test_user"
 
-    def test_submit_new(self, dbsession, test_app, layer_vectortiles_test_data):
+    def test_submit_new(self, dbsession, test_app, layer_vectortiles_test_data) -> None:
         from c2cgeoportal_commons.models.main import LayerVectorTiles, Log, LogAction
 
         resp = test_app.post(
@@ -189,7 +189,7 @@ class TestLayerVectortiles(AbstractViewsTests):
         assert log.element_name == layer.name
         assert log.username == "test_user"
 
-    def test_duplicate(self, layer_vectortiles_test_data, test_app, dbsession):
+    def test_duplicate(self, layer_vectortiles_test_data, test_app, dbsession) -> None:
         from c2cgeoportal_commons.models.main import LayerVectorTiles
 
         layer = layer_vectortiles_test_data["layers"][3]
@@ -222,7 +222,7 @@ class TestLayerVectortiles(AbstractViewsTests):
         assert layer_vectortiles_test_data["layers"][3].metadatas[0].name == layer.metadatas[0].name
         assert layer_vectortiles_test_data["layers"][3].metadatas[1].name == layer.metadatas[1].name
 
-    def test_delete(self, test_app, dbsession):
+    def test_delete(self, test_app, dbsession) -> None:
         from c2cgeoportal_commons.models.main import (
             Layer,
             LayerVectorTiles,
