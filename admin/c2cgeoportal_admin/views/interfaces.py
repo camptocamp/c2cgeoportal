@@ -56,7 +56,7 @@ class InterfacesViews(LoggedViews[Interface]):
         _list_field("name"),
         _list_field("description"),
         _list_field(
-            "layers", renderer=lambda interface: ", ".join([layer.name or "" for layer in interface.layers])
+            "layers", renderer=lambda interface: ", ".join([layer.name or "" for layer in interface.layers]),
         ),
         _list_field(
             "theme",
@@ -88,7 +88,7 @@ class InterfacesViews(LoggedViews[Interface]):
         return super().delete()
 
     @view_config(  # type: ignore[misc]
-        route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2"
+        route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2",
     )
     def duplicate(self) -> ObjectResponse:
         return super().duplicate()

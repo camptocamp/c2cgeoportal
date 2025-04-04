@@ -55,7 +55,7 @@ class LayerViews(TreeItemViews[_T], Generic[_T]):
         _list_field(
             "interfaces",
             renderer=lambda layer_wms: ", ".join(
-                [i.name or "" for i in sorted(layer_wms.interfaces, key=lambda i: cast(str, i.name))]
+                [i.name or "" for i in sorted(layer_wms.interfaces, key=lambda i: cast("str", i.name))],
             ),
             sort_column=Interface.name,
             filter_column=Interface.name,
@@ -63,7 +63,7 @@ class LayerViews(TreeItemViews[_T], Generic[_T]):
         _list_field(
             "restrictionareas",
             renderer=lambda layer_wms: ", ".join(
-                [r.name or "" for r in sorted(layer_wms.restrictionareas, key=lambda r: cast(str, r.name))]
+                [r.name or "" for r in sorted(layer_wms.restrictionareas, key=lambda r: cast("str", r.name))],
             ),
         ),
     ] + TreeItemViews._extra_list_fields  # pylint: disable=protected-access
@@ -72,5 +72,5 @@ class LayerViews(TreeItemViews[_T], Generic[_T]):
         return super()._sub_query(
             query.outerjoin(Layer.interfaces)
             .options(subqueryload(Layer.interfaces))
-            .options(subqueryload(Layer.restrictionareas))
+            .options(subqueryload(Layer.restrictionareas)),
         )

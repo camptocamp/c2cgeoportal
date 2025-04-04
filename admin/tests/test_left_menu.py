@@ -6,7 +6,6 @@ from . import AbstractViewsTests
 
 
 @pytest.fixture(scope="function")
-@pytest.mark.usefixtures("dbsession", "transact")
 def left_menu_test_data(dbsession, transact):
     del transact
 
@@ -19,7 +18,7 @@ def left_menu_test_data(dbsession, transact):
 
     dbsession.flush()
 
-    yield {"roles": roles}
+    return {"roles": roles}
 
 
 @pytest.mark.usefixtures("test_app")

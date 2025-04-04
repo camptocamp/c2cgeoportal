@@ -65,12 +65,12 @@ class Profile(Raster):
                     "values": filtered_alts,
                     "x": point["easting"],
                     "y": point["northing"],
-                }
+                },
             )
         return profile
 
     def _get_profile_service_data(
-        self, layers: list[str], geom: dict[str, Any], rasters: dict[str, Any], nb_points: int
+        self, layers: list[str], geom: dict[str, Any], rasters: dict[str, Any], nb_points: int,
     ) -> list[dict[str, Any]]:
         request = f"{rasters[layers[0]]['url']}/profile.json?{urllib.parse.urlencode({'geom': geom, 'nbPoints': nb_points, 'distinct_points': 'true'})}"
         response = requests.get(request, timeout=10)
@@ -78,7 +78,7 @@ class Profile(Raster):
             _LOG.error("profile request %s failed with status code %s", request, response.status_code)
             raise HTTPInternalServerError(
                 f"Failed to fetch profile data from internal request: \
-                {response.status_code} {response.reason}"
+                {response.status_code} {response.reason}",
             )
 
         try:
@@ -151,13 +151,12 @@ class Profile(Raster):
                 points.append({"dist": rounded_dist, "values": values, "x": coord[0], "y": coord[1]})
                 prev_coord = coord
             return layers, points
-        else:
-            additional_layers = [layer for layer in layers if layer not in service_layers]
-            for point in service_results:
-                for ref in additional_layers:
-                    value = self._get_raster_value(self.rasters[ref], ref, point["x"], point["y"])
-                    point["values"][ref] = value
-            return layers, service_results
+        additional_layers = [layer for layer in layers if layer not in service_layers]
+        for point in service_results:
+            for ref in additional_layers:
+                value = self._get_raster_value(self.rasters[ref], ref, point["x"], point["y"])
+                point["values"][ref] = value
+        return layers, service_results
 
     @staticmethod
     def _dist(coord1: tuple[float, float], coord2: tuple[float, float]) -> float:

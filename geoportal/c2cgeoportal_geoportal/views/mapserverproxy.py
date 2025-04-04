@@ -68,7 +68,7 @@ class MapservProxy(OGCProxy):
             _LOG.debug("proxy() detected authentication_required")
             if self.request.registry.settings.get("basicauth", "False").lower() == "true":
                 raise HTTPUnauthorized(
-                    headers={"WWW-Authenticate": 'Basic realm="Access to restricted layers"'}
+                    headers={"WWW-Authenticate": 'Basic realm="Access to restricted layers"'},
                 )
             raise HTTPForbidden("Basic auth is not enabled")
 
@@ -92,15 +92,14 @@ class MapservProxy(OGCProxy):
             # parameter is actually provided.
             if "request" not in self.lower_params:
                 self.params = {}
-            else:
-                if self.ogc_server.type != main.OGCSERVER_TYPE_QGISSERVER or "user_id" not in self.params:
-                    use_cache = self.lower_params["request"] in ("getlegendgraphic",)
+            elif self.ogc_server.type != main.OGCSERVER_TYPE_QGISSERVER or "user_id" not in self.params:
+                use_cache = self.lower_params["request"] in ("getlegendgraphic",)
 
-                    # no user_id and role_id or cached queries
-                    if use_cache and "user_id" in self.params:
-                        del self.params["user_id"]
-                    if use_cache and "role_ids" in self.params:
-                        del self.params["role_ids"]
+                # no user_id and role_id or cached queries
+                if use_cache and "user_id" in self.params:
+                    del self.params["user_id"]
+                if use_cache and "role_ids" in self.params:
+                    del self.params["role_ids"]
 
             if "service" in self.lower_params and self.lower_params["service"] == "wfs":
                 _url = self._get_wfs_url(errors)
@@ -214,7 +213,7 @@ class MapservProxy(OGCProxy):
         return response
 
     def _proxy_callback(
-        self, cache_control: Cache, url: Url, params: dict[str, str], **kwargs: Any
+        self, cache_control: Cache, url: Url, params: dict[str, str], **kwargs: Any,
     ) -> Response:
         if self.request.matched_route.name.endswith("_path"):
             if self.request.matchdict["path"] == ("favicon.ico",):

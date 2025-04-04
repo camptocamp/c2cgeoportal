@@ -86,7 +86,7 @@ class OGCProxy(Proxy):
         except NoResultFound:
             raise HTTPBadRequest(  # pylint: disable=raise-missing-from
                 f"The OGC Server '{name}' does not exist (existing: "
-                f"{','.join([t[0] for t in DBSession.query(main.OGCServer.name).all()])})."
+                f"{','.join([t[0] for t in DBSession.query(main.OGCServer.name).all()])}).",
             )
 
     def _get_wms_url(self, errors: set[str]) -> Url | None:
@@ -115,6 +115,6 @@ class OGCProxy(Proxy):
                 headers["X-Qgis-Service-Url"] = self.request.current_route_url(path=[], _query={})
             else:
                 headers["X-Qgis-Service-Url"] = self.request.current_route_url(
-                    _query={"ogcserver": self.ogc_server.name}
+                    _query={"ogcserver": self.ogc_server.name},
                 )
         return headers

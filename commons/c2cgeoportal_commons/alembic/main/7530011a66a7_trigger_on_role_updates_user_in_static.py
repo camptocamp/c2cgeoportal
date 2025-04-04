@@ -62,7 +62,7 @@ def upgrade() -> None:
         RETURN NEW;
         END;
         $$
-        LANGUAGE plpgsql"""
+        LANGUAGE plpgsql""",
     )
 
 
@@ -82,5 +82,5 @@ END IF;
 RETURN NEW;
 END;
 $$
-LANGUAGE plpgsql"""
+LANGUAGE plpgsql""",
     )

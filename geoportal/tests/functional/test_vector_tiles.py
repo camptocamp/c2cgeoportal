@@ -78,7 +78,7 @@ def test_data(dbsession_old, transact_old):
 
     dbsession_old.flush()
 
-    yield {
+    return {
         "layers": layers,
         "points": points,
     }

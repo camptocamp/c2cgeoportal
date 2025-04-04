@@ -60,7 +60,7 @@ class UrlAuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
     """An authentication policy based on information given in the URL."""
 
     def __init__(
-        self, aes_key: str, callback: Callable[[str, Any], list[str]] | None = None, debug: bool = False
+        self, aes_key: str, callback: Callable[[str, Any], list[str]] | None = None, debug: bool = False,
     ):
         self.aeskey = aes_key
         self.callback = callback
@@ -83,7 +83,7 @@ class UrlAuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
 
             if len(auth_enc) % 2 != 0:
                 _LOG.warning(
-                    "Found auth parameter in URL query string but it is not an even number of characters"
+                    "Found auth parameter in URL query string but it is not an even number of characters",
                 )
                 return None
 
@@ -101,7 +101,7 @@ class UrlAuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
                 if now < timestamp and request.registry.validate_user(request, auth["u"], auth["p"]):
                     headers = remember(request, auth["u"])
                     request.response.headerlist.extend(headers)
-                    return cast(str, auth["u"])
+                    return cast("str", auth["u"])
 
         except Exception:  # pylint: disable=broad-exception-caught
             _LOG.exception("URL login error on auth '%s'.", auth_enc)
@@ -148,7 +148,7 @@ class OAuth2AuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
         if valid:
             request.user_ = oauth2_request.user
 
-            return cast(str, request.user.username)
+            return cast("str", request.user.username)
         return None
 
     def remember(self, request: pyramid.request.Request, userid: str, **kw: Any) -> list[dict[str, str]]:
@@ -191,7 +191,7 @@ def create_authentication(settings: dict[str, Any]) -> MultiAuthenticationPolicy
     if len(secret) < 64:
         raise Exception(  # pylint: disable=broad-exception-raised
             '"authtkt_secret should be at least 64 characters.'
-            "See https://docs.pylonsproject.org/projects/pyramid/en/latest/api/session.html"
+            "See https://docs.pylonsproject.org/projects/pyramid/en/latest/api/session.html",
         )
 
     policies = []
@@ -200,7 +200,7 @@ def create_authentication(settings: dict[str, Any]) -> MultiAuthenticationPolicy
         UrlAuthenticationPolicy(
             settings.get("urllogin", {}).get("aes_key"),
             defaultgroupsfinder,
-        )
+        ),
     )
 
     policies.append(
@@ -215,7 +215,7 @@ def create_authentication(settings: dict[str, Any]) -> MultiAuthenticationPolicy
             hashalg="sha512",
             http_only=http_only,
             secure=secure,
-        )
+        ),
     )
 
     authentication_config = settings.get("authentication", {})
@@ -228,7 +228,7 @@ def create_authentication(settings: dict[str, Any]) -> MultiAuthenticationPolicy
         if authentication_config.get("two_factor", False):
             _LOG.warning(
                 "Basic auth and two factor auth should not be enable together, "
-                "you should use OAuth2 instead of Basic auth"
+                "you should use OAuth2 instead of Basic auth",
             )
         if openid_connect_config.get("enabled", False):
             _LOG.warning("Basic auth and OpenID Connect should not be enable together")
@@ -237,7 +237,7 @@ def create_authentication(settings: dict[str, Any]) -> MultiAuthenticationPolicy
         policies.append(basic_authentication_policy)
 
     # Consider empty string as not configured
-    if "DEV_LOGINNAME" in os.environ and os.environ["DEV_LOGINNAME"]:
+    if os.environ.get("DEV_LOGINNAME"):
         policies.append(DevAuthenticationPolicy())
 
     return MultiAuthenticationPolicy(policies)

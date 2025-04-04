@@ -66,7 +66,7 @@ class ChildSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
 
 
 def treeitems(
-    node: TreeGroup, kw: dict[str, pyramid.request.Request], only_groups: bool = False
+    node: TreeGroup, kw: dict[str, pyramid.request.Request], only_groups: bool = False,
 ) -> list[dict[str, Any]]:
     """Get a serializable representation of the tree items."""
     del node
@@ -99,8 +99,8 @@ def treeitems(
         relation_alias = aliased(LayergroupTreeitem, name="relation")
         search_ancestors = search_ancestors.union_all(
             dbsession.query(relation_alias.treegroup_id).filter(  # type: ignore[arg-type]
-                relation_alias.treeitem_id == search_alias.c.treegroup_id
-            )
+                relation_alias.treeitem_id == search_alias.c.treegroup_id,
+            ),
         )
         ancestors = dbsession.query(search_ancestors.c.treegroup_id).subquery("ancestors")
 
@@ -128,7 +128,7 @@ def children_validator(node, cstruct):
             raise colander.Invalid(
                 node,
                 _("Value {} does not exist in table {} or is not allowed to avoid cycles").format(
-                    dict_["treeitem_id"], TreeItem.__tablename__
+                    dict_["treeitem_id"], TreeItem.__tablename__,
                 ),
             )
 
@@ -182,7 +182,7 @@ def children_schema_node(only_groups: bool = False) -> colander.SequenceSchema:
                     <p>The ordered children elements.</p>
                     <hr>
                 </div>
-                """
+                """,
             ),
         ),
         candidates=colander.deferred(partial(treeitems, only_groups=only_groups)),

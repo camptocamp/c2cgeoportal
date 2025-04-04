@@ -59,7 +59,7 @@ def locale(request: pyramid.request.Request) -> pyramid.response.Response:
         request.static_url(
             f"/etc/geomapfish/static/{request.locale_name}.json",
             _query={"cache": get_cache_version()},
-        )
+        ),
     )
     set_common_headers(request, "api", Cache.PUBLIC_NO, response=response)
     return response

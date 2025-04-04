@@ -16,7 +16,6 @@ from sqlalchemy.exc import DBAPIError
 
 
 @pytest.fixture(scope="session")
-@pytest.mark.usefixtures("settings")
 def dbsession(settings):
     generate_mappers()
     engine = get_engine(settings)
@@ -27,7 +26,6 @@ def dbsession(settings):
 
 
 @pytest.fixture(scope="function")
-@pytest.mark.usefixtures("dbsession")
 def transact(dbsession):
     t = dbsession.begin_nested()
     yield
@@ -49,7 +47,6 @@ def raise_db_error(_):
 
 
 @pytest.fixture(scope="function")
-@pytest.mark.usefixtures("dbsession")
 def raise_db_error_on_query(dbsession):
     query = dbsession.query
     dbsession.query = raise_db_error

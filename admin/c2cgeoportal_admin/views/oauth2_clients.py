@@ -76,7 +76,7 @@ class OAuth2ClientViews(LoggedViews[OAuth2Client]):
         return super().grid()
 
     @view_config(  # type: ignore[misc]
-        route_name="c2cgeoform_item", request_method="GET", renderer="../templates/edit.jinja2"
+        route_name="c2cgeoform_item", request_method="GET", renderer="../templates/edit.jinja2",
     )
     def view(self) -> ObjectResponse:
         return super().edit()
@@ -90,7 +90,7 @@ class OAuth2ClientViews(LoggedViews[OAuth2Client]):
         return super().delete()
 
     @view_config(  # type: ignore[misc]
-        route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2"
+        route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2",
     )
     def duplicate(self) -> ObjectResponse:
         return super().duplicate()

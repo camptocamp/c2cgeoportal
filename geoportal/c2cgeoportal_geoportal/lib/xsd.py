@@ -162,7 +162,7 @@ class XSD:
                 response = request.response
                 response.content_type = "application/xml"
                 io = self.generator.get_class_xsd(BytesIO(), cls)
-                return cast(bytes, io.getvalue())
+                return cast("bytes", io.getvalue())
             return None
 
         return _render

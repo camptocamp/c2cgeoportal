@@ -41,9 +41,9 @@ class Loader(BaseLoader):
     """The Pyramid configuration loader."""
 
     def get_wsgi_app_settings(
-        self, name: str | None = None, defaults: dict[str, str] | None = None
+        self, name: str | None = None, defaults: dict[str, str] | None = None,
     ) -> dict[str, Any]:
-        settings = cast(dict[str, Any], super().get_wsgi_app_settings(name, defaults))
+        settings = cast("dict[str, Any]", super().get_wsgi_app_settings(name, defaults))
         app_cfg = settings.get("app.cfg")
         if app_cfg is not None:
             configuration.init(app_cfg)

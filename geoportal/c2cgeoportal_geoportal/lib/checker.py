@@ -43,7 +43,7 @@ _LOG = logging.getLogger(__name__)
 
 
 def build_url(
-    name: str, path: str, request: pyramid.request.Request, headers: dict[str, str] | None = None
+    name: str, path: str, request: pyramid.request.Request, headers: dict[str, str] | None = None,
 ) -> dict[str, str | dict[str, str]]:
     """Build an URL and headers for the checkers."""
     base_internal_url = request.registry.settings["checker"]["base_internal_url"]
@@ -186,7 +186,7 @@ def _themes_errors(settings: dict[str, Any], health_check: c2cwsgiutils.health_c
             result = response.json()
             if result["errors"]:
                 raise c2cwsgiutils.health_check.JsonCheckException(
-                    f"Interface '{interface}' has error in Theme.", result["errors"]
+                    f"Interface '{interface}' has error in Theme.", result["errors"],
                 )
 
     health_check.add_custom_check(name="checker_themes", check_cb=check, level=themes_settings["level"])
@@ -230,7 +230,7 @@ def _lang_files(
                     return build_url(
                         self.name,
                         request.static_path(
-                            self.url.format(package=global_settings["package"], lang=self.lang)
+                            self.url.format(package=global_settings["package"], lang=self.lang),
                         ),
                         request,
                     )[self.type]
@@ -255,7 +255,7 @@ def _phantomjs(settings: dict[str, Any], health_check: c2cwsgiutils.health_check
 
             def __call__(self, request: pyramid.request.Request) -> None:
                 path = request.route_path(self.route["name"], _query=self.route.get("params", {}))
-                url: str = cast(str, build_url("Check", path, request)["url"])
+                url: str = cast("str", build_url("Check", path, request)["url"])
 
                 cmd: list[str] = ["check-example", url]
                 env = dict(os.environ)
@@ -271,14 +271,14 @@ def _phantomjs(settings: dict[str, Any], health_check: c2cwsgiutils.health_check
                 except subprocess.CalledProcessError as exception:
                     raise Exception(  # pylint: disable=broad-exception-raised
                         f"{' '.join(exception.cmd)} exit with code: {exception.returncode}\n"
-                        f"{exception.output.decode('utf-8')[:10000]}"
+                        f"{exception.output.decode('utf-8')[:10000]}",
                     ) from exception
                 except subprocess.TimeoutExpired as exception:
                     raise Exception(  # pylint: disable=broad-exception-raised
                         f"""Timeout:
 command: {" ".join(exception.cmd)}
 output:
-{exception.output.decode("utf-8")}"""
+{exception.output.decode("utf-8")}""",
                     ) from exception
 
         name = "checker_phantomjs_" + route.get("checker_name", route["name"])

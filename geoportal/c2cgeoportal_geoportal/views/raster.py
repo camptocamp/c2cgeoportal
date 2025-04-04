@@ -76,11 +76,11 @@ class Raster:
             result = float(self.request.params[name])
         except ValueError:
             raise HTTPBadRequest(  # pylint: disable=raise-missing-from
-                f"'{name}' ({self.request.params[name]}) parameters should be a number"
+                f"'{name}' ({self.request.params[name]}) parameters should be a number",
             )
         if not math.isfinite(result):
             raise HTTPBadRequest(
-                f"'{name}' ({self.request.params[name]}) parameters should be a finite number"
+                f"'{name}' ({self.request.params[name]}) parameters should be a finite number",
             )
         return result
 
@@ -137,7 +137,7 @@ class Raster:
         return self.data[name]
 
     def _get_raster_value(
-        self, layer: dict[str, Any], name: str, lon: float, lat: float
+        self, layer: dict[str, Any], name: str, lon: float, lat: float,
     ) -> decimal.Decimal | None:
         data = self._get_data(layer, name)
         type_ = layer.get("type", "shp_index")
@@ -169,7 +169,7 @@ class Raster:
 
     @staticmethod
     def _get_value(
-        layer: dict[str, Any], name: str, dataset: DatasetReader, lon: float, lat: float
+        layer: dict[str, Any], name: str, dataset: DatasetReader, lon: float, lat: float,
     ) -> numpy.float32 | None:
         index = dataset.index(lon, lat)
 
@@ -199,7 +199,7 @@ class Raster:
         return result
 
     def _get_service_data(
-        self, layer: str, lat: float, lon: float, rasters: dict[str, Any]
+        self, layer: str, lat: float, lon: float, rasters: dict[str, Any],
     ) -> dict[str, Any]:
         request = (
             f"{rasters[layer]['url']}/height?{urllib.parse.urlencode({'easting': lon, 'northing': lat})}"
@@ -210,7 +210,7 @@ class Raster:
             _LOG.error("Elevation request %s failed with status code %s", request, response.status_code)
             raise HTTPInternalServerError(
                 f"Failed to fetch elevation data from the internal request: \
-                {response.status_code} {response.reason}"
+                {response.status_code} {response.reason}",
             )
 
         try:

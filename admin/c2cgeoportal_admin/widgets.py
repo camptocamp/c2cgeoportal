@@ -36,10 +36,10 @@ from deform.widget import MappingWidget, SequenceWidget
 
 registry = widget.default_resource_registry
 registry.set_js_resources(
-    "magicsuggest", None, "c2cgeoportal_admin:node_modules/magicsuggest-alpine/magicsuggest-min.js"
+    "magicsuggest", None, "c2cgeoportal_admin:node_modules/magicsuggest-alpine/magicsuggest-min.js",
 )
 registry.set_css_resources(
-    "magicsuggest", None, "c2cgeoportal_admin:node_modules/magicsuggest-alpine/magicsuggest-min.css"
+    "magicsuggest", None, "c2cgeoportal_admin:node_modules/magicsuggest-alpine/magicsuggest-min.css",
 )
 
 
@@ -94,7 +94,7 @@ class ChildWidget(MappingWidget):  # type: ignore
         return None
 
     def edit_url(  # pylint: disable=useless-return
-        self, request: pyramid.request.Request, child: Any
+        self, request: pyramid.request.Request, child: Any,
     ) -> str | None:
         del request
         del child

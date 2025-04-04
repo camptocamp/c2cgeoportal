@@ -51,7 +51,7 @@ def upgrade() -> None:
 
     op.execute(f"UPDATE ONLY {schema}.metadata SET name = 'copyTo' where name = 'copy_to'")
     op.execute(
-        f"UPDATE ONLY {schema}.metadata SET name = 'geometryValidation' where name = 'geometry_validation'"
+        f"UPDATE ONLY {schema}.metadata SET name = 'geometryValidation' where name = 'geometry_validation'",
     )
 
 
@@ -61,5 +61,5 @@ def downgrade() -> None:
 
     op.execute(f"UPDATE ONLY {schema}.metadata SET name = 'copy_to' where name = 'copyTo'")
     op.execute(
-        f"UPDATE ONLY {schema}.metadata SET name = 'geometry_validation' where name = 'geometryValidation'"
+        f"UPDATE ONLY {schema}.metadata SET name = 'geometry_validation' where name = 'geometryValidation'",
     )

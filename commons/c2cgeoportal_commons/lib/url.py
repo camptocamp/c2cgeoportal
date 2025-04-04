@@ -141,7 +141,7 @@ class Url:
                 self.path,
                 urllib.parse.urlencode(self.query),
                 self.fragment,
-            )
+            ),
         )
 
     def __str__(self) -> str:
@@ -152,7 +152,7 @@ class Url:
 
 
 def get_url2(
-    name: str, url: str, request: Request, errors: set[str], servers: dict[str, str] | None = None
+    name: str, url: str, request: Request, errors: set[str], servers: dict[str, str] | None = None,
 ) -> Url | None:
     """
     Get the real URL from the URI of the administration interface.
@@ -189,7 +189,7 @@ def get_url2(
             if proj == "static-ngeo":
                 errors.add(
                     f"{name}='{url}' static-ngeo shouldn't be used out of webpack because it don't has "
-                    "cache bustering."
+                    "cache bustering.",
                 )
             proj = f"{package}_geoportal:{proj}"
         return Url(request.static_url(f"{proj}{url_split.path}"))
@@ -201,7 +201,7 @@ def get_url2(
         if server is None:
             errors.add(
                 f"{name}: The server '{url_obj.netloc}' ({url}) is not found in the config: "
-                f"[{', '.join(servers.keys())}]"
+                f"[{', '.join(servers.keys())}]",
             )
             return None
 

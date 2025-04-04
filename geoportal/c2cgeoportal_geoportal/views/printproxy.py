@@ -63,7 +63,7 @@ class PrintProxy(Proxy):
         query_string = urllib.parse.urlencode(params)
 
         resp, content = self._capabilities(
-            templates, query_string, self.request.method, self.request.referrer, self.request.host
+            templates, query_string, self.request.method, self.request.referrer, self.request.host,
         )
 
         response = self._build_response(resp, content, Cache.PRIVATE, "print")
@@ -73,7 +73,7 @@ class PrintProxy(Proxy):
 
     @_CACHE_REGION.cache_on_arguments()
     def _capabilities(
-        self, templates: list[str], query_string: dict[str, str], method: str, referrer: str, host: str
+        self, templates: list[str], query_string: dict[str, str], method: str, referrer: str, host: str,
     ) -> tuple[requests.Response, str]:
         del query_string  # Just for caching
         del method  # Just for caching
@@ -99,7 +99,7 @@ class PrintProxy(Proxy):
 
             pretty = self.request.params.get("pretty", "false") == "true"
             content = json.dumps(
-                capabilities, separators=None if pretty else (",", ":"), indent=4 if pretty else None
+                capabilities, separators=None if pretty else (",", ":"), indent=4 if pretty else None,
             )
         else:
             content = ""
@@ -120,7 +120,7 @@ class PrintProxy(Proxy):
         return self._proxy_response(
             "print",
             Url(
-                f"{self.request.get_organization_print_url()}/status/{self.request.matchdict.get('ref')}.json"
+                f"{self.request.get_organization_print_url()}/status/{self.request.matchdict.get('ref')}.json",
             ),
         )
 

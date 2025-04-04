@@ -44,7 +44,7 @@ def fill_arguments(parser: ArgumentParser, use_attribute: bool = False) -> None:
         "c2c://development.ini" if os.path.isfile("development.ini") else "c2c://geoportal/development.ini"
     )
     c2cwsgiutils.setup_process.fill_arguments(
-        parser, default_config_uri=default_config_uri, use_attribute=use_attribute
+        parser, default_config_uri=default_config_uri, use_attribute=use_attribute,
     )
 
 

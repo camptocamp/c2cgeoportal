@@ -83,10 +83,10 @@ def get_argparser() -> ArgumentParser:
         help="do not import the blocks (first level layer groups)",
     )
     parser.add_argument(
-        "--no-folders", action="store_false", dest="folders", help="do not import the folders (tree folders)"
+        "--no-folders", action="store_false", dest="folders", help="do not import the folders (tree folders)",
     )
     parser.add_argument(
-        "--no-layers", action="store_false", dest="layers", help="do not import the layers (tree leaf)"
+        "--no-layers", action="store_false", dest="layers", help="do not import the layers (tree leaf)",
     )
     parser.add_argument("--package", help="the application package")
     fill_arguments(parser)
@@ -201,7 +201,7 @@ class Import:
                     self.fts_languages[lang],
                     " ".join(
                         [self.fts_normalizer(self._[lang].gettext(item.name))]
-                        + [v.strip() for m in item.get_metadata("searchAlias") for v in m.value.split(",")]
+                        + [v.strip() for m in item.get_metadata("searchAlias") for v in m.value.split(",")],
                     ),
                 )
                 fts.actions = [{"action": action, "data": item.name}]
@@ -326,7 +326,7 @@ class Import:
                 if result and current_result != result:
                     sys.stderr.write(
                         f"WARNING: the item {item.name} (id: {item.id}) has a label pattern and inconsistent "
-                        f"multiple parents\n"
+                        f"multiple parents\n",
                     )
                     return self._[lang].gettext(item.name)
                 result = current_result

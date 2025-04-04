@@ -48,7 +48,7 @@ _LOG = logging.getLogger(__name__)
 def send_email_config(settings: dict[str, Any], email_config_name: str, email: str, **kwargs: Any) -> None:
     """Send an email from the config information."""
     smtp_config = settings["smtp"]
-    email_config = cast(dict[str, str], settings[email_config_name])
+    email_config = cast("dict[str, str]", settings[email_config_name])
 
     try:
         send_email(
@@ -64,7 +64,7 @@ def send_email_config(settings: dict[str, Any], email_config_name: str, email: s
 
 
 def send_email(
-    from_addr: str, to_address: list[str], body: str, subject: str, smtp_config: dict[str, str]
+    from_addr: str, to_address: list[str], body: str, subject: str, smtp_config: dict[str, str],
 ) -> None:
     """Send an email."""
     msg = MIMEMultipart()

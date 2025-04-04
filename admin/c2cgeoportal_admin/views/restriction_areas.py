@@ -91,7 +91,7 @@ base_schema.add(
         description=RestrictionArea.layers.info["colanderalchemy"]["description"],
         candidates=colander.deferred(layers),
         widget=ChildrenWidget(child_input_name="id", orderable=False),
-    )
+    ),
 )
 
 
@@ -105,7 +105,7 @@ class RestrictionAreaViews(LoggedViews[RestrictionArea]):
         _list_field("description"),
         _list_field("readwrite"),
         _list_field(
-            "roles", renderer=lambda restriction_area: ", ".join(r.name for r in restriction_area.roles)
+            "roles", renderer=lambda restriction_area: ", ".join(r.name for r in restriction_area.roles),
         ),
         _list_field(
             "layers",
@@ -148,7 +148,7 @@ class RestrictionAreaViews(LoggedViews[RestrictionArea]):
         return super().delete()
 
     @view_config(  # type: ignore[misc]
-        route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2"
+        route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2",
     )
     def duplicate(self) -> ObjectResponse:
         return super().duplicate()

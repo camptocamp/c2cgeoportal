@@ -52,7 +52,7 @@ def upgrade() -> None:
     op.execute(
         f"DELETE from {schema}.layer_restrictionarea WHERE layer_id IN ("
         f"SELECT id from {schema}.treeitem WHERE type = 'layerv1'"
-        ");"
+        ");",
     )
     op.execute(f"DELETE from {schema}.treeitem WHERE type = 'layerv1';")
 

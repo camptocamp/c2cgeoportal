@@ -45,7 +45,7 @@ def create_token(aeskey: str, user: str, password: str, valid: bool) -> str:
     if aeskey is None:
         print("urllogin is not configured")
         sys.exit(1)
-    cipher = cast(ChaCha20Poly1305Cipher, AES.new(aeskey.encode("ascii"), AES.MODE_EAX))
+    cipher = cast("ChaCha20Poly1305Cipher", AES.new(aeskey.encode("ascii"), AES.MODE_EAX))
     data = json.dumps(auth)
     mod_len = len(data) % 16
     if mod_len != 0:

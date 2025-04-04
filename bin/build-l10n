@@ -3,9 +3,7 @@
 import argparse
 import glob
 import os
-import shutil
 import subprocess  # nosec
-import subprocess
 
 
 def main() -> None:
@@ -27,7 +25,7 @@ def main() -> None:
                 if args.dry_run:
                     print(
                         f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po => "
-                        f"{base_path}/{lang}/LC_MESSAGES/{dest_package}_geoportal-client{suffix}.mo"
+                        f"{base_path}/{lang}/LC_MESSAGES/{dest_package}_geoportal-client{suffix}.mo",
                     )
                 else:
                     subprocess.run(
@@ -45,7 +43,7 @@ def main() -> None:
                 if args.dry_run:
                     print(
                         f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-server{suffix}.po => "
-                        f"{base_path}/{lang}/LC_MESSAGES/{dest_package}_geoportal-server{suffix}.mo"
+                        f"{base_path}/{lang}/LC_MESSAGES/{dest_package}_geoportal-server{suffix}.mo",
                     )
                 else:
                     subprocess.run(
@@ -64,11 +62,11 @@ def main() -> None:
                     print(
                         f"/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/{lang}/LC_MESSAGES/ngeo.po, "
                         f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po => "
-                        f"{package_base_path}/static/{lang}{suffix}.json"
+                        f"{package_base_path}/static/{lang}{suffix}.json",
                     )
                 else:
                     with open(
-                        f"{package_base_path}/static/{lang}{suffix}.json", "w", encoding="utf-8"
+                        f"{package_base_path}/static/{lang}{suffix}.json", "w", encoding="utf-8",
                     ) as out:
                         subprocess.run(
                             [

@@ -47,7 +47,7 @@ with open("ci/changelog.yaml", encoding="utf-8") as cl_file:
 def save() -> None:
     with open("ci/changelog.yaml", "w", encoding="utf-8") as cl_file_w:
         cl_file_w.write(yaml.dump(changelog, Dumper=yaml.SafeDumper))
-    subprocess.run(["pre-commit", "run", "--file=ci/changelog.yaml"])  # pylint: disable=subprocess-run-check
+    subprocess.run(["pre-commit", "run", "--file=ci/changelog.yaml"], check=False)  # pylint: disable=subprocess-run-check
 
 
 def output(cmd: list[str]) -> bytes | None:
@@ -160,8 +160,8 @@ def add_new_release() -> None:
                     "npm",
                     "list",
                     "--json",
-                ]
-            ).decode()
+                ],
+            ).decode(),
         )
 
         print("Found npm dependencies:")
@@ -179,7 +179,7 @@ def add_new_release() -> None:
         )
 
         changelog["releases"].append(
-            {"ngeo": ngeo_ref, "c2cgeoportal": c2cgeoportal_ref, "name": sys.argv[1]}
+            {"ngeo": ngeo_ref, "c2cgeoportal": c2cgeoportal_ref, "name": sys.argv[1]},
         )
 
 
@@ -247,10 +247,10 @@ def main() -> None:
                             md_file.write(f"##### {release}\n\n")
                             title = False
                         md_file.write(
-                            f"- {pull['title'].strip()} [{repo}#{pull['number']}]({pull['html_url']})\n"
+                            f"- {pull['title'].strip()} [{repo}#{pull['number']}]({pull['html_url']})\n",
                         )
 
-    subprocess.run(["pre-commit", "run", "--file=CHANGELOG.md"])  # pylint: disable=subprocess-run-check
+    subprocess.run(["pre-commit", "run", "--file=CHANGELOG.md"], check=False)  # pylint: disable=subprocess-run-check
 
 
 if __name__ == "__main__":

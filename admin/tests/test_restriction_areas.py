@@ -12,7 +12,6 @@ from .test_treegroup import TestTreeGroup
 
 
 @pytest.fixture(scope="function")
-@pytest.mark.usefixtures("dbsession", "transact")
 def restriction_area_test_data(dbsession, transact):
     del transact
     from c2cgeoportal_commons.models.main import (
@@ -46,7 +45,7 @@ def restriction_area_test_data(dbsession, transact):
         restrictionareas.append(restrictionarea)
 
     dbsession.flush()
-    yield {
+    return {
         "layers": layers,
         "restriction_areas": restrictionareas,
         "roles": roles,

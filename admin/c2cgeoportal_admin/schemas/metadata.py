@@ -86,9 +86,9 @@ def metadata_name_widget(model: type[Any]) -> colander.deferred:
                 (m["name"], m["name"])
                 for m in sorted(
                     metadata_definitions(kw["request"].registry.settings, model),
-                    key=lambda m: cast(str, m["name"]),
+                    key=lambda m: cast("str", m["name"]),
                 )
-            ]
+            ],
         )
 
     return colander.deferred(create_widget)
@@ -153,7 +153,7 @@ class MetadataSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
         self._add_value_node("float", colander.Float())
         self._add_value_node("url", colander.String(), validator=url)
         self._add_value_node(
-            "json", colander.String(), widget=TextAreaWidget(rows=10), validator=json_validator
+            "json", colander.String(), widget=TextAreaWidget(rows=10), validator=json_validator,
         )
 
     def _add_value_node(self, type_name: str, colander_type: colander.SchemaType, **kw: Any) -> None:
@@ -184,7 +184,7 @@ class MetadataSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
 
     def _ui_type(self, metadata_name: str) -> str:
         metadata_type = (
-            cast(dict[str, dict[str, str]], self.metadata_definitions)
+            cast("dict[str, dict[str, str]]", self.metadata_definitions)
             .get(metadata_name, {})
             .get("type", "string")
         )
@@ -192,7 +192,7 @@ class MetadataSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
 
 
 def _translate_available_metadata(
-    available_metadata: dict[str, Any], request: pyramid.request.Request
+    available_metadata: dict[str, Any], request: pyramid.request.Request,
 ) -> dict[str, Any]:
     result = {}
     result.update(available_metadata)
@@ -208,7 +208,7 @@ def metadata_schema_node(prop: InstrumentedAttribute[Any], model: type[Any]) -> 
         lambda node, kw: {
             m["name"]: _translate_available_metadata(m, kw["request"])
             for m in metadata_definitions(kw["request"].registry.settings, model)
-        }
+        },
     )
 
     return colander.SequenceSchema(

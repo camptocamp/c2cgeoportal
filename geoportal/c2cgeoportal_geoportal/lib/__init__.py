@@ -83,7 +83,7 @@ def get_typed(
                 return False
             errors.add(
                 f"{prefix}The boolean attribute '{name}'='{value.lower()}' is not in "
-                "[yes, y, on, 1, true, no, n, off, 0, false]."
+                "[yes, y, on, 1, true, no, n, off, 0, false].",
             )
         elif type_["type"] == "integer":
             return int(value)
@@ -109,15 +109,15 @@ def get_typed(
             return url.url() if url else ""
         elif type_["type"] == "json":
             try:
-                return cast(dict[str, Any], json.loads(value))
+                return cast("dict[str, Any]", json.loads(value))
             except Exception as e:  # pylint: disable=broad-exception-caught
-                errors.add(f"{prefix}The attribute '{name}'='{value}' has an error: {str(e)}")
+                errors.add(f"{prefix}The attribute '{name}'='{value}' has an error: {e!s}")
         elif type_["type"] == "regex":
             pattern = type_["regex"]
             if re.match(pattern, value) is None:
                 errors.add(
                     f"{prefix}The regex attribute '{name}'='{value}' "
-                    f"does not match expected pattern '{pattern}'."
+                    f"does not match expected pattern '{pattern}'.",
                 )
             else:
                 return value
@@ -126,7 +126,7 @@ def get_typed(
     except Exception as e:  # pylint: disable=broad-exception-caught
         errors.add(
             f"{prefix}Unable to parse the attribute '{name}'='{value}' with the type "
-            f"'{type_.get('type', 'string')}', error:\n{e!s}"
+            f"'{type_.get('type', 'string')}', error:\n{e!s}",
         )
     return None
 
@@ -233,7 +233,7 @@ def get_role_id(name: str) -> int:
 
     assert DBSession is not None
 
-    return cast(int, DBSession.query(main.Role.id).filter(main.Role.name == name).one()[0])
+    return cast("int", DBSession.query(main.Role.id).filter(main.Role.name == name).one()[0])
 
 
 def get_roles_id(request: pyramid.request.Request) -> list[int]:

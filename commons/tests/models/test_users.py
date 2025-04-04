@@ -5,7 +5,6 @@ import sqlalchemy.exc
 
 
 @pytest.fixture(scope="class")
-@pytest.mark.usefixtures("dbsession")
 def insert_users_test_data(dbsession):
     from c2cgeoportal_commons.models.main import Role
     from c2cgeoportal_commons.models.static import User

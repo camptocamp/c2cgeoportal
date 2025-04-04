@@ -63,7 +63,7 @@ def upgrade() -> None:
 INSERT INTO "{staticschema}"."user_role" ("user_id", "role_id")
 SELECT "user"."id", "role"."id"
 FROM "{staticschema}"."user"
-JOIN "{schema}"."role" ON "role"."name" = "user"."role_name";"""
+JOIN "{schema}"."role" ON "role"."name" = "user"."role_name";""",
     )
 
     op.add_column("user", Column("settings_role_id", Integer), schema=staticschema)
@@ -72,7 +72,7 @@ JOIN "{schema}"."role" ON "role"."name" = "user"."role_name";"""
 UPDATE "{staticschema}"."user"
 SET "settings_role_id" = "role"."id"
 FROM "{schema}"."role"
-WHERE "role"."name" = "user"."role_name";"""
+WHERE "role"."name" = "user"."role_name";""",
     )
 
     op.drop_column("user", "role_name", schema=staticschema)
@@ -90,7 +90,7 @@ def downgrade() -> None:
 UPDATE "{staticschema}"."user"
 SET "role_name" = "role"."name"
 FROM "{schema}"."role"
-WHERE "role"."id" = "user"."settings_role_id";"""
+WHERE "role"."id" = "user"."settings_role_id";""",
     )
 
     op.drop_column("user", "settings_role_id", schema=staticschema)

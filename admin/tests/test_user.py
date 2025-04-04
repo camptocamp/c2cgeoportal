@@ -12,7 +12,6 @@ from . import AbstractViewsTests
 
 
 @pytest.fixture(scope="function")
-@pytest.mark.usefixtures("dbsession", "transact")
 def users_test_data(dbsession, transact):
     del transact
 
@@ -38,7 +37,7 @@ def users_test_data(dbsession, transact):
 
     dbsession.flush()
 
-    yield {"roles": roles, "users": users}
+    return {"roles": roles, "users": users}
 
 
 EXPECTED_WELCOME_MAIL = (

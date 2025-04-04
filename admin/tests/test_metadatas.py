@@ -6,7 +6,6 @@ from . import AbstractViewsTests
 
 
 @pytest.fixture(scope="function")
-@pytest.mark.usefixtures("dbsession", "transact")
 def metadatas_test_data(dbsession, transact):
     del transact
 
@@ -55,7 +54,7 @@ def metadatas_test_data(dbsession, transact):
 
     dbsession.flush()
 
-    yield {
+    return {
         "ogc_server": ogc_server,
         "layer_wms": layer_wms,
         "layer_wmts": layer_wmts,

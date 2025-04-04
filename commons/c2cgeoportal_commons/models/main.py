@@ -99,7 +99,7 @@ if os.environ.get("DEVELOPMENT", "0") == "1":
 _LOG = logging.getLogger(__name__)
 
 _schema: str = config["schema"] or "main"
-_srid: int = cast(int, config["srid"]) or 3857
+_srid: int = cast("int", config["srid"]) or 3857
 
 # Set some default values for the admin interface
 conf = config.get_config()
@@ -125,11 +125,11 @@ class FullTextSearch(GeoInterface, Base):  # type: ignore
     label: Mapped[str] = mapped_column(Unicode)
     layer_name: Mapped[str] = mapped_column(Unicode, nullable=True)
     role_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey(_schema + ".role.id", ondelete="CASCADE"), nullable=True
+        Integer, ForeignKey(_schema + ".role.id", ondelete="CASCADE"), nullable=True,
     )
     role = relationship("Role")
     interface_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey(_schema + ".interface.id", ondelete="CASCADE"), nullable=True
+        Integer, ForeignKey(_schema + ".interface.id", ondelete="CASCADE"), nullable=True,
     )
     interface = relationship("Interface")
     lang: Mapped[str] = mapped_column(String(2), nullable=True)
@@ -154,7 +154,7 @@ class Functionality(Base):  # type: ignore
     __c2cgeoform_config__ = {"duplicate": True}
 
     id: Mapped[int] = mapped_column(
-        Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}}
+        Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}},
     )
     name: Mapped[str] = mapped_column(
         Unicode,
@@ -169,11 +169,11 @@ class Functionality(Base):  # type: ignore
                         (f["name"], f["name"])
                         for f in sorted(
                             _admin_config.get("available_functionalities", []),
-                            key=lambda f: cast(str, f["name"]),
+                            key=lambda f: cast("str", f["name"]),
                         )
                     ],
                 ),
-            }
+            },
         },
     )
     description: Mapped[str | None] = mapped_column(
@@ -182,7 +182,7 @@ class Functionality(Base):  # type: ignore
             "colanderalchemy": {
                 "title": _("Description"),
                 "description": _("An optional description."),
-            }
+            },
         },
     )
     value: Mapped[str] = mapped_column(
@@ -192,7 +192,7 @@ class Functionality(Base):  # type: ignore
             "colanderalchemy": {
                 "title": _("Value"),
                 "description": _("A value for the functionality."),
-            }
+            },
         },
     )
 
@@ -247,7 +247,7 @@ class Role(Base):  # type: ignore
     __c2cgeoform_config__ = {"duplicate": True}
 
     id: Mapped[int] = mapped_column(
-        Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}}
+        Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}},
     )
     name: Mapped[str] = mapped_column(
         Unicode,
@@ -257,7 +257,7 @@ class Role(Base):  # type: ignore
             "colanderalchemy": {
                 "title": _("Name"),
                 "description": _("A name for this role."),
-            }
+            },
         },
     )
     description: Mapped[str | None] = mapped_column(
@@ -266,7 +266,7 @@ class Role(Base):  # type: ignore
             "colanderalchemy": {
                 "title": _("Description"),
                 "description": _("An optional description."),
-            }
+            },
         },
     )
     extent = mapped_column(
@@ -277,7 +277,7 @@ class Role(Base):  # type: ignore
                 "description": _("Initial extent for this role."),
                 "typ": ColanderGeometry("POLYGON", srid=_srid, map_srid=_admin_config["map_srid"]),
                 "widget": MapWidget(map_options=_map_config),
-            }
+            },
         },
     )
 
@@ -291,7 +291,7 @@ class Role(Base):  # type: ignore
                 "title": _("Functionalities"),
                 "description": _("Functionality values for this role."),
                 "exclude": True,
-            }
+            },
         },
     )
 
@@ -316,7 +316,7 @@ class Role(Base):  # type: ignore
     def bounds(self) -> tuple[float, float, float, float] | None:
         if self.extent is None:
             return None
-        return cast(tuple[float, float, float, float], to_shape(self.extent).bounds)
+        return cast("tuple[float, float, float, float]", to_shape(self.extent).bounds)
 
 
 event.listen(Role.functionalities, "set", cache_invalidate_cb)
@@ -333,7 +333,7 @@ class TreeItem(Base):  # type: ignore
         {"schema": _schema},
     )
     item_type: Mapped[str] = mapped_column(
-        "type", String(10), nullable=False, info={"colanderalchemy": {"exclude": True}}
+        "type", String(10), nullable=False, info={"colanderalchemy": {"exclude": True}},
     )
     __mapper_args__ = {"polymorphic_on": item_type}
 
@@ -348,9 +348,9 @@ class TreeItem(Base):  # type: ignore
                     """
                     The name of the node, it is used through the i18n tools to display the name on the layers
                     tree.
-                    """
+                    """,
                 ),
-            }
+            },
         },
     )
     description: Mapped[str | None] = mapped_column(
@@ -359,7 +359,7 @@ class TreeItem(Base):  # type: ignore
             "colanderalchemy": {
                 "title": _("Description"),
                 "description": _("An optional description."),
-            }
+            },
         },
     )
 
@@ -398,7 +398,7 @@ class LayergroupTreeitem(Base):  # type: ignore
 
     # required by formalchemy
     id: Mapped[int] = mapped_column(
-        Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}}
+        Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}},
     )
     description: Mapped[str | None] = mapped_column(Unicode, info={"colanderalchemy": {"exclude": True}})
     treegroup_id: Mapped[int] = mapped_column(
@@ -440,7 +440,7 @@ class LayergroupTreeitem(Base):  # type: ignore
     ordering: Mapped[int] = mapped_column(Integer, info={"colanderalchemy": {"widget": HiddenWidget()}})
 
     def __init__(
-        self, group: Optional["TreeGroup"] = None, item: TreeItem | None = None, ordering: int = 0
+        self, group: Optional["TreeGroup"] = None, item: TreeItem | None = None, ordering: int = 0,
     ) -> None:
         self.treegroup = group
         self.treeitem = item
@@ -526,8 +526,8 @@ class LayerGroup(TreeGroup):
                 <b>background</b> (by default).</p>
                 <hr>
             </div>
-                """
-            )
+                """,
+            ),
         ),
     }
     __mapper_args__ = {"polymorphic_identity": "group"}  # type: ignore[dict-item]
@@ -570,7 +570,7 @@ class Theme(TreeGroup):
         info={"colanderalchemy": {"missing": drop, "widget": HiddenWidget()}},
     )
     ordering: Mapped[int] = mapped_column(
-        Integer, nullable=False, info={"colanderalchemy": {"title": _("Order"), "widget": HiddenWidget()}}
+        Integer, nullable=False, info={"colanderalchemy": {"title": _("Order"), "widget": HiddenWidget()}},
     )
     public: Mapped[bool] = mapped_column(
         Boolean,
@@ -580,7 +580,7 @@ class Theme(TreeGroup):
             "colanderalchemy": {
                 "title": _("Public"),
                 "description": _("Makes the theme public."),
-            }
+            },
         },
     )
     icon: Mapped[str] = mapped_column(
@@ -591,7 +591,7 @@ class Theme(TreeGroup):
                 "title": _("Icon"),
                 "description": _("The icon URL."),
                 "missing": "",
-            }
+            },
         },
     )
 
@@ -605,7 +605,7 @@ class Theme(TreeGroup):
                 "title": _("Functionalities"),
                 "description": _("The linked functionalities."),
                 "exclude": True,
-            }
+            },
         },
     )
 
@@ -619,7 +619,7 @@ class Theme(TreeGroup):
                 "title": _("Roles"),
                 "description": _("Users with checked roles will get access to this theme."),
                 "exclude": True,
-            }
+            },
         },
     )
 
@@ -654,7 +654,7 @@ class Layer(TreeItem):
             "colanderalchemy": {
                 "title": _("Public"),
                 "description": _("Makes the layer public."),
-            }
+            },
         },
     )
     geo_table: Mapped[str | None] = mapped_column(
@@ -663,7 +663,7 @@ class Layer(TreeItem):
             "colanderalchemy": {
                 "title": _("Geo table"),
                 "description": _("The related database table, used by the editing module."),
-            }
+            },
         },
     )
     exclude_properties: Mapped[str] = mapped_column(
@@ -677,10 +677,10 @@ class Layer(TreeItem):
                     The list of attributes (database columns) that should not appear in
                     the editing form so that they cannot be modified by the end user.
                     For enumerable attributes (foreign key), the column name should end with '_id'.
-                    """
+                    """,
                 ),
                 "missing": "",
-            }
+            },
         },
     )
 
@@ -733,13 +733,13 @@ class OGCServer(Base):  # type: ignore
                 you should define two <code>OGC servers</code>.</p>
                 <hr>
             </div>
-                """
-            )
+                """,
+            ),
         ),
     }
     __c2cgeoform_config__ = {"duplicate": True}
     id: Mapped[int] = mapped_column(
-        Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}}
+        Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}},
     )
     name: Mapped[str] = mapped_column(
         Unicode,
@@ -751,9 +751,9 @@ class OGCServer(Base):  # type: ignore
                 "description": _(
                     "The name of the OGC Server, should contains only no unaccentuated letters, numbers and _. "
                     "When you rename it don't miss to update the <code>ogcServer<code> metadata on the "
-                    "WMTS and COG layers."
+                    "WMTS and COG layers.",
                 ),
-            }
+            },
         },
     )
     description: Mapped[str | None] = mapped_column(
@@ -762,7 +762,7 @@ class OGCServer(Base):  # type: ignore
             "colanderalchemy": {
                 "title": _("Description"),
                 "description": _("An optional description."),
-            }
+            },
         },
     )
     url: Mapped[str] = mapped_column(
@@ -772,7 +772,7 @@ class OGCServer(Base):  # type: ignore
             "colanderalchemy": {
                 "title": _("Basic URL"),
                 "description": _("The server URL."),
-            }
+            },
         },
     )
     url_wfs: Mapped[str | None] = mapped_column(
@@ -781,7 +781,7 @@ class OGCServer(Base):  # type: ignore
             "colanderalchemy": {
                 "title": _("WFS URL"),
                 "description": _("The WFS server URL. If empty, the ``Basic URL`` is used."),
-            }
+            },
         },
     )
     type: Mapped[OGCServerType] = mapped_column(
@@ -791,10 +791,10 @@ class OGCServer(Base):  # type: ignore
             "colanderalchemy": {
                 "title": _("Server type"),
                 "description": _(
-                    "The server type which is used to know which custom attribute will be used."
+                    "The server type which is used to know which custom attribute will be used.",
                 ),
                 "widget": SelectWidget(values=list((e, e) for e in get_args(OGCServerType))),
-            }
+            },
         },
     )
     image_type: Mapped[ImageType] = mapped_column(
@@ -806,7 +806,7 @@ class OGCServer(Base):  # type: ignore
                 "description": _("The MIME type of the images (e.g.: ``image/png``)."),
                 "widget": SelectWidget(values=list((e, e) for e in get_args(ImageType))),
                 "column": 2,
-            }
+            },
         },
     )
     auth: Mapped[OGCServerAuth] = mapped_column(
@@ -818,7 +818,7 @@ class OGCServer(Base):  # type: ignore
                 "description": "The kind of authentication to use.",
                 "widget": SelectWidget(values=list((e, e) for e in get_args(OGCServerAuth))),
                 "column": 2,
-            }
+            },
         },
     )
     wfs_support: Mapped[bool] = mapped_column(
@@ -828,7 +828,7 @@ class OGCServer(Base):  # type: ignore
                 "title": _("WFS support"),
                 "description": _("Whether WFS is supported by the server."),
                 "column": 2,
-            }
+            },
         },
     )
     is_single_tile: Mapped[bool] = mapped_column(
@@ -838,7 +838,7 @@ class OGCServer(Base):  # type: ignore
                 "title": _("Single tile"),
                 "description": _("Whether to use the single tile mode (For future use)."),
                 "column": 2,
-            }
+            },
         },
     )
 
@@ -897,8 +897,8 @@ class LayerWMS(DimensionLayer):
                 used when we create a new <code>WMS layer</code>.</p>
                 <hr>
             </div>
-                """
-            )
+                """,
+            ),
         ),
     }
 
@@ -921,9 +921,9 @@ class LayerWMS(DimensionLayer):
                 "title": _("OGC server"),
                 "column": 2,
                 "widget": RelationSelect2Widget(
-                    OGCServer, "id", "name", order_by="name", default_value=("", _("- Select -"))
+                    OGCServer, "id", "name", order_by="name", default_value=("", _("- Select -")),
                 ),
-            }
+            },
         },
     )
     layer: Mapped[str] = mapped_column(
@@ -938,10 +938,10 @@ class LayerWMS(DimensionLayer):
                     In the case of a comma separated list of layers, you will get the legend rule for the
                     layer icon on the first layer, and to support the legend you should define a legend
                     metadata.
-                    """
+                    """,
                 ),
                 "column": 2,
-            }
+            },
         },
     )
     style: Mapped[str | None] = mapped_column(
@@ -951,7 +951,7 @@ class LayerWMS(DimensionLayer):
                 "title": _("Style"),
                 "description": _("The style to use for this layer, can be empty."),
                 "column": 2,
-            }
+            },
         },
     )
     valid: Mapped[bool] = mapped_column(
@@ -964,7 +964,7 @@ class LayerWMS(DimensionLayer):
                 "column": 2,
                 "widget": CheckboxWidget(readonly=True),
                 "missing": colander_null,
-            }
+            },
         },
     )
     invalid_reason: Mapped[str] = mapped_column(
@@ -977,7 +977,7 @@ class LayerWMS(DimensionLayer):
                 "column": 2,
                 "widget": TextInputWidget(readonly=True),
                 "missing": "",
-            }
+            },
         },
     )
     time_mode: Mapped[TimeMode] = mapped_column(
@@ -990,9 +990,9 @@ class LayerWMS(DimensionLayer):
                 "description": _("Used for the WMS time component."),
                 "column": 2,
                 "widget": SelectWidget(
-                    values=(("disabled", _("Disabled")), ("value", _("Value")), ("range", _("Range")))
+                    values=(("disabled", _("Disabled")), ("value", _("Value")), ("range", _("Range"))),
                 ),
-            }
+            },
         },
     )
     time_widget: Mapped[TimeWidget] = mapped_column(
@@ -1005,7 +1005,7 @@ class LayerWMS(DimensionLayer):
                 "description": _("The component type used for the WMS time."),
                 "column": 2,
                 "widget": SelectWidget(values=(("slider", _("Slider")), ("datepicker", _("Datepicker")))),
-            }
+            },
         },
     )
 
@@ -1018,7 +1018,7 @@ class LayerWMS(DimensionLayer):
                 "title": _("OGC server"),
                 "description": _("The OGC server to use for this layer."),
                 "exclude": True,
-            }
+            },
         },
     )
 
@@ -1038,7 +1038,7 @@ class LayerWMS(DimensionLayer):
     @staticmethod
     def get_default(dbsession: Session) -> DimensionLayer | None:
         return cast(
-            DimensionLayer | None,
+            "DimensionLayer | None",
             dbsession.query(LayerWMS).filter(LayerWMS.name == "wms-defaults").one_or_none(),
         )
 
@@ -1094,8 +1094,8 @@ class LayerWMTS(DimensionLayer):
                 </ul>
                 <hr>
             </div>
-                """
-            )
+                """,
+            ),
         ),
     }
     __c2cgeoform_config__ = {"duplicate": True}
@@ -1115,7 +1115,7 @@ class LayerWMTS(DimensionLayer):
                 "title": _("GetCapabilities URL"),
                 "description": _("The URL to the WMTS capabilities."),
                 "column": 2,
-            }
+            },
         },
     )
     layer: Mapped[str] = mapped_column(
@@ -1126,7 +1126,7 @@ class LayerWMTS(DimensionLayer):
                 "title": _("WMTS layer name"),
                 "description": _("The name of the WMTS layer to use."),
                 "column": 2,
-            }
+            },
         },
     )
     style: Mapped[str] = mapped_column(
@@ -1138,7 +1138,7 @@ class LayerWMTS(DimensionLayer):
                 "description": _("The style to use; if not present, the default style is used."),
                 "column": 2,
                 "missing": "",
-            }
+            },
         },
     )
     matrix_set: Mapped[str] = mapped_column(
@@ -1149,11 +1149,11 @@ class LayerWMTS(DimensionLayer):
                 "title": _("Matrix set"),
                 "description": _(
                     "The matrix set to use; if there is only one matrix set in the capabilities, it can be"
-                    "left empty."
+                    "left empty.",
                 ),
                 "column": 2,
                 "missing": "",
-            }
+            },
         },
     )
     image_type: Mapped[ImageType] = mapped_column(
@@ -1166,12 +1166,12 @@ class LayerWMTS(DimensionLayer):
                     _(
                         """
                         The MIME type of the images (e.g.: <code>image/png</code>).
-                        """
-                    )
+                        """,
+                    ),
                 ),
                 "column": 2,
                 "widget": SelectWidget(values=list((e, e) for e in get_args(ImageType))),
-            }
+            },
         },
     )
 
@@ -1182,7 +1182,7 @@ class LayerWMTS(DimensionLayer):
     @staticmethod
     def get_default(dbsession: Session) -> DimensionLayer | None:
         return cast(
-            DimensionLayer | None,
+            "DimensionLayer | None",
             dbsession.query(LayerWMTS).filter(LayerWMTS.name == "wmts-defaults").one_or_none(),
         )
 
@@ -1233,8 +1233,8 @@ class LayerCOG(Layer):
                 <p>Note: The layers named <code>cog-defaults</code> contains the values
                 used when we create a new <code>COG layer</code>.</p>
             </div>
-                """
-            )
+                """,
+            ),
         ),
     }
     __c2cgeoform_config__ = {"duplicate": True}
@@ -1254,7 +1254,7 @@ class LayerCOG(Layer):
                 "title": _("URL"),
                 "description": _("URL of the COG file."),
                 "column": 2,
-            }
+            },
         },
     )
 
@@ -1303,8 +1303,8 @@ class LayerVectorTiles(DimensionLayer):
                 </ul>
                 <hr>
             </div>
-                """
-            )
+                """,
+            ),
         ),
     }
 
@@ -1328,10 +1328,10 @@ class LayerVectorTiles(DimensionLayer):
                 "description": _(
                     """
                     The path to a Mapbox Style file (version 8 or higher). Example: https://url/style.json.
-                    """
+                    """,
                 ),
                 "column": 2,
-            }
+            },
         },
     )
 
@@ -1344,7 +1344,7 @@ class LayerVectorTiles(DimensionLayer):
                 "description": _("A SQL query to get the vector tiles data."),
                 "column": 2,
                 "widget": TextAreaWidget(rows=15),
-            }
+            },
         },
     )
 
@@ -1358,10 +1358,10 @@ class LayerVectorTiles(DimensionLayer):
                     """
                     The raster url. Example: https://url/{z}/{x}/{y}.png. Alternative to print the
                     layer with a service which rasterises the vector tiles.
-                    """
+                    """,
                 ),
                 "column": 2,
-            }
+            },
         },
     )
 
@@ -1373,7 +1373,7 @@ class LayerVectorTiles(DimensionLayer):
     @staticmethod
     def get_default(dbsession: Session) -> DimensionLayer | None:
         return cast(
-            DimensionLayer | None,
+            "DimensionLayer | None",
             dbsession.query(LayerVectorTiles)
             .filter(LayerVectorTiles.name == "vector-tiles-defaults")
             .one_or_none(),
@@ -1393,7 +1393,7 @@ class RestrictionArea(Base):  # type: ignore
     __colanderalchemy_config__ = {"title": _("Restriction area"), "plural": _("Restriction areas")}
     __c2cgeoform_config__ = {"duplicate": True}
     id: Mapped[int] = mapped_column(
-        Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}}
+        Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}},
     )
 
     name: Mapped[str] = mapped_column(
@@ -1402,7 +1402,7 @@ class RestrictionArea(Base):  # type: ignore
             "colanderalchemy": {
                 "title": _("Name"),
                 "description": _("A name."),
-            }
+            },
         },
     )
     description: Mapped[str | None] = mapped_column(
@@ -1411,7 +1411,7 @@ class RestrictionArea(Base):  # type: ignore
             "colanderalchemy": {
                 "title": _("Description"),
                 "description": _("An optional description."),
-            }
+            },
         },
     )
     readwrite: Mapped[bool] = mapped_column(
@@ -1421,7 +1421,7 @@ class RestrictionArea(Base):  # type: ignore
             "colanderalchemy": {
                 "title": _("Read/write"),
                 "description": _("Allows the linked users to change the objects."),
-            }
+            },
         },
     )
     area = mapped_column(
@@ -1432,7 +1432,7 @@ class RestrictionArea(Base):  # type: ignore
                 "description": _("Active in the following area, if not defined, it is active everywhere."),
                 "typ": ColanderGeometry("POLYGON", srid=_srid, map_srid=_map_config["srid"]),
                 "widget": MapWidget(map_options=_map_config),
-            }
+            },
         },
     )
 
@@ -1445,7 +1445,7 @@ class RestrictionArea(Base):  # type: ignore
                 "title": _("Roles"),
                 "description": _("Checked roles will grant access to this restriction area."),
                 "exclude": True,
-            }
+            },
         },
         cascade="save-update,merge,refresh-expire",
         backref=backref(
@@ -1454,10 +1454,10 @@ class RestrictionArea(Base):  # type: ignore
                 "colanderalchemy": {
                     "title": _("Restriction areas"),
                     "description": _(
-                        "Users with this role will be granted with access to those restriction areas."
+                        "Users with this role will be granted with access to those restriction areas.",
                     ),
                     "exclude": True,
-                }
+                },
             },
         ),
     )
@@ -1476,10 +1476,10 @@ class RestrictionArea(Base):  # type: ignore
                             <p>This restriction area will grant access to the checked layers.</p>
                             <hr>
                         </div>
-                        """
-                    )
+                        """,
+                    ),
                 ),
-            }
+            },
         },
         cascade="save-update,merge,refresh-expire",
         backref=backref(
@@ -1489,7 +1489,7 @@ class RestrictionArea(Base):  # type: ignore
                     "title": _("Restriction areas"),
                     "exclude": True,
                     "description": _("The areas through which the user can see the layer."),
-                }
+                },
             },
         ),
     )
@@ -1528,7 +1528,7 @@ interface_layer = Table(
     "interface_layer",
     Base.metadata,
     Column(
-        "interface_id", Integer, ForeignKey(_schema + ".interface.id", ondelete="CASCADE"), primary_key=True
+        "interface_id", Integer, ForeignKey(_schema + ".interface.id", ondelete="CASCADE"), primary_key=True,
     ),
     Column("layer_id", Integer, ForeignKey(_schema + ".layer.id", ondelete="CASCADE"), primary_key=True),
     schema=_schema,
@@ -1539,7 +1539,7 @@ interface_theme = Table(
     "interface_theme",
     Base.metadata,
     Column(
-        "interface_id", Integer, ForeignKey(_schema + ".interface.id", ondelete="CASCADE"), primary_key=True
+        "interface_id", Integer, ForeignKey(_schema + ".interface.id", ondelete="CASCADE"), primary_key=True,
     ),
     Column("theme_id", Integer, ForeignKey(_schema + ".theme.id", ondelete="CASCADE"), primary_key=True),
     schema=_schema,
@@ -1555,7 +1555,7 @@ class Interface(Base):  # type: ignore
     __colanderalchemy_config__ = {"title": _("Interface"), "plural": _("Interfaces")}
 
     id: Mapped[int] = mapped_column(
-        Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}}
+        Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}},
     )
     name: Mapped[str] = mapped_column(
         Unicode,
@@ -1563,7 +1563,7 @@ class Interface(Base):  # type: ignore
             "colanderalchemy": {
                 "title": _("Name"),
                 "description": _("The name of the interface, as used in request URL."),
-            }
+            },
         },
     )
     description: Mapped[str | None] = mapped_column(
@@ -1572,7 +1572,7 @@ class Interface(Base):  # type: ignore
             "colanderalchemy": {
                 "title": _("Description"),
                 "description": _("An optional description."),
-            }
+            },
         },
     )
 
@@ -1589,7 +1589,7 @@ class Interface(Base):  # type: ignore
                     "title": _("Interfaces"),
                     "exclude": True,
                     "description": _("Make it visible in the checked interfaces."),
-                }
+                },
             },
         ),
     )
@@ -1605,7 +1605,7 @@ class Interface(Base):  # type: ignore
                     "title": _("Interfaces"),
                     "description": _("Make it visible in the checked interfaces."),
                     "exclude": True,
-                }
+                },
             },
         ),
     )
@@ -1629,7 +1629,7 @@ class Metadata(Base):  # type: ignore
     }
 
     id: Mapped[int] = mapped_column(
-        Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}}
+        Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}},
     )
     name: Mapped[str] = mapped_column(
         Unicode,
@@ -1637,9 +1637,9 @@ class Metadata(Base):  # type: ignore
             "colanderalchemy": {
                 "title": _("Name"),
                 "description": c2cgeoportal_commons.lib.literal.Literal(
-                    _("The type of <code>Metadata</code> we want to set.")
+                    _("The type of <code>Metadata</code> we want to set."),
                 ),
-            }
+            },
         },
     )
     value: Mapped[str] = mapped_column(
@@ -1650,7 +1650,7 @@ class Metadata(Base):  # type: ignore
                 "title": _("Value"),
                 "exclude": True,
                 "description": _("The value of the metadata entry."),
-            }
+            },
         },
     )
     description: Mapped[str | None] = mapped_column(
@@ -1660,7 +1660,7 @@ class Metadata(Base):  # type: ignore
                 "title": _("Description"),
                 "widget": TextAreaWidget(),
                 "description": _("An optional description."),
-            }
+            },
         },
     )
 
@@ -1704,12 +1704,12 @@ class Metadata(Base):  # type: ignore
                                     "https://camptocamp.github.io/ngeo/"
                                     f"{os.environ.get('MAJOR_VERSION', 'master')}"
                                     "/apidoc/interfaces/contribs_gmf_src_themes.GmfMetaData.html"
-                                )
+                                ),
                             },
-                        )
+                        ),
                     ),
                     "exclude": True,
-                }
+                },
             },
         ),
     )
@@ -1739,7 +1739,7 @@ class Dimension(Base):  # type: ignore
     }
 
     id: Mapped[int] = mapped_column(
-        Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}}
+        Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}},
     )
     name: Mapped[str] = mapped_column(
         Unicode,
@@ -1747,7 +1747,7 @@ class Dimension(Base):  # type: ignore
             "colanderalchemy": {
                 "title": _("Name"),
                 "description": _("The name of the dimension as it will be sent in requests."),
-            }
+            },
         },
     )
     value: Mapped[str] = mapped_column(
@@ -1757,7 +1757,7 @@ class Dimension(Base):  # type: ignore
             "colanderalchemy": {
                 "title": _("Value"),
                 "description": _("The default value for this dimension."),
-            }
+            },
         },
     )
     field: Mapped[str | None] = mapped_column(
@@ -1766,9 +1766,9 @@ class Dimension(Base):  # type: ignore
             "colanderalchemy": {
                 "title": _("Field"),
                 "description": _(
-                    "The name of the field to use for filtering (leave empty when not using OGC filters)."
+                    "The name of the field to use for filtering (leave empty when not using OGC filters).",
                 ),
-            }
+            },
         },
     )
     description: Mapped[str | None] = mapped_column(
@@ -1778,7 +1778,7 @@ class Dimension(Base):  # type: ignore
                 "title": _("Description"),
                 "description": _("An optional description."),
                 "widget": TextAreaWidget(),
-            }
+            },
         },
     )
 
@@ -1806,10 +1806,10 @@ class Dimension(Base):  # type: ignore
             <p>The dimensions, if not provided default values are used.</p>
             <hr>
         </div>
-                            """
-                        )
+                            """,
+                        ),
                     ),
-                }
+                },
             },
         ),
     )
@@ -1860,7 +1860,7 @@ class AbstractLog(AbstractConcreteBase, Base):  # type: ignore
         info={
             "colanderalchemy": {
                 "title": _("Date"),
-            }
+            },
         },
     )
     action: Mapped[LogAction] = mapped_column(
@@ -1869,7 +1869,7 @@ class AbstractLog(AbstractConcreteBase, Base):  # type: ignore
         info={
             "colanderalchemy": {
                 "title": _("Action"),
-            }
+            },
         },
     )
     element_type: Mapped[str] = mapped_column(
@@ -1878,7 +1878,7 @@ class AbstractLog(AbstractConcreteBase, Base):  # type: ignore
         info={
             "colanderalchemy": {
                 "title": _("Element type"),
-            }
+            },
         },
     )
     element_id: Mapped[int] = mapped_column(
@@ -1887,7 +1887,7 @@ class AbstractLog(AbstractConcreteBase, Base):  # type: ignore
         info={
             "colanderalchemy": {
                 "title": _("Element identifier"),
-            }
+            },
         },
     )
     element_name: Mapped[str] = mapped_column(
@@ -1896,7 +1896,7 @@ class AbstractLog(AbstractConcreteBase, Base):  # type: ignore
         info={
             "colanderalchemy": {
                 "title": _("Element name"),
-            }
+            },
         },
     )
     element_url_table: Mapped[str] = mapped_column(
@@ -1905,7 +1905,7 @@ class AbstractLog(AbstractConcreteBase, Base):  # type: ignore
         info={
             "colanderalchemy": {
                 "title": _("Table segment of the element URL"),
-            }
+            },
         },
     )
     username: Mapped[str] = mapped_column(
@@ -1914,7 +1914,7 @@ class AbstractLog(AbstractConcreteBase, Base):  # type: ignore
         info={
             "colanderalchemy": {
                 "title": _("Username"),
-            }
+            },
         },
     )
 

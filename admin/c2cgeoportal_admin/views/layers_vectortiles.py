@@ -82,7 +82,7 @@ class LayerVectorTilesViews(DimensionLayerViews[LayerVectorTiles]):
         return super()._sub_query(self._request.dbsession.query(LayerVectorTiles).distinct())
 
     def _sub_query(
-        self, query: sqlalchemy.orm.query.Query[LayerVectorTiles] | None
+        self, query: sqlalchemy.orm.query.Query[LayerVectorTiles] | None,
     ) -> sqlalchemy.orm.query.Query[LayerVectorTiles]:
         del query
         return self._base_query()
@@ -101,13 +101,13 @@ class LayerVectorTilesViews(DimensionLayerViews[LayerVectorTiles]):
         except HTTPNotFound:
             obj = None
 
-        schema = cast(GeoFormSchemaNode, self._base_schema.clone())
+        schema = cast("GeoFormSchemaNode", self._base_schema.clone())
         if obj is not None:
             schema["style"].description = Literal(
                 _("{}<br>Current runtime value is: {}").format(
                     schema["style"].description,
                     obj.style_description(self._request),
-                )
+                ),
             )
         return schema
 
@@ -124,7 +124,7 @@ class LayerVectorTilesViews(DimensionLayerViews[LayerVectorTiles]):
         return super().delete()
 
     @view_config(  # type: ignore[misc]
-        route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2"
+        route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2",
     )
     def duplicate(self) -> ObjectResponse:
         return super().duplicate()

@@ -8,7 +8,6 @@ from . import AbstractViewsTests
 
 
 @pytest.fixture(scope="function")
-@pytest.mark.usefixtures("dbsession", "transact")
 def layertree_test_data(dbsession, transact):
     del transact
 
@@ -85,7 +84,7 @@ def layertree_test_data(dbsession, transact):
 
     dbsession.flush()
 
-    yield (
+    return (
         {
             "themes": themes,
             "groups": groups,

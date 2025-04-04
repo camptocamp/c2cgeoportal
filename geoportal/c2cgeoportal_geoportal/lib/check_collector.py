@@ -72,9 +72,9 @@ def init(config: pyramid.config.Configurator, health_check: c2cwsgiutils.health_
                         **url_headers,  # type: ignore
                     )
                     r.raise_for_status()
-                    return cast(dict[str, Any], r.json())
+                    return cast("dict[str, Any]", r.json())
                 return None
 
         health_check.add_custom_check(
-            name="check_collector_" + host["display"], check_cb=Check(host), level=settings["level"]
+            name="check_collector_" + host["display"], check_cb=Check(host), level=settings["level"],
         )

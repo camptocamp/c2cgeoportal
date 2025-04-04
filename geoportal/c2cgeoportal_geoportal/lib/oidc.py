@@ -96,7 +96,7 @@ class OidcRememberObject(TypedDict):
 
 
 def get_remember_from_user_info(
-    request: pyramid.request.Request, user_info: dict[str, Any], remember_object: OidcRememberObject
+    request: pyramid.request.Request, user_info: dict[str, Any], remember_object: OidcRememberObject,
 ) -> None:
     """
     Fill the remember object from the user info.
@@ -134,7 +134,7 @@ def get_remember_from_user_info(
 
 
 def get_user_from_remember(
-    request: pyramid.request.Request, remember_object: OidcRememberObject, update_create_user: bool = False
+    request: pyramid.request.Request, remember_object: OidcRememberObject, update_create_user: bool = False,
 ) -> Union["static.User", DynamicUser] | None:
     """
     Create a user from the remember object filled from `get_remember_from_user_info`.
@@ -161,7 +161,7 @@ def get_user_from_remember(
     display_name = remember_object["display_name"] or email
 
     openid_connect_configuration = request.registry.settings.get("authentication", {}).get(
-        "openid_connect", {}
+        "openid_connect", {},
     )
     provide_roles = openid_connect_configuration.get("provide_roles", False)
     if provide_roles is False:
@@ -173,7 +173,7 @@ def get_user_from_remember(
             user_query = user_query.filter_by(email=email)
         else:
             raise HTTPInternalServerError(
-                f"Unknown match_field: '{match_field}', allowed values are 'username' and 'email'"
+                f"Unknown match_field: '{match_field}', allowed values are 'username' and 'email'",
             )
         user = user_query.one_or_none()
         if update_create_user is True:
@@ -187,7 +187,7 @@ def get_user_from_remember(
                         user.email = email
                     else:
                         raise HTTPInternalServerError(
-                            f"Unknown update_field: '{field}', allowed values are 'username', 'display_name' and 'email'"
+                            f"Unknown update_field: '{field}', allowed values are 'username', 'display_name' and 'email'",
                         )
             elif openid_connect_configuration.get("create_user", False) is True:
                 user = static.User(username=username, email=email, display_name=display_name)
@@ -267,7 +267,7 @@ class OidcRemember:
             user_info = client.fetch_userinfo(token_response.access_token)
         else:
             un_validated_user_info = simple_openid_connect.data.IdToken.parse_jwt(
-                token_response.id_token, client.provider_keys
+                token_response.id_token, client.provider_keys,
             )
             _LOG.info(
                 "Receive audiences: %s",
@@ -280,7 +280,7 @@ class OidcRemember:
             user_info = client.decode_id_token(
                 token_response.id_token,
                 extra_trusted_audiences=openid_connect.get(
-                    "trusted_audiences", [openid_connect.get("client_id")]
+                    "trusted_audiences", [openid_connect.get("client_id")],
                 ),
             )
 

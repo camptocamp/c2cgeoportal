@@ -8,7 +8,6 @@ from . import AbstractViewsTests, factory_build_layers, get_test_default_layers
 
 
 @pytest.fixture(scope="function")
-@pytest.mark.usefixtures("dbsession", "transact")
 def layer_wmts_test_data(dbsession, transact):
     del transact
 
@@ -34,7 +33,7 @@ def layer_wmts_test_data(dbsession, transact):
 
     dbsession.flush()
 
-    yield data
+    return data
 
 
 @pytest.mark.usefixtures("layer_wmts_test_data", "test_app")

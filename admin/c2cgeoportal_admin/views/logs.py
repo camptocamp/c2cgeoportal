@@ -88,7 +88,7 @@ class LogViews(AbstractViews[AbstractLog]):
                     label=_("Edit element"),
                     icon="glyphicon glyphicon-pencil",
                     url=element_url,
-                ).to_dict(self._request)
+                ).to_dict(self._request),
             ],
         }
 

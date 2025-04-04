@@ -47,7 +47,7 @@ _LOG = logging.getLogger(__name__)
 def memory(request: pyramid.request.Request) -> dict[str, Any]:
     """Offer an authenticated view throw c2cwsgiutils to provide some memory information."""
     auth_view(request)
-    return cast(dict[str, Any], _memory())
+    return cast("dict[str, Any]", _memory())
 
 
 def _nice_type_name(obj: Any, dogpile_cache: bool = False) -> str:
@@ -74,7 +74,7 @@ def _process_dict(dict_: dict[str, Any], dogpile_cache: bool = False) -> dict[st
                 }
                 for key, value in dict_.items()
             ),
-            key=lambda i: cast(float, -i["size_kb"]),
+            key=lambda i: cast("float", -i["size_kb"]),
         ),
         "id": id(dict_),
         "size_kb": get_size(dict_) / 1024 if time.monotonic() < timeout else -1,

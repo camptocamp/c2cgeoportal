@@ -78,8 +78,8 @@ class ThemeViews(TreeItemViews[Theme]):
                 renderer=lambda themes: ", ".join(
                     [
                         f"{f.name}={f.value}"
-                        for f in sorted(themes.functionalities, key=lambda f: cast(str, f.name))
-                    ]
+                        for f in sorted(themes.functionalities, key=lambda f: cast("str", f.name))
+                    ],
                 ),
                 filter_column=concat(Functionality.name, "=", Functionality.value),
             ),
@@ -91,7 +91,7 @@ class ThemeViews(TreeItemViews[Theme]):
             _list_field(
                 "interfaces",
                 renderer=lambda themes: ", ".join(
-                    [i.name or "" for i in sorted(themes.interfaces, key=lambda i: cast(str, i.name))]
+                    [i.name or "" for i in sorted(themes.interfaces, key=lambda i: cast("str", i.name))],
                 ),
                 filter_column=Interface.name,
             ),
@@ -112,7 +112,7 @@ class ThemeViews(TreeItemViews[Theme]):
             .outerjoin(Theme.functionalities)
             .options(subqueryload(Theme.functionalities))
             .options(subqueryload(Theme.restricted_roles))
-            .options(subqueryload(Theme.interfaces))
+            .options(subqueryload(Theme.interfaces)),
         )
 
     def _sub_query(self, query: sqlalchemy.orm.query.Query[Theme]) -> sqlalchemy.orm.query.Query[Theme]:
@@ -140,7 +140,7 @@ class ThemeViews(TreeItemViews[Theme]):
         return super().delete()
 
     @view_config(  # type: ignore[misc]
-        route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2"
+        route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2",
     )
     def duplicate(self) -> ObjectResponse:
         return super().duplicate()

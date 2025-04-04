@@ -68,7 +68,7 @@ class PdfReport(OGCProxy):
 
     @staticmethod
     def _build_map(
-        mapserv_url: str, vector_request_url: str, srs: str, map_config: dict[str, Any]
+        mapserv_url: str, vector_request_url: str, srs: str, map_config: dict[str, Any],
     ) -> dict[str, Any]:
         backgroundlayers = map_config["backgroundlayers"]
         imageformat = map_config["imageformat"]
@@ -141,7 +141,7 @@ class PdfReport(OGCProxy):
         srs = layer_config["srs"]
 
         mapserv_url = self.request.route_url(
-            "mapserverproxy", _query={"ogcserver": layer_config["ogc_server"]}
+            "mapserverproxy", _query={"ogcserver": layer_config["ogc_server"]},
         )
         url = Url(mapserv_url)
         url.add_query(
@@ -153,7 +153,7 @@ class PdfReport(OGCProxy):
                 "typeName": self.layername,
                 "featureid": ",".join(features_ids),
                 "srsName": srs,
-            }
+            },
         )
         vector_request_url = url.url()
 
@@ -173,7 +173,7 @@ class PdfReport(OGCProxy):
                 spec["attributes"]["maps"] = []
                 for map_config in maps_config:
                     spec["attributes"]["maps"].append(
-                        self._build_map(mapserv_url, vector_request_url, srs, map_config)
+                        self._build_map(mapserv_url, vector_request_url, srs, map_config),
                     )
         else:
             datasource = layer_config.get("datasource", True)
@@ -188,7 +188,7 @@ class PdfReport(OGCProxy):
                             "srs": srs,
                             "mapserv_url": mapserv_url,
                             "vector_request_url": vector_request_url,
-                        }
+                        },
                     )
                     for id_ in ids
                 ]
@@ -200,7 +200,7 @@ class PdfReport(OGCProxy):
                         "srs": srs,
                         "mapserv_url": mapserv_url,
                         "vector_request_url": vector_request_url,
-                    }
+                    },
                 )
             elif multiple:
                 spec = loads(
@@ -211,7 +211,7 @@ class PdfReport(OGCProxy):
                         "srs": srs,
                         "mapserv_url": mapserv_url,
                         "vector_request_url": vector_request_url,
-                    }
+                    },
                 )
             else:
                 spec = loads(
@@ -222,7 +222,7 @@ class PdfReport(OGCProxy):
                         "srs": srs,
                         "mapserv_url": mapserv_url,
                         "vector_request_url": vector_request_url,
-                    }
+                    },
                 )
 
         return self._do_print(spec)

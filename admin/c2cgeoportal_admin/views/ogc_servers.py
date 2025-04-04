@@ -104,23 +104,23 @@ class OGCServerViews(LoggedViews[OGCServer]):
     def schema(self) -> GeoFormSchemaNode:
         obj = self._get_object()
 
-        schema = cast(GeoFormSchemaNode, self._base_schema.clone())
+        schema = cast("GeoFormSchemaNode", self._base_schema.clone())
         schema["url"].description = Literal(
             _("{}<br>Current runtime value is: {}").format(
                 schema["url"].description,
                 obj.url_description(self._request),
-            )
+            ),
         )
         schema["url_wfs"].description = Literal(
             _("{}<br>Current runtime value is: {}").format(
                 schema["url_wfs"].description,
                 obj.url_wfs_description(self._request),
-            )
+            ),
         )
         return schema
 
     def _item_actions(self, item: OGCServer, readonly: bool = False) -> list[Any]:
-        actions = cast(list[Any], super()._item_actions(item, readonly))
+        actions = cast("list[Any]", super()._item_actions(item, readonly))
         if inspect(item).persistent:  # type: ignore[attr-defined]
             actions.insert(
                 next((i for i, v in enumerate(actions) if v.name() == "delete")),
@@ -150,13 +150,13 @@ class OGCServerViews(LoggedViews[OGCServer]):
         return actions
 
     @view_config(  # type: ignore[misc]
-        route_name="c2cgeoform_item", request_method="GET", renderer="../templates/edit.jinja2"
+        route_name="c2cgeoform_item", request_method="GET", renderer="../templates/edit.jinja2",
     )
     def view(self) -> ObjectResponse:
         return super().edit(self.schema())
 
     @view_config(  # type: ignore[misc]
-        route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2"
+        route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2",
     )
     def save(self) -> SaveResponse:
         result = super().save()
@@ -183,13 +183,13 @@ class OGCServerViews(LoggedViews[OGCServer]):
         return result
 
     @view_config(  # type: ignore[misc]
-        route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2"
+        route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2",
     )
     def duplicate(self) -> ObjectResponse:
         return super().duplicate()
 
     @view_config(  # type: ignore[misc]
-        route_name="ogcserver_synchronize", renderer="../templates/ogcserver_synchronize.jinja2"
+        route_name="ogcserver_synchronize", renderer="../templates/ogcserver_synchronize.jinja2",
     )
     def synchronize(self) -> JSONDict:
         obj = self._get_object()

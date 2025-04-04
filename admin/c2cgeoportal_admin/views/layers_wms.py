@@ -100,11 +100,11 @@ class LayerWmsViews(DimensionLayerViews[LayerWMS]):
 
     def _base_query(self) -> sqlalchemy.orm.query.Query[LayerWMS]:
         return super()._sub_query(
-            self._request.dbsession.query(LayerWMS, OGCServer.name).distinct().outerjoin(LayerWMS.ogc_server)
+            self._request.dbsession.query(LayerWMS, OGCServer.name).distinct().outerjoin(LayerWMS.ogc_server),
         )
 
     def _sub_query(
-        self, query: sqlalchemy.orm.query.Query[LayerWMS] | None
+        self, query: sqlalchemy.orm.query.Query[LayerWMS] | None,
     ) -> sqlalchemy.orm.query.Query[LayerWMS]:
         del query
         return self._base_query()
@@ -134,7 +134,7 @@ class LayerWmsViews(DimensionLayerViews[LayerWMS]):
         return actions
 
     @view_config(  # type: ignore[misc]
-        route_name="c2cgeoform_item", request_method="GET", renderer="../templates/edit.jinja2"
+        route_name="c2cgeoform_item", request_method="GET", renderer="../templates/edit.jinja2",
     )
     def view(self) -> ObjectResponse:
         if self._is_new():
@@ -145,7 +145,7 @@ class LayerWmsViews(DimensionLayerViews[LayerWMS]):
         return super().edit()
 
     @view_config(  # type: ignore[misc]
-        route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2"
+        route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2",
     )
     def save(self) -> SaveResponse:
         return super().save()
@@ -155,7 +155,7 @@ class LayerWmsViews(DimensionLayerViews[LayerWMS]):
         return super().delete()
 
     @view_config(  # type: ignore[misc]
-        route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2"
+        route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2",
     )
     def duplicate(self) -> ObjectResponse:
         return super().duplicate()
@@ -180,7 +180,7 @@ class LayerWmsViews(DimensionLayerViews[LayerWMS]):
                     "layer": src.layer,
                     "image_type": src.ogc_server.image_type,
                     "style": src.style,
-                }
+                },
             )
             i = i.values(values)
             u = update(TreeItem.__table__)

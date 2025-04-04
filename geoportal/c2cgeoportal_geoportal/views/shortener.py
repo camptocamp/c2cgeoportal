@@ -124,7 +124,7 @@ class Shortener:
                 logger.error(message)
                 raise HTTPInternalServerError(message)
 
-        user_email = cast(static.User, self.request.user).email if self.request.user is not None else None
+        user_email = cast("static.User", self.request.user).email if self.request.user is not None else None
         email = self.request.params.get("email")
         if not shortened:
             short_url = static.Shorturl()

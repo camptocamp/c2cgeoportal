@@ -69,7 +69,7 @@ def get_config() -> dict[str, str | bool]:
             "version_table": version_table,
             "version_locations": version_locations,
             "version_table_schema": config[schema_config_name],
-        }
+        },
     )
     return settings
 
@@ -121,12 +121,12 @@ def run_migrations_online() -> None:
         del name, reflected, compare_to
 
         if type_ == "table":
-            return cast(bool, obj.schema == _schema)  # type: ignore[attr-defined]
-        return cast(bool, obj.table.schema == _schema)  # type: ignore[attr-defined]
+            return cast("bool", obj.schema == _schema)  # type: ignore[attr-defined]
+        return cast("bool", obj.table.schema == _schema)  # type: ignore[attr-defined]
 
     if _schema:
         conf.update(
-            {"target_metadata": Base.metadata, "include_schemas": True, "include_object": include_object}
+            {"target_metadata": Base.metadata, "include_schemas": True, "include_object": include_object},
         )
 
     engine = engine_from_config(conf, prefix="sqlalchemy.", poolclass=pool.NullPool)

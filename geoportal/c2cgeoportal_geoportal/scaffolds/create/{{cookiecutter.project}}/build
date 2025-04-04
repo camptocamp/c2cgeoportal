@@ -11,7 +11,7 @@ import stat
 import subprocess
 import sys
 import urllib.request
-from typing import TYPE_CHECKING, Any, List, Optional
+from typing import TYPE_CHECKING, Any
 
 import yaml
 
@@ -19,12 +19,12 @@ CompletedProcess = subprocess.CompletedProcess[str] if TYPE_CHECKING else subpro
 
 
 def run(
-    args: argparse.Namespace, command: List[str], exit_on_error: bool = True, **kwargs: Any
-) -> Optional[CompletedProcess]:
+    args: argparse.Namespace, command: list[str], exit_on_error: bool = True, **kwargs: Any,
+) -> CompletedProcess | None:
     if args.verbose or args.dry_run:
         print(shlex.join(command))
     if not args.dry_run or "stdout" in kwargs:
-        if args.stack_trace and exit_on_error and not "checks" in kwargs:
+        if args.stack_trace and exit_on_error and "checks" not in kwargs:
             kwargs["check"] = True
         process = subprocess.run(command, **kwargs)  # nosec
         if exit_on_error and process.returncode != 0:
@@ -38,7 +38,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Build the project")
     parser.add_argument("--verbose", action="store_true", help="Display the Docker build commands")
     parser.add_argument(
-        "--dry-run", action="store_true", help="Display the docker build commands without executing them"
+        "--dry-run", action="store_true", help="Display the docker build commands without executing them",
     )
     parser.add_argument("--service", help="Build only the specified service")
     parser.add_argument("--env", action="store_true", help="Build only the .env file")
@@ -59,7 +59,7 @@ def main() -> None:
         help="Do not pull external or base images for faster rebuild during development.",
     )
     parser.add_argument(
-        "--debug", help="Path to c2cgeoportal source folder to be able to debug the upgrade procedure"
+        "--debug", help="Path to c2cgeoportal source folder to be able to debug the upgrade procedure",
     )
     parser.add_argument("--stack-trace", action="store_true", help="Display the stack trace on error")
     parser.add_argument("env_files", nargs="*", help="The environment config")
@@ -76,9 +76,7 @@ def main() -> None:
         full_version = args.upgrade
         with open("upgrade", "w", encoding="utf-8") as f:
             with urllib.request.urlopen(  # nosec
-                "https://raw.githubusercontent.com/camptocamp/c2cgeoportal/{major_version}/scripts/upgrade".format(
-                    major_version=major_version
-                )
+                f"https://raw.githubusercontent.com/camptocamp/c2cgeoportal/{major_version}/scripts/upgrade",
             ) as result:
                 if result.code != 200:
                     print("ERROR:")

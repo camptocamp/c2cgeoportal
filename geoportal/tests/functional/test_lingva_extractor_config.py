@@ -81,7 +81,7 @@ def settings():
         yield settings
 
 
-@pytest.fixture()
+@pytest.fixture
 def dbsession_db1(settings, dbsession_old):
     from c2cgeoportal_commons.models import DBSession, DBSessions
 

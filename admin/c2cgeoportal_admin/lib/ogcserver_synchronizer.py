@@ -117,7 +117,7 @@ class OGCServerSynchronizer:
     def check_layers(self) -> None:
         capabilities = ElementTree.fromstring(self.wms_capabilities())
         layers = self._request.dbsession.query(main.LayerWMS).filter(
-            main.LayerWMS.ogc_server == self._ogc_server
+            main.LayerWMS.ogc_server == self._ogc_server,
         )
         items = 0
         invalids = 0
@@ -182,7 +182,7 @@ class OGCServerSynchronizer:
         self._layers_removed = 0
 
         self._default_wms = cast(
-            main.LayerWMS, main.LayerWMS.get_default(self._request.dbsession) or main.LayerWMS()
+            "main.LayerWMS", main.LayerWMS.get_default(self._request.dbsession) or main.LayerWMS(),
         )
         self._interfaces = self._request.dbsession.query(main.Interface).all()
 
@@ -225,7 +225,7 @@ class OGCServerSynchronizer:
             children = server_children + external_children
             if tree_item.children != children:
                 tree_item._set_children(  # pylint: disable=protected-access
-                    server_children + external_children, order=True
+                    server_children + external_children, order=True,
                 )
                 self._logger.info("Children of %s have been sorted", tree_item.name)
 
@@ -237,7 +237,7 @@ class OGCServerSynchronizer:
         name = name_el.text
 
         theme = cast(
-            main.Theme | None,
+            "main.Theme | None",
             self._request.dbsession.query(main.Theme).filter(main.Theme.name == name).one_or_none(),
         )
 
@@ -262,7 +262,7 @@ class OGCServerSynchronizer:
         assert name is not None
 
         group = cast(
-            main.LayerGroup | None,
+            "main.LayerGroup | None",
             (
                 self._request.dbsession.query(main.LayerGroup)
                 .filter(main.LayerGroup.name == name)
@@ -293,7 +293,7 @@ class OGCServerSynchronizer:
         assert name is not None
 
         layer = cast(
-            main.LayerWMS | None,
+            "main.LayerWMS | None",
             self._request.dbsession.query(main.LayerWMS).filter(main.LayerWMS.name == name).one_or_none(),
         )
 
@@ -403,7 +403,7 @@ class OGCServerSynchronizer:
         ]:
             raise Exception(  # pylint: disable=broad-exception-raised
                 f"GetCapabilities from URL '{url}' returns a wrong Content-Type: "
-                f"{response.headers.get('Content-Type', '')}\n{response.text}"
+                f"{response.headers.get('Content-Type', '')}\n{response.text}",
             )
 
         return response.content

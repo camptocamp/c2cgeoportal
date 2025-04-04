@@ -101,12 +101,12 @@ def _get_db_functionality(
 @_CACHE_REGION_OBJ.cache_on_arguments()
 def _get_functionalities_type(request: pyramid.request.Request) -> dict[str, dict[str, Any]]:
     return get_types_map(
-        request.registry.settings.get("admin_interface", {}).get("available_functionalities", [])
+        request.registry.settings.get("admin_interface", {}).get("available_functionalities", []),
     )
 
 
 def get_functionality(
-    name: str, request: pyramid.request.Request, is_intranet_: bool
+    name: str, request: pyramid.request.Request, is_intranet_: bool,
 ) -> list[str | int | float | bool | list[Any] | dict[str, Any]]:
     """Get all the functionality for the current user."""
     result: list[str | int | float | bool | list[Any] | dict[str, Any]] = []
@@ -114,7 +114,7 @@ def get_functionality(
 
     if request.user is not None:
         result = _get_db_functionality(
-            name, _user_to_struct(request.user), _get_functionalities_type(request), request, errors
+            name, _user_to_struct(request.user), _get_functionalities_type(request), request, errors,
         )
         if not result:
             result = _get_db_functionality(
@@ -154,7 +154,7 @@ def get_mapserver_substitution_params(request: pyramid.request.Request) -> dict[
     mss = get_functionality("mapserver_substitution", request, is_intranet(request))
     if mss:
         for s_ in mss:
-            s = cast(str, s_)
+            s = cast("str", s_)
             index = s.find("=")
             if index > 0:
                 attribute = "s_" + s[:index]

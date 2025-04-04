@@ -8,7 +8,6 @@ from .test_treegroup import TestTreeGroup
 
 
 @pytest.fixture(scope="function")
-@pytest.mark.usefixtures("dbsession", "transact")
 def layer_groups_test_data(dbsession, transact):
     del transact
 
@@ -59,7 +58,7 @@ def layer_groups_test_data(dbsession, transact):
 
     dbsession.flush()
 
-    yield {"groups": groups}
+    return {"groups": groups}
 
 
 @pytest.mark.usefixtures("layer_groups_test_data", "test_app")

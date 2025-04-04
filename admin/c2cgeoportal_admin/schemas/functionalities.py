@@ -61,15 +61,15 @@ def functionalities_widget(model: type[Any]) -> colander.deferred:
             )
             .where(
                 Functionality.name.in_(
-                    [f["name"] for f in available_functionalities_for(kw["request"].registry.settings, model)]
-                )
+                    [f["name"] for f in available_functionalities_for(kw["request"].registry.settings, model)],
+                ),
             )
             .alias("functionality_labels"),
             "id",
             "label",
             order_by="label",
             edit_url=lambda request, value: request.route_url(
-                "c2cgeoform_item", table="functionalities", id=value
+                "c2cgeoform_item", table="functionalities", id=value,
             ),
         )
 
@@ -77,7 +77,7 @@ def functionalities_widget(model: type[Any]) -> colander.deferred:
 
 
 def functionalities_schema_node(
-    prop: InstrumentedAttribute[Any], model: type[Any]
+    prop: InstrumentedAttribute[Any], model: type[Any],
 ) -> colander.SequenceSchema:
     """Get the schema of the functionalities."""
     return colander.SequenceSchema(

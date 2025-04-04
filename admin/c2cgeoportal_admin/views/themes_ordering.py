@@ -103,7 +103,7 @@ class ThemesOrdering(AbstractViews[ThemesOrderingSchema]):
             "themes": [
                 form.schema["themes"].children[0].dictify(theme)
                 for theme in self._request.dbsession.query(Theme).order_by(Theme.ordering)
-            ]
+            ],
         }
         return {
             "title": form.title,

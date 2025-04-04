@@ -51,7 +51,7 @@ def _convert_location(location: str, raster_base: RasterBase, verify_first: bool
 def _convert_qgis_project(project: bytes, raster_base: RasterBase) -> bytes:
     if len(raster_base.split) < 2:
         raise Exception(
-            f"Invalid raster base '{raster_base.value}' should have at lease 2 parts like '/vsiaz/container/'"
+            f"Invalid raster base '{raster_base.value}' should have at lease 2 parts like '/vsiaz/container/'",
         )
 
     xml = ElementTree.fromstring(project)
@@ -73,7 +73,7 @@ def _convert_qgis_project(project: bytes, raster_base: RasterBase) -> bytes:
         ):
             datasource_element.text = _convert_location(datasource_element.text, raster_base, True)
 
-    return cast(bytes, ElementTree.tostring(xml))
+    return cast("bytes", ElementTree.tostring(xml))
 
 
 def _main() -> None:
@@ -103,7 +103,7 @@ def _main() -> None:
                 "If the `RASTER_BASE_PATH` environment variable is set, the raster layers in the QGIS project and "
                 "Mapserver tile index will be converted to use the raster base path, if an empty file "
                 "`*.qgs.raster`, `*.qgz.raster` (for QGIS server) or `*.raster` (for MapServer tile index) is found.",
-            ]
+            ],
         ),
     )
     parser.parse_args()

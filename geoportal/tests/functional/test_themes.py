@@ -35,8 +35,7 @@ from tests.functional import setup_common as setup_module  # noqa
 from tests.functional import teardown_common as teardown_module  # noqa
 
 
-@pytest.fixture()
-@pytest.mark.usefixtures("dbsession", "transact", "default_ogcserver")
+@pytest.fixture
 def themes_setup(dbsession, transact, default_ogcserver):
     from c2cgeoportal_commons.models.main import (
         OGCSERVER_AUTH_NOAUTH,

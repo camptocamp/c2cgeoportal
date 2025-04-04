@@ -13,7 +13,6 @@ from .test_treegroup import TestTreeGroup
 
 
 @pytest.fixture(scope="function")
-@pytest.mark.usefixtures("dbsession", "transact")
 def roles_test_data(dbsession, transact):
     del transact
 
@@ -59,7 +58,7 @@ def roles_test_data(dbsession, transact):
 
     dbsession.flush()
 
-    yield {
+    return {
         "functionalities": functionalities,
         "restrictionareas": restrictionareas,
         "users": users,

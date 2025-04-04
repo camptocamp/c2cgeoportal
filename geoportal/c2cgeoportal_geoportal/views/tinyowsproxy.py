@@ -73,7 +73,7 @@ class TinyOWSProxy(OGCProxy):
             )
         except sqlalchemy.exc.NoResultFound:
             raise HTTPBadRequest(  # pylint: disable=raise-missing-from
-                f"OGC server {self.settings['ogc_server']} not found"
+                f"OGC server {self.settings['ogc_server']} not found",
             )
 
         self.user = self.request.user
@@ -85,7 +85,7 @@ class TinyOWSProxy(OGCProxy):
     def proxy(self) -> pyramid.response.Response:
         if self.user is None:
             raise HTTPUnauthorized(
-                "Authentication required", headers=[("WWW-Authenticate", 'Basic realm="TinyOWS"')]
+                "Authentication required", headers=[("WWW-Authenticate", 'Basic realm="TinyOWS"')],
             )
 
         operation = self.lower_params.get("request")
@@ -100,7 +100,7 @@ class TinyOWSProxy(OGCProxy):
             except Exception:
                 _LOG.exception("Error while parsing POST request body")
                 raise HTTPBadRequest(  # pylint: disable=raise-missing-from
-                    "Error parsing the request (see logs for more details)"
+                    "Error parsing the request (see logs for more details)",
                 )
 
             typenames = typenames.union(typenames_post)
@@ -149,7 +149,7 @@ class TinyOWSProxy(OGCProxy):
         return headers
 
     def _proxy_callback(
-        self, operation: str, cache_control: Cache, *args: Any, **kwargs: Any
+        self, operation: str, cache_control: Cache, *args: Any, **kwargs: Any,
     ) -> pyramid.response.Response:
         response = self._proxy(*args, **kwargs)
         content = response.content.decode()
@@ -164,7 +164,7 @@ class TinyOWSProxy(OGCProxy):
             content = filter_wfst_capabilities(content, url, self.request)
 
         content = self._filter_urls(
-            content, self.settings.get("online_resource"), self.settings.get("proxy_online_resource")
+            content, self.settings.get("online_resource"), self.settings.get("proxy_online_resource"),
         )
 
         return self._build_response(response, content.encode(), cache_control, "tinyows")

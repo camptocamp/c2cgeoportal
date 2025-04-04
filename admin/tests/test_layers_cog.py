@@ -11,7 +11,6 @@ from . import AbstractViewsTests, factory_build_layers, get_test_default_layers
 
 
 @pytest.fixture(scope="function")
-@pytest.mark.usefixtures("dbsession", "transact")
 def layer_cog_test_data(dbsession: Session, transact: SessionTransaction) -> dict[str, Any]:
     del transact
 
@@ -29,7 +28,7 @@ def layer_cog_test_data(dbsession: Session, transact: SessionTransaction) -> dic
 
     dbsession.flush()
 
-    yield data
+    return data
 
 
 @pytest.mark.usefixtures("layer_cog_test_data", "test_app")

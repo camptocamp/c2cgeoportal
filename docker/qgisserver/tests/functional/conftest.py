@@ -18,7 +18,6 @@ def settings():
 
 
 @pytest.fixture(scope="module")
-@pytest.mark.usefixtures("settings")
 def DBSession(settings):  # noqa: ignore=N802
     generate_mappers()
     engine = create_engine(config["sqlalchemy_slave.url"], pool_timeout=10)
@@ -30,7 +29,6 @@ def DBSession(settings):  # noqa: ignore=N802
 
 
 @pytest.fixture(scope="module")
-@pytest.mark.usefixtures("DBSession")
 def clean_dbsession(DBSession):  # noqa: ignore=N803
     from c2cgeoportal_commons.models.main import (
         OGCServer,
@@ -63,7 +61,7 @@ def clean_dbsession(DBSession):  # noqa: ignore=N803
 @pytest.fixture(scope="function")
 def server_iface():
     result = Mock(spec=QgsServerInterface)
-    yield result
+    return result
 
 
 @pytest.fixture(scope="module")

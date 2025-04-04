@@ -5,7 +5,6 @@ from pyramid.view import view_config
 
 
 @pytest.fixture(scope="class")
-@pytest.mark.usefixtures("dbsession")
 def insert_users_test_data(dbsession):
     from c2cgeoportal_commons.models.static import User
 

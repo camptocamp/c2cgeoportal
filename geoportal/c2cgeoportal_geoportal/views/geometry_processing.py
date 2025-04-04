@@ -62,13 +62,13 @@ class GeometryProcessing:
             {
                 "geometries": [geomA, geomB]
             }
-            """
+            """,
             )
 
         return to_shape(
             DBSession.query(
                 func.ST_Difference(
-                    from_shape(shape(body["geometries"][0])), from_shape(shape(body["geometries"][1]))
-                )
-            ).scalar()
+                    from_shape(shape(body["geometries"][0])), from_shape(shape(body["geometries"][1])),
+                ),
+            ).scalar(),
         )

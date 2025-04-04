@@ -71,7 +71,7 @@ class VectorTilesViews:
             raise HTTPNotFound(f"Not found any vector tile layer named {layer_name}")
 
         raw_sql = layer[0].format(
-            envelope=f"ST_MakeEnvelope({minx}, {miny}, {maxx}, {maxy}, {settings['srid']})"
+            envelope=f"ST_MakeEnvelope({minx}, {miny}, {maxx}, {maxy}, {settings['srid']})",
         )
 
         result = DBSession.execute(sqlalchemy.text(raw_sql))

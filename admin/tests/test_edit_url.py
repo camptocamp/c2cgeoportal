@@ -8,7 +8,6 @@ from . import AbstractViewsTests
 
 
 @pytest.fixture(scope="function")
-@pytest.mark.usefixtures("dbsession", "transact")
 def edit_url_test_data(dbsession, transact):
     del transact
 
@@ -78,7 +77,7 @@ def edit_url_test_data(dbsession, transact):
 
     dbsession.flush()
 
-    yield {
+    return {
         "ogc_server": ogc_server,
         "layers_wmts": layers_wmts,
         "layers_wms": layers_wms,

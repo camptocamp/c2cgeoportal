@@ -198,7 +198,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         client_id: str,
         code: str,
         redirect_uri: str,
-        client: "c2cgeoportal_commons.models.static.OAuth2Client",  # noqa: F821
+        client: "c2cgeoportal_commons.models.static.OAuth2Client",
         *args: Any,
         **kwargs: Any,
     ) -> bool:
@@ -437,7 +437,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
             .filter(static.OAuth2AuthorizationCode.code == code)
             .filter(static.OAuth2Client.client_id == client_id)
             .filter(static.OAuth2AuthorizationCode.user_id == request.user.id)
-            .one()
+            .one(),
         )
 
     def is_within_original_scope(
@@ -827,7 +827,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         self,
         client_id: str,
         code: str,
-        client: "c2cgeoportal_commons.models.static.OAuth2Client",  # noqa: F821
+        client: "c2cgeoportal_commons.models.static.OAuth2Client",
         request: oauthlib.common.Request,
         *args: Any,
         **kwargs: Any,
@@ -878,7 +878,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         )
         if client.state_required:
             authorization_code_query = authorization_code_query.filter(
-                static.OAuth2AuthorizationCode.state == request.state
+                static.OAuth2AuthorizationCode.state == request.state,
             )
 
         authorization_code = authorization_code_query.one_or_none()
@@ -983,7 +983,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
     def validate_refresh_token(
         self,
         refresh_token: str,
-        client: "c2cgeoportal_commons.models.static.OAuth2Client",  # noqa: F821
+        client: "c2cgeoportal_commons.models.static.OAuth2Client",
         request: oauthlib.common.Request,
         *args: Any,
         **kwargs: Any,
@@ -1101,7 +1101,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore
         self,
         username: str,
         password: str,
-        client: "c2cgeoportal_commons.models.static.OAuth2Client",  # noqa: F821
+        client: "c2cgeoportal_commons.models.static.OAuth2Client",
         request: oauthlib.common.Request,
         *args: Any,
         **kwargs: Any,
@@ -1278,7 +1278,7 @@ def get_oauth_client(settings: dict[str, Any]) -> oauthlib.oauth2.WebApplication
 
 @_OBJECT_CACHE_REGION.cache_on_arguments()
 def _get_oauth_client_cache(
-    authorization_expire_minutes: int, token_expire_minutes: int
+    authorization_expire_minutes: int, token_expire_minutes: int,
 ) -> oauthlib.oauth2.WebApplicationServer:
     """Get the oauth2 client, with a cache."""
     return oauthlib.oauth2.WebApplicationServer(

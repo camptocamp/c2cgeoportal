@@ -63,7 +63,7 @@ class TreeItemViews(LoggedViews[_T], Generic[_T]):
             "metadatas",
             renderer=lambda treeitem: ", ".join([f"{m.name}: {m.value}" or "" for m in treeitem.metadatas]),
             filter_column=concat(Metadata.name, ": ", Metadata.value).label("metadata"),
-        )
+        ),
     ]
     _extra_list_fields = [
         _list_field(
@@ -72,9 +72,9 @@ class TreeItemViews(LoggedViews[_T], Generic[_T]):
                 [
                     p.treegroup.name or ""
                     for p in sorted(layer_wms.parents_relation, key=lambda p: p.treegroup.name or "")
-                ]
+                ],
             ),
-        )
+        ),
     ] + _extra_list_fields_no_parents
 
     @view_config(route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2")  # type: ignore[misc]

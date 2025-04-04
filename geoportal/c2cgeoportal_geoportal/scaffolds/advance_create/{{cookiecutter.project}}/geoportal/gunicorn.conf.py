@@ -96,7 +96,7 @@ logconfig_dict = {
             "format": "%(asctime)s [%(process)d] [%(levelname)-5.5s] %(message)s",
             "datefmt": "[%Y-%m-%d %H:%M:%S %z]",
             "class": "logging.Formatter",
-        }
+        },
     },
 }
 

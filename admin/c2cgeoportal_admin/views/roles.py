@@ -101,7 +101,7 @@ base_schema.add(
         description=Role.users.info["colanderalchemy"]["description"],
         candidates=colander.deferred(users),
         widget=ChildrenWidget(child_input_name="id", orderable=False, category="structural"),
-    )
+    ),
 )
 # Not possible to overwrite this in constructor.
 base_schema["users"].children[0].description = ""
@@ -120,7 +120,7 @@ class RoleViews(LoggedViews[Role]):
             renderer=lambda role: ", ".join([f"{f.name}={f.value}" for f in role.functionalities]),
         ),
         _list_field(
-            "restrictionareas", renderer=lambda role: ", ".join([r.name or "" for r in role.restrictionareas])
+            "restrictionareas", renderer=lambda role: ", ".join([r.name or "" for r in role.restrictionareas]),
         ),
     ]
     _id_field = "id"
@@ -157,7 +157,7 @@ class RoleViews(LoggedViews[Role]):
         return super().delete()
 
     @view_config(  # type: ignore[misc]
-        route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2"
+        route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2",
     )
     def duplicate(self) -> ObjectResponse:
         return super().duplicate()

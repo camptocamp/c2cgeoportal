@@ -104,7 +104,7 @@ def test_data2(clean_dbsession):
     dbsession.commit()
     dbsession.close()
 
-    yield {
+    return {
         "users": users,
         "roles": roles,
         "project": project,

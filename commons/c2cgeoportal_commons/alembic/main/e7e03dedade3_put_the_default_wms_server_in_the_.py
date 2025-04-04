@@ -54,7 +54,7 @@ def upgrade() -> None:
         UPDATE "{schema}".ogc_server
         SET url = 'config://local/mapserv'
         WHERE url IS NULL
-        """
+        """,
     )
 
     op.alter_column("ogc_server", "url", nullable=False, schema=schema)
@@ -77,5 +77,5 @@ def downgrade() -> None:
         UPDATE "{schema}".ogc_server
         SET url = NULL
         WHERE url = 'config://local/mapserv'
-        """
+        """,
     )

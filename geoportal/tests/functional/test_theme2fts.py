@@ -42,7 +42,7 @@ _LOGGER = logging.getLogger(__name__)
 @pytest.fixture(scope="module")
 def settings():
     setup_module()
-    yield {
+    return {
         **configuration.get_config(),
         "available_locale_names": ["fr", "en", "de", "it"],
         "fulltextsearch": {
@@ -117,7 +117,7 @@ def test_data(dbsession_old, transact_old):
 
     dbsession_old.flush()  # Flush here to detect integrity errors now.
 
-    yield {
+    return {
         "ogc_server": ogc_server,
         "interfaces": interfaces,
         "role": role,

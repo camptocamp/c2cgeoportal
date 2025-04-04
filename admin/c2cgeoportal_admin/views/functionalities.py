@@ -51,12 +51,12 @@ _list_field = partial(ListField, Functionality)
 
 
 def _translate_available_functionality(
-    available_functionality: dict[str, Any], request: pyramid.request.Request
+    available_functionality: dict[str, Any], request: pyramid.request.Request,
 ) -> dict[str, Any]:
     result = {}
     result.update(available_functionality)
     result["description"] = request.localizer.translate(
-        _(available_functionality.get("description", "").strip())
+        _(available_functionality.get("description", "").strip()),
     )
     return result
 

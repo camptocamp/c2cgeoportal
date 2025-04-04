@@ -45,7 +45,7 @@ def wms_capabilities(content=DEFAULT_CONTENT):
 def web_request(dbsession):
     request = testing.DummyRequest()
     request.dbsession = dbsession
-    yield request
+    return request
 
 
 def ogc_server(**kwargs):

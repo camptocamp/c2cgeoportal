@@ -112,9 +112,9 @@ class LayerTreeViews:
                 label=_("Edit"),
                 icon="glyphicon glyphicon-pencil",
                 url=self._request.route_url(
-                    "c2cgeoform_item", table=itemtypes_tables[item.item_type], id=item.id
+                    "c2cgeoform_item", table=itemtypes_tables[item.item_type], id=item.id,
                 ),
-            )
+            ),
         )
 
         if item.item_type in ("theme", "group"):
@@ -125,7 +125,7 @@ class LayerTreeViews:
                     icon="glyphicon glyphicon-plus",
                     url=f"{self._request.route_url('c2cgeoform_item', table='layer_groups', id='new')}?"
                     f"parent_id={item.id}",
-                )
+                ),
             )
 
         if item.item_type == "group":
@@ -136,7 +136,7 @@ class LayerTreeViews:
                     icon="glyphicon glyphicon-plus",
                     url=f"{self._request.route_url('c2cgeoform_item', table='layers_wms', id='new')}?"
                     f"parent_id={item.id}",
-                )
+                ),
             )
 
             actions.append(
@@ -146,7 +146,7 @@ class LayerTreeViews:
                     icon="glyphicon glyphicon-plus",
                     url=f"{self._request.route_url('c2cgeoform_item', table='layers_wmts', id='new')}?"
                     f"parent_id={item.id}",
-                )
+                ),
             )
 
         actions.append(
@@ -155,9 +155,9 @@ class LayerTreeViews:
                 label=_("Duplicate"),
                 icon="glyphicon glyphicon-duplicate",
                 url=self._request.route_url(
-                    "c2cgeoform_item_duplicate", table=itemtypes_tables[item.item_type], id=item.id
+                    "c2cgeoform_item_duplicate", table=itemtypes_tables[item.item_type], id=item.id,
                 ),
-            )
+            ),
         )
 
         if parent_id is not None:
@@ -169,7 +169,7 @@ class LayerTreeViews:
                     url=self._request.route_url("layertree_unlink", group_id=parent_id, item_id=item.id),
                     method="DELETE",
                     confirmation=_("Are your sure you want to unlink this record from his parent?"),
-                )
+                ),
             )
 
         actions.append(
@@ -180,7 +180,7 @@ class LayerTreeViews:
                 url=self._request.route_url("layertree_delete", item_id=item.id),
                 method="DELETE",
                 confirmation=_("Are your sure you want to delete this record?"),
-            )
+            ),
         )
 
         return actions

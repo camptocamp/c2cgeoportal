@@ -8,7 +8,6 @@ from . import AbstractViewsTests
 
 
 @pytest.fixture(scope="function")
-@pytest.mark.usefixtures("dbsession", "transact")
 def functionality_test_data(dbsession, transact, settings):
     del transact
 
@@ -26,7 +25,7 @@ def functionality_test_data(dbsession, transact, settings):
 
     dbsession.flush()
 
-    yield {"functionalities": functionalities}
+    return {"functionalities": functionalities}
 
 
 @pytest.mark.usefixtures("functionality_test_data", "test_app")

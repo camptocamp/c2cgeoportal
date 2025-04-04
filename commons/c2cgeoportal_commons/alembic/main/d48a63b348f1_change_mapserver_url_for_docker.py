@@ -55,7 +55,7 @@ def upgrade() -> None:
         UPDATE "{schema}".ogc_server
         SET url = 'config://mapserver'
         WHERE url = 'config://internal/mapserv'
-        """
+        """,
     )
 
 
@@ -69,5 +69,5 @@ def downgrade() -> None:
         UPDATE "{schema}".ogc_server
         SET url = 'config://internal/mapserv'
         WHERE url = 'config://mapserver'
-        """
+        """,
     )

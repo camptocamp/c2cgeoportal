@@ -51,7 +51,7 @@ def _get_postgresql_version(deb_versions: dict[str, str]) -> str:
 
 
 def _get_versions(
-    version: str, old_version: Version
+    version: str, old_version: Version,
 ) -> tuple[list[tuple[str, str]], dict[str, str], dict[str, str]]:
     deb_versions = {
         e.split("==")[0]: e.split("==")[1]
@@ -66,7 +66,7 @@ def _get_versions(
                 "--show",
                 "-f",
                 "${binary:Package}==${Version}\n",
-            ]
+            ],
         )
         .decode()
         .strip()
@@ -85,7 +85,7 @@ def _get_versions(
                     f"camptocamp/geomapfish:{version}",
                     "cat",
                     "/etc/issue",
-                ]
+                ],
             )
             .decode()
             .strip()
@@ -102,7 +102,7 @@ def _get_versions(
                     f"camptocamp/geomapfish:{version}",
                     "python3",
                     "--version",
-                ]
+                ],
             )
             .decode()
             .strip()
@@ -119,7 +119,7 @@ def _get_versions(
                     f"camptocamp/geomapfish-tools:{version}",
                     "node",
                     "--version",
-                ]
+                ],
             )
             .decode()
             .strip()
@@ -136,7 +136,7 @@ def _get_versions(
                     f"camptocamp/geomapfish-tools:{version}",
                     "npm",
                     "--version",
-                ]
+                ],
             )
             .decode()
             .strip(),
@@ -157,7 +157,7 @@ def _get_versions(
                         f"camptocamp/geomapfish:{version}",
                         "gdalinfo",
                         "--version",
-                    ]
+                    ],
                 )
                 .decode()
                 .strip()
@@ -175,7 +175,7 @@ def _get_versions(
                         "pkg-config",
                         "--modversion",
                         "proj",
-                    ]
+                    ],
                 )
                 .decode()
                 .strip(),
@@ -196,7 +196,7 @@ def _get_versions(
                     "-m",
                     "pip",
                     "freeze",
-                ]
+                ],
             )
             .decode()
             .split("\n")
@@ -222,26 +222,25 @@ def _get_npm_versions(version_str: str) -> dict[str, dict[str, str]]:
                     "list",
                     "--json",
                     "--depth=0",
-                ]
-            )
+                ],
+            ),
         )["dependencies"]
-    else:
-        return json.loads(
-            output(
-                [
-                    "docker",
-                    "run",
-                    "--rm",
-                    "--entrypoint=",
-                    f"camptocamp/geomapfish-tools:{version_str}",
-                    "npm",
-                    "list",
-                    "--global",
-                    "--json",
-                    "--depth=0",
-                ]
-            )
-        )["dependencies"]
+    return json.loads(
+        output(
+            [
+                "docker",
+                "run",
+                "--rm",
+                "--entrypoint=",
+                f"camptocamp/geomapfish-tools:{version_str}",
+                "npm",
+                "list",
+                "--global",
+                "--json",
+                "--depth=0",
+            ],
+        ),
+    )["dependencies"]
 
 
 def print_package_update(package_old: dict[str, str], package_new: dict[str, str]) -> None:
@@ -286,7 +285,7 @@ def main() -> None:
 
     print("Main versions updates")
     print("-------------------")
-    for major_old, major_new in zip(main_old, main_new):
+    for major_old, major_new in zip(main_old, main_new, strict=False):
         # if major_old[1] != major_new[1]:
         print(f"{major_old[0]} is updated from {major_old[1]} to {major_new[1]}")
 

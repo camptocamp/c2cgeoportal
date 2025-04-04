@@ -38,7 +38,7 @@ class Literal:
         self.s = s
 
     def __html__(self) -> str:
-        return cast(str, get_current_request().translate(self.s))
+        return cast("str", get_current_request().translate(self.s))
 
     def __bool__(self) -> bool:
         return len(self.s) > 0
