@@ -57,6 +57,7 @@ publish:
         group: qgis-old
         tags:
           - gmf{version}-qgis3.14
+    dispatch: False
   pypi:
     packages:
       - path: commons
