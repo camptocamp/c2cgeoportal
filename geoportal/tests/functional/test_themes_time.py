@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2024, Camptocamp SA
+# Copyright (c) 2013-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -56,7 +56,7 @@ class PointTest(Base):  # type: ignore
 
 
 class TestThemesTimeView(TestCase):
-    def setup_method(self, _):
+    def setup_method(self, _) -> None:
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
@@ -155,7 +155,7 @@ class TestThemesTimeView(TestCase):
 
         transaction.commit()
 
-    def teardown_method(self, _):
+    def teardown_method(self, _) -> None:
         testing.tearDown()
 
         from c2cgeoportal_commons.models import DBSession
@@ -203,163 +203,154 @@ class TestThemesTimeView(TestCase):
     def _get_filtered_errors(themes):
         errors = themes["errors"]
         regex = re.compile(
-            r"The (GeoMapFish|WMS) layer name '[a-z0-9_.]*', cannot be two times in the same block \(first level group\)."
+            r"The (GeoMapFish|WMS) layer name '[a-z0-9_.]*', cannot be two times in the same block \(first level group\).",
         )
         errors = [e for e in errors if not regex.match(e)]
         return set(errors)
 
-    def test_time(self):
+    def test_time(self) -> None:
         theme_view = self._create_theme_obj()
         themes = theme_view.themes()
-        self.assertEqual(
-            set(themes["errors"]),
+        assert set(themes["errors"]) == {
+            "Error while handling time for layer '__test_layer_time_group_1': Could not mix time mode 'range' and 'value'",
+            "Error: time layer '__test_layer_without_time_info' has no time information in capabilities",
+        }
+        assert [self._only(t) for t in themes["themes"]] == [
             {
-                "Error while handling time for layer '__test_layer_time_group_1': Could not mix time mode 'range' and 'value'",
-                "Error: time layer '__test_layer_without_time_info' has no time information in capabilities",
+                "name": "__test_theme",
+                "children": [
+                    {
+                        "name": "__test_layer_group_1",
+                        "time": {
+                            "maxDefValue": None,
+                            "interval": (1, 0, 0, 0),
+                            "maxValue": "2020-01-01T00:00:00Z",
+                            "minDefValue": "2000-01-01T00:00:00Z",
+                            "minValue": "2000-01-01T00:00:00Z",
+                            "mode": "value",
+                            "resolution": "year",
+                            "widget": "slider",
+                        },
+                        "children": [{"name": "__test_layer_time_1"}, {"name": "__test_layer_time_2"}],
+                    },
+                    {
+                        "name": "__test_layer_group_2",
+                        "children": [
+                            {
+                                "name": "__test_layer_time_1",
+                                "time": {
+                                    "maxDefValue": None,
+                                    "interval": (1, 0, 0, 0),
+                                    "maxValue": "2010-01-01T00:00:00Z",
+                                    "minDefValue": "2000-01-01T00:00:00Z",
+                                    "minValue": "2000-01-01T00:00:00Z",
+                                    "mode": "value",
+                                    "resolution": "year",
+                                    "widget": "slider",
+                                },
+                            },
+                        ],
+                    },
+                    {
+                        "name": "__test_layer_group_3",
+                        "time": {
+                            "maxDefValue": None,
+                            "interval": (1, 0, 0, 0),
+                            "maxValue": "2020-01-01T00:00:00Z",
+                            "minDefValue": "2000-01-01T00:00:00Z",
+                            "minValue": "2000-01-01T00:00:00Z",
+                            "mode": "value",
+                            "resolution": "year",
+                            "widget": "slider",
+                        },
+                        "children": [{"name": "__test_layer_time_1"}, {"name": "__test_layer_time_2"}],
+                    },
+                    {
+                        "name": "__test_layer_group_4",
+                        "children": [
+                            {
+                                "name": "__test_layer_time_group_1",
+                                "time": {
+                                    "maxDefValue": None,
+                                    "interval": (1, 0, 0, 0),
+                                    "maxValue": "2020-01-01T00:00:00Z",
+                                    "minDefValue": "2000-01-01T00:00:00Z",
+                                    "minValue": "2000-01-01T00:00:00Z",
+                                    "mode": "range",
+                                    "resolution": "year",
+                                    "widget": "datepicker",
+                                },
+                            },
+                        ],
+                    },
+                    {
+                        "name": "__test_layer_group_5",
+                        "time": {
+                            "maxDefValue": None,
+                            "interval": (1, 0, 0, 0),
+                            "maxValue": "2020-01-01T00:00:00Z",
+                            "minDefValue": "2000-01-01T00:00:00Z",
+                            "minValue": "2000-01-01T00:00:00Z",
+                            "mode": "value",
+                            "resolution": "year",
+                            "widget": "slider",
+                        },
+                        "children": [
+                            {"name": "__test_layer_time_1"},
+                            {"name": "__test_layer_time_2"},
+                            {"name": "__test_layer_time_group_2"},
+                        ],
+                    },
+                    {
+                        "name": "__test_layer_group_6",
+                        "children": [
+                            {
+                                "name": "__test_layer_time_1",
+                                "time": {
+                                    "maxDefValue": None,
+                                    "interval": (1, 0, 0, 0),
+                                    "maxValue": "2010-01-01T00:00:00Z",
+                                    "minDefValue": "2000-01-01T00:00:00Z",
+                                    "minValue": "2000-01-01T00:00:00Z",
+                                    "mode": "value",
+                                    "resolution": "year",
+                                    "widget": "slider",
+                                },
+                            },
+                            {
+                                "name": "__test_layer_time_2",
+                                "time": {
+                                    "maxDefValue": None,
+                                    "interval": (1, 0, 0, 0),
+                                    "maxValue": "2020-01-01T00:00:00Z",
+                                    "minDefValue": "2015-01-01T00:00:00Z",
+                                    "minValue": "2015-01-01T00:00:00Z",
+                                    "mode": "value",
+                                    "resolution": "year",
+                                    "widget": "slider",
+                                },
+                            },
+                            {"name": "__test_layer_wmts"},
+                        ],
+                    },
+                    {
+                        "name": "__test_layer_group_7",
+                        "children": [
+                            {
+                                "name": "__test_layer_time_1",
+                                "time": {
+                                    "maxDefValue": None,
+                                    "interval": (1, 0, 0, 0),
+                                    "maxValue": "2010-01-01T00:00:00Z",
+                                    "minDefValue": "2000-01-01T00:00:00Z",
+                                    "minValue": "2000-01-01T00:00:00Z",
+                                    "mode": "value",
+                                    "resolution": "year",
+                                    "widget": "slider",
+                                },
+                            },
+                        ],
+                    },
+                ],
             },
-        )
-        self.assertEqual(
-            [self._only(t) for t in themes["themes"]],
-            [
-                {
-                    "name": "__test_theme",
-                    "children": [
-                        {
-                            "name": "__test_layer_group_1",
-                            "time": {
-                                "maxDefValue": None,
-                                "interval": (1, 0, 0, 0),
-                                "maxValue": "2020-01-01T00:00:00Z",
-                                "minDefValue": "2000-01-01T00:00:00Z",
-                                "minValue": "2000-01-01T00:00:00Z",
-                                "mode": "value",
-                                "resolution": "year",
-                                "widget": "slider",
-                            },
-                            "children": [{"name": "__test_layer_time_1"}, {"name": "__test_layer_time_2"}],
-                        },
-                        {
-                            "name": "__test_layer_group_2",
-                            "children": [
-                                {
-                                    "name": "__test_layer_time_1",
-                                    "time": {
-                                        "maxDefValue": None,
-                                        "interval": (1, 0, 0, 0),
-                                        "maxValue": "2010-01-01T00:00:00Z",
-                                        "minDefValue": "2000-01-01T00:00:00Z",
-                                        "minValue": "2000-01-01T00:00:00Z",
-                                        "mode": "value",
-                                        "resolution": "year",
-                                        "widget": "slider",
-                                    },
-                                }
-                            ],
-                        },
-                        {
-                            "name": "__test_layer_group_3",
-                            "time": {
-                                "maxDefValue": None,
-                                "interval": (1, 0, 0, 0),
-                                "maxValue": "2020-01-01T00:00:00Z",
-                                "minDefValue": "2000-01-01T00:00:00Z",
-                                "minValue": "2000-01-01T00:00:00Z",
-                                "mode": "value",
-                                "resolution": "year",
-                                "widget": "slider",
-                            },
-                            "children": [
-                                {"name": "__test_layer_time_1"},
-                                {"name": "__test_layer_time_2"},
-                            ],
-                        },
-                        {
-                            "name": "__test_layer_group_4",
-                            "children": [
-                                {
-                                    "name": "__test_layer_time_group_1",
-                                    "time": {
-                                        "maxDefValue": None,
-                                        "interval": (1, 0, 0, 0),
-                                        "maxValue": "2020-01-01T00:00:00Z",
-                                        "minDefValue": "2000-01-01T00:00:00Z",
-                                        "minValue": "2000-01-01T00:00:00Z",
-                                        "mode": "range",
-                                        "resolution": "year",
-                                        "widget": "datepicker",
-                                    },
-                                }
-                            ],
-                        },
-                        {
-                            "name": "__test_layer_group_5",
-                            "time": {
-                                "maxDefValue": None,
-                                "interval": (1, 0, 0, 0),
-                                "maxValue": "2020-01-01T00:00:00Z",
-                                "minDefValue": "2000-01-01T00:00:00Z",
-                                "minValue": "2000-01-01T00:00:00Z",
-                                "mode": "value",
-                                "resolution": "year",
-                                "widget": "slider",
-                            },
-                            "children": [
-                                {"name": "__test_layer_time_1"},
-                                {"name": "__test_layer_time_2"},
-                                {"name": "__test_layer_time_group_2"},
-                            ],
-                        },
-                        {
-                            "name": "__test_layer_group_6",
-                            "children": [
-                                {
-                                    "name": "__test_layer_time_1",
-                                    "time": {
-                                        "maxDefValue": None,
-                                        "interval": (1, 0, 0, 0),
-                                        "maxValue": "2010-01-01T00:00:00Z",
-                                        "minDefValue": "2000-01-01T00:00:00Z",
-                                        "minValue": "2000-01-01T00:00:00Z",
-                                        "mode": "value",
-                                        "resolution": "year",
-                                        "widget": "slider",
-                                    },
-                                },
-                                {
-                                    "name": "__test_layer_time_2",
-                                    "time": {
-                                        "maxDefValue": None,
-                                        "interval": (1, 0, 0, 0),
-                                        "maxValue": "2020-01-01T00:00:00Z",
-                                        "minDefValue": "2015-01-01T00:00:00Z",
-                                        "minValue": "2015-01-01T00:00:00Z",
-                                        "mode": "value",
-                                        "resolution": "year",
-                                        "widget": "slider",
-                                    },
-                                },
-                                {"name": "__test_layer_wmts"},
-                            ],
-                        },
-                        {
-                            "name": "__test_layer_group_7",
-                            "children": [
-                                {
-                                    "name": "__test_layer_time_1",
-                                    "time": {
-                                        "maxDefValue": None,
-                                        "interval": (1, 0, 0, 0),
-                                        "maxValue": "2010-01-01T00:00:00Z",
-                                        "minDefValue": "2000-01-01T00:00:00Z",
-                                        "minValue": "2000-01-01T00:00:00Z",
-                                        "mode": "value",
-                                        "resolution": "year",
-                                        "widget": "slider",
-                                    },
-                                },
-                            ],
-                        },
-                    ],
-                }
-            ],
-        )
+        ]

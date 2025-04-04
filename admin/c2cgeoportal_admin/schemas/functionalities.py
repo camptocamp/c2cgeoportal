@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2024, Camptocamp SA
+# Copyright (c) 2018-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -51,7 +51,8 @@ def available_functionalities_for(settings: dict[str, Any], model: type[Any]) ->
 def functionalities_widget(model: type[Any]) -> colander.deferred:
     """Return a colander deferred which itself returns a widget for the functionalities field."""
 
-    def create_widget(node, kw):
+    def create_widget(node: Any, kw: Any) -> RelationCheckBoxListWidget:
+        """Create a widget for the functionalities field."""
         del node
 
         return RelationCheckBoxListWidget(
@@ -61,15 +62,20 @@ def functionalities_widget(model: type[Any]) -> colander.deferred:
             )
             .where(
                 Functionality.name.in_(
-                    [f["name"] for f in available_functionalities_for(kw["request"].registry.settings, model)]
-                )
+                    [
+                        f["name"]
+                        for f in available_functionalities_for(kw["request"].registry.settings, model)
+                    ],
+                ),
             )
             .alias("functionality_labels"),
             "id",
             "label",
             order_by="label",
             edit_url=lambda request, value: request.route_url(
-                "c2cgeoform_item", table="functionalities", id=value
+                "c2cgeoform_item",
+                table="functionalities",
+                id=value,
             ),
         )
 
@@ -77,7 +83,8 @@ def functionalities_widget(model: type[Any]) -> colander.deferred:
 
 
 def functionalities_schema_node(
-    prop: InstrumentedAttribute[Any], model: type[Any]
+    prop: InstrumentedAttribute[Any],
+    model: type[Any],
 ) -> colander.SequenceSchema:
     """Get the schema of the functionalities."""
     return colander.SequenceSchema(

@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2024, Camptocamp SA
+# Copyright (c) 2017-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -26,6 +26,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from types import TracebackType
 from typing import Any
 
 import c2cgeoform
@@ -44,13 +45,13 @@ from translationstring import TranslationStringFactory
 from c2cgeoportal_admin.subscribers import add_localizer, add_renderer_globals
 from c2cgeoportal_admin.views import IsAdminPredicate
 
-search_paths = (resource_filename(__name__, "templates/widgets"),) + c2cgeoform.default_search_paths
+search_paths = (resource_filename(__name__, "templates/widgets"), *c2cgeoform.default_search_paths)
 c2cgeoform.default_search_paths = search_paths
 
 _ = TranslationStringFactory("c2cgeoportal_admin")
 
 
-def main(_, **settings):
+def main(_: Any, **settings: Any) -> Any:
     """Return a Pyramid WSGI application."""
     app_cfg = settings.get("app.cfg")
     assert app_cfg is not None
@@ -116,7 +117,7 @@ def main(_, **settings):
 class PermissionSetter:
     """Set the permission to the admin user."""
 
-    def __init__(self, config: Configurator):
+    def __init__(self, config: Configurator) -> None:
         self.default_permission_to_revert = None
         self.config = config
 
@@ -128,7 +129,13 @@ class PermissionSetter:
             ]["introspectable"]["value"]
         self.config.set_default_permission("admin")
 
-    def __exit__(self, _type: Any, value: Any, traceback: Any) -> None:
+    def __exit__(
+        self,
+        _type: type[BaseException] | None,
+        value: BaseException | None,
+        traceback: TracebackType | None,
+    ) -> None:
+        del _type, value, traceback  # unused
         self.config.commit()  # avoid .ConfigurationConflictError
         self.config.set_default_permission(self.default_permission_to_revert)
 

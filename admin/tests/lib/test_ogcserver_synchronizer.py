@@ -28,7 +28,7 @@ DEFAULT_CONTENT = """
 """
 
 
-def wms_capabilities(content=DEFAULT_CONTENT):
+def wms_capabilities(content=DEFAULT_CONTENT) -> str:
     return f"""
 <WMS_Capabilities>
 <Service>
@@ -41,11 +41,11 @@ def wms_capabilities(content=DEFAULT_CONTENT):
 """
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def web_request(dbsession):
     request = testing.DummyRequest()
     request.dbsession = dbsession
-    yield request
+    return request
 
 
 def ogc_server(**kwargs):
@@ -53,15 +53,13 @@ def ogc_server(**kwargs):
 
     return main.OGCServer(
         **{
-            **{
-                "name": "Test server",
-                "description": "Test server",
-                "url": "config://mapserver",
-                "image_type": "image/png",
-                "auth": main.OGCSERVER_AUTH_NOAUTH,
-            },
+            "name": "Test server",
+            "description": "Test server",
+            "url": "config://mapserver",
+            "image_type": "image/png",
+            "auth": main.OGCSERVER_AUTH_NOAUTH,
             **kwargs,
-        }
+        },
     )
 
 
@@ -78,7 +76,7 @@ class TestOGCServerSynchronizer:
             clean=clean,
         )
 
-    def test_wms_service_mapserver(self, web_request):
+    def test_wms_service_mapserver(self, web_request) -> None:
         synchronizer = self.synchronizer(web_request)
 
         wms_capabilities = synchronizer.wms_capabilities()
@@ -87,7 +85,7 @@ class TestOGCServerSynchronizer:
         assert wms_service.identification.type == "OGC:WMS"
 
         url = re.escape(
-            "http://mapserver:8080/?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetCapabilities&ROLE_IDS=0&USER_ID=0"
+            "http://mapserver:8080/?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetCapabilities&ROLE_IDS=0&USER_ID=0",
         )
         assert re.match(
             rf"Get WMS GetCapabilities from: {url}\nGot response 200 in \d+.\d+s.\n",
@@ -98,7 +96,7 @@ class TestOGCServerSynchronizer:
         "c2cgeoportal_admin.lib.ogcserver_synchronizer.OGCServerSynchronizer.wms_capabilities",
         return_value=wms_capabilities(),
     )
-    def test_check_layers(self, cap_mock, web_request, dbsession):
+    def test_check_layers(self, cap_mock, web_request, dbsession) -> None:
         from c2cgeoportal_commons.models import main
 
         server = ogc_server()
@@ -130,7 +128,7 @@ class TestOGCServerSynchronizer:
             "Checked 3 layers, 2 are invalid\n"
         )
 
-    def test_synchronize_mapserver(self, web_request):
+    def test_synchronize_mapserver(self, web_request) -> None:
         synchronizer = self.synchronizer(web_request)
         synchronizer.synchronize()
 
@@ -138,7 +136,7 @@ class TestOGCServerSynchronizer:
         "c2cgeoportal_admin.lib.ogcserver_synchronizer.OGCServerSynchronizer.wms_capabilities",
         return_value=wms_capabilities(),
     )
-    def test_synchronize_dry_run(self, cap_mock, web_request, dbsession):
+    def test_synchronize_dry_run(self, cap_mock, web_request, dbsession) -> None:
         from c2cgeoportal_commons.models import main
 
         assert dbsession.query(main.TreeItem).count() == 0
@@ -167,7 +165,7 @@ class TestOGCServerSynchronizer:
         "c2cgeoportal_admin.lib.ogcserver_synchronizer.OGCServerSynchronizer.wms_capabilities",
         return_value=wms_capabilities(),
     )
-    def test_synchronize_success(self, cap_mock, web_request, dbsession):
+    def test_synchronize_success(self, cap_mock, web_request, dbsession) -> None:
         from c2cgeoportal_commons.models import main
 
         interface = main.Interface(name="desktop")
@@ -217,7 +215,7 @@ class TestOGCServerSynchronizer:
         "c2cgeoportal_admin.lib.ogcserver_synchronizer.OGCServerSynchronizer.wms_capabilities",
         return_value=wms_capabilities(),
     )
-    def test_synchronize_force_parents(self, cap_mock, web_request, dbsession):
+    def test_synchronize_force_parents(self, cap_mock, web_request, dbsession) -> None:
         from c2cgeoportal_commons.models import main
 
         interface = main.Interface(name="desktop")
@@ -276,7 +274,7 @@ class TestOGCServerSynchronizer:
         "c2cgeoportal_admin.lib.ogcserver_synchronizer.OGCServerSynchronizer.wms_capabilities",
         return_value=wms_capabilities(),
     )
-    def test_synchronize_force_ordering(self, cap_mock, web_request, dbsession):
+    def test_synchronize_force_ordering(self, cap_mock, web_request, dbsession) -> None:
         from c2cgeoportal_commons.models import main
 
         interface = main.Interface(name="desktop")
@@ -319,7 +317,7 @@ class TestOGCServerSynchronizer:
                         </Layer>
                     </Layer>
                 </Layer>
-                """
+                """,
             ),
         ):
             synchronizer = self.synchronizer(web_request, server)
@@ -360,11 +358,15 @@ class TestOGCServerSynchronizer:
                         </Layer>
                     </Layer>
                 </Layer>
-                """
+                """,
             ),
         ):
             synchronizer = self.synchronizer(
-                web_request, server, force_parents=True, force_ordering=True, clean=True
+                web_request,
+                server,
+                force_parents=True,
+                force_ordering=True,
+                clean=True,
             )
             synchronizer.synchronize()
 
@@ -397,7 +399,7 @@ class TestOGCServerSynchronizer:
         "c2cgeoportal_admin.lib.ogcserver_synchronizer.OGCServerSynchronizer.wms_capabilities",
         return_value=wms_capabilities(),
     )
-    def test_synchronize_clean(self, cap_mock, web_request, dbsession):
+    def test_synchronize_clean(self, cap_mock, web_request, dbsession) -> None:
         from c2cgeoportal_commons.models import main
 
         server = ogc_server()
@@ -440,7 +442,7 @@ class TestOGCServerSynchronizer:
             "1 layers removed\n"
         )
 
-    def test_get_layer_wms_defaut(self, web_request, dbsession):
+    def test_get_layer_wms_defaut(self, web_request, dbsession) -> None:
         """We should copy properties from default LayerWMS."""
         from c2cgeoportal_commons.models import main
 
@@ -452,7 +454,7 @@ class TestOGCServerSynchronizer:
         default_wms.exclude_properties = "excluded_property"
         default_wms.interfaces = [main.Interface("interface")]
         default_wms.dimensions = [
-            main.Dimension(name="dim", value=None, field="dim", description="description")
+            main.Dimension(name="dim", value=None, field="dim", description="description"),
         ]
         default_wms.style = "default_style"
 
@@ -465,7 +467,7 @@ class TestOGCServerSynchronizer:
         <Title>default_style</Title>
     </Style>
 </Layer>
-"""
+""",
         )
 
         with patch.object(synchronizer, "_default_wms", default_wms):
@@ -485,7 +487,7 @@ class TestOGCServerSynchronizer:
             assert layer.dimensions[0].description == "description"
             assert layer.style == "default_style"
 
-    def test_get_layer_wms_defaut_style_not_exists(self, web_request, dbsession):
+    def test_get_layer_wms_defaut_style_not_exists(self, web_request, dbsession) -> None:
         """We should not copy style from default LayerWMS if does not exist in capabilities."""
         from c2cgeoportal_commons.models import main
 
@@ -506,7 +508,7 @@ class TestOGCServerSynchronizer:
         <Title>default</Title>
     </Style>
 </Layer>
-"""
+""",
         )
 
         layer = synchronizer.get_layer_wms(el, None)

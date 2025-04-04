@@ -10,7 +10,7 @@ tsf_getitfixed = TranslationStringFactory("getitfixed")
 
 
 @subscriber(NewRequest)
-def add_localizer(event):
+def add_localizer(event) -> None:
     request = event.request
     localizer = get_localizer(request)
 
@@ -32,7 +32,7 @@ def add_localizer(event):
 
 
 @subscriber(BeforeRender)
-def add_renderer_globals(event):
+def add_renderer_globals(event) -> None:
     request = event.get("request")
     if request:
         event["_"] = request.translate

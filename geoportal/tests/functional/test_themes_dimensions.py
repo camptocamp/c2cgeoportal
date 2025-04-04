@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2024, Camptocamp SA
+# Copyright (c) 2016-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -40,7 +40,7 @@ from tests.functional import teardown_common as teardown_module  # noqa
 
 
 class TestThemesView(TestCase):
-    def setup_method(self, _):
+    def setup_method(self, _) -> None:
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
@@ -149,7 +149,7 @@ class TestThemesView(TestCase):
 
         transaction.commit()
 
-    def teardown_method(self, _):
+    def teardown_method(self, _) -> None:
         testing.tearDown()
 
         from c2cgeoportal_commons.models import DBSession
@@ -204,77 +204,73 @@ class TestThemesView(TestCase):
     @staticmethod
     def _get_filtered_errors(themes):
         regex = re.compile(
-            r"^The layer '__[a-z0-9_]+' \(__[a-z0-9_]+\) is not defined in WMS capabilities from '__test_ogc_server'$"
+            r"^The layer '__[a-z0-9_]+' \(__[a-z0-9_]+\) is not defined in WMS capabilities from '__test_ogc_server'$",
         )
         return {e for e in themes["errors"] if regex.search(e) is None}
 
-    def test_theme_dimensions(self):
+    def test_theme_dimensions(self) -> None:
         theme_view = self._create_theme_obj(params={"interface": "main"})
         themes = theme_view.themes()
-        self.assertEqual(
-            set(themes["errors"]),
+        assert set(themes["errors"]) == {
+            "The layer '__test_layer_wms_2' has a wrong dimension value 'b' for 'A', expected 'a' or empty.",
+            "The layer '__test_layer_wmts_2' has an unsupported dimension value 'countries:\"name\" IN ( 'Germany' , 'Italy' )' ('FILTER').",
+        }
+        assert [
+            self._only_name(t, ["name", "dimensions", "dimensionsFilters"]) for t in themes["themes"]
+        ] == [
             {
-                "The layer '__test_layer_wms_2' has a wrong dimension value 'b' for 'A', expected 'a' or empty.",
-                "The layer '__test_layer_wmts_2' has an unsupported dimension value 'countries:\"name\" IN ( 'Germany' , 'Italy' )' ('FILTER').",
-            },
-        )
-        self.assertEqual(
-            [self._only_name(t, ["name", "dimensions", "dimensionsFilters"]) for t in themes["themes"]],
-            [
-                {
-                    "children": [
-                        {
-                            "name": "__test_layer_group_1",
-                            "children": [
-                                {"dimensions": {"A": "a"}, "name": "__test_layer_wms_1"},
-                                {"dimensions": {"B": "b"}, "name": "__test_layer_wmts"},
-                            ],
+                "children": [
+                    {
+                        "name": "__test_layer_group_1",
+                        "children": [
+                            {"dimensions": {"A": "a"}, "name": "__test_layer_wms_1"},
+                            {"dimensions": {"B": "b"}, "name": "__test_layer_wmts"},
+                        ],
+                    },
+                    {
+                        "name": "__test_layer_group_2",
+                        "children": [{"name": "__test_layer_wms_1"}],
+                        "dimensions": {"A": "a"},
+                    },
+                    {
+                        "name": "__test_layer_group_3",
+                        "children": [{"name": "__test_layer_wms_1"}, {"name": "__test_layer_wms_3"}],
+                        "dimensions": {"A": "a"},
+                    },
+                    {
+                        "name": "__test_layer_group_4",
+                        "children": [{"name": "__test_layer_wms_1"}, {"name": "__test_layer_wms_4"}],
+                        "dimensions": {"A": "a"},
+                    },
+                    {
+                        "name": "__test_layer_group_5",
+                        "children": [
+                            {"name": "__test_layer_wms_1"},
+                            {"name": "__test_layer_wms_5"},
+                            {"name": "__test_layer_wms_6"},
+                        ],
+                        "dimensions": {
+                            "A": "a",
+                            "B": "b",
+                            "FILTER": "countries:\"name\" IN ( 'Germany' , 'Italy' )",
                         },
-                        {
-                            "name": "__test_layer_group_2",
-                            "children": [{"name": "__test_layer_wms_1"}],
-                            "dimensions": {"A": "a"},
-                        },
-                        {
-                            "name": "__test_layer_group_3",
-                            "children": [{"name": "__test_layer_wms_1"}, {"name": "__test_layer_wms_3"}],
-                            "dimensions": {"A": "a"},
-                        },
-                        {
-                            "name": "__test_layer_group_4",
-                            "children": [{"name": "__test_layer_wms_1"}, {"name": "__test_layer_wms_4"}],
-                            "dimensions": {"A": "a"},
-                        },
-                        {
-                            "name": "__test_layer_group_5",
-                            "children": [
-                                {"name": "__test_layer_wms_1"},
-                                {"name": "__test_layer_wms_5"},
-                                {"name": "__test_layer_wms_6"},
-                            ],
-                            "dimensions": {
-                                "A": "a",
-                                "B": "b",
-                                "FILTER": "countries:\"name\" IN ( 'Germany' , 'Italy' )",
+                    },
+                    {
+                        "name": "__test_layer_group_6",
+                        "children": [{"name": "__test_layer_wms_3"}],
+                        "dimensions": {"A": None},
+                    },
+                    {
+                        "name": "__test_layer_group_7",
+                        "children": [
+                            {
+                                "name": "__test_layer_wms_7",
+                                "dimensionsFilters": {"FLOOR": {"field": "floor", "value": None}},
                             },
-                        },
-                        {
-                            "name": "__test_layer_group_6",
-                            "children": [{"name": "__test_layer_wms_3"}],
-                            "dimensions": {"A": None},
-                        },
-                        {
-                            "name": "__test_layer_group_7",
-                            "children": [
-                                {
-                                    "name": "__test_layer_wms_7",
-                                    "dimensionsFilters": {"FLOOR": {"field": "floor", "value": None}},
-                                }
-                            ],
-                            "dimensions": {},
-                        },
-                    ],
-                    "name": "__test_theme",
-                }
-            ],
-        )
+                        ],
+                        "dimensions": {},
+                    },
+                ],
+                "name": "__test_theme",
+            },
+        ]

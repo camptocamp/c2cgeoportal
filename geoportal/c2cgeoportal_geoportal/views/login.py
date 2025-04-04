@@ -69,7 +69,7 @@ class Login:
     Also manage the 2fa.
     """
 
-    def __init__(self, request: pyramid.request.Request):
+    def __init__(self, request: pyramid.request.Request) -> None:
         self.request = request
         self.settings = request.registry.settings
         self.lang = request.locale_name
@@ -101,7 +101,7 @@ class Login:
                 location=self.request.route_url(
                     "oidc_login",
                     _query={"came_from": f"{self.request.path}?{urllib.parse.urlencode(self.request.GET)}"},
-                )
+                ),
             )
 
         set_common_headers(self.request, "login", Cache.PRIVATE_NO)
@@ -164,9 +164,10 @@ class Login:
                                     "two_factor_enable": self.two_factor_auth,
                                     "two_factor_totp_secret": user.tech_data["2fa_totp_secret"],
                                     "otp_uri": pyotp.TOTP(user.tech_data["2fa_totp_secret"]).provisioning_uri(
-                                        user.email, issuer_name=self.two_factor_issuer_name
+                                        user.email,
+                                        issuer_name=self.two_factor_issuer_name,
                                     ),
-                                }
+                                },
                             ),
                             headers=(("Content-Type", "text/json"),),
                         ),
@@ -193,7 +194,7 @@ class Login:
                                 "username": user.username,
                                 "is_password_changed": False,
                                 "two_factor_enable": self.two_factor_auth,
-                            }
+                            },
                         ),
                         headers=(("Content-Type", "text/json"),),
                     ),
@@ -233,7 +234,8 @@ class Login:
                 user.tech_data["consecutive_failed"] = "0"
             user.tech_data["consecutive_failed"] = str(int(user.tech_data["consecutive_failed"]) + 1)
             if int(user.tech_data["consecutive_failed"]) >= self.request.registry.settings.get(
-                "authentication", {}
+                "authentication",
+                {},
             ).get("max_consecutive_failures", sys.maxsize):
                 user.deactivated = True
                 user.tech_data["consecutive_failed"] = "0"
@@ -251,7 +253,7 @@ class Login:
             self.request.body,
         )
         headers, body, status = oauth2.get_oauth_client(
-            self.request.registry.settings
+            self.request.registry.settings,
         ).create_authorization_response(
             self.request.current_route_url(_query=self.request.GET),
             self.request.method,
@@ -308,7 +310,10 @@ class Login:
 
         headers.append(("Content-Type", "text/json"))
         return set_common_headers(
-            self.request, "login", Cache.PRIVATE_NO, response=Response("true", headers=headers)
+            self.request,
+            "login",
+            Cache.PRIVATE_NO,
+            response=Response("true", headers=headers),
         )
 
     def _user(self, user: static.User | None = None) -> dict[str, Any]:
@@ -331,7 +336,7 @@ class Login:
                     "username": user.display_name,
                     "email": user.email,
                     "roles": [{"name": r.name, "id": r.id} for r in user.roles],
-                }
+                },
             )
         return result
 
@@ -357,7 +362,7 @@ class Login:
         otp = self.request.POST.get("otp")
         if new_password is None or new_password_confirm is None or old_password is None:
             raise HTTPBadRequest(
-                "'oldPassword', 'newPassword' and 'confirmNewPassword' should be available in request params."
+                "'oldPassword', 'newPassword' and 'confirmNewPassword' should be available in request params.",
             )
         if self.two_factor_auth and otp is None:
             raise HTTPBadRequest("The second factor is missing.")
@@ -404,7 +409,7 @@ class Login:
                 string.ascii_letters * 2,
                 string.digits * 2,
                 string.punctuation,  # One time to have less punctuation char
-            ]
+            ],
         )
         return "".join(secrets.choice(allchars) for i in range(8))
 
@@ -473,7 +478,7 @@ class Login:
             self.request.body,
         )
         headers, body, status = oauth2.get_oauth_client(
-            self.request.registry.settings
+            self.request.registry.settings,
         ).create_introspect_response(
             self.request.current_route_url(_query=self.request.GET),
             self.request.method,
@@ -538,7 +543,7 @@ class Login:
             self.request.body,
         )
         headers, body, status = oauth2.get_oauth_client(  # pylint: disable=no-member,unrecognized-inline-option
-            self.request.registry.settings
+            self.request.registry.settings,
         ).create_authorize_response(
             self.request.current_route_url(_query=self.request.GET),
             self.request.method,
@@ -619,10 +624,10 @@ class Login:
                 client.authorization_code_flow.start_authentication(
                     code_challenge=code_challenge,
                     code_challenge_method="S256",
-                )
+                ),
             )
             url.add_query(
-                self.authentication_settings.get("openid_connect", {}).get("login_extra_params", {})
+                self.authentication_settings.get("openid_connect", {}).get("login_extra_params", {}),
             )
             return HTTPFound(location=url.url(), headers=self.request.response.headers)
         finally:
@@ -645,7 +650,8 @@ class Login:
         remember_object = oidc.OidcRemember(self.request).remember(token_response, self.request.host)
 
         user: static.User | oidc.DynamicUser | None = self.request.get_user_from_remember(
-            remember_object, update_create_user=True
+            remember_object,
+            update_create_user=True,
         )
         if user is not None:
             self.request.user_ = user
@@ -662,7 +668,7 @@ class Login:
                 "login",
                 Cache.PRIVATE_NO,
                 response=Response(
-                    # TODO respect the user interface... # pylint: disable=fixme
+                    # TODO: respect the user interface... # pylint: disable=fixme
                     json.dumps(
                         {
                             "username": user.display_name,
@@ -670,10 +676,9 @@ class Login:
                             "is_intranet": is_intranet(self.request),
                             "functionalities": self._functionality(),
                             "roles": [{"name": r.name, "id": r.id} for r in user.roles],
-                        }
+                        },
                     ),
                     headers=(("Content-Type", "text/json"),),
                 ),
             )
-        else:
-            return HTTPUnauthorized("See server logs for details")
+        return HTTPUnauthorized("See server logs for details")

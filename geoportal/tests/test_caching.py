@@ -58,7 +58,7 @@ class TestSetCorsHeaders(TestCase):
 
         return dict(request.response.headers)
 
-    def test_simple(self):
+    def test_simple(self) -> None:
         """Tests specified in http://www.w3.org/TR/cors/#resource-requests."""
         # 1. If the Origin header is not present terminate this set of steps.
         #    The request is outside the scope of this specification.
@@ -103,7 +103,7 @@ class TestSetCorsHeaders(TestCase):
         #    field names given in the list of exposed headers.
         # Not implemented
 
-    def test_preflight(self):
+    def test_preflight(self) -> None:
         """Tests specified in http://www.w3.org/TR/cors/#resource-preflight-requests."""
         # 1. If the Origin header is not present terminate this set of steps.
         #    The request is outside the scope of this specification.
@@ -158,7 +158,9 @@ class TestSetCorsHeaders(TestCase):
         #    header as value, and add a single Access-Control-Allow-Credentials
         #    header with the case-sensitive string "true" as value.
         assert self._do(
-            "OPTIONS", {"Origin": self.ORIGIN1, "Access-Control-Request-Method": "GET"}, credentials=True
+            "OPTIONS",
+            {"Origin": self.ORIGIN1, "Access-Control-Request-Method": "GET"},
+            credentials=True,
         ) == {
             "Content-Length": "0",
             "Content-Type": "text/html; charset=UTF-8",
@@ -199,7 +201,7 @@ class TestSetCorsHeaders(TestCase):
             "Cache-Control": "max-age=" + self.MAX_AGE,
         }
 
-    def test_not_configured(self):
+    def test_not_configured(self) -> None:
         # If the service is not configured, then no CORS head.
         assert self._do("GET", {"Origin": self.ORIGIN1}, settings=None) == {
             "Cache-Control": "max-age=10, private",
@@ -208,7 +210,7 @@ class TestSetCorsHeaders(TestCase):
             "Vary": "Origin, Access-Control-Request-Headers, Cookie, Authorization",
         }
 
-    def test_match_all(self):
+    def test_match_all(self) -> None:
         settings = {
             "access_control_allow_origin": [self.ORIGIN1, "*"],
             "access_control_max_age": self.MAX_AGE,
@@ -259,17 +261,17 @@ class TestSetCorsHeaders(TestCase):
             "Cache-Control": "max-age=" + self.MAX_AGE,
         }
 
-    def test_cache(self):
+    def test_cache(self) -> None:
         init_region({"backend": "dogpile.cache.memory"}, "std")
         cache_version = get_cache_version()
         assert cache_version == get_cache_version()
 
-    def test_cache_invalidation(self):
+    def test_cache_invalidation(self) -> None:
         init_region({"backend": "dogpile.cache.memory"}, "std")
         cache_version = get_cache_version()
         invalidate_region()
         assert cache_version != get_cache_version()
 
-    def test_nocache(self):
+    def test_nocache(self) -> None:
         init_region({"backend": "dogpile.cache.null"}, "std")
         assert get_cache_version() != get_cache_version()

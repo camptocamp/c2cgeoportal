@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2024, Camptocamp SA
+# Copyright (c) 2022-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -49,7 +49,7 @@ class TestGeomapfishConfigExtractor:
         "c2cgeoportal_admin.lib.lingva_extractor.open",
         mock_open(read_data=GMF_CONFIG),
     )
-    def test_extract_config(self):
+    def test_extract_config(self) -> None:
         extractor = GeomapfishConfigExtractor()
 
         options = Mock()

@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2024, Camptocamp SA
+# Copyright (c) 2013-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -74,7 +74,10 @@ class TestThemesEditColumns(TestCase):
 
         self.role = Role(name="__test_role")
         self.user = User(
-            username="__test_user", password="__test_user", settings_role=self.role, roles=[self.role]
+            username="__test_user",
+            password="__test_user",
+            settings_role=self.role,
+            roles=[self.role],
         )
         self.main = Interface(name="main")
 
@@ -197,7 +200,7 @@ class TestThemesEditColumns(TestCase):
                 layer.metadatas = metadatas
 
             DBSession.add(self.layer_group_1)
-            self.layer_group_1.children = self.layer_group_1.children + [layer]
+            self.layer_group_1.children = [*self.layer_group_1.children, layer]
 
             DBSession.add(self.layer_group_1)
 
@@ -281,7 +284,7 @@ class TestThemesEditColumns(TestCase):
                         "name": "child",
                         "enumeration": ["c1\xe9", "c2\xe9"],
                     },
-                ]
+                ],
             ],
         )
 
@@ -344,6 +347,6 @@ class TestThemesEditColumns(TestCase):
                         "name": "child",
                         "enumeration": ["c1\xe9", "c2\xe9"],
                     },
-                ]
+                ],
             ],
         )

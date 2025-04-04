@@ -8,7 +8,7 @@ import subprocess  # nosec
 import subprocess
 
 
-def main() -> None:
+def _main() -> None:
     parser = argparse.ArgumentParser(description="Generate the l10n for a project.")
     parser.add_argument("package", help="the package name")
     parser.add_argument("--suffix", action="append", help="a suffix added to the po and mo files")
@@ -17,7 +17,7 @@ def main() -> None:
 
     all_suffix = [""] if args.suffix is None else ["", *args.suffix]
 
-    package_base_path = f"/tmp/config/geoportal/{args.package}_geoportal"  # nosec
+    package_base_path = f"/tmp/config/geoportal/{args.package}_geoportal"  # noqa: S108 # nosec
     base_path = f"{package_base_path}/locale"
     dest_package = "geomapfishapp" if os.environ.get("SIMPLE", "false").lower() == "true" else args.package
 
@@ -89,4 +89,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    _main()

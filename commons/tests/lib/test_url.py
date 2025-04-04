@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2024, Camptocamp SA
+# Copyright (c) 2013-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -34,7 +34,7 @@ from pyramid.testing import DummyRequest
 
 
 class TestUrl(TestCase):
-    def test_url(self):
+    def test_url(self) -> None:
         url = Url("http://test/")
         url.add_query({"Name": "Bob", "Age": "18", "Nationality": "Việt Name"})
         assert url.scheme == "http"
@@ -43,7 +43,7 @@ class TestUrl(TestCase):
         assert url.fragment == ""
         self.assertEqual(url.query, {"Name": "Bob", "Age": "18", "Nationality": "Việt Name"})
 
-    def test_url_encode1(self):
+    def test_url_encode1(self) -> None:
         url = Url("http://example.com/toto")
         url.add_query({"à": "é"})
         assert url.scheme == "http"
@@ -52,7 +52,7 @@ class TestUrl(TestCase):
         assert url.fragment == ""
         assert url.query == {"à": "é"}
 
-    def test_url_encode2(self):
+    def test_url_encode2(self) -> None:
         url = Url("http://example.com/toto?à=é")
         url.add_query({"1": "2"})
         assert url.scheme == "http"
@@ -61,7 +61,7 @@ class TestUrl(TestCase):
         assert url.fragment == ""
         self.assertEqual(url.query, {"à": "é", "1": "2"})
 
-    def test_url_encode3(self):
+    def test_url_encode3(self) -> None:
         url = Url("http://example.com/toto?%C3%A0=%C3%A9")
         url.add_query({"1": "2"})
         assert url.scheme == "http"
@@ -70,7 +70,7 @@ class TestUrl(TestCase):
         assert url.fragment == ""
         self.assertEqual(url.query, {"à": "é", "1": "2"})
 
-    def test_url_port(self):
+    def test_url_port(self) -> None:
         url = Url("http://example.com:8480/toto")
         url.add_query({"1": "2"})
         assert url.scheme == "http"
@@ -80,12 +80,12 @@ class TestUrl(TestCase):
         assert url.fragment == ""
         assert url.query == {"1": "2"}
 
-    def test_url_noparam(self):
+    def test_url_noparam(self) -> None:
         url = Url("http://example.com/")
         url.add_query({})
         assert url.url() == "http://example.com/"
 
-    def test_url_update(self):
+    def test_url_update(self) -> None:
         url = Url("http://test:123/toto?map=123#456")
         url.hostname = "example"
         assert url.netloc == "example:123"
@@ -116,7 +116,7 @@ class TestUrl(TestCase):
         assert url.hostname == "test"
         assert url.url() == "http://test/toto?map=123#456"
 
-    def test_get_url2(self):
+    def test_get_url2(self) -> None:
         request = DummyRequest()
         request.registry.settings = {
             "package": "my_project",
@@ -158,7 +158,8 @@ class TestUrl(TestCase):
             "https://example.com/test/icon.png",
         )
         self.assertEqual(
-            get_url2("test", "config://full_url", request, set()).url(), "https://example.com/test.xml"
+            get_url2("test", "config://full_url", request, set()).url(),
+            "https://example.com/test.xml",
         )
         self.assertEqual(
             get_url2("test", "http://example.com/icon.png", request, set()).url(),
@@ -181,10 +182,11 @@ class TestUrl(TestCase):
             "https://example.com/icon.png",
         )
         self.assertEqual(
-            get_url2("test", "config://srv_no_path", request, errors=errors).url(), "https://example.com"
+            get_url2("test", "config://srv_no_path", request, errors=errors).url(),
+            "https://example.com",
         )
 
-    def test_get_url2_dict(self):
+    def test_get_url2_dict(self) -> None:
         request = DummyRequest()
         request.registry.settings = {
             "package": "my_project",

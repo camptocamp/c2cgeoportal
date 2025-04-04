@@ -58,7 +58,7 @@ _LOG = logging.getLogger(__name__)
 class TinyOWSProxy(OGCProxy):
     """Proxy for the tiny OWN server."""
 
-    def __init__(self, request: pyramid.request.Request):
+    def __init__(self, request: pyramid.request.Request) -> None:
         OGCProxy.__init__(self, request, has_default_ogc_server=True)
 
         assert models.DBSession is not None
@@ -73,7 +73,7 @@ class TinyOWSProxy(OGCProxy):
             )
         except sqlalchemy.exc.NoResultFound:
             raise HTTPBadRequest(  # pylint: disable=raise-missing-from
-                f"OGC server {self.settings['ogc_server']} not found"
+                f"OGC server {self.settings['ogc_server']} not found",
             )
 
         self.user = self.request.user
@@ -85,7 +85,8 @@ class TinyOWSProxy(OGCProxy):
     def proxy(self) -> pyramid.response.Response:
         if self.user is None:
             raise HTTPUnauthorized(
-                "Authentication required", headers=[("WWW-Authenticate", 'Basic realm="TinyOWS"')]
+                "Authentication required",
+                headers=[("WWW-Authenticate", 'Basic realm="TinyOWS"')],
             )
 
         operation = self.lower_params.get("request")
@@ -100,7 +101,7 @@ class TinyOWSProxy(OGCProxy):
             except Exception:
                 _LOG.exception("Error while parsing POST request body")
                 raise HTTPBadRequest(  # pylint: disable=raise-missing-from
-                    "Error parsing the request (see logs for more details)"
+                    "Error parsing the request (see logs for more details)",
                 )
 
             typenames = typenames.union(typenames_post)
@@ -122,7 +123,7 @@ class TinyOWSProxy(OGCProxy):
 
         url = Url(self.settings.get("tinyows_url"))
 
-        response = self._proxy_callback(
+        return self._proxy_callback(
             operation,
             cache_control,
             url=url,
@@ -131,7 +132,6 @@ class TinyOWSProxy(OGCProxy):
             headers=self._get_headers(),
             body=self.request.body,
         )
-        return response
 
     def _is_allowed(self, typenames: set[str]) -> bool:
         """Check if the current user has the rights to access the given type-names."""
@@ -149,7 +149,11 @@ class TinyOWSProxy(OGCProxy):
         return headers
 
     def _proxy_callback(
-        self, operation: str, cache_control: Cache, *args: Any, **kwargs: Any
+        self,
+        operation: str,
+        cache_control: Cache,
+        *args: Any,
+        **kwargs: Any,
     ) -> pyramid.response.Response:
         response = self._proxy(*args, **kwargs)
         content = response.content.decode()
@@ -158,13 +162,15 @@ class TinyOWSProxy(OGCProxy):
         url = super()._get_wfs_url(errors)
         if url is None:
             _LOG.error("Error getting the URL:\n%s", "\n".join(errors))
-            raise HTTPInternalServerError()
+            raise HTTPInternalServerError
 
         if operation == "getcapabilities":
             content = filter_wfst_capabilities(content, url, self.request)
 
         content = self._filter_urls(
-            content, self.settings.get("online_resource"), self.settings.get("proxy_online_resource")
+            content,
+            self.settings.get("online_resource"),
+            self.settings.get("proxy_online_resource"),
         )
 
         return self._build_response(response, content.encode(), cache_control, "tinyows")

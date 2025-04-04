@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2024, Camptocamp SA
+# Copyright (c) 2018-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -40,7 +40,7 @@ def handler(request):
 
 
 class MyRequest(DummyRequest):
-    def __init__(self, path_info):
+    def __init__(self, path_info) -> None:
         self.path_info = path_info
 
 
@@ -49,7 +49,7 @@ class TestCacheBuster(TestCase):
     def setup_class(cls):
         pass
 
-    def test_tween(self):
+    def test_tween(self) -> None:
         from c2cgeoportal_geoportal.lib.headers import HeadersTween
 
         registry = pyramid.registry.Registry()

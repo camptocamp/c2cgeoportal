@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2024, Camptocamp SA
+# Copyright (c) 2013-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@ from tests.functional import (
     create_dummy_request,
     setup_db,
 )
-from tests.functional import setup_common as setup_module  # noqa
+from tests.functional import setup_common as setup_module
 from tests.functional import teardown_common as teardown_module  # noqa
 
 if TYPE_CHECKING:
@@ -66,7 +66,10 @@ class TestLayers(TestCase):
 
         self.role = Role(name="__test_role")
         self.user = User(
-            username="__test_user", password="__test_user", settings_role=self.role, roles=[self.role]
+            username="__test_user",
+            password="__test_user",
+            settings_role=self.role,
+            roles=[self.role],
         )
         self.main = Interface(name="main")
 
@@ -184,7 +187,9 @@ class TestLayers(TestCase):
             connection.execute(ins)
             if attr_list:
                 ins = table2.insert().values(
-                    child_id=c2_id, name="aaa,bbb,foo", geom=WKTElement("POINT(6 46)", 21781)
+                    child_id=c2_id,
+                    name="aaa,bbb,foo",
+                    geom=WKTElement("POINT(6 46)", 21781),
                 )
                 connection.execute(ins)
 
@@ -240,8 +245,8 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id)
 
         collection = Layers(request).read_many()
-        self.assertTrue(isinstance(collection, FeatureCollection))
-        self.assertEqual([f.properties["child"] for f in collection.features], ["c1é", "c2é"])
+        assert isinstance(collection, FeatureCollection)
+        assert [f.properties["child"] for f in collection.features] == ["c1é", "c2é"]
 
     def test_read_many_no_auth(self) -> None:
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -262,7 +267,7 @@ class TestLayers(TestCase):
 
         layers = Layers(request)
         collection = layers.read_many()
-        self.assertTrue(isinstance(collection, FeatureCollection))
+        assert isinstance(collection, FeatureCollection)
         assert [f.properties["child"] for f in collection.features] == ["c1é"]
 
     def test_read_many_layer_not_found(self) -> None:
@@ -288,10 +293,12 @@ class TestLayers(TestCase):
 
         layers = Layers(request)
         collection = layers.read_many()
-        self.assertTrue(isinstance(collection, FeatureCollection))
-        self.assertEqual(
-            [f.properties["__layer_id__"] for f in collection.features], [layer_id1, layer_id2, layer_id3]
-        )
+        assert isinstance(collection, FeatureCollection)
+        assert [f.properties["__layer_id__"] for f in collection.features] == [
+            layer_id1,
+            layer_id2,
+            layer_id3,
+        ]
 
     def test_read_one_public(self) -> None:
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -303,7 +310,7 @@ class TestLayers(TestCase):
 
         layers = Layers(request)
         feature = layers.read_one()
-        self.assertTrue(isinstance(feature, Feature))
+        assert isinstance(feature, Feature)
         assert feature.id == 1
         assert feature.properties["name"] == "foo"
         assert feature.properties["child"] == "c1é"
@@ -318,7 +325,7 @@ class TestLayers(TestCase):
 
         layers = Layers(request)
         feature = layers.read_one()
-        self.assertTrue(isinstance(feature, HTTPNotFound))
+        assert isinstance(feature, HTTPNotFound)
 
     def test_read_one_no_auth(self) -> None:
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -352,7 +359,7 @@ class TestLayers(TestCase):
 
         layers = Layers(request)
         feature = layers.read_one()
-        self.assertTrue(isinstance(feature, Feature))
+        assert isinstance(feature, Feature)
         assert feature.id == 1
         assert feature.properties["name"] == "foo"
         assert feature.properties["child"] == "c1é"
@@ -374,7 +381,7 @@ class TestLayers(TestCase):
         layer_id = self._create_layer()
         request = self._get_request(layer_id)
         request.method = "POST"
-        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # noqa
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.create)
 
@@ -385,7 +392,7 @@ class TestLayers(TestCase):
         layer_id = self._create_layer()
         request = self._get_request(layer_id, username="__test_user")
         request.method = "POST"
-        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [4, 44]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # noqa
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [4, 44]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.create)
 
@@ -396,10 +403,10 @@ class TestLayers(TestCase):
         layer_id = self._create_layer()
         request = self._get_request(layer_id, username="__test_user")
         request.method = "POST"
-        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # noqa
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'
         layers = Layers(request)
         collection = layers.create()
-        self.assertTrue(isinstance(collection, FeatureCollection))
+        assert isinstance(collection, FeatureCollection)
         assert len(collection.features) == 2
 
     def test_create_with_constraint_fail_integrity(self) -> None:
@@ -408,12 +415,12 @@ class TestLayers(TestCase):
         layer_id = self._create_layer()
         request = self._get_request(layer_id, username="__test_user")
         request.method = "POST"
-        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"email": "novalidemail", "name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # noqa
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"email": "novalidemail", "name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'
         layers = Layers(request)
         response = layers.create()
         assert request.response.status_int == 400
-        self.assertTrue("error_type" in response)
-        self.assertTrue("message" in response)
+        assert "error_type" in response
+        assert "message" in response
         assert response["error_type"] == "integrity_error"
 
     def test_create_log(self) -> None:
@@ -425,7 +432,7 @@ class TestLayers(TestCase):
         from c2cgeoportal_geoportal.views.layers import Layers
         from geojson.feature import FeatureCollection
 
-        self.assertEqual(DBSession.query(User.username).all(), [("__test_user",)])
+        assert DBSession.query(User.username).all() == [("__test_user",)]
 
         metadatas = [
             Metadata("lastUpdateDateColumn", "last_update_date"),
@@ -434,18 +441,18 @@ class TestLayers(TestCase):
         layer_id = self._create_layer(metadatas=metadatas)
         request = self._get_request(layer_id, username="__test_user")
         request.method = "POST"
-        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # noqa
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'
         layers = Layers(request)
         collection = layers.create()
         assert request.response.status_int == 201
-        self.assertTrue(isinstance(collection, FeatureCollection))
+        assert isinstance(collection, FeatureCollection)
         assert len(collection.features) == 1
         properties = collection.features[0]
 
         assert request.user.username == "__test_user"
 
         assert properties.last_update_user == request.user.id
-        self.assertIsInstance(properties.last_update_date, datetime)
+        assert isinstance(properties.last_update_date, datetime)
 
     def test_create_validation_fails(self) -> None:
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -453,12 +460,12 @@ class TestLayers(TestCase):
         layer_id = self._create_layer()
         request = self._get_request(layer_id, username="__test_user")
         request.method = "POST"
-        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "LineString", "coordinates": [[5, 45], [5, 45]]}}]}'  # noqa
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "LineString", "coordinates": [[5, 45], [5, 45]]}}]}'
         layers = Layers(request)
         response = layers.create()
         assert request.response.status_int == 400
-        self.assertTrue("error_type" in response)
-        self.assertTrue("message" in response)
+        assert "error_type" in response
+        assert "message" in response
         assert response["error_type"] == "validation_error"
         assert response["message"] == "Too few points in geometry component[5 45]"
 
@@ -471,11 +478,11 @@ class TestLayers(TestCase):
         layer_id = self._create_layer(metadatas=metadatas, geom_type=False)
         request = self._get_request(layer_id, username="__test_user")
         request.method = "POST"
-        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "LineString", "coordinates": [[5, 45], [5, 45]]}}]}'  # noqa
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "LineString", "coordinates": [[5, 45], [5, 45]]}}]}'
         layers = Layers(request)
         collection = layers.create()
         assert request.response.status_int == 201
-        self.assertTrue(isinstance(collection, FeatureCollection))
+        assert isinstance(collection, FeatureCollection)
         assert len(collection.features) == 2
 
     def test_update_no_auth(self) -> None:
@@ -486,7 +493,7 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id)
         request.matchdict["feature_id"] = 1
         request.method = "PUT"
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # noqa
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.update)
 
@@ -498,7 +505,7 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id, username="__test_user")
         request.matchdict["feature_id"] = 1
         request.method = "PUT"
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [4, 44]}}'  # noqa
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [4, 44]}}'
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.update)
 
@@ -510,7 +517,7 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id, username="__test_user")
         request.matchdict["feature_id"] = 2
         request.method = "PUT"
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # noqa
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.update)
 
@@ -521,7 +528,7 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id, username="__test_user")
         request.matchdict["feature_id"] = 1
         request.method = "PUT"
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # noqa
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'
         layers = Layers(request)
         feature = layers.update()
         assert feature.id == 1
@@ -542,12 +549,12 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id, username="__test_user")
         request.matchdict["feature_id"] = 1
         request.method = "PUT"
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # noqa
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'
         layers = Layers(request)
         feature = layers.update()
         assert feature.id == 1
         assert feature.last_update_user == request.user.id
-        self.assertIsInstance(feature.last_update_date, datetime)
+        assert isinstance(feature.last_update_date, datetime)
 
     def test_update_validation_fails(self) -> None:
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -556,12 +563,12 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id, username="__test_user")
         request.matchdict["feature_id"] = 1
         request.method = "PUT"
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "LineString", "coordinates": [[5, 45], [5, 45]]}}'  # noqa
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "LineString", "coordinates": [[5, 45], [5, 45]]}}'
         layers = Layers(request)
         response = layers.update()
         assert request.response.status_int == 400
-        self.assertTrue("error_type" in response)
-        self.assertTrue("message" in response)
+        assert "error_type" in response
+        assert "message" in response
         assert response["error_type"] == "validation_error"
         assert response["message"] == "Too few points in geometry component[5 45]"
 
@@ -572,12 +579,12 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id, username="__test_user")
         request.matchdict["feature_id"] = 1
         request.method = "PUT"
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "LineString", "coordinates": [[5, 45], [6, 45], [5, 45]]}}'  # noqa
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "LineString", "coordinates": [[5, 45], [6, 45], [5, 45]]}}'
         layers = Layers(request)
         response = layers.update()
         assert request.response.status_int == 400
-        self.assertTrue("error_type" in response)
-        self.assertTrue("message" in response)
+        assert "error_type" in response
+        assert "message" in response
         assert response["error_type"] == "validation_error"
         assert response["message"] == "Not simple"
 
@@ -588,12 +595,12 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id, username="__test_user")
         request.matchdict["feature_id"] = 1
         request.method = "PUT"
-        request.body = '{"type": "Feature", "id": 1, "properties": {"email": "novalidemail"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # noqa
+        request.body = '{"type": "Feature", "id": 1, "properties": {"email": "novalidemail"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'
         layers = Layers(request)
         response = layers.update()
         assert request.response.status_int == 400
-        self.assertTrue("error_type" in response)
-        self.assertTrue("message" in response)
+        assert "error_type" in response
+        assert "message" in response
         assert response["error_type"] == "integrity_error"
 
     def test_update_no_validation(self) -> None:
@@ -605,7 +612,7 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id, username="__test_user")
         request.matchdict["feature_id"] = 1
         request.method = "PUT"
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "LineString", "coordinates": [[5, 45], [5, 45]]}}'  # noqa
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "LineString", "coordinates": [[5, 45], [5, 45]]}}'
         layers = Layers(request)
         feature = layers.update()
         assert feature.id == 1
@@ -664,8 +671,8 @@ class TestLayers(TestCase):
         layers = Layers(request)
         cls = layers.metadata()
         assert cls.__table__.name == f"table_{layer_id:d}"
-        self.assertTrue(hasattr(cls, "name"))
-        self.assertTrue("child" in cls.__dict__)
+        assert hasattr(cls, "name")
+        assert "child" in cls.__dict__
 
     def test_metadata_log(self) -> None:
         from c2cgeoportal_commons.models.main import Metadata
@@ -680,8 +687,8 @@ class TestLayers(TestCase):
 
         layers = Layers(request)
         cls = layers.metadata()
-        self.assertFalse(hasattr(cls, "last_update_date"))
-        self.assertFalse(hasattr(cls, "last_update_user"))
+        assert not hasattr(cls, "last_update_date")
+        assert not hasattr(cls, "last_update_user")
 
     def test_metadata_exclude_properties(self) -> None:
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -691,7 +698,7 @@ class TestLayers(TestCase):
 
         layers = Layers(request)
         cls = layers.metadata()
-        self.assertFalse(hasattr(cls, "name"))
+        assert not hasattr(cls, "name")
 
     def test_metadata_columns_order(self) -> None:
         from c2cgeoportal_commons.models.main import Metadata
@@ -705,7 +712,7 @@ class TestLayers(TestCase):
         layers = Layers(request)
         cls = layers.metadata()
 
-        self.assertEqual(attributes_order.split(","), cls.__attributes_order__)
+        assert attributes_order.split(",") == cls.__attributes_order__
 
     def test_metadata_editing_enumeration_config(self) -> None:
         import json
@@ -734,8 +741,8 @@ class TestLayers(TestCase):
 
         layers = Layers(request)
         collection = layers.read_many()
-        self.assertTrue(isinstance(collection, FeatureCollection))
-        self.assertEqual([f.properties["child"] for f in collection.features], ["c1é", "c2é"])
+        assert isinstance(collection, FeatureCollection)
+        assert [f.properties["child"] for f in collection.features] == ["c1é", "c2é"]
 
     def test_read_many_no_auth_none_area(self) -> None:
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -756,7 +763,7 @@ class TestLayers(TestCase):
 
         layers = Layers(request)
         collection = layers.read_many()
-        self.assertTrue(isinstance(collection, FeatureCollection))
+        assert isinstance(collection, FeatureCollection)
         assert len(collection.features) == 2
         assert collection.features[0].properties["child"] == "c1é"
         assert collection.features[1].properties["child"] == "c2é"
@@ -771,7 +778,7 @@ class TestLayers(TestCase):
 
         layers = Layers(request)
         feature = layers.read_one()
-        self.assertTrue(isinstance(feature, Feature))
+        assert isinstance(feature, Feature)
         assert feature.id == 1
         assert feature.properties["name"] == "foo"
         assert feature.properties["child"] == "c1é"
@@ -797,7 +804,7 @@ class TestLayers(TestCase):
 
         layers = Layers(request)
         feature = layers.read_one()
-        self.assertTrue(isinstance(feature, Feature))
+        assert isinstance(feature, Feature)
         assert feature.id == 1
         assert feature.properties["name"] == "foo"
         assert feature.properties["child"] == "c1é"
@@ -819,7 +826,7 @@ class TestLayers(TestCase):
         layer_id = self._create_layer(none_area=True)
         request = self._get_request(layer_id)
         request.method = "POST"
-        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # noqa
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.create)
 
@@ -830,10 +837,10 @@ class TestLayers(TestCase):
         layer_id = self._create_layer(none_area=True)
         request = self._get_request(layer_id, username="__test_user")
         request.method = "POST"
-        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'  # noqa
+        request.body = '{"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "foo", "child": "c1é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}, {"type": "Feature", "properties": {"text": "foo", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}]}'
         layers = Layers(request)
         collection = layers.create()
-        self.assertTrue(isinstance(collection, FeatureCollection))
+        assert isinstance(collection, FeatureCollection)
         assert len(collection.features) == 2
 
     def test_update_no_auth_none_area(self) -> None:
@@ -844,7 +851,7 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id)
         request.matchdict["feature_id"] = 1
         request.method = "PUT"
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # noqa
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'
         layers = Layers(request)
         self.assertRaises(HTTPForbidden, layers.update)
 
@@ -855,7 +862,7 @@ class TestLayers(TestCase):
         request = self._get_request(layer_id, username="__test_user")
         request.matchdict["feature_id"] = 1
         request.method = "PUT"
-        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'  # noqa
+        request.body = '{"type": "Feature", "id": 1, "properties": {"name": "foobar", "child": "c2é"}, "geometry": {"type": "Point", "coordinates": [5, 45]}}'
         layers = Layers(request)
         feature = layers.update()
         assert feature.id == 1
@@ -891,8 +898,10 @@ class TestLayers(TestCase):
         tablename = f"table_{layer_id:d}"
         settings = {
             "layers": {
-                "enum": {"layer_test": {"attributes": {"label": {"table": tablename, "column_name": "name"}}}}
-            }
+                "enum": {
+                    "layer_test": {"attributes": {"label": {"table": tablename, "column_name": "name"}}},
+                },
+            },
         }
 
         request = self._get_request(layer_id)
@@ -901,7 +910,7 @@ class TestLayers(TestCase):
         request.matchdict["field_name"] = "label"
         layers = Layers(request)
         response = layers.enumerate_attribute_values()
-        self.assertEqual(response, {"items": [{"value": "bar"}, {"value": "foo"}]})
+        assert response == {"items": [{"value": "bar"}, {"value": "foo"}]}
 
     def test_enumerate_attribute_values_list(self) -> None:
         from c2cgeoportal_geoportal.views.layers import Layers
@@ -912,10 +921,12 @@ class TestLayers(TestCase):
             "layers": {
                 "enum": {
                     "layer_test": {
-                        "attributes": {"label": {"table": tablename, "column_name": "name", "separator": ","}}
-                    }
-                }
-            }
+                        "attributes": {
+                            "label": {"table": tablename, "column_name": "name", "separator": ","},
+                        },
+                    },
+                },
+            },
         }
 
         request = self._get_request(layer_id)
@@ -925,6 +936,4 @@ class TestLayers(TestCase):
 
         layers = Layers(request)
         response = layers.enumerate_attribute_values()
-        self.assertEqual(
-            response, {"items": [{"value": "aaa"}, {"value": "bar"}, {"value": "bbb"}, {"value": "foo"}]}
-        )
+        assert response == {"items": [{"value": "aaa"}, {"value": "bar"}, {"value": "bbb"}, {"value": "foo"}]}

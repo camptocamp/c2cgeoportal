@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2024, Camptocamp SA
+# Copyright (c) 2015-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -56,8 +56,8 @@ def _create_dummy_request(username=None):
                 "ogc_server": "__test_ogc_server",
                 # "online_resource": "http://domain.com/tinyows_proxy",
                 # "proxy_online_resource": "http://domain.com/tinyows"
-            }
-        }
+            },
+        },
     )
     request.user = None if username is None else DBSession.query(User).filter_by(username=username).one()
     return request
@@ -72,7 +72,7 @@ class TestTinyOWSProxyView(TestCase):
     describefeaturetype_request_file = data_base + "tinyows_describefeaturetype_request.xml"
     describefeaturetype_request_multiple_file = data_base + "tinyows_describefeaturetype_request_multiple.xml"
 
-    def setup_method(self, _):
+    def setup_method(self, _) -> None:
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
@@ -129,10 +129,10 @@ class TestTinyOWSProxyView(TestCase):
 
         transaction.commit()
 
-    def teardown_method(self, _):
+    def teardown_method(self, _) -> None:
         cleanup_db()
 
-    def test_proxy_not_auth(self):
+    def test_proxy_not_auth(self) -> None:
         from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
         from pyramid.httpexceptions import HTTPUnauthorized
 
@@ -142,7 +142,7 @@ class TestTinyOWSProxyView(TestCase):
             TinyOWSProxy(request).proxy()
 
     @responses.activate
-    def test_proxy_get_capabilities_user1(self):
+    def test_proxy_get_capabilities_user1(self) -> None:
         from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
 
         request = _create_dummy_request(username="__test_user1")
@@ -154,14 +154,14 @@ class TestTinyOWSProxyView(TestCase):
 
         response = TinyOWSProxy(request).proxy()
 
-        self.assertEqual(
-            load_file(self.capabilities_response_filtered_file1).strip(),
-            response.body.decode().replace("  \n", "").strip(),
+        assert (
+            load_file(self.capabilities_response_filtered_file1).strip()
+            == response.body.decode().replace("  \n", "").strip()
         )
         assert response.status == "200 OK"
 
     @responses.activate
-    def test_proxy_get_capabilities_user2(self):
+    def test_proxy_get_capabilities_user2(self) -> None:
         from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
 
         request = _create_dummy_request(username="__test_user2")
@@ -173,14 +173,14 @@ class TestTinyOWSProxyView(TestCase):
 
         response = TinyOWSProxy(request).proxy()
 
-        self.assertEqual(
-            load_file(self.capabilities_response_filtered_file2).strip(),
-            response.body.decode().replace("  \n", "").strip(),
+        assert (
+            load_file(self.capabilities_response_filtered_file2).strip()
+            == response.body.decode().replace("  \n", "").strip()
         )
         assert response.status == "200 OK"
 
     @responses.activate
-    def test_proxy_get_capabilities_get(self):
+    def test_proxy_get_capabilities_get(self) -> None:
         from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
 
         request = _create_dummy_request(username="__test_user1")
@@ -193,14 +193,14 @@ class TestTinyOWSProxyView(TestCase):
 
         response = TinyOWSProxy(request).proxy()
 
-        self.assertEqual(
-            load_file(self.capabilities_response_filtered_file1).strip(),
-            response.body.decode().replace("  \n", "").strip(),
+        assert (
+            load_file(self.capabilities_response_filtered_file1).strip()
+            == response.body.decode().replace("  \n", "").strip()
         )
         assert response.status == "200 OK"
 
     @responses.activate
-    def test_proxy_get_capabilities_post(self):
+    def test_proxy_get_capabilities_post(self) -> None:
         from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
 
         request = _create_dummy_request(username="__test_user1")
@@ -214,14 +214,14 @@ class TestTinyOWSProxyView(TestCase):
 
         response = TinyOWSProxy(request).proxy()
 
-        self.assertEqual(
-            load_file(self.capabilities_response_filtered_file1).strip(),
-            response.body.decode().replace("  \n", "").strip(),
+        assert (
+            load_file(self.capabilities_response_filtered_file1).strip()
+            == response.body.decode().replace("  \n", "").strip()
         )
 
         assert response.status == "200 OK"
 
-    def test_proxy_get_capabilities_post_invalid_body(self):
+    def test_proxy_get_capabilities_post_invalid_body(self) -> None:
         from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
         from pyramid.httpexceptions import HTTPBadRequest
 
@@ -234,7 +234,7 @@ class TestTinyOWSProxyView(TestCase):
             TinyOWSProxy(request).proxy()
 
     @responses.activate
-    def test_proxy_describe_feature_type_get(self):
+    def test_proxy_describe_feature_type_get(self) -> None:
         from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
 
         request = _create_dummy_request(username="__test_user1")
@@ -242,10 +242,10 @@ class TestTinyOWSProxyView(TestCase):
             {
                 "tinyows_host": "demo.gmf.org",
                 "tinyows_url": "http://example.com",
-            }
+            },
         )
         request.params.update(
-            dict(service="wfs", version="1.1.0", request="DescribeFeatureType", typename="tows:layer_1")
+            dict(service="wfs", version="1.1.0", request="DescribeFeatureType", typename="tows:layer_1"),
         )
 
         responses.get(
@@ -257,20 +257,20 @@ class TestTinyOWSProxyView(TestCase):
 
         assert response.status == "200 OK"
 
-    def test_proxy_describe_feature_type_invalid_layer(self):
+    def test_proxy_describe_feature_type_invalid_layer(self) -> None:
         from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
         from pyramid.httpexceptions import HTTPForbidden
 
         request = _create_dummy_request(username="__test_user1")
         request.params.update(
-            dict(service="wfs", version="1.1.0", request="DescribeFeatureType", typename="tows:layer_3")
+            dict(service="wfs", version="1.1.0", request="DescribeFeatureType", typename="tows:layer_3"),
         )
 
         with pytest.raises(HTTPForbidden):
             TinyOWSProxy(request).proxy()
 
     @responses.activate
-    def test_proxy_describe_feature_type_post(self):
+    def test_proxy_describe_feature_type_post(self) -> None:
         from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
 
         request = _create_dummy_request(username="__test_user1")
@@ -286,7 +286,7 @@ class TestTinyOWSProxyView(TestCase):
 
         assert response.status == "200 OK"
 
-    def test_proxy_describe_feature_type_post_multiple_types(self):
+    def test_proxy_describe_feature_type_post_multiple_types(self) -> None:
         from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
         from pyramid.httpexceptions import HTTPBadRequest
 
@@ -308,7 +308,7 @@ class TestTinyOWSProxyViewNoDb(TestCase):
     transaction_delete_request_file = data_base + "tinyows_transaction_delete_request.xml"
     transaction_insert_request_file = data_base + "tinyows_transaction_insert_request.xml"
 
-    def setup_method(self, _):
+    def setup_method(self, _) -> None:
         from c2cgeoportal_commons.models import DBSession
 
         # Always see the diff
@@ -318,10 +318,10 @@ class TestTinyOWSProxyViewNoDb(TestCase):
         cleanup_db()
         create_default_ogcserver(DBSession)
 
-    def teardown_method(self, _):
+    def teardown_method(self, _) -> None:
         cleanup_db()
 
-    def test_parse_body_getcapabilities(self):
+    def test_parse_body_getcapabilities(self) -> None:
         from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
 
         request = _create_dummy_request()
@@ -332,7 +332,7 @@ class TestTinyOWSProxyViewNoDb(TestCase):
         assert operation == "getcapabilities"
         assert set() == typename
 
-    def test_parse_body_describefeaturetype(self):
+    def test_parse_body_describefeaturetype(self) -> None:
         from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
 
         request = _create_dummy_request()
@@ -343,7 +343,7 @@ class TestTinyOWSProxyViewNoDb(TestCase):
         assert operation == "describefeaturetype"
         assert {"layer_1"} == typename
 
-    def test_parse_body_getfeature(self):
+    def test_parse_body_getfeature(self) -> None:
         from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
 
         request = _create_dummy_request()
@@ -354,7 +354,7 @@ class TestTinyOWSProxyViewNoDb(TestCase):
         assert operation == "getfeature"
         assert {"parks"} == typename
 
-    def test_parse_body_lockfeature(self):
+    def test_parse_body_lockfeature(self) -> None:
         from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
 
         request = _create_dummy_request()
@@ -365,7 +365,7 @@ class TestTinyOWSProxyViewNoDb(TestCase):
         assert operation == "lockfeature"
         assert {"parks"} == typename
 
-    def test_parse_body_transaction_update(self):
+    def test_parse_body_transaction_update(self) -> None:
         from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
 
         request = _create_dummy_request()
@@ -376,7 +376,7 @@ class TestTinyOWSProxyViewNoDb(TestCase):
         assert operation == "transaction"
         assert {"parks"} == typename
 
-    def test_parse_body_transaction_delete(self):
+    def test_parse_body_transaction_delete(self) -> None:
         from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
 
         request = _create_dummy_request()
@@ -387,7 +387,7 @@ class TestTinyOWSProxyViewNoDb(TestCase):
         assert operation == "transaction"
         assert {"parks"} == typename
 
-    def test_parse_body_transaction_insert(self):
+    def test_parse_body_transaction_insert(self) -> None:
         from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
 
         request = _create_dummy_request()

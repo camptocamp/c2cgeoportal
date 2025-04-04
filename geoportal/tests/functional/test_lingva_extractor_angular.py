@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2024, Camptocamp SA
+# Copyright (c) 2020-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,7 @@ from c2cgeoportal_geoportal.lib.lingva_extractor import GeomapfishAngularExtract
 
 
 class TestGeomapfishAngularExtractor:
-    def test_extract_desktop_html_ejs(self):
+    def test_extract_desktop_html_ejs(self) -> None:
         extractor = GeomapfishAngularExtractor()
         extractor.config = {
             "package": "geomapfish_geoportal",

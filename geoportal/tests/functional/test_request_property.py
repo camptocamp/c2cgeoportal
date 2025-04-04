@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2024, Camptocamp SA
+# Copyright (c) 2011-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,7 @@ from tests.functional import teardown_common as teardown_module  # noqa
 
 
 class TestRequestProperty(TestCase):
-    def setup_method(self, _):
+    def setup_method(self, _) -> None:
         import transaction
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import Role
@@ -49,7 +49,7 @@ class TestRequestProperty(TestCase):
         DBSession.add_all([u, r])
         transaction.commit()
 
-    def teardown_method(self, _):
+    def teardown_method(self, _) -> None:
         import transaction
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import Role
@@ -61,37 +61,37 @@ class TestRequestProperty(TestCase):
         DBSession.query(Role).filter_by(name="__test_role").delete()
         transaction.commit()
 
-    def test_request_no_auth(self):
+    def test_request_no_auth(self) -> None:
         request = create_dummy_request()
         assert request.user is None
 
-    def test_request_auth(self):
+    def test_request_auth(self) -> None:
         request = create_dummy_request(authentication=False, user="__test_user")
         assert request.user.username == "__test_user"
         assert [role.name for role in request.user.roles] == ["__test_role"]
 
-    def test_request_right_auth(self):
+    def test_request_right_auth(self) -> None:
         request = create_dummy_request(
             {"basicauth": "true"},
             headers={
                 "Authorization": "Basic "
-                + base64.b64encode(b"__test_user:__test_user").decode("utf-8").replace("\n", "")
+                + base64.b64encode(b"__test_user:__test_user").decode("utf-8").replace("\n", ""),
             },
         )
 
         assert request.user.username == "__test_user"
 
-    def test_request_wrong_auth(self):
+    def test_request_wrong_auth(self) -> None:
         request = create_dummy_request(
             headers={
                 "Authorization": "Basic "
-                + base64.b64encode(b"__test_user:__wrong_pass").decode("utf-8").replace("\n", "")
-            }
+                + base64.b64encode(b"__test_user:__wrong_pass").decode("utf-8").replace("\n", ""),
+            },
         )
 
         assert request.user is None
 
-    def test_request_auth_overwritten_property(self):
+    def test_request_auth_overwritten_property(self) -> None:
         def setter(request):
             del request  # Unused
 

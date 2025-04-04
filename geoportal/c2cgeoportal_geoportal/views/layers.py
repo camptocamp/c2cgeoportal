@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2024, Camptocamp SA
+# Copyright (c) 2012-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -25,11 +25,11 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+import datetime
 import json
 import logging
 import os
 from collections.abc import Generator
-from datetime import datetime
 from typing import TYPE_CHECKING, Any, TypedDict, cast
 
 import geoalchemy2.elements
@@ -85,20 +85,21 @@ _CACHE_REGION = get_region("std")
 
 
 class _BaseCallback:
-    def __init__(self, layer: "main.Layer"):
+    def __init__(self, layer: "main.Layer") -> None:
         self.layer = layer
 
     def update(self, request: pyramid.request.Request, obj: Any) -> None:
         last_update_date = Layers.get_metadata(self.layer, "lastUpdateDateColumn")
         if last_update_date is not None:
-            setattr(obj, last_update_date, datetime.now())
+            setattr(obj, last_update_date, datetime.datetime.now(tz=datetime.timezone.utc))
 
         last_update_user = Layers.get_metadata(self.layer, "lastUpdateUserColumn")
         if last_update_user is not None:
             setattr(obj, last_update_user, request.user.id)
 
     def _get_geometry_check_base_query(
-        self, request: pyramid.request.Request
+        self,
+        request: pyramid.request.Request,
     ) -> sqlalchemy.orm.query.RowReturningQuery[tuple[int]]:
         from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
             Layer,
@@ -112,8 +113,7 @@ class _BaseCallback:
         allowed = allowed.join(RestrictionArea.layers)
         allowed = allowed.filter(RestrictionArea.readwrite.is_(True))
         allowed = allowed.filter(Role.id.in_(get_roles_id(request)))
-        allowed = allowed.filter(Layer.id == self.layer.id)
-        return allowed
+        return allowed.filter(Layer.id == self.layer.id)
 
 
 class _InsertCallback(_BaseCallback):
@@ -127,18 +127,18 @@ class _InsertCallback(_BaseCallback):
         geom = feature.geometry
         if geom and not isinstance(geom, geojson.geometry.Default):
             shape = shapely.geometry.shape(geom)
-            srid = Layers._get_geom_col_info(self.layer)[1]
+            srid = Layers._get_geom_col_info(self.layer)[1]  # noqa: SLF001
             spatial_elt = from_shape(shape, srid=srid)
             allowed = self._get_geometry_check_base_query(request)
             allowed = allowed.filter(
-                or_(RestrictionArea.area.is_(None), RestrictionArea.area.ST_Contains(spatial_elt))
+                or_(RestrictionArea.area.is_(None), RestrictionArea.area.ST_Contains(spatial_elt)),
             )
             if allowed.scalar() == 0:
-                raise HTTPForbidden()
+                raise HTTPForbidden
 
             # Check if geometry is valid
-            if Layers._get_validation_setting(self.layer, request):
-                Layers._validate_geometry(spatial_elt)
+            if Layers._get_validation_setting(self.layer, request):  # noqa: SLF001
+                Layers._validate_geometry(spatial_elt)  # noqa: SLF001
 
         self.update(request, obj)
 
@@ -153,26 +153,26 @@ class _UpdateCallback(_BaseCallback):
 
         # we need both the "original" and "new" geometry to be
         # within the restriction area
-        geom_attr, srid = Layers._get_geom_col_info(self.layer)
+        geom_attr, srid = Layers._get_geom_col_info(self.layer)  # noqa: SLF001
         geom_attr = getattr(obj, geom_attr)
         geom = feature.geometry
         allowed = self._get_geometry_check_base_query(request)
         allowed = allowed.filter(
-            or_(RestrictionArea.area.is_(None), RestrictionArea.area.ST_Contains(geom_attr))
+            or_(RestrictionArea.area.is_(None), RestrictionArea.area.ST_Contains(geom_attr)),
         )
         spatial_elt = None
         if geom and not isinstance(geom, geojson.geometry.Default):
             shape = shapely.geometry.shape(geom)
             spatial_elt = from_shape(shape, srid=srid)
             allowed = allowed.filter(
-                or_(RestrictionArea.area.is_(None), RestrictionArea.area.ST_Contains(spatial_elt))
+                or_(RestrictionArea.area.is_(None), RestrictionArea.area.ST_Contains(spatial_elt)),
             )
         if allowed.scalar() == 0:
-            raise HTTPForbidden()
+            raise HTTPForbidden
 
         # Check is geometry is valid
-        if Layers._get_validation_setting(self.layer, request):
-            Layers._validate_geometry(spatial_elt)
+        if Layers._get_validation_setting(self.layer, request):  # noqa: SLF001
+            Layers._validate_geometry(spatial_elt)  # noqa: SLF001
 
         self.update(request, obj)
 
@@ -183,13 +183,13 @@ class _DeleteCallback(_BaseCallback):
             RestrictionArea,
         )
 
-        geom_attr = getattr(obj, Layers._get_geom_col_info(self.layer)[0])
+        geom_attr = getattr(obj, Layers._get_geom_col_info(self.layer)[0])  # noqa: SLF001
         allowed = self._get_geometry_check_base_query(request)
         allowed = allowed.filter(
-            or_(RestrictionArea.area.is_(None), RestrictionArea.area.ST_Contains(geom_attr))
+            or_(RestrictionArea.area.is_(None), RestrictionArea.area.ST_Contains(geom_attr)),
         )
         if allowed.scalar() == 0:
-            raise HTTPForbidden()
+            raise HTTPForbidden
 
 
 class Layers:
@@ -199,14 +199,14 @@ class Layers:
     Mapfish protocol implementation
     """
 
-    def __init__(self, request: pyramid.request.Request):
+    def __init__(self, request: pyramid.request.Request) -> None:
         self.request = request
         self.settings = self._get_settings(request)
         self.layers_enum_config = self.settings.get("enum", {})
 
     @staticmethod
     def _get_settings(request: pyramid.request.Request) -> dict[str, Any]:
-        return cast(dict[str, Any], request.registry.settings.get("layers", {}))
+        return cast("dict[str, Any]", request.registry.settings.get("layers", {}))
 
     @staticmethod
     def _get_geom_col_info(layer: "main.Layer") -> tuple[str, int]:
@@ -264,7 +264,7 @@ class Layers:
                 yield self._get_layer(layer_id)
         except ValueError:
             raise HTTPBadRequest(  # pylint: disable=raise-missing-from
-                f"A Layer id in '{self.request.matchdict['layer_id']}' is not an integer"
+                f"A Layer id in '{self.request.matchdict['layer_id']}' is not an integer",
             )
 
     def _get_layer_for_request(self) -> "main.Layer":
@@ -305,7 +305,7 @@ class Layers:
             return proto.read(self.request)
         user = self.request.user
         if user is None:
-            raise HTTPForbidden()
+            raise HTTPForbidden
         cls = proto.mapped_class
         geom_attr = proto.geom_attr
         ras = models.DBSession.query(RestrictionArea.area, RestrictionArea.area.ST_SRID())
@@ -321,7 +321,7 @@ class Layers:
             use_srid = srid
             collect_ra.append(to_shape(ra))
         if not collect_ra:
-            raise HTTPForbidden()
+            raise HTTPForbidden
 
         filter1_ = create_filter(self.request, cls, geom_attr)
         ra = unary_union(collect_ra)
@@ -366,7 +366,7 @@ class Layers:
         if layer.public:
             return feature
         if self.request.user is None:
-            raise HTTPForbidden()
+            raise HTTPForbidden
         geom = feature.geometry
         if not geom or isinstance(geom, geojson.geometry.Default):
             return feature
@@ -379,10 +379,10 @@ class Layers:
         allowed = allowed.filter(Role.id.in_(get_roles_id(self.request)))
         allowed = allowed.filter(Layer.id == layer.id)
         allowed = allowed.filter(
-            or_(RestrictionArea.area.is_(None), RestrictionArea.area.ST_Contains(spatial_elt))
+            or_(RestrictionArea.area.is_(None), RestrictionArea.area.ST_Contains(spatial_elt)),
         )
         if allowed.scalar() == 0:
-            raise HTTPForbidden()
+            raise HTTPForbidden
 
         return feature
 
@@ -394,14 +394,14 @@ class Layers:
         count = protocol.count(self.request)
         if isinstance(count, HTTPException):
             raise count
-        return cast(int, count)
+        return cast("int", count)
 
     @view_config(route_name="layers_create", renderer="geojson")  # type: ignore[misc]
     def create(self) -> FeatureCollection | None:
         set_common_headers(self.request, "layers", Cache.PRIVATE_NO)
 
         if self.request.user is None:
-            raise HTTPForbidden()
+            raise HTTPForbidden
 
         self.request.response.cache_control.no_cache = True
 
@@ -410,22 +410,23 @@ class Layers:
             features = protocol.create(self.request)
             if isinstance(features, HTTPException):
                 raise features
-            return features
         except TopologicalError as e:
             self.request.response.status_int = 400
             return {"error_type": "validation_error", "message": str(e)}
         except exc.IntegrityError as e:
             _LOG.error(str(e))
-            assert e.orig is not None
+            assert e.orig is not None  # noqa: PT017
             self.request.response.status_int = 400
             return {"error_type": "integrity_error", "message": str(e.orig.diag.message_primary)}  # type: ignore[attr-defined]
+        else:
+            return features
 
     @view_config(route_name="layers_update", renderer="geojson")  # type: ignore[misc]
     def update(self) -> Feature:
         set_common_headers(self.request, "layers", Cache.PRIVATE_NO)
 
         if self.request.user is None:
-            raise HTTPForbidden()
+            raise HTTPForbidden
 
         self.request.response.cache_control.no_cache = True
 
@@ -435,13 +436,13 @@ class Layers:
             feature = protocol.update(self.request, feature_id)
             if isinstance(feature, HTTPException):
                 raise feature
-            return cast(Feature, feature)
+            return cast("Feature", feature)
         except TopologicalError as e:
             self.request.response.status_int = 400
             return {"error_type": "validation_error", "message": str(e)}
         except exc.IntegrityError as e:
             _LOG.error(str(e))
-            assert e.orig is not None
+            assert e.orig is not None  # noqa: PT017
             self.request.response.status_int = 400
             return {"error_type": "integrity_error", "message": str(e.orig.diag.message_primary)}  # type: ignore[attr-defined]
 
@@ -472,12 +473,12 @@ class Layers:
         should_validate = cls.get_metadata(layer, "geometryValidation", None)
         if should_validate:
             return should_validate.lower() != "false"
-        return cast(bool, cls._get_settings(request).get("geometry_validation", False))
+        return cast("bool", cls._get_settings(request).get("geometry_validation", False))
 
     @view_config(route_name="layers_delete")  # type: ignore[misc]
     def delete(self) -> pyramid.response.Response:
         if self.request.user is None:
-            raise HTTPForbidden()
+            raise HTTPForbidden
 
         feature_id = self.request.matchdict.get("feature_id")
         protocol = self._get_protocol_for_request()
@@ -493,7 +494,7 @@ class Layers:
 
         layer = self._get_layer_for_request()
         if not layer.public and self.request.user is None:
-            raise HTTPForbidden()
+            raise HTTPForbidden
 
         return get_layer_class(layer, with_last_update_columns=True)
 
@@ -505,9 +506,9 @@ class Layers:
             raise HTTPInternalServerError("Missing configuration")
         layername = self.request.matchdict["layer_name"]
         fieldname = self.request.matchdict["field_name"]
-        # TODO check if layer is public or not # pylint: disable=fixme
+        # TODO: check if layer is public or not # pylint: disable=fixme
 
-        return cast(dict[str, Any], self._enumerate_attribute_values(layername, fieldname))
+        return cast("dict[str, Any]", self._enumerate_attribute_values(layername, fieldname))
 
     @_CACHE_REGION.cache_on_arguments()
     def _enumerate_attribute_values(self, layername: str, fieldname: str) -> dict[str, Any]:
@@ -521,11 +522,10 @@ class Layers:
         dbsession = models.DBSessions.get(dbsession_name)
         if dbsession is None:
             raise HTTPInternalServerError(
-                f"No dbsession found for layer '{layername!s}' ({dbsession_name!s})"
+                f"No dbsession found for layer '{layername!s}' ({dbsession_name!s})",
             )
         values = sorted(self.query_enumerate_attribute_values(dbsession, layerinfos, fieldname))
-        enum = {"items": [{"value": value[0]} for value in values]}
-        return enum
+        return {"items": [{"value": value[0]} for value in values]}
 
     @staticmethod
     def query_enumerate_attribute_values(
@@ -543,7 +543,7 @@ class Layers:
         if "separator" in attrinfos:
             separator = attrinfos["separator"]
             attribute = func.unnest(func.string_to_array(func.string_agg(attribute, separator), separator))
-        return set(cast(list[tuple[str, ...]], dbsession.query(attribute).order_by(attribute).all()))
+        return set(cast("list[tuple[str, ...]]", dbsession.query(attribute).order_by(attribute).all()))
 
 
 def get_layer_class(layer: "main.Layer", with_last_update_columns: bool = False) -> type:
@@ -606,7 +606,7 @@ def get_layer_class(layer: "main.Layer", with_last_update_columns: bool = False)
                 ", ".join(column_properties),
             )
 
-    return cast(type, cls)
+    return cast("type", cls)
 
 
 class ColumnProperties(TypedDict, total=False):
@@ -618,9 +618,9 @@ class ColumnProperties(TypedDict, total=False):
     srid: int
     enumeration: list[str]
     restriction: str
-    maxLength: int  # noqa
-    fractionDigits: int  # noqa
-    totalDigits: int  # noqa
+    maxLength: int
+    fractionDigits: int
+    totalDigits: int
 
 
 def get_layer_metadata(layer: "main.Layer") -> list[ColumnProperties]:
@@ -686,7 +686,7 @@ def _convert_column_type(column_type: object) -> ColumnProperties:
 
         raise NotImplementedError(
             f"The geometry type '{geometry_type}' is not supported, supported types: "
-            f"{','.join(XSDGenerator.SIMPLE_GEOMETRY_XSD_TYPES)}"
+            f"{','.join(XSDGenerator.SIMPLE_GEOMETRY_XSD_TYPES)}",
         )
 
     # Enumeration type
@@ -717,5 +717,5 @@ def _convert_column_type(column_type: object) -> ColumnProperties:
 
     raise NotImplementedError(
         f"The type '{type(column_type).__name__}' is not supported, supported types: "
-        "Geometry, Enum, String, Text, Unicode, UnicodeText, Numeric"
+        "Geometry, Enum, String, Text, Unicode, UnicodeText, Numeric",
     )

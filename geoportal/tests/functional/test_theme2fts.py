@@ -42,7 +42,7 @@ _LOGGER = logging.getLogger(__name__)
 @pytest.fixture(scope="module")
 def settings():
     setup_module()
-    yield {
+    return {
         **configuration.get_config(),
         "available_locale_names": ["fr", "en", "de", "it"],
         "fulltextsearch": {
@@ -51,19 +51,19 @@ def settings():
                 "en": "english",
                 "de": "german",
                 "it": "italian",
-            }
+            },
         },
     }
 
 
-def add_parent(dbsession_old, item, group):
+def add_parent(dbsession_old, item, group) -> None:
     """Utility function to add a TreeItem in a TreeGroup."""
     from c2cgeoportal_commons.models import main
 
     dbsession_old.add(main.LayergroupTreeitem(group=group, item=item, ordering=len(group.children_relation)))
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture
 def test_data(dbsession_old, transact_old):
     from c2cgeoportal_commons.models import main
 
@@ -117,7 +117,7 @@ def test_data(dbsession_old, transact_old):
 
     dbsession_old.flush()  # Flush here to detect integrity errors now.
 
-    yield {
+    return {
         "ogc_server": ogc_server,
         "interfaces": interfaces,
         "role": role,
@@ -154,7 +154,7 @@ def dummy_translation():
     """
 
     class Translation:
-        def __init__(self, lang):
+        def __init__(self, lang) -> None:
             self._lang = lang
 
         def gettext(self, text):
@@ -164,14 +164,15 @@ def dummy_translation():
         return Translation(languages[0])
 
     with patch(
-        "c2cgeoportal_geoportal.scripts.theme2fts.gettext.translation", side_effect=translation
+        "c2cgeoportal_geoportal.scripts.theme2fts.gettext.translation",
+        side_effect=translation,
     ) as tr_mock:
         yield tr_mock
 
 
 @pytest.mark.usefixtures("test_data", "dummy_translation")
 class TestImport:
-    def assert_fts(self, dbsession_old, attrs):
+    def assert_fts(self, dbsession_old, attrs) -> None:
         from c2cgeoportal_commons.models import main
 
         fts = (
@@ -196,7 +197,7 @@ class TestImport:
         assert fts.actions == attrs["actions"]
         assert fts.from_theme is True
 
-    def test_import(self, dbsession_old, settings, test_data):
+    def test_import(self, dbsession_old, settings, test_data) -> None:
         from c2cgeoportal_commons.models import main
         from c2cgeoportal_geoportal.scripts.theme2fts import Import
 
@@ -209,8 +210,8 @@ class TestImport:
         assert dbsession_old.query(main.FullTextSearch).count() == total, "\n".join(
             [
                 ", ".join((fts.label, str(fts.lang), str(fts.interface), str(fts.public), str(fts.role)))
-                for fts in dbsession.query(main.FullTextSearch).all()
-            ]
+                for fts in dbsession_old.query(main.FullTextSearch).all()
+            ],
         )
 
         for lang in settings["available_locale_names"]:
@@ -306,7 +307,7 @@ class TestImport:
                 for e in expected:
                     self.assert_fts(dbsession_old, e)
 
-    def test_search_alias(self, dbsession_old, settings, test_data):
+    def test_search_alias(self, dbsession_old, settings, test_data) -> None:
         from c2cgeoportal_commons.models import main
         from c2cgeoportal_geoportal.scripts.theme2fts import Import
 
@@ -346,7 +347,7 @@ class TestImport:
                 for e in expected:
                     self.assert_fts(dbsession_old, e)
 
-    def test_search_label_pattern(self, dbsession_old, settings, test_data):
+    def test_search_label_pattern(self, dbsession_old, settings, test_data) -> None:
         from c2cgeoportal_commons.models import main
         from c2cgeoportal_geoportal.scripts.theme2fts import Import
 

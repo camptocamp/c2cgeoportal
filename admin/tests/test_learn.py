@@ -5,7 +5,6 @@ from pyramid.view import view_config
 
 
 @pytest.fixture(scope="class")
-@pytest.mark.usefixtures("dbsession")
 def insert_users_test_data(dbsession):
     from c2cgeoportal_commons.models.static import User
 
@@ -42,7 +41,7 @@ def view_displaying_users_nb(request):
 @pytest.mark.usefixtures("insert_users_test_data", "transact")
 class TestUser:
     @pytest.mark.usefixtures("test_app")
-    def test_view_rendering_in_app(self, dbsession, test_app):
+    def test_view_rendering_in_app(self, dbsession, test_app) -> None:
         res = test_app.get("/users_nb", status=200)
         expected = (
             "['users len is: 1', <br/>, 'first is: babar', <br/>, 'project is: c2cgeoportal_admin', <br/>]"
@@ -50,7 +49,7 @@ class TestUser:
         assert expected == str(res.html.contents)
 
     @pytest.mark.usefixtures("test_app")
-    def test_commit_in_app(self, dbsession, test_app):
+    def test_commit_in_app(self, dbsession, test_app) -> None:
         res = test_app.get("/user_add", status=200)
         res = test_app.get("/users_nb", status=200)
         expected = (
@@ -59,7 +58,7 @@ class TestUser:
         assert expected == str(res.html.contents)
 
     @pytest.mark.usefixtures("test_app")
-    def test_commit_in_app_rollbacked(self, dbsession, test_app):
+    def test_commit_in_app_rollbacked(self, dbsession, test_app) -> None:
         res = test_app.get("/users_nb", status=200)
         expected = (
             "['users len is: 1', <br/>, 'first is: babar', <br/>, 'project is: c2cgeoportal_admin', <br/>]"

@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2024, Camptocamp SA
+# Copyright (c) 2011-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -47,7 +47,9 @@ def get_cache_version() -> str:
 
 
 def version_cache_buster(
-    request: pyramid.request.Request, subpath: str, kw: dict[str, Any]
+    request: pyramid.request.Request,
+    subpath: str,
+    kw: dict[str, Any],
 ) -> tuple[str, dict[str, Any]]:
     """Join the cash buster version with the sub path."""
     del request  # unused
@@ -61,7 +63,7 @@ class CachebusterTween:
         self,
         handler: Callable[[pyramid.request.Request], pyramid.response.Response],
         registry: pyramid.registry.Registry,
-    ):
+    ) -> None:
         self.handler = handler
         self.cache_path = registry.settings["cache_path"]
 
@@ -69,7 +71,7 @@ class CachebusterTween:
         path = request.path_info.split("/", 3)
         if len(path) > 1 and path[1] in self.cache_path:
             if len(path) == 2:
-                raise pyramid.httpexceptions.HTTPNotFound()
+                raise pyramid.httpexceptions.HTTPNotFound
             # Remove the cache buster
             path.pop(2)
             request.path_info = "/".join(path)

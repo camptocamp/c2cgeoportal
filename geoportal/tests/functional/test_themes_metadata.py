@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2024, Camptocamp SA
+# Copyright (c) 2013-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -40,7 +40,7 @@ from tests.functional import teardown_common as teardown_module  # noqa
 
 
 class TestThemesViewMetadata(TestCase):
-    def setup_method(self, _):
+    def setup_method(self, _) -> None:
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
@@ -121,7 +121,7 @@ class TestThemesViewMetadata(TestCase):
 
         transaction.commit()
 
-    def teardown_method(self, _):
+    def teardown_method(self, _) -> None:
         testing.tearDown()
 
         from c2cgeoportal_commons.models import DBSession
@@ -150,7 +150,7 @@ class TestThemesViewMetadata(TestCase):
     def _get_filtered_errors(themes):
         errors = themes["errors"]
         regex1 = re.compile(
-            r"The (GeoMapFish|WMS) layer name '[a-z0-9_.]*', cannot be two times in the same block \(first level group\)."
+            r"The (GeoMapFish|WMS) layer name '[a-z0-9_.]*', cannot be two times in the same block \(first level group\).",
         )
         regex2 = re.compile(r"Error \'.*\' on reading DescribeFeatureType from URL .*")
         errors = [
@@ -162,7 +162,7 @@ class TestThemesViewMetadata(TestCase):
         ]
         return set(errors)
 
-    def test_metadata(self):
+    def test_metadata(self) -> None:
         from c2cgeoportal_geoportal.views.theme import Theme
 
         types = [
@@ -191,7 +191,7 @@ class TestThemesViewMetadata(TestCase):
                 "package": "tests",
                 "servers": {"server": "http://example.com/test"},
                 "admin_interface": {"available_metadata": types},
-            }
+            },
         )
 
         def route_url(url, **kwargs):
@@ -210,65 +210,59 @@ class TestThemesViewMetadata(TestCase):
         theme_view = Theme(request)
 
         themes = theme_view.themes()
-        self.assertEqual(
-            set(themes["errors"]),
+        assert set(themes["errors"]) == {
+            "The boolean attribute 'boolean3'='hello' is not in [yes, y, on, 1, true, no, n, off, 0, false].",
+            "The attribute 'json_wrong'='{\"test\": 123' has an error: Expecting ',' delimiter: line 1 column 13 (char 12)",
+            "The date attribute 'date2'='Sep 25 10:36:28 BRST 2003' should not have any time",
+            "The time attribute 'time2'='Sep 25 10:36:28 BRST 2003' should not have any date",
+            "Unable to parse the attribute 'datetime2'='Hello' with the type 'datetime', error:\nUnknown string format: Hello",
+            "The regex attribute 'regex'='invalid' does not match expected pattern '^valid$'.",
+            "The attribute 'url11'='https:///static/icon.png' is not a valid URL.",
+            "The attribute 'url12'='static://test' cannot have an empty path.",
+            "The attribute 'url13'='static://test/' cannot have an empty path.",
+            "The attribute 'url14'='config:///static/icon.png' cannot have an empty netloc.",
+            "The attribute 'url15': The server 'unknown_server' (config://unknown_server) is not found in the config: [server]",
+            "The attribute 'url16'='https://' is not a valid URL.",
+            "The attribute 'url17'='https:///' is not a valid URL.",
+            "The attribute 'url18'='https:///static' is not a valid URL.",
+            "The attribute 'url19'='' is not an URL.",
+            "The attribute 'url20'='/' is not an URL.",
+            "Unknown type 'unknown'.",
+        }
+        assert [self._only_name(t, "metadata") for t in themes["themes"]] == [
             {
-                "The boolean attribute 'boolean3'='hello' is not in [yes, y, on, 1, true, no, n, off, 0, false].",
-                "The attribute 'json_wrong'='{\"test\": 123' has an error: Expecting ',' delimiter: line 1 column 13 (char 12)",
-                "The date attribute 'date2'='Sep 25 10:36:28 BRST 2003' should not have any time",
-                "The time attribute 'time2'='Sep 25 10:36:28 BRST 2003' should not have any date",
-                "Unable to parse the attribute 'datetime2'='Hello' with the type 'datetime', error:\nUnknown string format: Hello",
-                "The regex attribute 'regex'='invalid' does not match expected pattern '^valid$'.",
-                "The attribute 'url11'='https:///static/icon.png' is not a valid URL.",
-                "The attribute 'url12'='static://test' cannot have an empty path.",
-                "The attribute 'url13'='static://test/' cannot have an empty path.",
-                "The attribute 'url14'='config:///static/icon.png' cannot have an empty netloc.",
-                "The attribute 'url15': The server 'unknown_server' (config://unknown_server) is not found in the config: [server]",
-                "The attribute 'url16'='https://' is not a valid URL.",
-                "The attribute 'url17'='https:///' is not a valid URL.",
-                "The attribute 'url18'='https:///static' is not a valid URL.",
-                "The attribute 'url19'='' is not an URL.",
-                "The attribute 'url20'='/' is not an URL.",
-                "Unknown type 'unknown'.",
+                "metadata": {},
+                "children": [
+                    {
+                        "metadata": {},
+                        "children": [
+                            {
+                                "metadata": {
+                                    "string": "string",
+                                    "list": ["1", "2", "a"],
+                                    "boolean": True,
+                                    "boolean2": False,
+                                    "integer": 1,
+                                    "float": 5.5,
+                                    "json": {"test": 123},
+                                    "date": "2003-09-25",
+                                    "time": "10:36:28",
+                                    "datetime": "2003-09-25T10:36:28",
+                                    "regex": "valid",
+                                    "url1": "http://example.com/hi?a=b#c",
+                                    "url2": "http://dummy.org//etc/geomapfish/static/path/icon.png",
+                                    "url3": "http://dummy.org//etc/geomapfish/static/path/icon.png",
+                                    "url4": "http://dummy.org/tests_geoportal:cgxp/path/icon.png",
+                                    "url5": "http://dummy.org/project:static/path/icon.png",
+                                    "url6": "http://dummy.org/project:cgxp/path/icon.png",
+                                    "url7": "http://example.com/test",
+                                    "url8": "http://example.com/test/index.html",
+                                    "url9": "/dummy/static/icon.png",
+                                    "url10": "dummy/static/icon.png",
+                                },
+                            },
+                        ],
+                    },
+                ],
             },
-        )
-        self.assertEqual(
-            [self._only_name(t, "metadata") for t in themes["themes"]],
-            [
-                {
-                    "metadata": {},
-                    "children": [
-                        {
-                            "metadata": {},
-                            "children": [
-                                {
-                                    "metadata": {
-                                        "string": "string",
-                                        "list": ["1", "2", "a"],
-                                        "boolean": True,
-                                        "boolean2": False,
-                                        "integer": 1,
-                                        "float": 5.5,
-                                        "json": {"test": 123},
-                                        "date": "2003-09-25",
-                                        "time": "10:36:28",
-                                        "datetime": "2003-09-25T10:36:28",
-                                        "regex": "valid",
-                                        "url1": "http://example.com/hi?a=b#c",
-                                        "url2": "http://dummy.org//etc/geomapfish/static/path/icon.png",
-                                        "url3": "http://dummy.org//etc/geomapfish/static/path/icon.png",
-                                        "url4": "http://dummy.org/tests_geoportal:cgxp/path/icon.png",
-                                        "url5": "http://dummy.org/project:static/path/icon.png",
-                                        "url6": "http://dummy.org/project:cgxp/path/icon.png",
-                                        "url7": "http://example.com/test",
-                                        "url8": "http://example.com/test/index.html",
-                                        "url9": "/dummy/static/icon.png",
-                                        "url10": "dummy/static/icon.png",
-                                    }
-                                }
-                            ],
-                        }
-                    ],
-                }
-            ],
-        )
+        ]

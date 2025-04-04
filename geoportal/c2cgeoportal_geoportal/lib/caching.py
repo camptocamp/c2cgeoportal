@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2024, Camptocamp SA
+# Copyright (c) 2012-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -122,7 +122,7 @@ def invalidate_region(region: str | None = None) -> None:
 class HybridRedisBackend(CacheBackend):
     """A Dogpile cache backend with a memory cache backend in front of a Redis backend for performance."""
 
-    def __init__(self, arguments: dict[str, Any]):
+    def __init__(self, arguments: dict[str, Any]) -> None:
         self._use_memory_cache = not arguments.pop("disable_memory_cache", False)
         self._memory: CacheBackend = MemoryBackend(  # type: ignore[no-untyped-call]
             {"cache_dict": arguments.pop("cache_dict", {})},
@@ -169,6 +169,6 @@ class HybridRedisBackend(CacheBackend):
 class HybridRedisSentinelBackend(HybridRedisBackend):
     """Same as HybridRedisBackend but using the Redis Sentinel."""
 
-    def __init__(self, arguments: dict[str, Any]):
+    def __init__(self, arguments: dict[str, Any]) -> None:
         super().__init__(arguments)
         self._redis = RedisSentinelBackend(arguments)  # type: ignore[no-untyped-call]

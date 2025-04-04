@@ -7,8 +7,7 @@ import pytest
 from . import AbstractViewsTests
 
 
-@pytest.fixture(scope="function")
-@pytest.mark.usefixtures("dbsession", "transact")
+@pytest.fixture
 def layertree_test_data(dbsession, transact):
     del transact
 
@@ -85,16 +84,14 @@ def layertree_test_data(dbsession, transact):
 
     dbsession.flush()
 
-    yield (
-        {
-            "themes": themes,
-            "groups": groups,
-            "layers_wms": layers_wms,
-            "layers_wmts": layers_wmts,
-            "ogc_servers": [ogc_server],
-            "interfaces": [interface1, interface2],
-        }
-    )
+    return {
+        "themes": themes,
+        "groups": groups,
+        "layers_wms": layers_wms,
+        "layers_wmts": layers_wmts,
+        "ogc_servers": [ogc_server],
+        "interfaces": [interface1, interface2],
+    }
 
 
 @patch(
@@ -105,27 +102,36 @@ def layertree_test_data(dbsession, transact):
 class TestLayerTreeView(AbstractViewsTests):
     _prefix = "/admin/layertree"
 
-    def test_index(self, test_app):
+    def test_index(self, test_app) -> None:
         self.get(test_app, status=200)
 
-    def check_edit_action(self, test_app, nodes, table, item_id):
+    def check_edit_action(self, test_app, nodes, table, item_id) -> None:
         node = next(n for n in nodes if n["id"] == item_id)
         action = next(a for a in node["actions"] if a["name"] == "edit")
         assert f"http://localhost/admin/{table}/{item_id}" == action["url"]
         test_app.get(action["url"], status=200)
 
-    def check_unlink_action(self, test_app, nodes, group_id, item_id):
+    def check_unlink_action(self, test_app, nodes, group_id, item_id) -> None:
         node = next(n for n in nodes if n["id"] == item_id)
         action = next(a for a in node["actions"] if a["name"] == "unlink")
         assert f"http://localhost/admin/layertree/unlink/{group_id}/{item_id}" == action["url"]
         test_app.delete(action["url"], status=200)
 
-    def check_translation(self, nodes, item):
+    def check_translation(self, nodes, item) -> None:
         node = next(n for n in nodes if n["id"] == item.id)
         expected_factory_domain = "c2cgeoportal_admin-client"
         assert (expected_factory_domain + "_{}_").format(item.name) == node["translated_name"]
 
-    def check_new_action(self, test_app, nodes, parent_id, action_name, label, route_table, required_fields):
+    def check_new_action(
+        self,
+        test_app,
+        nodes,
+        parent_id,
+        action_name,
+        label,
+        route_table,
+        required_fields,
+    ) -> None:
         node = next(n for n in nodes if n["id"] == parent_id)
         action = next(a for a in node["actions"] if a["name"] == action_name)
         assert label == action["label"]
@@ -137,7 +143,7 @@ class TestLayerTreeView(AbstractViewsTests):
             form[required_field] = required_fields[required_field]
         form.submit("submit", 302)
 
-    def test_themes(self, test_app, layertree_test_data):
+    def test_themes(self, test_app, layertree_test_data) -> None:
         resp = self.get(test_app, "/children", status=200)
         nodes = resp.json
         assert len(nodes) == 5
@@ -168,7 +174,7 @@ class TestLayerTreeView(AbstractViewsTests):
             {"name": "new_name_from_layer_group"},
         )
 
-    def test_groups(self, test_app, layertree_test_data, dbsession):
+    def test_groups(self, test_app, layertree_test_data, dbsession) -> None:
         theme = layertree_test_data["themes"][0]
 
         # Invert children order (to test ordering)
@@ -218,7 +224,7 @@ class TestLayerTreeView(AbstractViewsTests):
             },
         )
 
-    def test_layers(self, test_app, layertree_test_data, dbsession):
+    def test_layers(self, test_app, layertree_test_data, dbsession) -> None:
         theme = layertree_test_data["themes"][0]
         group = layertree_test_data["groups"][0]
 
@@ -251,14 +257,14 @@ class TestLayerTreeView(AbstractViewsTests):
         for item in [layer_wms, layer_wmts]:
             self.check_translation(nodes, item)
 
-    def test_unlink(self, test_app, layertree_test_data, dbsession):
+    def test_unlink(self, test_app, layertree_test_data, dbsession) -> None:
         group = layertree_test_data["groups"][0]
         item = layertree_test_data["layers_wms"][0]
         test_app.delete(f"/admin/layertree/unlink/{group.id}/{item.id}", status=200)
         dbsession.expire_all()
         assert item not in group.children
 
-    def test_delete(self, test_app, layertree_test_data, dbsession):
+    def test_delete(self, test_app, layertree_test_data, dbsession) -> None:
         from c2cgeoportal_commons.models.main import LayerGroup, LayerWMS, LayerWMTS
 
         groups = layertree_test_data["groups"]
@@ -274,20 +280,20 @@ class TestLayerTreeView(AbstractViewsTests):
             assert dbsession.query(model).get(item_id) is None
 
     @pytest.mark.parametrize(
-        "params,expected",
+        ("params", "expected"),
         [
             ({}, ["theme_0", "theme_3", "theme_1", "theme_2", "theme_4"]),
             ({"interface": "interface1"}, ["theme_3", "theme_1", "theme_2", "theme_4"]),
             ({"interface": "interface2"}, ["theme_3", "theme_2", "theme_4"]),
         ],
     )
-    def test_themes_interfaces(self, test_app, layertree_test_data, params, expected):
+    def test_themes_interfaces(self, test_app, layertree_test_data, params, expected) -> None:
         resp = self.get(test_app, "/children", status=200, params=params)
         nodes = resp.json
         assert expected == [node["name"] for node in nodes if node["item_type"] == "theme"]
 
     @pytest.mark.parametrize(
-        "interface,index,length",
+        ("interface", "index", "length"),
         [
             (None, 0, 2),
             (None, 1, 2),
@@ -300,7 +306,7 @@ class TestLayerTreeView(AbstractViewsTests):
             ("interface2", 2, 2),
         ],
     )
-    def test_layers_interface(self, test_app, layertree_test_data, interface, index, length):
+    def test_layers_interface(self, test_app, layertree_test_data, interface, index, length) -> None:
         theme = layertree_test_data["themes"][index]
         group = layertree_test_data["groups"][index]
         params = {"group_id": group.id, "path": f"_{theme.id}_{group.id}"}

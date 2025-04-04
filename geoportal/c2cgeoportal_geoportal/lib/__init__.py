@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2024, Camptocamp SA
+# Copyright (c) 2011-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -83,41 +83,50 @@ def get_typed(
                 return False
             errors.add(
                 f"{prefix}The boolean attribute '{name}'='{value.lower()}' is not in "
-                "[yes, y, on, 1, true, no, n, off, 0, false]."
+                "[yes, y, on, 1, true, no, n, off, 0, false].",
             )
         elif type_["type"] == "integer":
             return int(value)
         elif type_["type"] == "float":
             return float(value)
         elif type_["type"] == "date":
-            date = dateutil.parser.parse(value, default=datetime.datetime(1, 1, 1, 0, 0, 0))
+            date = dateutil.parser.parse(
+                value,
+                default=datetime.datetime(1, 1, 1, 0, 0, 0, tzinfo=datetime.timezone.utc),
+            )
             if date.time() != datetime.time(0, 0, 0):
                 errors.add(f"{prefix}The date attribute '{name}'='{value}' should not have any time")
             else:
                 return datetime.date.strftime(date.date(), "%Y-%m-%d")
         elif type_["type"] == "time":
-            date = dateutil.parser.parse(value, default=datetime.datetime(1, 1, 1, 0, 0, 0))
+            date = dateutil.parser.parse(
+                value,
+                default=datetime.datetime(1, 1, 1, 0, 0, 0, tzinfo=datetime.timezone.utc),
+            )
             if date.date() != datetime.date(1, 1, 1):
                 errors.add(f"{prefix}The time attribute '{name}'='{value}' should not have any date")
             else:
                 return datetime.time.strftime(date.time(), "%H:%M:%S")
         elif type_["type"] == "datetime":
-            date = dateutil.parser.parse(value, default=datetime.datetime(1, 1, 1, 0, 0, 0))
+            date = dateutil.parser.parse(
+                value,
+                default=datetime.datetime(1, 1, 1, 0, 0, 0, tzinfo=datetime.timezone.utc),
+            )
             return datetime.datetime.strftime(date, "%Y-%m-%dT%H:%M:%S")
         elif type_["type"] == "url":
             url = get_url2(f"{prefix}The attribute '{name}'", value, request, errors)
             return url.url() if url else ""
         elif type_["type"] == "json":
             try:
-                return cast(dict[str, Any], json.loads(value))
+                return cast("dict[str, Any]", json.loads(value))
             except Exception as e:  # pylint: disable=broad-exception-caught
-                errors.add(f"{prefix}The attribute '{name}'='{value}' has an error: {str(e)}")
+                errors.add(f"{prefix}The attribute '{name}'='{value}' has an error: {e!s}")
         elif type_["type"] == "regex":
             pattern = type_["regex"]
             if re.match(pattern, value) is None:
                 errors.add(
                     f"{prefix}The regex attribute '{name}'='{value}' "
-                    f"does not match expected pattern '{pattern}'."
+                    f"does not match expected pattern '{pattern}'.",
                 )
             else:
                 return value
@@ -126,7 +135,7 @@ def get_typed(
     except Exception as e:  # pylint: disable=broad-exception-caught
         errors.add(
             f"{prefix}Unable to parse the attribute '{name}'='{value}' with the type "
-            f"'{type_.get('type', 'string')}', error:\n{e!s}"
+            f"'{type_.get('type', 'string')}', error:\n{e!s}",
         )
     return None
 
@@ -190,7 +199,7 @@ def get_ogc_server_wfs_url_ids(request: pyramid.request.Request, host: str) -> d
 class C2CPregenerator:
     """The custom pyramid pregenerator that manage the cache version."""
 
-    def __init__(self, version: bool = True, role: bool = False):
+    def __init__(self, version: bool = True, role: bool = False) -> None:
         self.version = version
         self.role = role
 
@@ -233,7 +242,7 @@ def get_role_id(name: str) -> int:
 
     assert DBSession is not None
 
-    return cast(int, DBSession.query(main.Role.id).filter(main.Role.name == name).one()[0])
+    return cast("int", DBSession.query(main.Role.id).filter(main.Role.name == name).one()[0])
 
 
 def get_roles_id(request: pyramid.request.Request) -> list[int]:

@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2023, Camptocamp SA
+# Copyright (c) 2011-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -36,12 +36,12 @@ from c2cwsgiutils.pretty_json import _FastDumps as FastDumps
 
 
 class TestDecimalJSON(TestCase):
-    def test_decimal(self):
+    def test_decimal(self) -> None:
         value = {"str": "an str", "int": 1, "dec": decimal.Decimal("1.2")}
         fast_dumps = FastDumps(False, False)
         result = fast_dumps(value)
-        self.assertEqual(json.loads(result), {"int": 1, "dec": 1.2, "str": "an str"})
+        assert json.loads(result) == {"int": 1, "dec": 1.2, "str": "an str"}
 
-    def test_decimal_json(self):
+    def test_decimal_json(self) -> None:
         fast_dumps = FastDumps(False, False)
         assert fast_dumps({"a": decimal.Decimal("3.3")}) == '{"a":3.3}'

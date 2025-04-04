@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2024, Camptocamp SA
+# Copyright (c) 2017-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -26,14 +26,16 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import pyramid.config
 from c2cgeoform.routes import register_route, register_routes
 
 
-def includeme(config):
+def includeme(config: pyramid.config.Configurator) -> None:
     """Initialize the Pyramid routes."""
     config.add_static_view("c2cgeoportal_admin_node_modules", "c2cgeoportal_admin:node_modules")
     config.override_asset(
-        to_override="c2cgeoportal_admin:node_modules/", override_with="/opt/c2cgeoportal/admin/node_modules"
+        to_override="c2cgeoportal_admin:node_modules/",
+        override_with="/opt/c2cgeoportal/admin/node_modules",
     )
     # Because c2cgeoform widgets target {root_package}:node_modules/...
     asset_spec = f"{config.root_package.__name__}:node_modules/"
@@ -51,7 +53,9 @@ def includeme(config):
     register_route(config, "convert_to_wms", "/{application:admin}/{table:layers_wmts}/{id}/convert_to_wms")
     register_route(config, "convert_to_wmts", "/{application:admin}/{table:layers_wms}/{id}/convert_to_wmts")
     register_route(
-        config, "ogcserver_synchronize", "/{application:admin}/{table:ogc_servers}/{id}/synchronize"
+        config,
+        "ogcserver_synchronize",
+        "/{application:admin}/{table:ogc_servers}/{id}/synchronize",
     )
 
     from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel

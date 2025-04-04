@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2024, Camptocamp SA
+# Copyright (c) 2021-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -38,7 +38,7 @@ class Literal:
         self.s = s
 
     def __html__(self) -> str:
-        return cast(str, get_current_request().translate(self.s))
+        return cast("str", get_current_request().translate(self.s))
 
     def __bool__(self) -> bool:
         return len(self.s) > 0

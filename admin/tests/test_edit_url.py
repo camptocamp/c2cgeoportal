@@ -7,8 +7,7 @@ import pytest
 from . import AbstractViewsTests
 
 
-@pytest.fixture(scope="function")
-@pytest.mark.usefixtures("dbsession", "transact")
+@pytest.fixture
 def edit_url_test_data(dbsession, transact):
     del transact
 
@@ -24,11 +23,11 @@ def edit_url_test_data(dbsession, transact):
         Theme,
     )
 
-    restrictionareas = [RestrictionArea(name=f"restrictionarea_{i}") for i in range(0, 5)]
+    restrictionareas = [RestrictionArea(name=f"restrictionarea_{i}") for i in range(5)]
     functionalities = {}
     for name in ("default_basemap", "default_theme"):
         functionalities[name] = []
-        for v in range(0, 4):
+        for v in range(4):
             functionality = Functionality(name=name, value=f"value_{v}")
             dbsession.add(functionality)
             functionalities[name].append(functionality)
@@ -37,7 +36,7 @@ def edit_url_test_data(dbsession, transact):
     ogc_server = OGCServer(name="ogc_server")
 
     layers_wmts = []
-    for i in range(0, 5):
+    for i in range(5):
         name = f"layer_wmts_{i}"
         layer_wmts = LayerWMTS(name=name)
         layer_wmts.layer = name
@@ -51,7 +50,7 @@ def edit_url_test_data(dbsession, transact):
         layers_wmts.append(layer_wmts)
 
     layers_wms = []
-    for i in range(0, 5):
+    for i in range(5):
         layer_wms = LayerWMS(name=f"layer_wms_{i}")
         layer_wms.layer = f"wms_layer_{i}"
         layer_wms.ogc_server = ogc_server
@@ -60,7 +59,7 @@ def edit_url_test_data(dbsession, transact):
         layers_wms.append(layer_wms)
 
     roles = []
-    for i in range(0, 5):
+    for i in range(5):
         role = Role("secretary_" + str(i))
         role.functionalities = [
             functionalities["default_theme"][0],
@@ -78,7 +77,7 @@ def edit_url_test_data(dbsession, transact):
 
     dbsession.flush()
 
-    yield {
+    return {
         "ogc_server": ogc_server,
         "layers_wmts": layers_wmts,
         "layers_wms": layers_wms,
@@ -103,22 +102,22 @@ class TestUrlEdit(AbstractViewsTests):
         assert re.match(rf"http://localhost/admin/{table}/\d+", link["href"]) is not None
         test_app.get(link.get("href"), status=status)
 
-    def test_layer_wms_edit(self, edit_url_test_data, test_app):
+    def test_layer_wms_edit(self, edit_url_test_data, test_app) -> None:
         resp = self._get(test_app, "admin/layers_wms", edit_url_test_data["layers_wms"][0].id)
         self._check_link(test_app, resp, "restrictionareas", "restriction_areas", 200)
         self._check_link(test_app, resp, "interfaces", "interfaces", 200)
 
-    def test_layer_wmts_edit(self, edit_url_test_data, test_app):
+    def test_layer_wmts_edit(self, edit_url_test_data, test_app) -> None:
         resp = self._get(test_app, "admin/layers_wmts", edit_url_test_data["layers_wmts"][0].id)
         self._check_link(test_app, resp, "restrictionareas", "restriction_areas", 200)
         self._check_link(test_app, resp, "interfaces", "interfaces", 200)
 
-    def test_roles_edit(self, edit_url_test_data, test_app):
+    def test_roles_edit(self, edit_url_test_data, test_app) -> None:
         resp = self._get(test_app, "admin/roles", edit_url_test_data["roles"][0].id)
         self._check_link(test_app, resp, "functionalities", "functionalities", 200)
         self._check_link(test_app, resp, "restrictionareas", "restriction_areas", 200)
 
-    def test_themes_edit(self, edit_url_test_data, test_app):
+    def test_themes_edit(self, edit_url_test_data, test_app) -> None:
         resp = self._get(test_app, "admin/themes", edit_url_test_data["themes"][0].id)
         self._check_link(test_app, resp, "functionalities", "functionalities", 200)
         self._check_link(test_app, resp, "interfaces", "interfaces", 200)

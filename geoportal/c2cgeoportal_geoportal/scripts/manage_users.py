@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2024, Camptocamp SA
+# Copyright (c) 2011-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -45,10 +45,17 @@ User can be created if it does not exist yet."""
     fill_arguments(parser)
     parser.add_argument("--password", "-p", help="Set password (if not set, username is used as password")
     parser.add_argument(
-        "--create", "-c", action="store_true", default=False, help="Create user if it does not already exist"
+        "--create",
+        "-c",
+        action="store_true",
+        default=False,
+        help="Create user if it does not already exist",
     )
     parser.add_argument(
-        "--rolename", "-r", default="role_admin", help="The role name which must exist in the database"
+        "--rolename",
+        "-r",
+        default="role_admin",
+        help="The role name which must exist in the database",
     )
     parser.add_argument("--email", "-e", default=None, help="The user email")
     parser.add_argument("user", help="The user")
@@ -111,8 +118,8 @@ def main() -> None:
 
                 user = User(
                     username=username,
-                    password=cast(str, options.password),
-                    email=cast(str, options.email),
+                    password=cast("str", options.password),
+                    email=cast("str", options.email),
                     settings_role=role,
                     roles=[role],
                 )

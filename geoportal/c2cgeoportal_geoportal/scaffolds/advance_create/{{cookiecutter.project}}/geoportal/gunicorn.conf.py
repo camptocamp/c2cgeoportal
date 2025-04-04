@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2024, Camptocamp SA
+# Copyright (c) 2019-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -96,7 +96,7 @@ logconfig_dict = {
             "format": "%(asctime)s [%(process)d] [%(levelname)-5.5s] %(message)s",
             "datefmt": "[%Y-%m-%d %H:%M:%S %z]",
             "class": "logging.Formatter",
-        }
+        },
     },
 }
 

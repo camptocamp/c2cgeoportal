@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2024, Camptocamp SA
+# Copyright (c) 2017-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -42,7 +42,7 @@ from tests.functional import teardown_common as teardown_module  # noqa
 
 
 class TestUrlAuthenticationPolicy(TestCase):
-    def setup_method(self, _):
+    def setup_method(self, _) -> None:
         self.maxDiff = None
 
         from c2cgeoportal_commons.models import DBSession
@@ -64,7 +64,7 @@ class TestUrlAuthenticationPolicy(TestCase):
 
         DBSession.flush()
 
-    def teardown_method(self, _):
+    def teardown_method(self, _) -> None:
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
 
@@ -86,29 +86,29 @@ class TestUrlAuthenticationPolicy(TestCase):
             remember_mock.assert_not_called()
         return userid
 
-    def test_ok(self):
+    def test_ok(self) -> None:
         user = self.get_user("foobar1234567891", "__test_user1", "__test_user1", 1)
-        self.assertIsNotNone(user)
+        assert user is not None
         assert user == "__test_user1"
 
-    def test_token_expired(self):
-        self.assertIsNone(self.get_user("foobar1234567891", "__test_user1", "__test_user1", -1))
+    def test_token_expired(self) -> None:
+        assert self.get_user("foobar1234567891", "__test_user1", "__test_user1", -1) is None
 
-    def test_wrong_user(self):
-        self.assertIsNone(self.get_user("foobar1234567891", "__test_user2", "__test_user1", 1))
+    def test_wrong_user(self) -> None:
+        assert self.get_user("foobar1234567891", "__test_user2", "__test_user1", 1) is None
 
-    def test_wrong_pass(self):
-        self.assertIsNone(self.get_user("foobar1234567891", "__test_user1", "__test_user2", 1))
+    def test_wrong_pass(self) -> None:
+        assert self.get_user("foobar1234567891", "__test_user1", "__test_user2", 1) is None
 
-    def test_wrong_key(self):
+    def test_wrong_key(self) -> None:
         token = create_token("foobar1234567890", "__test_user1", "__test_user1", 1)
         request = create_dummy_request(params={"auth": token})
         policy = UrlAuthenticationPolicy("foobar1234567891", defaultgroupsfinder)
         userid = policy.unauthenticated_userid(request)
-        self.assertIsNone(userid)
+        assert userid is None
 
     @patch("c2cgeoportal_geoportal.lib.authentication._LOG.error", side_effect=Exception())
-    def test_wrong_method(self, log_mock):  # pylint: disable=unused-argument
+    def test_wrong_method(self, log_mock) -> None:  # pylint: disable=unused-argument
         """POST requests with input named "auth" must not raise exceptions due to urllogin."""
 
         def _get_user(method):
@@ -119,12 +119,12 @@ class TestUrlAuthenticationPolicy(TestCase):
         _get_user("GET")
         _get_user("POST")
 
-    def test_user_deactivated(self):
-        self.assertIsNone(self.get_user("foobar1234567891", "__test_user2", "__test_user2", 1))
+    def test_user_deactivated(self) -> None:
+        assert self.get_user("foobar1234567891", "__test_user2", "__test_user2", 1) is None
 
-    def test_user_expired(self):
-        self.assertIsNone(self.get_user("foobar1234567891", "__test_user3", "__test_user3", 1))
+    def test_user_expired(self) -> None:
+        assert self.get_user("foobar1234567891", "__test_user3", "__test_user3", 1) is None
 
-    def test_user_currently_not_expired(self):
+    def test_user_currently_not_expired(self) -> None:
         user = self.get_user("foobar1234567891", "__test_user4", "__test_user4", 1)
         assert user == "__test_user4"
