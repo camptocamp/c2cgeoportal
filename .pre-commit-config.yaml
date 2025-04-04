@@ -115,8 +115,8 @@ repos:
     hooks:
       - id: prospector
         args:
+          - --profile=utils:pre-commit
           - --profile=.prospector.yaml
-          - --profile=utils:unsafe
           - --tool=ruff
           - --die-on-tool-error
           - --output-format=pylint
@@ -124,6 +124,23 @@ repos:
           - prospector-profile-duplicated==1.10.5 # pypi
           - prospector-profile-utils==1.22.3 # pypi
           - ruff==0.11.3 # pypi
+        exclude: |-
+          (?x)(
+            ^tests?/?
+            |/tests?(/|$)
+            |.*/tests(/|$)
+            |(^|/)test_[_a-zA-Z0-9]+.py$
+            |(^|/)[_a-zA-Z0-9]+_tests?.py$
+            |(^|/)tests?.py$
+          )
+      - id: prospector
+        args:
+          - --die-on-tool-error
+          - --output-format=pylint
+          - --profile=utils:tests
+          - --profile=utils:pre-commit
+        additional_dependencies:
+          - prospector-profile-utils==1.22.3 # pypi
   - repo: https://github.com/sbrunner/jsonschema-validator
     rev: 1.0.0
     hooks:
