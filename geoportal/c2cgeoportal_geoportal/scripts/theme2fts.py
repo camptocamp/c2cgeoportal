@@ -83,10 +83,16 @@ def get_argparser() -> ArgumentParser:
         help="do not import the blocks (first level layer groups)",
     )
     parser.add_argument(
-        "--no-folders", action="store_false", dest="folders", help="do not import the folders (tree folders)",
+        "--no-folders",
+        action="store_false",
+        dest="folders",
+        help="do not import the folders (tree folders)",
     )
     parser.add_argument(
-        "--no-layers", action="store_false", dest="layers", help="do not import the layers (tree leaf)",
+        "--no-layers",
+        action="store_false",
+        dest="layers",
+        help="do not import the layers (tree leaf)",
     )
     parser.add_argument("--package", help="the application package")
     fill_arguments(parser)

@@ -112,7 +112,11 @@ class Proxy:
         try:
             if method in ("POST", "PUT"):
                 response = requests.request(
-                    method, url.url(), data=body, headers=headers, **self.http_options,
+                    method,
+                    url.url(),
+                    data=body,
+                    headers=headers,
+                    **self.http_options,
                 )
             else:
                 response = requests.request(method, url.url(), headers=headers, **self.http_options)
@@ -202,7 +206,11 @@ class Proxy:
             else (Cache.PUBLIC_NO if public else Cache.PRIVATE_NO)
         )
         return self._build_response(
-            response, response.content, cache_control, service_name, headers_update=headers_update,
+            response,
+            response.content,
+            cache_control,
+            service_name,
+            headers_update=headers_update,
         )
 
     def _build_response(
@@ -245,7 +253,11 @@ class Proxy:
         response = pyramid.response.Response(content, status=response.status_code, headers=headers)
 
         return set_common_headers(
-            self.request, service_name, cache_control, response=response, content_type=content_type,
+            self.request,
+            service_name,
+            cache_control,
+            response=response,
+            content_type=content_type,
         )
 
     @staticmethod

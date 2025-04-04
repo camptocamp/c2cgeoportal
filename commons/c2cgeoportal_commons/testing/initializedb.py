@@ -57,7 +57,7 @@ def schema_exists(connection: Connection, schema_name: str) -> bool:
     )
     result = connection.execute(sqlalchemy.text(sql))
     row = result.first()
-    return cast('bool', row[0] == 1)  # type: ignore[index]
+    return cast("bool", row[0] == 1)  # type: ignore[index]
 
 
 def truncate_tables(connection: Connection) -> None:

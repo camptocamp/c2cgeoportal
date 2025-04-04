@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2024, Camptocamp SA
+# Copyright (c) 2011-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -213,7 +213,11 @@ class MapservProxy(OGCProxy):
         return response
 
     def _proxy_callback(
-        self, cache_control: Cache, url: Url, params: dict[str, str], **kwargs: Any,
+        self,
+        cache_control: Cache,
+        url: Url,
+        params: dict[str, str],
+        **kwargs: Any,
     ) -> Response:
         if self.request.matched_route.name.endswith("_path"):
             if self.request.matchdict["path"] == ("favicon.ico",):

@@ -1,4 +1,4 @@
-# Copyright (c) 2014-2024, Camptocamp SA
+# Copyright (c) 2014-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -60,7 +60,10 @@ class UrlAuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore
     """An authentication policy based on information given in the URL."""
 
     def __init__(
-        self, aes_key: str, callback: Callable[[str, Any], list[str]] | None = None, debug: bool = False,
+        self,
+        aes_key: str,
+        callback: Callable[[str, Any], list[str]] | None = None,
+        debug: bool = False,
     ):
         self.aeskey = aes_key
         self.callback = callback

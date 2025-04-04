@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2024, Camptocamp SA
+# Copyright (c) 2011-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -76,5 +76,7 @@ def init(config: pyramid.config.Configurator, health_check: c2cwsgiutils.health_
                 return None
 
         health_check.add_custom_check(
-            name="check_collector_" + host["display"], check_cb=Check(host), level=settings["level"],
+            name="check_collector_" + host["display"],
+            check_cb=Check(host),
+            level=settings["level"],
         )

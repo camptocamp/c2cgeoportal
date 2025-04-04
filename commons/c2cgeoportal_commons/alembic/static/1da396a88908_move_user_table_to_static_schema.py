@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2024, Camptocamp SA
+# Copyright (c) 2015-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -56,7 +56,9 @@ def upgrade() -> None:
     engine = op.get_bind().engine
     with engine.connect() as connection:
         if type(engine).__name__ != "MockConnection" and op.get_context().dialect.has_table(
-            connection, "user", schema=staticschema,
+            connection,
+            "user",
+            schema=staticschema,
         ):
             return
 
@@ -121,7 +123,9 @@ def downgrade() -> None:
     parent_join = ""
     if parentschema is not None and parentschema != "":
         op.add_column(
-            "user", Column("parent_role_id", Integer, ForeignKey(parentschema + ".role.id")), schema=schema,
+            "user",
+            Column("parent_role_id", Integer, ForeignKey(parentschema + ".role.id")),
+            schema=schema,
         )
         parent_column = ", parent_role_id"
         parent_select = ", pr.id"

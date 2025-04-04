@@ -43,7 +43,10 @@ _LOG = logging.getLogger(__name__)
 
 
 def build_url(
-    name: str, path: str, request: pyramid.request.Request, headers: dict[str, str] | None = None,
+    name: str,
+    path: str,
+    request: pyramid.request.Request,
+    headers: dict[str, str] | None = None,
 ) -> dict[str, str | dict[str, str]]:
     """Build an URL and headers for the checkers."""
     base_internal_url = request.registry.settings["checker"]["base_internal_url"]
@@ -186,7 +189,8 @@ def _themes_errors(settings: dict[str, Any], health_check: c2cwsgiutils.health_c
             result = response.json()
             if result["errors"]:
                 raise c2cwsgiutils.health_check.JsonCheckException(
-                    f"Interface '{interface}' has error in Theme.", result["errors"],
+                    f"Interface '{interface}' has error in Theme.",
+                    result["errors"],
                 )
 
     health_check.add_custom_check(name="checker_themes", check_cb=check, level=themes_settings["level"])

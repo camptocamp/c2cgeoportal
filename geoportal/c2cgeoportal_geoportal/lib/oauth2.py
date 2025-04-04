@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2024, Camptocamp SA
+# Copyright (c) 2021-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -1278,7 +1278,8 @@ def get_oauth_client(settings: dict[str, Any]) -> oauthlib.oauth2.WebApplication
 
 @_OBJECT_CACHE_REGION.cache_on_arguments()
 def _get_oauth_client_cache(
-    authorization_expire_minutes: int, token_expire_minutes: int,
+    authorization_expire_minutes: int,
+    token_expire_minutes: int,
 ) -> oauthlib.oauth2.WebApplicationServer:
     """Get the oauth2 client, with a cache."""
     return oauthlib.oauth2.WebApplicationServer(

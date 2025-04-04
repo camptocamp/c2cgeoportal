@@ -85,7 +85,8 @@ class TinyOWSProxy(OGCProxy):
     def proxy(self) -> pyramid.response.Response:
         if self.user is None:
             raise HTTPUnauthorized(
-                "Authentication required", headers=[("WWW-Authenticate", 'Basic realm="TinyOWS"')],
+                "Authentication required",
+                headers=[("WWW-Authenticate", 'Basic realm="TinyOWS"')],
             )
 
         operation = self.lower_params.get("request")
@@ -149,7 +150,11 @@ class TinyOWSProxy(OGCProxy):
         return headers
 
     def _proxy_callback(
-        self, operation: str, cache_control: Cache, *args: Any, **kwargs: Any,
+        self,
+        operation: str,
+        cache_control: Cache,
+        *args: Any,
+        **kwargs: Any,
     ) -> pyramid.response.Response:
         response = self._proxy(*args, **kwargs)
         content = response.content.decode()
@@ -164,7 +169,9 @@ class TinyOWSProxy(OGCProxy):
             content = filter_wfst_capabilities(content, url, self.request)
 
         content = self._filter_urls(
-            content, self.settings.get("online_resource"), self.settings.get("proxy_online_resource"),
+            content,
+            self.settings.get("online_resource"),
+            self.settings.get("proxy_online_resource"),
         )
 
         return self._build_response(response, content.encode(), cache_control, "tinyows")

@@ -90,7 +90,8 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             assert configuration is not None
 
             DBSession = create_session_factory(  # pylint: disable=invalid-name
-                config.get("sqlalchemy_slave.url"), configuration.get("sqlalchemy", {}),
+                config.get("sqlalchemy_slave.url"),
+                configuration.get("sqlalchemy", {}),
             )
 
             if "GEOMAPFISH_OGCSERVER" in os.environ:
@@ -113,7 +114,11 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
 
                 for map_, map_config in ac_config.get("map_config").items():
                     map_config["access_control"] = OGCServerAccessControl(
-                        server_iface, map_config["ogc_server"], map_, config.get("srid"), DBSession,
+                        server_iface,
+                        map_config["ogc_server"],
+                        map_,
+                        config.get("srid"),
+                        DBSession,
                     )
                     self.ogcserver_accesscontrols[map_] = map_config
                 _LOG.info("Use config '%s'.", os.environ["GEOMAPFISH_ACCESSCONTROL_CONFIG"])
@@ -279,7 +284,8 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             raise
 
     def layerPermissions(  # pylint: disable=invalid-name
-        self, layer: QgsVectorLayer,
+        self,
+        layer: QgsVectorLayer,
     ) -> qgis.server.QgsAccessControlFilter.LayerPermissions:
         """Return the layer rights."""
         try:
@@ -294,7 +300,9 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):
             raise
 
     def authorizedLayerAttributes(  # pylint: disable=invalid-name
-        self, layer: QgsVectorLayer, attributes: list[str],
+        self,
+        layer: QgsVectorLayer,
+        attributes: list[str],
     ) -> list[str]:
         """Return the authorized layer attributes."""
         try:
@@ -691,7 +699,8 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             raise
 
     def layerPermissions(  # pylint: disable=invalid-name
-        self, layer: QgsVectorLayer,
+        self,
+        layer: QgsVectorLayer,
     ) -> qgis.server.QgsAccessControlFilter.LayerPermissions:
         """Get the layer rights."""
         _LOG.debug("layerPermissions %s", layer.name())
@@ -735,7 +744,9 @@ class OGCServerAccessControl(QgsAccessControlFilter):
             raise
 
     def authorizedLayerAttributes(  # pylint: disable=invalid-name
-        self, layer: QgsVectorLayer, attributes: list[str],
+        self,
+        layer: QgsVectorLayer,
+        attributes: list[str],
     ) -> list[str]:
         """Get the authorized layer attributes."""
         roles = self.get_roles(self.DBSession())

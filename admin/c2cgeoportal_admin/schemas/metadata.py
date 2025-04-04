@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2024, Camptocamp SA
+# Copyright (c) 2018-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -153,7 +153,10 @@ class MetadataSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
         self._add_value_node("float", colander.Float())
         self._add_value_node("url", colander.String(), validator=url)
         self._add_value_node(
-            "json", colander.String(), widget=TextAreaWidget(rows=10), validator=json_validator,
+            "json",
+            colander.String(),
+            widget=TextAreaWidget(rows=10),
+            validator=json_validator,
         )
 
     def _add_value_node(self, type_name: str, colander_type: colander.SchemaType, **kw: Any) -> None:
@@ -192,7 +195,8 @@ class MetadataSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
 
 
 def _translate_available_metadata(
-    available_metadata: dict[str, Any], request: pyramid.request.Request,
+    available_metadata: dict[str, Any],
+    request: pyramid.request.Request,
 ) -> dict[str, Any]:
     result = {}
     result.update(available_metadata)

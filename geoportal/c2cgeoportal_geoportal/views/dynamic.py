@@ -116,7 +116,10 @@ class DynamicView:
             for name, dyn in config.get("dynamic_params", {}).items():
                 params[name] = dynamic[dyn]
             constants[constant] = self.request.route_url(
-                route_name, *config.get("elements", []), _query=params, **config.get("kw", {}),
+                route_name,
+                *config.get("elements", []),
+                _query=params,
+                **config.get("kw", {}),
             )
 
         return constants
@@ -183,17 +186,23 @@ class DynamicView:
                     theme = match.group(1)
             if theme is not None:
                 no_redirect_url = self.request.route_url(
-                    interface_config["redirect_interface"] + "theme", themes=theme, _query=no_redirect_query,
+                    interface_config["redirect_interface"] + "theme",
+                    themes=theme,
+                    _query=no_redirect_query,
                 )
                 url = self.request.route_url(
-                    interface_config["redirect_interface"] + "theme", themes=theme, _query=query,
+                    interface_config["redirect_interface"] + "theme",
+                    themes=theme,
+                    _query=query,
                 ).replace("+", "%20")
             else:
                 no_redirect_url = self.request.route_url(
-                    interface_config["redirect_interface"], _query=no_redirect_query,
+                    interface_config["redirect_interface"],
+                    _query=no_redirect_query,
                 )
                 url = self.request.route_url(interface_config["redirect_interface"], _query=query).replace(
-                    "+", "%20",
+                    "+",
+                    "%20",
                 )
 
             if "no_redirect" in query:

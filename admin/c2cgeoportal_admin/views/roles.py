@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2024, Camptocamp SA
+# Copyright (c) 2017-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -120,7 +120,8 @@ class RoleViews(LoggedViews[Role]):
             renderer=lambda role: ", ".join([f"{f.name}={f.value}" for f in role.functionalities]),
         ),
         _list_field(
-            "restrictionareas", renderer=lambda role: ", ".join([r.name or "" for r in role.restrictionareas]),
+            "restrictionareas",
+            renderer=lambda role: ", ".join([r.name or "" for r in role.restrictionareas]),
         ),
     ]
     _id_field = "id"
@@ -157,7 +158,9 @@ class RoleViews(LoggedViews[Role]):
         return super().delete()
 
     @view_config(  # type: ignore[misc]
-        route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2",
+        route_name="c2cgeoform_item_duplicate",
+        request_method="GET",
+        renderer="../templates/edit.jinja2",
     )
     def duplicate(self) -> ObjectResponse:
         return super().duplicate()

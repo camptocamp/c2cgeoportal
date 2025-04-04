@@ -80,7 +80,10 @@ def main() -> None:
 def _fill_arguments() -> ArgumentParser:
     parser = ArgumentParser()
     parser.add_argument(
-        "--git-remote", metavar="GITREMOTE", help="Specify the remote branch", default="origin",
+        "--git-remote",
+        metavar="GITREMOTE",
+        help="Specify the remote branch",
+        default="origin",
     )
     parser.add_argument("--step", type=int, help=argparse.SUPPRESS, default=0)
 
@@ -104,7 +107,8 @@ class Step:
         self.file_marker = file_marker
 
     def __call__(
-        self, current_step: Callable[["C2cUpgradeTool", int], None],
+        self,
+        current_step: Callable[["C2cUpgradeTool", int], None],
     ) -> Callable[["C2cUpgradeTool"], None]:
         def decorate(c2cupgradetool: "C2cUpgradeTool") -> None:
             try:
@@ -255,7 +259,8 @@ class C2cUpgradeTool:
                 messages.append(
                     "The element '{required}' is missing in the `template_vars` of "
                     "the file 'project.yaml', you should have for example: {required}: {template}.".format(
-                        required=required, template=TEMPLATE_EXAMPLE.get("required", ""),
+                        required=required,
+                        template=TEMPLATE_EXAMPLE.get("required", ""),
                     ),
                 )
         if self.project.get("managed_files") is None:
@@ -266,7 +271,10 @@ class C2cUpgradeTool:
             )
         if messages:
             self.print_step(
-                step, error=True, message="\n".join(messages), prompt="Fix it and run again the upgrade:",
+                step,
+                error=True,
+                message="\n".join(messages),
+                prompt="Fix it and run again the upgrade:",
             )
             sys.exit(1)
 

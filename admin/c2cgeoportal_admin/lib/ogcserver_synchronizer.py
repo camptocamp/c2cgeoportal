@@ -182,7 +182,8 @@ class OGCServerSynchronizer:
         self._layers_removed = 0
 
         self._default_wms = cast(
-            "main.LayerWMS", main.LayerWMS.get_default(self._request.dbsession) or main.LayerWMS(),
+            "main.LayerWMS",
+            main.LayerWMS.get_default(self._request.dbsession) or main.LayerWMS(),
         )
         self._interfaces = self._request.dbsession.query(main.Interface).all()
 
@@ -225,7 +226,8 @@ class OGCServerSynchronizer:
             children = server_children + external_children
             if tree_item.children != children:
                 tree_item._set_children(  # pylint: disable=protected-access
-                    server_children + external_children, order=True,
+                    server_children + external_children,
+                    order=True,
                 )
                 self._logger.info("Children of %s have been sorted", tree_item.name)
 

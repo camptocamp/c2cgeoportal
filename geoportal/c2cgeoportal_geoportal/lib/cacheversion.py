@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2024, Camptocamp SA
+# Copyright (c) 2011-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -47,7 +47,9 @@ def get_cache_version() -> str:
 
 
 def version_cache_buster(
-    request: pyramid.request.Request, subpath: str, kw: dict[str, Any],
+    request: pyramid.request.Request,
+    subpath: str,
+    kw: dict[str, Any],
 ) -> tuple[str, dict[str, Any]]:
     """Join the cash buster version with the sub path."""
     del request  # unused

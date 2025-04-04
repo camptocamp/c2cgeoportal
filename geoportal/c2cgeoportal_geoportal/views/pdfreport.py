@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2024, Camptocamp SA
+# Copyright (c) 2011-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -68,7 +68,10 @@ class PdfReport(OGCProxy):
 
     @staticmethod
     def _build_map(
-        mapserv_url: str, vector_request_url: str, srs: str, map_config: dict[str, Any],
+        mapserv_url: str,
+        vector_request_url: str,
+        srs: str,
+        map_config: dict[str, Any],
     ) -> dict[str, Any]:
         backgroundlayers = map_config["backgroundlayers"]
         imageformat = map_config["imageformat"]
@@ -141,7 +144,8 @@ class PdfReport(OGCProxy):
         srs = layer_config["srs"]
 
         mapserv_url = self.request.route_url(
-            "mapserverproxy", _query={"ogcserver": layer_config["ogc_server"]},
+            "mapserverproxy",
+            _query={"ogcserver": layer_config["ogc_server"]},
         )
         url = Url(mapserv_url)
         url.add_query(

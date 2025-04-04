@@ -125,11 +125,15 @@ class FullTextSearch(GeoInterface, Base):  # type: ignore
     label: Mapped[str] = mapped_column(Unicode)
     layer_name: Mapped[str] = mapped_column(Unicode, nullable=True)
     role_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey(_schema + ".role.id", ondelete="CASCADE"), nullable=True,
+        Integer,
+        ForeignKey(_schema + ".role.id", ondelete="CASCADE"),
+        nullable=True,
     )
     role = relationship("Role")
     interface_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey(_schema + ".interface.id", ondelete="CASCADE"), nullable=True,
+        Integer,
+        ForeignKey(_schema + ".interface.id", ondelete="CASCADE"),
+        nullable=True,
     )
     interface = relationship("Interface")
     lang: Mapped[str] = mapped_column(String(2), nullable=True)
@@ -154,7 +158,9 @@ class Functionality(Base):  # type: ignore
     __c2cgeoform_config__ = {"duplicate": True}
 
     id: Mapped[int] = mapped_column(
-        Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}},
+        Integer,
+        primary_key=True,
+        info={"colanderalchemy": {"widget": HiddenWidget()}},
     )
     name: Mapped[str] = mapped_column(
         Unicode,
@@ -247,7 +253,9 @@ class Role(Base):  # type: ignore
     __c2cgeoform_config__ = {"duplicate": True}
 
     id: Mapped[int] = mapped_column(
-        Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}},
+        Integer,
+        primary_key=True,
+        info={"colanderalchemy": {"widget": HiddenWidget()}},
     )
     name: Mapped[str] = mapped_column(
         Unicode,
@@ -333,7 +341,10 @@ class TreeItem(Base):  # type: ignore
         {"schema": _schema},
     )
     item_type: Mapped[str] = mapped_column(
-        "type", String(10), nullable=False, info={"colanderalchemy": {"exclude": True}},
+        "type",
+        String(10),
+        nullable=False,
+        info={"colanderalchemy": {"exclude": True}},
     )
     __mapper_args__ = {"polymorphic_on": item_type}
 
@@ -398,7 +409,9 @@ class LayergroupTreeitem(Base):  # type: ignore
 
     # required by formalchemy
     id: Mapped[int] = mapped_column(
-        Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}},
+        Integer,
+        primary_key=True,
+        info={"colanderalchemy": {"widget": HiddenWidget()}},
     )
     description: Mapped[str | None] = mapped_column(Unicode, info={"colanderalchemy": {"exclude": True}})
     treegroup_id: Mapped[int] = mapped_column(
@@ -440,7 +453,10 @@ class LayergroupTreeitem(Base):  # type: ignore
     ordering: Mapped[int] = mapped_column(Integer, info={"colanderalchemy": {"widget": HiddenWidget()}})
 
     def __init__(
-        self, group: Optional["TreeGroup"] = None, item: TreeItem | None = None, ordering: int = 0,
+        self,
+        group: Optional["TreeGroup"] = None,
+        item: TreeItem | None = None,
+        ordering: int = 0,
     ) -> None:
         self.treegroup = group
         self.treeitem = item
@@ -570,7 +586,9 @@ class Theme(TreeGroup):
         info={"colanderalchemy": {"missing": drop, "widget": HiddenWidget()}},
     )
     ordering: Mapped[int] = mapped_column(
-        Integer, nullable=False, info={"colanderalchemy": {"title": _("Order"), "widget": HiddenWidget()}},
+        Integer,
+        nullable=False,
+        info={"colanderalchemy": {"title": _("Order"), "widget": HiddenWidget()}},
     )
     public: Mapped[bool] = mapped_column(
         Boolean,
@@ -739,7 +757,9 @@ class OGCServer(Base):  # type: ignore
     }
     __c2cgeoform_config__ = {"duplicate": True}
     id: Mapped[int] = mapped_column(
-        Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}},
+        Integer,
+        primary_key=True,
+        info={"colanderalchemy": {"widget": HiddenWidget()}},
     )
     name: Mapped[str] = mapped_column(
         Unicode,
@@ -921,7 +941,11 @@ class LayerWMS(DimensionLayer):
                 "title": _("OGC server"),
                 "column": 2,
                 "widget": RelationSelect2Widget(
-                    OGCServer, "id", "name", order_by="name", default_value=("", _("- Select -")),
+                    OGCServer,
+                    "id",
+                    "name",
+                    order_by="name",
+                    default_value=("", _("- Select -")),
                 ),
             },
         },
@@ -1393,7 +1417,9 @@ class RestrictionArea(Base):  # type: ignore
     __colanderalchemy_config__ = {"title": _("Restriction area"), "plural": _("Restriction areas")}
     __c2cgeoform_config__ = {"duplicate": True}
     id: Mapped[int] = mapped_column(
-        Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}},
+        Integer,
+        primary_key=True,
+        info={"colanderalchemy": {"widget": HiddenWidget()}},
     )
 
     name: Mapped[str] = mapped_column(
@@ -1528,7 +1554,10 @@ interface_layer = Table(
     "interface_layer",
     Base.metadata,
     Column(
-        "interface_id", Integer, ForeignKey(_schema + ".interface.id", ondelete="CASCADE"), primary_key=True,
+        "interface_id",
+        Integer,
+        ForeignKey(_schema + ".interface.id", ondelete="CASCADE"),
+        primary_key=True,
     ),
     Column("layer_id", Integer, ForeignKey(_schema + ".layer.id", ondelete="CASCADE"), primary_key=True),
     schema=_schema,
@@ -1539,7 +1568,10 @@ interface_theme = Table(
     "interface_theme",
     Base.metadata,
     Column(
-        "interface_id", Integer, ForeignKey(_schema + ".interface.id", ondelete="CASCADE"), primary_key=True,
+        "interface_id",
+        Integer,
+        ForeignKey(_schema + ".interface.id", ondelete="CASCADE"),
+        primary_key=True,
     ),
     Column("theme_id", Integer, ForeignKey(_schema + ".theme.id", ondelete="CASCADE"), primary_key=True),
     schema=_schema,
@@ -1555,7 +1587,9 @@ class Interface(Base):  # type: ignore
     __colanderalchemy_config__ = {"title": _("Interface"), "plural": _("Interfaces")}
 
     id: Mapped[int] = mapped_column(
-        Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}},
+        Integer,
+        primary_key=True,
+        info={"colanderalchemy": {"widget": HiddenWidget()}},
     )
     name: Mapped[str] = mapped_column(
         Unicode,
@@ -1629,7 +1663,9 @@ class Metadata(Base):  # type: ignore
     }
 
     id: Mapped[int] = mapped_column(
-        Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}},
+        Integer,
+        primary_key=True,
+        info={"colanderalchemy": {"widget": HiddenWidget()}},
     )
     name: Mapped[str] = mapped_column(
         Unicode,
@@ -1739,7 +1775,9 @@ class Dimension(Base):  # type: ignore
     }
 
     id: Mapped[int] = mapped_column(
-        Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}},
+        Integer,
+        primary_key=True,
+        info={"colanderalchemy": {"widget": HiddenWidget()}},
     )
     name: Mapped[str] = mapped_column(
         Unicode,

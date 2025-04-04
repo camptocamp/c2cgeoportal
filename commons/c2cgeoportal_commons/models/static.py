@@ -125,12 +125,17 @@ class User(Base):  # type: ignore
     }
     __c2cgeoform_config__ = {"duplicate": True}
     item_type: Mapped[str] = mapped_column(
-        "type", String(10), nullable=False, info={"colanderalchemy": {"widget": HiddenWidget()}},
+        "type",
+        String(10),
+        nullable=False,
+        info={"colanderalchemy": {"widget": HiddenWidget()}},
     )
     __mapper_args__ = {"polymorphic_on": item_type, "polymorphic_identity": "user"}
 
     id: Mapped[int] = mapped_column(
-        Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}},
+        Integer,
+        primary_key=True,
+        info={"colanderalchemy": {"widget": HiddenWidget()}},
     )
     username: Mapped[str] = mapped_column(
         Unicode,
@@ -157,10 +162,16 @@ class User(Base):  # type: ignore
         },
     )
     _password: Mapped[str] = mapped_column(
-        "password", Unicode, nullable=False, info={"colanderalchemy": {"exclude": True}},
+        "password",
+        Unicode,
+        nullable=False,
+        info={"colanderalchemy": {"exclude": True}},
     )
     temp_password: Mapped[str | None] = mapped_column(
-        "temp_password", Unicode, nullable=True, info={"colanderalchemy": {"exclude": True}},
+        "temp_password",
+        Unicode,
+        nullable=True,
+        info={"colanderalchemy": {"exclude": True}},
     )
     tech_data = mapped_column(MutableDict.as_mutable(HSTORE), info={"colanderalchemy": {"exclude": True}})  # type: ignore[arg-type]
     email: Mapped[str] = mapped_column(
@@ -200,7 +211,11 @@ class User(Base):  # type: ignore
                 "title": _("Settings from role"),
                 "description": _("Used to get some settings for the user (not for permissions)."),
                 "widget": RelationSelect2Widget(
-                    Role, "id", "name", order_by="name", default_value=("", _("- Select -")),
+                    Role,
+                    "id",
+                    "name",
+                    order_by="name",
+                    default_value=("", _("- Select -")),
                 ),
             },
         },
@@ -391,7 +406,9 @@ class OAuth2Client(Base):  # type: ignore
     __colanderalchemy_config__ = {"title": _("OAuth2 Client"), "plural": _("OAuth2 Clients")}
     __c2cgeoform_config__ = {"duplicate": True}
     id: Mapped[int] = mapped_column(
-        Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}},
+        Integer,
+        primary_key=True,
+        info={"colanderalchemy": {"widget": HiddenWidget()}},
     )
     client_id: Mapped[str] = mapped_column(
         Unicode,
@@ -467,11 +484,15 @@ class OAuth2BearerToken(Base):  # type: ignore
     )
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     client_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey(_schema + ".oauth2_client.id", ondelete="CASCADE"), nullable=False,
+        Integer,
+        ForeignKey(_schema + ".oauth2_client.id", ondelete="CASCADE"),
+        nullable=False,
     )
     client = relationship(OAuth2Client)
     user_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey(_schema + ".user.id", ondelete="CASCADE"), nullable=False,
+        Integer,
+        ForeignKey(_schema + ".user.id", ondelete="CASCADE"),
+        nullable=False,
     )
     user = relationship(User)
     access_token: Mapped[str] = mapped_column(Unicode(100), unique=True)
@@ -492,11 +513,15 @@ class OAuth2AuthorizationCode(Base):  # type: ignore
     )
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     client_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey(_schema + ".oauth2_client.id", ondelete="CASCADE"), nullable=False,
+        Integer,
+        ForeignKey(_schema + ".oauth2_client.id", ondelete="CASCADE"),
+        nullable=False,
     )
     client = relationship(OAuth2Client)
     user_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey(_schema + ".user.id", ondelete="CASCADE"), nullable=False,
+        Integer,
+        ForeignKey(_schema + ".user.id", ondelete="CASCADE"),
+        nullable=False,
     )
     user = relationship(User)
     redirect_uri: Mapped[str] = mapped_column(Unicode)

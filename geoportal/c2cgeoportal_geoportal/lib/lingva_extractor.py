@@ -193,7 +193,10 @@ class GeomapfishAngularExtractor(Extractor):  # type: ignore
                             self.tpl = Template(self.source, lookup=lookup, **kwargs)  # noqa: S702 # nosec
                         else:
                             self.tpl = Template(  # noqa: S702 # nosec
-                                uri=self.name, filename=self.filename, lookup=lookup, **kwargs,
+                                uri=self.name,
+                                filename=self.filename,
+                                lookup=lookup,
+                                **kwargs,
                             )
 
                 try:
@@ -475,7 +478,11 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
         self.env = None
 
     def __call__(
-        self, filename: str, options: dict[str, Any], fileobj: str | None = None, lineno: int = 0,
+        self,
+        filename: str,
+        options: dict[str, Any],
+        fileobj: str | None = None,
+        lineno: int = 0,
     ) -> list[Message]:
         del fileobj, lineno
 
@@ -717,7 +724,12 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                         raise
 
     def _import_layer_attributes(
-        self, url: str, layer: "main.Layer", item_type: str, name: str, messages: list[str],
+        self,
+        url: str,
+        layer: "main.Layer",
+        item_type: str,
+        name: str,
+        messages: list[str],
     ) -> None:
         attributes, layers = self._layer_attributes(url, layer)
         for sub_layer in layers:
@@ -900,7 +912,8 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
                 featurestype: dict[str, Node] | None = {}
                 self.featuretype_cache[url] = featurestype
                 for type_element in describe.getElementsByTagNameNS(
-                    "http://www.w3.org/2001/XMLSchema", "complexType",
+                    "http://www.w3.org/2001/XMLSchema",
+                    "complexType",
                 ):
                     cast("dict[str, Node]", featurestype)[type_element.getAttribute("name")] = type_element
             except ExpatError as e:
@@ -944,7 +957,8 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore
             type_element = featurestype.get(f"{sub_layer}Type")
             if type_element is not None:
                 for element in type_element.getElementsByTagNameNS(
-                    "http://www.w3.org/2001/XMLSchema", "element",
+                    "http://www.w3.org/2001/XMLSchema",
+                    "element",
                 ):
                     if not element.getAttribute("type").startswith("gml:"):
                         attributes.append(element.getAttribute("name"))

@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2024, Camptocamp SA
+# Copyright (c) 2012-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -137,7 +137,11 @@ class Raster:
         return self.data[name]
 
     def _get_raster_value(
-        self, layer: dict[str, Any], name: str, lon: float, lat: float,
+        self,
+        layer: dict[str, Any],
+        name: str,
+        lon: float,
+        lat: float,
     ) -> decimal.Decimal | None:
         data = self._get_data(layer, name)
         type_ = layer.get("type", "shp_index")
@@ -169,7 +173,11 @@ class Raster:
 
     @staticmethod
     def _get_value(
-        layer: dict[str, Any], name: str, dataset: DatasetReader, lon: float, lat: float,
+        layer: dict[str, Any],
+        name: str,
+        dataset: DatasetReader,
+        lon: float,
+        lat: float,
     ) -> numpy.float32 | None:
         index = dataset.index(lon, lat)
 
@@ -199,7 +207,11 @@ class Raster:
         return result
 
     def _get_service_data(
-        self, layer: str, lat: float, lon: float, rasters: dict[str, Any],
+        self,
+        layer: str,
+        lat: float,
+        lon: float,
+        rasters: dict[str, Any],
     ) -> dict[str, Any]:
         request = (
             f"{rasters[layer]['url']}/height?{urllib.parse.urlencode({'easting': lon, 'northing': lat})}"

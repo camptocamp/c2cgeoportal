@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2024, Camptocamp SA
+# Copyright (c) 2018-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -66,7 +66,9 @@ class ChildSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
 
 
 def treeitems(
-    node: TreeGroup, kw: dict[str, pyramid.request.Request], only_groups: bool = False,
+    node: TreeGroup,
+    kw: dict[str, pyramid.request.Request],
+    only_groups: bool = False,
 ) -> list[dict[str, Any]]:
     """Get a serializable representation of the tree items."""
     del node
@@ -128,7 +130,8 @@ def children_validator(node, cstruct):
             raise colander.Invalid(
                 node,
                 _("Value {} does not exist in table {} or is not allowed to avoid cycles").format(
-                    dict_["treeitem_id"], TreeItem.__tablename__,
+                    dict_["treeitem_id"],
+                    TreeItem.__tablename__,
                 ),
             )
 

@@ -19,7 +19,10 @@ CompletedProcess = subprocess.CompletedProcess[str] if TYPE_CHECKING else subpro
 
 
 def run(
-    args: argparse.Namespace, command: list[str], exit_on_error: bool = True, **kwargs: Any,
+    args: argparse.Namespace,
+    command: list[str],
+    exit_on_error: bool = True,
+    **kwargs: Any,
 ) -> CompletedProcess | None:
     if args.verbose or args.dry_run:
         print(shlex.join(command))
@@ -38,7 +41,9 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Build the project")
     parser.add_argument("--verbose", action="store_true", help="Display the Docker build commands")
     parser.add_argument(
-        "--dry-run", action="store_true", help="Display the docker build commands without executing them",
+        "--dry-run",
+        action="store_true",
+        help="Display the docker build commands without executing them",
     )
     parser.add_argument("--service", help="Build only the specified service")
     parser.add_argument("--env", action="store_true", help="Build only the .env file")
@@ -59,7 +64,8 @@ def main() -> None:
         help="Do not pull external or base images for faster rebuild during development.",
     )
     parser.add_argument(
-        "--debug", help="Path to c2cgeoportal source folder to be able to debug the upgrade procedure",
+        "--debug",
+        help="Path to c2cgeoportal source folder to be able to debug the upgrade procedure",
     )
     parser.add_argument("--stack-trace", action="store_true", help="Display the stack trace on error")
     parser.add_argument("env_files", nargs="*", help="The environment config")

@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2024, Camptocamp SA
+# Copyright (c) 2011-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -68,7 +68,8 @@ class GeometryProcessing:
         return to_shape(
             DBSession.query(
                 func.ST_Difference(
-                    from_shape(shape(body["geometries"][0])), from_shape(shape(body["geometries"][1])),
+                    from_shape(shape(body["geometries"][0])),
+                    from_shape(shape(body["geometries"][1])),
                 ),
             ).scalar(),
         )

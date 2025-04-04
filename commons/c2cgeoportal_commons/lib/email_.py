@@ -64,7 +64,11 @@ def send_email_config(settings: dict[str, Any], email_config_name: str, email: s
 
 
 def send_email(
-    from_addr: str, to_address: list[str], body: str, subject: str, smtp_config: dict[str, str],
+    from_addr: str,
+    to_address: list[str],
+    body: str,
+    subject: str,
+    smtp_config: dict[str, str],
 ) -> None:
     """Send an email."""
     msg = MIMEMultipart()

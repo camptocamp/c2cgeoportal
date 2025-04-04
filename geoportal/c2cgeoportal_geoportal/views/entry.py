@@ -145,7 +145,8 @@ def canvas_view(request: pyramid.request.Request, interface_config: dict[str, An
 
 
 def custom_view(
-    request: pyramid.request.Request, interface_config: dict[str, Any],
+    request: pyramid.request.Request,
+    interface_config: dict[str, Any],
 ) -> pyramid.response.Response:
     """Get view used as entry point of a canvas interface."""
     set_common_headers(request, "index", Cache.PUBLIC_NO, content_type="text/html")

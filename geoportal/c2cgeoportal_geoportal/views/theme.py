@@ -82,7 +82,10 @@ Metadata = str | int | float | bool | list[Any] | dict[str, Any]
 
 
 async def get_http_cached(
-    http_options: dict[str, Any], url: str, headers: dict[str, str], cache: bool = True,
+    http_options: dict[str, Any],
+    url: str,
+    headers: dict[str, str],
+    cache: bool = True,
 ) -> tuple[bytes, str]:
     """Get the content of the URL with a cache (dogpile)."""
 
@@ -98,7 +101,11 @@ async def get_http_cached(
             return result
 
     response = await asyncio.to_thread(
-        requests.get, url.strip(), headers=headers, timeout=_TIMEOUT, **http_options,
+        requests.get,
+        url.strip(),
+        headers=headers,
+        timeout=_TIMEOUT,
+        **http_options,
     )
     response.raise_for_status()
     _LOG.info("Get url '%s' in %.1fs.", url, response.elapsed.total_seconds())
@@ -176,14 +183,22 @@ class Theme:
         self._themes_cache: list[main.Theme] | None = None
 
     def _get_metadata(
-        self, item: main.TreeItem, metadata: str, errors: set[str],
+        self,
+        item: main.TreeItem,
+        metadata: str,
+        errors: set[str],
     ) -> None | str | int | float | bool | list[Any] | dict[str, Any]:
         metadatas = item.get_metadata(metadata)
         return (
             None
             if not metadatas
             else get_typed(
-                metadata, metadatas[0].value, self.metadata_type, self.request, errors, layer_name=item.name,
+                metadata,
+                metadatas[0].value,
+                self.metadata_type,
+                self.request,
+                errors,
+                layer_name=item.name,
             )
         )
 
@@ -198,7 +213,10 @@ class Theme:
         return metadatas
 
     async def _wms_getcap(
-        self, ogc_server: main.OGCServer, preload: bool = False, cache: bool = True,
+        self,
+        ogc_server: main.OGCServer,
+        preload: bool = False,
+        cache: bool = True,
     ) -> tuple[dict[str, dict[str, Any]] | None, set[str]]:
         _LOG.debug("Get the WMS Capabilities of %s, preload: %s, cache: %s", ogc_server.name, preload, cache)
 
@@ -270,7 +288,9 @@ class Theme:
         return build_web_map_service.refresh(ogc_server.id)  # type: ignore
 
     async def _wms_getcap_cached(
-        self, ogc_server: main.OGCServer, cache: bool = True,
+        self,
+        ogc_server: main.OGCServer,
+        cache: bool = True,
     ) -> tuple[Url | None, bytes | None, set[str]]:
         errors: set[str] = set()
         url = get_url2(f"The OGC server '{ogc_server.name}'", ogc_server.url, self.request, errors)
@@ -449,7 +469,10 @@ class Theme:
 
     @staticmethod
     def _merge_time(
-        time_: TimeInformation, layer_theme: dict[str, Any], layer: main.Layer, wms: dict[str, dict[str, Any]],
+        time_: TimeInformation,
+        layer_theme: dict[str, Any],
+        layer: main.Layer,
+        wms: dict[str, dict[str, Any]],
     ) -> set[str]:
         errors = set()
         wmslayer = layer.layer
@@ -522,7 +545,11 @@ class Theme:
                 self._fill_child_layer(layer_theme, child_layer, wms)
 
     async def _fill_wms(
-        self, layer_theme: dict[str, Any], layer: main.Layer, errors: set[str], mixed: bool,
+        self,
+        layer_theme: dict[str, Any],
+        layer: main.Layer,
+        errors: set[str],
+        mixed: bool,
     ) -> None:
         wms, wms_errors = await self._wms_layers(layer.ogc_server)
         errors |= wms_errors
@@ -583,7 +610,10 @@ class Theme:
         layer_theme["imageType"] = layer.image_type
 
     def _vectortiles_layers(
-        self, layer_theme: dict[str, Any], layer: main.LayerVectorTiles, errors: set[str],
+        self,
+        layer_theme: dict[str, Any],
+        layer: main.LayerVectorTiles,
+        errors: set[str],
     ) -> None:
         style = get_url2(f"The VectorTiles layer '{layer.name}'", layer.style, self.request, errors=errors)
         layer_theme["style"] = style.url() if style is not None else None
@@ -733,7 +763,8 @@ class Theme:
         return [name for (name,) in query.all()]
 
     async def _wms_layers(
-        self, ogc_server: main.OGCServer,
+        self,
+        ogc_server: main.OGCServer,
     ) -> tuple[dict[str, dict[str, Any]] | None, set[str]]:
         # retrieve layers metadata via GetCapabilities
         wms, wms_errors = await self._wms_getcap(ogc_server)
@@ -774,7 +805,10 @@ class Theme:
         )
 
     async def _themes(
-        self, interface: str = "desktop", filter_themes: bool = True, min_levels: int = 1,
+        self,
+        interface: str = "desktop",
+        filter_themes: bool = True,
+        min_levels: int = 1,
     ) -> tuple[list[dict[str, Any]], set[str]]:
         """Return theme information for the role identified by ``role_id``."""
         assert models.DBSession is not None
@@ -849,14 +883,20 @@ class Theme:
         return {"success": True}
 
     async def _get_children(
-        self, theme: main.Theme, layers: list[str], min_levels: int,
+        self,
+        theme: main.Theme,
+        layers: list[str],
+        min_levels: int,
     ) -> tuple[list[dict[str, Any]], set[str]]:
         children = []
         errors: set[str] = set()
         for item in theme.children:
             if isinstance(item, main.LayerGroup):
                 group_theme, gp_errors = await self._group(
-                    f"{theme.name}/{item.name}", item, layers, min_levels=min_levels,
+                    f"{theme.name}/{item.name}",
+                    item,
+                    layers,
+                    min_levels=min_levels,
                 )
                 errors |= gp_errors
                 if group_theme is not None:
@@ -894,7 +934,11 @@ class Theme:
         return None if self.request.user is None else {role.id for role in self.request.user.roles}
 
     async def _wfs_get_features_type(
-        self, wfs_url: Url, ogc_server: main.OGCServer, preload: bool = False, cache: bool = True,
+        self,
+        wfs_url: Url,
+        ogc_server: main.OGCServer,
+        preload: bool = False,
+        cache: bool = True,
     ) -> tuple[xml.etree.ElementTree.Element | None, set[str]]:  # pylint: disable=c-extension-no-member
         errors = set()
 
@@ -954,7 +998,9 @@ class Theme:
             return None, errors
 
     def get_url_internal_wfs(
-        self, ogc_server: main.OGCServer, errors: set[str],
+        self,
+        ogc_server: main.OGCServer,
+        errors: set[str],
     ) -> tuple[Url | None, Url | None, Url | None]:
         # required to do every time to validate the url.
         if ogc_server.auth != main.OGCSERVER_AUTH_NOAUTH:
@@ -1008,18 +1054,25 @@ class Theme:
         await asyncio.gather(*tasks)
 
     async def preload_ogc_server(
-        self, ogc_server: main.OGCServer, url_internal_wfs: Url, cache: bool = True,
+        self,
+        ogc_server: main.OGCServer,
+        url_internal_wfs: Url,
+        cache: bool = True,
     ) -> None:
         if ogc_server.wfs_support:
             await self._get_features_attributes(url_internal_wfs, ogc_server, cache=cache)
         await self._wms_getcap(ogc_server, False, cache=cache)
 
     async def _get_features_attributes(
-        self, url_internal_wfs: Url, ogc_server: main.OGCServer, cache: bool = True,
+        self,
+        url_internal_wfs: Url,
+        ogc_server: main.OGCServer,
+        cache: bool = True,
     ) -> tuple[dict[str, dict[Any, dict[str, Any]]] | None, str | None, set[str]]:
         @_CACHE_OGC_SERVER_REGION.cache_on_arguments()
         def _get_features_attributes_cache(
-            url_internal_wfs: Url, ogc_server_name: str,
+            url_internal_wfs: Url,
+            ogc_server_name: str,
         ) -> tuple[dict[str, dict[Any, dict[str, Any]]] | None, str | None, set[str]]:
             del url_internal_wfs  # Just for cache
             all_errors: set[str] = set()
@@ -1171,7 +1224,8 @@ class Theme:
                     )
                 if ogc_server.wfs_support and url_internal_wfs:
                     attributes, namespace, errors = await self._get_features_attributes(
-                        url_internal_wfs, ogc_server,
+                        url_internal_wfs,
+                        ogc_server,
                     )
                     # Create a local copy (don't modify the cache)
                     if attributes is not None:
@@ -1256,7 +1310,9 @@ class Theme:
         return asyncio.run(get_theme())
 
     async def _get_group(
-        self, group: main.LayerGroup, interface: main.Interface,
+        self,
+        group: main.LayerGroup,
+        interface: main.Interface,
     ) -> tuple[dict[str, Any] | None, set[str]]:
         assert models.DBSession is not None
 
@@ -1308,7 +1364,9 @@ class Theme:
         url_internal_wfs, _, _ = self.get_url_internal_wfs(ogc_server, errors)
         if errors:
             _LOG.error(
-                "Error while getting the URL of the OGC Server %s:\n%s", ogc_server.id, "\n".join(errors),
+                "Error while getting the URL of the OGC Server %s:\n%s",
+                ogc_server.id,
+                "\n".join(errors),
             )
             return
         if url_internal_wfs is None:
@@ -1317,7 +1375,9 @@ class Theme:
         asyncio.run(self._async_cache_invalidate_ogc_server_cb(ogc_server, url_internal_wfs))
 
     async def _async_cache_invalidate_ogc_server_cb(
-        self, ogc_server: main.OGCServer, url_internal_wfs: Url,
+        self,
+        ogc_server: main.OGCServer,
+        url_internal_wfs: Url,
     ) -> None:
         # Fill the cache
         await self.preload_ogc_server(ogc_server, url_internal_wfs, False)

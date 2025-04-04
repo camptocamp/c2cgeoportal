@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2024, Camptocamp SA
+# Copyright (c) 2018-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -89,7 +89,9 @@ def generate_mappers() -> None:
 
 
 def get_session(
-    settings: dict[str, Any], transaction_manager: TransactionManager, prefix: str = "sqlalchemy.",
+    settings: dict[str, Any],
+    transaction_manager: TransactionManager,
+    prefix: str = "sqlalchemy.",
 ) -> Session:
     """Get the session."""
     configure_mappers()

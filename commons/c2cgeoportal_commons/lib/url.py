@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2024, Camptocamp SA
+# Copyright (c) 2013-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -152,7 +152,11 @@ class Url:
 
 
 def get_url2(
-    name: str, url: str, request: Request, errors: set[str], servers: dict[str, str] | None = None,
+    name: str,
+    url: str,
+    request: Request,
+    errors: set[str],
+    servers: dict[str, str] | None = None,
 ) -> Url | None:
     """
     Get the real URL from the URI of the administration interface.

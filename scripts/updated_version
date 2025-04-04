@@ -51,7 +51,8 @@ def _get_postgresql_version(deb_versions: dict[str, str]) -> str:
 
 
 def _get_versions(
-    version: str, old_version: Version,
+    version: str,
+    old_version: Version,
 ) -> tuple[list[tuple[str, str]], dict[str, str], dict[str, str]]:
     deb_versions = {
         e.split("==")[0]: e.split("==")[1]

@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2024, Camptocamp SA
+# Copyright (c) 2012-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -70,7 +70,11 @@ class Profile(Raster):
         return profile
 
     def _get_profile_service_data(
-        self, layers: list[str], geom: dict[str, Any], rasters: dict[str, Any], nb_points: int,
+        self,
+        layers: list[str],
+        geom: dict[str, Any],
+        rasters: dict[str, Any],
+        nb_points: int,
     ) -> list[dict[str, Any]]:
         request = f"{rasters[layers[0]]['url']}/profile.json?{urllib.parse.urlencode({'geom': geom, 'nbPoints': nb_points, 'distinct_points': 'true'})}"
         response = requests.get(request, timeout=10)

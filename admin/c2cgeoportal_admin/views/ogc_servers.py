@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2024, Camptocamp SA
+# Copyright (c) 2017-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -150,13 +150,17 @@ class OGCServerViews(LoggedViews[OGCServer]):
         return actions
 
     @view_config(  # type: ignore[misc]
-        route_name="c2cgeoform_item", request_method="GET", renderer="../templates/edit.jinja2",
+        route_name="c2cgeoform_item",
+        request_method="GET",
+        renderer="../templates/edit.jinja2",
     )
     def view(self) -> ObjectResponse:
         return super().edit(self.schema())
 
     @view_config(  # type: ignore[misc]
-        route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2",
+        route_name="c2cgeoform_item",
+        request_method="POST",
+        renderer="../templates/edit.jinja2",
     )
     def save(self) -> SaveResponse:
         result = super().save()
@@ -183,13 +187,16 @@ class OGCServerViews(LoggedViews[OGCServer]):
         return result
 
     @view_config(  # type: ignore[misc]
-        route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2",
+        route_name="c2cgeoform_item_duplicate",
+        request_method="GET",
+        renderer="../templates/edit.jinja2",
     )
     def duplicate(self) -> ObjectResponse:
         return super().duplicate()
 
     @view_config(  # type: ignore[misc]
-        route_name="ogcserver_synchronize", renderer="../templates/ogcserver_synchronize.jinja2",
+        route_name="ogcserver_synchronize",
+        renderer="../templates/ogcserver_synchronize.jinja2",
     )
     def synchronize(self) -> JSONDict:
         obj = self._get_object()

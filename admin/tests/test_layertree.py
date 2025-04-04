@@ -84,16 +84,14 @@ def layertree_test_data(dbsession, transact):
 
     dbsession.flush()
 
-    return (
-        {
-            "themes": themes,
-            "groups": groups,
-            "layers_wms": layers_wms,
-            "layers_wmts": layers_wmts,
-            "ogc_servers": [ogc_server],
-            "interfaces": [interface1, interface2],
-        }
-    )
+    return {
+        "themes": themes,
+        "groups": groups,
+        "layers_wms": layers_wms,
+        "layers_wmts": layers_wmts,
+        "ogc_servers": [ogc_server],
+        "interfaces": [interface1, interface2],
+    }
 
 
 @patch(

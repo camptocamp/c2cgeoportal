@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2024, Camptocamp SA
+# Copyright (c) 2012-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -98,7 +98,8 @@ class _BaseCallback:
             setattr(obj, last_update_user, request.user.id)
 
     def _get_geometry_check_base_query(
-        self, request: pyramid.request.Request,
+        self,
+        request: pyramid.request.Request,
     ) -> sqlalchemy.orm.query.RowReturningQuery[tuple[int]]:
         from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
             Layer,

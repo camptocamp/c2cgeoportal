@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2024, Camptocamp SA
+# Copyright (c) 2017-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -112,7 +112,9 @@ class LayerTreeViews:
                 label=_("Edit"),
                 icon="glyphicon glyphicon-pencil",
                 url=self._request.route_url(
-                    "c2cgeoform_item", table=itemtypes_tables[item.item_type], id=item.id,
+                    "c2cgeoform_item",
+                    table=itemtypes_tables[item.item_type],
+                    id=item.id,
                 ),
             ),
         )
@@ -155,7 +157,9 @@ class LayerTreeViews:
                 label=_("Duplicate"),
                 icon="glyphicon glyphicon-duplicate",
                 url=self._request.route_url(
-                    "c2cgeoform_item_duplicate", table=itemtypes_tables[item.item_type], id=item.id,
+                    "c2cgeoform_item_duplicate",
+                    table=itemtypes_tables[item.item_type],
+                    id=item.id,
                 ),
             ),
         )

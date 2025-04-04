@@ -164,7 +164,8 @@ class Login:
                                     "two_factor_enable": self.two_factor_auth,
                                     "two_factor_totp_secret": user.tech_data["2fa_totp_secret"],
                                     "otp_uri": pyotp.TOTP(user.tech_data["2fa_totp_secret"]).provisioning_uri(
-                                        user.email, issuer_name=self.two_factor_issuer_name,
+                                        user.email,
+                                        issuer_name=self.two_factor_issuer_name,
                                     ),
                                 },
                             ),
@@ -233,7 +234,8 @@ class Login:
                 user.tech_data["consecutive_failed"] = "0"
             user.tech_data["consecutive_failed"] = str(int(user.tech_data["consecutive_failed"]) + 1)
             if int(user.tech_data["consecutive_failed"]) >= self.request.registry.settings.get(
-                "authentication", {},
+                "authentication",
+                {},
             ).get("max_consecutive_failures", sys.maxsize):
                 user.deactivated = True
                 user.tech_data["consecutive_failed"] = "0"
@@ -308,7 +310,10 @@ class Login:
 
         headers.append(("Content-Type", "text/json"))
         return set_common_headers(
-            self.request, "login", Cache.PRIVATE_NO, response=Response("true", headers=headers),
+            self.request,
+            "login",
+            Cache.PRIVATE_NO,
+            response=Response("true", headers=headers),
         )
 
     def _user(self, user: static.User | None = None) -> dict[str, Any]:
@@ -645,7 +650,8 @@ class Login:
         remember_object = oidc.OidcRemember(self.request).remember(token_response, self.request.host)
 
         user: static.User | oidc.DynamicUser | None = self.request.get_user_from_remember(
-            remember_object, update_create_user=True,
+            remember_object,
+            update_create_user=True,
         )
         if user is not None:
             self.request.user_ = user

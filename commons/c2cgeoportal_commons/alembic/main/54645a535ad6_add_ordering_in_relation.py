@@ -1,4 +1,4 @@
-# Copyright (c) 2014-2024, Camptocamp SA
+# Copyright (c) 2014-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -80,5 +80,8 @@ def downgrade() -> None:
     op.drop_column("layergroup_treeitem", "ordering", schema=schema)
     op.drop_column("layergroup_treeitem", "id", schema=schema)
     op.create_primary_key(
-        "layergroup_treeitem_pkey", "layergroup_treeitem", ["treegroup_id", "treeitem_id"], schema=schema,
+        "layergroup_treeitem_pkey",
+        "layergroup_treeitem",
+        ["treegroup_id", "treeitem_id"],
+        schema=schema,
     )

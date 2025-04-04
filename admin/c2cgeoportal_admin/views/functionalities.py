@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2024, Camptocamp SA
+# Copyright (c) 2017-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -51,7 +51,8 @@ _list_field = partial(ListField, Functionality)
 
 
 def _translate_available_functionality(
-    available_functionality: dict[str, Any], request: pyramid.request.Request,
+    available_functionality: dict[str, Any],
+    request: pyramid.request.Request,
 ) -> dict[str, Any]:
     result = {}
     result.update(available_functionality)
