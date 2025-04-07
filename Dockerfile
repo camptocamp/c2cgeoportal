@@ -155,7 +155,7 @@ ENV VERSION=$VERSION
 RUN --mount=type=cache,target=/var/cache,sharing=locked \
     --mount=type=cache,target=/root/.cache \
     grep -r masterdev . || true \
-    && python3 -m pip install --disable-pip-version-check --no-deps \
+    && POETRY_DYNAMIC_VERSIONING_BYPASS=${VERSION} python3 -m pip install --disable-pip-version-check --no-deps \
         --editable=commons \
         --editable=geoportal \
         --editable=admin
