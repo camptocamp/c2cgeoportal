@@ -1,3 +1,12 @@
+##### 2.9.rc.121
+
+- Fix local tile generation [c2cgeoportal#11867](https://github.com/camptocamp/c2cgeoportal/pull/11867)
+- Update CI dependencies (2.9) [ngeo#9683](https://github.com/camptocamp/ngeo/pull/9683)
+- Update all patch/minor versions (2.9) [ngeo#9684](https://github.com/camptocamp/ngeo/pull/9684)
+- Update dependency c2cciutils to v1.7.3 (2.9) [ngeo#9685](https://github.com/camptocamp/ngeo/pull/9685)
+- Update webpack (2.9) [ngeo#9686](https://github.com/camptocamp/ngeo/pull/9686)
+- Audit Snyk check/fix 2.9 [ngeo#9687](https://github.com/camptocamp/ngeo/pull/9687)
+
 ##### 2.9.rc.120
 
 - Audit Dpkg 2.9 [c2cgeoportal#11865](https://github.com/camptocamp/c2cgeoportal/pull/11865)
