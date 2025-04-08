@@ -32,7 +32,7 @@ import xml.sax.handler  # nosec
 import xml.sax.xmlreader  # nosec
 from collections.abc import Callable
 from io import StringIO
-from typing import Any
+from typing import Any, TypeAlias
 from xml.sax.saxutils import XMLFilterBase, XMLGenerator  # nosec
 
 import defusedxml.expatreader
@@ -58,7 +58,8 @@ from c2cgeoportal_geoportal.lib.layers import (
 
 _CACHE_REGION = caching.get_region("std")
 _LOG = logging.getLogger(__name__)
-ContentMetadata = ContentMetadata111 | ContentMetadata130
+
+ContentMetadata: TypeAlias = ContentMetadata111 | ContentMetadata130
 
 
 @_CACHE_REGION.cache_on_arguments()
@@ -72,18 +73,20 @@ def wms_structure(request: pyramid.request.Request, wms_url: Url, host: str) -> 
         headers["Host"] = host
     try:
         response = requests.get(
-            url.url(), headers=headers, **request.registry.settings.get("http_options", {})
+            url.url(),
+            headers=headers,
+            **request.registry.settings.get("http_options", {}),
         )
     except Exception:
         _LOG.exception("Unable to GetCapabilities from wms_url '%s'", wms_url)
         raise HTTPBadGateway(  # pylint: disable=raise-missing-from
-            "Unable to GetCapabilities, see logs for details"
+            "Unable to GetCapabilities, see logs for details",
         )
 
     if not response.ok:
         raise HTTPBadGateway(
             f"GetCapabilities from wms_url {url.url()} return the error: "
-            f"{response.status_code:d} {response.reason}"
+            f"{response.status_code:d} {response.reason}",
         )
 
     try:
@@ -100,7 +103,6 @@ def wms_structure(request: pyramid.request.Request, wms_url: Url, host: str) -> 
 
         for layer in list(wms.contents.values()):
             _fill(layer.name, layer.parent)
-        return result
 
     except AttributeError:
         error = "WARNING! an error occurred while trying to read the mapfile and recover the themes."
@@ -114,9 +116,16 @@ def wms_structure(request: pyramid.request.Request, wms_url: Url, host: str) -> 
         _LOG.exception(error)
         raise HTTPBadGateway(error)  # pylint: disable=raise-missing-from
 
+    else:
+        return result
+
 
 def filter_capabilities(
-    request: pyramid.request.Request, content: str, wms: bool, url: Url, headers: dict[str, str]
+    request: pyramid.request.Request,
+    content: str,
+    wms: bool,
+    url: Url,
+    headers: dict[str, str],
 ) -> str:
     """Filter the WMS/WFS capabilities."""
     wms_structure_ = wms_structure(request, url, headers.get("Host"))
@@ -146,13 +155,16 @@ def filter_capabilities(
 
     parser = defusedxml.expatreader.create_parser(forbid_external=False)
     # skip inclusion of DTDs
-    parser.setFeature(xml.sax.handler.feature_external_ges, False)
-    parser.setFeature(xml.sax.handler.feature_external_pes, False)
+    parser.setFeature(xml.sax.handler.feature_external_ges, state=False)
+    parser.setFeature(xml.sax.handler.feature_external_pes, state=False)
 
     result = StringIO()
     downstream_handler = XMLGenerator(result, "utf-8")
     filter_handler = _CapabilitiesFilter(
-        parser, downstream_handler, "Layer" if wms else "FeatureType", layers_blacklist=private_layers
+        parser,
+        downstream_handler,
+        "Layer" if wms else "FeatureType",
+        layers_blacklist=private_layers,
     )
     filter_handler.parse(StringIO(content))
     return result.getvalue()
@@ -177,20 +189,23 @@ def filter_wfst_capabilities(content: str, wfs_url: Url, request: pyramid.reques
 
     parser = defusedxml.expatreader.create_parser(forbid_external=False)
     # skip inclusion of DTDs
-    parser.setFeature(xml.sax.handler.feature_external_ges, False)
-    parser.setFeature(xml.sax.handler.feature_external_pes, False)
+    parser.setFeature(xml.sax.handler.feature_external_ges, state=False)
+    parser.setFeature(xml.sax.handler.feature_external_pes, state=False)
 
     result = StringIO()
     downstream_handler = XMLGenerator(result, "utf-8")
     filter_handler = _CapabilitiesFilter(
-        parser, downstream_handler, "FeatureType", layers_whitelist=writable_layers
+        parser,
+        downstream_handler,
+        "FeatureType",
+        layers_whitelist=writable_layers,
     )
     filter_handler.parse(StringIO(content))
     return result.getvalue()
 
 
 class _Layer:
-    def __init__(self, self_hidden: bool = False):
+    def __init__(self, self_hidden: bool = False) -> None:
         self.accumulator: list[Callable[[], None]] = []
         self.hidden = True
         self.self_hidden = self_hidden
@@ -214,7 +229,7 @@ class _CapabilitiesFilter(XMLFilterBase):
         tag_name: str,
         layers_blacklist: set[str] | None = None,
         layers_whitelist: set[str] | None = None,
-    ):
+    ) -> None:
         XMLFilterBase.__init__(self, upstream)
         self._downstream = downstream
         self._accumulator: list[str] = []
@@ -257,22 +272,22 @@ class _CapabilitiesFilter(XMLFilterBase):
                 action()
             layer.accumulator = []
 
-    def setDocumentLocator(self, locator: xml.sax.xmlreader.Locator) -> None:  # noqa: ignore=N802
+    def setDocumentLocator(self, locator: xml.sax.xmlreader.Locator) -> None:  # noqa: N802
         self._downstream.setDocumentLocator(locator)
 
-    def startDocument(self) -> None:  # noqa: ignore=N802
+    def startDocument(self) -> None:  # noqa: N802
         self._downstream.startDocument()
 
-    def endDocument(self) -> None:  # noqa: ignore=N802
+    def endDocument(self) -> None:  # noqa: N802
         self._downstream.endDocument()
 
-    def startPrefixMapping(self, prefix: str | None, uri: str) -> None:  # noqa: ignore=N802
+    def startPrefixMapping(self, prefix: str | None, uri: str) -> None:  # noqa: N802
         self._downstream.startPrefixMapping(prefix, uri)
 
-    def endPrefixMapping(self, prefix: str | None) -> None:  # noqa: ignore=N802
+    def endPrefixMapping(self, prefix: str | None) -> None:  # noqa: N802
         self._downstream.endPrefixMapping(prefix)
 
-    def startElement(self, name: str, attrs: xml.sax.xmlreader.AttributesImpl) -> None:  # noqa: ignore=N802
+    def startElement(self, name: str, attrs: xml.sax.xmlreader.AttributesImpl) -> None:  # noqa: N802
         if name == self.tag_name:
             self.level += 1
             if self.layers_path:
@@ -291,7 +306,7 @@ class _CapabilitiesFilter(XMLFilterBase):
 
         self._do(lambda: self._downstream.startElement(name, attrs))
 
-    def endElement(self, name: str) -> None:  # noqa: ignore=N802
+    def endElement(self, name: str) -> None:  # noqa: N802
         self._do(lambda: self._downstream.endElement(name))
 
         if name == self.tag_name:
@@ -304,12 +319,15 @@ class _CapabilitiesFilter(XMLFilterBase):
         elif name == "Name":
             self.in_name = False
 
-    def startElementNS(  # noqa: ignore=N802
-        self, name: tuple[str, str], qname: str, attrs: xml.sax.xmlreader.AttributesNSImpl
+    def startElementNS(  # noqa: N802
+        self,
+        name: tuple[str, str],
+        qname: str,
+        attrs: xml.sax.xmlreader.AttributesNSImpl,
     ) -> None:
         self._do(lambda: self._downstream.startElementNS(name, qname, attrs))
 
-    def endElementNS(self, name: tuple[str, str], qname: str) -> None:  # noqa: ignore=N802
+    def endElementNS(self, name: tuple[str, str], qname: str) -> None:  # noqa: N802
         self._do(lambda: self._downstream.endElementNS(name, qname))
 
     def _keep_layer(self, layer_name: str) -> bool:
@@ -331,13 +349,13 @@ class _CapabilitiesFilter(XMLFilterBase):
 
         self._do(lambda: self._accumulator.append(content))
 
-    def ignorableWhitespace(self, chars: str) -> None:  # noqa: ignore=N802
+    def ignorableWhitespace(self, chars: str) -> None:  # noqa: N802
         self._do(lambda: self._accumulator.append(chars))
 
-    def processingInstruction(self, target: str, data: str) -> None:  # noqa: ignore=N802
+    def processingInstruction(self, target: str, data: str) -> None:  # noqa: N802
         self._do(lambda: self._downstream.processingInstruction(target, data))
 
-    def skippedEntity(self, name: str) -> None:  # noqa: ignore=N802
+    def skippedEntity(self, name: str) -> None:  # noqa: N802
         self._downstream.skippedEntity(name)
 
 

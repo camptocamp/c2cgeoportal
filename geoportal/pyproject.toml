@@ -1,0 +1,118 @@
+[project]
+name = "c2cgeoportal_geoportal"
+version = "0.0.0"
+description = "c2cgeoportal geoportal"
+readme = "README.md"
+readme-content-type = "text/markdown"
+requires-python = ">=3.10"
+license = {text = "BSD-2-Clause"}
+authors = [{name = "Camptocamp", email = "info@camptocamp.com"}]
+classifiers = [
+    "Development Status :: 6 - Mature",
+    "Environment :: Web Environment",
+    "Framework :: Pyramid",
+    "Intended Audience :: Other Audience",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Scientific/Engineering :: GIS",
+    "Typing :: Typed",
+]
+keywords = ["web", "gis", "geoportail", "c2cgeoportal", "geocommune", "pyramid"]
+dynamic = ["dependencies"]
+dependencies = [
+    "alembic",
+    "bottle",
+    "c2cgeoportal_commons[upgrade]",
+    "c2cwsgiutils",
+    "defusedxml",
+    "dogpile.cache>=0.6",
+    "Fiona",
+    "GeoAlchemy2",
+    "geojson",
+    "isodate",  # WMST support
+    "lingva",
+    "Mako",
+    "OWSLib>=0.6.0",
+    "papyrus",
+    "psycopg2",
+    "pycryptodome",
+    "pyotp",
+    "pyramid",
+    "pyramid_debugtoolbar",  # Needed by the development.ini
+    "pyramid_mako",  # to render the HTML files
+    "pyramid_multiauth",
+    "pyramid_tm",
+    "python-dateutil",
+    "PyYAML",
+    "rasterio",
+    "requests",
+    "redis",
+    "Shapely",
+    "SQLAlchemy",
+    "transaction",
+]
+
+[project.urls]
+Homepage = "https://github.com/camptocamp/c2cgeoportal/"
+Documentation = "https://camptocamp.github.io/c2cgeoportal/master/"
+Source = "https://github.com/camptocamp/c2cgeoportal/"
+
+[project.scripts]
+manage-users = "c2cgeoportal_geoportal.scripts.manage_users:main"
+c2cupgrade = "c2cgeoportal_geoportal.scripts.c2cupgrade:main"
+theme2fts = "c2cgeoportal_geoportal.scripts.theme2fts:main"
+create-demo-theme = "c2cgeoportal_geoportal.scripts.create_demo_theme:main"
+urllogin = "c2cgeoportal_geoportal.scripts.urllogin:main"
+pcreate = "c2cgeoportal_geoportal.scripts.pcreate:main"
+
+[project.entry-points."lingva.extractors"]
+geomapfish-theme = "c2cgeoportal_geoportal.lib.lingva_extractor:GeomapfishThemeExtractor"
+geomapfish-config = "c2cgeoportal_geoportal.lib.lingva_extractor:GeomapfishConfigExtractor"
+geomapfish-angular = "c2cgeoportal_geoportal.lib.lingva_extractor:GeomapfishAngularExtractor"
+
+[project.entry-points."plaster.loader_factory"]
+c2cgeoportal = "c2cgeoportal_geoportal.lib.loader:Loader"
+"c2cgeoportal+ini" = "c2cgeoportal_geoportal.lib.loader:Loader"
+"c2cgeoportal+egg" = "c2cgeoportal_geoportal.lib.loader:Loader"
+
+[project.entry-points."plaster.wsgi_loader_factory"]
+c2cgeoportal = "c2cgeoportal_geoportal.lib.loader:Loader"
+"c2cgeoportal+ini" = "c2cgeoportal_geoportal.lib.loader:Loader"
+"c2cgeoportal+egg" = "c2cgeoportal_geoportal.lib.loader:Loader"
+
+[tool.poetry]
+packages = [{ include = "c2cgeoportal_geoportal" }]
+include = ["c2cgeoportal_geoportal/py.typed"]
+exclude = ["tests.*"]
+
+[tool.entry-points."pyramid.scaffold"]
+c2cgeoportal_create = "c2cgeoportal_geoportal.scaffolds:TemplateCreate"
+c2cgeoportal_update = "c2cgeoportal_geoportal.scaffolds:TemplateUpdate"
+c2cgeoportal_advance_create = "c2cgeoportal_geoportal.scaffolds:TemplateAdvanceCreate"
+c2cgeoportal_advance_update = "c2cgeoportal_geoportal.scaffolds:TemplateAdvanceUpdate"
+
+[tool.poetry-dynamic-versioning]
+enable = true
+vcs = "git"
+pattern = "^(?P<base>\\d+(\\.\\d+)*)"
+format-jinja = """
+{%- if env.get("VERSION_TYPE") == "default_branch" -%}
+{{serialize_pep440(bump_version(base, 1), dev=distance)}}
+{%- elif env.get("VERSION_TYPE") == "stabilization_branch" -%}
+{{serialize_pep440(bump_version(base, 2), dev=distance)}}
+{%- elif distance == 0 -%}
+{{serialize_pep440(base)}}
+{%- else -%}
+{{serialize_pep440(bump_version(base), dev=distance)}}
+{%- endif -%}
+"""
+
+[tool.poetry-plugin-tweak-dependencies-version]
+default = "present"
+
+[build-system]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning", "poetry-plugin-tweak-dependencies-version", "poetry-plugin-drop-python-upper-constraint"]
+build-backend = "poetry.core.masonry.api"

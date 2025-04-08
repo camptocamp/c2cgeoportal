@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2024, Camptocamp SA
+# Copyright (c) 2019-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -59,7 +59,7 @@ def locale(request: pyramid.request.Request) -> pyramid.response.Response:
         request.static_url(
             f"/etc/geomapfish/static/{request.locale_name}.json",
             _query={"cache": get_cache_version()},
-        )
+        ),
     )
     set_common_headers(request, "api", Cache.PUBLIC_NO, response=response)
     return response
@@ -79,7 +79,7 @@ def localepot(request: pyramid.request.Request) -> pyramid.response.Response:
     # The following code is a modified version of the main function of this file:
     # https://github.com/wichert/lingva/blob/master/src/lingva/extract.py
 
-    global _INITIALIZED  # pylint: disable=global-statement
+    global _INITIALIZED  # pylint: disable=global-statement # noqa: PLW0603
     if not _INITIALIZED:
         register_extractors()
         register_babel_plugins()

@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2023, Camptocamp SA
+# Copyright (c) 2018-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -41,7 +41,7 @@ from c2cgeoportal_geoportal.views.raster import Raster
 class MemoryCacheSizeCollector(prometheus_client.registry.Collector):
     """Get the memory used by the cache."""
 
-    def __init__(self, all_: bool = False):
+    def __init__(self, all_: bool = False) -> None:
         super().__init__()
         self.all = all_
 

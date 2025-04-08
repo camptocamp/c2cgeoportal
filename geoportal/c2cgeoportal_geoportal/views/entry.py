@@ -47,7 +47,7 @@ _CACHE_REGION = get_region("std")
 class Entry:
     """All the entry points views."""
 
-    def __init__(self, request: pyramid.request.Request):
+    def __init__(self, request: pyramid.request.Request) -> None:
         self.request = request
 
     @view_config(route_name="testi18n", renderer="testi18n.html")  # type: ignore[misc]
@@ -58,7 +58,7 @@ class Entry:
     def get_ngeo_index_vars(self) -> dict[str, Any]:
         set_common_headers(self.request, "index", Cache.PUBLIC_NO, content_type="text/html")
         # Force urllogin to be converted to cookie when requesting the main HTML page
-        self.request.user  # noqa
+        self.request.user  # noqa: B018 # pylint: disable=pointless-statement
         return {}
 
     @staticmethod
@@ -120,7 +120,7 @@ def canvas_view(request: pyramid.request.Request, interface_config: dict[str, An
         [
             f'<link href="{request.static_url(css)}" rel="stylesheet" crossorigin="anonymous">'
             for css in css_files
-        ]
+        ],
     )
 
     set_common_headers(request, "index", Cache.PUBLIC_NO, content_type="text/html")
@@ -138,14 +138,15 @@ def canvas_view(request: pyramid.request.Request, interface_config: dict[str, An
 <meta name="interface" content="{interface_config["name"]}">
 {css}""",
         "footer": "\n    ".join(
-            [f'<script src="{request.static_url(js)}" crossorigin="anonymous"></script>' for js in js_files]
+            [f'<script src="{request.static_url(js)}" crossorigin="anonymous"></script>' for js in js_files],
         ),
         "spinner": spinner,
     }
 
 
 def custom_view(
-    request: pyramid.request.Request, interface_config: dict[str, Any]
+    request: pyramid.request.Request,
+    interface_config: dict[str, Any],
 ) -> pyramid.response.Response:
     """Get view used as entry point of a canvas interface."""
     set_common_headers(request, "index", Cache.PUBLIC_NO, content_type="text/html")
@@ -158,11 +159,11 @@ def custom_view(
         html = BeautifulSoup(html_file, "html.parser")
 
     meta = html.find("meta", attrs={"name": "interface"})
-    if meta is not None:
-        meta["content"] = interface_config["name"]
+    if meta and hasattr(meta, "attrs"):
+        meta.attrs["content"] = interface_config["name"]
     meta = html.find("meta", attrs={"name": "dynamicUrl"})
-    if meta is not None:
-        meta["content"] = request.route_url("dynamic")
+    if meta and hasattr(meta, "attrs"):
+        meta.attrs["content"] = request.route_url("dynamic")
 
     if hasattr(request, "custom_interface_transformer"):
         request.custom_interface_transformer(html, interface_config)

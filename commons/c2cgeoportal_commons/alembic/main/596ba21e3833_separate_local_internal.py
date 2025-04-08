@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2024, Camptocamp SA
+# Copyright (c) 2016-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -54,7 +54,7 @@ def upgrade() -> None:
         UPDATE "{schema}".ogc_server
         SET url = 'config://internal/mapserv'
         WHERE url = 'config://local/mapserv'
-        """
+        """,
     )
 
 
@@ -67,5 +67,5 @@ def downgrade() -> None:
         UPDATE "{schema}".ogc_server
         SET url = 'config://local/mapserv'
         WHERE url = 'config://internal/mapserv'
-        """
+        """,
     )

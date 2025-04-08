@@ -3,7 +3,9 @@
 import requests
 
 response = requests.get(
-    "http://qgisserver", params={"SERVICE": "WMS", "REQUEST": "GetCapabilities"}, timeout=10
+    "http://qgisserver",
+    params={"SERVICE": "WMS", "REQUEST": "GetCapabilities"},
+    timeout=10,
 )
 
 assert response.ok, f"{response.status_code}\n{response.text}"
@@ -12,7 +14,9 @@ assert "private_layer" not in response.text, response.text
 
 
 response = requests.get(
-    "http://qgisserver", params={"SERVICE": "WMS", "REQUEST": "GetCapabilities", "ROLE_IDS": "99"}, timeout=10
+    "http://qgisserver",
+    params={"SERVICE": "WMS", "REQUEST": "GetCapabilities", "ROLE_IDS": "99"},
+    timeout=10,
 )
 
 assert response.ok, f"{response.status_code}\n{response.text}"

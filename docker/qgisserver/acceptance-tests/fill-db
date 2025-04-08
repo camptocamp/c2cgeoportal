@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# pylint: disable=invalid-name
 
 
 import sqlalchemy
@@ -60,8 +61,8 @@ dbsession.execute(
 INSERT INTO geodata.testpoint
 (name, city, country, geom)
 VALUES ('test', 'test', 'test', ST_GeomFromText('POINT(500000 80000)', 21781))
-"""
-    )
+""",
+    ),
 )
 
 transaction.commit()

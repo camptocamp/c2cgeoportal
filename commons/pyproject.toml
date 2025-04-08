@@ -1,0 +1,64 @@
+[project]
+name = "c2cgeoportal_commons"
+version = "0.0.0"
+description = "c2cgeoportal commons"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "BSD License"}
+authors = [
+    {name = "Camptocamp", email = "info@camptocamp.com"}
+]
+classifiers = [
+    "Development Status :: 6 - Mature",
+    "Environment :: Web Environment",
+    "Framework :: Pyramid",
+    "Intended Audience :: Other Audience",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Scientific/Engineering :: GIS",
+    "Typing :: Typed"
+]
+keywords = ["web", "gis", "geoportail", "c2cgeoportal", "geocommune", "pyramid"]
+dependencies = [
+    "GeoAlchemy2",
+    "papyrus",
+    "pyramid",
+    "sqlalchemy",
+    "transaction",
+    "zope.event",
+]
+
+[project.optional-dependencies]
+testing = ["transaction"]
+upgrade = ["alembic", "psycopg2"]
+broadcast = ["c2cwsgiutils"]
+
+[tool.poetry]
+packages = [{ include = "c2cgeoportal_commons" }]
+include = ["c2cgeoportal_commons/py.typed"]
+
+[tool.poetry-dynamic-versioning]
+enable = true
+vcs = "git"
+pattern = "^(?P<base>\\d+(\\.\\d+)*)"
+format-jinja = """
+{%- if env.get("VERSION_TYPE") == "default_branch" -%}
+{{serialize_pep440(bump_version(base, 1), dev=distance)}}
+{%- elif env.get("VERSION_TYPE") == "stabilization_branch" -%}
+{{serialize_pep440(bump_version(base, 2), dev=distance)}}
+{%- elif distance == 0 -%}
+{{serialize_pep440(base)}}
+{%- else -%}
+{{serialize_pep440(bump_version(base), dev=distance)}}
+{%- endif -%}
+"""
+
+[tool.poetry-plugin-tweak-dependencies-version]
+default = "present"
+
+[build-system]
+requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning", "poetry-plugin-tweak-dependencies-version", "poetry-plugin-drop-python-upper-constraint"]
+build-backend = "poetry.core.masonry.api"

@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2024, Camptocamp SA
+# Copyright (c) 2013-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -34,14 +34,14 @@ from tests import DummyRequest
 
 
 class TestLocalNegociator(TestCase):
-    def test_lang_param(self):
+    def test_lang_param(self) -> None:
         from c2cgeoportal_geoportal import locale_negotiator
 
         request = DummyRequest(params=dict(lang="fr"))
         lang = locale_negotiator(request)
         assert lang == "fr"
 
-    def test_lang_is_not_available(self):
+    def test_lang_is_not_available(self) -> None:
         from c2cgeoportal_geoportal import locale_negotiator
         from pyramid.request import Request
         from pyramid.threadlocal import get_current_registry
@@ -54,7 +54,7 @@ class TestLocalNegociator(TestCase):
         lang = locale_negotiator(request)
         assert lang == "de"
 
-    def test_lang_is_available(self):
+    def test_lang_is_available(self) -> None:
         from c2cgeoportal_geoportal import locale_negotiator
         from pyramid.request import Request
         from pyramid.threadlocal import get_current_registry

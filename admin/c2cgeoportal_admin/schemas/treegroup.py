@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2024, Camptocamp SA
+# Copyright (c) 2018-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -57,7 +57,7 @@ ITEM_TYPE_ROUTE_MAP = {
 class ChildSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
     """Schema of the child nodes."""
 
-    def objectify(self, dict_, context=None):
+    def objectify(self, dict_: Any, context: Any = None) -> Any:
         if dict_.get("id", None):
             context = self.dbsession.query(LayergroupTreeitem).get(dict_["id"])
         context = super().objectify(dict_, context)
@@ -66,7 +66,9 @@ class ChildSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
 
 
 def treeitems(
-    node: TreeGroup, kw: dict[str, pyramid.request.Request], only_groups: bool = False
+    node: TreeGroup,
+    kw: dict[str, pyramid.request.Request],
+    only_groups: bool = False,
 ) -> list[dict[str, Any]]:
     """Get a serializable representation of the tree items."""
     del node
@@ -99,8 +101,8 @@ def treeitems(
         relation_alias = aliased(LayergroupTreeitem, name="relation")
         search_ancestors = search_ancestors.union_all(
             dbsession.query(relation_alias.treegroup_id).filter(  # type: ignore[arg-type]
-                relation_alias.treeitem_id == search_alias.c.treegroup_id
-            )
+                relation_alias.treeitem_id == search_alias.c.treegroup_id,
+            ),
         )
         ancestors = dbsession.query(search_ancestors.c.treegroup_id).subquery("ancestors")
 
@@ -121,23 +123,25 @@ def treeitems(
     ]
 
 
-def children_validator(node, cstruct):
+def children_validator(node: Any, cstruct: Any) -> None:
     """Get the validator on the children nodes."""
     for dict_ in cstruct:
         if dict_["treeitem_id"] not in [item["id"] for item in node.candidates]:
             raise colander.Invalid(
                 node,
                 _("Value {} does not exist in table {} or is not allowed to avoid cycles").format(
-                    dict_["treeitem_id"], TreeItem.__tablename__
+                    dict_["treeitem_id"],
+                    TreeItem.__tablename__,
                 ),
             )
 
 
-def base_deferred_parent_id_validator(node, kw, model):
+def base_deferred_parent_id_validator(node: Any, kw: Any, model: Any) -> colander.deferred:
     """Get the validator on the parent node ID."""
     del node
 
-    def validator(node, cstruct):
+    def validator(node: Any, cstruct: Any) -> None:
+        """Validate the parent ID."""
         if kw["dbsession"].query(model).filter(model.id == cstruct).count() == 0:
             raise colander.Invalid(node, f"Value {cstruct} does not exist in table {model.__tablename__}")
 
@@ -152,7 +156,7 @@ def treeitem_edit_url(request: pyramid.request.Request, treeitem: TreeGroup) -> 
     if table is None:
         _LOG.warning("%s not found in ITEM_TYPE_ROUTE_MAP", treeitem.item_type)
         return None
-    return request.route_url(  # type: ignore
+    return request.route_url(  # type: ignore[no-any-return]
         "c2cgeoform_item",
         table=ITEM_TYPE_ROUTE_MAP[treeitem.item_type],
         id=treeitem.id,
@@ -182,7 +186,7 @@ def children_schema_node(only_groups: bool = False) -> colander.SequenceSchema:
                     <p>The ordered children elements.</p>
                     <hr>
                 </div>
-                """
+                """,
             ),
         ),
         candidates=colander.deferred(partial(treeitems, only_groups=only_groups)),

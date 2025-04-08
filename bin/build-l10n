@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
+# pylint: disable=invalid-name
 
 import argparse
 import glob
 import os
-import shutil
 import subprocess  # nosec
-import subprocess
 
 
-def main() -> None:
+def _main() -> None:
     parser = argparse.ArgumentParser(description="Generate the l10n for a project.")
     parser.add_argument("package", help="the package name")
     parser.add_argument("--suffix", action="append", help="a suffix added to the po and mo files")
@@ -17,7 +16,7 @@ def main() -> None:
 
     all_suffix = [""] if args.suffix is None else ["", *args.suffix]
 
-    package_base_path = f"/tmp/config/geoportal/{args.package}_geoportal"  # nosec
+    package_base_path = f"/tmp/config/geoportal/{args.package}_geoportal"  # noqa: S108 # nosec
     base_path = f"{package_base_path}/locale"
     dest_package = "geomapfishapp" if os.environ.get("SIMPLE", "false").lower() == "true" else args.package
 
@@ -27,7 +26,7 @@ def main() -> None:
                 if args.dry_run:
                     print(
                         f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po => "
-                        f"{base_path}/{lang}/LC_MESSAGES/{dest_package}_geoportal-client{suffix}.mo"
+                        f"{base_path}/{lang}/LC_MESSAGES/{dest_package}_geoportal-client{suffix}.mo",
                     )
                 else:
                     subprocess.run(
@@ -45,7 +44,7 @@ def main() -> None:
                 if args.dry_run:
                     print(
                         f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-server{suffix}.po => "
-                        f"{base_path}/{lang}/LC_MESSAGES/{dest_package}_geoportal-server{suffix}.mo"
+                        f"{base_path}/{lang}/LC_MESSAGES/{dest_package}_geoportal-server{suffix}.mo",
                     )
                 else:
                     subprocess.run(
@@ -64,11 +63,13 @@ def main() -> None:
                     print(
                         f"/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/locale/{lang}/LC_MESSAGES/ngeo.po, "
                         f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-client{suffix}.po => "
-                        f"{package_base_path}/static/{lang}{suffix}.json"
+                        f"{package_base_path}/static/{lang}{suffix}.json",
                     )
                 else:
                     with open(
-                        f"{package_base_path}/static/{lang}{suffix}.json", "w", encoding="utf-8"
+                        f"{package_base_path}/static/{lang}{suffix}.json",
+                        "w",
+                        encoding="utf-8",
                     ) as out:
                         subprocess.run(
                             [
@@ -89,4 +90,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    _main()

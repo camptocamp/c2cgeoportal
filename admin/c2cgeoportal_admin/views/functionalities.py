@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2024, Camptocamp SA
+# Copyright (c) 2017-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -51,12 +51,13 @@ _list_field = partial(ListField, Functionality)
 
 
 def _translate_available_functionality(
-    available_functionality: dict[str, Any], request: pyramid.request.Request
+    available_functionality: dict[str, Any],
+    request: pyramid.request.Request,
 ) -> dict[str, Any]:
     result = {}
     result.update(available_functionality)
     result["description"] = request.localizer.translate(
-        _(available_functionality.get("description", "").strip())
+        _(available_functionality.get("description", "").strip()),
     )
     return result
 
@@ -77,7 +78,7 @@ base_schema = GeoFormSchemaNode(
 class FunctionalityViews(LoggedViews[Functionality]):
     """The functionality administration view."""
 
-    _list_fields = [_list_field("id"), _list_field("name"), _list_field("description"), _list_field("value")]
+    _list_fields = [_list_field("id"), _list_field("name"), _list_field("description"), _list_field("value")]  # noqa: RUF012
     _id_field = "id"
     _model = Functionality
     _base_schema = base_schema

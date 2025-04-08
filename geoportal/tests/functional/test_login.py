@@ -49,7 +49,7 @@ _LOG = logging.getLogger(__name__)
 
 
 class TestLoginView(TestCase):
-    def setup_method(self, _):
+    def setup_method(self, _) -> None:
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None  # pylint: disable=invalid-name
@@ -79,7 +79,7 @@ class TestLoginView(TestCase):
 
         transaction.commit()
 
-    def teardown_method(self, _):
+    def teardown_method(self, _) -> None:
         testing.tearDown()
 
         cleanup_db()
@@ -105,7 +105,7 @@ class TestLoginView(TestCase):
     # login/logout tests
     #
 
-    def test_login_success(self):
+    def test_login_success(self) -> None:
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
         from c2cgeoportal_geoportal.views.login import Login
@@ -115,7 +115,8 @@ class TestLoginView(TestCase):
         user.is_password_changed = True
 
         request = self._create_request_obj(
-            params={"came_from": "/came_from"}, POST={"login": "__test_user1", "password": "__test_user1"}
+            params={"came_from": "/came_from"},
+            POST={"login": "__test_user1", "password": "__test_user1"},
         )
         response = Login(request).login()
         assert response.status_int == 302, response.body
@@ -138,7 +139,7 @@ class TestLoginView(TestCase):
         login = Login(request)
         self.assertRaises(HTTPUnauthorized, login.login)
 
-    def test_logout_no_auth(self):
+    def test_logout_no_auth(self) -> None:
         from c2cgeoportal_geoportal.views.login import Login
         from pyramid.httpexceptions import HTTPUnauthorized
 
@@ -147,7 +148,7 @@ class TestLoginView(TestCase):
         with pytest.raises(HTTPUnauthorized):
             login.logout()
 
-    def test_logout(self):
+    def test_logout(self) -> None:
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
         from c2cgeoportal_geoportal.views.login import Login
@@ -165,7 +166,7 @@ class TestLoginView(TestCase):
         assert response.status_int == 200, response.body
         assert response.body.decode("utf-8") == "true"
 
-    def test_reset_password(self):
+    def test_reset_password(self) -> None:
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
         from c2cgeoportal_geoportal.views.login import Login
@@ -191,7 +192,7 @@ class TestLoginView(TestCase):
                 "oldPassword": password,
                 "newPassword": "1234",
                 "confirmNewPassword": "1234",
-            }
+            },
         )
         response = Login(request).change_password()
 
@@ -206,11 +207,11 @@ class TestLoginView(TestCase):
         }
 
         user = DBSession.query(User).filter(User.username == "__test_user1").first()
-        self.assertIsNone(user.temp_password)
-        self.assertIsNotNone(user.password)
-        self.assertNotEqual(len(user.password), 0)
+        assert user.temp_password is None
+        assert user.password is not None
+        assert len(user.password) != 0
 
-    def test_change_password_no_params(self):
+    def test_change_password_no_params(self) -> None:
         from c2cgeoportal_geoportal.views.login import Login
         from pyramid.httpexceptions import HTTPBadRequest
 
@@ -218,7 +219,7 @@ class TestLoginView(TestCase):
         login = Login(request)
         self.assertRaises(HTTPBadRequest, login.change_password)
 
-    def test_change_password_wrong_old(self):
+    def test_change_password_wrong_old(self) -> None:
         from c2cgeoportal_geoportal.views.login import Login
         from pyramid.httpexceptions import HTTPUnauthorized
 
@@ -231,7 +232,7 @@ class TestLoginView(TestCase):
         with pytest.raises(HTTPUnauthorized):
             login.change_password()
 
-    def test_change_password_different(self):
+    def test_change_password_different(self) -> None:
         from c2cgeoportal_geoportal.views.login import Login
         from pyramid.httpexceptions import HTTPBadRequest
 
@@ -244,7 +245,7 @@ class TestLoginView(TestCase):
         with pytest.raises(HTTPBadRequest):
             login.change_password()
 
-    def test_change_password_good_is_password_changed(self):
+    def test_change_password_good_is_password_changed(self) -> None:
         import crypt
 
         from c2cgeoportal_geoportal.views.login import Login
@@ -266,12 +267,12 @@ class TestLoginView(TestCase):
         assert user.is_password_changed is False
         assert user._password == crypt.crypt("__test_user1", user._password)
         login = Login(request)
-        self.assertNotEqual(login.change_password(), None)
+        assert login.change_password() is not None
         user = DBSession.query(User).filter_by(username="__test_user1").one()
         assert user.is_password_changed is True
         assert user._password == crypt.crypt("1234", user._password)
 
-    def test_login_0(self):
+    def test_login_0(self) -> None:
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_geoportal.views.login import Login
 
@@ -312,7 +313,7 @@ class TestLoginView(TestCase):
         class R:
             id = 123
 
-            def __init__(self, name, functionalities):
+            def __init__(self, name, functionalities) -> None:
                 self.name = name
                 self.functionalities = functionalities
 
@@ -323,7 +324,7 @@ class TestLoginView(TestCase):
             email = "info@example.com"
             settings_role = None
 
-            def __init__(self, role="__test_role", functionalities=None):
+            def __init__(self, role="__test_role", functionalities=None) -> None:
                 if functionalities is None:
                     functionalities = []
                 self.roles = [R(role, functionalities)]
@@ -363,7 +364,7 @@ class TestLoginView(TestCase):
             == "Origin, Access-Control-Request-Headers, Cookie, Authorization"
         )
 
-    def test_intranet(self):
+    def test_intranet(self) -> None:
         from c2cgeoportal_geoportal.views.login import Login
 
         from tests import DummyRequest
@@ -373,22 +374,26 @@ class TestLoginView(TestCase):
         request.user = None
 
         login = Login(request)
-        self.assertEqual(
-            login.loginuser(),
-            {"is_intranet": False, "login_type": "local", "functionalities": {}, "two_factor_enable": False},
-        )
+        assert login.loginuser() == {
+            "is_intranet": False,
+            "login_type": "local",
+            "functionalities": {},
+            "two_factor_enable": False,
+        }
 
         request.client_addr = "192.168.1.20"
         login = Login(request)
-        self.assertEqual(
-            login.loginuser(),
-            {"is_intranet": True, "login_type": "local", "functionalities": {}, "two_factor_enable": False},
-        )
+        assert login.loginuser() == {
+            "is_intranet": True,
+            "login_type": "local",
+            "functionalities": {},
+            "two_factor_enable": False,
+        }
 
         class G:
             id = 123
 
-            def __init__(self, name, functionalities):
+            def __init__(self, name, functionalities) -> None:
                 self.name = name
                 self.functionalities = functionalities
 
@@ -398,7 +403,7 @@ class TestLoginView(TestCase):
             is_password_changed = True
             email = "info@example.com"
 
-            def __init__(self, role="__test_role", functionalities=None):
+            def __init__(self, role="__test_role", functionalities=None) -> None:
                 if functionalities is None:
                     functionalities = []
                 self.roles = [G(role, functionalities)]
@@ -407,35 +412,29 @@ class TestLoginView(TestCase):
 
         login = Login(request)
         request.client_addr = "192.168.2.20"
-        self.assertEqual(
-            login.loginuser(),
-            {
-                "username": "Test User",
-                "email": "info@example.com",
-                "functionalities": {},
-                "is_intranet": False,
-                "login_type": "local",
-                "roles": [{"id": 123, "name": "__test_role"}],
-                "two_factor_enable": False,
-            },
-        )
+        assert login.loginuser() == {
+            "username": "Test User",
+            "email": "info@example.com",
+            "functionalities": {},
+            "is_intranet": False,
+            "login_type": "local",
+            "roles": [{"id": 123, "name": "__test_role"}],
+            "two_factor_enable": False,
+        }
 
         login = Login(request)
         request.client_addr = "192.168.1.20"
-        self.assertEqual(
-            login.loginuser(),
-            {
-                "username": "Test User",
-                "email": "info@example.com",
-                "functionalities": {},
-                "is_intranet": True,
-                "login_type": "local",
-                "roles": [{"id": 123, "name": "__test_role"}],
-                "two_factor_enable": False,
-            },
-        )
+        assert login.loginuser() == {
+            "username": "Test User",
+            "email": "info@example.com",
+            "functionalities": {},
+            "is_intranet": True,
+            "login_type": "local",
+            "roles": [{"id": 123, "name": "__test_role"}],
+            "two_factor_enable": False,
+        }
 
-    def test_deactivated_user(self):
+    def test_deactivated_user(self) -> None:
         from c2cgeoportal_geoportal.views.login import Login
 
         request = self._create_request_obj(user="__test_user3")

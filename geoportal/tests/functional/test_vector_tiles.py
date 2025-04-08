@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2024, Camptocamp SA
+# Copyright (c) 2021-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -43,16 +43,28 @@ def test_data(dbsession_old, transact_old):
 
     points = {
         "p1": PointTest(
-            geom=WKTElement("POINT(599910 199955)", srid=21781), name="foo", city="Lausanne", country="Swiss"
+            geom=WKTElement("POINT(599910 199955)", srid=21781),
+            name="foo",
+            city="Lausanne",
+            country="Swiss",
         ),
         "p2": PointTest(
-            geom=WKTElement("POINT(599910 200045)", srid=21781), name="bar", city="Chambéry", country="France"
+            geom=WKTElement("POINT(599910 200045)", srid=21781),
+            name="bar",
+            city="Chambéry",
+            country="France",
         ),
         "p3": PointTest(
-            geom=WKTElement("POINT(600090 200045)", srid=21781), name="éàè", city="Paris", country="France"
+            geom=WKTElement("POINT(600090 200045)", srid=21781),
+            name="éàè",
+            city="Paris",
+            country="France",
         ),
         "p4": PointTest(
-            geom=WKTElement("POINT(600090 199955)", srid=21781), name="123", city="Londre", country="UK"
+            geom=WKTElement("POINT(600090 199955)", srid=21781),
+            name="123",
+            city="Londre",
+            country="UK",
         ),
     }
     dbsession_old.add_all(points.values())
@@ -72,20 +84,20 @@ def test_data(dbsession_old, transact_old):
                 WHERE ST_Intersects("geom", {envelope})
             ) AS q
             """,
-        )
+        ),
     }
     dbsession_old.add_all(layers.values())
 
     dbsession_old.flush()
 
-    yield {
+    return {
         "layers": layers,
         "points": points,
     }
 
 
 class TestVectorTilesViews:
-    def test_vector_tiles_success(self, dummy_request, test_data):
+    def test_vector_tiles_success(self, dummy_request, test_data) -> None:
         from c2cgeoportal_geoportal.views.vector_tiles import VectorTilesViews
 
         request = dummy_request
@@ -102,7 +114,7 @@ class TestVectorTilesViews:
         data = mapbox_vector_tile.decode(resp.body)
         assert data["mvt_routes"]["features"][0]["properties"]["city"] == test_data["points"]["p1"].city
 
-    def test_vector_tiles_layer_not_found(self, dummy_request, test_data):
+    def test_vector_tiles_layer_not_found(self, dummy_request, test_data) -> None:
         from c2cgeoportal_geoportal.views.vector_tiles import VectorTilesViews
 
         request = dummy_request

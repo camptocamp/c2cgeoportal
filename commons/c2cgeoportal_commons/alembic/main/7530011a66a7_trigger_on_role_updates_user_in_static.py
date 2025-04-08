@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2024, Camptocamp SA
+# Copyright (c) 2018-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -62,7 +62,7 @@ def upgrade() -> None:
         RETURN NEW;
         END;
         $$
-        LANGUAGE plpgsql"""
+        LANGUAGE plpgsql""",
     )
 
 
@@ -82,5 +82,5 @@ END IF;
 RETURN NEW;
 END;
 $$
-LANGUAGE plpgsql"""
+LANGUAGE plpgsql""",
     )

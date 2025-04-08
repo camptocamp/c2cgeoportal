@@ -48,13 +48,13 @@ CACHE_REGION = get_region("std")
 class DynamicView:
     """The dynamic vies that provide the configuration of the client application."""
 
-    def __init__(self, request: pyramid.request.Request):
+    def __init__(self, request: pyramid.request.Request) -> None:
         self.request = request
         self.settings = request.registry.settings
         self.interfaces_config = self.settings["interfaces_config"]
 
     def get(self, value: dict[str, Any], interface: str) -> dict[str, Any]:
-        return cast(dict[str, Any], self.interfaces_config.get(interface, {}).get(value, {}))
+        return cast("dict[str, Any]", self.interfaces_config.get(interface, {}).get(value, {}))
 
     @CACHE_REGION.cache_on_arguments()
     def _fulltextsearch_groups(self) -> list[str]:
@@ -100,13 +100,13 @@ class DynamicView:
                 name: dynamic[value]
                 for name, value in interface_config.get("dynamic_constants", {}).items()
                 if value is not None
-            }
+            },
         )
         constants.update(
             {
                 name: self.request.static_url(static_["name"]) + static_.get("append", "")
                 for name, static_ in interface_config.get("static", {}).items()
-            }
+            },
         )
 
         for constant, config in interface_config.get("routes", {}).items():
@@ -116,7 +116,10 @@ class DynamicView:
             for name, dyn in config.get("dynamic_params", {}).items():
                 params[name] = dynamic[dyn]
             constants[constant] = self.request.route_url(
-                route_name, *config.get("elements", []), _query=params, **config.get("kw", {})
+                route_name,
+                *config.get("elements", []),
+                _query=params,
+                **config.get("kw", {}),
             )
 
         return constants
@@ -133,7 +136,7 @@ class DynamicView:
             interface_separator = "', '"
             raise HTTPNotFound(
                 f"Interface '{interface_name}' doesn't exist in the 'interfaces_config', "
-                f"available interfaces are: '{interface_separator.join(self.interfaces_config.keys())}'."
+                f"available interfaces are: '{interface_separator.join(self.interfaces_config.keys())}'.",
             )
 
         interface_config = self.interfaces_config[interface_name]
@@ -183,26 +186,31 @@ class DynamicView:
                     theme = match.group(1)
             if theme is not None:
                 no_redirect_url = self.request.route_url(
-                    interface_config["redirect_interface"] + "theme", themes=theme, _query=no_redirect_query
+                    interface_config["redirect_interface"] + "theme",
+                    themes=theme,
+                    _query=no_redirect_query,
                 )
                 url = self.request.route_url(
-                    interface_config["redirect_interface"] + "theme", themes=theme, _query=query
+                    interface_config["redirect_interface"] + "theme",
+                    themes=theme,
+                    _query=query,
                 ).replace("+", "%20")
             else:
                 no_redirect_url = self.request.route_url(
-                    interface_config["redirect_interface"], _query=no_redirect_query
+                    interface_config["redirect_interface"],
+                    _query=no_redirect_query,
                 )
                 url = self.request.route_url(interface_config["redirect_interface"], _query=query).replace(
-                    "+", "%20"
+                    "+",
+                    "%20",
                 )
 
             if "no_redirect" in query:
                 constants["redirectUrl"] = ""
+            elif interface_config.get("do_redirect", False):
+                do_redirect = True
             else:
-                if interface_config.get("do_redirect", False):
-                    do_redirect = True
-                else:
-                    constants["redirectUrl"] = no_redirect_url
+                constants["redirectUrl"] = no_redirect_url
 
         set_common_headers(self.request, "dynamic", Cache.PUBLIC_NO)
         return {"constants": constants, "doRedirect": do_redirect, "redirectUrl": url}

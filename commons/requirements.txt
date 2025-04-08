@@ -1,7 +1,0 @@
-#c2c.template
-GeoAlchemy2
-papyrus
-pyramid
-sqlalchemy
-transaction
-zope.event

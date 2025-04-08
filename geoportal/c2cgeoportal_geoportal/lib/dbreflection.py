@@ -55,7 +55,13 @@ SQL_GEOMETRY_COLUMNS = """
 class _AssociationProxy:
     # A specific "association proxy" implementation
 
-    def __init__(self, target: str, value_attr: str, nullable: bool = True, order_by: str | None = None):
+    def __init__(
+        self,
+        target: str,
+        value_attr: str,
+        nullable: bool = True,
+        order_by: str | None = None,
+    ) -> None:
         self.target = target
         self.value_attr = value_attr
         self.nullable = nullable
@@ -171,15 +177,13 @@ def get_class(
     table = get_table(tablename, schema, None, primary_key=primary_key)
 
     # create the mapped class
-    cls = _create_class(
+    return _create_class(
         table,
         exclude_properties=exclude_properties,
         attributes_order=attributes_order,
         enumerations_config=enumerations_config,
         readonly_attributes=readonly_attributes,
     )
-
-    return cls
 
 
 def _create_class(

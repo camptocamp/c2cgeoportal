@@ -32,7 +32,7 @@ from unittest import TestCase
 
 
 class TestRasterViews(TestCase):
-    def test_raster(self):
+    def test_raster(self) -> None:
         from decimal import Decimal
 
         from c2cgeoportal_geoportal.views.raster import Raster
@@ -46,7 +46,7 @@ class TestRasterViews(TestCase):
                 "dem1": {"file": "/opt/c2cgeoportal/geoportal/tests/data/dem.shp", "round": 0.1},
                 "dem2": {"file": "/opt/c2cgeoportal/geoportal/tests/data/dem.shp", "round": 1},
                 "dem3": {"file": "/opt/c2cgeoportal/geoportal/tests/data/dem.shp"},
-            }
+            },
         }
         raster = Raster(request)
 
@@ -66,15 +66,15 @@ class TestRasterViews(TestCase):
 
         request.params["layers"] = "dem2"
         result = raster.raster()
-        self.assertFalse("dem1" in result)
-        self.assertFalse("dem3" in result)
+        assert "dem1" not in result
+        assert "dem3" not in result
         self.assertAlmostEqual(result["dem2"], Decimal("1172"))
 
         # test wrong layer name
         request.params["layers"] = "wrong"
         self.assertRaises(HTTPNotFound, raster.raster)
 
-    def test_raster_angle(self):
+    def test_raster_angle(self) -> None:
         from decimal import Decimal
 
         from c2cgeoportal_geoportal.views.raster import Raster
@@ -88,8 +88,8 @@ class TestRasterViews(TestCase):
                     "file": "/opt/c2cgeoportal/geoportal/tests/data/dem4.bt",
                     "type": "gdal",
                     "round": 0.01,
-                }
-            }
+                },
+            },
         }
         raster = Raster(request)
 
@@ -119,7 +119,7 @@ class TestRasterViews(TestCase):
         result = raster.raster()
         assert result["dem5"] is None
 
-    def test_raster_vrt(self):
+    def test_raster_vrt(self) -> None:
         from decimal import Decimal
 
         from c2cgeoportal_geoportal.views.raster import Raster
@@ -133,8 +133,8 @@ class TestRasterViews(TestCase):
                     "file": "/opt/c2cgeoportal/geoportal/tests/data/dem4.vrt",
                     "type": "gdal",
                     "round": 0.01,
-                }
-            }
+                },
+            },
         }
         raster = Raster(request)
 
@@ -144,18 +144,18 @@ class TestRasterViews(TestCase):
         result = raster.raster()
         assert result["dem6"] == Decimal("1164.2")
 
-    def test_absolute_path(self):
+    def test_absolute_path(self) -> None:
         import fiona
 
         with fiona.open("/opt/c2cgeoportal/geoportal/tests/data/dem_absolute.shp") as collection:
             tiles = [e for e in collection.filter(mask={"type": "Point", "coordinates": [548000, 216000]})]
 
-        self.assertEqual(
-            tiles[0]["properties"]["location"],
-            "/home/sbrunner/regiogis/regiogis/c2cgeoportal/c2cgeoportal/tests/data/dem.bt",
+        assert (
+            tiles[0]["properties"]["location"]
+            == "/home/sbrunner/regiogis/regiogis/c2cgeoportal/c2cgeoportal/tests/data/dem.bt"
         )
 
-    def test_profile_json(self):
+    def test_profile_json(self) -> None:
         from decimal import Decimal
 
         from c2cgeoportal_geoportal.views.profile import Profile
@@ -168,7 +168,7 @@ class TestRasterViews(TestCase):
             "raster": {
                 "dem": {"file": "/opt/c2cgeoportal/geoportal/tests/data/dem.shp", "round": 4},
                 "dem2": {"file": "/opt/c2cgeoportal/geoportal/tests/data/dem.shp", "round": 4},
-            }
+            },
         }
         profile = Profile(request)
 
@@ -257,7 +257,7 @@ class TestRasterViews(TestCase):
         request.params["layers"] = "wrong"
         self.assertRaises(HTTPNotFound, profile.json)
 
-    def test_round_bigvalue(self):
+    def test_round_bigvalue(self) -> None:
         from decimal import Decimal
 
         from c2cgeoportal_geoportal.views.raster import Raster

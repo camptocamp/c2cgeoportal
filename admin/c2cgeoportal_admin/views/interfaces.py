@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2024, Camptocamp SA
+# Copyright (c) 2017-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -51,12 +51,13 @@ base_schema = GeoFormSchemaNode(Interface)
 class InterfacesViews(LoggedViews[Interface]):
     """The interface administration view."""
 
-    _list_fields = [
+    _list_fields = [  # noqa: RUF012
         _list_field("id"),
         _list_field("name"),
         _list_field("description"),
         _list_field(
-            "layers", renderer=lambda interface: ", ".join([layer.name or "" for layer in interface.layers])
+            "layers",
+            renderer=lambda interface: ", ".join([layer.name or "" for layer in interface.layers]),
         ),
         _list_field(
             "theme",
@@ -88,7 +89,9 @@ class InterfacesViews(LoggedViews[Interface]):
         return super().delete()
 
     @view_config(  # type: ignore[misc]
-        route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2"
+        route_name="c2cgeoform_item_duplicate",
+        request_method="GET",
+        renderer="../templates/edit.jinja2",
     )
     def duplicate(self) -> ObjectResponse:
         return super().duplicate()

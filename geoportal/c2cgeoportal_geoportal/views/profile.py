@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2024, Camptocamp SA
+# Copyright (c) 2012-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -51,7 +51,7 @@ _ = TranslationStringFactory("c2cgeoportal")
 class Profile(Raster):
     """All the view concerned the profile."""
 
-    def __init__(self, request: pyramid.request.Request):
+    def __init__(self, request: pyramid.request.Request) -> None:
         Raster.__init__(self, request)
 
     @staticmethod
@@ -65,12 +65,16 @@ class Profile(Raster):
                     "values": filtered_alts,
                     "x": point["easting"],
                     "y": point["northing"],
-                }
+                },
             )
         return profile
 
     def _get_profile_service_data(
-        self, layers: list[str], geom: dict[str, Any], rasters: dict[str, Any], nb_points: int
+        self,
+        layers: list[str],
+        geom: dict[str, Any],
+        rasters: dict[str, Any],
+        nb_points: int,
     ) -> list[dict[str, Any]]:
         request = f"{rasters[layers[0]]['url']}/profile.json?{urllib.parse.urlencode({'geom': geom, 'nbPoints': nb_points, 'distinct_points': 'true'})}"
         response = requests.get(request, timeout=10)
@@ -78,7 +82,7 @@ class Profile(Raster):
             _LOG.error("profile request %s failed with status code %s", request, response.status_code)
             raise HTTPInternalServerError(
                 f"Failed to fetch profile data from internal request: \
-                {response.status_code} {response.reason}"
+                {response.status_code} {response.reason}",
             )
 
         try:
@@ -132,7 +136,7 @@ class Profile(Raster):
         if len(service_results) == 0:
             points: list[dict[str, Any]] = []
 
-            dist = 0
+            dist: float = 0
             prev_coord = None
             coords = self._create_points(geom.coordinates, nb_points)
             for coord in coords:
@@ -151,13 +155,12 @@ class Profile(Raster):
                 points.append({"dist": rounded_dist, "values": values, "x": coord[0], "y": coord[1]})
                 prev_coord = coord
             return layers, points
-        else:
-            additional_layers = [layer for layer in layers if layer not in service_layers]
-            for point in service_results:
-                for ref in additional_layers:
-                    value = self._get_raster_value(self.rasters[ref], ref, point["x"], point["y"])
-                    point["values"][ref] = value
-            return layers, service_results
+        additional_layers = [layer for layer in layers if layer not in service_layers]
+        for point in service_results:
+            for ref in additional_layers:
+                value = self._get_raster_value(self.rasters[ref], ref, point["x"], point["y"])
+                point["values"][ref] = value
+        return layers, service_results
 
     @staticmethod
     def _dist(coord1: tuple[float, float], coord2: tuple[float, float]) -> float:
@@ -166,7 +169,7 @@ class Profile(Raster):
 
     def _create_points(self, coords: list[tuple[float, float]], nb_points: int) -> list[tuple[float, float]]:
         """Add some points in order to reach roughly the asked number of points."""
-        total_length = 0
+        total_length = 0.0
         prev_coord = None
         for coord in coords:
             if prev_coord is not None:
@@ -184,8 +187,9 @@ class Profile(Raster):
                 cur_nb_points = max(int(nb_points * cur_length / total_length + 0.5), 1)
                 dx = (coord[0] - prev_coord[0]) / float(cur_nb_points)
                 dy = (coord[1] - prev_coord[1]) / float(cur_nb_points)
-                for i in range(1, cur_nb_points + 1):
-                    result.append((prev_coord[0] + dx * i, prev_coord[1] + dy * i))
+                result.extend(
+                    [(prev_coord[0] + dx * i, prev_coord[1] + dy * i) for i in range(1, cur_nb_points + 1)],
+                )
             else:
                 result.append((coord[0], coord[1]))
             prev_coord = coord

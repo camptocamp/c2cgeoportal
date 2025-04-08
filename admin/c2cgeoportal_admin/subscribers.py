@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2021, Camptocamp SA
+# Copyright (c) 2018-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -26,12 +26,14 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from typing import Any
+
 from pyramid.i18n import TranslationStringFactory, get_localizer
 
 # see https://docs.pylonsproject.org/projects/pyramid-cookbook/en/latest/templates/mako_i18n.html*
 
 
-def add_renderer_globals(event):
+def add_renderer_globals(event: Any) -> None:
     """Add the localizer to the global event."""
     request = event["request"]
     event["_"] = request.translate
@@ -42,14 +44,14 @@ tsf1 = TranslationStringFactory("c2cgeoportal_admin")
 tsf2 = TranslationStringFactory("c2cgeoform")
 
 
-def add_localizer(event):
+def add_localizer(event: Any) -> None:
     """Add the localizer to the request."""
     request = event.request
     localizer = get_localizer(request)
 
-    def auto_translate(*args, **kwargs):
+    def auto_translate(*args: Any, **kwargs: Any) -> str:
         result = localizer.translate(tsf1(*args, **kwargs))
-        return localizer.translate(tsf2(*args, **kwargs)) if result == args[0] else result
+        return localizer.translate(tsf2(*args, **kwargs)) if result == args[0] else result  # type: ignore[no-any-return]
 
     request.localizer = localizer
     request.translate = auto_translate

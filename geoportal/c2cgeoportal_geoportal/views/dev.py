@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2024, Camptocamp SA
+# Copyright (c) 2011-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -45,7 +45,7 @@ class Dev(Proxy):
 
     THEME_RE = re.compile(r"/theme/.*$")
 
-    def __init__(self, request: pyramid.request.Request):
+    def __init__(self, request: pyramid.request.Request) -> None:
         super().__init__(request)
         self.dev_url = self.request.registry.settings["devserver_url"]
 

@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2024, Camptocamp SA
+# Copyright (c) 2012-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -49,7 +49,7 @@ from tests import DummyRequest
 class TestIncludeme(TestCase):
     config = None
 
-    def setup_method(self, _):
+    def setup_method(self, _) -> None:
         # the c2cgeoportal includeme function requires a number
         # of settings
         self.config = testing.setUp(
@@ -70,24 +70,24 @@ class TestIncludeme(TestCase):
                     "raster_data": False,
                     "total_python_object_memory": False,
                 },
-            }
+            },
         )
         config.init("/opt/c2cgeoportal/geoportal/tests/config.yaml")
 
     @patch("c2cgeoportal_geoportal.available_locale_names", return_value=["de", "en", "fr"])
-    def test_available_locale_names(self, locales_mock):
+    def test_available_locale_names(self, locales_mock) -> None:
         self.config.include(c2cgeoportal_geoportal.includeme)
-        self.assertEqual(self.config.registry.settings["available_locale_names"], ["de", "en", "fr"])
+        assert self.config.registry.settings["available_locale_names"] == ["de", "en", "fr"]
 
-    def test_set_user_validator_directive(self):
+    def test_set_user_validator_directive(self) -> None:
         self.config.include(c2cgeoportal_geoportal.includeme)
-        self.assertTrue(self.config.set_user_validator.__func__.__docobj__ is set_user_validator)
+        assert self.config.set_user_validator.__func__.__docobj__ is set_user_validator
 
-    def test_default_user_validator(self):
+    def test_default_user_validator(self) -> None:
         self.config.include(c2cgeoportal_geoportal.includeme)
         assert self.config.registry.validate_user == default_user_validator
 
-    def test_user_validator_overwrite(self):
+    def test_user_validator_overwrite(self) -> None:
         self.config.include(c2cgeoportal_geoportal.includeme)
 
         def custom_validator(username, password):
@@ -100,7 +100,7 @@ class TestIncludeme(TestCase):
 
 
 @pytest.mark.parametrize(
-    "authorized,value,expected",
+    ("authorized", "value", "expected"),
     [
         ("https://example.com", "http://example.com/app", True),
         ("http://example.com", "https://example.com/app", True),
@@ -110,7 +110,6 @@ class TestIncludeme(TestCase):
         ("example.com", "http://example.com/app", True),
         ("example.com", "http://example.com/app/", True),
         ("example.com", "http://example.com/app/x/y", True),
-        ("example.com", "http://example.com/app/x/y", True),
         ("example.com", "http://other.com", False),
         ("example.com", "http://example.com.bad.org/app/x/y", False),
         ("example.com:8080", "http://example.com:8080/app", True),
@@ -119,7 +118,7 @@ class TestIncludeme(TestCase):
         ("other.com", "http://example-test.com", True),
     ],
 )
-def test_is_valid_referrer(authorized, value, expected):
+def test_is_valid_referrer(authorized, value, expected) -> None:
     r = DummyRequest()
     r.referrer = value
     r.host = "example-test.com"
@@ -136,7 +135,7 @@ class TestReferer(TestCase):
 
     def _get_user(self, to, ref, method="GET", host="example.com"):
         class MockRequest:
-            def __init__(self, to, ref, method):
+            def __init__(self, to, ref, method) -> None:
                 self.path_qs = to
                 self.referrer = ref
                 self.user_ = TestReferer.USER
@@ -152,40 +151,41 @@ class TestReferer(TestCase):
         get_user = create_get_user_from_request(self.SETTINGS)
         return get_user(MockRequest(to=to, ref=ref, method=method))
 
-    def test_positive(self):
+    def test_positive(self) -> None:
         assert self._get_user(to=self.BASE1 + "/1", ref=self.BASE1) == self.USER
         assert self._get_user(to=self.BASE1 + "/2", ref=self.BASE1 + "/3") == self.USER
         assert self._get_user(to=self.BASE1 + "/4", ref=self.BASE2 + "/5") == self.USER
 
-    def test_no_ref(self):
+    def test_no_ref(self) -> None:
         assert self._get_user(to=self.BASE1, ref=None) == self.USER
         assert self._get_user(to=self.BASE1, ref="") is None
 
         assert self._get_user(to=self.BASE1, ref=None, method="POST") == self.USER
         assert self._get_user(to=self.BASE1, ref="", method="POST") is None
 
-    def test_bad_ref(self):
-        self.assertIsNone(self._get_user(to=self.BASE1, ref="http://bad.com/hacker"))
+    def test_bad_ref(self) -> None:
+        assert self._get_user(to=self.BASE1, ref="http://bad.com/hacker") is None
 
 
-def hook(tracer):
+def hook(tracer) -> None:
     tracer["called"] = True
 
 
 class TestHooks(TestCase):
     settings = {"hooks": {"test": "tests.test_init.hook", "bad": "c2cgeoportal_geoportal.not_here"}}
 
-    def test_existing(self):
+    def test_existing(self) -> None:
         tracer = {"called": False}
         call_hook(self.settings, "test", tracer)
-        self.assertTrue(tracer["called"])
+        assert tracer["called"]
 
-    def test_no_hook(self):
+    def test_no_hook(self) -> None:
         call_hook(self.settings, "test2")
 
     @staticmethod
     def test_no_hooks():
         call_hook({}, "test")
 
-    def test_bad_hook(self):
-        self.assertRaises(AttributeError, call_hook, self.settings, "bad")
+    def test_bad_hook(self) -> None:
+        with pytest.raises(AttributeError):
+            call_hook(self.settings, "bad")

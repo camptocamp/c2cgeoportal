@@ -7,7 +7,7 @@ import yaml
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        "Add some values from the GeoMapFish config to QGIS server plugin config"
+        "Add some values from the GeoMapFish config to QGIS server plugin config",
     )
     parser.add_argument("gmf_config")
     parser.add_argument("plugin_config")

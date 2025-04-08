@@ -26,7 +26,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import crypt
+import crypt  # pylint: disable=deprecated-module
 import logging
 import os
 from datetime import datetime, timezone
@@ -56,7 +56,7 @@ except ModuleNotFoundError:
     class GenericClass:
         """Generic class."""
 
-        def __init__(self, *args: Any, **kwargs: Any):
+        def __init__(self, *args: Any, **kwargs: Any) -> None:
             pass
 
     Email = GenericClass
@@ -81,12 +81,12 @@ user_role = Table(
 )
 
 
-class User(Base):  # type: ignore
+class User(Base):  # type: ignore[valid-type,misc]
     """The user table representation."""
 
     __tablename__ = "user"
-    __table_args__ = {"schema": _schema}
-    __colanderalchemy_config__ = {
+    __table_args__ = {"schema": _schema}  # noqa: RUF012
+    __colanderalchemy_config__ = {  # noqa: RUF012
         "title": _("User"),
         "plural": _("Users"),
         "description": Literal(
@@ -119,18 +119,23 @@ class User(Base):  # type: ignore
                     be defined in any role linked to the user.</p>
                 <hr>
             </div>
-                """
-            )
+                """,
+            ),
         ),
     }
-    __c2cgeoform_config__ = {"duplicate": True}
+    __c2cgeoform_config__ = {"duplicate": True}  # noqa: RUF012
     item_type: Mapped[str] = mapped_column(
-        "type", String(10), nullable=False, info={"colanderalchemy": {"widget": HiddenWidget()}}
+        "type",
+        String(10),
+        nullable=False,
+        info={"colanderalchemy": {"widget": HiddenWidget()}},
     )
-    __mapper_args__ = {"polymorphic_on": item_type, "polymorphic_identity": "user"}
+    __mapper_args__ = {"polymorphic_on": item_type, "polymorphic_identity": "user"}  # noqa: RUF012
 
     id: Mapped[int] = mapped_column(
-        Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}}
+        Integer,
+        primary_key=True,
+        info={"colanderalchemy": {"widget": HiddenWidget()}},
     )
     username: Mapped[str] = mapped_column(
         Unicode,
@@ -144,7 +149,7 @@ class User(Base):  # type: ignore
                 }
                 if not _OPENID_CONNECT_ENABLED
                 else {"widget": HiddenWidget()}
-            )
+            ),
         },
     )
     display_name: Mapped[str] = mapped_column(
@@ -153,16 +158,22 @@ class User(Base):  # type: ignore
             "colanderalchemy": {
                 "title": _("Display name"),
                 "description": _("Name displayed in the application."),
-            }
+            },
         },
     )
     _password: Mapped[str] = mapped_column(
-        "password", Unicode, nullable=False, info={"colanderalchemy": {"exclude": True}}
+        "password",
+        Unicode,
+        nullable=False,
+        info={"colanderalchemy": {"exclude": True}},
     )
     temp_password: Mapped[str | None] = mapped_column(
-        "temp_password", Unicode, nullable=True, info={"colanderalchemy": {"exclude": True}}
+        "temp_password",
+        Unicode,
+        nullable=True,
+        info={"colanderalchemy": {"exclude": True}},
     )
-    tech_data = mapped_column(MutableDict.as_mutable(HSTORE), info={"colanderalchemy": {"exclude": True}})  # type: ignore[arg-type]
+    tech_data = mapped_column(MutableDict.as_mutable(HSTORE), info={"colanderalchemy": {"exclude": True}})
     email: Mapped[str] = mapped_column(
         Unicode,
         nullable=False,
@@ -171,10 +182,10 @@ class User(Base):  # type: ignore
             "colanderalchemy": {
                 "title": _("Email"),
                 "description": _(
-                    "Used to send emails to the user, for example in case of password recovery."
+                    "Used to send emails to the user, for example in case of password recovery.",
                 ),
                 "validator": Email(),
-            }
+            },
         },
     )
     is_password_changed: Mapped[bool] = mapped_column(
@@ -188,7 +199,7 @@ class User(Base):  # type: ignore
                 }
                 if not _OPENID_CONNECT_ENABLED
                 else {"exclude": True}
-            )
+            ),
         },
     )
 
@@ -200,9 +211,13 @@ class User(Base):  # type: ignore
                 "title": _("Settings from role"),
                 "description": _("Used to get some settings for the user (not for permissions)."),
                 "widget": RelationSelect2Widget(
-                    Role, "id", "name", order_by="name", default_value=("", _("- Select -"))
+                    Role,
+                    "id",
+                    "name",
+                    order_by="name",
+                    default_value=("", _("- Select -")),
                 ),
-            }
+            },
         },
     )
 
@@ -225,7 +240,7 @@ class User(Base):  # type: ignore
                     "title": _("Users"),
                     "description": _("Users granted with this role."),
                     "exclude": True,
-                }
+                },
             },
         ),
         info={
@@ -233,7 +248,7 @@ class User(Base):  # type: ignore
                 "title": _("Roles"),
                 "description": _("Roles granted to the user."),
                 "exclude": True,
-            }
+            },
         },
     )
 
@@ -250,7 +265,7 @@ class User(Base):  # type: ignore
                 }
                 if not _OPENID_CONNECT_ENABLED
                 else {"exclude": True}
-            )
+            ),
         },
     )
 
@@ -264,7 +279,7 @@ class User(Base):  # type: ignore
                 }
                 if not _OPENID_CONNECT_ENABLED
                 else {"exclude": True}
-            )
+            ),
         },
     )
 
@@ -279,7 +294,7 @@ class User(Base):  # type: ignore
                 }
                 if not _OPENID_CONNECT_ENABLED
                 else {"exclude": True}
-            )
+            ),
         },
     )
 
@@ -328,6 +343,7 @@ class User(Base):  # type: ignore
 
     @staticmethod
     def __encrypt_password(password: str) -> str:
+        """Hash the given password with SHA512."""
         return crypt.crypt(password, crypt.METHOD_SHA512)
 
     def validate_password(self, passwd: str) -> bool:
@@ -342,12 +358,11 @@ class User(Base):  # type: ignore
             # new encryption method
             if compare_hash(self._password, crypt.crypt(passwd, self._password)):
                 return True
-        else:
-            # legacy encryption method
-            if compare_hash(self._password, self.__encrypt_password_legacy(passwd)):
-                # convert to the new encryption method
-                self._password = self.__encrypt_password(passwd)
-                return True
+        # legacy encryption method
+        elif compare_hash(self._password, self.__encrypt_password_legacy(passwd)):
+            # convert to the new encryption method
+            self._password = self.__encrypt_password(passwd)
+            return True
 
         if (
             self.temp_password is not None
@@ -370,11 +385,11 @@ class User(Base):  # type: ignore
         return self.username or ""
 
 
-class Shorturl(Base):  # type: ignore
+class Shorturl(Base):  # type: ignore[valid-type,misc]
     """The shorturl table representation."""
 
     __tablename__ = "shorturl"
-    __table_args__ = {"schema": _schema}
+    __table_args__ = {"schema": _schema}  # noqa: RUF012
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     url: Mapped[str] = mapped_column(Unicode)
     ref: Mapped[str] = mapped_column(String(20), index=True, unique=True, nullable=False)
@@ -384,15 +399,17 @@ class Shorturl(Base):  # type: ignore
     nb_hits: Mapped[int] = mapped_column(Integer)
 
 
-class OAuth2Client(Base):  # type: ignore
+class OAuth2Client(Base):  # type: ignore[valid-type,misc]
     """The oauth2_client table representation."""
 
     __tablename__ = "oauth2_client"
-    __table_args__ = {"schema": _schema}
-    __colanderalchemy_config__ = {"title": _("OAuth2 Client"), "plural": _("OAuth2 Clients")}
-    __c2cgeoform_config__ = {"duplicate": True}
+    __table_args__ = {"schema": _schema}  # noqa: RUF012
+    __colanderalchemy_config__ = {"title": _("OAuth2 Client"), "plural": _("OAuth2 Clients")}  # noqa: RUF012
+    __c2cgeoform_config__ = {"duplicate": True}  # noqa: RUF012
     id: Mapped[int] = mapped_column(
-        Integer, primary_key=True, info={"colanderalchemy": {"widget": HiddenWidget()}}
+        Integer,
+        primary_key=True,
+        info={"colanderalchemy": {"widget": HiddenWidget()}},
     )
     client_id: Mapped[str] = mapped_column(
         Unicode,
@@ -401,7 +418,7 @@ class OAuth2Client(Base):  # type: ignore
             "colanderalchemy": {
                 "title": _("Client ID"),
                 "description": _("The client identifier as e.-g. 'qgis'."),
-            }
+            },
         },
     )
     secret: Mapped[str] = mapped_column(
@@ -410,7 +427,7 @@ class OAuth2Client(Base):  # type: ignore
             "colanderalchemy": {
                 "title": _("Secret"),
                 "description": _("The secret."),
-            }
+            },
         },
     )
     redirect_uri: Mapped[str] = mapped_column(
@@ -422,9 +439,9 @@ class OAuth2Client(Base):  # type: ignore
                     """
                     URI where user should be redirected after authentication
                     as e.-g. 'http://127.0.0.1:7070/' in case of QGIS desktop.
-                    """
+                    """,
                 ),
-            }
+            },
         },
     )
     state_required: Mapped[bool] = mapped_column(
@@ -435,9 +452,9 @@ class OAuth2Client(Base):  # type: ignore
                 "title": _("State required"),
                 "description": _(
                     "The state is required for this client (see: "
-                    "https://auth0.com/docs/secure/attack-protection/state-parameters)."
+                    "https://auth0.com/docs/secure/attack-protection/state-parameters).",
                 ),
-            }
+            },
         },
     )
     pkce_required: Mapped[bool] = mapped_column(
@@ -449,14 +466,14 @@ class OAuth2Client(Base):  # type: ignore
                 "description": _(
                     "PKCE is required for this client (see: "
                     "https://auth0.com/docs/get-started/authentication-and-authorization-flow/"
-                    "authorization-code-flow-with-proof-key-for-code-exchange-pkce)."
+                    "authorization-code-flow-with-proof-key-for-code-exchange-pkce).",
                 ),
-            }
+            },
         },
     )
 
 
-class OAuth2BearerToken(Base):  # type: ignore
+class OAuth2BearerToken(Base):  # type: ignore[valid-type,misc]
     """The oauth2_bearertoken table representation."""
 
     __tablename__ = "oauth2_bearertoken"
@@ -468,11 +485,15 @@ class OAuth2BearerToken(Base):  # type: ignore
     )
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     client_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey(_schema + ".oauth2_client.id", ondelete="CASCADE"), nullable=False
+        Integer,
+        ForeignKey(_schema + ".oauth2_client.id", ondelete="CASCADE"),
+        nullable=False,
     )
     client = relationship(OAuth2Client)
     user_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey(_schema + ".user.id", ondelete="CASCADE"), nullable=False
+        Integer,
+        ForeignKey(_schema + ".user.id", ondelete="CASCADE"),
+        nullable=False,
     )
     user = relationship(User)
     access_token: Mapped[str] = mapped_column(Unicode(100), unique=True)
@@ -481,7 +502,7 @@ class OAuth2BearerToken(Base):  # type: ignore
     state = mapped_column(String, nullable=True)
 
 
-class OAuth2AuthorizationCode(Base):  # type: ignore
+class OAuth2AuthorizationCode(Base):  # type: ignore[valid-type,misc]
     """The oauth2_authorizationcode table representation."""
 
     __tablename__ = "oauth2_authorizationcode"
@@ -493,11 +514,15 @@ class OAuth2AuthorizationCode(Base):  # type: ignore
     )
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     client_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey(_schema + ".oauth2_client.id", ondelete="CASCADE"), nullable=False
+        Integer,
+        ForeignKey(_schema + ".oauth2_client.id", ondelete="CASCADE"),
+        nullable=False,
     )
     client = relationship(OAuth2Client)
     user_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey(_schema + ".user.id", ondelete="CASCADE"), nullable=False
+        Integer,
+        ForeignKey(_schema + ".user.id", ondelete="CASCADE"),
+        nullable=False,
     )
     user = relationship(User)
     redirect_uri: Mapped[str] = mapped_column(Unicode)
@@ -512,8 +537,8 @@ class Log(AbstractLog):
     """The static log table representation."""
 
     __tablename__ = "log"
-    __table_args__ = {"schema": _schema}
-    __mapper_args__ = {
+    __table_args__ = {"schema": _schema}  # noqa: RUF012
+    __mapper_args__ = {  # noqa: RUF012
         "polymorphic_identity": "static",
         "concrete": True,
     }

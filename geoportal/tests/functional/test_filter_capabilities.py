@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2023, Camptocamp SA
+# Copyright (c) 2013-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -41,20 +41,20 @@ from tests.functional import teardown_common as teardown_module  # noqa
 class TestFilterCapabilities(TestCase):
     capabilities_file = "tests/data/tinyows_getcapabilities.xml"
 
-    def test_capabilities_filter_featuretype(self):
+    def test_capabilities_filter_featuretype(self) -> None:
         xml = load_file(TestFilterCapabilities.capabilities_file)
         layers_whitelist = set()
         filtered_xml = self._filter_xml(xml, "FeatureType", layers_whitelist)
 
-        self.assertTrue("<Name>tows:parks</Name>" not in filtered_xml)
+        assert "<Name>tows:parks</Name>" not in filtered_xml
 
-    def test_capabilities_filter_featuretype_private_layer(self):
+    def test_capabilities_filter_featuretype_private_layer(self) -> None:
         xml = load_file(TestFilterCapabilities.capabilities_file)
         layers_whitelist = set()
         layers_whitelist.add("parks")
         filtered_xml = self._filter_xml(xml, "FeatureType", layers_whitelist)
 
-        self.assertTrue("<Name>tows:parks</Name>" in filtered_xml)
+        assert "<Name>tows:parks</Name>" in filtered_xml
 
     @staticmethod
     def _filter_xml(xml, tag_name, layers_whitelist):
@@ -64,7 +64,10 @@ class TestFilterCapabilities(TestCase):
         result = StringIO()
         downstream_handler = XMLGenerator(result, "utf-8")
         filter_handler = _CapabilitiesFilter(
-            parser, downstream_handler, tag_name, layers_whitelist=layers_whitelist
+            parser,
+            downstream_handler,
+            tag_name,
+            layers_whitelist=layers_whitelist,
         )
         filter_handler.parse(StringIO(xml))
         return result.getvalue()

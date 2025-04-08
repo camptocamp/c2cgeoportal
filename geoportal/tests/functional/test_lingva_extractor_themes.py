@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2024, Camptocamp SA
+# Copyright (c) 2020-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -42,7 +42,7 @@ class TestGeomapfishThemeExtractor:
 
         return list(extractor("development.ini", options))
 
-    def test_extract_theme(self, dbsession_old, transact_old):
+    def test_extract_theme(self, dbsession_old, transact_old) -> None:
         from c2cgeoportal_commons.models import main
 
         del transact_old
@@ -55,7 +55,7 @@ class TestGeomapfishThemeExtractor:
 
         assert {"theme"} == {m.msgid for m in messages}
 
-    def test_extract_group(self, dbsession_old, transact_old):
+    def test_extract_group(self, dbsession_old, transact_old) -> None:
         from c2cgeoportal_commons.models import main
 
         del transact_old
@@ -68,7 +68,7 @@ class TestGeomapfishThemeExtractor:
 
         assert {"group"} == {m.msgid for m in messages}
 
-    def test_extract_layer_wms(self, dbsession_old, transact_old):
+    def test_extract_layer_wms(self, dbsession_old, transact_old) -> None:
         from c2cgeoportal_commons.models import main
 
         del transact_old
@@ -90,7 +90,7 @@ class TestGeomapfishThemeExtractor:
             "name",
         }
 
-    def test_extract_layer_wmts(self, dbsession_old, transact_old):
+    def test_extract_layer_wmts(self, dbsession_old, transact_old) -> None:
         from c2cgeoportal_commons.models import main
 
         del transact_old
@@ -116,7 +116,7 @@ class TestGeomapfishThemeExtractor:
             "name",
         }
 
-    def test_extract_full_text_search(self, dbsession_old, transact_old):
+    def test_extract_full_text_search(self, dbsession_old, transact_old) -> None:
         from c2cgeoportal_commons.models import main
 
         del transact_old

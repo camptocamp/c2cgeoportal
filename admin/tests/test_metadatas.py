@@ -5,8 +5,7 @@ import pytest
 from . import AbstractViewsTests
 
 
-@pytest.fixture(scope="function")
-@pytest.mark.usefixtures("dbsession", "transact")
+@pytest.fixture
 def metadatas_test_data(dbsession, transact):
     del transact
 
@@ -55,7 +54,7 @@ def metadatas_test_data(dbsession, transact):
 
     dbsession.flush()
 
-    yield {
+    return {
         "ogc_server": ogc_server,
         "layer_wms": layer_wms,
         "layer_wmts": layer_wmts,
@@ -121,8 +120,8 @@ class TestMetadatasView(AbstractViewsTests):
     def _post_metadata(self, test_app, url, base_mapping, name, value, status):
         return test_app.post(
             url,
-            base_mapping
-            + (
+            (
+                *base_mapping,
                 ("__start__", "metadatas:sequence"),
                 ("__start__", "metadata:mapping"),
                 ("name", name),
@@ -151,7 +150,7 @@ class TestMetadatasView(AbstractViewsTests):
             ("layer", "new_wmslayername"),
         )
 
-    def test_invalid_float_metadata(self, test_app, metadatas_test_data):
+    def test_invalid_float_metadata(self, test_app, metadatas_test_data) -> None:
         self._post_invalid_metadata(
             test_app,
             "/admin/layers_wms/new",
@@ -161,19 +160,19 @@ class TestMetadatasView(AbstractViewsTests):
             '"number" is not a number',
         )
 
-    def test_get_true_boolean_metadata(self, metadatas_test_data, test_app):
+    def test_get_true_boolean_metadata(self, metadatas_test_data, test_app) -> None:
         from c2cgeoportal_commons.models.main import LayerWMS
 
         metadatas_test_data["layer_wms"].get_metadata("_boolean")[0].value = "true"
         self._test_edit_treeitem("layers_wms", metadatas_test_data["layer_wms"], test_app, LayerWMS)
 
-    def test_get_false_boolean_metadata(self, metadatas_test_data, test_app):
+    def test_get_false_boolean_metadata(self, metadatas_test_data, test_app) -> None:
         from c2cgeoportal_commons.models.main import LayerWMS
 
         metadatas_test_data["layer_wms"].get_metadata("_boolean")[0].value = "false"
         self._test_edit_treeitem("layers_wms", metadatas_test_data["layer_wms"], test_app, LayerWMS)
 
-    def test_post_true_boolean_metadata(self, test_app, metadatas_test_data, dbsession):
+    def test_post_true_boolean_metadata(self, test_app, metadatas_test_data, dbsession) -> None:
         from c2cgeoportal_commons.models.main import LayerWMS
 
         self._post_metadata(
@@ -187,7 +186,7 @@ class TestMetadatasView(AbstractViewsTests):
         layer = dbsession.query(LayerWMS).filter(LayerWMS.name == "new_name").one()
         assert layer.get_metadata("_boolean")[0].value == "true"
 
-    def test_post_false_boolean_metadata(self, test_app, metadatas_test_data, dbsession):
+    def test_post_false_boolean_metadata(self, test_app, metadatas_test_data, dbsession) -> None:
         from c2cgeoportal_commons.models.main import LayerWMS
 
         self._post_metadata(
@@ -201,7 +200,7 @@ class TestMetadatasView(AbstractViewsTests):
         layer = dbsession.query(LayerWMS).filter(LayerWMS.name == "new_name").one()
         assert layer.get_metadata("_boolean")[0].value == "false"
 
-    def test_valid_float_metadata(self, test_app, metadatas_test_data):
+    def test_valid_float_metadata(self, test_app, metadatas_test_data) -> None:
         self._post_metadata(
             test_app,
             "/admin/layers_wms/new",
@@ -211,7 +210,7 @@ class TestMetadatasView(AbstractViewsTests):
             302,
         )
 
-    def test_invalid_int_metadata(self, test_app, metadatas_test_data):
+    def test_invalid_int_metadata(self, test_app, metadatas_test_data) -> None:
         self._post_invalid_metadata(
             test_app,
             "/admin/layers_wms/new",
@@ -221,7 +220,7 @@ class TestMetadatasView(AbstractViewsTests):
             '"number" is not a number',
         )
 
-    def test_valid_int_metadata(self, test_app, metadatas_test_data):
+    def test_valid_int_metadata(self, test_app, metadatas_test_data) -> None:
         self._post_metadata(
             test_app,
             "/admin/layers_wms/new",
@@ -231,7 +230,7 @@ class TestMetadatasView(AbstractViewsTests):
             302,
         )
 
-    def test_invalid_url_metadata(self, test_app, metadatas_test_data):
+    def test_invalid_url_metadata(self, test_app, metadatas_test_data) -> None:
         self._post_invalid_metadata(
             test_app,
             "/admin/layers_wms/new",
@@ -248,7 +247,7 @@ class TestMetadatasView(AbstractViewsTests):
             "static://static/img/cadastre.jpeg",
         ],
     )
-    def test_valid_url_metadata(self, test_app, metadatas_test_data, url):
+    def test_valid_url_metadata(self, test_app, metadatas_test_data, url) -> None:
         self._post_metadata(
             test_app,
             "/admin/layers_wms/new",
@@ -258,7 +257,7 @@ class TestMetadatasView(AbstractViewsTests):
             302,
         )
 
-    def test_invalid_json_metadata(self, test_app, metadatas_test_data):
+    def test_invalid_json_metadata(self, test_app, metadatas_test_data) -> None:
         self._post_invalid_metadata(
             test_app,
             "/admin/layers_wms/new",
@@ -276,7 +275,7 @@ class TestMetadatasView(AbstractViewsTests):
             "Parser report: \"Expecting ',' delimiter: line 7 column 26 (char 213)\"",
         )
 
-    def test_valid_json_metadata(self, test_app, metadatas_test_data):
+    def test_valid_json_metadata(self, test_app, metadatas_test_data) -> None:
         self._post_metadata(
             test_app,
             "/admin/layers_wms/new",
@@ -294,7 +293,7 @@ class TestMetadatasView(AbstractViewsTests):
             302,
         )
 
-    def test_invalid_color(self, test_app, metadatas_test_data):
+    def test_invalid_color(self, test_app, metadatas_test_data) -> None:
         self._post_invalid_metadata(
             test_app,
             "/admin/layers_wms/new",
@@ -304,7 +303,7 @@ class TestMetadatasView(AbstractViewsTests):
             "Expecting hex format for color, e.g. #007DCD",
         )
 
-    def test_valid_color(self, test_app, metadatas_test_data):
+    def test_valid_color(self, test_app, metadatas_test_data) -> None:
         self._post_metadata(
             test_app,
             "/admin/layers_wms/new",
@@ -319,27 +318,27 @@ class TestMetadatasView(AbstractViewsTests):
         self._check_metadatas(test_app, resp.html.select_one(".item-metadatas"), item.metadatas, model)
         resp.form.submit("submit", status=302)
 
-    def test_layer_wms_metadatas(self, metadatas_test_data, test_app):
+    def test_layer_wms_metadatas(self, metadatas_test_data, test_app) -> None:
         from c2cgeoportal_commons.models.main import LayerWMS
 
         self._test_edit_treeitem("layers_wms", metadatas_test_data["layer_wms"], test_app, LayerWMS)
 
-    def test_layer_wmts_metadatas(self, metadatas_test_data, test_app):
+    def test_layer_wmts_metadatas(self, metadatas_test_data, test_app) -> None:
         from c2cgeoportal_commons.models.main import LayerWMTS
 
         self._test_edit_treeitem("layers_wmts", metadatas_test_data["layer_wmts"], test_app, LayerWMTS)
 
-    def test_theme_metadatas(self, metadatas_test_data, test_app):
+    def test_theme_metadatas(self, metadatas_test_data, test_app) -> None:
         from c2cgeoportal_commons.models.main import Theme
 
         self._test_edit_treeitem("themes", metadatas_test_data["theme"], test_app, Theme)
 
-    def test_group_metadatas(self, metadatas_test_data, test_app):
+    def test_group_metadatas(self, metadatas_test_data, test_app) -> None:
         from c2cgeoportal_commons.models.main import LayerGroup
 
         self._test_edit_treeitem("layer_groups", metadatas_test_data["group"], test_app, LayerGroup)
 
-    def test_undefined_metadata(self, metadatas_test_data, test_app):
+    def test_undefined_metadata(self, metadatas_test_data, test_app) -> None:
         """Undefined metadata must be kept intact across submissions."""
         from c2cgeoportal_commons.models.main import Metadata
 

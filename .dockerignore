@@ -16,9 +16,7 @@
 !.nvmrc
 !admin/.snyk
 !admin/README.md
-!admin/requirements.txt
-!admin/setup.cfg
-!admin/setup.py
+!admin/pyproject.toml
 !admin/lingva.cfg
 !scripts/clone_schema.sql
 !scripts/extract-messages.js

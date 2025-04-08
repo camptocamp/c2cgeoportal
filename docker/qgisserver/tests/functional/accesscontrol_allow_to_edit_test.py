@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2024, Camptocamp SA
+# Copyright (c) 2018-2025, Camptocamp SA
 # All rights reserved.
 
 # This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -104,7 +104,7 @@ def test_data2(clean_dbsession):
     dbsession.commit()
     dbsession.close()
 
-    yield {
+    return {
         "users": users,
         "roles": roles,
         "project": project,
@@ -127,10 +127,14 @@ def project_mock(test_data2):
     "project_mock",
 )
 class TestAccessControlAllowToEdit:
-    def test_allow_to_edit(self, server_iface, DBSession, test_data2):  # noqa: ignore=N803
+    def test_allow_to_edit(self, server_iface, DBSession, test_data2) -> None:  # noqa: ignore=N803
         session = DBSession()
         ogcserver_accesscontrol = OGCServerAccessControl(
-            server_iface, "qgisserver", "no_project", 21781, lambda: session
+            server_iface,
+            "qgisserver",
+            "no_project",
+            21781,
+            lambda: session,
         )
 
         for user_name, expected, geometry in [

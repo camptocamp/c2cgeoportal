@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2024, Camptocamp SA
+# Copyright (c) 2013-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -106,7 +106,9 @@ class TestThemesPrivateView(TestCase):
         theme.children = [layer_group]
 
         restriction_area = RestrictionArea(
-            name="__test_ra1", layers=[layer_wms_private, layer_wmts_private], roles=[role]
+            name="__test_ra1",
+            layers=[layer_wms_private, layer_wmts_private],
+            roles=[role],
         )
         restriction_area2 = RestrictionArea(name="__test_ra2", layers=[layer_wms_private2], roles=[role2])
 
@@ -162,8 +164,7 @@ class TestThemesPrivateView(TestCase):
             del kwargs  # Unused
             if _query is None:
                 return "http://localhost/ci/mapserv"
-            else:
-                return "http://localhost/ci/mapserv?" + "&".join(["=".join(i) for i in _query.items()])
+            return "http://localhost/ci/mapserv?" + "&".join(["=".join(i) for i in _query.items()])
 
         request.route_url = route_url
         request.params = params
@@ -195,85 +196,76 @@ class TestThemesPrivateView(TestCase):
             and not e.startswith("Unable to get DescribeFeatureType from URL ")
         }
 
-    def test_public(self):
+    def test_public(self) -> None:
         theme_view = self._create_theme_obj()
         themes = theme_view.themes()
         assert self._get_filtered_errors(themes) == set()
-        self.assertEqual(
-            [self._only_name(t) for t in themes["themes"]],
-            [
-                {
-                    "name": "__test_theme",
-                    "children": [
-                        {
-                            "name": "__test_layer_group",
-                            "children": [{"name": "__test_layer_wms"}, {"name": "__test_layer_wmts"}],
-                        }
-                    ],
-                }
-            ],
-        )
+        assert [self._only_name(t) for t in themes["themes"]] == [
+            {
+                "name": "__test_theme",
+                "children": [
+                    {
+                        "name": "__test_layer_group",
+                        "children": [{"name": "__test_layer_wms"}, {"name": "__test_layer_wmts"}],
+                    },
+                ],
+            },
+        ]
 
-    def test_private(self):
+    def test_private(self) -> None:
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
 
         theme_view = self._create_theme_obj(
-            user=DBSession.query(User).filter_by(username="__test_user").one()
+            user=DBSession.query(User).filter_by(username="__test_user").one(),
         )
         themes = theme_view.themes()
         assert self._get_filtered_errors(themes) == set()
-        self.assertEqual(
-            [self._only_name(t) for t in themes["themes"]],
-            [
-                {
-                    "name": "__test_theme",
-                    "children": [
-                        {
-                            "name": "__test_layer_group",
-                            "children": [
-                                {"name": "__test_layer_wms"},
-                                {"name": "__test_layer_wms_private"},
-                                {"name": "__test_layer_wmts"},
-                                {"name": "__test_layer_wmts_private"},
-                            ],
-                        }
-                    ],
-                }
-            ],
-        )
+        assert [self._only_name(t) for t in themes["themes"]] == [
+            {
+                "name": "__test_theme",
+                "children": [
+                    {
+                        "name": "__test_layer_group",
+                        "children": [
+                            {"name": "__test_layer_wms"},
+                            {"name": "__test_layer_wms_private"},
+                            {"name": "__test_layer_wmts"},
+                            {"name": "__test_layer_wmts_private"},
+                        ],
+                    },
+                ],
+            },
+        ]
 
-    def test_private_multirole(self):
+    def test_private_multirole(self) -> None:
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
 
         theme_view = self._create_theme_obj(
-            user=DBSession.query(User).filter_by(username="__test_user2").one()
+            user=DBSession.query(User).filter_by(username="__test_user2").one(),
         )
         themes = theme_view.themes()
         assert self._get_filtered_errors(themes) == set()
-        self.assertEqual(
-            [self._only_name(t) for t in themes["themes"]],
-            [
-                {
-                    "name": "__test_theme",
-                    "children": [
-                        {
-                            "name": "__test_layer_group",
-                            "children": [
-                                {"name": "__test_layer_wms"},
-                                {"name": "__test_layer_wms_private"},
-                                {"name": "__test_layer_wms_private2"},
-                                {"name": "__test_layer_wmts"},
-                                {"name": "__test_layer_wmts_private"},
-                            ],
-                        }
-                    ],
-                }
-            ],
-        )
+        assert [self._only_name(t) for t in themes["themes"]] == [
+            {
+                "name": "__test_theme",
+                "children": [
+                    {
+                        "name": "__test_layer_group",
+                        "children": [
+                            {"name": "__test_layer_wms"},
+                            {"name": "__test_layer_wms_private"},
+                            {"name": "__test_layer_wms_private2"},
+                            {"name": "__test_layer_wmts"},
+                            {"name": "__test_layer_wmts_private"},
+                        ],
+                    },
+                ],
+            },
+        ]
 
-    def test_ogc_server_private_layers(self):
+    def test_ogc_server_private_layers(self) -> None:
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
 
@@ -282,7 +274,7 @@ class TestThemesPrivateView(TestCase):
         assert "testpoint_protected" not in themes["ogcServers"]["__test_ogc_server"]["attributes"]
 
         theme_view = self._create_theme_obj(
-            user=DBSession.query(User).filter_by(username="__test_user").one()
+            user=DBSession.query(User).filter_by(username="__test_user").one(),
         )
         themes = theme_view.themes()
         assert "testpoint_protected" in themes["ogcServers"]["__test_ogc_server"]["attributes"]

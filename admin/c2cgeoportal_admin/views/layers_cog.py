@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2024, Camptocamp SA
+# Copyright (c) 2017-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -68,11 +68,11 @@ base_schema.add(parent_id_node(LayerGroup))
 class LayerCOGViews(LayerViews[LayerCOG]):
     """The vector tiles administration view."""
 
-    _list_fields = (
-        LayerViews._list_fields  # typer: ignore[misc] # pylint: disable=protected-access
-        + [_list_field("url")]
-        + LayerViews._extra_list_fields  # pylint: disable=protected-access
-    )
+    _list_fields = [  # noqa: RUF012
+        *LayerViews._list_fields,  # type: ignore[misc] # pylint: disable=protected-access # noqa: SLF001
+        _list_field("url"),
+        *LayerViews._extra_list_fields,  # pylint: disable=protected-access # noqa: SLF001
+    ]
 
     _id_field = "id"
     _model = LayerCOG
@@ -82,7 +82,8 @@ class LayerCOGViews(LayerViews[LayerCOG]):
         return super()._sub_query(self._request.dbsession.query(LayerCOG).distinct())
 
     def _sub_query(
-        self, query: sqlalchemy.orm.query.Query[LayerCOG] | None
+        self,
+        query: sqlalchemy.orm.query.Query[LayerCOG] | None,
     ) -> sqlalchemy.orm.query.Query[LayerCOG]:
         del query
         return self._base_query()
@@ -101,13 +102,13 @@ class LayerCOGViews(LayerViews[LayerCOG]):
         except HTTPNotFound:
             obj = None
 
-        schema = cast(GeoFormSchemaNode, self._base_schema.clone())
+        schema = cast("GeoFormSchemaNode", self._base_schema.clone())
         if obj is not None:
             schema["url"].description = Literal(
                 _("{}<br>Current runtime value is: {}").format(
                     schema["url"].description,
                     obj.url_description(self._request),
-                )
+                ),
             )
         return schema
 
@@ -129,7 +130,9 @@ class LayerCOGViews(LayerViews[LayerCOG]):
         return super().delete()
 
     @view_config(  # type: ignore[misc]
-        route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2"
+        route_name="c2cgeoform_item_duplicate",
+        request_method="GET",
+        renderer="../templates/edit.jinja2",
     )
     def duplicate(self) -> ObjectResponse:
         return super().duplicate()

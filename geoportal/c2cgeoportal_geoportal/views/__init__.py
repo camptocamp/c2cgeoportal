@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2023, Camptocamp SA
+# Copyright (c) 2011-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -55,5 +55,4 @@ def restrict_headers(headers: dict[str, str], whitelist: list[str], blacklist: l
     if len(whitelist) > 0:
         headers = {key: value for key, value in headers.items() if key in whitelist}
 
-    headers = {key: value for key, value in headers.items() if key not in blacklist}
-    return headers
+    return {key: value for key, value in headers.items() if key not in blacklist}

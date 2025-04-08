@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# pylint: disable=invalid-name
 
 # Copyright (c) 2018-2025, Camptocamp SA
 # All rights reserved.
@@ -34,133 +35,138 @@ import re
 import subprocess  # nosec
 import sys
 
+import c2cciutils
 import requests
 import yaml
 
-parser = argparse.ArgumentParser(description="Get and upgrade the minor version.")
-parser.add_argument("--auto-increment", action="store_true")
-parser.add_argument("--force-increment", action="store_true")
-parser.add_argument("--full", action="store_true")
-parser.add_argument("--major", action="store_true")
-parser.add_argument("--major-minor", action="store_true")
-parser.add_argument("--github", action="store_true")
-args = parser.parse_args()
 
-with open("ci/ci.yaml") as ci_file:
-    ci = yaml.safe_load(ci_file.read())
+def _main() -> None:
+    parser = argparse.ArgumentParser(description="Get and upgrade the minor version.")
+    parser.add_argument("--auto-increment", action="store_true")
+    parser.add_argument("--force-increment", action="store_true")
+    parser.add_argument("--full", action="store_true")
+    parser.add_argument("--major", action="store_true")
+    parser.add_argument("--major-minor", action="store_true")
+    parser.add_argument("--github", action="store_true")
+    args = parser.parse_args()
 
-tag = None
-match = re.match(r"refs/tags/([0-9]+\.[0-9]+\.[0-9]+)$", os.environ.get("GITHUB_REF", "dev"))
-if match is not None:
-    tag = match.group(1)
-if args.force_increment:
-    ci["minor"] = ci["minor"] + 1
-    with open("ci/ci.yaml", "w") as ci_file:
-        ci_file.write(yaml.dump(ci, default_flow_style=False, explicit_start=True))
-elif args.auto_increment:
-    if tag is not None:
-        ci["minor"] = 0
-    elif os.environ.get("MAIN_BRANCH", "master") != "master" and (
-        os.environ.get("GITHUB_REF", "") == "refs/heads/" + os.environ.get("MAIN_BRANCH", "master")
-        or os.environ.get("GITHUB_EVENT_NAME", "") == "repository_dispatch"
-        or os.environ.get("GITHUB_EVENT_NAME", "") == "workflow_dispatch"
-    ):
+    with open("ci/ci.yaml", encoding="utf-8") as ci_file:
+        ci = yaml.safe_load(ci_file.read())
+
+    tag = None
+    match = re.match(r"refs/tags/([0-9]+\.[0-9]+\.[0-9]+)$", os.environ.get("GITHUB_REF", "dev"))
+    if match is not None:
+        tag = match.group(1)
+    if args.force_increment:
         ci["minor"] = ci["minor"] + 1
+        with open("ci/ci.yaml", "w", encoding="utf-8") as ci_file:
+            ci_file.write(yaml.dump(ci, default_flow_style=False, explicit_start=True))
+    elif args.auto_increment:
+        if tag is not None:
+            ci["minor"] = 0
+        elif os.environ.get("MAIN_BRANCH", "master") != "master" and (
+            os.environ.get("GITHUB_REF", "") == "refs/heads/" + os.environ.get("MAIN_BRANCH", "master")
+            or os.environ.get("GITHUB_EVENT_NAME", "") == "repository_dispatch"
+            or os.environ.get("GITHUB_EVENT_NAME", "") == "workflow_dispatch"
+        ):
+            ci["minor"] = ci["minor"] + 1
 
-    with open("ci/ci.yaml", "w") as ci_file:
-        ci_file.write(yaml.dump(ci, default_flow_style=False, explicit_start=True))
+        with open("ci/ci.yaml", "w", encoding="utf-8") as ci_file:
+            ci_file.write(yaml.dump(ci, default_flow_style=False, explicit_start=True))
 
-minor = str(ci["minor"])
+    minor = str(ci["minor"])
 
-last_tag = subprocess.check_output(["git", "describe", "--abbrev=0", "--tags"]).decode().strip()
-main_branch = os.environ.get("MAIN_BRANCH", "master")
-major_version = os.environ.get("MAJOR_VERSION", "2.10")
-patch = ""
-if tag:
-    patch = tag
-    major_minor = tag
-    full = tag + ".0"
-elif last_tag.startswith(major_version):
-    patch = last_tag
-    major_minor = last_tag
-    full = last_tag + "." + minor
-elif main_branch == "master":
-    major_minor = major_version + ".0"
-    full = major_version
-else:
-    major_minor = major_version + ".0"
-    full = major_version + ".rc." + minor
-major = major_version
+    last_tag = subprocess.check_output(["git", "describe", "--abbrev=0", "--tags"]).decode().strip()
+    main_branch = os.environ.get("MAIN_BRANCH", "master")
+    major_version = os.environ.get("MAJOR_VERSION", "2.10")
+    patch = ""
+    if tag:
+        patch = tag
+        major_minor = tag
+        full = tag + ".0"
+    elif last_tag.startswith(major_version):
+        patch = last_tag
+        major_minor = last_tag
+        full = last_tag + "." + minor
+    elif main_branch == "master":
+        major_minor = major_version + ".0"
+        full = major_version
+    else:
+        major_minor = major_version + ".0"
+        full = major_version + ".rc." + minor
+    major = major_version
 
-if args.major:
-    print(major)
-    sys.exit(0)
-if args.major_minor:
-    print(major_minor)
-    sys.exit(0)
-if args.full:
-    print(full)
-    sys.exit(0)
+    if args.major:
+        print(major)
+        sys.exit(0)
+    if args.major_minor:
+        print(major_minor)
+        sys.exit(0)
+    if args.full:
+        print(full)
+        sys.exit(0)
 
-import c2cciutils
+    latest = False
+    security_response = requests.get(
+        "https://raw.githubusercontent.com/c2cgeoportal/master/SECURITY.md",
+        headers=c2cciutils.add_authorization_header({}),
+        timeout=30,
+    )
+    with open("ci/config.yaml", encoding="utf-8") as open_file:
+        config = yaml.load(open_file, Loader=yaml.SafeLoader)
+    docker_config = config.get("publish", {}).get("docker", {})
 
-latest = False
-security_response = requests.get(
-    "https://raw.githubusercontent.com/c2cgeoportal/master/SECURITY.md",
-    headers=c2cciutils.add_authorization_header({}),
-    timeout=30,
-)
-with open("ci/config.yaml", encoding="utf-8") as open_file:
-    config = yaml.load(open_file, Loader=yaml.SafeLoader)
-docker_config = config.get("publish", {}).get("docker", {})
+    if (
+        security_response.ok
+        and docker_config.get("latest", c2cciutils.configuration.PUBLISH_DOCKER_LATEST_DEFAULT) is True
+    ):
+        security = c2cciutils.security.Security(security_response.text)
+        version_index = security.headers.index("Version")
+        latest = security.data[-1][version_index] == major_version
 
-if (
-    security_response.ok
-    and docker_config.get("latest", c2cciutils.configuration.PUBLISH_DOCKER_LATEST_DEFAULT) is True
-):
-    security = c2cciutils.security.Security(security_response.text)
-    version_index = security.headers.index("Version")
-    latest = security.data[-1][version_index] == major_version
+    versions = []
 
-versions = []
+    upgrade_version = ""
+    if os.environ.get("GITHUB_WORKFLOW", "").startswith("Rebuild"):
+        branch = main_branch
+        versions = [major_minor, major_version]
+    elif os.environ.get("GITHUB_WORKFLOW", "").startswith("Update ngeo "):
+        branch = main_branch
+        versions = [major_minor, major_version, full]
+    else:
+        if os.environ.get("GITHUB_REF", "").startswith("refs/heads/"):
+            branch = os.environ["GITHUB_REF"][11:]
+            if branch == "master":
+                versions = [major_minor, major_version, "master"]
+                upgrade_version = "master"
+            elif branch == main_branch:
+                versions = [major_minor, major_version, full]
+                if patch:
+                    versions.append(patch)
+                if latest:
+                    versions.append("latest")
+                upgrade_version = full
+            elif "/" not in branch:
+                versions = [branch]
+        if os.environ.get("GITHUB_REF", "").startswith("refs/pull/"):
+            pull_request = os.environ["GITHUB_REF"][10:-6]
+            versions = [pull_request]
 
-upgrade_version = ""
-if os.environ.get("GITHUB_WORKFLOW", "").startswith("Rebuild"):
-    branch = main_branch
-    versions = [major_minor, major_version]
-elif os.environ.get("GITHUB_WORKFLOW", "").startswith("Update ngeo "):
-    branch = main_branch
-    versions = [major_minor, major_version, full]
-else:
-    if os.environ.get("GITHUB_REF", "").startswith("refs/heads/"):
-        branch = os.environ["GITHUB_REF"][11:]
-        if branch == "master":
-            versions = [major_minor, major_version, "master"]
-            upgrade_version = "master"
-        elif branch == main_branch:
-            versions = [major_minor, major_version, full]
-            if patch:
-                versions.append(patch)
-            if latest:
-                versions.append("latest")
-            upgrade_version = full
-        elif "/" not in branch:
-            versions = [branch]
-    if os.environ.get("GITHUB_REF", "").startswith("refs/pull/"):
-        pull_request = os.environ["GITHUB_REF"][10:-6]
-        versions = [pull_request]
+    print(f"full: {full}")
+    print(f"major: {major}")
+    print(f"major_minor: {major_minor}")
+    print(f"minor: {minor}")
+    print(f"upgrade_version: {upgrade_version}")
+    print(f"versions: {','.join(versions)}")
+    if args.github:
+        with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output_file:
+            output_file.write(f"full={full}\n")
+            output_file.write(f"major={major}\n")
+            output_file.write(f"major_minor={major_minor}\n")
+            output_file.write(f"minor={minor}\n")
+            output_file.write(f"upgrade_version={upgrade_version}\n")
+            output_file.write(f"versions={','.join(versions)}\n")
 
-print(f"full: {full}")
-print(f"major: {major}")
-print(f"major_minor: {major_minor}")
-print(f"minor: {minor}")
-print(f"upgrade_version: {upgrade_version}")
-print("versions: {versions}".format(versions=",".join(versions)))
-if args.github:
-    with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output_file:
-        output_file.write(f"full={full}\n")
-        output_file.write(f"major={major}\n")
-        output_file.write(f"major_minor={major_minor}\n")
-        output_file.write(f"minor={minor}\n")
-        output_file.write(f"upgrade_version={upgrade_version}\n")
-        output_file.write("versions={versions}\n".format(versions=",".join(versions)))
+
+if __name__ == "__main__":
+    _main()

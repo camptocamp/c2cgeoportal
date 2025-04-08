@@ -47,7 +47,7 @@ from tests.functional import setup_common as setup_module
 from tests.functional import teardown_common as teardown_module
 
 
-def use(item):
+def use(item) -> None:
     pass
 
 
@@ -58,7 +58,7 @@ _LOG = logging.getLogger(__name__)
 
 
 class TestEntryView(TestCase):
-    def setup_method(self, _):
+    def setup_method(self, _) -> None:
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None  # pylint: disable=invalid-name
@@ -127,7 +127,9 @@ class TestEntryView(TestCase):
 
         interface_not_in_mapfile = Interface(name="interface_not_in_mapfile")
         public_layer_not_in_mapfile = LayerWMS(
-            name="__test_public_layer_not_in_mapfile", layer="__test_public_layer_not_in_mapfile", public=True
+            name="__test_public_layer_not_in_mapfile",
+            layer="__test_public_layer_not_in_mapfile",
+            public=True,
         )
         public_layer_not_in_mapfile.interfaces = [interface_not_in_mapfile]
         public_layer_not_in_mapfile.ogc_server = ogcserver
@@ -136,7 +138,9 @@ class TestEntryView(TestCase):
         ogcserver_notmapfile = OGCServer(name="__test_ogc_server_notmapfile")
         ogcserver_notmapfile.url = mapserv_url + "?map=not_a_mapfile"
         public_layer_not_mapfile = LayerWMS(
-            name="__test_public_layer_notmapfile", layer="__test_public_layer_notmapfile", public=True
+            name="__test_public_layer_notmapfile",
+            layer="__test_public_layer_notmapfile",
+            public=True,
         )
         public_layer_not_mapfile.interfaces = [interface_notmapfile]
         public_layer_not_mapfile.ogc_server = ogcserver_notmapfile
@@ -147,7 +151,9 @@ class TestEntryView(TestCase):
         ogcserver_geoserver.type = OGCSERVER_TYPE_GEOSERVER
         ogcserver_geoserver.auth = OGCSERVER_AUTH_GEOSERVER
         public_layer_geoserver = LayerWMS(
-            name="__test_public_layer_geoserver", layer="__test_public_layer_geoserver", public=True
+            name="__test_public_layer_geoserver",
+            layer="__test_public_layer_geoserver",
+            public=True,
         )
         public_layer_geoserver.interfaces = [interface_geoserver]
         public_layer_geoserver.ogc_server = ogcserver_geoserver
@@ -230,7 +236,7 @@ class TestEntryView(TestCase):
 
         transaction.commit()
 
-    def teardown_method(self, _):
+    def teardown_method(self, _) -> None:
         testing.tearDown()
 
         cleanup_db()
@@ -264,7 +270,7 @@ class TestEntryView(TestCase):
     @staticmethod
     def _get_filtered_errors(errors):
         regex = re.compile(
-            r"The layer \'[a-z0-9_]*\' \([a-z0-9_]*\) is not defined in WMS capabilities from \'[a-z0-9_]*\'"
+            r"The layer \'[a-z0-9_]*\' \([a-z0-9_]*\) is not defined in WMS capabilities from \'[a-z0-9_]*\'",
         )
         errors = [e for e in errors if not regex.match(e)]
         return set(errors)
@@ -277,7 +283,7 @@ class TestEntryView(TestCase):
             {
                 "layers": {"enum": {"layer_test": {"attributes": {"label": None}}}},
                 "api": {"ogc_server": "__test_ogc_server"},
-            }
+            },
         )
         request.matchdict = {"themes": ["theme"]}
         entry = Entry(request)
@@ -285,12 +291,12 @@ class TestEntryView(TestCase):
         return entry, request
 
     def _assert_has_error(self, errors, error):
-        self.assertIn(error, errors)
+        assert error in errors
         assert len([e for e in errors if e == error]) == 1, (
             f"Error '{error}' more than one time in errors:\n{errors!r}"
         )
 
-    def test_json_extent(self):
+    def test_json_extent(self) -> None:
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import Role
 

@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2024, Camptocamp SA
+# Copyright (c) 2011-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -50,7 +50,7 @@ IGNORED_STARTUP_CHARS_RE = re.compile(r"^[']*")
 class FullTextSearchView:
     """All the full-text search view."""
 
-    def __init__(self, request: pyramid.request.Request):
+    def __init__(self, request: pyramid.request.Request) -> None:
         self.request = request
         set_common_headers(request, "fulltextsearch", Cache.PUBLIC_NO)
         self.settings = request.registry.settings.get("fulltextsearch", {})

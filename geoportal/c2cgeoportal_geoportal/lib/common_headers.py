@@ -76,7 +76,7 @@ def _set_cors_headers(
         _LOG.warning("CORS preflight query missing the Access-Control-Request-Method header")
         return
 
-    allowed_origins = cast(list[str], service_headers_settings.get("access_control_allow_origin", []))
+    allowed_origins = cast("list[str]", service_headers_settings.get("access_control_allow_origin", []))
     if origin not in allowed_origins:
         if "*" in allowed_origins:
             origin = "*"
@@ -86,7 +86,7 @@ def _set_cors_headers(
             return
 
     response.headers.update(
-        {"Access-Control-Allow-Origin": origin, "Access-Control-Allow-Methods": CORS_METHODS}
+        {"Access-Control-Allow-Origin": origin, "Access-Control-Allow-Methods": CORS_METHODS},
     )
 
     max_age = service_headers_settings.get("access_control_max_age", 3600)
@@ -142,7 +142,7 @@ def _set_common_headers(
     elif cache in (Cache.PRIVATE, Cache.PRIVATE_NO):
         response.cache_control.private = True
     else:
-        raise Exception("Invalid cache type")  # pylint: disable=broad-exception-raised
+        raise Exception("Invalid cache type")  # pylint: disable=broad-exception-raised # noqa: TRY002
 
     if content_type is not None:
         response.content_type = content_type

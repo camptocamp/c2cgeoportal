@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2024, Camptocamp SA
+# Copyright (c) 2017-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -45,19 +45,20 @@ _T = TypeVar("_T", bound=DimensionLayer)
 class DimensionLayerViews(LayerViews[_T], Generic[_T]):
     """The layer with dimensions administration view."""
 
-    _extra_list_fields = [
+    _extra_list_fields = [  # noqa: RUF005
         _list_field(
             "dimensions",
             renderer=lambda layer_wms: "; ".join(
                 [
                     f"{group[0]}: {', '.join([d.value or 'NULL' for d in group[1]])}"
-                    for group in groupby(layer_wms.dimensions, lambda d: cast(str, d.name))
-                ]
+                    for group in groupby(layer_wms.dimensions, lambda d: cast("str", d.name))
+                ],
             ),
-        )
-    ] + LayerViews._extra_list_fields  # pylint: disable=protected-access
+        ),
+    ] + LayerViews._extra_list_fields  # pylint: disable=protected-access # noqa: SLF001
 
     def _sub_query(
-        self, query: sqlalchemy.orm.query.Query[DimensionLayer]
+        self,
+        query: sqlalchemy.orm.query.Query[DimensionLayer],
     ) -> sqlalchemy.orm.query.Query[DimensionLayer]:
         return super()._sub_query(query.options(subqueryload(DimensionLayer.dimensions)))

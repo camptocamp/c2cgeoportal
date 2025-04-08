@@ -1,4 +1,4 @@
-# Copyright (c) 2024, Camptocamp SA
+# Copyright (c) 2024-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -88,36 +88,64 @@ def upgrade() -> None:
         schema=staticschema,
     )
     op.alter_column(
-        "oauth2_client", "client_id", existing_type=sa.VARCHAR(), nullable=False, schema=staticschema
+        "oauth2_client",
+        "client_id",
+        existing_type=sa.VARCHAR(),
+        nullable=False,
+        schema=staticschema,
     )
     op.alter_column(
-        "oauth2_client", "secret", existing_type=sa.VARCHAR(), nullable=False, schema=staticschema
+        "oauth2_client",
+        "secret",
+        existing_type=sa.VARCHAR(),
+        nullable=False,
+        schema=staticschema,
     )
     op.alter_column(
-        "oauth2_client", "redirect_uri", existing_type=sa.VARCHAR(), nullable=False, schema=staticschema
+        "oauth2_client",
+        "redirect_uri",
+        existing_type=sa.VARCHAR(),
+        nullable=False,
+        schema=staticschema,
     )
     op.execute(f"UPDATE {staticschema}.oauth2_client SET state_required = true WHERE state_required IS NULL")
     op.alter_column(
-        "oauth2_client", "state_required", existing_type=sa.BOOLEAN(), nullable=False, schema=staticschema
+        "oauth2_client",
+        "state_required",
+        existing_type=sa.BOOLEAN(),
+        nullable=False,
+        schema=staticschema,
     )
     op.execute(f"UPDATE {staticschema}.oauth2_client SET pkce_required = true WHERE pkce_required IS NULL")
     op.alter_column(
-        "oauth2_client", "pkce_required", existing_type=sa.BOOLEAN(), nullable=False, schema=staticschema
+        "oauth2_client",
+        "pkce_required",
+        existing_type=sa.BOOLEAN(),
+        nullable=False,
+        schema=staticschema,
     )
     # URL and creation are required
     op.alter_column("shorturl", "url", existing_type=sa.VARCHAR(), nullable=False, schema=staticschema)
     op.alter_column(
-        "shorturl", "creation", existing_type=postgresql.TIMESTAMP(), nullable=False, schema=staticschema
+        "shorturl",
+        "creation",
+        existing_type=postgresql.TIMESTAMP(),
+        nullable=False,
+        schema=staticschema,
     )
     # Add default value to nb_hits
     op.execute(f"UPDATE {staticschema}.shorturl SET nb_hits = 0 WHERE nb_hits IS NULL")
     op.alter_column("shorturl", "nb_hits", existing_type=sa.INTEGER(), nullable=False, schema=staticschema)
     # Add default value to is_password_changed and deactivated
     op.execute(
-        f'UPDATE {staticschema}."user" SET is_password_changed = false WHERE is_password_changed IS NULL'
+        f'UPDATE {staticschema}."user" SET is_password_changed = false WHERE is_password_changed IS NULL',
     )
     op.alter_column(
-        "user", "is_password_changed", existing_type=sa.BOOLEAN(), nullable=False, schema=staticschema
+        "user",
+        "is_password_changed",
+        existing_type=sa.BOOLEAN(),
+        nullable=False,
+        schema=staticschema,
     )
     op.execute(f'UPDATE {staticschema}."user" SET deactivated = false WHERE deactivated IS NULL')
     op.alter_column("user", "deactivated", existing_type=sa.BOOLEAN(), nullable=False, schema=staticschema)
@@ -129,25 +157,49 @@ def downgrade() -> None:
 
     op.alter_column("user", "deactivated", existing_type=sa.BOOLEAN(), nullable=True, schema=staticschema)
     op.alter_column(
-        "user", "is_password_changed", existing_type=sa.BOOLEAN(), nullable=True, schema=staticschema
+        "user",
+        "is_password_changed",
+        existing_type=sa.BOOLEAN(),
+        nullable=True,
+        schema=staticschema,
     )
     op.alter_column("shorturl", "nb_hits", existing_type=sa.INTEGER(), nullable=True, schema=staticschema)
     op.alter_column(
-        "shorturl", "creation", existing_type=postgresql.TIMESTAMP(), nullable=True, schema=staticschema
+        "shorturl",
+        "creation",
+        existing_type=postgresql.TIMESTAMP(),
+        nullable=True,
+        schema=staticschema,
     )
     op.alter_column("shorturl", "url", existing_type=sa.VARCHAR(), nullable=True, schema=staticschema)
     op.alter_column(
-        "oauth2_client", "pkce_required", existing_type=sa.BOOLEAN(), nullable=True, schema=staticschema
+        "oauth2_client",
+        "pkce_required",
+        existing_type=sa.BOOLEAN(),
+        nullable=True,
+        schema=staticschema,
     )
     op.alter_column(
-        "oauth2_client", "state_required", existing_type=sa.BOOLEAN(), nullable=True, schema=staticschema
+        "oauth2_client",
+        "state_required",
+        existing_type=sa.BOOLEAN(),
+        nullable=True,
+        schema=staticschema,
     )
     op.alter_column(
-        "oauth2_client", "redirect_uri", existing_type=sa.VARCHAR(), nullable=True, schema=staticschema
+        "oauth2_client",
+        "redirect_uri",
+        existing_type=sa.VARCHAR(),
+        nullable=True,
+        schema=staticschema,
     )
     op.alter_column("oauth2_client", "secret", existing_type=sa.VARCHAR(), nullable=True, schema=staticschema)
     op.alter_column(
-        "oauth2_client", "client_id", existing_type=sa.VARCHAR(), nullable=True, schema=staticschema
+        "oauth2_client",
+        "client_id",
+        existing_type=sa.VARCHAR(),
+        nullable=True,
+        schema=staticschema,
     )
     op.alter_column(
         "oauth2_bearertoken",

@@ -7,15 +7,14 @@ import pytest
 from . import AbstractViewsTests
 
 
-@pytest.fixture(scope="function")
-@pytest.mark.usefixtures("dbsession", "transact")
+@pytest.fixture
 def functionality_test_data(dbsession, transact, settings):
     del transact
 
     from c2cgeoportal_commons.models.main import Functionality
 
     functionalities = []
-    for i in range(0, 4):
+    for i in range(4):
         functionality = Functionality(
             settings["admin_interface"]["available_functionalities"][i]["name"],
             value=f"value_{i}",
@@ -26,14 +25,14 @@ def functionality_test_data(dbsession, transact, settings):
 
     dbsession.flush()
 
-    yield {"functionalities": functionalities}
+    return {"functionalities": functionalities}
 
 
 @pytest.mark.usefixtures("functionality_test_data", "test_app")
 class TestFunctionality(AbstractViewsTests):
     _prefix = "/admin/functionalities"
 
-    def test_index_rendering(self, test_app):
+    def test_index_rendering(self, test_app) -> None:
         resp = self.get(test_app)
 
         self.check_left_menu(resp, "Functionalities")
@@ -47,11 +46,11 @@ class TestFunctionality(AbstractViewsTests):
         ]
         self.check_grid_headers(resp, expected)
 
-    def test_grid_search(self, test_app):
+    def test_grid_search(self, test_app) -> None:
         # search on functionality name
         self.check_search(test_app, "default_basemap", total=1)
 
-    def test_submit_new(self, dbsession, test_app):
+    def test_submit_new(self, dbsession, test_app) -> None:
         from c2cgeoportal_commons.models.main import Functionality, Log, LogAction
 
         resp = test_app.post(
@@ -61,7 +60,8 @@ class TestFunctionality(AbstractViewsTests):
         )
         functionality = dbsession.query(Functionality).filter(Functionality.name == "new_name").one()
         assert str(functionality.id) == re.match(
-            r"http://localhost/admin/functionalities/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/functionalities/(.*)\?msg_col=submit_ok",
+            resp.location,
         ).group(1)
         assert functionality.name == "new_name"
 
@@ -73,7 +73,7 @@ class TestFunctionality(AbstractViewsTests):
         assert log.element_name == functionality.name
         assert log.username == "test_user"
 
-    def test_edit(self, test_app, functionality_test_data, dbsession):
+    def test_edit(self, test_app, functionality_test_data, dbsession) -> None:
         from c2cgeoportal_commons.models.main import Log, LogAction
 
         functionality = functionality_test_data["functionalities"][0]
@@ -94,7 +94,7 @@ class TestFunctionality(AbstractViewsTests):
         assert log.element_name == functionality.name
         assert log.username == "test_user"
 
-    def test_delete(self, test_app, functionality_test_data, dbsession):
+    def test_delete(self, test_app, functionality_test_data, dbsession) -> None:
         from c2cgeoportal_commons.models.main import Functionality, Log, LogAction
 
         functionality = functionality_test_data["functionalities"][0]
@@ -110,7 +110,7 @@ class TestFunctionality(AbstractViewsTests):
         assert log.element_name == functionality.name
         assert log.username == "test_user"
 
-    def test_duplicate(self, functionality_test_data, test_app, dbsession):
+    def test_duplicate(self, functionality_test_data, test_app, dbsession) -> None:
         from c2cgeoportal_commons.models.main import Functionality
 
         functionality = functionality_test_data["functionalities"][3]
@@ -132,5 +132,6 @@ class TestFunctionality(AbstractViewsTests):
             .one()
         )
         assert str(functionality.id) == re.match(
-            r"http://localhost/admin/functionalities/(.*)\?msg_col=submit_ok", resp.location
+            r"http://localhost/admin/functionalities/(.*)\?msg_col=submit_ok",
+            resp.location,
         ).group(1)

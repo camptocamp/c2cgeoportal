@@ -1,4 +1,5 @@
-# Copyright (c) 2014-2024, Camptocamp SA
+# noqa: INP001, EXE002
+# Copyright (c) 2014-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -69,7 +70,7 @@ def get_config() -> dict[str, str | bool]:
             "version_table": version_table,
             "version_locations": version_locations,
             "version_table_schema": config[schema_config_name],
-        }
+        },
     )
     return settings
 
@@ -87,7 +88,7 @@ def run_migrations_offline() -> None:
     script output.
     """
     conf = get_config()
-    context.configure(url=conf["sqlalchemy.url"], **conf)  # type: ignore
+    context.configure(url=conf["sqlalchemy.url"], **conf)  # type: ignore[arg-type]
 
     with context.begin_transaction():
         context.run_migrations()
@@ -109,7 +110,7 @@ def run_migrations_online() -> None:
         static,
     )
 
-    _schema = main._schema if alembic_name == "main" else static._schema  # pylint: disable=protected-access
+    _schema = main._schema if alembic_name == "main" else static._schema  # pylint: disable=protected-access # noqa: SLF001
 
     def include_object(
         obj: sqlalchemy.ext.declarative.ConcreteBase,
@@ -121,12 +122,12 @@ def run_migrations_online() -> None:
         del name, reflected, compare_to
 
         if type_ == "table":
-            return cast(bool, obj.schema == _schema)  # type: ignore[attr-defined]
-        return cast(bool, obj.table.schema == _schema)  # type: ignore[attr-defined]
+            return cast("bool", obj.schema == _schema)  # type: ignore[attr-defined]
+        return cast("bool", obj.table.schema == _schema)  # type: ignore[attr-defined]
 
     if _schema:
         conf.update(
-            {"target_metadata": Base.metadata, "include_schemas": True, "include_object": include_object}
+            {"target_metadata": Base.metadata, "include_schemas": True, "include_object": include_object},
         )
 
     engine = engine_from_config(conf, prefix="sqlalchemy.", poolclass=pool.NullPool)

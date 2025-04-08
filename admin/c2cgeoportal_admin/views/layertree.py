@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2024, Camptocamp SA
+# Copyright (c) 2017-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -56,7 +56,7 @@ itemtypes_tables = {
 class LayerTreeViews:
     """The layer tree administration view."""
 
-    def __init__(self, request: pyramid.request.Request):
+    def __init__(self, request: pyramid.request.Request) -> None:
         self._request = request
         self._dbsession = request.dbsession
 
@@ -112,9 +112,11 @@ class LayerTreeViews:
                 label=_("Edit"),
                 icon="glyphicon glyphicon-pencil",
                 url=self._request.route_url(
-                    "c2cgeoform_item", table=itemtypes_tables[item.item_type], id=item.id
+                    "c2cgeoform_item",
+                    table=itemtypes_tables[item.item_type],
+                    id=item.id,
                 ),
-            )
+            ),
         )
 
         if item.item_type in ("theme", "group"):
@@ -125,7 +127,7 @@ class LayerTreeViews:
                     icon="glyphicon glyphicon-plus",
                     url=f"{self._request.route_url('c2cgeoform_item', table='layer_groups', id='new')}?"
                     f"parent_id={item.id}",
-                )
+                ),
             )
 
         if item.item_type == "group":
@@ -136,7 +138,7 @@ class LayerTreeViews:
                     icon="glyphicon glyphicon-plus",
                     url=f"{self._request.route_url('c2cgeoform_item', table='layers_wms', id='new')}?"
                     f"parent_id={item.id}",
-                )
+                ),
             )
 
             actions.append(
@@ -146,7 +148,7 @@ class LayerTreeViews:
                     icon="glyphicon glyphicon-plus",
                     url=f"{self._request.route_url('c2cgeoform_item', table='layers_wmts', id='new')}?"
                     f"parent_id={item.id}",
-                )
+                ),
             )
 
         actions.append(
@@ -155,9 +157,11 @@ class LayerTreeViews:
                 label=_("Duplicate"),
                 icon="glyphicon glyphicon-duplicate",
                 url=self._request.route_url(
-                    "c2cgeoform_item_duplicate", table=itemtypes_tables[item.item_type], id=item.id
+                    "c2cgeoform_item_duplicate",
+                    table=itemtypes_tables[item.item_type],
+                    id=item.id,
                 ),
-            )
+            ),
         )
 
         if parent_id is not None:
@@ -169,7 +173,7 @@ class LayerTreeViews:
                     url=self._request.route_url("layertree_unlink", group_id=parent_id, item_id=item.id),
                     method="DELETE",
                     confirmation=_("Are your sure you want to unlink this record from his parent?"),
-                )
+                ),
             )
 
         actions.append(
@@ -180,7 +184,7 @@ class LayerTreeViews:
                 url=self._request.route_url("layertree_delete", item_id=item.id),
                 method="DELETE",
                 confirmation=_("Are your sure you want to delete this record?"),
-            )
+            ),
         )
 
         return actions
@@ -196,7 +200,7 @@ class LayerTreeViews:
             .one_or_none()
         )
         if link is None:
-            raise HTTPNotFound()
+            raise HTTPNotFound
         self._request.dbsession.delete(link)
         self._request.dbsession.flush()
         return {"success": True, "redirect": self._request.route_url("layertree")}
@@ -206,7 +210,7 @@ class LayerTreeViews:
         item_id = self._request.matchdict.get("item_id")
         item = self._request.dbsession.query(TreeItem).get(item_id)
         if item is None:
-            raise HTTPNotFound()
+            raise HTTPNotFound
         self._request.dbsession.delete(item)
         self._request.dbsession.flush()
         return {"success": True, "redirect": self._request.route_url("layertree")}

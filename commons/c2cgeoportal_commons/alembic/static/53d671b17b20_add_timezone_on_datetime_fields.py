@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2024, Camptocamp SA
+# Copyright (c) 2018-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -55,7 +55,7 @@ SET TIME ZONE 'UTC';
 ALTER TABLE {staticschema}.user ALTER COLUMN last_login TYPE timestamp with time zone;
 SET TIME ZONE LOCAL;
 ALTER TABLE {staticschema}.user ALTER COLUMN expire_on TYPE timestamp with time zone;
-"""
+""",
     )
 
 
@@ -69,5 +69,5 @@ SET TIME ZONE 'UTC';
 ALTER TABLE {staticschema}.user ALTER COLUMN last_login TYPE timestamp without time zone;
 SET TIME ZONE LOCAL;
 ALTER TABLE {staticschema}.user ALTER COLUMN expire_on TYPE timestamp without time zone;
-"""
+""",
     )

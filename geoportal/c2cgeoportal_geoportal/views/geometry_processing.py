@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2024, Camptocamp SA
+# Copyright (c) 2011-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -44,7 +44,7 @@ class GeometryProcessing:
     Currently only difference between geometries.
     """
 
-    def __init__(self, request: pyramid.request.Request):
+    def __init__(self, request: pyramid.request.Request) -> None:
         self.request = request
 
     @view_config(route_name="difference", renderer="geojson")  # type: ignore[misc]
@@ -62,13 +62,14 @@ class GeometryProcessing:
             {
                 "geometries": [geomA, geomB]
             }
-            """
+            """,
             )
 
         return to_shape(
             DBSession.query(
                 func.ST_Difference(
-                    from_shape(shape(body["geometries"][0])), from_shape(shape(body["geometries"][1]))
-                )
-            ).scalar()
+                    from_shape(shape(body["geometries"][0])),
+                    from_shape(shape(body["geometries"][1])),
+                ),
+            ).scalar(),
         )

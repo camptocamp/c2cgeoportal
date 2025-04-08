@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2024, Camptocamp SA
+# Copyright (c) 2021-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -71,7 +71,7 @@ class VectorTilesViews:
             raise HTTPNotFound(f"Not found any vector tile layer named {layer_name}")
 
         raw_sql = layer[0].format(
-            envelope=f"ST_MakeEnvelope({minx}, {miny}, {maxx}, {maxy}, {settings['srid']})"
+            envelope=f"ST_MakeEnvelope({minx}, {miny}, {maxx}, {maxy}, {settings['srid']})",
         )
 
         result = DBSession.execute(sqlalchemy.text(raw_sql))
@@ -81,3 +81,4 @@ class VectorTilesViews:
             response.content_type = "application/vnd.mapbox-vector-tile"
             response.body = row[0].tobytes()
             return response
+        return None

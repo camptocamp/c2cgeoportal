@@ -7,7 +7,7 @@ from sqlalchemy import Column, types
 Base: typing.Any = sqlalchemy.ext.declarative.declarative_base()
 
 
-class PointTest(Base):  # type: ignore
+class PointTest(Base):  # type: ignore[m]
     __tablename__ = "testpoint"
     __table_args__ = {"schema": "geodata"}
     id = Column(types.Integer, primary_key=True)

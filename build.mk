@@ -145,6 +145,7 @@ geoportal/c2cgeoportal_geoportal/scaffolds%advance_update/{{cookiecutter.project
 geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot: \
 		lingva.cfg $(SRC_FILES)
 	mkdir --parent $(dir $@)
+	pot-create --list-extractors
 	pot-create --width=110 --config=$< --keyword=_ --output=$@ $(SRC_FILES)
 
 admin/c2cgeoportal_admin/locale/c2cgeoportal_admin.pot: \

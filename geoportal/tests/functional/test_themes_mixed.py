@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2024, Camptocamp SA
+# Copyright (c) 2016-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -40,7 +40,7 @@ from tests.functional import teardown_common as teardown_module  # noqa
 
 
 class TestThemesView(TestCase):
-    def setup_method(self, _):
+    def setup_method(self, _) -> None:
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
@@ -83,19 +83,25 @@ class TestThemesView(TestCase):
         layer_internal_wms.ogc_server = ogc_server_internal
 
         layer_external_wms = LayerWMS(
-            name="__test_layer_external_wms", layer="ch.swisstopo.dreiecksvermaschung", public=True
+            name="__test_layer_external_wms",
+            layer="ch.swisstopo.dreiecksvermaschung",
+            public=True,
         )
         layer_external_wms.interfaces = [main]
         layer_external_wms.ogc_server = ogc_server_external
 
         layer_valid_wms_version = LayerWMS(
-            name="__test_valid_wms_version", layer="testpoint_unprotected", public=True
+            name="__test_valid_wms_version",
+            layer="testpoint_unprotected",
+            public=True,
         )
         layer_valid_wms_version.interfaces = [main]
         layer_valid_wms_version.ogc_server = ogc_server_valid_wms_version
 
         layer_invalid_wms_version = LayerWMS(
-            name="__test_invalid_wms_version", layer="testpoint_unprotected", public=True
+            name="__test_invalid_wms_version",
+            layer="testpoint_unprotected",
+            public=True,
         )
         layer_invalid_wms_version.interfaces = [main]
         layer_invalid_wms_version.ogc_server = ogc_server_invalid_wms_version
@@ -149,7 +155,7 @@ class TestThemesView(TestCase):
 
         transaction.commit()
 
-    def teardown_method(self, _):
+    def teardown_method(self, _) -> None:
         testing.tearDown()
 
         from c2cgeoportal_commons.models import DBSession
@@ -208,7 +214,7 @@ class TestThemesView(TestCase):
         errors = themes["errors"]
 
         regex = re.compile(
-            r"The (GeoMapFish|WMS) layer name '[a-z0-9_]*', cannot be two times in the same block \(first level group\)."
+            r"The (GeoMapFish|WMS) layer name '[a-z0-9_]*', cannot be two times in the same block \(first level group\).",
         )
         errors = [e for e in errors if not regex.match(e)]
 
@@ -216,106 +222,100 @@ class TestThemesView(TestCase):
 
         return set(errors)
 
-    def test_theme_mixed(self):
+    def test_theme_mixed(self) -> None:
         theme_view = self._create_theme_obj(params={"interface": "main"})
         themes = theme_view.themes()
-        self.assertEqual(
-            self._get_filtered_errors(themes),
+        assert self._get_filtered_errors(themes) == {
+            "WARNING! an error 'The WMS version (1.0.0) you requested is not implemented. Please use 1.1.1 or 1.3",
+        }
+        assert [self._only_name(t, ["name", "mixed"]) for t in themes["themes"]] == [
             {
-                "WARNING! an error 'The WMS version (1.0.0) you requested is not implemented. Please use 1.1.1 or 1.3",
+                "children": [
+                    {
+                        "children": [{"name": "__test_layer_internal_wms"}],
+                        "mixed": False,
+                        "name": "__test_layer_group_1",
+                    },
+                    {
+                        "children": [{"name": "__test_layer_external_wms"}],
+                        "mixed": False,
+                        "name": "__test_layer_group_2",
+                    },
+                    {
+                        "children": [{"name": "__test_layer_wmts"}],
+                        "mixed": True,
+                        "name": "__test_layer_group_3",
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": [{"name": "__test_layer_internal_wms"}],
+                                "mixed": True,
+                                "name": "__test_layer_group_1",
+                            },
+                            {
+                                "children": [{"name": "__test_layer_external_wms"}],
+                                "mixed": True,
+                                "name": "__test_layer_group_2",
+                            },
+                        ],
+                        "mixed": True,
+                        "name": "__test_layer_group_4",
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": [{"name": "__test_layer_internal_wms"}],
+                                "mixed": True,
+                                "name": "__test_layer_group_1",
+                            },
+                            {
+                                "children": [{"name": "__test_layer_wmts"}],
+                                "mixed": True,
+                                "name": "__test_layer_group_3",
+                            },
+                        ],
+                        "mixed": True,
+                        "name": "__test_layer_group_5",
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": [{"name": "__test_layer_internal_wms"}],
+                                "mixed": False,
+                                "name": "__test_layer_group_1",
+                            },
+                            {
+                                "children": [{"name": "__test_layer_internal_wms"}],
+                                "mixed": False,
+                                "name": "__test_layer_group_6",
+                            },
+                        ],
+                        "mixed": False,
+                        "name": "__test_layer_group_7",
+                    },
+                    {
+                        "children": [
+                            {
+                                "children": [{"name": "__test_layer_external_wms"}],
+                                "mixed": True,
+                                "name": "__test_layer_group_2",
+                            },
+                            {
+                                "children": [{"name": "__test_layer_internal_wms"}],
+                                "mixed": True,
+                                "name": "__test_layer_group_6",
+                            },
+                        ],
+                        "mixed": True,
+                        "name": "__test_layer_group_8",
+                    },
+                    {
+                        "children": [{"name": "__test_valid_wms_version"}],
+                        "mixed": True,
+                        "name": "__test_layer_group_9",
+                    },
+                ],
+                "name": "__test_theme",
             },
-        )
-        self.assertEqual(
-            [self._only_name(t, ["name", "mixed"]) for t in themes["themes"]],
-            [
-                {
-                    "children": [
-                        {
-                            "children": [{"name": "__test_layer_internal_wms"}],
-                            "mixed": False,
-                            "name": "__test_layer_group_1",
-                        },
-                        {
-                            "children": [{"name": "__test_layer_external_wms"}],
-                            "mixed": False,
-                            "name": "__test_layer_group_2",
-                        },
-                        {
-                            "children": [{"name": "__test_layer_wmts"}],
-                            "mixed": True,
-                            "name": "__test_layer_group_3",
-                        },
-                        {
-                            "children": [
-                                {
-                                    "children": [{"name": "__test_layer_internal_wms"}],
-                                    "mixed": True,
-                                    "name": "__test_layer_group_1",
-                                },
-                                {
-                                    "children": [{"name": "__test_layer_external_wms"}],
-                                    "mixed": True,
-                                    "name": "__test_layer_group_2",
-                                },
-                            ],
-                            "mixed": True,
-                            "name": "__test_layer_group_4",
-                        },
-                        {
-                            "children": [
-                                {
-                                    "children": [{"name": "__test_layer_internal_wms"}],
-                                    "mixed": True,
-                                    "name": "__test_layer_group_1",
-                                },
-                                {
-                                    "children": [{"name": "__test_layer_wmts"}],
-                                    "mixed": True,
-                                    "name": "__test_layer_group_3",
-                                },
-                            ],
-                            "mixed": True,
-                            "name": "__test_layer_group_5",
-                        },
-                        {
-                            "children": [
-                                {
-                                    "children": [{"name": "__test_layer_internal_wms"}],
-                                    "mixed": False,
-                                    "name": "__test_layer_group_1",
-                                },
-                                {
-                                    "children": [{"name": "__test_layer_internal_wms"}],
-                                    "mixed": False,
-                                    "name": "__test_layer_group_6",
-                                },
-                            ],
-                            "mixed": False,
-                            "name": "__test_layer_group_7",
-                        },
-                        {
-                            "children": [
-                                {
-                                    "children": [{"name": "__test_layer_external_wms"}],
-                                    "mixed": True,
-                                    "name": "__test_layer_group_2",
-                                },
-                                {
-                                    "children": [{"name": "__test_layer_internal_wms"}],
-                                    "mixed": True,
-                                    "name": "__test_layer_group_6",
-                                },
-                            ],
-                            "mixed": True,
-                            "name": "__test_layer_group_8",
-                        },
-                        {
-                            "children": [{"name": "__test_valid_wms_version"}],
-                            "mixed": True,
-                            "name": "__test_layer_group_9",
-                        },
-                    ],
-                    "name": "__test_theme",
-                }
-            ],
-        )
+        ]

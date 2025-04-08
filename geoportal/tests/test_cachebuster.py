@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2024, Camptocamp SA
+# Copyright (c) 2011-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -41,16 +41,16 @@ def handler(request):
 
 
 class MyRequest(DummyRequest):
-    def __init__(self, path_info):
+    def __init__(self, path_info) -> None:
         self.path_info = path_info
 
 
 class TestCacheBuster(TestCase):
-    def setup_class(self):
+    def setup_class(self) -> None:
         init_region({"backend": "dogpile.cache.memory"}, "std")
         init_region({"backend": "dogpile.cache.memory"}, "obj")
 
-    def test_replace(self):
+    def test_replace(self) -> None:
         from c2cgeoportal_geoportal.lib.cacheversion import CachebusterTween
 
         registry = pyramid.registry.Registry()
@@ -60,7 +60,7 @@ class TestCacheBuster(TestCase):
         ctf(request)
         assert request.path_info == "/test/build.css"
 
-    def test_noreplace(self):
+    def test_noreplace(self) -> None:
         from c2cgeoportal_geoportal.lib.cacheversion import CachebusterTween
 
         registry = pyramid.registry.Registry()

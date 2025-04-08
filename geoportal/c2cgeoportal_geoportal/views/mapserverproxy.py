@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2024, Camptocamp SA
+# Copyright (c) 2011-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -55,7 +55,7 @@ _LOG = logging.getLogger(__name__)
 class MapservProxy(OGCProxy):
     """Proxy for OGC (WMS/WFS) servers."""
 
-    params: dict[str, str] = {}
+    params: dict[str, str] = {}  # noqa: RUF012
 
     def __init__(self, request: Request) -> None:
         OGCProxy.__init__(self, request)
@@ -68,7 +68,7 @@ class MapservProxy(OGCProxy):
             _LOG.debug("proxy() detected authentication_required")
             if self.request.registry.settings.get("basicauth", "False").lower() == "true":
                 raise HTTPUnauthorized(
-                    headers={"WWW-Authenticate": 'Basic realm="Access to restricted layers"'}
+                    headers={"WWW-Authenticate": 'Basic realm="Access to restricted layers"'},
                 )
             raise HTTPForbidden("Basic auth is not enabled")
 
@@ -92,15 +92,14 @@ class MapservProxy(OGCProxy):
             # parameter is actually provided.
             if "request" not in self.lower_params:
                 self.params = {}
-            else:
-                if self.ogc_server.type != main.OGCSERVER_TYPE_QGISSERVER or "user_id" not in self.params:
-                    use_cache = self.lower_params["request"] in ("getlegendgraphic",)
+            elif self.ogc_server.type != main.OGCSERVER_TYPE_QGISSERVER or "user_id" not in self.params:
+                use_cache = self.lower_params["request"] in ("getlegendgraphic",)
 
-                    # no user_id and role_id or cached queries
-                    if use_cache and "user_id" in self.params:
-                        del self.params["user_id"]
-                    if use_cache and "role_ids" in self.params:
-                        del self.params["role_ids"]
+                # no user_id and role_id or cached queries
+                if use_cache and "user_id" in self.params:
+                    del self.params["user_id"]
+                if use_cache and "role_ids" in self.params:
+                    del self.params["role_ids"]
 
             if "service" in self.lower_params and self.lower_params["service"] == "wfs":
                 _url = self._get_wfs_url(errors)
@@ -112,7 +111,7 @@ class MapservProxy(OGCProxy):
 
         if _url is None:
             _LOG.error("Error getting the URL:\n%s", "\n".join(errors))
-            raise HTTPInternalServerError()
+            raise HTTPInternalServerError
 
         cache_control = (
             Cache.PRIVATE
@@ -192,7 +191,7 @@ class MapservProxy(OGCProxy):
 
         if _url is None:
             _LOG.error("Error getting the URL:\n%s", "\n".join(errors))
-            raise HTTPInternalServerError()
+            raise HTTPInternalServerError
 
         cache_control = Cache.PRIVATE_NO
 
@@ -202,7 +201,7 @@ class MapservProxy(OGCProxy):
             headers["sec-username"] = self.user.username
             headers["sec-roles"] = ";".join(get_roles_name(self.request))
 
-        response = self._proxy_callback(
+        return self._proxy_callback(
             cache_control,
             url=_url,
             params=self.params,
@@ -211,10 +210,12 @@ class MapservProxy(OGCProxy):
             body=self.request.body,
         )
 
-        return response
-
     def _proxy_callback(
-        self, cache_control: Cache, url: Url, params: dict[str, str], **kwargs: Any
+        self,
+        cache_control: Cache,
+        url: Url,
+        params: dict[str, str],
+        **kwargs: Any,
     ) -> Response:
         if self.request.matched_route.name.endswith("_path"):
             if self.request.matchdict["path"] == ("favicon.ico",):

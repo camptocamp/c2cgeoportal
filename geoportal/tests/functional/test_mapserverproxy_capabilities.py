@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2024, Camptocamp SA
+# Copyright (c) 2013-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -44,7 +44,7 @@ from tests.functional import teardown_common as teardown_module  # noqa
 
 
 class TestMapserverproxyCapabilities(TestCase):
-    def setup_method(self, _):
+    def setup_method(self, _) -> None:
         self.maxDiff = None
 
         from c2cgeoportal_commons.models import DBSession
@@ -118,7 +118,7 @@ class TestMapserverproxyCapabilities(TestCase):
         DBSession.add_all([user, restricted_area])
         transaction.commit()
 
-    def teardown_method(self, _):
+    def teardown_method(self, _) -> None:
         cleanup_db()
 
     @staticmethod
@@ -131,14 +131,14 @@ class TestMapserverproxyCapabilities(TestCase):
                     "available_functionalities": [
                         {"name": "mapserver_substitution"},
                         {"name": "print_template"},
-                    ]
+                    ],
                 },
                 "servers": {"srv": "http://example.com"},
             },
             user=username,
         )
         request.params.update(
-            dict(service=service, version="1.1.1", request="getcapabilities", ogcserver=ogcserver)
+            dict(service=service, version="1.1.1", request="getcapabilities", ogcserver=ogcserver),
         )
         return MapservProxy(request).proxy()
 
@@ -152,95 +152,95 @@ class TestMapserverproxyCapabilities(TestCase):
                     "available_functionalities": [
                         {"name": "mapserver_substitution"},
                         {"name": "print_template"},
-                    ]
+                    ],
                 },
                 "servers": {"srv": "http://example.com"},
             },
             user=username,
         )
         request.params.update(
-            dict(service=service, version="1.1.1", request="getcapabilities", ogcserver=ogcserver)
+            dict(service=service, version="1.1.1", request="getcapabilities", ogcserver=ogcserver),
         )
         return MapservProxy(request).proxy()
 
-    def test_wms_osjpeg(self):
+    def test_wms_osjpeg(self) -> None:
         response = self._wms_get_capabilities("__test_ogc_server_jpeg")
         assert "<Name>__test_private_layer1</Name>" not in response.body.decode("utf-8")
         assert "<Name>__test_private_layer2</Name>" not in response.body.decode("utf-8")
         assert "<Name>__test_private_layer3</Name>" not in response.body.decode("utf-8")
         assert "<Name>__test_private_layer4</Name>" in response.body.decode("utf-8")
 
-    def test_wms_osjpeg_auth(self):
+    def test_wms_osjpeg_auth(self) -> None:
         response = self._wms_get_capabilities("__test_ogc_server_jpeg", username="__test_user")
         assert "<Name>__test_private_layer1</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer2</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer3</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer4</Name>" in response.body.decode("utf-8")
 
-    def test_wfs_osjpeg(self):
+    def test_wfs_osjpeg(self) -> None:
         response = self._wms_get_capabilities("__test_ogc_server_jpeg", "wfs")
         assert "<Name>__test_private_layer1</Name>" not in response.body.decode("utf-8")
         assert "<Name>__test_private_layer2</Name>" not in response.body.decode("utf-8")
         assert "<Name>__test_private_layer3</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer4</Name>" not in response.body.decode("utf-8")
 
-    def test_wfs_osjpeg_auth(self):
+    def test_wfs_osjpeg_auth(self) -> None:
         response = self._wms_get_capabilities("__test_ogc_server_jpeg", "wfs", username="__test_user")
         assert "<Name>__test_private_layer1</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer2</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer3</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer4</Name>" in response.body.decode("utf-8")
 
-    def test_wms_ospng(self):
+    def test_wms_ospng(self) -> None:
         response = self._wms_get_capabilities("__test_ogc_server_png")
         assert "<Name>__test_private_layer1</Name>" not in response.body.decode("utf-8")
         assert "<Name>__test_private_layer2</Name>" not in response.body.decode("utf-8")
         assert "<Name>__test_private_layer3</Name>" not in response.body.decode("utf-8")
         assert "<Name>__test_private_layer4</Name>" in response.body.decode("utf-8")
 
-    def test_wms_ospng_auth(self):
+    def test_wms_ospng_auth(self) -> None:
         response = self._wms_get_capabilities("__test_ogc_server_png", username="__test_user")
         assert "<Name>__test_private_layer1</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer2</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer3</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer4</Name>" in response.body.decode("utf-8")
 
-    def test_wfs_ospng(self):
+    def test_wfs_ospng(self) -> None:
         response = self._wms_get_capabilities("__test_ogc_server_png", "wfs")
         assert "<Name>__test_private_layer1</Name>" not in response.body.decode("utf-8")
         assert "<Name>__test_private_layer2</Name>" not in response.body.decode("utf-8")
         assert "<Name>__test_private_layer3</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer4</Name>" not in response.body.decode("utf-8")
 
-    def test_wfs_ospng_auth(self):
+    def test_wfs_ospng_auth(self) -> None:
         response = self._wms_get_capabilities("__test_ogc_server_png", "wfs", username="__test_user")
         assert "<Name>__test_private_layer1</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer2</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer3</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer4</Name>" in response.body.decode("utf-8")
 
-    def test_wms_oswfs1(self):
+    def test_wms_oswfs1(self) -> None:
         response = self._wms_get_capabilities("__test_ogc_server_wfs1")
         assert "<Name>__test_private_layer1</Name>" not in response.body.decode("utf-8")
         assert "<Name>__test_private_layer2</Name>" not in response.body.decode("utf-8")
         assert "<Name>__test_private_layer3</Name>" not in response.body.decode("utf-8")
         assert "<Name>__test_private_layer4</Name>" in response.body.decode("utf-8")
 
-    def test_wms_oswfs1_auth(self):
+    def test_wms_oswfs1_auth(self) -> None:
         response = self._wms_get_capabilities("__test_ogc_server_wfs1", username="__test_user")
         assert "<Name>__test_private_layer1</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer2</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer3</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer4</Name>" in response.body.decode("utf-8")
 
-    def test_wfs_oswfs2(self):
+    def test_wfs_oswfs2(self) -> None:
         response = self._wms_get_capabilities("__test_ogc_server_wfs2", "wfs")
         assert "<Name>__test_private_layer1</Name>" not in response.body.decode("utf-8")
         assert "<Name>__test_private_layer2</Name>" not in response.body.decode("utf-8")
         assert "<Name>__test_private_layer3</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer4</Name>" not in response.body.decode("utf-8")
 
-    def test_wfs_oswfs2_auth(self):
+    def test_wfs_oswfs2_auth(self) -> None:
         response = self._wms_get_capabilities("__test_ogc_server_wfs2", "wfs", username="__test_user")
         assert "<Name>__test_private_layer1</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer2</Name>" in response.body.decode("utf-8")
@@ -249,84 +249,84 @@ class TestMapserverproxyCapabilities(TestCase):
 
     # # # CONFIG # # #
 
-    def test_wms_osjpeg_config(self):
+    def test_wms_osjpeg_config(self) -> None:
         response = self._wms_get_capabilities_config("__test_ogc_server_jpeg")
         assert "<Name>__test_private_layer1</Name>" not in response.body.decode("utf-8")
         assert "<Name>__test_private_layer2</Name>" not in response.body.decode("utf-8")
         assert "<Name>__test_private_layer3</Name>" not in response.body.decode("utf-8")
         assert "<Name>__test_private_layer4</Name>" in response.body.decode("utf-8")
 
-    def test_wms_osjpeg_auth_config(self):
+    def test_wms_osjpeg_auth_config(self) -> None:
         response = self._wms_get_capabilities_config("__test_ogc_server_jpeg", username="__test_user")
         assert "<Name>__test_private_layer1</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer2</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer3</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer4</Name>" in response.body.decode("utf-8")
 
-    def test_wfs_osjpeg_config(self):
+    def test_wfs_osjpeg_config(self) -> None:
         response = self._wms_get_capabilities_config("__test_ogc_server_jpeg", "wfs")
         assert "<Name>__test_private_layer1</Name>" not in response.body.decode("utf-8")
         assert "<Name>__test_private_layer2</Name>" not in response.body.decode("utf-8")
         assert "<Name>__test_private_layer3</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer4</Name>" not in response.body.decode("utf-8")
 
-    def test_wfs_osjpeg_auth_config(self):
+    def test_wfs_osjpeg_auth_config(self) -> None:
         response = self._wms_get_capabilities_config("__test_ogc_server_jpeg", "wfs", username="__test_user")
         assert "<Name>__test_private_layer1</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer2</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer3</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer4</Name>" in response.body.decode("utf-8")
 
-    def test_wms_ospng_config(self):
+    def test_wms_ospng_config(self) -> None:
         response = self._wms_get_capabilities_config("__test_ogc_server_png")
         assert "<Name>__test_private_layer1</Name>" not in response.body.decode("utf-8")
         assert "<Name>__test_private_layer2</Name>" not in response.body.decode("utf-8")
         assert "<Name>__test_private_layer3</Name>" not in response.body.decode("utf-8")
         assert "<Name>__test_private_layer4</Name>" in response.body.decode("utf-8")
 
-    def test_wms_ospng_auth_config(self):
+    def test_wms_ospng_auth_config(self) -> None:
         response = self._wms_get_capabilities_config("__test_ogc_server_png", username="__test_user")
         assert "<Name>__test_private_layer1</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer2</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer3</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer4</Name>" in response.body.decode("utf-8")
 
-    def test_wfs_ospng_config(self):
+    def test_wfs_ospng_config(self) -> None:
         response = self._wms_get_capabilities_config("__test_ogc_server_png", "wfs")
         assert "<Name>__test_private_layer1</Name>" not in response.body.decode("utf-8")
         assert "<Name>__test_private_layer2</Name>" not in response.body.decode("utf-8")
         assert "<Name>__test_private_layer3</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer4</Name>" not in response.body.decode("utf-8")
 
-    def test_wfs_ospng_auth_config(self):
+    def test_wfs_ospng_auth_config(self) -> None:
         response = self._wms_get_capabilities_config("__test_ogc_server_png", "wfs", username="__test_user")
         assert "<Name>__test_private_layer1</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer2</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer3</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer4</Name>" in response.body.decode("utf-8")
 
-    def test_wms_oswfs1_config(self):
+    def test_wms_oswfs1_config(self) -> None:
         response = self._wms_get_capabilities_config("__test_ogc_server_wfs1")
         assert "<Name>__test_private_layer1</Name>" not in response.body.decode("utf-8")
         assert "<Name>__test_private_layer2</Name>" not in response.body.decode("utf-8")
         assert "<Name>__test_private_layer3</Name>" not in response.body.decode("utf-8")
         assert "<Name>__test_private_layer4</Name>" in response.body.decode("utf-8")
 
-    def test_wms_oswfs1_auth_config(self):
+    def test_wms_oswfs1_auth_config(self) -> None:
         response = self._wms_get_capabilities_config("__test_ogc_server_wfs1", username="__test_user")
         assert "<Name>__test_private_layer1</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer2</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer3</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer4</Name>" in response.body.decode("utf-8")
 
-    def test_wfs_oswfs2_config(self):
+    def test_wfs_oswfs2_config(self) -> None:
         response = self._wms_get_capabilities_config("__test_ogc_server_wfs2", "wfs")
         assert "<Name>__test_private_layer1</Name>" not in response.body.decode("utf-8")
         assert "<Name>__test_private_layer2</Name>" not in response.body.decode("utf-8")
         assert "<Name>__test_private_layer3</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer4</Name>" not in response.body.decode("utf-8")
 
-    def test_wfs_oswfs2_auth_config(self):
+    def test_wfs_oswfs2_auth_config(self) -> None:
         response = self._wms_get_capabilities_config("__test_ogc_server_wfs2", "wfs", username="__test_user")
         assert "<Name>__test_private_layer1</Name>" in response.body.decode("utf-8")
         assert "<Name>__test_private_layer2</Name>" in response.body.decode("utf-8")

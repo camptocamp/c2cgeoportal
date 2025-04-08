@@ -31,7 +31,7 @@ import yaml
 from azure.storage.blob import BlobServiceClient, ContainerClient, __version__
 
 
-def main() -> None:
+def _main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--connection-string",
@@ -44,7 +44,9 @@ def main() -> None:
         default=os.environ.get("AZURE_STORAGE_BLOB_CONTAINER_URL"),
     )
     parser.add_argument(
-        "--connection-info", help="Display Azure Storage connection info file", action="store_true"
+        "--connection-info",
+        help="Display Azure Storage connection info file",
+        action="store_true",
     )
     parser.add_argument("--list-containers", help="List the containers", action="store_true")
     parser.add_argument("--container", help="Container name")
@@ -70,7 +72,7 @@ def main() -> None:
             print(f"Connected as {blob_service_client.account_name}, account information:")
             print(yaml.dump(blob_service_client.get_account_information(), Dumper=yaml.SafeDumper))
         if container_client is not None:
-            print(f"Container information:")
+            print("Container information:")
             print(yaml.dump(container_client.get_container_properties(), Dumper=yaml.SafeDumper))
 
     if args.list_containers:
@@ -89,7 +91,8 @@ def main() -> None:
             filtered_keys = list(filter(lambda i: i.endswith(args.vrt[1]), keys))
             full_keys = [f"/vsiaz/{args.container}/{i}" for i in filtered_keys]
             subprocess.run(
-                ["gdalbuildvrt", f"/vsiaz/{args.container}/{args.vrt[0]}/index.vrt"] + full_keys,
+                ["gdalbuildvrt", f"/vsiaz/{args.container}/{args.vrt[0]}/index.vrt", *full_keys],
+                check=False,
             )
 
         if args.gdaltindex:
@@ -97,7 +100,8 @@ def main() -> None:
             filtered_keys = list(filter(lambda i: i.endswith(args.gdaltindex[1]), keys))
             full_keys = [f"/vsiaz/{args.container}/{i}" for i in filtered_keys]
             subprocess.run(
-                ["gdaltindex", "index.shp"] + full_keys,
+                ["gdaltindex", "index.shp", *full_keys],
+                check=False,
             )
             print("Generated files:")
             print(f"{os.getcwd()}/index.shp")
@@ -132,4 +136,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    _main()

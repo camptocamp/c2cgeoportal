@@ -21,18 +21,16 @@ from webtest import TestApp as WebTestApp  # Avoid warning with pytest
 
 
 @pytest.fixture(scope="session")
-@pytest.mark.usefixtures("settings")
 def dbsession(settings: dict[str, Any]) -> Session:
     generate_mappers()
     engine = get_engine(settings)
     session_factory = get_session_factory(engine)
     session = get_tm_session(session_factory, transaction.manager)
     truncate_tables(session)
-    yield session
+    return session
 
 
-@pytest.fixture(scope="function")
-@pytest.mark.usefixtures("dbsession")
+@pytest.fixture
 def transact(dbsession: Session) -> SessionTransaction:
     t = dbsession.begin_nested()
     yield t
@@ -47,8 +45,7 @@ def raise_db_error(_: Any) -> None:
     raise DBAPIError("this is a test !", None, None)
 
 
-@pytest.fixture(scope="function")
-@pytest.mark.usefixtures("dbsession")
+@pytest.fixture
 def raise_db_error_on_query(dbsession: Session) -> None:
     query = dbsession.query
     dbsession.query = raise_db_error
@@ -64,7 +61,6 @@ def app_env() -> AppEnvironment:
 
 
 @pytest.fixture(scope="session")
-@pytest.mark.usefixtures("app_env", "dbsession")
 def app(app_env: AppEnvironment, dbsession: Session) -> Router:
     config = testing.setUp(registry=app_env["registry"])
     config.add_request_method(lambda request: dbsession, "dbsession", reify=True)
@@ -73,17 +69,15 @@ def app(app_env: AppEnvironment, dbsession: Session) -> Router:
     config.add_route("base", "/", static=True)
     config.scan(package="tests")
     app = config.make_wsgi_app()
-    yield app
+    return app
 
 
 @pytest.fixture(scope="session")
-@pytest.mark.usefixtures("app_env")
 def settings(app_env: AppEnvironment) -> Any:
-    yield app_env.get("registry").settings
+    return app_env.get("registry").settings
 
 
 @pytest.fixture(scope="session")  # noqa: ignore=F811
-@pytest.mark.usefixtures("app")
 def test_app(request: pyramid.request.Request, app: Router) -> WebTestApp:
     testapp = WebTestApp(app)
-    yield testapp
+    return testapp

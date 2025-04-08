@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2024, Camptocamp SA
+# Copyright (c) 2013-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -129,7 +129,7 @@ class TimeExtentValue:
         resolution: str,
         min_def_value: datetime.datetime | None,
         max_def_value: datetime.datetime | None,
-    ):
+    ) -> None:
         """
         Initialize.
 
@@ -147,7 +147,7 @@ class TimeExtentValue:
 
     def merge(self, extent: TimeExtent) -> None:
         if not isinstance(extent, TimeExtentValue):
-            raise ValueError("Could not mix time defined as a list of values with other type of definition")
+            raise TypeError("Could not mix time defined as a list of values with other type of definition")
         self.values.update(extent.values)
         self.min_def_value = min_none(self.min_def_value, extent.min_def_value)
         self.max_def_value = max_none(self.max_def_value, extent.max_def_value)
@@ -178,7 +178,7 @@ class TimeExtentInterval:
         resolution: str,
         min_def_value: datetime.datetime | None,
         max_def_value: datetime.datetime | None,
-    ):
+    ) -> None:
         """
         Initialize.
 
@@ -200,9 +200,9 @@ class TimeExtentInterval:
 
     def merge(self, extent: TimeExtent) -> None:
         if not isinstance(extent, TimeExtentInterval):
-            raise ValueError("Could not merge time defined as with an interval with other type of definition")
+            raise TypeError("Could not merge time defined as with an interval with other type of definition")
         if self.interval != extent.interval:
-            raise ValueError("Could not merge times defined with a different interval")
+            raise TypeError("Could not merge times defined with a different interval")
         start = min_none(self.start, extent.start)
         assert start is not None
         self.start = start
@@ -309,18 +309,20 @@ def _parse_date(date: str) -> tuple[str, datetime.datetime]:
 
     for resolution, pattern in list(resolutions.items()):
         try:
-            dt = datetime.datetime.strptime(date, pattern)
-            return resolution, dt.replace(tzinfo=isodate.UTC)
-        except Exception:  # pylint: disable=broad-exception-caught
+            dt = datetime.datetime.strptime(date, pattern).replace(tzinfo=isodate.UTC)
+        except Exception:  # pylint: disable=broad-exception-caught # nosec
             pass
+        else:
+            return resolution, dt
 
     try:
         dt = isodate.parse_datetime(date)
         if dt.tzinfo is None:
             dt = dt.replace(tzinfo=isodate.UTC)
-        return "second", dt
     except Exception as e:
         raise ValueError(f"Invalid date format '{date}'") from e
+    else:
+        return "second", dt
 
 
 def _format_date(date: datetime.datetime) -> str:

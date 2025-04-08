@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2024, Camptocamp SA
+# Copyright (c) 2017-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -65,7 +65,7 @@ _OPENID_CONNECT_ENABLED = os.environ.get("OPENID_CONNECT_ENABLED", "false").lowe
 class UserViews(LoggedViews[User]):
     """The admin user view."""
 
-    _list_fields = [
+    _list_fields = [  # noqa: RUF012
         _list_field("id"),
         *([_list_field("username")] if not _OPENID_CONNECT_ENABLED else []),
         _list_field("display_name"),
@@ -93,8 +93,8 @@ class UserViews(LoggedViews[User]):
     _log_model = Log
     _name_field = "username"
 
-    def _base_query(self):
-        return (
+    def _base_query(self) -> User:
+        return (  # type: ignore[no-any-return]
             self._request.dbsession.query(User)
             .distinct()
             .outerjoin(settings_role, settings_role.id == User.settings_role_id)
@@ -150,7 +150,9 @@ class UserViews(LoggedViews[User]):
         return super().delete()
 
     @view_config(  # type: ignore[misc]
-        route_name="c2cgeoform_item_duplicate", request_method="GET", renderer="../templates/edit.jinja2"
+        route_name="c2cgeoform_item_duplicate",
+        request_method="GET",
+        renderer="../templates/edit.jinja2",
     )
     def duplicate(self) -> ObjectResponse:
         return super().duplicate()
