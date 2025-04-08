@@ -47,7 +47,7 @@ with open("ci/changelog.yaml", encoding="utf-8") as cl_file:
 def _save() -> None:
     with open("ci/changelog.yaml", "w", encoding="utf-8") as cl_file_w:
         cl_file_w.write(yaml.dump(changelog, Dumper=yaml.SafeDumper))
-    subprocess.run(["pre-commit", "run", "--file=ci/changelog.yaml"])  # pylint: disable=subprocess-run-check
+    subprocess.run(["pre-commit", "run", "--file=ci/changelog.yaml"], check=False)  # pylint: disable=subprocess-run-check
 
 
 def _output(cmd: list[str]) -> bytes | None:
@@ -250,7 +250,7 @@ def _main() -> None:
                             f"- {pull['title'].strip()} [{repo}#{pull['number']}]({pull['html_url']})\n",
                         )
 
-    subprocess.run(["pre-commit", "run", "--file=CHANGELOG.md"])  # pylint: disable=subprocess-run-check
+    subprocess.run(["pre-commit", "run", "--file=CHANGELOG.md"], check=False)  # pylint: disable=subprocess-run-check
 
 
 if __name__ == "__main__":
