@@ -1,3 +1,7 @@
+##### 2.8.1.204
+
+- Add some documentation about customizing a tenant [c2cgeoportal#11876](https://github.com/camptocamp/c2cgeoportal/pull/11876)
+
 ##### 2.8.1.203
 
 - Update dependency @types/jqueryui to v1.12.24 (2.8) [ngeo#9656](https://github.com/camptocamp/ngeo/pull/9656)
