@@ -1,4 +1,5 @@
 {
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
   'extends': [
     'github>camptocamp/gs-renovate-config-preset:base.json5#1.0.1',
     'github>camptocamp/gs-renovate-config-preset:group.json5#1.0.1',
@@ -42,15 +43,6 @@
     /** Docker images versioning */
     {
       matchDatasources: ['docker'],
-      versioning: 'loose',
-    },
-    {
-      matchFileNames: ['docker/config/Dockerfile'],
-      matchDatasources: ['docker'],
-      versioning: 'ubuntu',
-    },
-    {
-      matchDatasources: ['docker'],
       versioning: 'regex:^(?<major>\\d+)\\.(?<minor>\\d+)(-(?<compatibility>.*))?$',
       matchDepNames: [
         'ghcr.io/camptocamp/mapfish_print',
@@ -70,11 +62,6 @@
       matchDatasources: ['docker'],
       versioning: 'regex:^(?<major>\\d+)-(?<compatibility>.*)-(?<minor>\\d+)?$',
       matchDepNames: ['ghcr.io/camptocamp/postgres'],
-    },
-    /** Ungroup OWSLib */
-    {
-      matchDepNames: ['OWSLib'],
-      groupName: 'OWSLib',
     },
     /** Ungroup Gdal */
     {
@@ -96,12 +83,6 @@
       matchFileNames: ['.github/workflows/ngeo-*.yaml'],
       enabled: false,
     },
-    /** Accept only the patch and lockFileMaintenance on stabilization branches */
-    {
-      matchBaseBranches: ['/^[0-9]+\\.[0-9]+$/'],
-      matchUpdateTypes: ['major', 'minor', 'pin', 'digest', 'rollback', 'bump'],
-      enabled: false,
-    },
     /** Don't update the project minimal requirements */
     {
       matchPaths: ['ci/requirements-project\\.txt'],
@@ -116,67 +97,17 @@
       matchPaths: ['doc/Pipfile'],
       enabled: false,
     },
-    /** Disable upgrading the supported Python version */
-    {
-      matchFileNames: [
-        'pyproject.toml',
-        'doc/pyproject.toml',
-        'docker/config/pyproject.toml',
-        'docker/qgisserver/pyproject.toml',
-        '.python-version',
-      ],
-      enabled: false,
-      matchDepNames: ['python'],
-    },
     /** Don't upgrade c2cciutils in tools to be able to upbrade a version <= 2.8 */
     {
       matchPaths: ['pyproject.toml'],
       enabled: false,
       matchDepNames: ['c2cciutils'],
     },
-    /** Disable dpkg on master */
-    {
-      matchBaseBranches: ['master'],
-      matchPaths: ['^ci/dpkg\\-versions\\.yaml$'],
-      enabled: false,
-    },
-    /** Only LTS version of Node */
-    {
-      allowedVersions: '/(0|2|4|6|8)$/',
-      enabled: false,
-      matchDepNames: ['node'],
-    },
     /** The version 5.4.1 of PyYAML is not working */
     {
       allowedVersions: '5.4.1',
       enabled: false,
       matchDepNames: ['PyYAML'],
-    },
-    /** Group and auto merge the GitHub action */
-    {
-      matchFileNames: ['.github/workflows/*.yaml'],
-      groupName: 'github-actions',
-      automerge: true,
-      separateMajorMinor: false,
-      separateMinorPatch: false,
-    },
-    /** Group and auto merge the pre-commit updates */
-    {
-      matchFileNames: ['.pre-commit-config.yaml'],
-      groupName: 'pre-commit',
-      automerge: true,
-      separateMajorMinor: false,
-      separateMinorPatch: false,
-    },
-    /** Group and auto merge the projects CI dependencies */
-    {
-      matchFileNames: [
-        'geoportal/c2cgeoportal_geoportal/scaffolds/*/{{cookiecutter.project}}/.github/**',
-        'geoportal/c2cgeoportal_geoportal/scaffolds/*/{{cookiecutter.project}}/.pre-commit-config.yaml',
-        'geoportal/c2cgeoportal_geoportal/scaffolds/*/{{cookiecutter.project}}/ci/**',
-      ],
-      groupName: 'CI dependencies',
-      automerge: true,
     },
     /** Daily ngeo */
     {
@@ -202,11 +133,6 @@
       enabled: false,
       matchDepNames: ['alabaster'],
     },
-    /** Packages published very recently are not pushed to stabilization branches for security reasons */
-    {
-      matchBaseBranches: ['/^[0-9]+\\.[0-9]+$/'],
-      minimumReleaseAge: '7 days',
-    },
     /** Don't update the old workflow files */
     {
       matchFileNames: [
@@ -216,11 +142,11 @@
       ],
       enabled: false,
     },
-    /** In file `.python-version`, use the `<major>.<minor>` version */
+    /** Don't update eslint to version >= 9.0.0 */
     {
-      matchFileNames: ['.python-version'],
-      versioning: 'regex:^(?<major>\\d+)\\.(?<minor>\\d+)$',
+      matchPackagePatterns: ['eslint'],
+      allowedVersions: '<9.0.0',
+      matchPaths: ['geoportal/package.json'],
     },
   ],
-  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
 }
