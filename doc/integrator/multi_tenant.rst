@@ -185,6 +185,61 @@ When loading the frontend, the ``dynamic`` view will return the appropriate loca
 See the definition above.
 
 
+Stylesheet, Title and other UI customization
+--------------------------------------------
+
+Note: This is also working in simple mode.
+
+To be able to have some Stylesheet per tenant create a CSS file named
+``geoportal/geomapfish_geoportal/static/css/<tenant>.css`` and use it in the tenant interfaces with e.-g.:
+
+.. code:: yaml
+
+  vars:
+    interfaces_config:
+      <tenant>-desktop:
+        static:
+          gmfCustomStylesheetUrl:
+            name: /etc/geomapfish/static/css/grancy.css
+
+To be able to have some title per tenant create a file named
+``geoportal/geomapfish_geoportal/static/tenant.js``, with:
+
+.. code:: javascript
+
+  let tenant = gmfapi.store.config.getConfig().getValue().tenantOptions;
+  if (tenant.title !== undefined) {
+    // Don't be updated by AngularJS
+    let title = document.querySelector('title');
+    if (title) {
+      title.remove();
+    }
+    document.title = tenant.title;
+  }
+
+Then use it in the default interfaces:
+
+.. code:: yaml
+
+  vars:
+    interfaces_config:
+      default:
+        static:
+          gmfCustomJavascriptUrl:
+            name: /etc/geomapfish/static/tenant.js
+
+And configure it in the tenant interfaces:
+
+.. code:: yaml
+
+  vars:
+    interfaces_config:
+      <tenant>-desktop:
+        constants:
+          tenantOptions:
+            title: Tenant title - Desktop
+
+
 Warning
 -------
 
