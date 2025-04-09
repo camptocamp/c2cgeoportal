@@ -1,3 +1,7 @@
+##### 2.8.1.202
+
+- Remove the shortner base_url [c2cgeoportal#11872](https://github.com/camptocamp/c2cgeoportal/pull/11872)
+
 ##### 2.8.1.201
 
 - Update dependency pyjson5 to v1.6.8 (2.8) [c2cgeoportal#11853](https://github.com/camptocamp/c2cgeoportal/pull/11853)
