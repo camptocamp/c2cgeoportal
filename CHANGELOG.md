@@ -1,3 +1,7 @@
+##### 2.9.rc.124
+
+- [Backport 2.9] Add some documentation about customizing a tenant [c2cgeoportal#11881](https://github.com/camptocamp/c2cgeoportal/pull/11881)
+
 ##### 2.9.rc.123
 
 - Audit Dpkg 2.9 [c2cgeoportal#11871](https://github.com/camptocamp/c2cgeoportal/pull/11871)
