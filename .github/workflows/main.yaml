@@ -12,6 +12,11 @@ on:
 env:
   HAS_SECRETS: ${{ secrets.HAS_SECRETS }}
 
+permissions:
+  contents: write
+  packages: write
+  id-token: write
+
 jobs:
   not-failed-backport:
     name: Test that's not a failed backport
@@ -321,6 +326,3 @@ jobs:
         if: always()
       - run: df -h
         if: always()
-permissions:
-  contents: write
-  packages: write
