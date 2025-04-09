@@ -97,6 +97,18 @@
       matchPaths: ['doc/Pipfile'],
       enabled: false,
     },
+    /** Disable upgrading the supported Python version */
+    {
+      matchFileNames: [
+        'pyproject.toml',
+        'doc/pyproject.toml',
+        'docker/config/pyproject.toml',
+        'docker/qgisserver/pyproject.toml',
+        '.python-version',
+      ],
+      enabled: false,
+      matchDepNames: ['python'],
+    },
     /** Don't upgrade c2cciutils in tools to be able to upbrade a version <= 2.8 */
     {
       matchPaths: ['pyproject.toml'],
