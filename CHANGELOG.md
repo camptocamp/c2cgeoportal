@@ -1,3 +1,7 @@
+##### 2.9.rc.128
+
+- Audit Snyk check/fix 2.9 [ngeo#9711](https://github.com/camptocamp/ngeo/pull/9711)
+
 ##### 2.9.rc.127
 
 - [Backport 2.9] Clean the branch before writing on it [ngeo#9704](https://github.com/camptocamp/ngeo/pull/9704)
