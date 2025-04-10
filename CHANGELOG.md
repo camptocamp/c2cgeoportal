@@ -1,3 +1,7 @@
+##### 2.9.rc.125
+
+- [Backport 2.9] Remove the shortner base_url [c2cgeoportal#11883](https://github.com/camptocamp/c2cgeoportal/pull/11883)
+
 ##### 2.9.rc.124
 
 - [Backport 2.9] Add some documentation about customizing a tenant [c2cgeoportal#11881](https://github.com/camptocamp/c2cgeoportal/pull/11881)
