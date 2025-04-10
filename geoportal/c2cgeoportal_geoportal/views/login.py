@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2024, Camptocamp SA
+# Copyright (c) 2011-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -81,6 +81,7 @@ class Login:
 
     def _functionality(self) -> dict[str, list[str | int | float | bool | list[Any] | dict[str, Any]]]:
         functionality = {}
+
         for func_ in get_setting(self.settings, ("functionalities", "available_in_templates"), []):
             functionality[func_] = get_functionality(func_, self.request, is_intranet(self.request))
         return functionality

@@ -1,4 +1,4 @@
-# Copyright (c) 2024, Camptocamp SA
+# Copyright (c) 2024-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -96,11 +96,11 @@ def upgrade() -> None:
     op.alter_column(
         "oauth2_client", "redirect_uri", existing_type=sa.VARCHAR(), nullable=False, schema=staticschema
     )
-    op.execute(f"UPDATE {staticschema}.oauth2_client SET state_required = true WHERE state_required IS NULL")
+    op.execute(f"UPDATE {staticschema}.oauth2_client SET state_required = false WHERE state_required IS NULL")
     op.alter_column(
         "oauth2_client", "state_required", existing_type=sa.BOOLEAN(), nullable=False, schema=staticschema
     )
-    op.execute(f"UPDATE {staticschema}.oauth2_client SET pkce_required = true WHERE pkce_required IS NULL")
+    op.execute(f"UPDATE {staticschema}.oauth2_client SET pkce_required = false WHERE pkce_required IS NULL")
     op.alter_column(
         "oauth2_client", "pkce_required", existing_type=sa.BOOLEAN(), nullable=False, schema=staticschema
     )
