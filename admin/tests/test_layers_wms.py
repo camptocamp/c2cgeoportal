@@ -15,7 +15,7 @@ def layer_wms_test_data(dbsession, transact):
 
     servers = [OGCServer(name=f"server_{i}") for i in range(4)]
     for i, server in enumerate(servers):
-        server.url = f"http://wms.geo.admin.ch_{i}"
+        server.url = f"https://wms.geo.admin.ch_{i}"
         server.image_type = "image/jpeg" if i % 2 == 0 else "image/png"
 
     def layer_builder(i):

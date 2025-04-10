@@ -57,7 +57,7 @@ def themes_setup(dbsession, transact, default_ogcserver):
 
     ogc_server_external = OGCServer(
         name="__test_ogc_server_chtopo",
-        url="http://wms.geo.admin.ch/",
+        url="https://wms.geo.admin.ch/",
         image_type="image/jpeg",
         auth=OGCSERVER_AUTH_NOAUTH,
     )
@@ -349,8 +349,8 @@ def test_ogc_server(dbsession, transact, themes_setup) -> None:
             "isSingleTile": False,
             "namespace": None,
             "type": "mapserver",
-            "url": "http://wms.geo.admin.ch/",
-            "urlWfs": "http://wms.geo.admin.ch/",
+            "url": "https://wms.geo.admin.ch/",
+            "urlWfs": "https://wms.geo.admin.ch/",
             "wfsSupport": False,
         },
     }

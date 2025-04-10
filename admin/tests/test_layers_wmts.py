@@ -14,7 +14,7 @@ def layer_wmts_test_data(dbsession, transact):
     from c2cgeoportal_commons.models.main import LayerWMTS, OGCServer
 
     server = OGCServer(name="server_1")
-    server.url = "http://wms.geo.admin.ch_1"
+    server.url = "https://wms.geo.admin.ch_1"
     server.image_type = "image/png"
 
     def layer_builder(i):
