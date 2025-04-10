@@ -1,3 +1,7 @@
+##### 2.9.rc.127
+
+- [Backport 2.9] Clean the branch before writing on it [ngeo#9704](https://github.com/camptocamp/ngeo/pull/9704)
+
 ##### 2.9.rc.126
 
 - Fix oauth2 login [c2cgeoportal#11799](https://github.com/camptocamp/c2cgeoportal/pull/11799)
