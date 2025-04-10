@@ -656,6 +656,15 @@ class OGCServerAccessControl(QgsAccessControlFilter):  # type: ignore[misc]
                 _LOG.debug("layerFilterSubsetString not allowed")
                 return "0"
 
+            if not area.is_valid:
+                _LOG.warning("Invalid geometry detected, attempting to fix it.")
+                area = area.buffer(0)  # Fix invalid geometry by buffering with 0
+
+            # Ensure the geometry has the correct number of dimensions (2D or 3D)
+            if area.has_z:
+                _LOG.debug("Geometry has Z dimension, converting to 2D")
+                area = ops.transform(lambda x, y, _=None: (x, y), area)  # Convert to 2D
+
             area = f"ST_GeomFromText('{area.wkt}', {self.srid})"
             if self.srid != layer.crs().postgisSrid():
                 area = f"ST_transform({area}, {layer.crs().postgisSrid()})"
