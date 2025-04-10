@@ -7,7 +7,7 @@ import pyramid.httpexceptions
 import pytest
 from geoalchemy2.shape import from_shape, to_shape
 from pyramid.testing import DummyRequest
-from shapely.geometry import Polygon, box, shape
+from shapely.geometry import box, shape
 
 from .test_treegroup import TestTreeGroup
 
@@ -174,16 +174,19 @@ class TestRole(TestTreeGroup):
 
         assert form["name"].value == "secretary_10"
 
-        expected = Polygon(
-            [
-                (1167544.3397631699, 5748064.729594703),
-                (1180453.0256760044, 6074797.96820131),
-                (658348.6696383564, 6080273.63626964),
-                (664577.4194513536, 5753148.2510447875),
-                (1167544.3397631699, 5748064.729594703),
-            ],
-        )
-        assert expected.almost_equals(shape(json.loads(form["extent"].value)), decimal=0)
+        expected_coords = [
+            (1167544.3397631699, 5748064.729594703),
+            (1180453.0256760044, 6074797.96820131),
+            (658348.6696383564, 6080273.63626964),
+            (664577.4194513536, 5753148.2510447875),
+            (1167544.3397631699, 5748064.729594703),
+        ]
+        actual_coords = shape(json.loads(form["extent"].value)).exterior.coords[:]
+        assert len(expected_coords) == len(actual_coords)
+        for expected, actual in zip(expected_coords, actual_coords, strict=False):
+            assert all(abs(e - a) < 1 for e, a in zip(expected, actual, strict=False)), (
+                f"{expected} != {actual}"
+            )
 
         functionalities = roles_test_data["functionalities"]
         assert {
@@ -270,16 +273,19 @@ class TestRole(TestTreeGroup):
         assert role.name == "New name"
         assert role.description == "New description"
 
-        expected = Polygon(
-            [
-                (719383.7988896352, 109062.8141734005),
-                (716689.3301397888, 245909.7643546755),
-                (513083.1504351135, 245400.5416369234),
-                (511073.1973649057, 108541.7344432737),
-                (719383.7988896352, 109062.8141734005),
-            ],
-        )
-        assert expected.almost_equals(to_shape(role.extent), decimal=0)
+        expected_coords = [
+            (719383.7988896352, 109062.8141734005),
+            (716689.3301397888, 245909.7643546755),
+            (513083.1504351135, 245400.5416369234),
+            (511073.1973649057, 108541.7344432737),
+            (719383.7988896352, 109062.8141734005),
+        ]
+        actual_coords = to_shape(role.extent).exterior.coords[:]
+        assert len(expected_coords) == len(actual_coords)
+        for expected, actual in zip(expected_coords, actual_coords, strict=False):
+            assert all(abs(e - a) < 1 for e, a in zip(expected, actual, strict=False)), (
+                f"{expected} != {actual}"
+            )
 
         assert set(functionality_ids) == {f.id for f in role.functionalities}
         assert set(ra_ids) == {f.id for f in role.restrictionareas}

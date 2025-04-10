@@ -6,7 +6,7 @@ import re
 
 import pytest
 from geoalchemy2.shape import from_shape
-from shapely.geometry import Polygon, box, shape
+from shapely.geometry import box, shape
 
 from .test_treegroup import TestTreeGroup
 
@@ -150,16 +150,19 @@ class TestRestrictionAreaViews(TestTreeGroup):
         assert str(restriction_area.id) == self.get_first_field_named(form, "id").value
         assert self.get_first_field_named(form, "id").attrs["type"] == "hidden"
         assert restriction_area.name == form["name"].value
-        expected = Polygon(
-            [
-                (1167544.3397631699, 5748064.729594703),
-                (1180453.0256760044, 6074797.96820131),
-                (658348.6696383564, 6080273.63626964),
-                (664577.4194513536, 5753148.2510447875),
-                (1167544.3397631699, 5748064.729594703),
-            ],
-        )
-        assert expected.almost_equals(shape(json.loads(form["area"].value)), decimal=0)
+        expected_coords = [
+            (1167544.3397631699, 5748064.729594703),
+            (1180453.0256760044, 6074797.96820131),
+            (658348.6696383564, 6080273.63626964),
+            (664577.4194513536, 5753148.2510447875),
+            (1167544.3397631699, 5748064.729594703),
+        ]
+        actual_coords = shape(json.loads(form["area"].value)).exterior.coords[:]
+        assert len(expected_coords) == len(actual_coords)
+        for expected, actual in zip(expected_coords, actual_coords, strict=False):
+            assert all(abs(e - a) < 1 for e, a in zip(expected, actual, strict=False)), (
+                f"{expected} != {actual}"
+            )
         self._check_roles(form, roles, restriction_area)
         self.check_children(
             form,
