@@ -1,3 +1,7 @@
+##### 2.9.rc.126
+
+- Fix oauth2 login [c2cgeoportal#11799](https://github.com/camptocamp/c2cgeoportal/pull/11799)
+
 ##### 2.9.rc.125
 
 - [Backport 2.9] Remove the shortner base_url [c2cgeoportal#11883](https://github.com/camptocamp/c2cgeoportal/pull/11883)
