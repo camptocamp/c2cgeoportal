@@ -976,8 +976,6 @@ vars:
 
   # The shortener base configuration
   shortener:
-    # The base of created URL
-    base_url: '{VISIBLE_WEB_PROTOCOL}://{VISIBLE_WEB_HOST}{VISIBLE_ENTRY_POINT}s/'
     length: 4
 
   # Define whether the MapServer proxy should hide the OGC capabilities.
