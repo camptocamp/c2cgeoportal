@@ -31,7 +31,7 @@ _OIDC_CONFIGURATION = {
     "id_token_signing_alg_values_supported": ["RS256"],
     "code_challenge_methods_supported": ["S256"],
 }
-_PRIVATE_KEY = rsa.generate_private_key(public_exponent=65537, key_size=512)
+_PRIVATE_KEY = rsa.generate_private_key(public_exponent=65537, key_size=2048)
 _OIDC_KEYS = {
     "keys": [
         {
@@ -39,11 +39,9 @@ _OIDC_KEYS = {
             "kty": "RSA",
             "alg": "RS256",
             "n": base64.urlsafe_b64encode(
-                _PRIVATE_KEY.public_key().public_numbers().n.to_bytes(64, byteorder="big"),
+                _PRIVATE_KEY.public_key().public_numbers().n.to_bytes(256, byteorder="big"),
             ).decode(),
             "e": "AQAB",
-            # _PRIVATE_KEY.public_key().public_bytes(encoding=serialization.Encoding.DER, format=serialization.PublicFormat.SubjectPublicKeyInfo),
-            # PKCS8EncodedKeySpec
         },
     ],
 }
