@@ -201,6 +201,51 @@ link between layer groups and interfaces.</p>
 See the definition above.</p>
 </section>
 </section>
+<section id="stylesheet-title-and-other-ui-customization">
+<h2>Stylesheet, Title and other UI customization<a class="headerlink" href="#stylesheet-title-and-other-ui-customization" title="Link to this heading">¶</a></h2>
+<p>Note: This is also working in simple mode.</p>
+<p>To be able to have some Stylesheet per tenant create a CSS file named
+<code class="docutils literal notranslate"><span class="pre">geoportal/geomapfish_geoportal/static/css/&lt;tenant&gt;.css</span></code> and use it in the tenant interfaces with e.-g.:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">interfaces_config</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">&lt;tenant&gt;-desktop</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">static</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">gmfCustomStylesheetUrl</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/etc/geomapfish/static/css/grancy.css</span>
+</pre></div>
+</div>
+<p>To be able to have some title per tenant create a file named
+<code class="docutils literal notranslate"><span class="pre">geoportal/geomapfish_geoportal/static/tenant.js</span></code>, with:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">let</span><span class="w"> </span><span class="nx">tenant</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">gmfapi</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">getConfig</span><span class="p">().</span><span class="nx">getValue</span><span class="p">().</span><span class="nx">tenantOptions</span><span class="p">;</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">tenant</span><span class="p">.</span><span class="nx">title</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="kc">undefined</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="c1">// Don&#39;t be updated by AngularJS</span>
+<span class="w">  </span><span class="kd">let</span><span class="w"> </span><span class="nx">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">);</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">title</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">title</span><span class="p">.</span><span class="nx">remove</span><span class="p">();</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="w">  </span><span class="nb">document</span><span class="p">.</span><span class="nx">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">tenant</span><span class="p">.</span><span class="nx">title</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Then use it in the default interfaces:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">interfaces_config</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">default</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">static</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">gmfCustomJavascriptUrl</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/etc/geomapfish/static/tenant.js</span>
+</pre></div>
+</div>
+<p>And configure it in the tenant interfaces:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">interfaces_config</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">&lt;tenant&gt;-desktop</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">constants</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">tenantOptions</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Tenant title - Desktop</span>
+</pre></div>
+</div>
+</section>
 <section id="warning">
 <h2>Warning<a class="headerlink" href="#warning" title="Link to this heading">¶</a></h2>
 <p>With that, one user of the org1 can login to the organization org2 and will have the <code class="docutils literal notranslate"><span class="pre">registered</span></code> rights.</p>

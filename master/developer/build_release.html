@@ -211,9 +211,8 @@ span.prompt1:before {
 
 <span class="w"> </span>      - name: Publish
 <span class="w"> </span>        run: &gt;
-<span class="w"> </span>          c2cciutils-publish
+<span class="w"> </span>          tag-publish
 <span class="w"> </span>          --docker-versions=${{ steps.version.outputs.versions }}
-<span class="w"> </span>          --snyk-version=${{ steps.version.outputs.snyk_version }}
 <span class="gi">+          --type=rebuild</span>
 
 <span class="gd">-      - name: Publish version branch to pypi</span>
