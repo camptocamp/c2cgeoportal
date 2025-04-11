@@ -1,3 +1,7 @@
+##### 2.9.rc.129
+
+- Fix application context on OIDC login [ngeo#9697](https://github.com/camptocamp/ngeo/pull/9697)
+
 ##### 2.9.rc.128
 
 - Audit Snyk check/fix 2.9 [ngeo#9711](https://github.com/camptocamp/ngeo/pull/9711)
