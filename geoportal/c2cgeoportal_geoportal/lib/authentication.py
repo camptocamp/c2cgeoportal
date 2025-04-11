@@ -35,6 +35,7 @@ import time
 from collections.abc import Callable
 from typing import Any, cast
 
+import c2cgeoportal_commons.models
 import pyramid.request
 from Crypto.Cipher import AES  # nosec
 from pyramid.authentication import (
@@ -150,6 +151,8 @@ class OAuth2AuthenticationPolicy(CallbackAuthenticationPolicy):  # type: ignore[
         _LOG.debug("OAuth verify_request: %s", valid)
         if valid:
             request.user_ = oauth2_request.user
+            if request.user_ is not None and c2cgeoportal_commons.models.DBSession is not None:
+                c2cgeoportal_commons.models.DBSession.add(request.user_)
 
             return cast("str", request.user.username)
         return None
