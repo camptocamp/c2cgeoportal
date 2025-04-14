@@ -1,3 +1,7 @@
+##### 2.8.1.205
+
+- Audit Snyk check/fix 2.8 [c2cgeoportal#11909](https://github.com/camptocamp/c2cgeoportal/pull/11909)
+
 ##### 2.8.1.204
 
 - Add some documentation about customizing a tenant [c2cgeoportal#11876](https://github.com/camptocamp/c2cgeoportal/pull/11876)
