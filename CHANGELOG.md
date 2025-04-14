@@ -1,3 +1,7 @@
+##### 2.9.rc.130
+
+- Audit Dpkg 2.9 [c2cgeoportal#11908](https://github.com/camptocamp/c2cgeoportal/pull/11908)
+
 ##### 2.9.rc.129
 
 - Fix application context on OIDC login [ngeo#9697](https://github.com/camptocamp/ngeo/pull/9697)
