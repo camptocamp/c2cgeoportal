@@ -1,3 +1,7 @@
+##### 2.8.1.206
+
+- [Backport 2.8] Clean the branch before writing on it [ngeo#9699](https://github.com/camptocamp/ngeo/pull/9699)
+
 ##### 2.8.1.205
 
 - Audit Snyk check/fix 2.8 [c2cgeoportal#11909](https://github.com/camptocamp/c2cgeoportal/pull/11909)
