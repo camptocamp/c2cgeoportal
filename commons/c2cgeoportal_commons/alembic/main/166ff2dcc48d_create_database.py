@@ -1,4 +1,4 @@
-# Copyright (c) 2014-2024, Camptocamp SA
+# Copyright (c) 2014-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -50,7 +50,7 @@ down_revision = None
 class TsVector(UserDefinedType):  # type: ignore # pylint: disable=abstract-method
     """A custom type for PostgreSQL's tsvector type."""
 
-    def get_col_spec(self) -> str:
+    def get_col_spec(self) -> str:  # type: ignore[override] # pylint: disable=arguments-differ
         return "TSVECTOR"
 
 
