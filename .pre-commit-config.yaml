@@ -63,7 +63,7 @@ repos:
         additional_dependencies:
           - prettier@3.3.3 # npm
           - prettier-plugin-sh@0.14.0 # npm
-          - prettier-plugin-toml@2.0.2 # npm
+          - prettier-plugin-toml@2.0.4 # npm
         exclude: |-
           (?x)(
             ^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/{{cookiecutter\.project}}/
@@ -169,6 +169,6 @@ repos:
       - id: jsonschema-validator
         files: ^ci/config\.yaml$
   - repo: https://github.com/renovatebot/pre-commit-hooks
-    rev: 38.142.5
+    rev: 38.142.7
     hooks:
       - id: renovate-config-validator
