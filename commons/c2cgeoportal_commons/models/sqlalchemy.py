@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2024, Camptocamp SA
+# Copyright (c) 2012-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -59,7 +59,7 @@ class TsVector(UserDefinedType[dict[str, str]]):  # pylint: disable=abstract-met
 
     cache_ok = True
 
-    def get_col_spec(self) -> str:
+    def get_col_spec(self) -> str:  # type: ignore[override] # pylint: disable=arguments-differ
         return "TSVECTOR"
 
     @property
