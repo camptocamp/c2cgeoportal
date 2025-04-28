@@ -1,3 +1,8 @@
+##### 2.9.0.136
+
+- [Backport 2.9] Send optional VERSION from OGCServer URL in print spec [ngeo#9725](https://github.com/camptocamp/ngeo/pull/9725)
+- Fix example backgroundlayerselector (layer added) [ngeo#9727](https://github.com/camptocamp/ngeo/pull/9727)
+
 ##### 2.9.0.134
 
 - Update all patch/minor versions (2.9) [c2cgeoportal#11911](https://github.com/camptocamp/c2cgeoportal/pull/11911)
