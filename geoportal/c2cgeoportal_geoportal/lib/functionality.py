@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2024, Camptocamp SA
+# Copyright (c) 2011-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -111,6 +111,10 @@ def get_functionality(
     errors: set[str] = set()
 
     if request.user is not None:
+        import c2cgeoportal_commons.models
+
+        if c2cgeoportal_commons.models.DBSession is not None:
+            c2cgeoportal_commons.models.DBSession.add(request.user_)
         result = _get_db_functionality(
             name, _user_to_struct(request.user), _get_functionalities_type(request), request, errors
         )
