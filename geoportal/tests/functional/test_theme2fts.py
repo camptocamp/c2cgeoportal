@@ -147,6 +147,7 @@ def options(**kwargs):
         "layers": True,
         "package": "Seems not used",
         "stats": False,
+        "debug": False,
     }
     Options = namedtuple("Options", default_options.keys())  # noqa: PYI024
     return Options(**{**default_options, **kwargs})
