@@ -36,7 +36,6 @@ import yaml
 
 
 def _main():
-
     parser = argparse.ArgumentParser(description="Get the main version.")
     parser.add_argument("--github", action="store_true")
     args = parser.parse_args()
