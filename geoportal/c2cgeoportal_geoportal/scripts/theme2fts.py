@@ -92,11 +92,13 @@ def get_argparser() -> ArgumentParser:
     parser.add_argument(
         "--stats",
         default=False,
+        action='store_true',
         help=f"Print out statistics information",
     )
     parser.add_argument(
         "--debug",
         default=False,
+        action='store_true',
         help=f"Print out debug statements",
     )
     parser.add_argument("--package", help="the application package")
@@ -109,14 +111,8 @@ def main() -> None:
     options = get_argparser().parse_args()
     settings = get_appsettings(options)
 
-    if options.stats:
-        # Ensure correct data type
-        options.stats=True
-
     if options.debug:
         print("Script running, debug is activated")
-        # Ensure correct data type
-        options.debug=True
 
     with transaction.manager:
         session = get_session(settings, transaction.manager)
@@ -151,9 +147,6 @@ class Import:
                 self.languages = [lang for lang in self.languages if lang in self.fts_languages]
             else:
                 raise KeyError(KeyError(msg))
-
-        if options.debug:
-            print("Import in the middle")
 
         # must be done only once we have loaded the project config
         from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
