@@ -184,7 +184,7 @@ class Import:
         query = self.session.query(Interface)
 
         if options.debug:
-            print("Import got query")
+            print("Import got query interface")
 
         if options.interfaces is not None:
             query = query.filter(Interface.name.in_(options.interfaces))
