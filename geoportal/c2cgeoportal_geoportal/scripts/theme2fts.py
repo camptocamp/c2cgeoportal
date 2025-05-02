@@ -220,7 +220,7 @@ class Import:
             print("Done adding", nb_themes, "public themes, average time:", (time.time() - start_time) / nb_themes)
 
         if options.debug:
-            print("Import adding roles")
+            print("Import adding private themes")
 
         start_time = time.time()
         nb_themes = 0
