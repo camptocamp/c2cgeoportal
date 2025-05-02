@@ -1,3 +1,7 @@
+##### 2.8.1.209
+
+- [Backport 2.8] Reset 4th version on tag [c2cgeoportal#11919](https://github.com/camptocamp/c2cgeoportal/pull/11919)
+
 ##### 2.8.1.207
 
 - Send optional VERSION from OGCServer URL in print spec [ngeo#9722](https://github.com/camptocamp/ngeo/pull/9722)
