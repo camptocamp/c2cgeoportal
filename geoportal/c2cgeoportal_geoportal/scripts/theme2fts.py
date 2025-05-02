@@ -29,9 +29,9 @@
 import gettext
 import os
 import sys
+import time
 from argparse import ArgumentParser, Namespace
 from collections.abc import Iterator
-import time
 from typing import TYPE_CHECKING, Any, Optional
 
 import pyramid.config
@@ -92,13 +92,13 @@ def get_argparser() -> ArgumentParser:
     parser.add_argument(
         "--stats",
         default=False,
-        action='store_true',
+        action="store_true",
         help=f"Print out statistics information",
     )
     parser.add_argument(
         "--debug",
         default=False,
-        action='store_true',
+        action="store_true",
         help=f"Print out debug statements",
     )
     parser.add_argument("--package", help="the application package")
@@ -210,7 +210,12 @@ class Import:
             self._add_theme(theme)
             nb_themes += 1
         if nb_themes > 0 & options.stats:
-            print("Done adding", nb_themes, "public themes, average time:", (time.time() - start_time) / nb_themes)
+            print(
+                "Done adding",
+                nb_themes,
+                "public themes, average time:",
+                (time.time() - start_time) / nb_themes,
+            )
 
         if options.debug:
             print("Import adding private themes")
@@ -221,14 +226,24 @@ class Import:
         block_size = 10
         for role in self.session.query(Role).all():
             for theme in self.session.query(Theme).all():
-                start_theme_role = time.time()
+                time.time()
                 self._add_theme(theme, role)
                 nb_themes += 1
                 if nb_themes % block_size == 0 and options.stats:
-                    print("... processed", block_size, "themes within role-theme combinations, average time:", (time.time() - block_time) / block_size)
+                    print(
+                        "... processed",
+                        block_size,
+                        "themes within role-theme combinations, average time:",
+                        (time.time() - block_time) / block_size,
+                    )
                     block_time = time.time()
         if nb_themes > 0 and options.stats:
-            print("Done adding", nb_themes, "role-theme combinations, average time:", (time.time() - start_time) / nb_themes)
+            print(
+                "Done adding",
+                nb_themes,
+                "role-theme combinations, average time:",
+                (time.time() - start_time) / nb_themes,
+            )
 
         if options.debug:
             print("Import done successfully")
@@ -289,7 +304,16 @@ class Import:
                         nb_fts_entries += 1
 
         if self.options.debug:
-            print("_add_theme added", nb_fts_entries, "FTS entries for theme", theme, ", role", role, ", time:", time.time() - start_time)
+            print(
+                "_add_theme added",
+                nb_fts_entries,
+                "FTS entries for theme",
+                theme,
+                ", role",
+                role,
+                ", time:",
+                time.time() - start_time,
+            )
 
     def _add_block(
         self,
@@ -328,7 +352,18 @@ class Import:
                 fill = self._add_layer(child, interface, role) or fill
         time_needed = time.time() - time_block1
         if self.options.debug and (time.time() - time_block1 > 0.1):
-            print("Debug hint: code block in add_group took long:", time_needed, "for group", group, ", interface", interface, ", role", role, "nb_children:", nb_children)
+            print(
+                "Debug hint: code block in add_group took long:",
+                time_needed,
+                "for group",
+                group,
+                ", interface",
+                interface,
+                ", role",
+                role,
+                "nb_children:",
+                nb_children,
+            )
 
         if fill and export:
             if role is None:
