@@ -1,3 +1,7 @@
+##### 2.9.0.138
+
+- Log the invalid hostname message as error [c2cgeoportal#11922](https://github.com/camptocamp/c2cgeoportal/pull/11922)
+
 ##### 2.9.0.137
 
 - Reset 4th version on tag [c2cgeoportal#11913](https://github.com/camptocamp/c2cgeoportal/pull/11913)
