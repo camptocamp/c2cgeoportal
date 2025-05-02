@@ -179,7 +179,7 @@ class Import:
                 print(f"Warning: {e} (language: {lang})")
 
         if options.debug:
-            print("Import before query")
+            print("Import before create query on interface")
 
         query = self.session.query(Interface)
 
