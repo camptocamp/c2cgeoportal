@@ -164,7 +164,7 @@ class Import:
         self.session.execute(FullTextSearch.__table__.delete().where(FullTextSearch.from_theme))
 
         if options.debug:
-            print("Import after execute")
+            print("Import after delete")
 
         self._: dict[str, gettext.NullTranslations] = {}
         for lang in self.languages:
