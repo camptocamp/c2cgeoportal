@@ -193,7 +193,7 @@ class Import:
         self.interfaces = query.all()
 
         if options.debug:
-            print("Import after query all")
+            print("Import after query all interfaces")
 
         self.public_theme: dict[int, list[int]] = {}
         self.public_group: dict[int, list[int]] = {}
