@@ -1,3 +1,7 @@
+##### 2.9.0.139
+
+- Update all patch/minor versions to v7.4.3 (2.9) [c2cgeoportal#11930](https://github.com/camptocamp/c2cgeoportal/pull/11930)
+
 ##### 2.9.0.138
 
 - Log the invalid hostname message as error [c2cgeoportal#11922](https://github.com/camptocamp/c2cgeoportal/pull/11922)
