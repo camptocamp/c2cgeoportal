@@ -327,7 +327,7 @@ class Import:
             else:
                 fill = self._add_layer(child, interface, role) or fill
         time_needed = time.time() - time_block1
-        if self.options.debug & (time.time() - time_block1 > 0.1):
+        if self.options.debug and (time.time() - time_block1 > 0.1):
             print("Debug hint: code block in add_group took long:", time_needed, "for group", group, ", interface", interface, ", role", role, "nb_children:", nb_children)
 
         if fill and export:
