@@ -227,7 +227,7 @@ class Import:
                 if nb_themes % block_size == 0 & options.stats:
                     print("... processed", block_size, "themes within role-theme combinations, average time:", (time.time() - block_time) / block_size)
                     block_time = time.time()
-        if nb_themes > 0 & options.stats:
+        if nb_themes > 0 and options.stats:
             print("Done adding", nb_themes, "role-theme combinations, average time:", (time.time() - start_time) / nb_themes)
 
         if options.debug:
