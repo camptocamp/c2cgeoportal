@@ -275,7 +275,7 @@ class Login:
                 f"is not the current host '{self.request.host}' "
                 f"or part of allowed_hosts: {', '.join(allowed_hosts)}"
             )
-            _LOG.debug(message)
+            _LOG.error(message)
             return HTTPBadRequest(message)
 
         if status == 302:
