@@ -166,7 +166,7 @@ class Import:
         self.session = session
 
         if options.debug:
-            print("Import before execute")
+            print("Import before delete")
 
         self.session.execute(FullTextSearch.__table__.delete().where(FullTextSearch.from_theme))
 
