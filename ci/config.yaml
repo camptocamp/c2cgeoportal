@@ -57,11 +57,3 @@ publish:
         group: qgis-ltr
         tags:
           - gmf{version}-qgisltr
-  pypi:
-    packages:
-      - path: commons
-        group: pypi
-      - path: geoportal
-        group: pypi
-      - path: admin
-        group: pypi
