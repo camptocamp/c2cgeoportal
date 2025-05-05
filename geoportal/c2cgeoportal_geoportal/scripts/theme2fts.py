@@ -29,6 +29,7 @@
 import gettext
 import os
 import sys
+import time
 from argparse import ArgumentParser, Namespace
 from collections.abc import Iterator
 from typing import TYPE_CHECKING, Any, Optional
@@ -88,6 +89,18 @@ def get_argparser() -> ArgumentParser:
     parser.add_argument(
         "--no-layers", action="store_false", dest="layers", help="do not import the layers (tree leaf)"
     )
+    parser.add_argument(
+        "--stats",
+        default=False,
+        action="store_true",
+        help=f"Print out statistics information",
+    )
+    parser.add_argument(
+        "--debug",
+        default=False,
+        action="store_true",
+        help=f"Print out debug statements",
+    )
     parser.add_argument("--package", help="the application package")
     fill_arguments(parser)
     return parser
@@ -95,9 +108,11 @@ def get_argparser() -> ArgumentParser:
 
 def main() -> None:
     """Run the command."""
-
     options = get_argparser().parse_args()
     settings = get_appsettings(options)
+
+    if options.debug:
+        print("Script running, debug is activated")
 
     with transaction.manager:
         session = get_session(settings, transaction.manager)
@@ -113,6 +128,9 @@ class Import:
     """
 
     def __init__(self, session: Session, settings: pyramid.config.Configurator, options: Namespace):
+        if options.debug:
+            print("Import init")
+
         self.options = options
         self.imported: set[Any] = set()
         package = settings["package"]
@@ -139,7 +157,14 @@ class Import:
         )
 
         self.session = session
+
+        if options.debug:
+            print("Import before delete")
+
         self.session.execute(FullTextSearch.__table__.delete().where(FullTextSearch.from_theme))
+
+        if options.debug:
+            print("Import after delete")
 
         self._: dict[str, gettext.NullTranslations] = {}
         for lang in self.languages:
@@ -153,12 +178,22 @@ class Import:
                 self._[lang] = gettext.NullTranslations()
                 print(f"Warning: {e} (language: {lang})")
 
+        if options.debug:
+            print("Import before create query on interface")
+
         query = self.session.query(Interface)
+
+        if options.debug:
+            print("Import got query interface")
+
         if options.interfaces is not None:
             query = query.filter(Interface.name.in_(options.interfaces))
         else:
             query = query.filter(Interface.name.notin_(options.exclude_interfaces))
         self.interfaces = query.all()
+
+        if options.debug:
+            print("Import after query all interfaces")
 
         self.public_theme: dict[int, list[int]] = {}
         self.public_group: dict[int, list[int]] = {}
@@ -166,12 +201,52 @@ class Import:
             self.public_theme[interface.id] = []
             self.public_group[interface.id] = []
 
+        if options.debug:
+            print("Import adding public themes")
+
+        start_time = time.time()
+        nb_themes = 0
         for theme in self.session.query(Theme).filter_by(public=True).all():
             self._add_theme(theme)
+            nb_themes += 1
+        if nb_themes > 0 and options.stats:
+            print(
+                "Done adding",
+                nb_themes,
+                "public themes, average time:",
+                (time.time() - start_time) / nb_themes,
+            )
 
+        if options.debug:
+            print("Import adding private themes")
+
+        start_time = time.time()
+        nb_themes = 0
+        block_time = time.time()
+        block_size = 10
         for role in self.session.query(Role).all():
             for theme in self.session.query(Theme).all():
+                time.time()
                 self._add_theme(theme, role)
+                nb_themes += 1
+                if nb_themes % block_size == 0 and options.stats:
+                    print(
+                        "... processed",
+                        block_size,
+                        "themes within role-theme combinations, average time:",
+                        (time.time() - block_time) / block_size,
+                    )
+                    block_time = time.time()
+        if nb_themes > 0 and options.stats:
+            print(
+                "Done adding",
+                nb_themes,
+                "role-theme combinations, average time:",
+                (time.time() - start_time) / nb_themes,
+            )
+
+        if options.debug:
+            print("Import done successfully")
 
     def _add_fts(
         self,
@@ -212,7 +287,9 @@ class Import:
         theme: "c2cgeoportal_commons.models.main.Theme",
         role: Optional["c2cgeoportal_commons.models.main.Role"] = None,
     ) -> None:
+        start_time = time.time()
         fill = False
+        nb_fts_entries = 0
         for interface in self.interfaces:
             if interface in theme.interfaces:
                 for child in theme.children:
@@ -224,6 +301,19 @@ class Import:
 
                     if role is None or theme.id not in self.public_theme[interface.id]:
                         self._add_fts(theme, interface, "add_theme", role)
+                        nb_fts_entries += 1
+
+        if self.options.debug:
+            print(
+                "_add_theme added",
+                nb_fts_entries,
+                "FTS entries for theme",
+                theme,
+                ", role",
+                role,
+                ", time:",
+                time.time() - start_time,
+            )
 
     def _add_block(
         self,
@@ -251,11 +341,29 @@ class Import:
         from c2cgeoportal_commons.models.main import LayerGroup  # pylint: disable=import-outside-toplevel
 
         fill = False
+
+        time_block1 = time.time()
+        nb_children = 0
         for child in group.children:
+            nb_children += 1
             if isinstance(child, LayerGroup):
                 fill = self._add_folder(child, interface, role) or fill
             else:
                 fill = self._add_layer(child, interface, role) or fill
+        time_needed = time.time() - time_block1
+        if self.options.debug and (time.time() - time_block1 > 0.1):
+            print(
+                "Debug hint: code block in add_group took long:",
+                time_needed,
+                "for group",
+                group,
+                ", interface",
+                interface,
+                ", role",
+                role,
+                "nb_children:",
+                nb_children,
+            )
 
         if fill and export:
             if role is None:
