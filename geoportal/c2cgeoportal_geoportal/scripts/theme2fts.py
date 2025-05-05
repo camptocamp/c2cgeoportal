@@ -209,7 +209,7 @@ class Import:
         for theme in self.session.query(Theme).filter_by(public=True).all():
             self._add_theme(theme)
             nb_themes += 1
-        if nb_themes > 0 & options.stats:
+        if nb_themes > 0 and options.stats:
             print(
                 "Done adding",
                 nb_themes,
