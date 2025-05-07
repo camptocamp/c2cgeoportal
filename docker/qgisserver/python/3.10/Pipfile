@@ -41,6 +41,7 @@ webob = "==1.8.9"
 wrapt = "==1.13.3"
 "zope.deprecation" = "==4.4.0"
 "zope.interface" = "==5.4.0"
+setuptools = "==78.1.1"
 
 [dev-packages]
 prospector = {extras = ["with_mypy", "with_bandit"], version = "==1.7.7"}
