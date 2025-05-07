@@ -45,14 +45,19 @@
     /** Docker images versioning */
     {
       matchDatasources: ['docker'],
-      versioning: 'regex:^(?<major>\\d+)\\.(?<minor>\\d+)(-(?<compatibility>.*))?$',
+      versioning: 'regex:^(?<major>\\d+)\\.(?<minor>\\d+)$',
       matchDepNames: [
         'ghcr.io/camptocamp/mapfish_print',
         'ghcr.io/camptocamp/tilecloud-chain',
-        'ghcr.io/camptocamp/mapserver',
         'redis',
         'haproxy',
       ],
+    },
+    {
+      matchDatasources: ['docker'],
+      // like 8.4-gdal3.8
+      versioning: 'regex:^(?<major>\\d+)\\.(?<minor>\\d+)-gdal(?<patch>\\d+)\\.(?<build>\\d+)$',
+      matchDepNames: ['ghcr.io/camptocamp/mapserver'],
     },
     {
       matchDatasources: ['docker'],
