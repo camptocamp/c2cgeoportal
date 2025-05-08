@@ -54,7 +54,7 @@ RUN \
     && mkdir --parent /usr/local/tomcat/webapps/ROOT/ \
     && mvif /tmp/config/print /tmp/config/print/print-apps /usr/local/tomcat/webapps/ROOT/ \
     && mv /tmp/config/geoportal/{{cookiecutter.package}}_geoportal/ /etc/geomapfish/ \
-    && mv /tmp/config/geoportal/* /etc/geomapfish/ || true \
+    && ( mv /tmp/config/geoportal/* /etc/geomapfish/ || true ) \
     && chmod g+w -R \
         /etc/geomapfish \
         /etc/mapserver \
