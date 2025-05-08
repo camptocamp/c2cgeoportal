@@ -1,3 +1,7 @@
+##### 2.8.1.213
+
+- [Backport 2.8] Simple application mode require the usage of update-po-from-url to up… [c2cgeoportal#11944](https://github.com/camptocamp/c2cgeoportal/pull/11944)
+
 ##### 2.8.1.212
 
 - Put the class in the right place [ngeo#9736](https://github.com/camptocamp/ngeo/pull/9736)
