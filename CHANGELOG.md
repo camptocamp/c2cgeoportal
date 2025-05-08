@@ -1,3 +1,9 @@
+##### 2.7.1.167
+
+- Audit Snyk check/fix 2.7 [c2cgeoportal#11935](https://github.com/camptocamp/c2cgeoportal/pull/11935)
+- [Backport 2.7] Clean the branch before writing on it [ngeo#9701](https://github.com/camptocamp/ngeo/pull/9701)
+- [Backport 2.7] Send optional VERSION from OGCServer URL in print spec [ngeo#9726](https://github.com/camptocamp/ngeo/pull/9726)
+
 ##### 2.7.1.166
 
 - Update all patch/minor versions (2.7) [c2cgeoportal#11861](https://github.com/camptocamp/c2cgeoportal/pull/11861)
