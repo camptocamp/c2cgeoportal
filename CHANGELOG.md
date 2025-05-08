@@ -1,3 +1,7 @@
+##### 2.8.1.212
+
+- Put the class in the right place [ngeo#9736](https://github.com/camptocamp/ngeo/pull/9736)
+
 ##### 2.8.1.209
 
 - [Backport 2.8] Reset 4th version on tag [c2cgeoportal#11919](https://github.com/camptocamp/c2cgeoportal/pull/11919)
