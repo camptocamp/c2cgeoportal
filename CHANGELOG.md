@@ -1,3 +1,7 @@
+##### 2.9.0.141
+
+- [Backport 2.9] Simple application mode require the usage of update-po-from-url to up… [c2cgeoportal#11943](https://github.com/camptocamp/c2cgeoportal/pull/11943)
+
 ##### 2.9.0.140
 
 - Audit Dpkg 2.9 [c2cgeoportal#11936](https://github.com/camptocamp/c2cgeoportal/pull/11936)
