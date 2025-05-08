@@ -37,11 +37,23 @@ The files to translate are:
    All the ``#, fuzzy`` strings should be verified and the line should be removed
    (if the line is not removed, the localization will not be used).
 
-To update your ``po`` files, you should proceed as follows.
+To update your ``po`` files, you should proceed as follows. The command is different if your project is in advanced application mode or in simple application mode.
+
+Advanced application mode only:
 
 .. code:: bash
 
     make update-po
+
+Simple or advance application mode:
+
+.. code:: bash
+
+    make update-po-from-url
+
+To be able to use the command ``make update-po-from-url``, you need to have a running application,
+and the application should be accessible from the URL defined in the ``PROJECT_PUBLIC_URL`` variable in the ``Makefile``.
+
 
 .. note::
 
