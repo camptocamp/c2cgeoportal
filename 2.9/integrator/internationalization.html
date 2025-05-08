@@ -62,10 +62,17 @@ in the simple application mode, the list of languages is constant: en fr de it.<
 <p>All the <code class="docutils literal notranslate"><span class="pre">#,</span> <span class="pre">fuzzy</span></code> strings should be verified and the line should be removed
 (if the line is not removed, the localization will not be used).</p>
 </div>
-<p>To update your <code class="docutils literal notranslate"><span class="pre">po</span></code> files, you should proceed as follows.</p>
+<p>To update your <code class="docutils literal notranslate"><span class="pre">po</span></code> files, you should proceed as follows. The command is different if your project is in advanced application mode or in simple application mode.</p>
+<p>Advanced application mode only:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>update-po
 </pre></div>
 </div>
+<p>Simple or advance application mode:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>make<span class="w"> </span>update-po-from-url
+</pre></div>
+</div>
+<p>To be able to use the command <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">update-po-from-url</span></code>, you need to have a running application,
+and the application should be accessible from the URL defined in the <code class="docutils literal notranslate"><span class="pre">PROJECT_PUBLIC_URL</span></code> variable in the <code class="docutils literal notranslate"><span class="pre">Makefile</span></code>.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>You should run this command when you change something in the following:</p>
