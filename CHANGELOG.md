@@ -1,3 +1,9 @@
+##### 2.9.0.143
+
+- Update all patch/minor versions (2.9) [ngeo#9732](https://github.com/camptocamp/ngeo/pull/9732)
+- Update CI dependencies (2.9) [ngeo#9733](https://github.com/camptocamp/ngeo/pull/9733)
+- [Backport 2.9] Put the class in the right place [ngeo#9740](https://github.com/camptocamp/ngeo/pull/9740)
+
 ##### 2.9.0.142
 
 - Improve the interface documentation [c2cgeoportal#11942](https://github.com/camptocamp/c2cgeoportal/pull/11942)
