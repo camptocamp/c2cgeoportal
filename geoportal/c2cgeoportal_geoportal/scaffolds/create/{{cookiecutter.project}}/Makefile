@@ -1,4 +1,4 @@
-PROJECT_PUBLIC_URL?=https://example.camptocamp.com/
+PROJECT_PUBLIC_URL?=https://localhost:8484/
 DUMP_FILE=dump.backup
 PACKAGE={{cookiecutter.package}}
 LANGUAGES=en fr de it
