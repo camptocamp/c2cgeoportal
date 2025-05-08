@@ -107,9 +107,12 @@ in debugging mode with auto reloading:
           headers={"Cookie": request.headers.get("Cookie"), "Referrer": request.referrer},
       ).json()
 
+.. _extend_application_canvas:
 
 Create the new interface based on canvas
 ----------------------------------------
+
+The canvas interface goal is to be used in simple mode and offers more flexibility.
 
 Get the files from the ``CONST_create_template``:
 
@@ -132,9 +135,48 @@ In the ``vars.yaml`` file your interface should be declared like that:
        layout: desktop
        default: true
 
+   interfaces_config:
+     desktop:
+       constants:
+         gmfOptions:
+           cssVars:
+             # Used by https://github.com/camptocamp/ngeo/pull/7527
+             left-panel-width: 20rem
+             app-margin: 0.62rem
+             icon-font-size: 1.25rem
+             border: 0.06rem solid
+             input-height-base: 1.88rem
+             padding-base-vertical: 0.32rem
+             padding-small-vertical: 0.36rem
+             border-radius-base: 0
+             right-panel-width: 17.5rem
+             grid-gutter-width: 1.88rem
+             infobar-height: 2.52rem
+             width: 2.5rem
+
+in the ``geoportal/geomapfish_geoportal/static/css/desktop.css`` file you can add the following lines:
+
+.. code:: css
+
+   .logo {
+     height: 2.8rem;
+     margin-left: 0.62rem;
+     background-repeat: no-repeat;
+     background-size: auto 2.8rem;
+   }
+   .logo-right {
+     height: 2.8rem;
+     background-repeat: no-repeat;
+     background-size: auto 2.8rem;
+     position: absolute;
+     top: 0;
+     right: 0;
+   }
+
 The ``name`` is the interface name as usual.
-The ``type`` should be set to 'canvas' to be able to get the canvas based interface present in the config image.
-The ``layout`` is used to get the JavaScript and CSS files from ngeo.
+The ``type`` should be set to ``canvas`` to be able to get the canvas based interface present in the config image.
+The ``layout`` is used to get the JavaScript and CSS files from ngeo, in simple mode it can be one of the following:
+``desktop``, ``mobile``, ``mobile_alt``, ``iframe_api`` or ``oeedit``, but usually we use ``desktop``.
 The ``default`` is used to set the default interface as usual.
 
 In the file ``geoportal/interfaces/desktop.html.mako`` you will use the following variables:
@@ -159,6 +201,8 @@ Add the following lines in the ``project.yaml`` as ``managed_files``:
 .. code:: yaml
 
   - geoportal/interfaces/desktop_alt\.html\.mako
+
+.. _extend_application_webcomponent:
 
 Create a new WebComponent
 -------------------------
@@ -399,3 +443,42 @@ In the ``docker-compose.yaml`` file do the following changes:
 
    With these changes, you can add your own authentication logic, but be aware that this logic may need
    to be adapted when migrating to future versions of GeoMapFish.
+
+
+Interfaces
+----------
+
+In the ``vars.yaml`` file, you can add your own interface in the ``interfaces`` section.
+
+The interface has the following fields:
+
+- ``name``: the name of the interface, used to build the interfaces routes end to get the html files names.
+- ``default``: if the interface is the default one, will be available on '/'.
+- ``type``: the type of the interface, can be ``ngeo``, ``canvas`` or ``custom``.
+- ``layout``: Used to get the JavaScript and CSS files in canvas mode.
+
+``ngeo``
+........
+
+The interface type ``ngeo`` is the older one, is used a standard ngeo application
+
+In simple application mode the name can be one of the following:
+``desktop``, ``mobile``, ``mobile_alt``, ``iframe_api`` or ``oeedit``.
+
+``canvas``
+..........
+
+The interface type ``canvas`` is a layout based on a canvas, it offer more flexibility in simple application mode
+
+See :ref:`Canvas section<extend_application_canvas>` for more information.
+
+``custom``
+..........
+
+The interface type ``custom`` is a custom interface, it can be used to create a new interface based on
+another build tool like Vite. With this mode you are able to use an other interface like
+`GeoGirafe <https://gitlab.com/geogirafe/gg-viewer>`_.
+
+This is working in simple application mode.
+
+See :ref:`WebComponent section<extend_application_webcomponent>` for more information.
