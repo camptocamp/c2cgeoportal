@@ -132,7 +132,8 @@ in debugging mode with auto reloading:</p>
 </div>
 </section>
 <section id="create-the-new-interface-based-on-canvas">
-<h2>Create the new interface based on canvas<a class="headerlink" href="#create-the-new-interface-based-on-canvas" title="Link to this heading">¶</a></h2>
+<span id="extend-application-canvas"></span><h2>Create the new interface based on canvas<a class="headerlink" href="#create-the-new-interface-based-on-canvas" title="Link to this heading">¶</a></h2>
+<p>The canvas interface goal is to be used in simple mode and offers more flexibility.</p>
 <p>Get the files from the <code class="docutils literal notranslate"><span class="pre">CONST_create_template</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">mkdir<span class="w"> </span>-p<span class="w"> </span>geoportal/interfaces/</span>
 <span class="prompt1">cp<span class="w"> </span>CONST_create_template/geoportal/interfaces/desktop_alt.html.mako<span class="w"> </span><span class="se">\</span>
@@ -146,11 +147,48 @@ in debugging mode with auto reloading:</p>
 <span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">canvas</span>
 <span class="w">    </span><span class="nt">layout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">desktop</span>
 <span class="w">    </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="nt">interfaces_config</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">desktop</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">constants</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">gmfOptions</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">cssVars</span><span class="p">:</span>
+<span class="w">          </span><span class="c1"># Used by https://github.com/camptocamp/ngeo/pull/7527</span>
+<span class="w">          </span><span class="nt">left-panel-width</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20rem</span>
+<span class="w">          </span><span class="nt">app-margin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.62rem</span>
+<span class="w">          </span><span class="nt">icon-font-size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.25rem</span>
+<span class="w">          </span><span class="nt">border</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.06rem solid</span>
+<span class="w">          </span><span class="nt">input-height-base</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.88rem</span>
+<span class="w">          </span><span class="nt">padding-base-vertical</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.32rem</span>
+<span class="w">          </span><span class="nt">padding-small-vertical</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.36rem</span>
+<span class="w">          </span><span class="nt">border-radius-base</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="w">          </span><span class="nt">right-panel-width</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">17.5rem</span>
+<span class="w">          </span><span class="nt">grid-gutter-width</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.88rem</span>
+<span class="w">          </span><span class="nt">infobar-height</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2.52rem</span>
+<span class="w">          </span><span class="nt">width</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2.5rem</span>
+</pre></div>
+</div>
+<p>in the <code class="docutils literal notranslate"><span class="pre">geoportal/geomapfish_geoportal/static/css/desktop.css</span></code> file you can add the following lines:</p>
+<div class="highlight-css notranslate"><div class="highlight"><pre><span></span><span class="p">.</span><span class="nc">logo</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">height</span><span class="p">:</span><span class="w"> </span><span class="mf">2.8</span><span class="kt">rem</span><span class="p">;</span>
+<span class="w">  </span><span class="k">margin-left</span><span class="p">:</span><span class="w"> </span><span class="mf">0.62</span><span class="kt">rem</span><span class="p">;</span>
+<span class="w">  </span><span class="k">background-repeat</span><span class="p">:</span><span class="w"> </span><span class="kc">no-repeat</span><span class="p">;</span>
+<span class="w">  </span><span class="k">background-size</span><span class="p">:</span><span class="w"> </span><span class="kc">auto</span><span class="w"> </span><span class="mf">2.8</span><span class="kt">rem</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="p">.</span><span class="nc">logo-right</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="k">height</span><span class="p">:</span><span class="w"> </span><span class="mf">2.8</span><span class="kt">rem</span><span class="p">;</span>
+<span class="w">  </span><span class="k">background-repeat</span><span class="p">:</span><span class="w"> </span><span class="kc">no-repeat</span><span class="p">;</span>
+<span class="w">  </span><span class="k">background-size</span><span class="p">:</span><span class="w"> </span><span class="kc">auto</span><span class="w"> </span><span class="mf">2.8</span><span class="kt">rem</span><span class="p">;</span>
+<span class="w">  </span><span class="k">position</span><span class="p">:</span><span class="w"> </span><span class="kc">absolute</span><span class="p">;</span>
+<span class="w">  </span><span class="k">top</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="k">right</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">name</span></code> is the interface name as usual.
-The <code class="docutils literal notranslate"><span class="pre">type</span></code> should be set to ‘canvas’ to be able to get the canvas based interface present in the config image.
-The <code class="docutils literal notranslate"><span class="pre">layout</span></code> is used to get the JavaScript and CSS files from ngeo.
+The <code class="docutils literal notranslate"><span class="pre">type</span></code> should be set to <code class="docutils literal notranslate"><span class="pre">canvas</span></code> to be able to get the canvas based interface present in the config image.
+The <code class="docutils literal notranslate"><span class="pre">layout</span></code> is used to get the JavaScript and CSS files from ngeo, in simple mode it can be one of the following:
+<code class="docutils literal notranslate"><span class="pre">desktop</span></code>, <code class="docutils literal notranslate"><span class="pre">mobile</span></code>, <code class="docutils literal notranslate"><span class="pre">mobile_alt</span></code>, <code class="docutils literal notranslate"><span class="pre">iframe_api</span></code> or <code class="docutils literal notranslate"><span class="pre">oeedit</span></code>, but usually we use <code class="docutils literal notranslate"><span class="pre">desktop</span></code>.
 The <code class="docutils literal notranslate"><span class="pre">default</span></code> is used to set the default interface as usual.</p>
 <p>In the file <code class="docutils literal notranslate"><span class="pre">geoportal/interfaces/desktop.html.mako</span></code> you will use the following variables:</p>
 <ul class="simple">
@@ -175,7 +213,7 @@ The slot says where the component should be added:</p>
 </div>
 </section>
 <section id="create-a-new-webcomponent">
-<h2>Create a new WebComponent<a class="headerlink" href="#create-a-new-webcomponent" title="Link to this heading">¶</a></h2>
+<span id="extend-application-webcomponent"></span><h2>Create a new WebComponent<a class="headerlink" href="#create-a-new-webcomponent" title="Link to this heading">¶</a></h2>
 <p>In this tutorial we will create a new WebComponent based on <a class="reference external" href="https://lit.dev/">Lit</a>,
 and build by <a class="reference external" href="https://vitejs.dev/">Vite</a>.</p>
 <p>We will add a button in the tools bar which opens a new tool panel and that can be used to send a feedback.</p>
@@ -367,6 +405,36 @@ COPY authentication.py /app/geomapfishapp_geoportal/
 <p>With these changes, you can add your own authentication logic, but be aware that this logic may need
 to be adapted when migrating to future versions of GeoMapFish.</p>
 </div>
+</section>
+<section id="interfaces">
+<h2>Interfaces<a class="headerlink" href="#interfaces" title="Link to this heading">¶</a></h2>
+<p>In the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> file, you can add your own interface in the <code class="docutils literal notranslate"><span class="pre">interfaces</span></code> section.</p>
+<p>The interface has the following fields:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">name</span></code>: the name of the interface, used to build the interfaces routes end to get the html files names.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">default</span></code>: if the interface is the default one, will be available on ‘/’.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">type</span></code>: the type of the interface, can be <code class="docutils literal notranslate"><span class="pre">ngeo</span></code>, <code class="docutils literal notranslate"><span class="pre">canvas</span></code> or <code class="docutils literal notranslate"><span class="pre">custom</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">layout</span></code>: Used to get the JavaScript and CSS files in canvas mode.</p></li>
+</ul>
+<section id="ngeo">
+<h3><code class="docutils literal notranslate"><span class="pre">ngeo</span></code><a class="headerlink" href="#ngeo" title="Link to this heading">¶</a></h3>
+<p>The interface type <code class="docutils literal notranslate"><span class="pre">ngeo</span></code> is the older one, is used a standard ngeo application</p>
+<p>In simple application mode the name can be one of the following:
+<code class="docutils literal notranslate"><span class="pre">desktop</span></code>, <code class="docutils literal notranslate"><span class="pre">mobile</span></code>, <code class="docutils literal notranslate"><span class="pre">mobile_alt</span></code>, <code class="docutils literal notranslate"><span class="pre">iframe_api</span></code> or <code class="docutils literal notranslate"><span class="pre">oeedit</span></code>.</p>
+</section>
+<section id="canvas">
+<h3><code class="docutils literal notranslate"><span class="pre">canvas</span></code><a class="headerlink" href="#canvas" title="Link to this heading">¶</a></h3>
+<p>The interface type <code class="docutils literal notranslate"><span class="pre">canvas</span></code> is a layout based on a canvas, it offer more flexibility in simple application mode</p>
+<p>See <a class="reference internal" href="#extend-application-canvas"><span class="std std-ref">Canvas section</span></a> for more information.</p>
+</section>
+<section id="custom">
+<h3><code class="docutils literal notranslate"><span class="pre">custom</span></code><a class="headerlink" href="#custom" title="Link to this heading">¶</a></h3>
+<p>The interface type <code class="docutils literal notranslate"><span class="pre">custom</span></code> is a custom interface, it can be used to create a new interface based on
+another build tool like Vite. With this mode you are able to use an other interface like
+<a class="reference external" href="https://gitlab.com/geogirafe/gg-viewer">GeoGirafe</a>.</p>
+<p>This is working in simple application mode.</p>
+<p>See <a class="reference internal" href="#extend-application-webcomponent"><span class="std std-ref">WebComponent section</span></a> for more information.</p>
+</section>
 </section>
 </section>
 
