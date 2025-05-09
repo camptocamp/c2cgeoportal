@@ -137,7 +137,7 @@ zipp = "==3.19.3"
 "zope.deprecation" = "==4.4.0"
 "zope.interface" = "==5.4.0"
 "zope.sqlalchemy" = "==1.6"
-cryptography = "==44.0.2"
+cryptography = "==44.0.3"
 msal = "==1.27.0"
 
 [dev-packages]
@@ -156,7 +156,7 @@ WebTest = "==3.0.4"  # admin tests
 prospector = {extras = ["with_mypy", "with_bandit"], version = "==1.7.7"}
 flake8 = "==4.0.1"
 types-pytz = "==2021.3.8"
-types-pyyaml = "==6.0.12.20250326"
+types-pyyaml = "==6.0.12.20250402"
 types-python-dateutil = "==2.8.19.20240311"
 types-requests = "==2.27.31"
 types-pkg-resources = "==0.1.3"
