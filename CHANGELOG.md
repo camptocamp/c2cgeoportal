@@ -1,3 +1,7 @@
+##### 2.9.0.144
+
+- Add lost primary and secondary band [c2cgeoportal#11948](https://github.com/camptocamp/c2cgeoportal/pull/11948)
+
 ##### 2.9.0.143
 
 - Update all patch/minor versions (2.9) [ngeo#9732](https://github.com/camptocamp/ngeo/pull/9732)
