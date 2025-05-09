@@ -1,3 +1,7 @@
+##### 2.7.1.169
+
+- [Backport 2.7] Be able to print OGCServer type other [ngeo#9746](https://github.com/camptocamp/ngeo/pull/9746)
+
 ##### 2.7.1.167
 
 - Audit Snyk check/fix 2.7 [c2cgeoportal#11935](https://github.com/camptocamp/c2cgeoportal/pull/11935)
