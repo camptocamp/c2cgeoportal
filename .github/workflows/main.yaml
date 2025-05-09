@@ -222,6 +222,9 @@ jobs:
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && env.HAS_SECRETS == 'HAS_SECRETS'
 
+      - run: ls -ld */dist || true
+      - run: ls -lh geoportal || true
+      - run: rm -rf geoportal/dist || true
       - run: rm -rf */dist || true
       - name: Publish feature branch
         run: |
