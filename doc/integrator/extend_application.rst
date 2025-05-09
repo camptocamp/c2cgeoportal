@@ -140,6 +140,8 @@ In the ``vars.yaml`` file your interface should be declared like that:
        constants:
          gmfOptions:
            cssVars:
+            brand-primary: '#94ac9a'
+            brand-secondary: '#d3e5d7'
              # Used by https://github.com/camptocamp/ngeo/pull/7527
              left-panel-width: 20rem
              app-margin: 0.62rem
