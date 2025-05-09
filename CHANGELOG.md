@@ -1,3 +1,7 @@
+##### 2.8.1.214
+
+- [Backport 2.8] Be able to print OGCServer type other [ngeo#9747](https://github.com/camptocamp/ngeo/pull/9747)
+
 ##### 2.8.1.213
 
 - [Backport 2.8] Simple application mode require the usage of update-po-from-url to up… [c2cgeoportal#11944](https://github.com/camptocamp/c2cgeoportal/pull/11944)
