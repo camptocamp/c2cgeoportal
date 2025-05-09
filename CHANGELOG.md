@@ -1,3 +1,7 @@
+##### 2.9.0.145
+
+- Be able to print OGCServer type other [ngeo#9744](https://github.com/camptocamp/ngeo/pull/9744)
+
 ##### 2.9.0.144
 
 - Add lost primary and secondary band [c2cgeoportal#11948](https://github.com/camptocamp/c2cgeoportal/pull/11948)
