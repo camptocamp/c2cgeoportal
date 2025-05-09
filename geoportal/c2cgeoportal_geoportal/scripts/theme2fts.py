@@ -34,8 +34,8 @@ from collections.abc import Iterator
 from typing import TYPE_CHECKING, Any, Optional
 
 import pyramid.config
+import sqlalchemy.orm
 import transaction
-from sqlalchemy import func
 from sqlalchemy.orm.session import Session
 
 from c2cgeoportal_geoportal.lib.bashcolor import Color, colorize
@@ -134,6 +134,9 @@ class Import:
         from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
             FullTextSearch,
             Interface,
+            LayerGroup,
+            LayerWMS,
+            LayerWMTS,
             Role,
             Theme,
         )
@@ -160,18 +163,63 @@ class Import:
             query = query.filter(Interface.name.notin_(options.exclude_interfaces))
         self.interfaces = query.all()
 
+        print("Create cache")
+        self._layerswms_cache = (
+            self.session.query(LayerWMS).options(sqlalchemy.orm.subqueryload(LayerWMS.metadatas)).all()
+        )
+        self._layerswmts_cache = (
+            self.session.query(LayerWMTS).options(sqlalchemy.orm.subqueryload(LayerWMTS.metadatas)).all()
+        )
+        self._layergroup_cache = (
+            self.session.query(LayerGroup)
+            .options(
+                sqlalchemy.orm.subqueryload(LayerGroup.children_relation),
+                sqlalchemy.orm.subqueryload(LayerWMS.metadatas),
+            )
+            .all()
+        )
+        all_themes = (
+            self.session.query(Theme)
+            .options(
+                sqlalchemy.orm.subqueryload(Theme.children_relation),
+                sqlalchemy.orm.subqueryload(LayerWMS.metadatas),
+            )
+            .all()
+        )
+
+        print("Collecting data")
+
         self.public_theme: dict[int, list[int]] = {}
         self.public_group: dict[int, list[int]] = {}
         for interface in self.interfaces:
             self.public_theme[interface.id] = []
             self.public_group[interface.id] = []
 
+        self.full_text_search: list[dict[str, Any]] = []
+
         for theme in self.session.query(Theme).filter_by(public=True).all():
             self._add_theme(theme)
 
         for role in self.session.query(Role).all():
-            for theme in self.session.query(Theme).all():
+            for theme in all_themes:
                 self._add_theme(theme, role)
+
+        print(f"Starting to fill the full-text search table with {len(self.full_text_search)} entries")
+        self.session.execute(
+            sqlalchemy.insert(FullTextSearch).values(
+                {
+                    "label": sqlalchemy.text(":label"),
+                    "role_id": sqlalchemy.text(":role_id"),
+                    "interface_id": sqlalchemy.text(":interface_id"),
+                    "lang": sqlalchemy.text(":lang"),
+                    "public": sqlalchemy.text(":public"),
+                    "ts": sqlalchemy.text("to_tsvector(:fts_lang, :fts_content)"),
+                    "actions": sqlalchemy.text("to_json(:actions)"),
+                    "from_theme": sqlalchemy.text(":from_theme"),
+                }
+            ),
+            self.full_text_search,
+        )
 
     def _add_fts(
         self,
@@ -180,8 +228,6 @@ class Import:
         action: str,
         role: Optional["c2cgeoportal_commons.models.main.Role"],
     ) -> None:
-        from c2cgeoportal_commons.models.main import FullTextSearch  # pylint: disable=import-outside-toplevel
-
         key = (
             item.name if self.options.name else item.id,
             interface.id,
@@ -190,22 +236,25 @@ class Import:
         if key not in self.imported:
             self.imported.add(key)
             for lang in self.languages:
-                fts = FullTextSearch()
-                fts.label = self._render_label(item, lang)
-                fts.role = role
-                fts.interface = interface
-                fts.lang = lang
-                fts.public = role is None
-                fts.ts = func.to_tsvector(
-                    self.fts_languages[lang],
-                    " ".join(
-                        [self.fts_normalizer(self._[lang].gettext(item.name))]
-                        + [v.strip() for m in item.get_metadata("searchAlias") for v in m.value.split(",")]
-                    ),
+                content = " ".join(
+                    [
+                        self.fts_normalizer(self._[lang].gettext(item.name)),
+                        *[v.strip() for m in item.get_metadata("searchAlias") for v in m.value.split(",")],
+                    ]
                 )
-                fts.actions = [{"action": action, "data": item.name}]
-                fts.from_theme = True
-                self.session.add(fts)
+                self.full_text_search.append(
+                    {
+                        "label": self._render_label(item, lang),
+                        "role_id": role.id if role is not None else None,
+                        "interface_id": interface.id,
+                        "lang": lang,
+                        "public": role is None,
+                        "fts_lang": self.fts_languages[lang],
+                        "fts_content": content,
+                        "actions": [{"action": action, "data": item.name}],
+                        "from_theme": True,
+                    }
+                )
 
     def _add_theme(
         self,
