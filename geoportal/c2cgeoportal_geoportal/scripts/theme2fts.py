@@ -29,6 +29,7 @@
 import gettext
 import os
 import sys
+import time
 from argparse import ArgumentParser, Namespace
 from collections.abc import Iterator
 from typing import TYPE_CHECKING, Any, Optional
@@ -95,6 +96,11 @@ def get_argparser() -> ArgumentParser:
         help="do not import the layers (tree leaf)",
     )
     parser.add_argument("--package", help="the application package")
+    parser.add_argument(
+        "--stats",
+        action="store_true",
+        help="Print out statistics information",
+    )
     fill_arguments(parser)
     return parser
 
@@ -135,20 +141,8 @@ class Import:
             else:
                 raise KeyError(KeyError(msg))
 
-        # must be done only once we have loaded the project config
-        from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
-            FullTextSearch,
-            Interface,
-            LayerGroup,
-            LayerWMS,
-            LayerWMTS,
-            Role,
-            Theme,
-        )
-
-        self.session = session
-        self.session.execute(FullTextSearch.__table__.delete().where(FullTextSearch.from_theme))
-
+        print("Loading translations")
+        start_time = time.time()
         self._: dict[str, gettext.NullTranslations] = {}
         for lang in self.languages:
             try:
@@ -160,15 +154,42 @@ class Import:
             except OSError as e:
                 self._[lang] = gettext.NullTranslations()
                 print(f"Warning: {e} (language: {lang})")
+        if self.options.stats:
+            print(
+                f"Translations loaded in {time.time() - start_time:.2f} seconds "
+                f"({len(self.languages)} languages)"
+            )
 
-        query = self.session.query(Interface)
-        if options.interfaces is not None:
-            query = query.filter(Interface.name.in_(options.interfaces))
-        else:
-            query = query.filter(Interface.name.notin_(options.exclude_interfaces))
-        self.interfaces = query.all()
+        print("Loading the database")
+        # Must be done only once we have loaded the project config
+        from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+            FullTextSearch,
+            Interface,
+            LayerGroup,
+            LayerWMS,
+            LayerWMTS,
+            Role,
+            Theme,
+        )
+
+        self.session = session
+        if self.options.stats:
+            print(
+                f"Session loaded in {time.time() - start_time:.2f} seconds "
+                f"({len(self.languages)} languages)"
+            )
+
+        print("Delete the full-text search table")
+        start_time = time.time()
+        self.session.execute(FullTextSearch.__table__.delete().where(FullTextSearch.from_theme))
+        if self.options.stats:
+            print(
+                f"Deleted old entries in the full-text search table in "
+                f"{time.time() - start_time:.2f} seconds"
+            )
 
         print("Create cache")
+        start_time = time.time()
         self._layerswms_cache = (
             self.session.query(LayerWMS).options(sqlalchemy.orm.subqueryload(LayerWMS.metadatas)).all()
         )
@@ -191,8 +212,28 @@ class Import:
             )
             .all()
         )
+        if self.options.stats:
+            print(
+                f"Cache created in {time.time() - start_time:.2f} seconds "
+                f"({len(self._layerswms_cache)} layerswms, "
+                f"{len(self._layerswmts_cache)} layerswmts, "
+                f"{len(self._layergroup_cache)} layergroups, "
+                f"{len(all_themes)} themes)"
+            )
+
+        print("Loading interfaces")
+        start_time = time.time()
+        query = self.session.query(Interface)
+        if options.interfaces is not None:
+            query = query.filter(Interface.name.in_(options.interfaces))
+        else:
+            query = query.filter(Interface.name.notin_(options.exclude_interfaces))
+        self.interfaces = query.all()
+        if self.options.stats:
+            print(f"Loaded {len(self.interfaces)} interfaces in " f"{time.time() - start_time:.2f} seconds")
 
         print("Collecting data")
+        start_time = time.time()
 
         self.public_theme: dict[int, list[int]] = {}
         self.public_group: dict[int, list[int]] = {}
@@ -209,7 +250,14 @@ class Import:
             for theme in all_themes:
                 self._add_theme(theme, role)
 
+        if self.options.stats:
+            print(
+                f"Collected {len(self.full_text_search)} entries in "
+                f"{time.time() - start_time:.2f} seconds"
+            )
+
         print(f"Starting to fill the full-text search table with {len(self.full_text_search)} entries")
+        start_time = time.time()
         self.session.execute(
             sqlalchemy.insert(FullTextSearch).values(
                 {
@@ -225,6 +273,12 @@ class Import:
             ),
             self.full_text_search,
         )
+        if self.options.stats:
+            print(
+                f"Filled the full-text search table in "
+                f"{time.time() - start_time:.2f} seconds "
+                f"({len(self.full_text_search)} entries)"
+            )
 
     def _add_fts(
         self,
