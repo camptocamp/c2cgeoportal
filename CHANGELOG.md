@@ -1,3 +1,7 @@
+##### 2.9.0.147
+
+- Audit Dpkg 2.9 [c2cgeoportal#11958](https://github.com/camptocamp/c2cgeoportal/pull/11958)
+
 ##### 2.9.0.146
 
 - Fix theme2fts performance issues [c2cgeoportal#11949](https://github.com/camptocamp/c2cgeoportal/pull/11949)
