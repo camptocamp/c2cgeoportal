@@ -1,3 +1,7 @@
+##### 2.9.0.146
+
+- Fix theme2fts performance issues [c2cgeoportal#11949](https://github.com/camptocamp/c2cgeoportal/pull/11949)
+
 ##### 2.9.0.145
 
 - Be able to print OGCServer type other [ngeo#9744](https://github.com/camptocamp/ngeo/pull/9744)
