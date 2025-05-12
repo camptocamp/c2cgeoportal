@@ -6,10 +6,7 @@ line-length = 110
 convention = "numpy"
 
 [tool.poetry]
-name = "c2cgeoportal"
 version = "0.0.0"
-description = "Not used"
-authors = []
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"
@@ -87,3 +84,9 @@ mapbox-vector-tile = "2.1.0"
 responses = "0.25.7"
 waitress = "3.0.2"
 boto3 = "1.38.5"
+
+[project]
+classifiers = []
+dynamic = ["dependencies", "version"]
+name = "c2cgeoportal"
+description = "Not used"
