@@ -156,7 +156,7 @@ WebTest = "==3.0.4"  # admin tests
 prospector = {extras = ["with_mypy", "with_bandit"], version = "==1.7.7"}
 flake8 = "==4.0.1"
 types-pytz = "==2021.3.8"
-types-pyyaml = "==6.0.12.20250326"
+types-pyyaml = "==6.0.12.20250402"
 types-python-dateutil = "==2.8.19.20240311"
 types-requests = "==2.27.31"
 types-pkg-resources = "==0.1.3"
