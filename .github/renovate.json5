@@ -160,5 +160,10 @@
       allowedVersions: '<9.0.0',
       matchPaths: ['geoportal/package.json'],
     },
+    /** In file `.python-version`, use the `<major>.<minor>` version */
+    {
+      matchFileNames: ['.python-version'],
+      versioning: 'regex:^(?<major>\\d+)\\.(?<minor>\\d+)$',
+    },
   ],
 }
