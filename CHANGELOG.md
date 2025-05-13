@@ -1,3 +1,7 @@
+##### 2.8.1.215
+
+- CI updates [ngeo#9750](https://github.com/camptocamp/ngeo/pull/9750)
+
 ##### 2.8.1.214
 
 - [Backport 2.8] Be able to print OGCServer type other [ngeo#9747](https://github.com/camptocamp/ngeo/pull/9747)
