@@ -1,3 +1,7 @@
+##### 2.8.1.216
+
+- Update dependency certifi to v2024.12.14 (2.8) [c2cgeoportal#11970](https://github.com/camptocamp/c2cgeoportal/pull/11970)
+
 ##### 2.8.1.215
 
 - CI updates [ngeo#9750](https://github.com/camptocamp/ngeo/pull/9750)
