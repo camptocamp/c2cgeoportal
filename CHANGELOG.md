@@ -1,3 +1,7 @@
+##### 2.8.1.217
+
+- Update security packages (2.8) (major) [c2cgeoportal#11971](https://github.com/camptocamp/c2cgeoportal/pull/11971)
+
 ##### 2.8.1.216
 
 - Update dependency certifi to v2024.12.14 (2.8) [c2cgeoportal#11970](https://github.com/camptocamp/c2cgeoportal/pull/11970)
