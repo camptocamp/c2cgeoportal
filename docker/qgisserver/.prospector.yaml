@@ -15,5 +15,6 @@ mypy:
 ruff:
   options:
     target-version: py310
+
 pyroma:
   run: false

@@ -24,6 +24,9 @@ bandit:
     - B607 # Starting a process with a partial executable path
 
 ruff:
+  options:
+    target-version: py310
+
   disable:
     - PTH # Path
     - ARG005 # Unused lambda argument: `request`
@@ -40,8 +43,6 @@ ruff:
     - S607 # Starting a process with a partial executable path
     - S110 # `try`-`except`-`pass` detected, consider logging the exception
 
-  options:
-    target-version: py310
 pycodestyle:
   disable:
     - N815 # variable '{}' in class scope should not be mixedCase
