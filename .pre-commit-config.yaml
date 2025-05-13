@@ -115,15 +115,16 @@ repos:
     hooks:
       - id: prospector
         args:
+          - --profile=utils:pre-commit
           - --profile=.prospector.yaml
-          - --profile=utils:autofix
-          - --tool=ruff
           - --die-on-tool-error
           - --output-format=pylint
+          - --without-tool=mypy
         additional_dependencies:
           - prospector-profile-duplicated==1.10.5 # pypi
           - prospector-profile-utils==1.22.3 # pypi
           - ruff==0.11.8 # pypi
+          - pylint[spelling]==3.3.6 # pypi
         exclude: |-
           (?x)(
             ^tests?/?
@@ -139,12 +140,11 @@ repos:
           - --die-on-tool-error
           - --output-format=pylint
           - --profile=.prospector-test.yaml
+          - --profile=utils:pre-commit
         additional_dependencies:
           - prospector-profile-utils==1.22.3 # pypi
         exclude: |-
-          (?x)^(
-            geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/\{\{cookiecutter.project\}\}/.*
-          )$
+          ^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/\{\{cookiecutter.project\}\}/.*$
   - repo: https://github.com/sbrunner/jsonschema-validator
     rev: 1.0.0
     hooks:
@@ -161,3 +161,7 @@ repos:
     rev: 39.264.0
     hooks:
       - id: renovate-config-validator
+  - repo: https://github.com/sbrunner/python-versions-hook
+    rev: 0.8.0
+    hooks:
+      - id: python-versions
