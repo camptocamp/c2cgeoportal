@@ -1,3 +1,8 @@
+##### 2.9.0.149
+
+- Update dependency cryptography to v44.0.3 (2.9) [c2cgeoportal#11972](https://github.com/camptocamp/c2cgeoportal/pull/11972)
+- Update dependency pytz to v2025 (2.9) [c2cgeoportal#11973](https://github.com/camptocamp/c2cgeoportal/pull/11973)
+
 ##### 2.9.0.148
 
 - CI updates [c2cgeoportal#11965](https://github.com/camptocamp/c2cgeoportal/pull/11965)
