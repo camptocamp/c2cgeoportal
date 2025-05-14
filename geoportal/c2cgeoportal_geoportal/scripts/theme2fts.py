@@ -157,7 +157,7 @@ class Import:
         if self.options.stats:
             print(
                 f"Translations loaded in {time.time() - start_time:.2f} seconds "
-                f"({len(self.languages)} languages)"
+                f"({len(self.languages)} languages)",
             )
 
         print("Loading the database")
@@ -175,8 +175,7 @@ class Import:
         self.session = session
         if self.options.stats:
             print(
-                f"Session loaded in {time.time() - start_time:.2f} seconds "
-                f"({len(self.languages)} languages)"
+                f"Session loaded in {time.time() - start_time:.2f} seconds ({len(self.languages)} languages)",
             )
 
         print("Delete the full-text search table")
@@ -184,8 +183,7 @@ class Import:
         self.session.execute(FullTextSearch.__table__.delete().where(FullTextSearch.from_theme))
         if self.options.stats:
             print(
-                f"Deleted old entries in the full-text search table in "
-                f"{time.time() - start_time:.2f} seconds"
+                f"Deleted old entries in the full-text search table in {time.time() - start_time:.2f} seconds",
             )
 
         print("Create cache")
@@ -218,7 +216,7 @@ class Import:
                 f"({len(self._layerswms_cache)} layerswms, "
                 f"{len(self._layerswmts_cache)} layerswmts, "
                 f"{len(self._layergroup_cache)} layergroups, "
-                f"{len(all_themes)} themes)"
+                f"{len(all_themes)} themes)",
             )
 
         print("Loading interfaces")
@@ -230,7 +228,7 @@ class Import:
             query = query.filter(Interface.name.notin_(options.exclude_interfaces))
         self.interfaces = query.all()
         if self.options.stats:
-            print(f"Loaded {len(self.interfaces)} interfaces in " f"{time.time() - start_time:.2f} seconds")
+            print(f"Loaded {len(self.interfaces)} interfaces in {time.time() - start_time:.2f} seconds")
 
         print("Collecting data")
         start_time = time.time()
@@ -251,10 +249,7 @@ class Import:
                 self._add_theme(theme, role)
 
         if self.options.stats:
-            print(
-                f"Collected {len(self.full_text_search)} entries in "
-                f"{time.time() - start_time:.2f} seconds"
-            )
+            print(f"Collected {len(self.full_text_search)} entries in {time.time() - start_time:.2f} seconds")
 
         print(f"Starting to fill the full-text search table with {len(self.full_text_search)} entries")
         start_time = time.time()
@@ -277,7 +272,7 @@ class Import:
             print(
                 f"Filled the full-text search table in "
                 f"{time.time() - start_time:.2f} seconds "
-                f"({len(self.full_text_search)} entries)"
+                f"({len(self.full_text_search)} entries)",
             )
 
     def _add_fts(
