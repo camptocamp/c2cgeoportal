@@ -226,6 +226,7 @@ jobs:
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && env.HAS_SECRETS == 'HAS_SECRETS'
 
+      - run: pip freeze --all
       - name: Publish feature branch
         run: |
           c2cciutils-publish
