@@ -139,6 +139,7 @@ def options(**kwargs):
         "folders": True,
         "layers": True,
         "package": "Seems not used",
+        "stats": False,
     }
     Options = namedtuple("Options", default_options.keys())
     return Options(**{**default_options, **kwargs})
