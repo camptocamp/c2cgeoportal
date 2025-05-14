@@ -1,3 +1,5 @@
+##### 2.6.0.292
+* Update security packages to v2025 (2.6) (major) [c2cgeoportal#11967](https://github.com/camptocamp/c2cgeoportal/pull/11967)
 ##### 2.6.0.291
 * Audit Snyk check/fix 2.6 [c2cgeoportal#11820](https://github.com/camptocamp/c2cgeoportal/pull/11820)
 * Update all patch/minor versions (2.6) [c2cgeoportal#11860](https://github.com/camptocamp/c2cgeoportal/pull/11860)
