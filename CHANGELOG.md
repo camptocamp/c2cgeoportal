@@ -1,3 +1,7 @@
+##### 2.9.0.151
+
+- Audit Snyk check/fix 2.9 [c2cgeoportal#11979](https://github.com/camptocamp/c2cgeoportal/pull/11979)
+
 ##### 2.9.0.150
 
 - Add stats in theme 2 full text search script [c2cgeoportal#11955](https://github.com/camptocamp/c2cgeoportal/pull/11955)
