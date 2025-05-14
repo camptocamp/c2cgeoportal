@@ -1,3 +1,7 @@
+##### 2.9.0.150
+
+- Add stats in theme 2 full text search script [c2cgeoportal#11955](https://github.com/camptocamp/c2cgeoportal/pull/11955)
+
 ##### 2.9.0.149
 
 - Update dependency cryptography to v44.0.3 (2.9) [c2cgeoportal#11972](https://github.com/camptocamp/c2cgeoportal/pull/11972)
