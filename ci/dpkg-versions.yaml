@@ -294,7 +294,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/liblapack3: 3.10.0-2ubuntu1
   ubuntu_22_04/liblaszip8: 3.4.3-2
   ubuntu_22_04/liblcms2-2: 2.12~rc1-2build2
-  ubuntu_22_04/libldap-2.5-0: 2.5.18+dfsg-0ubuntu0.22.04.3
+  ubuntu_22_04/libldap-2.5-0: 2.5.19+dfsg-0ubuntu0.22.04.1
   ubuntu_22_04/libllvm15: 1:15.0.7-0ubuntu0.22.04.3
   ubuntu_22_04/liblsan0: 12.3.0-1ubuntu1~22.04
   ubuntu_22_04/libltdl7: 2.4.6-15build2
@@ -741,7 +741,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/liblapack3: 3.10.0-2ubuntu1
   ubuntu_22_04/liblaszip8: 3.4.3-2
   ubuntu_22_04/liblcms2-2: 2.12~rc1-2build2
-  ubuntu_22_04/libldap-2.5-0: 2.5.18+dfsg-0ubuntu0.22.04.3
+  ubuntu_22_04/libldap-2.5-0: 2.5.19+dfsg-0ubuntu0.22.04.1
   ubuntu_22_04/libllvm15: 1:15.0.7-0ubuntu0.22.04.3
   ubuntu_22_04/liblsan0: 12.3.0-1ubuntu1~22.04
   ubuntu_22_04/libltdl7: 2.4.6-15build2
