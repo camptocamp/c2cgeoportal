@@ -1,3 +1,7 @@
+##### 2.7.1.175
+
+- Update dependency cryptography to v44.0.3 (2.7) [c2cgeoportal#11968](https://github.com/camptocamp/c2cgeoportal/pull/11968)
+
 ##### 2.7.1.174
 
 - Update security packages to v2025 (2.7) (major) [c2cgeoportal#11969](https://github.com/camptocamp/c2cgeoportal/pull/11969)
