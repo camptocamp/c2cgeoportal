@@ -1,3 +1,7 @@
+##### 2.9.0.153
+
+- Fix query present in the documentation [c2cgeoportal#11984](https://github.com/camptocamp/c2cgeoportal/pull/11984)
+
 ##### 2.9.0.152
 
 - Audit Dpkg 2.9 [c2cgeoportal#11980](https://github.com/camptocamp/c2cgeoportal/pull/11980)
