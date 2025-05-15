@@ -1,3 +1,7 @@
+##### 2.7.1.174
+
+- Update security packages to v2025 (2.7) (major) [c2cgeoportal#11969](https://github.com/camptocamp/c2cgeoportal/pull/11969)
+
 ##### 2.7.1.173
 
 - Fix publish 2.7 [c2cgeoportal#11976](https://github.com/camptocamp/c2cgeoportal/pull/11976)
