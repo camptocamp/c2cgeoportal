@@ -674,7 +674,7 @@ def includeme(config: pyramid.config.Configurator) -> None:
         "/mapserv_proxy/{ogcserver}/wfs3/*path",
         mapserverproxy=True,
         pregenerator=C2CPregenerator(role=True),
-        request_method="GET",
+        request_method=("GET", "POST", "PUT", "DELETE"),
     )
     add_cors_route(config, "/mapserv_proxy", "mapserver")
 
