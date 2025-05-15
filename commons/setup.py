@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (c) 2017-2020, Camptocamp SA
+# Copyright (c) 2017-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -32,7 +32,7 @@ import os
 from setuptools import find_packages, setup
 
 HERE = os.path.abspath(os.path.dirname(__file__))
-VERSION = os.environ.get("VERSION", "dev")
+VERSION = os.environ.get("VERSION", "0.0.0")
 
 with open(os.path.join(HERE, "README.md")) as f:
     README = f.read()
@@ -50,7 +50,6 @@ setup(
         "Environment :: Web Environment",
         "Framework :: Pyramid",
         "Intended Audience :: Other Audience",
-        "License :: OSI Approved :: BSD License",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
@@ -62,7 +61,7 @@ setup(
     author_email="info@camptocamp.com",
     url="https://github.com/camptocamp/c2cgeoportal/",
     keywords="web gis geoportail c2cgeoportal geocommune pyramid",
-    packages=find_packages(exclude=["tests.*"]),
+    packages=find_packages(include=["c2cgeoportal_commons.*"], exclude=["tests.*"]),
     package_data={"c2cgeoportal_commons": ["py.typed"]},
     include_package_data=True,
     zip_safe=False,

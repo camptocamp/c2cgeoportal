@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright (c) 2011-2020, Camptocamp SA
+# Copyright (c) 2011-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -38,7 +38,7 @@ the client part is `ngeo <https://github.com/camptocamp/ngeo/>`_.
 Read the `Documentation <https://camptocamp.github.io/c2cgeoportal/master/>`_.
 
 `Sources <https://github.com/camptocamp/c2cgeoportal/>`_"""
-VERSION = os.environ.get("VERSION", "dev")
+VERSION = os.environ.get("VERSION", "0.0.0")
 
 
 with open(os.path.join(HERE, "requirements.txt")) as f:
@@ -58,7 +58,6 @@ setup(
         "Environment :: Web Environment",
         "Framework :: Pyramid",
         "Intended Audience :: Other Audience",
-        "License :: OSI Approved :: BSD License",
         "Operating System :: OS Independent",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
@@ -70,7 +69,7 @@ setup(
     author_email="info@camptocamp.com",
     url="https://github.com/camptocamp/c2cgeoportal/",
     keywords="web gis geoportail c2cgeoportal geocommune pyramid",
-    packages=find_packages(exclude=["tests.*"]),
+    packages=find_packages(include=["c2cgeoportal_geoportal.*"], exclude=["tests.*"]),
     package_data={"c2cgeoportal_geoportal": ["py.typed"]},
     include_package_data=True,
     zip_safe=False,

@@ -12,6 +12,16 @@ checks:
   dependabot_config: false
   codespell: false
 publish:
+  pypi:
+    versions:
+      - version_tag
+    packages:
+      - path: commons
+        group: default
+      - path: geoportal
+        group: default
+      - path: admin
+        group: default
   docker:
     images:
       - name: camptocamp/geomapfish
