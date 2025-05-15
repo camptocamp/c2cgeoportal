@@ -190,9 +190,9 @@ may slow down the application.</p>
 <span class="ss">    FROM &lt;schema&gt;.&lt;table&gt;</span>
 <span class="ss">    WHERE ST_Contains(</span>
 <span class="ss">       (${MAPSERVER_DATA_SUBSELECT} &#39;&lt;layername&gt;&#39;),</span>
-<span class="ss">       ST_SetSRID(&lt;the_geom&gt;, &lt;projection&gt;)</span>
+<span class="ss">       &lt;the_geom&gt;</span>
 <span class="ss">     )</span>
-<span class="ss">) as foo USING unique gid USING srid=&lt;projection&gt;&quot;</span>
+<span class="ss">) AS foo USING unique gid USING srid=&lt;projection&gt;&quot;</span>
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">&lt;schema&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;table&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;layername&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;projection&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;the_geom&gt;</span></code>
@@ -203,13 +203,15 @@ table’s geometry column. <code class="docutils literal notranslate"><span clas
 what is configured in the administration interface for the layer.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">${MAPSERVER_DATA_SUBSELECT}</span></code> is defined as follows:</p>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span>
-<span class="w">    </span><span class="n">rra</span><span class="p">.</span><span class="n">role_id</span>
+<span class="w">    </span><span class="n">ST_Collect</span><span class="p">(</span><span class="n">ra</span><span class="p">.</span><span class="n">area</span><span class="p">)</span>
 <span class="k">FROM</span>
 <span class="w">    </span><span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">restrictionarea</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">ra</span><span class="p">,</span>
 <span class="w">    </span><span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">role_restrictionarea</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">rra</span><span class="p">,</span>
 <span class="w">    </span><span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">layer_restrictionarea</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">lra</span><span class="p">,</span>
 <span class="w">    </span><span class="o">&lt;</span><span class="n">main_schema</span><span class="o">&gt;</span><span class="p">.</span><span class="n">treeitem</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">la</span>
 <span class="k">WHERE</span>
+<span class="w">    </span><span class="n">rra</span><span class="p">.</span><span class="n">role_id</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">(</span><span class="o">%</span><span class="n">role_ids</span><span class="o">%</span><span class="p">)</span>
+<span class="k">AND</span>
 <span class="w">    </span><span class="n">rra</span><span class="p">.</span><span class="n">restrictionarea_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ra</span><span class="p">.</span><span class="n">id</span>
 <span class="k">AND</span>
 <span class="w">    </span><span class="n">lra</span><span class="p">.</span><span class="n">restrictionarea_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ra</span><span class="p">.</span><span class="n">id</span>

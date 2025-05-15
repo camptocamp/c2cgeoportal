@@ -187,9 +187,9 @@ To define a restricted layer in the Mapfile, the ``DATA`` property of the ``LAYE
         FROM <schema>.<table>
         WHERE ST_Contains(
            (${MAPSERVER_DATA_SUBSELECT} '<layername>'),
-           ST_SetSRID(<the_geom>, <projection>)
+           <the_geom>
          )
-    ) as foo USING unique gid USING srid=<projection>"
+    ) AS foo USING unique gid USING srid=<projection>"
 
 ``<schema>``, ``<table>``, ``<layername>``, ``<projection>`` and ``<the_geom>``
 need to be replaced as appropriate. ``<table>`` is the name of the PostGIS table
@@ -203,13 +203,15 @@ The ``${MAPSERVER_DATA_SUBSELECT}`` is defined as follows:
 .. code:: sql
 
     SELECT
-        rra.role_id
+        ST_Collect(ra.area)
     FROM
         <main_schema>.restrictionarea AS ra,
         <main_schema>.role_restrictionarea AS rra,
         <main_schema>.layer_restrictionarea AS lra,
         <main_schema>.treeitem AS la
     WHERE
+        rra.role_id in (%role_ids%)
+    AND
         rra.restrictionarea_id = ra.id
     AND
         lra.restrictionarea_id = ra.id
