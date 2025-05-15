@@ -40,8 +40,11 @@ jobs:
           patterns: pypi docker transifex
         if: github.repository == 'camptocamp/c2cgeoportal'
 
-      - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
-      - run: python3 -m pip install --user --requirement=ci/requirements.txt
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - run: python3 -m pip install setuptools==68.0.0 wheel==0.45.1
+      - run: python3 -m pip install --requirement=ci/requirements.txt
 
       - name: Checks
         run: c2cciutils-checks
