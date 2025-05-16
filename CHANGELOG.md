@@ -1,3 +1,7 @@
+##### 2.9.0.156
+
+- Fix images tag [c2cgeoportal#11992](https://github.com/camptocamp/c2cgeoportal/pull/11992)
+
 ##### 2.9.0.155
 
 - Accept and POST, PUT, DELETE methods for OGC API Features part 4 (editing) [c2cgeoportal#11986](https://github.com/camptocamp/c2cgeoportal/pull/11986)
