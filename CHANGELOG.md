@@ -1,3 +1,7 @@
+##### 2.9.0.157
+
+- Audit Snyk check/fix 2.9 [ngeo#9755](https://github.com/camptocamp/ngeo/pull/9755)
+
 ##### 2.9.0.156
 
 - Fix images tag [c2cgeoportal#11992](https://github.com/camptocamp/c2cgeoportal/pull/11992)
