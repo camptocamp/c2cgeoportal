@@ -1,3 +1,7 @@
+##### 2.9.0.155
+
+- Accept and POST, PUT, DELETE methods for OGC API Features part 4 (editing) [c2cgeoportal#11986](https://github.com/camptocamp/c2cgeoportal/pull/11986)
+
 ##### 2.9.0.154
 
 - Audit Dpkg 2.9 [c2cgeoportal#11990](https://github.com/camptocamp/c2cgeoportal/pull/11990)
