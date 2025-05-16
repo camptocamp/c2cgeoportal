@@ -45,34 +45,32 @@
     /** Docker images versioning */
     {
       matchDatasources: ['docker'],
-      versioning: 'regex:^(?<major>\\d+)\\.(?<minor>\\d+)$',
+      versioning: 'regex:^(?<major>\\d+)\\.(?<minor>\\d+)(-(?<compatibility>.*))?$',
       matchDepNames: [
         'ghcr.io/camptocamp/mapfish_print',
+        'camptocamp/mapfish_print',
         'ghcr.io/camptocamp/tilecloud-chain',
+        'camptocamp/tilecloud-chain',
+        'ghcr.io/camptocamp/mapserver',
+        'camptocamp/mapserver',
         'redis',
         'haproxy',
       ],
     },
     {
       matchDatasources: ['docker'],
-      // like 8.4-gdal3.8
-      versioning: 'regex:^(?<major>\\d+)\\.(?<minor>\\d+)-gdal(?<patch>\\d+)\\.(?<build>\\d+)$',
-      matchDepNames: ['ghcr.io/camptocamp/mapserver'],
-    },
-    {
-      matchDatasources: ['docker'],
       versioning: 'regex:^(?<compatibility>.*)-(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)?$',
-      matchDepNames: ['ghcr.io/osgeo/gdal'],
+      matchDepNames: ['ghcr.io/osgeo/gdal', 'osgeo/gdal'],
     },
     /** Postgresql versioning */
     {
       matchDatasources: ['docker'],
       versioning: 'regex:^(?<major>\\d+)-(?<compatibility>.*)-(?<minor>\\d+)?$',
-      matchDepNames: ['ghcr.io/camptocamp/postgres'],
+      matchDepNames: ['ghcr.io/camptocamp/postgres', 'camptocamp/postgres'],
     },
     /** Ungroup Gdal */
     {
-      matchDepNames: ['ghcr.io/osgeo/gdal'],
+      matchDepNames: ['ghcr.io/osgeo/gdal', 'osgeo/gdal'],
       groupName: 'Gdal',
     },
     /** Ignore geoportal/requirements.txt */
