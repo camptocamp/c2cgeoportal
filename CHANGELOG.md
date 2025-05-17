@@ -1,3 +1,7 @@
+##### 2.9.0.158
+
+- Audit Snyk check/fix 2.9 [ngeo#9756](https://github.com/camptocamp/ngeo/pull/9756)
+
 ##### 2.9.0.157
 
 - Audit Snyk check/fix 2.9 [ngeo#9755](https://github.com/camptocamp/ngeo/pull/9755)
