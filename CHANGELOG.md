@@ -1,3 +1,7 @@
+##### 2.9.0.159
+
+- Update dependency cryptography to v45 (2.9) [c2cgeoportal#11999](https://github.com/camptocamp/c2cgeoportal/pull/11999)
+
 ##### 2.9.0.158
 
 - Audit Snyk check/fix 2.9 [ngeo#9756](https://github.com/camptocamp/ngeo/pull/9756)
