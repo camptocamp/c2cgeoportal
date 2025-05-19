@@ -54,6 +54,8 @@
         'ghcr.io/camptocamp/mapserver',
         'camptocamp/mapserver',
         'redis',
+        'bitnami/redis',
+        'bitnami/redis-sentinel',
         'haproxy',
       ],
     },
