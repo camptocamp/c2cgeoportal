@@ -167,13 +167,13 @@ services:
       - '30'
 
   redis_master:
-    image: bitnami/redis:7.4.3
+    image: bitnami/redis:7.4
     environment:
       - REDIS_REPLICATION_MODE=master
       - ALLOW_EMPTY_PASSWORD=yes
 
   redis_slave:
-    image: bitnami/redis:7.4.3
+    image: bitnami/redis:7.4
     environment:
       - REDIS_REPLICATION_MODE=slave
       - REDIS_MASTER_HOST=redis_master
@@ -182,7 +182,7 @@ services:
       - redis_master
 
   redis_sentinel:
-    image: bitnami/redis-sentinel:7.4.3
+    image: bitnami/redis-sentinel:7.4
     environment:
       - REDIS_MASTER_HOST=redis_master
       - REDIS_MASTER_SET=mymaster
@@ -464,7 +464,7 @@ services:
     build: *geoportal-build
 
   front:
-    image: haproxy:2.6.7
+    image: haproxy:2.6
     restart: unless-stopped
     volumes:
       - ${FRONT_LOG_DIRECTORY}:/dev/log:rw
