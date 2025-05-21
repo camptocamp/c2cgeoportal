@@ -1,0 +1,9 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.25.1
+# ignores vulnerabilities until expiry date; change duration by modifying expiry date
+ignore:
+  SNYK-PYTHON-SETUPTOOLS-9964606:
+    - '*':
+        reason: Unable to publish this old package with newer version of setuptools (>=80.0.0)
+        created: 2025-05-21T13:15:51.416Z
+patch: {}
