@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2024, Camptocamp SA
+# Copyright (c) 2013-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -119,6 +119,7 @@ class Test2faView(TestCase):
             "email": "__test_user@example.com",
             "functionalities": {},
             "is_intranet": False,
+            "login": "__test_user",
             "login_type": "local",
             "roles": [],
             "two_factor_enable": True,
@@ -134,6 +135,7 @@ class Test2faView(TestCase):
             "username": "__test_user",
             "email": "__test_user@example.com",
             "is_intranet": False,
+            "login": "__test_user",
             "login_type": "local",
             "two_factor_enable": True,
             "roles": [],
@@ -186,6 +188,7 @@ class Test2faView(TestCase):
             "email": "__test_user@example.com",
             "functionalities": {},
             "is_intranet": False,
+            "login": "__test_user",
             "login_type": "local",
             "roles": [],
             "two_factor_enable": True,
@@ -201,6 +204,7 @@ class Test2faView(TestCase):
             "username": "__test_user",
             "email": "__test_user@example.com",
             "is_intranet": False,
+            "login": "__test_user",
             "login_type": "local",
             "two_factor_enable": True,
             "roles": [],
@@ -235,6 +239,7 @@ class Test2faView(TestCase):
             "email": "__test_user@example.com",
             "functionalities": {},
             "is_intranet": False,
+            "login": "__test_user",
             "login_type": "local",
             "roles": [],
             "two_factor_enable": True,
@@ -250,6 +255,7 @@ class Test2faView(TestCase):
             "username": "__test_user",
             "email": "__test_user@example.com",
             "is_intranet": False,
+            "login": "__test_user",
             "login_type": "local",
             "two_factor_enable": True,
             "roles": [],
