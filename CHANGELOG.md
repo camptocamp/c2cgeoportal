@@ -1,3 +1,7 @@
+##### 2.9.0.164
+
+- Audit Dpkg 2.9 [c2cgeoportal#12015](https://github.com/camptocamp/c2cgeoportal/pull/12015)
+
 ##### 2.9.0.163
 
 - Add login with the username [c2cgeoportal#12012](https://github.com/camptocamp/c2cgeoportal/pull/12012)
