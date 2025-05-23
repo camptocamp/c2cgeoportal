@@ -176,6 +176,7 @@ class TestLoginView(TestCase):
         assert set(response.keys()) == {
             "functionalities",
             "is_intranet",
+            "login",
             "login_type",
             "two_factor_enable",
             "username",
@@ -315,6 +316,7 @@ class TestLoginView(TestCase):
         assert set(response.keys()) == {
             "functionalities",
             "is_intranet",
+            "login",
             "login_type",
             "two_factor_enable",
             "username",
@@ -399,6 +401,7 @@ class TestLoginView(TestCase):
         assert set(response.keys()) == {
             "functionalities",
             "is_intranet",
+            "login",
             "login_type",
             "two_factor_enable",
             "username",
@@ -655,6 +658,7 @@ class TestLoginView(TestCase):
         assert set(response.keys()) == {
             "functionalities",
             "is_intranet",
+            "login",
             "login_type",
             "two_factor_enable",
             "username",
@@ -752,6 +756,7 @@ class TestLoginView(TestCase):
         assert set(response.keys()) == {
             "functionalities",
             "is_intranet",
+            "login",
             "login_type",
             "two_factor_enable",
             "username",

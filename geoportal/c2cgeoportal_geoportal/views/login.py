@@ -334,6 +334,7 @@ class Login:
         if user is not None:
             result.update(
                 {
+                    "login": user.username,
                     "username": user.display_name,
                     "email": user.email,
                     "roles": [{"name": r.name, "id": r.id} for r in user.roles],
@@ -672,6 +673,7 @@ class Login:
                     # TODO: respect the user interface... # pylint: disable=fixme
                     json.dumps(
                         {
+                            "login": user.username,
                             "username": user.display_name,
                             "email": user.email,
                             "is_intranet": is_intranet(self.request),
