@@ -244,6 +244,9 @@ mapping:
               provide_roles:
                 type: bool
                 default: false
+              ignore_unknown_roles:
+                type: bool
+                default: false
               query_user_info:
                 type: bool
                 default: false

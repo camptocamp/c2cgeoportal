@@ -42,10 +42,8 @@ import c2cwsgiutils.db
 import c2cwsgiutils.index
 import dateutil.parser
 import pyramid.config
-import pyramid.renderers
 import pyramid.request
 import pyramid.response
-import pyramid.security
 import sqlalchemy
 import sqlalchemy.orm
 import zope.event.classhandler
