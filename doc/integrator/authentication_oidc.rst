@@ -89,6 +89,9 @@ Other options
 ``create_user``: If ``true``, a user will be create in the geomapfish database if not exists,
   default is ``false``.
 
+``provide_roles``: If ``true``, the OpenID Connect provider will provide the roles for the user,
+  default is ``false``.
+
 ``login_extra_params``: Extra parameters to add to the login request.
   See `Zitadel additional parameters <https://zitadel.com/docs/apis/openidoauth/endpoints#additional-parameters>`_.
   Default is ``{}``.
@@ -99,14 +102,23 @@ Other options
   ``username``, ``display_name`` and ``email``.
 
 ``user_info_fields:`` The mapping between the user info fields and the user fields in the GeoMapFish database,
-  the key is the GeoMpaFish user field and the value is the field of the user info provided by the
-  OpenID Connect provider, default is:
+  the key is the GeoMapFish user field and the value is the field of the user info provided by the
+  OpenID Connect provider, can be a Python template, for example:
+
+  .. code:: yaml
+
+     username: sub
+     display_name: "{{ first_name }} {{ last_name }}"
+     email: email
+
+  The default mapping is:
 
   .. code:: yaml
 
      username: sub
      display_name: name
      email: email
+
 
 Example with Zitadel
 ~~~~~~~~~~~~~~~~~~~~
