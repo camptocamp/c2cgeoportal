@@ -246,7 +246,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libgl1: 1.4.0-1
   ubuntu_22_04/libgl1-mesa-dri: 23.2.1-1ubuntu3.1~22.04.3
   ubuntu_22_04/libglapi-mesa: 23.2.1-1ubuntu3.1~22.04.3
-  ubuntu_22_04/libglib2.0-0: 2.72.4-0ubuntu2.4
+  ubuntu_22_04/libglib2.0-0: 2.72.4-0ubuntu2.5
   ubuntu_22_04/libglvnd0: 1.4.0-1
   ubuntu_22_04/libglx-mesa0: 23.2.1-1ubuntu3.1~22.04.3
   ubuntu_22_04/libglx0: 1.4.0-1
@@ -693,7 +693,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libgl1: 1.4.0-1
   ubuntu_22_04/libgl1-mesa-dri: 23.2.1-1ubuntu3.1~22.04.3
   ubuntu_22_04/libglapi-mesa: 23.2.1-1ubuntu3.1~22.04.3
-  ubuntu_22_04/libglib2.0-0: 2.72.4-0ubuntu2.4
+  ubuntu_22_04/libglib2.0-0: 2.72.4-0ubuntu2.5
   ubuntu_22_04/libglvnd0: 1.4.0-1
   ubuntu_22_04/libglx-mesa0: 23.2.1-1ubuntu3.1~22.04.3
   ubuntu_22_04/libglx0: 1.4.0-1
@@ -1132,7 +1132,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_24_04/libgl1: 1.7.0-1build1
   ubuntu_24_04/libgl1-mesa-dri: 24.2.8-1ubuntu1~24.04.1
   ubuntu_24_04/libglapi-mesa: 24.2.8-1ubuntu1~24.04.1
-  ubuntu_24_04/libglib2.0-0t64: 2.80.0-6ubuntu3.2
+  ubuntu_24_04/libglib2.0-0t64: 2.80.0-6ubuntu3.4
   ubuntu_24_04/libglvnd0: 1.7.0-1build1
   ubuntu_24_04/libglx-mesa0: 24.2.8-1ubuntu1~24.04.1
   ubuntu_24_04/libglx0: 1.7.0-1build1
@@ -1546,7 +1546,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_24_04/libgl1: 1.7.0-1build1
   ubuntu_24_04/libgl1-mesa-dri: 24.2.8-1ubuntu1~24.04.1
   ubuntu_24_04/libglapi-mesa: 24.2.8-1ubuntu1~24.04.1
-  ubuntu_24_04/libglib2.0-0t64: 2.80.0-6ubuntu3.2
+  ubuntu_24_04/libglib2.0-0t64: 2.80.0-6ubuntu3.4
   ubuntu_24_04/libglvnd0: 1.7.0-1build1
   ubuntu_24_04/libglx-mesa0: 24.2.8-1ubuntu1~24.04.1
   ubuntu_24_04/libglx0: 1.7.0-1build1
@@ -1960,7 +1960,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/libgl1: 1.7.0-1build1
   ubuntu_24_04/libgl1-mesa-dri: 24.2.8-1ubuntu1~24.04.1
   ubuntu_24_04/libglapi-mesa: 24.2.8-1ubuntu1~24.04.1
-  ubuntu_24_04/libglib2.0-0t64: 2.80.0-6ubuntu3.2
+  ubuntu_24_04/libglib2.0-0t64: 2.80.0-6ubuntu3.4
   ubuntu_24_04/libglvnd0: 1.7.0-1build1
   ubuntu_24_04/libglx-mesa0: 24.2.8-1ubuntu1~24.04.1
   ubuntu_24_04/libglx0: 1.7.0-1build1
@@ -2370,7 +2370,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_24_04/libgl1: 1.7.0-1build1
   ubuntu_24_04/libgl1-mesa-dri: 24.2.8-1ubuntu1~24.04.1
   ubuntu_24_04/libglapi-mesa: 24.2.8-1ubuntu1~24.04.1
-  ubuntu_24_04/libglib2.0-0t64: 2.80.0-6ubuntu3.2
+  ubuntu_24_04/libglib2.0-0t64: 2.80.0-6ubuntu3.4
   ubuntu_24_04/libglvnd0: 1.7.0-1build1
   ubuntu_24_04/libglx-mesa0: 24.2.8-1ubuntu1~24.04.1
   ubuntu_24_04/libglx0: 1.7.0-1build1
@@ -2711,7 +2711,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/gettext: 0.21-14ubuntu2
   ubuntu_24_04/gettext-base: 0.21-14ubuntu2
   ubuntu_24_04/gir1.2-girepository-2.0: 1.80.1-1
-  ubuntu_24_04/gir1.2-glib-2.0: 2.80.0-6ubuntu3.2
+  ubuntu_24_04/gir1.2-glib-2.0: 2.80.0-6ubuntu3.4
   ubuntu_24_04/gir1.2-packagekitglib-1.0: 1.2.8-2ubuntu1.2
   ubuntu_24_04/git: 1:2.43.0-1ubuntu7.2
   ubuntu_24_04/git-man: 1:2.43.0-1ubuntu7.2
@@ -2818,9 +2818,9 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/libgfortran5: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/libgirepository-1.0-1: 1.80.1-1
   ubuntu_24_04/libglapi-mesa: 24.2.8-1ubuntu1~24.04.1
-  ubuntu_24_04/libglib2.0-0t64: 2.80.0-6ubuntu3.2
-  ubuntu_24_04/libglib2.0-bin: 2.80.0-6ubuntu3.2
-  ubuntu_24_04/libglib2.0-data: 2.80.0-6ubuntu3.2
+  ubuntu_24_04/libglib2.0-0t64: 2.80.0-6ubuntu3.4
+  ubuntu_24_04/libglib2.0-bin: 2.80.0-6ubuntu3.4
+  ubuntu_24_04/libglib2.0-data: 2.80.0-6ubuntu3.4
   ubuntu_24_04/libgmp10: 2:6.3.0+dfsg-2ubuntu6.1
   ubuntu_24_04/libgnutls30t64: 3.8.3-1.1ubuntu3.3
   ubuntu_24_04/libgomp1: 14.2.0-4ubuntu2~24.04
@@ -3482,7 +3482,7 @@ camptocamp/geomapfish:latest:
   ubuntu_24_04/gettext: 0.21-14ubuntu2
   ubuntu_24_04/gettext-base: 0.21-14ubuntu2
   ubuntu_24_04/gir1.2-girepository-2.0: 1.80.1-1
-  ubuntu_24_04/gir1.2-glib-2.0: 2.80.0-6ubuntu3.2
+  ubuntu_24_04/gir1.2-glib-2.0: 2.80.0-6ubuntu3.4
   ubuntu_24_04/gir1.2-packagekitglib-1.0: 1.2.8-2ubuntu1.2
   ubuntu_24_04/git: 1:2.43.0-1ubuntu7.2
   ubuntu_24_04/git-man: 1:2.43.0-1ubuntu7.2
@@ -3575,9 +3575,9 @@ camptocamp/geomapfish:latest:
   ubuntu_24_04/libgfortran5: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/libgirepository-1.0-1: 1.80.1-1
   ubuntu_24_04/libglapi-mesa: 24.2.8-1ubuntu1~24.04.1
-  ubuntu_24_04/libglib2.0-0t64: 2.80.0-6ubuntu3.2
-  ubuntu_24_04/libglib2.0-bin: 2.80.0-6ubuntu3.2
-  ubuntu_24_04/libglib2.0-data: 2.80.0-6ubuntu3.2
+  ubuntu_24_04/libglib2.0-0t64: 2.80.0-6ubuntu3.4
+  ubuntu_24_04/libglib2.0-bin: 2.80.0-6ubuntu3.4
+  ubuntu_24_04/libglib2.0-data: 2.80.0-6ubuntu3.4
   ubuntu_24_04/libgmp10: 2:6.3.0+dfsg-2ubuntu6.1
   ubuntu_24_04/libgnutls30t64: 3.8.3-1.1ubuntu3.3
   ubuntu_24_04/libgomp1: 14.2.0-4ubuntu2~24.04
@@ -4187,7 +4187,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_24_04/gettext: 0.21-14ubuntu2
   ubuntu_24_04/gettext-base: 0.21-14ubuntu2
   ubuntu_24_04/gir1.2-girepository-2.0: 1.80.1-1
-  ubuntu_24_04/gir1.2-glib-2.0: 2.80.0-6ubuntu3.2
+  ubuntu_24_04/gir1.2-glib-2.0: 2.80.0-6ubuntu3.4
   ubuntu_24_04/gir1.2-packagekitglib-1.0: 1.2.8-2ubuntu1.2
   ubuntu_24_04/git: 1:2.43.0-1ubuntu7.2
   ubuntu_24_04/git-man: 1:2.43.0-1ubuntu7.2
@@ -4280,9 +4280,9 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_24_04/libgfortran5: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/libgirepository-1.0-1: 1.80.1-1
   ubuntu_24_04/libglapi-mesa: 24.2.8-1ubuntu1~24.04.1
-  ubuntu_24_04/libglib2.0-0t64: 2.80.0-6ubuntu3.2
-  ubuntu_24_04/libglib2.0-bin: 2.80.0-6ubuntu3.2
-  ubuntu_24_04/libglib2.0-data: 2.80.0-6ubuntu3.2
+  ubuntu_24_04/libglib2.0-0t64: 2.80.0-6ubuntu3.4
+  ubuntu_24_04/libglib2.0-bin: 2.80.0-6ubuntu3.4
+  ubuntu_24_04/libglib2.0-data: 2.80.0-6ubuntu3.4
   ubuntu_24_04/libgmp10: 2:6.3.0+dfsg-2ubuntu6.1
   ubuntu_24_04/libgnutls30t64: 3.8.3-1.1ubuntu3.3
   ubuntu_24_04/libgomp1: 14.2.0-4ubuntu2~24.04
