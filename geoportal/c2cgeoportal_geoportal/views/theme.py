@@ -1279,8 +1279,7 @@ class Theme:
         if not self.request.user:
             raise pyramid.httpexceptions.HTTPForbidden()
 
-        admin_roles = [r for r in self.request.user.roles if r.name == ("role_admin")]
-        if not admin_roles:
+        if not self.request.has_permission("admin"):
             raise pyramid.httpexceptions.HTTPForbidden()
 
         self._ogc_server_clear_cache(
