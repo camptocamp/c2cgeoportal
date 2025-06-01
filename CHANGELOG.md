@@ -1,3 +1,8 @@
+##### 2.9.0.172
+
+- Update CI dependencies (2.9) [ngeo#9770](https://github.com/camptocamp/ngeo/pull/9770)
+- Audit Snyk check/fix 2.9 [ngeo#9771](https://github.com/camptocamp/ngeo/pull/9771)
+
 ##### 2.9.0.171
 
 - Update CI dependencies (2.9) [c2cgeoportal#12029](https://github.com/camptocamp/c2cgeoportal/pull/12029)
