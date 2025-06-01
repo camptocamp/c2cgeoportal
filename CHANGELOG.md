@@ -1,3 +1,8 @@
+##### 2.9.0.171
+
+- Update CI dependencies (2.9) [c2cgeoportal#12029](https://github.com/camptocamp/c2cgeoportal/pull/12029)
+- Update dependency SQLAlchemy to v2.0.41 (2.9) [c2cgeoportal#12030](https://github.com/camptocamp/c2cgeoportal/pull/12030)
+
 ##### 2.9.0.170
 
 - Audit Snyk check/fix 2.9 [ngeo#9764](https://github.com/camptocamp/ngeo/pull/9764)
