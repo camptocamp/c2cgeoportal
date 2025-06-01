@@ -1,3 +1,7 @@
+##### 2.8.1.218
+
+- Update dependency pyjson5 to v1.6.9 (2.8) [c2cgeoportal#12028](https://github.com/camptocamp/c2cgeoportal/pull/12028)
+
 ##### 2.8.1.217
 
 - Update security packages (2.8) (major) [c2cgeoportal#11971](https://github.com/camptocamp/c2cgeoportal/pull/11971)
