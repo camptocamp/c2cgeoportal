@@ -41,7 +41,7 @@ repos:
       - id: poetry2-lock
         exclude: ^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/{{cookiecutter\.project}}/
         additional_dependencies:
-          - poetry==2.1.2 # pypi
+          - poetry==2.1.3 # pypi
       - id: npm-lock
       - id: canonicalize
   - repo: https://github.com/codespell-project/codespell
@@ -62,8 +62,8 @@ repos:
       - id: prettier
         additional_dependencies:
           - prettier@3.5.3 # npm
-          - prettier-plugin-sh@0.17.2 # npm
-          - prettier-plugin-toml@2.0.4 # npm
+          - prettier-plugin-sh@0.17.4 # npm
+          - prettier-plugin-toml@2.0.5 # npm
         exclude: |-
           (?x)(
             ^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/{{cookiecutter\.project}}/
@@ -103,7 +103,7 @@ repos:
             |geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter\.project}}/mapserver/data/TM_EUROPE_BORDERS-0.3\.sql
           )$
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.11.8
+    rev: v0.11.12
     hooks:
       - id: ruff-format
         args:
@@ -123,8 +123,8 @@ repos:
         additional_dependencies:
           - prospector-profile-duplicated==1.10.5 # pypi
           - prospector-profile-utils==1.22.3 # pypi
-          - ruff==0.11.8 # pypi
-          - pylint[spelling]==3.3.6 # pypi
+          - ruff==0.11.12 # pypi
+          - pylint[spelling]==3.3.7 # pypi
         exclude: |-
           (?x)(
             ^tests?/?
