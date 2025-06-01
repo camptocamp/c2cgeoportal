@@ -464,7 +464,7 @@ services:
     build: *geoportal-build
 
   front:
-    image: haproxy:2.6
+    image: haproxy:3.2
     restart: unless-stopped
     volumes:
       - ${FRONT_LOG_DIRECTORY}:/dev/log:rw
