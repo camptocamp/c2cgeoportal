@@ -92,7 +92,9 @@ classifiers = [
     'Programming Language :: Python :: 3.10',
     'Programming Language :: Python :: 3.11',
     'Programming Language :: Python :: 3.12',
+    'Programming Language :: Python :: 3.13',
 ]
 dynamic = ["dependencies", "version"]
 name = "c2cgeoportal"
 description = "Not used"
+requires-python = ">=3.10"
