@@ -171,6 +171,7 @@ class TestLoginView(TestCase):
             "login_type",
             "two_factor_enable",
             "username",
+            "display_name",
             "email",
             "roles",
         }
@@ -311,6 +312,7 @@ class TestLoginView(TestCase):
             "login_type",
             "two_factor_enable",
             "username",
+            "display_name",
             "email",
             "roles",
         }
@@ -396,6 +398,7 @@ class TestLoginView(TestCase):
             "login_type",
             "two_factor_enable",
             "username",
+            "display_name",
             "email",
             "roles",
         }
@@ -653,6 +656,7 @@ class TestLoginView(TestCase):
             "login_type",
             "two_factor_enable",
             "username",
+            "display_name",
             "email",
             "roles",
         }
@@ -751,6 +755,7 @@ class TestLoginView(TestCase):
             "login_type",
             "two_factor_enable",
             "username",
+            "display_name",
             "email",
             "roles",
         }
