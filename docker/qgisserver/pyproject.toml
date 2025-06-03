@@ -14,7 +14,7 @@ papyrus = "2.6.2" # commons
 transaction = "5.0" # commons
 "c2c.template" = "2.4.2"
 GeoAlchemy2 = "0.17.1"
-SQLAlchemy = "2.0.40" # commons
+SQLAlchemy = "2.0.41" # commons
 "zope.event" = "5.0" # commons
 "zope.sqlalchemy" = "3.1" # commons
 shapely = "2.0.7"
@@ -26,5 +26,5 @@ pytz = "2025.2"
 prospector = { version = "1.17.1", extras = ["with_mypy", "with_bandit", "with_ruff"] }
 prospector-profile-duplicated = "1.10.5"
 prospector-profile-utils  = "1.22.3"
-types-pyyaml = "6.0.12.20250402"
-pytest = "8.3.5"
+types-pyyaml = "6.0.12.20250516"
+pytest = "8.4.0"
