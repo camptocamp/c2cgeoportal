@@ -1,3 +1,7 @@
+##### 2.9.0.176
+
+- Audit Snyk check/fix 2.9 [ngeo#9776](https://github.com/camptocamp/ngeo/pull/9776)
+
 ##### 2.9.0.174
 
 - Add display_name to user_login [c2cgeoportal#12036](https://github.com/camptocamp/c2cgeoportal/pull/12036)
