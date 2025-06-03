@@ -321,13 +321,13 @@ class _CapabilitiesFilter(XMLFilterBase):
 
     def startElementNS(  # noqa: N802
         self,
-        name: tuple[str, str],
-        qname: str,
+        name: tuple[str | None, str],
+        qname: str | None,
         attrs: xml.sax.xmlreader.AttributesNSImpl,
     ) -> None:
         self._do(lambda: self._downstream.startElementNS(name, qname, attrs))
 
-    def endElementNS(self, name: tuple[str, str], qname: str) -> None:  # noqa: N802
+    def endElementNS(self, name: tuple[str | None, str], qname: str | None) -> None:  # noqa: N802
         self._do(lambda: self._downstream.endElementNS(name, qname))
 
     def _keep_layer(self, layer_name: str) -> bool:

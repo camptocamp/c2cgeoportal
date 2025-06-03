@@ -69,6 +69,7 @@ class MetadataSelectWidget(SelectWidget):  # type: ignore[misc]
 
     def serialize(self, field: Any, cstruct: Any, **kw: Any) -> Any:
         values = kw.get("values", self.values)
+        assert values is not None
         if isinstance(cstruct, str) and (cstruct, cstruct) not in values:
             values = values.copy()
             values.append((cstruct, cstruct))
