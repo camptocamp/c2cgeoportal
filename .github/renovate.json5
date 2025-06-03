@@ -169,5 +169,17 @@
       matchFileNames: ['.python-version'],
       versioning: 'regex:^(?<major>\\d+)\\.(?<minor>\\d+)$',
     },
+    /** Group for Shapely major, minor */
+    {
+      matchPackageNames: ['Shapely'],
+      matchUpdateTypes: ['major', 'minor'],
+      groupName: 'shapely',
+    },
+    /** Group for Sphinx major, minor */
+    {
+      matchPackageNames: ['Sphinx'],
+      matchUpdateTypes: ['major', 'minor'],
+      groupName: 'sphinx',
+    },
   ],
 }
