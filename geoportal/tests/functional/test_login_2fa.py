@@ -122,6 +122,7 @@ class Test2faView(TestCase):
             "roles": [],
             "two_factor_enable": True,
             "username": "__test_user",
+            "display_name": "__test_user",
         }
 
         request = self._create_request_obj(
@@ -131,6 +132,7 @@ class Test2faView(TestCase):
         assert "Set-Cookie" in dict(response.headers)
         assert json.loads(response.body.decode("utf-8")) == {
             "username": "__test_user",
+            "display_name": "__test_user",
             "email": "__test_user@example.com",
             "is_intranet": False,
             "login": "__test_user",
@@ -191,6 +193,7 @@ class Test2faView(TestCase):
             "roles": [],
             "two_factor_enable": True,
             "username": "__test_user",
+            "display_name": "__test_user",
         }
 
         request = self._create_request_obj(
@@ -200,6 +203,7 @@ class Test2faView(TestCase):
         assert "Set-Cookie" in dict(response.headers)
         assert json.loads(response.body.decode("utf-8")) == {
             "username": "__test_user",
+            "display_name": "__test_user",
             "email": "__test_user@example.com",
             "is_intranet": False,
             "login": "__test_user",
@@ -242,6 +246,7 @@ class Test2faView(TestCase):
             "roles": [],
             "two_factor_enable": True,
             "username": "__test_user",
+            "display_name": "__test_user",
         }
 
         request = self._create_request_obj(
@@ -251,6 +256,7 @@ class Test2faView(TestCase):
         assert "Set-Cookie" in dict(response.headers)
         assert json.loads(response.body.decode("utf-8")) == {
             "username": "__test_user",
+            "display_name": "__test_user",
             "email": "__test_user@example.com",
             "is_intranet": False,
             "login": "__test_user",
