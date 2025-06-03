@@ -1,3 +1,7 @@
+##### 2.9.0.174
+
+- Add display_name to user_login [c2cgeoportal#12036](https://github.com/camptocamp/c2cgeoportal/pull/12036)
+
 ##### 2.9.0.173
 
 - Audit Dpkg 2.9 [c2cgeoportal#12032](https://github.com/camptocamp/c2cgeoportal/pull/12032)
