@@ -123,6 +123,7 @@ class TestLoginView(TestCase):
         assert response.status_int == 200, response.body
         assert json.loads(response.body.decode("utf-8")) == {
             "username": "__test_user1",
+            "display_name": "__test_user1",
             "email": "__test_user1@example.com",
             "is_intranet": False,
             "login": "__test_user1",
@@ -196,6 +197,7 @@ class TestLoginView(TestCase):
 
         assert json.loads(response.body.decode("utf-8")) == {
             "username": "__test_user1",
+            "display_name": "__test_user1",
             "email": "__test_user1@example.com",
             "is_intranet": False,
             "login": "__test_user1",
@@ -334,6 +336,7 @@ class TestLoginView(TestCase):
         login = Login(request)
         expected = {
             "username": "Test User",
+            "display_name": "Test User",
             "email": "info@example.com",
             "is_intranet": False,
             "login": "__test_user",
@@ -353,6 +356,7 @@ class TestLoginView(TestCase):
         login = Login(request)
         expected = {
             "username": "Test User",
+            "display_name": "Test User",
             "email": "info@example.com",
             "is_intranet": False,
             "login": "__test_user",
@@ -415,6 +419,7 @@ class TestLoginView(TestCase):
             login.loginuser(),
             {
                 "username": "Test User",
+                "display_name": "Test User",
                 "email": "info@example.com",
                 "functionalities": {},
                 "is_intranet": False,
@@ -431,6 +436,7 @@ class TestLoginView(TestCase):
             login.loginuser(),
             {
                 "username": "Test User",
+                "display_name": "Test User",
                 "email": "info@example.com",
                 "functionalities": {},
                 "is_intranet": True,

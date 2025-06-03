@@ -333,6 +333,7 @@ class Login:
                 {
                     "login": user.username,
                     "username": user.display_name,
+                    "display_name": user.display_name,
                     "email": user.email,
                     "roles": [{"name": r.name, "id": r.id} for r in user.roles],
                 }
