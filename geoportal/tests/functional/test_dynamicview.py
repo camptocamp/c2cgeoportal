@@ -33,7 +33,7 @@ from unittest import TestCase
 import pyramid.url
 from c2cgeoportal_geoportal.lib.caching import init_region
 from pyramid import testing
-from pyramid.testing import testConfig
+from pyramid.testing import testConfig as setupConfig
 
 from tests import DummyRequest
 from tests.functional import setup_common as setup_module
@@ -246,7 +246,7 @@ class TestDynamicView(TestCase):
     def test_route_with_keywords(self) -> None:
         from c2cgeoportal_geoportal.views.dynamic import DynamicView
 
-        with testConfig(
+        with setupConfig(
             settings=self._get_settings(
                 {
                     "test": {
@@ -271,7 +271,7 @@ class TestDynamicView(TestCase):
     def test_route_with_segments(self) -> None:
         from c2cgeoportal_geoportal.views.dynamic import DynamicView
 
-        with testConfig(
+        with setupConfig(
             settings=self._get_settings(
                 {"test": {"routes": {"XTest": {"name": "route_with_segments", "elements": ["s1", "s2"]}}}},
             ),
@@ -290,7 +290,7 @@ class TestDynamicView(TestCase):
     def test_route_with_all(self) -> None:
         from c2cgeoportal_geoportal.views.dynamic import DynamicView
 
-        with testConfig(
+        with setupConfig(
             settings=self._get_settings(
                 {
                     "test": {

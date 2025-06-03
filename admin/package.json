@@ -8,7 +8,7 @@
     "snyk-protect": "snyk-protect"
   },
   "dependencies": {
-    "@snyk/protect": "1.1296.2",
+    "@snyk/protect": "1.1297.1",
     "bootstrap": "3.4.1",
     "bootstrap-table": "1.24.1",
     "jquery": "3.7.1",
