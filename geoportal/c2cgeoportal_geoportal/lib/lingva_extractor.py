@@ -964,7 +964,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore[misc]
             if type_element is not None:
                 attributes.extend(
                     element.getAttribute("name")
-                    for element in type_element.getElementsByTagNameNS(
+                    for element in type_element.getElementsByTagNameNS(  # type: ignore[attr-defined]
                         "http://www.w3.org/2001/XMLSchema",
                         "element",
                     )
