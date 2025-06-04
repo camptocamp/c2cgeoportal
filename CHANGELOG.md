@@ -1,3 +1,7 @@
+##### 2.9.0.178
+
+- Set username to username, remove temporary login [c2cgeoportal#12037](https://github.com/camptocamp/c2cgeoportal/pull/12037)
+
 ##### 2.9.0.177
 
 - Use the display-name in the login panel [ngeo#9775](https://github.com/camptocamp/ngeo/pull/9775)
