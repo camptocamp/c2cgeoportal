@@ -1,3 +1,7 @@
+##### 2.9.0.177
+
+- Use the display-name in the login panel [ngeo#9775](https://github.com/camptocamp/ngeo/pull/9775)
+
 ##### 2.9.0.176
 
 - Audit Snyk check/fix 2.9 [ngeo#9776](https://github.com/camptocamp/ngeo/pull/9776)
