@@ -1,3 +1,7 @@
+##### 2.9.0.179
+
+- Audit Snyk check/fix 2.9 [ngeo#9778](https://github.com/camptocamp/ngeo/pull/9778)
+
 ##### 2.9.0.178
 
 - Set username to username, remove temporary login [c2cgeoportal#12037](https://github.com/camptocamp/c2cgeoportal/pull/12037)
