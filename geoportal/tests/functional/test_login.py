@@ -130,7 +130,6 @@ class TestLoginView(TestCase):
             "display_name": "__test_user1",
             "email": "__test_user1@example.com",
             "is_intranet": False,
-            "login": "__test_user1",
             "login_type": "local",
             "two_factor_enable": False,
             "roles": [{"name": "__test_role1", "id": self.role1_id}],
@@ -203,7 +202,6 @@ class TestLoginView(TestCase):
             "display_name": "__test_user1",
             "email": "__test_user1@example.com",
             "is_intranet": False,
-            "login": "__test_user1",
             "login_type": "local",
             "two_factor_enable": False,
             "roles": [{"name": "__test_role1", "id": self.role1_id}],
@@ -336,11 +334,10 @@ class TestLoginView(TestCase):
         request.user = U()
         login = Login(request)
         expected = {
-            "username": "Test User",
+            "username": "__test_user",
             "display_name": "Test User",
             "email": "info@example.com",
             "is_intranet": False,
-            "login": "__test_user",
             "login_type": "local",
             "two_factor_enable": False,
             "roles": [{"name": "__test_role", "id": 123}],
@@ -356,11 +353,10 @@ class TestLoginView(TestCase):
         del request.response.headers["Vary"]
         login = Login(request)
         expected = {
-            "username": "Test User",
+            "username": "__test_user",
             "display_name": "Test User",
             "email": "info@example.com",
             "is_intranet": False,
-            "login": "__test_user",
             "login_type": "local",
             "two_factor_enable": False,
             "roles": [{"name": "__test_role2", "id": 123}],
@@ -421,12 +417,11 @@ class TestLoginView(TestCase):
         login = Login(request)
         request.client_addr = "192.168.2.20"
         assert login.loginuser() == {
-            "username": "Test User",
+            "username": "__test_user",
             "display_name": "Test User",
             "email": "info@example.com",
             "functionalities": {},
             "is_intranet": False,
-            "login": "__test_user",
             "login_type": "local",
             "roles": [{"id": 123, "name": "__test_role"}],
             "two_factor_enable": False,
@@ -435,12 +430,11 @@ class TestLoginView(TestCase):
         login = Login(request)
         request.client_addr = "192.168.1.20"
         assert login.loginuser() == {
-            "username": "Test User",
+            "username": "__test_user",
             "display_name": "Test User",
             "email": "info@example.com",
             "functionalities": {},
             "is_intranet": True,
-            "login": "__test_user",
             "login_type": "local",
             "roles": [{"id": 123, "name": "__test_role"}],
             "two_factor_enable": False,
