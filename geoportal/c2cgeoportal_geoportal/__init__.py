@@ -687,6 +687,7 @@ def includeme(config: pyramid.config.Configurator) -> None:
         response = request.response
         response.headers["Allow"] = "GET, POST, PUT, DELETE"
         return response
+
     config.add_view(options_view, route_name="qgisserver_options")
     # Add route to the tinyows proxy
     config.add_route("tinyowsproxy", "/tinyows_proxy", pregenerator=C2CPregenerator(role=True))
