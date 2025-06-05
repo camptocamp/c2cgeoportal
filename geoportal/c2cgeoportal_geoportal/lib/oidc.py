@@ -28,6 +28,7 @@
 import datetime
 import json
 import logging
+import string
 from typing import TYPE_CHECKING, Any, NamedTuple, Optional, TypedDict, Union
 
 import pyramid.request
@@ -76,7 +77,7 @@ def get_oidc_client(request: pyramid.request.Request, host: str) -> simple_openi
         url=openid_connect["url"],
         authentication_redirect_uri=request.route_url("oidc_callback"),
         client_id=openid_connect["client_id"],
-        client_secret=openid_connect.get("client-secret"),
+        client_secret=openid_connect.get("client_secret"),
         scope=" ".join(openid_connect.get("scopes", ["openid", "profile", "email"])),
     )
 
@@ -123,16 +124,31 @@ def get_remember_from_user_info(
         ("settings_role", None),
         ("roles", None),
     ):
-        user_info_field = settings_fields.get(field_, default_field)
-        if user_info_field is not None:
-            if user_info_field not in user_info:
-                _LOG.error(
-                    "Field '%s' not found in user info, available: %s.",
-                    user_info_field,
-                    ", ".join(user_info.keys()),
-                )
-                raise HTTPInternalServerError(f"Field '{user_info_field}' not found in user info.")
-            remember_object[field_] = user_info[user_info_field]  # type: ignore[literal-required]
+        _LOG.debug("User info keys: %s", ", ".join(user_info.keys()))
+        user_info_field_template = settings_fields.get(field_, default_field)
+        if user_info_field_template is not None:
+            if "{" in user_info_field_template:
+                formatter = string.Formatter()
+                attributes = formatter.parse(user_info_field_template)
+                user_info_fields = [e[1] for e in attributes if e[1] is not None]
+            else:
+                user_info_fields = [user_info_field_template]
+
+            for user_info_field in user_info_fields:
+                if user_info_field not in user_info:
+                    _LOG.error(
+                        "Field '%s' not found in user info, available: %s.",
+                        user_info_field,
+                        ", ".join(user_info.keys()),
+                    )
+                    raise HTTPInternalServerError(f"Field '{user_info_field}' not found in user info.")
+
+            user_info_value = (
+                user_info_field_template.format(**user_info)
+                if "{" in user_info_field_template
+                else user_info[user_info_field_template]
+            )
+            remember_object[field_] = user_info_value  # type: ignore[literal-required]
 
 
 def get_user_from_remember(
@@ -198,6 +214,11 @@ def get_user_from_remember(
                 user = static.User(username=username, email=email, display_name=display_name)
                 models.DBSession.add(user)
     else:
+        roles = []
+        role_names = remember_object.get("roles", [])
+        if role_names:
+            query = models.DBSession.query(main.Role).filter(main.Role.name.in_(role_names))
+            roles = query.all()
         user = DynamicUser(
             id=-1,
             username=username,
@@ -208,10 +229,7 @@ def get_user_from_remember(
                 if remember_object.get("settings_role") is not None
                 else None
             ),
-            roles=[
-                models.DBSession.query(main.Role).filter_by(name=role).one()
-                for role in remember_object.get("roles", [])
-            ],
+            roles=roles,
         )
     return user
 

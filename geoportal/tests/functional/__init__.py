@@ -54,6 +54,17 @@ mapserv_url = "http://mapserver:8080/"
 config = None
 
 
+class _Root:
+    """The Pyramid root object with default ACLs."""
+
+    __acl__ = [
+        (pyramid.security.Allow, "role_admin", pyramid.security.ALL_PERMISSIONS),
+    ]
+
+    def __init__(self, request: pyramid.request.Request):
+        self.request = request
+
+
 class DummyRoute:
     """Dummy route for matched_route in testing."""
 
@@ -232,6 +243,7 @@ def create_dummy_request(
     additional_settings=None,
     authentication=True,
     user=None,
+    force_authentication=False,
     *args: Any,
     **kargs: Any,
 ) -> pyramid.request.Request:
@@ -278,7 +290,7 @@ def create_dummy_request(
     request.matched_route = DummyRoute()
     init_registry(request.registry)
 
-    if authentication and user is None:
+    if (authentication and user is None) or force_authentication:
         authentication_settings = {
             "authtkt_cookie_name": "__test",
             "authtkt_secret": "long enough secret!!  00000000000000000000000000000000000000000000000",
@@ -288,6 +300,7 @@ def create_dummy_request(
 
         testing_legacySecurityPolicy(config)
         config.registry.registerUtility(create_authentication(authentication_settings), IAuthenticationPolicy)
+        request.context = _Root(request)
 
     elif user is not None:
         config.testing_securitypolicy(user)

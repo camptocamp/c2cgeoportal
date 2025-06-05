@@ -31,6 +31,8 @@ import asyncio
 from unittest import TestCase
 
 import pyramid.httpexceptions
+import pyramid.security
+import pyramid.testing
 import pytest
 import responses
 import transaction
@@ -41,7 +43,7 @@ from tests.functional import create_default_ogcserver, create_dummy_request
 from tests.functional import setup_common as setup_module  # noqa
 from tests.functional import teardown_common as teardown_module  # noqa
 
-CAP = """<?xml version="1.0" encoding="utf-8"?>
+_CAP = """<?xml version="1.0" encoding="utf-8"?>
 <WMT_MS_Capabilities version="1.1.1">
 <Service></Service>
 <Capability>
@@ -92,7 +94,7 @@ CAP = """<?xml version="1.0" encoding="utf-8"?>
 </Capability>
 </WMT_MS_Capabilities>"""
 
-DFT = """<?xml version='1.0' encoding="UTF-8" ?>
+_DFT = """<?xml version='1.0' encoding="UTF-8" ?>
 <schema
    targetNamespace="http://mapserver.gis.umn.edu/mapserver"
    xmlns:ms="http://mapserver.gis.umn.edu/mapserver"
@@ -246,12 +248,12 @@ class TestThemesView(TestCase):
         responses.get(
             "http://mapserver:8080/?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetCapabilities&ROLE_IDS=0&USER_ID=0",
             content_type="application/vnd.ogc.wms_xml",
-            body=CAP.format(name2="__test_layer_internal_wms2"),
+            body=_CAP.format(name2="__test_layer_internal_wms2"),
         )
         responses.get(
             "http://mapserver:8080/?SERVICE=WFS&VERSION=1.0.0&REQUEST=DescribeFeatureType&ROLE_IDS=0&USER_ID=0",
             content_type="application/vnd.ogc.wms_xml",
-            body=DFT.format(name2="police1"),
+            body=_DFT.format(name2="police1"),
         )
         asyncio.run(theme._preload(set()))
         responses.reset()
@@ -285,12 +287,12 @@ class TestThemesView(TestCase):
         responses.get(
             "http://mapserver:8080/?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetCapabilities&ROLE_IDS=0&USER_ID=0",
             content_type="application/vnd.ogc.wms_xml",
-            body=CAP.format(name2="__test_layer_internal_wms3"),
+            body=_CAP.format(name2="__test_layer_internal_wms3"),
         )
         responses.get(
             "http://mapserver:8080/?SERVICE=WFS&VERSION=1.0.0&REQUEST=DescribeFeatureType&ROLE_IDS=0&USER_ID=0",
             content_type="application/vnd.ogc.wms_xml",
-            body=DFT.format(name2="police2"),
+            body=_DFT.format(name2="police2"),
         )
         theme._ogc_server_clear_cache(ogc_server)
         responses.reset()
@@ -353,12 +355,12 @@ def test_ogc_server_cache_clean_wrong_host(
     responses.get(
         "http://mapserver:8080/?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetCapabilities&ROLE_IDS=0&USER_ID=0",
         content_type="application/vnd.ogc.wms_xml",
-        body=CAP.format(name2="__test_layer_internal_wms3"),
+        body=_CAP.format(name2="__test_layer_internal_wms3"),
     )
     responses.get(
         "http://mapserver:8080/?SERVICE=WFS&VERSION=1.0.0&REQUEST=DescribeFeatureType&ROLE_IDS=0&USER_ID=0",
         content_type="application/vnd.ogc.wms_xml",
-        body=DFT.format(name2="police2"),
+        body=_DFT.format(name2="police2"),
     )
     with pytest.raises(
         pyramid.httpexceptions.HTTPFound if expected else pyramid.httpexceptions.HTTPBadRequest,
@@ -369,7 +371,11 @@ def test_ogc_server_cache_clean_wrong_host(
 def test_ogc_server_cache_clean_wrong_host_non_admin_user(some_user) -> None:
     from c2cgeoportal_geoportal.views.theme import Theme
 
-    request = create_dummy_request(user=some_user.username)
+    # config = testing.setUp()
+    # config.set_root_factory(_Root)
+
+    request = create_dummy_request(user=some_user.username, force_authentication=True)
+
     theme = Theme(request)
 
     with pytest.raises(pyramid.httpexceptions.HTTPForbidden):
