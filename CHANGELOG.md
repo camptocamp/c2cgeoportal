@@ -1,3 +1,7 @@
+##### 2.9.0.181
+
+- Audit Snyk check/fix 2.9 [ngeo#9779](https://github.com/camptocamp/ngeo/pull/9779)
+
 ##### 2.9.0.180
 
 - OIDC: Be able to ignore role, to have template in match [c2cgeoportal#12014](https://github.com/camptocamp/c2cgeoportal/pull/12014)
