@@ -720,7 +720,8 @@ def includeme(config: pyramid.config.Configurator) -> None:
         request_method="OPTIONS",
     )
     add_cors_route(config, "/mapserv_proxy", "qgisserver_options")
-    def options_view(request):
+
+    def options_view(request: pyramid.request.Request) -> pyramid.response.Response:
         response = request.response
         response.headers["Allow"] = "GET, POST, PUT, DELETE"
         return response
