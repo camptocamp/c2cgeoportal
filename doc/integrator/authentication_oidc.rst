@@ -92,8 +92,6 @@ Other options
 ``provide_roles``: If ``true``, the OpenID Connect provider will provide the roles for the user,
   default is ``false``.
 
-``ignore_unknown_roles``: If ``true``, the unknown roles will be ignored, default is ``false``.
-
 ``login_extra_params``: Extra parameters to add to the login request.
   See `Zitadel additional parameters <https://zitadel.com/docs/apis/openidoauth/endpoints#additional-parameters>`_.
   Default is ``{}``.

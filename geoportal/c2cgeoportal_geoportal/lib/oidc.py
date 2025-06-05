@@ -214,10 +214,7 @@ def get_user_from_remember(
         role_names = remember_object.get("roles", [])
         if role_names:
             query = models.DBSession.query(main.Role).filter(main.Role.name.in_(role_names))
-            if openid_connect_configuration.get("ignore_unknown_roles", False):
-                roles = [role for role in query.all() if role is not None]
-            else:
-                roles = query.all()
+            roles = query.all()
         user = DynamicUser(
             id=-1,
             username=username,
