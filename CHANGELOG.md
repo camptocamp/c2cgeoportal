@@ -1,3 +1,7 @@
+##### 2.7.1.184
+
+- Update dependency cryptography to v45.0.4 (2.7) [c2cgeoportal#12047](https://github.com/camptocamp/c2cgeoportal/pull/12047)
+
 ##### 2.7.1.183
 
 - Update dependency cryptography to v45.0.3 (2.7) [c2cgeoportal#12016](https://github.com/camptocamp/c2cgeoportal/pull/12016)
