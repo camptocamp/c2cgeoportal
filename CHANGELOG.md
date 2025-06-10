@@ -1,3 +1,9 @@
+##### 2.9.0.188
+
+- The login and password fields are not required when we use OIDC [ngeo#9780](https://github.com/camptocamp/ngeo/pull/9780)
+- Audit Snyk check/fix 2.9 [ngeo#9782](https://github.com/camptocamp/ngeo/pull/9782)
+- Update dependency requests to v2.32.4 [SECURITY] (2.9) [ngeo#9787](https://github.com/camptocamp/ngeo/pull/9787)
+
 ##### 2.9.0.187
 
 - Update dependency cryptography to v45.0.4 (2.9) [c2cgeoportal#12048](https://github.com/camptocamp/c2cgeoportal/pull/12048)
