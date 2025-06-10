@@ -1,3 +1,7 @@
+##### 2.9.0.187
+
+- Update dependency cryptography to v45.0.4 (2.9) [c2cgeoportal#12048](https://github.com/camptocamp/c2cgeoportal/pull/12048)
+
 ##### 2.9.0.186
 
 - Always use offset-aware dates in OIDC [c2cgeoportal#12044](https://github.com/camptocamp/c2cgeoportal/pull/12044)
