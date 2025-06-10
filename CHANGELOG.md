@@ -1,3 +1,7 @@
+##### 2.9.0.186
+
+- Always use offset-aware dates in OIDC [c2cgeoportal#12044](https://github.com/camptocamp/c2cgeoportal/pull/12044)
+
 ##### 2.9.0.185
 
 - Audit Dpkg 2.9 [c2cgeoportal#12046](https://github.com/camptocamp/c2cgeoportal/pull/12046)
