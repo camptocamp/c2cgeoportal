@@ -1,3 +1,7 @@
+##### 2.7.1.186
+
+- Update dependency requests to v2.32.4 [SECURITY] (2.7) [ngeo#9785](https://github.com/camptocamp/ngeo/pull/9785)
+
 ##### 2.7.1.184
 
 - Update dependency cryptography to v45.0.4 (2.7) [c2cgeoportal#12047](https://github.com/camptocamp/c2cgeoportal/pull/12047)
