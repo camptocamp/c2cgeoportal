@@ -419,12 +419,28 @@ def create_get_user_from_request(
                         access_token_expires = dateutil.parser.isoparse(
                             user_info_remember["access_token_expires"],
                         )
+                        # If access_token_expires is not offset-aware make it offset-aware
+                        if access_token_expires.tzinfo is None:
+                            _LOG.warning(
+                                "access_token_expires is not offset-aware, "
+                                "make it offset-aware by replacing tzinfo with UTC",
+                            )
+                            access_token_expires = access_token_expires.replace(tzinfo=datetime.timezone.utc)
                         if access_token_expires < datetime.datetime.now(tz=datetime.timezone.utc):
                             if user_info_remember["refresh_token_expires"] is None:
                                 return None
                             refresh_token_expires = dateutil.parser.isoparse(
                                 user_info_remember["refresh_token_expires"],
                             )
+                            # If refresh_token_expires is not offset-aware make it offset-aware
+                            if refresh_token_expires.tzinfo is None:
+                                _LOG.warning(
+                                    "refresh_token_expires is not offset-aware, "
+                                    "make it offset-aware by replacing tzinfo with UTC",
+                                )
+                                refresh_token_expires = refresh_token_expires.replace(
+                                    tzinfo=datetime.timezone.utc,
+                                )
                             if refresh_token_expires < datetime.datetime.now(tz=datetime.timezone.utc):
                                 return None
                             token_response = oidc.get_oidc_client(
