@@ -1,3 +1,7 @@
+##### 2.9.0.189
+
+- Audit Snyk check/fix 2.9 [c2cgeoportal#12055](https://github.com/camptocamp/c2cgeoportal/pull/12055)
+
 ##### 2.9.0.188
 
 - The login and password fields are not required when we use OIDC [ngeo#9780](https://github.com/camptocamp/ngeo/pull/9780)
