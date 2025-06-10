@@ -1,3 +1,7 @@
+##### 2.7.1.187
+
+- Audit Snyk check/fix 2.7 [c2cgeoportal#12052](https://github.com/camptocamp/c2cgeoportal/pull/12052)
+
 ##### 2.7.1.186
 
 - Update dependency requests to v2.32.4 [SECURITY] (2.7) [ngeo#9785](https://github.com/camptocamp/ngeo/pull/9785)
