@@ -1,3 +1,7 @@
+##### 2.8.1.221
+
+- Audit Snyk check/fix 2.8 [c2cgeoportal#12054](https://github.com/camptocamp/c2cgeoportal/pull/12054)
+
 ##### 2.8.1.219
 
 - Update dependency pyjson5 to v1.6.9 (2.8) [ngeo#9769](https://github.com/camptocamp/ngeo/pull/9769)
