@@ -676,18 +676,10 @@ def includeme(config: pyramid.config.Configurator) -> None:
         pregenerator=C2CPregenerator(role=True),
         request_method=("GET", "POST", "PUT", "DELETE", "PATCH"),
     )
-    config.add_route(
-        "qgisserver_options",
-        "/mapserv_proxy/{ogcserver}/wfs3/*path",
-        request_method="OPTIONS",
-    )
-    add_cors_route(config, "/mapserv_proxy", "qgisserver_options")
+    add_cors_route(config, "/mapserv_proxy", "mapserver")
+    add_cors_route(config, "/mapserv_proxy/{ogcserver}/ogcapi/*path", "mapserver_ogcapi_mapserver")
+    add_cors_route(config, "/mapserv_proxy/{ogcserver}/wfs3/*path", "mapserver_ogcapi_qgisserver")
 
-    def options_view(request: pyramid.request.Request) -> pyramid.response.Response:
-        response = request.response
-        response.headers["Allow"] = "GET, POST, PUT, DELETE"
-        return response
-    config.add_view(options_view, route_name="qgisserver_options")
     # Add route to the tinyows proxy
     config.add_route("tinyowsproxy", "/tinyows_proxy", pregenerator=C2CPregenerator(role=True))
 
