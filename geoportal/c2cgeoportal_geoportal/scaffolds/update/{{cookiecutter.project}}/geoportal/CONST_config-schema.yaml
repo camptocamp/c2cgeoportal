@@ -351,6 +351,8 @@ mapping:
           themes: *header
           fulltextsearch: *header
           mapserver: *header
+          mapserver_ogcapi_mapserver: *header
+          mapserver_ogcapi_qgisserver: *header
           tinyows: *header
           layers: *header
           print: *header
