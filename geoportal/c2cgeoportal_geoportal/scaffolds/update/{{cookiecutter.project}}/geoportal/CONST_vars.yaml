@@ -1191,6 +1191,8 @@ vars:
     print: *auth_header
     fulltextsearch: *auth_header
     mapserver: *auth_header
+    mapserver_ogcapi_mapserver: *auth_header
+    mapserver_ogcapi_qgisserver: *auth_header
     tinyows: *auth_header
     layers:
       <<: *auth_header
@@ -1434,6 +1436,12 @@ runtime_postprocess:
       - headers.mapserver.access_control_max_age
       - headers.mapserver.cache_control_max_age
       - headers.mapserver.cache_control_max_age_nocache
+      - headers.mapserver_ogcapi_mapserver.access_control_max_age
+      - headers.mapserver_ogcapi_mapserver.cache_control_max_age
+      - headers.mapserver_ogcapi_mapserver.cache_control_max_age_nocache
+      - headers.mapserver_ogcapi_qgisserver.access_control_max_age
+      - headers.mapserver_ogcapi_qgisserver.cache_control_max_age
+      - headers.mapserver_ogcapi_qgisserver.cache_control_max_age_nocache
       - headers.tinyows.access_control_max_age
       - headers.tinyows.cache_control_max_age
       - headers.tinyows.cache_control_max_age_nocache
