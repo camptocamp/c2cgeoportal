@@ -1,3 +1,7 @@
+##### 2.9.0.194
+
+- Fix access to wfs3 endpoints in mapserv proxy [c2cgeoportal#12041](https://github.com/camptocamp/c2cgeoportal/pull/12041)
+
 ##### 2.9.0.193
 
 - Audit Snyk check/fix 2.9 [ngeo#9792](https://github.com/camptocamp/ngeo/pull/9792)
