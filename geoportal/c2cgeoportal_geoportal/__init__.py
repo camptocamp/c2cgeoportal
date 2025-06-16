@@ -715,6 +715,8 @@ def includeme(config: pyramid.config.Configurator) -> None:
         request_method=("GET", "POST", "PUT", "DELETE", "PATCH"),
     )
     add_cors_route(config, "/mapserv_proxy", "mapserver")
+    add_cors_route(config, "/mapserv_proxy/{ogcserver}/ogcapi/*path", "mapserver_ogcapi_mapserver")
+    add_cors_route(config, "/mapserv_proxy/{ogcserver}/wfs3/*path", "mapserver_ogcapi_qgisserver")
 
     # Add route to the tinyows proxy
     config.add_route("tinyowsproxy", "/tinyows_proxy", pregenerator=C2CPregenerator(role=True))
