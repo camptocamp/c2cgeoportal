@@ -122,7 +122,7 @@ repos:
           - --without-tool=mypy
         additional_dependencies:
           - prospector-profile-duplicated==1.10.5 # pypi
-          - prospector-profile-utils==1.22.3 # pypi
+          - prospector-profile-utils==1.23.0 # pypi
           - ruff==0.11.12 # pypi
           - pylint[spelling]==3.3.7 # pypi
         exclude: |-
@@ -144,7 +144,10 @@ repos:
         additional_dependencies:
           - prospector-profile-utils==1.22.3 # pypi
         exclude: |-
-          ^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/\{\{cookiecutter.project\}\}/.*$
+          (?x)(
+            geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/\{\{cookiecutter.project\}\}/.*
+            |geoportal/c2cgeoportal_geoportal/views/theme\.py
+          )$
   - repo: https://github.com/sbrunner/jsonschema-validator
     rev: 1.0.0
     hooks:

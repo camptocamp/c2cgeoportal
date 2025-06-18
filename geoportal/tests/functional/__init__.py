@@ -215,11 +215,11 @@ def init_registry(registry=None):
 
 def testing_legacySecurityPolicy(
     config,
-    userid=None,
-    groupids=(),
-    permissive=True,
-    remember_result=None,
-    forget_result=None,
+    userid=None,  # noqa: PT028
+    groupids=(),  # noqa: PT028
+    permissive=True,  # noqa: PT028
+    remember_result=None,  # noqa: PT028
+    forget_result=None,  # noqa: PT028
 ):
     """Compatibility mode for deprecated AuthorizationPolicy and AuthenticationPolicy in our tests."""
     from pyramid.interfaces import (
