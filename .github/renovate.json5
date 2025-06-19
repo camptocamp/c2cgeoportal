@@ -17,28 +17,30 @@
   baseBranches: ['master', '2.6', '2.7', '2.8', '2.9'],
   customManagers: [
     {
-      fileMatch: ['^ci/applications-versions.yaml$'],
       matchStrings: ['(?<depName>[^\\s]+): (?<currentValue>[^\\s]+) # (?<datasource>[^\\s]+)'],
       customType: 'regex',
+      managerFilePatterns: ['/^ci/applications-versions.yaml$/'],
     },
     /** Do update on the schema present in the projects ci/config.yaml */
     {
-      fileMatch: ['^geoportal/c2cgeoportal_geoportal/scaffolds/*/{{cookiecutter.project}}/ci/config\\.yaml$'],
       matchStrings: [
         '.*https://raw\\.githubusercontent\\.com/(?<depName>[^\\s]+)/(?<currentValue>[0-9\\.]+)/.*',
       ],
       datasourceTemplate: 'github-tags',
       customType: 'regex',
+      managerFilePatterns: [
+        '/^geoportal/c2cgeoportal_geoportal/scaffolds/*/{{cookiecutter.project}}/ci/config\\.yaml$/',
+      ],
     },
     /** Upgrade the postgres version in the env values */
     {
-      fileMatch: [
-        '^geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}/env\\.default$',
-      ],
       matchStrings: ['POSTGRES_TAG=(?<currentValue>[0-9]+\\-postgis\\-[0-9]+)'],
       datasourceTemplate: 'docker',
       depNameTemplate: 'ghcr.io/camptocamp/postgres',
       customType: 'regex',
+      managerFilePatterns: [
+        '/^geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}/env\\.default$/',
+      ],
     },
   ],
   packageRules: [
@@ -97,9 +99,9 @@
      * For 2.6
      */
     {
-      matchPackagePatterns: ['^sphinxcontrib-.*'],
       matchPaths: ['doc/Pipfile'],
       enabled: false,
+      matchPackageNames: ['/^sphinxcontrib-.*/'],
     },
     /** Disable upgrading the supported Python version */
     {
@@ -160,14 +162,9 @@
     },
     /** Don't update eslint to version >= 9.0.0 */
     {
-      matchPackagePatterns: ['eslint'],
       allowedVersions: '<9.0.0',
       matchPaths: ['geoportal/package.json'],
-    },
-    /** In file `.python-version`, use the `<major>.<minor>` version */
-    {
-      matchFileNames: ['.python-version'],
-      versioning: 'regex:^(?<major>\\d+)\\.(?<minor>\\d+)$',
+      matchPackageNames: ['/eslint/'],
     },
     /** Group for Shapely major, minor */
     {
