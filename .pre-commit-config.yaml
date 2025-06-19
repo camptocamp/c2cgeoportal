@@ -142,7 +142,7 @@ repos:
           - --profile=.prospector-test.yaml
           - --profile=utils:pre-commit
         additional_dependencies:
-          - prospector-profile-utils==1.22.3 # pypi
+          - prospector-profile-utils==1.23.0 # pypi
         exclude: |-
           (?x)(
             geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/\{\{cookiecutter.project\}\}/.*
