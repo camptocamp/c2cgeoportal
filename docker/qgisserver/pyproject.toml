@@ -37,6 +37,7 @@ cee-syslog-handler = "0.6.0"
 psycopg2 = "2.9.10"
 pytz = "2025.2"
 requests = "2.32.4"
+urllib3 = "2.5.0"
 
 [tool.poetry.dev-dependencies]
 prospector = { extras = ["with_mypy", "with_bandit"], version = "1.12.1" }
