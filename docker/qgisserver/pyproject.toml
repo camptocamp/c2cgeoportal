@@ -23,7 +23,7 @@ psycopg2 = "2.9.10"
 pytz = "2025.2"
 
 [tool.poetry.dev-dependencies]
-prospector = { version = "1.17.1", extras = ["with_mypy", "with_bandit", "with_ruff"] }
+prospector = { version = "1.17.2", extras = ["with_mypy", "with_bandit", "with_ruff"] }
 prospector-profile-duplicated = "1.10.5"
 prospector-profile-utils  = "1.23.0"
 types-pyyaml = "6.0.12.20250516"
