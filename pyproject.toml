@@ -56,7 +56,7 @@ azure-storage-blob = "12.25.1"
 simple_openid_connect = { git = "https://github.com/sbrunner/py_simple_openid_connect.git", branch = "allows-pkce" } # geoportal
 pkce = '1.0.3' # geoportal
 basicauth = "1.0.0"
-prospector = { version = "1.17.1", extras = ["with_mypy", "with_bandit", "with_pyroma", "with_ruff"] }
+prospector = { version = "1.17.2", extras = ["with_mypy", "with_bandit", "with_pyroma", "with_ruff"] }
 prospector-profile-duplicated = "1.10.5"
 prospector-profile-utils  = "1.23.0"
 beautifulsoup4 = "4.13.4"
