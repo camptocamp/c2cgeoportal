@@ -2734,8 +2734,8 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/libapt-pkg6.0t64: 2.8.3
   ubuntu_24_04/libargon2-1: 0~20190702+dfsg-4build1
   ubuntu_24_04/libasan8: 14.2.0-4ubuntu2~24.04
-  ubuntu_24_04/libasound2-data: 1.2.11-1build2
-  ubuntu_24_04/libasound2t64: 1.2.11-1build2
+  ubuntu_24_04/libasound2-data: 1.2.11-1ubuntu0.1
+  ubuntu_24_04/libasound2t64: 1.2.11-1ubuntu0.1
   ubuntu_24_04/libassuan0: 2.5.6-1build1
   ubuntu_24_04/libatk-bridge2.0-0t64: 2.52.0-1build1
   ubuntu_24_04/libatk1.0-0t64: 2.52.0-1build1
@@ -3501,8 +3501,8 @@ camptocamp/geomapfish:latest:
   ubuntu_24_04/libappstream5: 1.0.2-1build6
   ubuntu_24_04/libapt-pkg6.0t64: 2.8.3
   ubuntu_24_04/libargon2-1: 0~20190702+dfsg-4build1
-  ubuntu_24_04/libasound2-data: 1.2.11-1build2
-  ubuntu_24_04/libasound2t64: 1.2.11-1build2
+  ubuntu_24_04/libasound2-data: 1.2.11-1ubuntu0.1
+  ubuntu_24_04/libasound2t64: 1.2.11-1ubuntu0.1
   ubuntu_24_04/libassuan0: 2.5.6-1build1
   ubuntu_24_04/libatk-bridge2.0-0t64: 2.52.0-1build1
   ubuntu_24_04/libatk1.0-0t64: 2.52.0-1build1
@@ -4206,8 +4206,8 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_24_04/libappstream5: 1.0.2-1build6
   ubuntu_24_04/libapt-pkg6.0t64: 2.8.3
   ubuntu_24_04/libargon2-1: 0~20190702+dfsg-4build1
-  ubuntu_24_04/libasound2-data: 1.2.11-1build2
-  ubuntu_24_04/libasound2t64: 1.2.11-1build2
+  ubuntu_24_04/libasound2-data: 1.2.11-1ubuntu0.1
+  ubuntu_24_04/libasound2t64: 1.2.11-1ubuntu0.1
   ubuntu_24_04/libassuan0: 2.5.6-1build1
   ubuntu_24_04/libatk-bridge2.0-0t64: 2.52.0-1build1
   ubuntu_24_04/libatk1.0-0t64: 2.52.0-1build1
