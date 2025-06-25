@@ -1,4 +1,4 @@
-poetry==1.5.1
+poetry==1.6.1
 poetry-core>=1.1.0a7 # not directly required, pinned by Snyk to avoid a vulnerability
 pip==23.3.2
 requests>=2.32.0 # not directly required, pinned by Snyk to avoid a vulnerability
