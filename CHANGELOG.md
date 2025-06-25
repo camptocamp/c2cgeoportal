@@ -1,3 +1,7 @@
+##### 2.8.1.227
+
+- Update dependency cryptography to v45 (2.8) [c2cgeoportal#12090](https://github.com/camptocamp/c2cgeoportal/pull/12090)
+
 ##### 2.8.1.226
 
 - Update dependency certifi to v2025.6.15 (2.8) [c2cgeoportal#12089](https://github.com/camptocamp/c2cgeoportal/pull/12089)
