@@ -1,3 +1,7 @@
+##### 2.8.1.225
+
+- Update dependency poetry to v1.6.1 (2.8) [c2cgeoportal#12088](https://github.com/camptocamp/c2cgeoportal/pull/12088)
+
 ##### 2.8.1.224
 
 - Update dependency certifi to v2025.6.15 (2.8) [c2cgeoportal#12064](https://github.com/camptocamp/c2cgeoportal/pull/12064)
