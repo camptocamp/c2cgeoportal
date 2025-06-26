@@ -5,3 +5,4 @@ pygments>=2.15.0 # not directly required, pinned by Snyk to avoid a vulnerabilit
 black>=24.3.0 # not directly required, pinned by Snyk to avoid a vulnerability
 pip>=23.3 # not directly required, pinned by Snyk to avoid a vulnerability
 virtualenv>=20.26.6 # not directly required, pinned by Snyk to avoid a vulnerability
+urllib3>=2.5.0 # not directly required, pinned by Snyk to avoid a vulnerability
