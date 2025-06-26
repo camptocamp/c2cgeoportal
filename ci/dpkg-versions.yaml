@@ -1200,7 +1200,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_24_04/libpam-modules-bin: 1.5.3-5ubuntu5.4
   ubuntu_24_04/libpam-runtime: 1.5.3-5ubuntu5.4
   ubuntu_24_04/libpam0g: 1.5.3-5ubuntu5.4
-  ubuntu_24_04/libpciaccess0: 0.17-3build1
+  ubuntu_24_04/libpciaccess0: 0.17-3ubuntu0.24.04.1
   ubuntu_24_04/libpcre2-16-0: 10.42-4ubuntu2.1
   ubuntu_24_04/libpcre2-8-0: 10.42-4ubuntu2.1
   ubuntu_24_04/libperl5.38t64: 5.38.2-3.2ubuntu0.1
@@ -1609,7 +1609,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_24_04/libpam-modules-bin: 1.5.3-5ubuntu5.4
   ubuntu_24_04/libpam-runtime: 1.5.3-5ubuntu5.4
   ubuntu_24_04/libpam0g: 1.5.3-5ubuntu5.4
-  ubuntu_24_04/libpciaccess0: 0.17-3build1
+  ubuntu_24_04/libpciaccess0: 0.17-3ubuntu0.24.04.1
   ubuntu_24_04/libpcre2-16-0: 10.42-4ubuntu2.1
   ubuntu_24_04/libpcre2-8-0: 10.42-4ubuntu2.1
   ubuntu_24_04/libperl5.38t64: 5.38.2-3.2ubuntu0.1
@@ -2018,7 +2018,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/libpam-modules-bin: 1.5.3-5ubuntu5.4
   ubuntu_24_04/libpam-runtime: 1.5.3-5ubuntu5.4
   ubuntu_24_04/libpam0g: 1.5.3-5ubuntu5.4
-  ubuntu_24_04/libpciaccess0: 0.17-3build1
+  ubuntu_24_04/libpciaccess0: 0.17-3ubuntu0.24.04.1
   ubuntu_24_04/libpcre2-16-0: 10.42-4ubuntu2.1
   ubuntu_24_04/libpcre2-8-0: 10.42-4ubuntu2.1
   ubuntu_24_04/libperl5.38t64: 5.38.2-3.2ubuntu0.1
@@ -2426,7 +2426,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_24_04/libpam-modules-bin: 1.5.3-5ubuntu5.4
   ubuntu_24_04/libpam-runtime: 1.5.3-5ubuntu5.4
   ubuntu_24_04/libpam0g: 1.5.3-5ubuntu5.4
-  ubuntu_24_04/libpciaccess0: 0.17-3build1
+  ubuntu_24_04/libpciaccess0: 0.17-3ubuntu0.24.04.1
   ubuntu_24_04/libpcre2-16-0: 10.42-4ubuntu2.1
   ubuntu_24_04/libpcre2-8-0: 10.42-4ubuntu2.1
   ubuntu_24_04/libperl5.38t64: 5.38.2-3.2ubuntu0.1
@@ -2887,7 +2887,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/libpam-systemd: 255.4-1ubuntu8.8
   ubuntu_24_04/libpam0g: 1.5.3-5ubuntu5.4
   ubuntu_24_04/libpango-1.0-0: 1.52.1+ds-1build1
-  ubuntu_24_04/libpciaccess0: 0.17-3build1
+  ubuntu_24_04/libpciaccess0: 0.17-3ubuntu0.24.04.1
   ubuntu_24_04/libpcre2-8-0: 10.42-4ubuntu2.1
   ubuntu_24_04/libperl5.38t64: 5.38.2-3.2ubuntu0.1
   ubuntu_24_04/libpipewire-0.3-0t64: 1.2.3-1~24.04.sav0
@@ -3626,7 +3626,7 @@ camptocamp/geomapfish:latest:
   ubuntu_24_04/libpam-systemd: 255.4-1ubuntu8.8
   ubuntu_24_04/libpam0g: 1.5.3-5ubuntu5.4
   ubuntu_24_04/libpango-1.0-0: 1.52.1+ds-1build1
-  ubuntu_24_04/libpciaccess0: 0.17-3build1
+  ubuntu_24_04/libpciaccess0: 0.17-3ubuntu0.24.04.1
   ubuntu_24_04/libpcre2-8-0: 10.42-4ubuntu2.1
   ubuntu_24_04/libperl5.38t64: 5.38.2-3.2ubuntu0.1
   ubuntu_24_04/libpipewire-0.3-0t64: 1.2.3-1~24.04.sav0
@@ -4331,7 +4331,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_24_04/libpam-systemd: 255.4-1ubuntu8.8
   ubuntu_24_04/libpam0g: 1.5.3-5ubuntu5.4
   ubuntu_24_04/libpango-1.0-0: 1.52.1+ds-1build1
-  ubuntu_24_04/libpciaccess0: 0.17-3build1
+  ubuntu_24_04/libpciaccess0: 0.17-3ubuntu0.24.04.1
   ubuntu_24_04/libpcre2-8-0: 10.42-4ubuntu2.1
   ubuntu_24_04/libperl5.38t64: 5.38.2-3.2ubuntu0.1
   ubuntu_24_04/libpipewire-0.3-0t64: 1.2.3-1~24.04.sav0
