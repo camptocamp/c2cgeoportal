@@ -98,7 +98,7 @@ camptocamp/geomapfish-config:latest:
   ubuntu_24_04/python-is-python3: 3.11.4-1
   ubuntu_24_04/python3: 3.12.3-0ubuntu2
   ubuntu_24_04/python3-minimal: 3.12.3-0ubuntu2
-  ubuntu_24_04/python3-pip: 24.0+dfsg-1ubuntu1.1
+  ubuntu_24_04/python3-pip: 24.0+dfsg-1ubuntu1.2
   ubuntu_24_04/python3-pkg-resources: 68.1.2-2ubuntu1.2
   ubuntu_24_04/python3-setuptools: 68.1.2-2ubuntu1.2
   ubuntu_24_04/python3-wheel: 0.42.0-2
@@ -482,7 +482,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libxpm4: 1:3.5.12-1ubuntu0.22.04.2
   ubuntu_22_04/libxrender1: 1:0.9.10-1build4
   ubuntu_22_04/libxshmfence1: 1.3-1build4
-  ubuntu_22_04/libxslt1.1: 1.1.34-4ubuntu0.22.04.3
+  ubuntu_22_04/libxslt1.1: 1.1.34-4ubuntu0.22.04.4
   ubuntu_22_04/libxt6: 1:1.2.1-1
   ubuntu_22_04/libxxf86vm1: 1:1.1.4-1build3
   ubuntu_22_04/libxxhash0: 0.8.1-1
@@ -516,8 +516,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/python3-minimal: 3.10.6-1~22.04.1
   ubuntu_22_04/python3-numpy: 1:1.21.5-1ubuntu22.04.1
   ubuntu_22_04/python3-pil: 9.0.1-1ubuntu0.3
-  ubuntu_22_04/python3-pip: 22.0.2+dfsg-1ubuntu0.5
-  ubuntu_22_04/python3-pip-whl: 22.0.2+dfsg-1ubuntu0.5
+  ubuntu_22_04/python3-pip: 22.0.2+dfsg-1ubuntu0.6
+  ubuntu_22_04/python3-pip-whl: 22.0.2+dfsg-1ubuntu0.6
   ubuntu_22_04/python3-pkg-resources: 59.6.0-1.2ubuntu0.22.04.3
   ubuntu_22_04/python3-pyqt5: 5.15.6+dfsg-1ubuntu3
   ubuntu_22_04/python3-pyqt5.qsci: 2.11.6+dfsg-4
@@ -929,7 +929,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libxpm4: 1:3.5.12-1ubuntu0.22.04.2
   ubuntu_22_04/libxrender1: 1:0.9.10-1build4
   ubuntu_22_04/libxshmfence1: 1.3-1build4
-  ubuntu_22_04/libxslt1.1: 1.1.34-4ubuntu0.22.04.3
+  ubuntu_22_04/libxslt1.1: 1.1.34-4ubuntu0.22.04.4
   ubuntu_22_04/libxt6: 1:1.2.1-1
   ubuntu_22_04/libxxf86vm1: 1:1.1.4-1build3
   ubuntu_22_04/libxxhash0: 0.8.1-1
@@ -963,8 +963,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/python3-minimal: 3.10.6-1~22.04.1
   ubuntu_22_04/python3-numpy: 1:1.21.5-1ubuntu22.04.1
   ubuntu_22_04/python3-pil: 9.0.1-1ubuntu0.3
-  ubuntu_22_04/python3-pip: 22.0.2+dfsg-1ubuntu0.5
-  ubuntu_22_04/python3-pip-whl: 22.0.2+dfsg-1ubuntu0.5
+  ubuntu_22_04/python3-pip: 22.0.2+dfsg-1ubuntu0.6
+  ubuntu_22_04/python3-pip-whl: 22.0.2+dfsg-1ubuntu0.6
   ubuntu_22_04/python3-pkg-resources: 59.6.0-1.2ubuntu0.22.04.3
   ubuntu_22_04/python3-pyqt5: 5.15.6+dfsg-1ubuntu3
   ubuntu_22_04/python3-pyqt5.qsci: 2.11.6+dfsg-4
@@ -1367,8 +1367,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_24_04/python3: 3.12.3-0ubuntu2
   ubuntu_24_04/python3-minimal: 3.12.3-0ubuntu2
   ubuntu_24_04/python3-numpy: 1:1.26.4+ds-6ubuntu1
-  ubuntu_24_04/python3-pip: 24.0+dfsg-1ubuntu1.1
-  ubuntu_24_04/python3-pip-whl: 24.0+dfsg-1ubuntu1.1
+  ubuntu_24_04/python3-pip: 24.0+dfsg-1ubuntu1.2
+  ubuntu_24_04/python3-pip-whl: 24.0+dfsg-1ubuntu1.2
   ubuntu_24_04/python3-pkg-resources: 68.1.2-2ubuntu1.2
   ubuntu_24_04/python3-pyqt5: 5.15.10+dfsg-1build6
   ubuntu_24_04/python3-pyqt5.qsci: 2.14.1+dfsg-1build3
@@ -1778,8 +1778,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_24_04/python3: 3.12.3-0ubuntu2
   ubuntu_24_04/python3-minimal: 3.12.3-0ubuntu2
   ubuntu_24_04/python3-numpy: 1:1.26.4+ds-6ubuntu1
-  ubuntu_24_04/python3-pip: 24.0+dfsg-1ubuntu1.1
-  ubuntu_24_04/python3-pip-whl: 24.0+dfsg-1ubuntu1.1
+  ubuntu_24_04/python3-pip: 24.0+dfsg-1ubuntu1.2
+  ubuntu_24_04/python3-pip-whl: 24.0+dfsg-1ubuntu1.2
   ubuntu_24_04/python3-pkg-resources: 68.1.2-2ubuntu1.2
   ubuntu_24_04/python3-pyqt5: 5.15.10+dfsg-1build6
   ubuntu_24_04/python3-pyqt5.qsci: 2.14.1+dfsg-1build3
@@ -2189,8 +2189,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/python3-minimal: 3.12.3-0ubuntu2
   ubuntu_24_04/python3-numpy: 1:1.26.4+ds-6ubuntu1
   ubuntu_24_04/python3-pil: 10.2.0-1ubuntu1
-  ubuntu_24_04/python3-pip: 24.0+dfsg-1ubuntu1.1
-  ubuntu_24_04/python3-pip-whl: 24.0+dfsg-1ubuntu1.1
+  ubuntu_24_04/python3-pip: 24.0+dfsg-1ubuntu1.2
+  ubuntu_24_04/python3-pip-whl: 24.0+dfsg-1ubuntu1.2
   ubuntu_24_04/python3-pkg-resources: 68.1.2-2ubuntu1.2
   ubuntu_24_04/python3-pyqt5: 5.15.10+dfsg-1build6
   ubuntu_24_04/python3-pyqt5.qsci: 2.14.1+dfsg-1build3
@@ -2593,8 +2593,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_24_04/python3: 3.12.3-0ubuntu2
   ubuntu_24_04/python3-minimal: 3.12.3-0ubuntu2
   ubuntu_24_04/python3-numpy: 1:1.26.4+ds-6ubuntu1
-  ubuntu_24_04/python3-pip: 24.0+dfsg-1ubuntu1.1
-  ubuntu_24_04/python3-pip-whl: 24.0+dfsg-1ubuntu1.1
+  ubuntu_24_04/python3-pip: 24.0+dfsg-1ubuntu1.2
+  ubuntu_24_04/python3-pip-whl: 24.0+dfsg-1ubuntu1.2
   ubuntu_24_04/python3-pkg-resources: 68.1.2-2ubuntu1.2
   ubuntu_24_04/python3-pyqt5: 5.15.10+dfsg-1build6
   ubuntu_24_04/python3-pyqt5.qsci: 2.14.1+dfsg-1build3
@@ -3385,8 +3385,8 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/python3-numpy: 1:1.26.4+ds-6ubuntu1
   ubuntu_24_04/python3-oauthlib: 3.2.2-1
   ubuntu_24_04/python3-pil: 10.2.0-1ubuntu1
-  ubuntu_24_04/python3-pip: 24.0+dfsg-1ubuntu1.1
-  ubuntu_24_04/python3-pip-whl: 24.0+dfsg-1ubuntu1.1
+  ubuntu_24_04/python3-pip: 24.0+dfsg-1ubuntu1.2
+  ubuntu_24_04/python3-pip-whl: 24.0+dfsg-1ubuntu1.2
   ubuntu_24_04/python3-pkg-resources: 68.1.2-2ubuntu1.2
   ubuntu_24_04/python3-pyparsing: 3.1.1-1
   ubuntu_24_04/python3-setuptools: 68.1.2-2ubuntu1.2
@@ -4099,8 +4099,8 @@ camptocamp/geomapfish:latest:
   ubuntu_24_04/python3-numpy: 1:1.26.4+ds-6ubuntu1
   ubuntu_24_04/python3-oauthlib: 3.2.2-1
   ubuntu_24_04/python3-pil: 10.2.0-1ubuntu1
-  ubuntu_24_04/python3-pip: 24.0+dfsg-1ubuntu1.1
-  ubuntu_24_04/python3-pip-whl: 24.0+dfsg-1ubuntu1.1
+  ubuntu_24_04/python3-pip: 24.0+dfsg-1ubuntu1.2
+  ubuntu_24_04/python3-pip-whl: 24.0+dfsg-1ubuntu1.2
   ubuntu_24_04/python3-pkg-resources: 68.1.2-2ubuntu1.2
   ubuntu_24_04/python3-pyparsing: 3.1.1-1
   ubuntu_24_04/python3-setuptools: 68.1.2-2ubuntu1.2
@@ -4804,8 +4804,8 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_24_04/python3-numpy: 1:1.26.4+ds-6ubuntu1
   ubuntu_24_04/python3-oauthlib: 3.2.2-1
   ubuntu_24_04/python3-pil: 10.2.0-1ubuntu1
-  ubuntu_24_04/python3-pip: 24.0+dfsg-1ubuntu1.1
-  ubuntu_24_04/python3-pip-whl: 24.0+dfsg-1ubuntu1.1
+  ubuntu_24_04/python3-pip: 24.0+dfsg-1ubuntu1.2
+  ubuntu_24_04/python3-pip-whl: 24.0+dfsg-1ubuntu1.2
   ubuntu_24_04/python3-pkg-resources: 68.1.2-2ubuntu1.2
   ubuntu_24_04/python3-pyparsing: 3.1.1-1
   ubuntu_24_04/python3-setuptools: 68.1.2-2ubuntu1.2
