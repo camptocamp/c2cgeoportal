@@ -38,6 +38,7 @@ from pyramid.view import view_config
 from sqlalchemy import ColumnElement, and_, desc, func, or_
 
 from c2cgeoportal_geoportal import locale_negotiator
+from c2cgeoportal_geoportal.lib import get_roles_id
 from c2cgeoportal_geoportal.lib.caching import get_region
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
 from c2cgeoportal_geoportal.lib.fulltextsearch import Normalize
@@ -98,16 +99,21 @@ class FullTextSearchView:
         ]
         terms_ts = "&".join(w + ":*" for w in terms_array if w != "")
         _filter: ColumnElement[bool] = FullTextSearch.ts.op("@@")(func.to_tsquery(language, terms_ts))
-
         if self.request.user is None:
-            _filter = and_(_filter, FullTextSearch.public.is_(True))
+            _filter = and_(
+                _filter,
+                or_(
+                    FullTextSearch.public.is_(True),
+                    FullTextSearch.role_id.in_(get_roles_id(self.request)),
+                ),
+            )
         else:
             _filter = and_(
                 _filter,
                 or_(
                     FullTextSearch.public.is_(True),
                     FullTextSearch.role_id.is_(None),
-                    FullTextSearch.role_id.in_([r.id for r in self.request.user.roles]),
+                    FullTextSearch.role_id.in_(get_roles_id(self.request)),
                 ),
             )
 

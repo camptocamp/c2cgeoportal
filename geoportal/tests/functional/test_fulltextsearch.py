@@ -48,11 +48,19 @@ class TestFulltextsearchView(TestCase):
         from geoalchemy2 import WKTElement
         from sqlalchemy import func
 
+        DBSession.query(User).delete()
+        DBSession.query(Role).delete()
+        DBSession.query(FullTextSearch).delete()
+
         role1 = Role(name="__test_role1", description="__test_role1")
         user1 = User(username="__test_user1", password="__test_user1", settings_role=role1, roles=[role1])
 
         role2 = Role(name="__test_role2", description="__test_role2")
         user2 = User(username="__test_user2", password="__test_user2", settings_role=role2, roles=[role2])
+
+        role_anonymous = Role(name="anonymous", description="All anonymous users")
+        role_intranet = Role(name="intranet", description="All intranet users")
+        role_registered = Role(name="registered", description="All registered users")
 
         entry1 = FullTextSearch()
         entry1.label = "label1"
@@ -112,20 +120,30 @@ class TestFulltextsearchView(TestCase):
         entry71.ts = func.to_tsvector("french", "A 71 simi")
         entry71.public = True
 
+        entry72 = FullTextSearch()
+        entry72.label = "Registered"
+        entry72.ts = func.to_tsvector("french", "Registered")
+        entry72.public = False
+        entry72.role = role_registered
+
         DBSession.add_all(
             [
                 user1,
                 user2,
                 role1,
                 role2,
+                role_anonymous,
+                role_intranet,
+                role_registered,
                 entry1,
                 entry2,
                 entry3,
                 entry4,
                 entry5,
                 entry6,
-                entry71,
                 entry70,
+                entry71,
+                entry72,
                 entry7,
             ],
         )
@@ -139,23 +157,11 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal_commons.models.main import FullTextSearch, Interface, Role
         from c2cgeoportal_commons.models.static import User
 
-        DBSession.delete(DBSession.query(User).filter(User.username == "__test_user1").one())
-        DBSession.delete(DBSession.query(User).filter(User.username == "__test_user2").one())
-
-        DBSession.query(FullTextSearch).filter(FullTextSearch.label == "label1").delete()
-        DBSession.query(FullTextSearch).filter(FullTextSearch.label == "label2").delete()
-        DBSession.query(FullTextSearch).filter(FullTextSearch.label == "label3").delete()
-        DBSession.query(FullTextSearch).filter(FullTextSearch.label == "label4").delete()
-        DBSession.query(FullTextSearch).filter(FullTextSearch.label == "label5").delete()
-        DBSession.query(FullTextSearch).filter(FullTextSearch.label == "label6").delete()
-        DBSession.query(FullTextSearch).filter(FullTextSearch.label == "A 7 simi").delete()
-        DBSession.query(FullTextSearch).filter(FullTextSearch.label == "A 70 simi").delete()
-        DBSession.query(FullTextSearch).filter(FullTextSearch.label == "A 71 simi").delete()
+        DBSession.query(User).delete()
+        DBSession.query(Role).delete()
+        DBSession.query(FullTextSearch).delete()
 
         DBSession.query(Interface).filter(Interface.name == "main").delete()
-
-        DBSession.query(Role).filter(Role.name == "__test_role1").delete()
-        DBSession.query(Role).filter(Role.name == "__test_role2").delete()
 
         transaction.commit()
 
@@ -406,3 +412,24 @@ class TestFulltextsearchView(TestCase):
         assert response.features[0].properties["layer_name"] == "layer1"
         assert response.features[1].properties["label"] == "label4"
         assert response.features[1].properties["layer_name"] == "layer1"
+
+    def test_public_match_registered(self):
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
+        from geojson.feature import FeatureCollection
+
+        request = self._create_dummy_request(params=dict(query="reg", limit=40))
+        fts = FullTextSearchView(request)
+        response = fts.fulltextsearch()
+        self.assertTrue(isinstance(response, FeatureCollection))
+        assert len(response.features) == 0
+
+    def test_private_match_registered(self):
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
+        from geojson.feature import FeatureCollection
+
+        request = self._create_dummy_request(params=dict(query="reg", limit=40), username="__test_user1")
+        fts = FullTextSearchView(request)
+        response = fts.fulltextsearch()
+        self.assertTrue(isinstance(response, FeatureCollection))
+        assert len(response.features) == 1
+        assert response.features[0].properties["label"] == "Registered"
