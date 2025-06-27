@@ -414,9 +414,8 @@ class TestFulltextsearchView(TestCase):
         assert response.features[1].properties["layer_name"] == "layer1"
 
     def test_public_match_registered(self):
-        from geojson.feature import FeatureCollection
-
         from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
+        from geojson.feature import FeatureCollection
 
         request = self._create_dummy_request(params=dict(query="reg", limit=40))
         fts = FullTextSearchView(request)
@@ -425,9 +424,8 @@ class TestFulltextsearchView(TestCase):
         assert len(response.features) == 0
 
     def test_private_match_registered(self):
-        from geojson.feature import FeatureCollection
-
         from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
+        from geojson.feature import FeatureCollection
 
         request = self._create_dummy_request(params=dict(query="reg", limit=40), username="__test_user1")
         fts = FullTextSearchView(request)
