@@ -1,3 +1,7 @@
+##### 2.7.1.191
+
+- Audit Snyk check/fix 2.7 [c2cgeoportal#12091](https://github.com/camptocamp/c2cgeoportal/pull/12091)
+
 ##### 2.7.1.190
 
 - Update dependency poetry to v1.6.1 (2.7) [c2cgeoportal#12086](https://github.com/camptocamp/c2cgeoportal/pull/12086)
