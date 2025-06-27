@@ -1,3 +1,7 @@
+##### 2.9.0.204
+
+- Audit Dpkg 2.9 [c2cgeoportal#12101](https://github.com/camptocamp/c2cgeoportal/pull/12101)
+
 ##### 2.9.0.203
 
 - Fix full text search for the auto defined roles [c2cgeoportal#12098](https://github.com/camptocamp/c2cgeoportal/pull/12098)
