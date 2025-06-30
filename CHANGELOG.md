@@ -1,3 +1,7 @@
+##### 2.8.1.229
+
+- Update all patch/minor versions (2.8) [c2cgeoportal#12113](https://github.com/camptocamp/c2cgeoportal/pull/12113)
+
 ##### 2.8.1.228
 
 - Audit Snyk check/fix 2.8 [c2cgeoportal#12081](https://github.com/camptocamp/c2cgeoportal/pull/12081)
