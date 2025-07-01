@@ -1,3 +1,8 @@
+##### 2.9.0.206
+
+- Update all patch/minor versions (2.9) [c2cgeoportal#12114](https://github.com/camptocamp/c2cgeoportal/pull/12114)
+- Update dependency requests to v2.32.4 (2.9) [c2cgeoportal#12115](https://github.com/camptocamp/c2cgeoportal/pull/12115)
+
 ##### 2.9.0.205
 
 - Audit Snyk check/fix 2.9 [ngeo#9802](https://github.com/camptocamp/ngeo/pull/9802)
