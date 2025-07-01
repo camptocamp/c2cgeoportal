@@ -70,7 +70,7 @@ class OAuth2ClientViews(LoggedViews[OAuth2Client]):
         return cast("sqlalchemy.orm.Session", self._request.dbsession).query(OAuth2Client)
 
     @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")  # type: ignore[misc]
-    def index(self) -> IndexResponse:
+    def index(self) -> IndexResponse[OAuth2Client]:
         return super().index()
 
     @view_config(route_name="c2cgeoform_grid", renderer="fast_json")  # type: ignore[misc]
