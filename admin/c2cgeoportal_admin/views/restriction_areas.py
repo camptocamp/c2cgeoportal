@@ -131,7 +131,7 @@ class RestrictionAreaViews(LoggedViews[RestrictionArea]):
         )
 
     @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")  # type: ignore[misc]
-    def index(self) -> IndexResponse:
+    def index(self) -> IndexResponse[RestrictionArea]:
         return super().index()
 
     @view_config(route_name="c2cgeoform_grid", renderer="fast_json")  # type: ignore[misc]
