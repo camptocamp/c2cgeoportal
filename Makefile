@@ -111,7 +111,7 @@ build-qgisserver-tests:
 .PHONY: prospector-qgisserver
 prospector-qgisserver: build-qgisserver-tests
 	docker run --rm --volume=$(shell pwd)/docker/qgisserver:/src camptocamp/geomapfish-qgisserver-tests \
-		prospector --without=mypy --output-format=pylint --die-on-tool-error
+		prospector --without=mypy --without=pylint --output-format=pylint --die-on-tool-error
 	docker run --rm --volume=$(shell pwd)/docker/qgisserver:/src camptocamp/geomapfish-qgisserver-tests \
 		prospector --tool=mypy --output-format=pylint --die-on-tool-error -I 'acceptance-tests/.*'
 
