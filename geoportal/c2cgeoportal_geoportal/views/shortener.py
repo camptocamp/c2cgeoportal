@@ -75,7 +75,7 @@ class Shortener:
         set_common_headers(self.request, "shortener", Cache.PUBLIC_NO)
         return HTTPFound(location=long_url)
 
-    @view_config(route_name="shortener_fetch", renderer="json")
+    @view_config(route_name="shortener_fetch", renderer="json")  # type: ignore[misc]
     def fetch(self) -> dict[str, str]:
         long_url = self._read()
         set_common_headers(self.request, "shortener", Cache.PUBLIC_NO)
