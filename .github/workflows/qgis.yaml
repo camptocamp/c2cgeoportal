@@ -52,9 +52,9 @@ jobs:
       matrix:
         # The versions should be set everywhere we have a == QGIS version == comment
         version:
-          - '3.34'
+          - '3.40'
           # Used as default version
-          - 3.34-gdal3.8
+          - 3.40-gdal3.10
           - ltr
           - lr
           - lr-debug
@@ -62,8 +62,8 @@ jobs:
 
     # == QGIS version ==
     outputs:
-      success-3-34: ${{ steps.success.outputs.success-3-34 }}
-      success-3-34-gdal3-8: ${{ steps.success.outputs.success-3-34-gdal3-8 }}
+      success-3-40: ${{ steps.success.outputs.success-3-40 }}
+      success-3-40-gdal3-10: ${{ steps.success.outputs.success-3-40-gdal3-10 }}
       success-ltr: ${{ steps.success.outputs.success-ltr }}
       success-lr: ${{ steps.success.outputs.success-lr }}
       success-lr-debug: ${{ steps.success.outputs.success-lr-debug }}
@@ -162,8 +162,8 @@ jobs:
 
     # == QGIS version ==
     steps:
-      - run: '[[ "${{ needs.main.outputs.success-3-34 }}" == "true" ]]'
-      - run: '[[ "${{ needs.main.outputs.success-3-34-gdal3-8 }}" == "true" ]]'
+      - run: '[[ "${{ needs.main.outputs.success-3-40 }}" == "true" ]]'
+      - run: '[[ "${{ needs.main.outputs.success-3-40-gdal3-10 }}" == "true" ]]'
       - run: '[[ "${{ needs.main.outputs.success-ltr }}" == "true" ]]'
       - run: '[[ "${{ needs.main.outputs.success-lr }}" == "true" ]]'
       - run: '[[ "${{ needs.main.outputs.success-lr-debug }}" == "true" ]]'

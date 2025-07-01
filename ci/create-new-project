@@ -11,9 +11,9 @@ docker tag "camptocamp/geomapfish:${TAG}" "ghcr.io/camptocamp/geomapfish:$(scrip
 docker tag "camptocamp/geomapfish-tools:${TAG}" "ghcr.io/camptocamp/geomapfish-tools:$(scripts/get-version --full)"
 docker tag "camptocamp/geomapfish-config:${TAG}" "ghcr.io/camptocamp/geomapfish-config:$(scripts/get-version --major-minor)"
 
-DOCKER_BUILDKIT=1 docker build --target=runner --build-arg=VERSION=3.34-gdal3.8 \
+DOCKER_BUILDKIT=1 docker build --target=runner --build-arg=VERSION=3.40-gdal3.10 \
     --build-arg="GEOMAPFISH_VERSION=${TAG}" \
-    --tag="camptocamp/geomapfish-qgisserver:gmf${TAG}-qgis3.34-gdal3.8" \
+    --tag="camptocamp/geomapfish-qgisserver:gmf${TAG}-qgis3.40-gdal3.10" \
     docker/qgisserver
 
 WORKSPACE=$1

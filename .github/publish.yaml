@@ -102,7 +102,7 @@ docker:
       group: qgis-latest
       tags:
         - gmf{version}-qgislatest
-      # master
+      # 2.9
     - name: camptocamp/geomapfish-qgisserver
       group: qgis-3.34-gdal3.8
       tags:
@@ -111,6 +111,15 @@ docker:
       group: qgis-3.34
       tags:
         - gmf{version}-qgis3.34
+      # master
+    - name: camptocamp/geomapfish-qgisserver
+      group: qgis-3.40-gdal3.10
+      tags:
+        - gmf{version}-qgis3.40-gdal3.10
+    - name: camptocamp/geomapfish-qgisserver
+      group: qgis-3.40
+      tags:
+        - gmf{version}-qgis3.40
     - name: camptocamp/geomapfish-qgisserver
       group: qgis-ltr
       tags:
