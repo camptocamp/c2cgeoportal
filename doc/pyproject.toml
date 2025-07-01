@@ -5,7 +5,7 @@ description = 'Not used'
 authors = []
 
 [tool.poetry.dependencies]
-python = ">=3.10,<3.13"
+python = ">=3.12,<3.13"
 alabaster = "1.0.0" # theme
 Pygments = "2.19.1"
 Sphinx = "8.2.3"
