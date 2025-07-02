@@ -51,7 +51,7 @@ _LOGGER = logging.getLogger(__name__)
 
 
 class Shortener:
-    """All the views conserne the shortener."""
+    """All the views concern the shortener."""
 
     def __init__(self, request: pyramid.request.Request) -> None:
         self.request = request
@@ -60,8 +60,7 @@ class Shortener:
         if "base_url" in self.settings:
             self.short_bases.append(self.settings["base_url"])
 
-    @view_config(route_name="shortener_get")  # type: ignore[misc]
-    def get(self) -> HTTPFound:
+    def _read(self) -> str:
         assert DBSession is not None
 
         ref = self.request.matchdict["ref"]
@@ -73,8 +72,19 @@ class Shortener:
         short_urls[0].nb_hits += 1
         short_urls[0].last_hit = datetime.datetime.now(datetime.timezone.utc)
 
+        return short_urls[0].url
+
+    @view_config(route_name="shortener_get")  # type: ignore[misc]
+    def get(self) -> HTTPFound:
+        long_url = self._read()
         set_common_headers(self.request, "shortener", Cache.PUBLIC_NO)
-        return HTTPFound(location=short_urls[0].url)
+        return HTTPFound(location=long_url)
+
+    @view_config(route_name="shortener_fetch", renderer="json")  # type: ignore[misc]
+    def fetch(self) -> dict[str, str]:
+        long_url = self._read()
+        set_common_headers(self.request, "shortener", Cache.PUBLIC_NO)
+        return {"long_url": long_url}
 
     @view_config(route_name="shortener_create", renderer="json")  # type: ignore[misc]
     def create(self) -> dict[str, str]:
