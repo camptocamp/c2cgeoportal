@@ -1,3 +1,7 @@
+##### 2.9.0.212
+
+- Update dependency cryptography to v45.0.5 (2.9) [c2cgeoportal#12123](https://github.com/camptocamp/c2cgeoportal/pull/12123)
+
 ##### 2.9.0.211
 
 - Audit Dpkg 2.9 [c2cgeoportal#12124](https://github.com/camptocamp/c2cgeoportal/pull/12124)
