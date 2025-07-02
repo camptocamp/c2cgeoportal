@@ -783,6 +783,7 @@ def includeme(config: pyramid.config.Configurator) -> None:
     add_cors_route(config, "/short/create", "shortener")
     config.add_route("shortener_create", "/short/create", request_method="POST")
     config.add_route("shortener_get", "/s/{ref}", request_method="GET")
+    config.add_route("shortener_fetch", "/short/get/{ref}", request_method="GET")
 
     # Geometry processing
     config.add_route("difference", "/difference", request_method="POST")
