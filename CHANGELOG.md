@@ -1,3 +1,7 @@
+##### 2.9.0.211
+
+- Audit Dpkg 2.9 [c2cgeoportal#12124](https://github.com/camptocamp/c2cgeoportal/pull/12124)
+
 ##### 2.9.0.210
 
 - [Backport 2.9] Add route "shortener_fetch" to be able to retrieve an url without redirect [c2cgeoportal#12120](https://github.com/camptocamp/c2cgeoportal/pull/12120)
