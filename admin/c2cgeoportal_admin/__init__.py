@@ -94,7 +94,7 @@ def main(_: Any, **settings: Any) -> Any:
     )
 
     # Add fake user as we do not have authentication from geoportal
-    from c2cgeoportal_commons.models.static import (  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models.static import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
         User,
     )
 

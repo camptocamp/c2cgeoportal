@@ -101,7 +101,7 @@ class _BaseCallback:
         self,
         request: pyramid.request.Request,
     ) -> sqlalchemy.orm.query.RowReturningQuery[tuple[int]]:
-        from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models.main import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             Layer,
             RestrictionArea,
             Role,
@@ -118,7 +118,7 @@ class _BaseCallback:
 
 class _InsertCallback(_BaseCallback):
     def __call__(self, request: pyramid.request.Request, feature: Feature, obj: Any) -> None:
-        from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models.main import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             RestrictionArea,
         )
 
@@ -145,7 +145,7 @@ class _InsertCallback(_BaseCallback):
 
 class _UpdateCallback(_BaseCallback):
     def __call__(self, request: pyramid.request.Request, feature: Feature, obj: Any) -> None:
-        from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models.main import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             RestrictionArea,
         )
 
@@ -179,7 +179,7 @@ class _UpdateCallback(_BaseCallback):
 
 class _DeleteCallback(_BaseCallback):
     def __call__(self, request: pyramid.request.Request, obj: Any) -> None:
-        from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models.main import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             RestrictionArea,
         )
 
@@ -231,7 +231,7 @@ class Layers:
     @staticmethod
     def _get_layer(layer_id: int) -> "main.Layer":
         """Return a ``Layer`` object for ``layer_id``."""
-        from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models.main import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             Layer,
         )
 
@@ -292,7 +292,7 @@ class Layers:
 
     def _proto_read(self, layer: "main.Layer") -> FeatureCollection:
         """Read features for the layer based on the self.request."""
-        from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models.main import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             Layer,
             RestrictionArea,
             Role,
@@ -347,7 +347,7 @@ class Layers:
 
     @view_config(route_name="layers_read_one", renderer="geojson")  # type: ignore[misc]
     def read_one(self) -> Feature:
-        from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models.main import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             Layer,
             RestrictionArea,
             Role,

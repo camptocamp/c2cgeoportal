@@ -62,10 +62,10 @@ def truncate_tables(connection: Connection) -> None:
 
 def setup_test_data(dbsession: Session) -> None:
     """Initialize the testing data."""
-    from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models.main import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
         Role,
     )
-    from c2cgeoportal_commons.models.static import (  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models.static import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
         User,
     )
 

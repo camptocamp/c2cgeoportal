@@ -162,7 +162,7 @@ class Import:
 
         print("Loading the database")
         # Must be done only once we have loaded the project config
-        from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models.main import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             FullTextSearch,
             Interface,
             LayerGroup,
@@ -351,7 +351,7 @@ class Import:
         export: bool,
         role: Optional["c2cgeoportal_commons.models.main.Role"],
     ) -> bool:
-        from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models.main import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             LayerGroup,
         )
 

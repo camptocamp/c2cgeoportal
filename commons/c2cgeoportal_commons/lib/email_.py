@@ -78,7 +78,7 @@ def send_email(
     msg["Subject"] = subject
     msg.attach(MIMEText(body, "plain", "utf-8"))
 
-    SMTPClass = smtplib.SMTP_SSL if smtp_config.get("ssl", False) else smtplib.SMTP  # noqa: N806
+    SMTPClass = smtplib.SMTP_SSL if smtp_config.get("ssl", False) else smtplib.SMTP
     with SMTPClass(smtp_config["host"]) as smtp:
         if smtp_config.get("starttls", False):
             smtp.starttls()

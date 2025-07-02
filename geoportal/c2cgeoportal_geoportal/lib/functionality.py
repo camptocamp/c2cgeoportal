@@ -43,7 +43,7 @@ _CACHE_REGION = get_region("std")
 
 @_CACHE_REGION_OBJ.cache_on_arguments()
 def _get_role(name: str) -> dict[str, Any]:
-    from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
         DBSession,
     )
 

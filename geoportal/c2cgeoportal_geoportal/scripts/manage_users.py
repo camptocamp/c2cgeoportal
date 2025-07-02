@@ -81,10 +81,10 @@ def main() -> None:
         session = get_session(settings, transaction.manager)
 
         # Must be done only once we have loaded the project config
-        from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models.main import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             Role,
         )
-        from c2cgeoportal_commons.models.static import (  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models.static import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             User,
         )
 

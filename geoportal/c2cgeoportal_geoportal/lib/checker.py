@@ -159,10 +159,10 @@ def _fts(settings: dict[str, Any], health_check: c2cwsgiutils.health_check.Healt
 
 
 def _themes_errors(settings: dict[str, Any], health_check: c2cwsgiutils.health_check.HealthCheck) -> None:
-    from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
         DBSession,
     )
-    from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models.main import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
         Interface,
     )
 
