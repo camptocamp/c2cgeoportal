@@ -149,18 +149,18 @@ test-tox-coverage = ["coverage (>=5.5)"]
 
 [[package]]
 name = "boto3"
-version = "1.38.28"
+version = "1.39.2"
 description = "The AWS SDK for Python"
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "boto3-1.38.28-py3-none-any.whl", hash = "sha256:1bbf770339d294c91dd396ac90588753d89b9fdd63496edc9bc6f710f24ed25a"},
-    {file = "boto3-1.38.28.tar.gz", hash = "sha256:69395075d54be4552719ccadad9f65a3dee5bb3751701e8851d65d71974a791d"},
+    {file = "boto3-1.39.2-py3-none-any.whl", hash = "sha256:a37f202978f11f384e3fd1f0ff8938367b527845493f9509357e1732debc390f"},
+    {file = "boto3-1.39.2.tar.gz", hash = "sha256:edad811edacb8c99f2fe59b117d9b9d8ee3972beb6c090c8aa164ddbc506d67d"},
 ]
 
 [package.dependencies]
-botocore = ">=1.38.28,<1.39.0"
+botocore = ">=1.39.2,<1.40.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.13.0,<0.14.0"
 
@@ -169,14 +169,14 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.38.46"
+version = "1.39.2"
 description = "Low-level, data-driven core of boto 3."
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "botocore-1.38.46-py3-none-any.whl", hash = "sha256:89ca782ffbf2e8769ca9c89234cfa5ca577f1987d07d913ee3c68c4776b1eb5b"},
-    {file = "botocore-1.38.46.tar.gz", hash = "sha256:8798e5a418c27cf93195b077153644aea44cb171fcd56edc1ecebaa1e49e226e"},
+    {file = "botocore-1.39.2-py3-none-any.whl", hash = "sha256:921cab9aa6e1e4ceddcece5b55b57daae7722168e74409f1aafcc2c5589df676"},
+    {file = "botocore-1.39.2.tar.gz", hash = "sha256:474445fa8b281dd5db8fc62184f0f6e494d4f1efb96fe10312490583e67a9dd0"},
 ]
 
 [package.dependencies]
@@ -1344,14 +1344,14 @@ files = [
 
 [[package]]
 name = "pygments"
-version = "2.19.1"
+version = "2.19.2"
 description = "Pygments is a syntax highlighting package written in Python."
 optional = false
 python-versions = ">=3.8"
 groups = ["main"]
 files = [
-    {file = "pygments-2.19.1-py3-none-any.whl", hash = "sha256:9ea1544ad55cecf4b8242fab6dd35a93bbce657034b0611ee383099054ab6d8c"},
-    {file = "pygments-2.19.1.tar.gz", hash = "sha256:61c16d2a8576dc0649d9f39e089b5f02bcd27fba10d8fb4dcc28173f7a45151f"},
+    {file = "pygments-2.19.2-py3-none-any.whl", hash = "sha256:86540386c03d588bb81d44bc3928634ff26449851e99741617ecb9037ee5ec0b"},
+    {file = "pygments-2.19.2.tar.gz", hash = "sha256:636cb2477cec7f8952536970bc533bc43743542f70392ae026374600add5b887"},
 ]
 
 [package.extras]
@@ -2145,34 +2145,36 @@ requests = "*"
 
 [[package]]
 name = "sphinx-prompt"
-version = "1.9.0"
+version = "1.10.0"
 description = "Sphinx directive to add unselectable prompt"
 optional = false
-python-versions = ">=3.10"
+python-versions = ">=3.11"
 groups = ["main"]
 files = [
-    {file = "sphinx_prompt-1.9.0-py3-none-any.whl", hash = "sha256:fd731446c03f043d1ff6df9f22414495b23067c67011cc21658ea8d36b3575fc"},
-    {file = "sphinx_prompt-1.9.0.tar.gz", hash = "sha256:471b3c6d466dce780a9b167d9541865fd4e9a80ed46e31b06a52a0529ae995a1"},
+    {file = "sphinx_prompt-1.10.0-py3-none-any.whl", hash = "sha256:d62f7a1aa346225d30222a271dc78997031204a5f199ce5006c14ece0d94b217"},
+    {file = "sphinx_prompt-1.10.0.tar.gz", hash = "sha256:23dca4c07ade840c9e87089d79d3499040fa524b3c422941427454e215fdd111"},
 ]
 
 [package.dependencies]
 certifi = "*"
 docutils = "*"
 idna = "*"
+jinja2 = "*"
 pygments = "*"
-Sphinx = ">=8.0.0,<9.0.0"
+requests = "2.32.4"
+Sphinx = "*"
 urllib3 = "*"
 
 [[package]]
 name = "sphinx-substitution-extensions"
-version = "2025.4.3"
+version = "2025.6.6"
 description = "Extensions for Sphinx which allow for substitutions."
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "sphinx_substitution_extensions-2025.4.3-py2.py3-none-any.whl", hash = "sha256:cc35f91344a077bf72686337e39e3569d5cc466db2920b26e2b144ca376a6207"},
-    {file = "sphinx_substitution_extensions-2025.4.3.tar.gz", hash = "sha256:00d75f13de4cacc7eac9041db766db9a88ac483e5666d9d9c3cbd370adc9128c"},
+    {file = "sphinx_substitution_extensions-2025.6.6-py2.py3-none-any.whl", hash = "sha256:96206ba7a2cdf43237edec81f87770a5683a91a1de3bf93f7a22309509ecbfd8"},
+    {file = "sphinx_substitution_extensions-2025.6.6.tar.gz", hash = "sha256:241ddb9f88962422a8b436243d2601f9d94616e94b520ce1a6a528d9a3b7804a"},
 ]
 
 [package.dependencies]
@@ -2182,8 +2184,8 @@ myst-parser = ">=4.0.0"
 sphinx = ">=8.1.0"
 
 [package.extras]
-dev = ["actionlint-py (==1.7.7.23)", "check-manifest (==0.50)", "deptry (==0.23.0)", "doc8 (==1.1.2)", "doccmd (==2025.2.18)", "docformatter (==1.7.5)", "interrogate (==1.7.0)", "mypy-strict-kwargs (==2025.4.3)", "mypy[faster-cache] (==1.15.0)", "pre-commit (==4.2.0)", "pyenchant (==3.3.0rc1)", "pylint (==3.3.6)", "pyproject-fmt (==2.5.1)", "pyright (==1.1.398)", "pyroma (==4.2)", "pytest (==8.3.5)", "pytest-cov (==6.1.0)", "ruff (==0.11.2)", "shellcheck-py (==0.10.0.1)", "shfmt-py (==3.11.0.2)", "sphinx-lint (==1.0.0)", "sphinx-toolbox (==3.9.0)", "types-docutils (==0.21.0.20241128)", "vulture (==2.14)", "yamlfix (==1.17.0)"]
-release = ["check-wheel-contents (==0.6.1)"]
+dev = ["actionlint-py (==1.7.7.23)", "check-manifest (==0.50)", "deptry (==0.23.0)", "doc8 (==1.1.2)", "doccmd (==2025.4.8)", "docformatter (==1.7.7)", "interrogate (==1.7.0)", "mypy-strict-kwargs (==2025.4.3)", "mypy[faster-cache] (==1.16.0)", "pre-commit (==4.2.0)", "pyenchant (==3.3.0rc1)", "pylint (==3.3.7)", "pyproject-fmt (==2.6.0)", "pyright (==1.1.401)", "pyroma (==4.2)", "pytest (==8.4.0)", "pytest-cov (==6.1.1)", "ruff (==0.11.13)", "shellcheck-py (==0.10.0.1)", "shfmt-py (==3.11.0.2)", "sphinx-lint (==1.0.0)", "sphinx-toolbox (==4.0.0)", "types-docutils (==0.21.0.20250604)", "vulture (==2.14)", "yamlfix (==1.17.0)"]
+release = ["check-wheel-contents (==0.6.2)"]
 
 [[package]]
 name = "sphinxcontrib-applehelp"
@@ -2787,4 +2789,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<3.13"
-content-hash = "821d6719145d9faf7ee3b2317a11b906043d6e5e9d47ff148dae3148808dc712"
+content-hash = "4d77f6fc2c8b6f21c0c594449cf2fe40dbf35c4e27f57977ce79d0dcaeb2473a"

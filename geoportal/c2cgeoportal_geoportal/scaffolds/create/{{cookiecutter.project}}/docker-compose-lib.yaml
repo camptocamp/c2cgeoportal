@@ -67,7 +67,7 @@ services:
       - HAPROXY_LOGGING_OPTIONS
 
   print:
-    image: ghcr.io/camptocamp/mapfish_print:3.31
+    image: ghcr.io/camptocamp/mapfish_print:3.33
     user: www-data
     restart: unless-stopped
     environment:
