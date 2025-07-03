@@ -1,3 +1,8 @@
+##### 2.8.1.230
+
+- [Backport 2.8] Fix full text search for the auto defined roles [c2cgeoportal#12103](https://github.com/camptocamp/c2cgeoportal/pull/12103)
+- Update dependency cryptography to v45.0.5 (2.8) [c2cgeoportal#12122](https://github.com/camptocamp/c2cgeoportal/pull/12122)
+
 ##### 2.8.1.229
 
 - Update all patch/minor versions (2.8) [c2cgeoportal#12113](https://github.com/camptocamp/c2cgeoportal/pull/12113)
