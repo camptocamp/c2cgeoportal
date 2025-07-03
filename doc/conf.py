@@ -31,7 +31,7 @@ html_theme_path = [alabaster.get_path()]
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
 extensions = [
-    "sphinx-prompt",
+    "sphinx_prompt",
     "alabaster",
     "sphinx-jsonschema",
     "sphinxarg.ext",
