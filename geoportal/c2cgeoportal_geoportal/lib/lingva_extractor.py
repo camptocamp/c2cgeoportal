@@ -264,10 +264,10 @@ def init_db(settings: dict[str, Any]) -> None:
     an exception ind initialize the connection.
     """
     try:
-        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             DBSession,
         )
-        from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models.main import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             Theme,
         )
 
@@ -342,11 +342,11 @@ class GeomapfishConfigExtractor(Extractor):  # type: ignore[misc]
 
         # Collect layers enum values (for filters)
 
-        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             DBSession,
             DBSessions,
         )
-        from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models.main import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             Metadata,
         )
 
@@ -498,7 +498,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore[misc]
 
         try:
             init_db(self.config)
-            from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+            from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
                 DBSession,
             )
 
@@ -507,7 +507,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore[misc]
             db_session = DBSession()
 
             try:
-                from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+                from c2cgeoportal_commons.models.main import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
                     FullTextSearch,
                     LayerGroup,
                     LayerWMS,
@@ -609,10 +609,10 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore[misc]
         has_interfaces: bool = True,
         name_regex: str = ".*",
     ) -> None:
-        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             DBSession,
         )
-        from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models.main import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             Interface,
         )
 
@@ -692,10 +692,10 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore[misc]
                     raise
 
     def _import_layer_wmts(self, layer: "main.Layer", messages: list[str]) -> None:
-        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             DBSession,
         )
-        from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models.main import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             OGCServer,
         )
 

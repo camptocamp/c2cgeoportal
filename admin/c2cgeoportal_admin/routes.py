@@ -58,7 +58,7 @@ def includeme(config: pyramid.config.Configurator) -> None:
         "/{application:admin}/{table:ogc_servers}/{id}/synchronize",
     )
 
-    from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models.main import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
         Functionality,
         Interface,
         LayerCOG,
@@ -72,7 +72,7 @@ def includeme(config: pyramid.config.Configurator) -> None:
         Role,
         Theme,
     )
-    from c2cgeoportal_commons.models.static import (  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models.static import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
         OAuth2Client,
         User,
     )

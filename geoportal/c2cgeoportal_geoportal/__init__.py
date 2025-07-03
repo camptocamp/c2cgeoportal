@@ -377,10 +377,10 @@ def create_get_user_from_request(
         * it has been deactivated
         * the referrer is invalid
         """
-        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             DBSession,
         )
-        from c2cgeoportal_commons.models.static import (  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models.static import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             User,
         )
 
@@ -497,10 +497,10 @@ def default_user_validator(request: pyramid.request.Request, username: str, pass
     otherwise.
     """
     del request  # unused
-    from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
         DBSession,
     )
-    from c2cgeoportal_commons.models.static import (  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models.static import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
         User,
     )
 
@@ -983,7 +983,7 @@ def init_db_sessions(
         )
 
     c2cgeoportal_commons.models.Base.metadata.clear()
-    from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
         main,
     )
 

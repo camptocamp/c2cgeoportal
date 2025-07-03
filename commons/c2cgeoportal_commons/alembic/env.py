@@ -104,7 +104,7 @@ def run_migrations_online() -> None:
 
     # Autogenerate config
     alembic_name = context.config.get_main_option("type")
-    from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
         Base,
         main,
         static,

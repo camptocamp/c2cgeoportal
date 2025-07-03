@@ -123,14 +123,14 @@ class Raster:
             path = layer["file"]
             if layer.get("type", "shp_index") == "shp_index":
                 # Avoid loading if not needed
-                from fiona.collection import (  # pylint: disable=import-outside-toplevel
+                from fiona.collection import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
                     Collection,
                 )
 
                 self.data[name] = Collection(path)
             elif layer.get("type") == "gdal":
                 # Avoid loading if not needed
-                import rasterio  # pylint: disable=import-outside-toplevel
+                import rasterio  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
 
                 self.data[name] = rasterio.open(path)
 
@@ -154,7 +154,7 @@ class Raster:
             path = os.path.join(os.path.dirname(layer["file"]), tiles[0]["properties"]["location"])
 
             # Avoid loading if not needed
-            import rasterio  # pylint: disable=import-outside-toplevel
+            import rasterio  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
 
             with rasterio.open(path) as dataset:
                 result = self._get_value(layer, name, dataset, lon, lat)

@@ -165,8 +165,8 @@ def get_user_from_remember(
     """
     # Those imports are here to avoid initializing the models module before the database schema are
     # correctly initialized.
-    from c2cgeoportal_commons import models  # pylint: disable=import-outside-toplevel
-    from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons import models  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
         main,
         static,
     )

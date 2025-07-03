@@ -103,7 +103,7 @@ class XSDGenerator(PapyrusXSDGenerator):  # type: ignore[misc]
         super().add_column_property_xsd(tb, column_property)
 
     def add_association_proxy_xsd(self, tb: str, column_property: ColumnProperty[Any]) -> None:
-        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             DBSession,
         )
 

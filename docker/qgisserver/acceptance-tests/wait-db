@@ -48,7 +48,7 @@ def _main() -> None:
             cursor = connection.cursor()
             cursor.execute("SELECT 1")
             sys.exit(0)
-        except Exception as e:  # pylint: disable=broad-except
+        except Exception as e:  # noqa: BLE001 # pylint: disable=broad-except
             print(str(e))
             print("Waiting for the DataBase server to be reachable")
             time.sleep(sleep_time)

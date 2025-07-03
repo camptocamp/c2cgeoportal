@@ -1,0 +1,6 @@
+inherits:
+  - .prospector.yaml
+
+ruff:
+  disable:
+    - RUF100

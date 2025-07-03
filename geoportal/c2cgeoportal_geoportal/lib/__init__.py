@@ -154,10 +154,10 @@ def get_setting(settings: Any, path: Iterable[str], default: Any = None) -> Any:
 @_CACHE_REGION_OBJ.cache_on_arguments()
 def get_ogc_server_wms_url_ids(request: pyramid.request.Request, host: str) -> dict[str, list[int]]:
     """Get the OGCServer ids mapped on the WMS URL."""
-    from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
         DBSession,
     )
-    from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models.main import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
         OGCServer,
     )
 
@@ -176,10 +176,10 @@ def get_ogc_server_wms_url_ids(request: pyramid.request.Request, host: str) -> d
 @_CACHE_REGION_OBJ.cache_on_arguments()
 def get_ogc_server_wfs_url_ids(request: pyramid.request.Request, host: str) -> dict[str, list[int]]:
     """Get the OGCServer ids mapped on the WFS URL."""
-    from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
         DBSession,
     )
-    from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models.main import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
         OGCServer,
     )
 
@@ -235,7 +235,7 @@ def _get_intranet_networks(
 @_CACHE_REGION.cache_on_arguments()
 def get_role_id(name: str) -> int:
     """Get the role ID."""
-    from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+    from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
         DBSession,
         main,
     )

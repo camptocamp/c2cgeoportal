@@ -122,7 +122,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore[misc]
 
         _LOG.debug("authenticate_client_id %s", client_id)
 
-        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             DBSession,
             static,
         )
@@ -236,7 +236,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore[misc]
 
         _LOG.debug("confirm_redirect_uri %s %s", client_id, redirect_uri)
 
-        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             DBSession,
             static,
         )
@@ -428,7 +428,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore[misc]
 
         _LOG.debug("invalidate_authorization_code %s", client_id)
 
-        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             DBSession,
             static,
         )
@@ -580,7 +580,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore[misc]
 
         _LOG.debug("save_authorization_code %s", client_id)
 
-        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             DBSession,
             static,
         )
@@ -679,7 +679,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore[misc]
 
         _LOG.debug("save_bearer_token")
 
-        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             DBSession,
             static,
         )
@@ -767,7 +767,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore[misc]
         """
         _LOG.debug("validate_bearer_token %s", scopes)
 
-        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             DBSession,
             static,
         )
@@ -817,7 +817,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore[misc]
 
         _LOG.debug("validate_client_id")
 
-        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             DBSession,
             static,
         )
@@ -872,7 +872,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore[misc]
 
         _LOG.debug("validate_code %s", client_id)
 
-        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             DBSession,
             static,
         )
@@ -976,7 +976,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore[misc]
 
         _LOG.debug("validate_redirect_uri %s %s", client_id, redirect_uri)
 
-        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             DBSession,
             static,
         )
@@ -1024,7 +1024,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore[misc]
 
         _LOG.debug("validate_refresh_token %s", client.client_id if client else None)
 
-        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             DBSession,
             static,
         )
@@ -1172,7 +1172,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore[misc]
 
         """
         del request  # unused
-        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             DBSession,
             static,
         )
@@ -1217,7 +1217,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore[misc]
 
         """
         del request  # unused
-        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             DBSession,
             static,
         )
@@ -1262,7 +1262,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore[misc]
 
         """
         del request  # unused
-        from c2cgeoportal_commons.models import (  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             DBSession,
             static,
         )

@@ -936,7 +936,7 @@ class Theme:
         ogc_server: main.OGCServer,
         preload: bool = False,
         cache: bool = True,
-    ) -> tuple[Optional[lxml_etree.Element], set[str]]:  # pylint: disable=c-extension-no-member # noqa: UP007
+    ) -> tuple[Optional[lxml_etree.Element], set[str]]:  # noqa: UP045 # pylint: disable=c-extension-no-member
         errors = set()
 
         wfs_url = wfs_url.clone()

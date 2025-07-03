@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2024, Camptocamp SA
+# Copyright (c) 2011-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -46,7 +46,7 @@ def main() -> None:
     with transaction.manager:
         session = get_session(settings, transaction.manager)
 
-        from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models.main import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             Interface,
             LayerGroup,
             LayerWMS,

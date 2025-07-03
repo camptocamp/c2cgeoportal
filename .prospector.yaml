@@ -42,7 +42,8 @@ ruff:
     - S603 # `subprocess` call: check for execution of untrusted input
     - S607 # Starting a process with a partial executable path
     - S110 # `try`-`except`-`pass` detected, consider logging the exception
+    - BLE001 # Do not catch blind exception: `Exception`
+    - N806 # Variable `{}` in function should be lowercase
 
 pycodestyle:
-  disable:
-    - N815 # variable '{}' in class scope should not be mixedCase
+  run: False

@@ -1,6 +1,7 @@
 inherits:
   - utils:tests
   - utils:pre-commit
+
 ruff:
   disable:
     - PT009 # Use a regular `assert` instead of unittest-style `assertAlmostEqual`
