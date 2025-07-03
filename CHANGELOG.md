@@ -1,3 +1,7 @@
+##### 2.7.1.194
+
+- Audit Snyk check/fix 2.7 [c2cgeoportal#12126](https://github.com/camptocamp/c2cgeoportal/pull/12126)
+
 ##### 2.7.1.193
 
 - Update dependency WebTest to v3.0.6 (2.7) [c2cgeoportal#12112](https://github.com/camptocamp/c2cgeoportal/pull/12112)
