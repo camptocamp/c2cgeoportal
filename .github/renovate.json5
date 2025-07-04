@@ -160,12 +160,6 @@
       ],
       enabled: false,
     },
-    /** Don't update eslint to version >= 9.0.0 */
-    {
-      allowedVersions: '<9.0.0',
-      matchPaths: ['geoportal/package.json'],
-      matchPackageNames: ['/eslint/'],
-    },
     /** Group for Shapely major, minor */
     {
       matchPackageNames: ['Shapely'],
@@ -177,6 +171,19 @@
       matchPackageNames: ['Sphinx'],
       matchUpdateTypes: ['major', 'minor'],
       groupName: 'sphinx',
+    },
+    /** Group for eslint major */
+    {
+      matchPaths: ['geoportal/package.json'],
+      matchPackageNames: ['/eslint/'],
+      matchUpdateTypes: ['major'],
+      groupName: 'eslint',
+    },
+    /** Group for commander major */
+    {
+      matchPackageNames: ['commander'],
+      matchUpdateTypes: ['major'],
+      groupName: 'commander',
     },
   ],
 }
