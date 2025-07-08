@@ -1,3 +1,7 @@
+##### 2.9.0.216
+
+- Add goodnessOfFit documentation [ngeo#9819](https://github.com/camptocamp/ngeo/pull/9819)
+
 ##### 2.9.0.215
 
 - Audit Snyk check/fix 2.9 [ngeo#9820](https://github.com/camptocamp/ngeo/pull/9820)
