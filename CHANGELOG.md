@@ -1,3 +1,7 @@
+##### 2.8.1.231
+
+- Update c2cciutils to fix compatilility issue with urllib3>=2 [c2cgeoportal#12130](https://github.com/camptocamp/c2cgeoportal/pull/12130)
+
 ##### 2.8.1.230
 
 - [Backport 2.8] Fix full text search for the auto defined roles [c2cgeoportal#12103](https://github.com/camptocamp/c2cgeoportal/pull/12103)
