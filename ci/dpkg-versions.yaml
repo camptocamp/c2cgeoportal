@@ -146,7 +146,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/gcc-12-base: 12.3.0-1ubuntu1~22.04
   ubuntu_22_04/gdal-data: 3.4.1+dfsg-1build4
   ubuntu_22_04/glibc-tools: 0.0~git3.23fd2b9-0ubuntu1
-  ubuntu_22_04/gpgv: 2.2.27-3ubuntu2.3
+  ubuntu_22_04/gpgv: 2.2.27-3ubuntu2.4
   ubuntu_22_04/grep: 3.7-1build1
   ubuntu_22_04/gzip: 1.10-4ubuntu4.1
   ubuntu_22_04/hostname: 3.23ubuntu2
@@ -593,7 +593,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/gcc-12-base: 12.3.0-1ubuntu1~22.04
   ubuntu_22_04/gdal-data: 3.4.1+dfsg-1build4
   ubuntu_22_04/glibc-tools: 0.0~git3.23fd2b9-0ubuntu1
-  ubuntu_22_04/gpgv: 2.2.27-3ubuntu2.3
+  ubuntu_22_04/gpgv: 2.2.27-3ubuntu2.4
   ubuntu_22_04/grep: 3.7-1build1
   ubuntu_22_04/gzip: 1.10-4ubuntu4.1
   ubuntu_22_04/hostname: 3.23ubuntu2
