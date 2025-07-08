@@ -235,6 +235,23 @@ class TestThemesPrivateView(TestCase):
                 }
             ],
         )
+        self.assertEqual(
+            [self._only_name(t, attribute="public") for t in themes["themes"]],
+            [
+                {
+                    "children": [
+                        {
+                            "children": [
+                                {"public": True},  # __test_layer_wms
+                                {"public": False},  # __test_layer_wms_private
+                                {"public": True},  # __test_layer_wmts
+                                {"public": False},  # __test_layer_wmts_private
+                            ],
+                        }
+                    ],
+                }
+            ],
+        )
 
     def test_private_multirole(self):
         from c2cgeoportal_commons.models import DBSession
