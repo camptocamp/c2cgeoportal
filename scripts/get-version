@@ -133,6 +133,7 @@ def _main() -> None:
     elif os.environ.get("GITHUB_WORKFLOW", "").startswith("Update ngeo "):
         branch = main_branch
         versions = [major_minor, major_version, full]
+        upgrade_version = full
     else:
         if os.environ.get("GITHUB_REF", "").startswith("refs/heads/"):
             branch = os.environ["GITHUB_REF"][11:]
