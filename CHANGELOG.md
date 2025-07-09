@@ -1,3 +1,7 @@
+##### 2.8.1.232
+
+- Update dependency certifi to v2025.7.9 (2.8) [c2cgeoportal#12135](https://github.com/camptocamp/c2cgeoportal/pull/12135)
+
 ##### 2.8.1.231
 
 - Update c2cciutils to fix compatilility issue with urllib3>=2 [c2cgeoportal#12130](https://github.com/camptocamp/c2cgeoportal/pull/12130)
