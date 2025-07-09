@@ -345,8 +345,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libpq5: 14.18-0ubuntu0.22.04.1
   ubuntu_22_04/libprocps8: 2:3.3.17-6ubuntu2.1
   ubuntu_22_04/libproj22: 8.2.1-1
-  ubuntu_22_04/libprotobuf-lite23: 3.12.4-1ubuntu7.22.04.2
-  ubuntu_22_04/libprotobuf23: 3.12.4-1ubuntu7.22.04.2
+  ubuntu_22_04/libprotobuf-lite23: 3.12.4-1ubuntu7.22.04.4
+  ubuntu_22_04/libprotobuf23: 3.12.4-1ubuntu7.22.04.4
   ubuntu_22_04/libpsl5: 0.21.0-1.2build2
   ubuntu_22_04/libpulse0: 1:15.99.1+dfsg1-1ubuntu2.2
   ubuntu_22_04/libpython3-dev: 3.10.6-1~22.04.1
@@ -792,8 +792,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libpq5: 14.18-0ubuntu0.22.04.1
   ubuntu_22_04/libprocps8: 2:3.3.17-6ubuntu2.1
   ubuntu_22_04/libproj22: 8.2.1-1
-  ubuntu_22_04/libprotobuf-lite23: 3.12.4-1ubuntu7.22.04.2
-  ubuntu_22_04/libprotobuf23: 3.12.4-1ubuntu7.22.04.2
+  ubuntu_22_04/libprotobuf-lite23: 3.12.4-1ubuntu7.22.04.4
+  ubuntu_22_04/libprotobuf23: 3.12.4-1ubuntu7.22.04.4
   ubuntu_22_04/libpsl5: 0.21.0-1.2build2
   ubuntu_22_04/libpulse0: 1:15.99.1+dfsg1-1ubuntu2.2
   ubuntu_22_04/libpython3-dev: 3.10.6-1~22.04.1
@@ -1209,8 +1209,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_24_04/libpq5: 16.9-0ubuntu0.24.04.1
   ubuntu_24_04/libproc2-0: 2:4.0.4-4ubuntu3.2
   ubuntu_24_04/libproj25: 9.4.0-1build2
-  ubuntu_24_04/libprotobuf-lite32t64: 3.21.12-8.2ubuntu0.1
-  ubuntu_24_04/libprotobuf32t64: 3.21.12-8.2ubuntu0.1
+  ubuntu_24_04/libprotobuf-lite32t64: 3.21.12-8.2ubuntu0.2
+  ubuntu_24_04/libprotobuf32t64: 3.21.12-8.2ubuntu0.2
   ubuntu_24_04/libpsl5t64: 0.21.2-1.1build1
   ubuntu_24_04/libpulse0: 1:16.1+dfsg1-2ubuntu10.1
   ubuntu_24_04/libpython3-dev: 3.12.3-0ubuntu2
@@ -1618,8 +1618,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_24_04/libpq5: 16.9-0ubuntu0.24.04.1
   ubuntu_24_04/libproc2-0: 2:4.0.4-4ubuntu3.2
   ubuntu_24_04/libproj25: 9.4.0-1build2
-  ubuntu_24_04/libprotobuf-lite32t64: 3.21.12-8.2ubuntu0.1
-  ubuntu_24_04/libprotobuf32t64: 3.21.12-8.2ubuntu0.1
+  ubuntu_24_04/libprotobuf-lite32t64: 3.21.12-8.2ubuntu0.2
+  ubuntu_24_04/libprotobuf32t64: 3.21.12-8.2ubuntu0.2
   ubuntu_24_04/libpsl5t64: 0.21.2-1.1build1
   ubuntu_24_04/libpulse0: 1:16.1+dfsg1-2ubuntu10.1
   ubuntu_24_04/libpython3-dev: 3.12.3-0ubuntu2
@@ -2027,8 +2027,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/libpq5: 16.9-0ubuntu0.24.04.1
   ubuntu_24_04/libproc2-0: 2:4.0.4-4ubuntu3.2
   ubuntu_24_04/libproj25: 9.4.0-1build2
-  ubuntu_24_04/libprotobuf-lite32t64: 3.21.12-8.2ubuntu0.1
-  ubuntu_24_04/libprotobuf32t64: 3.21.12-8.2ubuntu0.1
+  ubuntu_24_04/libprotobuf-lite32t64: 3.21.12-8.2ubuntu0.2
+  ubuntu_24_04/libprotobuf32t64: 3.21.12-8.2ubuntu0.2
   ubuntu_24_04/libpsl5t64: 0.21.2-1.1build1
   ubuntu_24_04/libpulse0: 1:16.1+dfsg1-2ubuntu10.1
   ubuntu_24_04/libpython3-dev: 3.12.3-0ubuntu2
@@ -2435,8 +2435,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_24_04/libpq5: 16.9-0ubuntu0.24.04.1
   ubuntu_24_04/libproc2-0: 2:4.0.4-4ubuntu3.2
   ubuntu_24_04/libproj25: 9.4.0-1build2
-  ubuntu_24_04/libprotobuf-lite32t64: 3.21.12-8.2ubuntu0.1
-  ubuntu_24_04/libprotobuf32t64: 3.21.12-8.2ubuntu0.1
+  ubuntu_24_04/libprotobuf-lite32t64: 3.21.12-8.2ubuntu0.2
+  ubuntu_24_04/libprotobuf32t64: 3.21.12-8.2ubuntu0.2
   ubuntu_24_04/libpsl5t64: 0.21.2-1.1build1
   ubuntu_24_04/libpulse0: 1:16.1+dfsg1-2ubuntu10.1
   ubuntu_24_04/libpython3-dev: 3.12.3-0ubuntu2
@@ -2695,8 +2695,8 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/gir1.2-girepository-2.0: 1.80.1-1
   ubuntu_24_04/gir1.2-glib-2.0: 2.80.0-6ubuntu3.4
   ubuntu_24_04/gir1.2-packagekitglib-1.0: 1.2.8-2ubuntu1.2
-  ubuntu_24_04/git: 1:2.43.0-1ubuntu7.2
-  ubuntu_24_04/git-man: 1:2.43.0-1ubuntu7.2
+  ubuntu_24_04/git: 1:2.43.0-1ubuntu7.3
+  ubuntu_24_04/git-man: 1:2.43.0-1ubuntu7.3
   ubuntu_24_04/gnupg: 2.4.4-2ubuntu17.3
   ubuntu_24_04/gnupg-utils: 2.4.4-2ubuntu17.3
   ubuntu_24_04/gpg: 2.4.4-2ubuntu17.3
@@ -3466,8 +3466,8 @@ camptocamp/geomapfish:latest:
   ubuntu_24_04/gir1.2-girepository-2.0: 1.80.1-1
   ubuntu_24_04/gir1.2-glib-2.0: 2.80.0-6ubuntu3.4
   ubuntu_24_04/gir1.2-packagekitglib-1.0: 1.2.8-2ubuntu1.2
-  ubuntu_24_04/git: 1:2.43.0-1ubuntu7.2
-  ubuntu_24_04/git-man: 1:2.43.0-1ubuntu7.2
+  ubuntu_24_04/git: 1:2.43.0-1ubuntu7.3
+  ubuntu_24_04/git-man: 1:2.43.0-1ubuntu7.3
   ubuntu_24_04/gnupg: 2.4.4-2ubuntu17.3
   ubuntu_24_04/gnupg-utils: 2.4.4-2ubuntu17.3
   ubuntu_24_04/gpg: 2.4.4-2ubuntu17.3
@@ -4171,8 +4171,8 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_24_04/gir1.2-girepository-2.0: 1.80.1-1
   ubuntu_24_04/gir1.2-glib-2.0: 2.80.0-6ubuntu3.4
   ubuntu_24_04/gir1.2-packagekitglib-1.0: 1.2.8-2ubuntu1.2
-  ubuntu_24_04/git: 1:2.43.0-1ubuntu7.2
-  ubuntu_24_04/git-man: 1:2.43.0-1ubuntu7.2
+  ubuntu_24_04/git: 1:2.43.0-1ubuntu7.3
+  ubuntu_24_04/git-man: 1:2.43.0-1ubuntu7.3
   ubuntu_24_04/gnupg: 2.4.4-2ubuntu17.3
   ubuntu_24_04/gnupg-utils: 2.4.4-2ubuntu17.3
   ubuntu_24_04/gpg: 2.4.4-2ubuntu17.3
