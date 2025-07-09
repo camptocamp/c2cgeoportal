@@ -1,3 +1,8 @@
+##### 2.9.0.217
+
+- Audit Dpkg 2.9 [c2cgeoportal#12132](https://github.com/camptocamp/c2cgeoportal/pull/12132)
+- Add missing upgrade_version in get-version [c2cgeoportal#12133](https://github.com/camptocamp/c2cgeoportal/pull/12133)
+
 ##### 2.9.0.216
 
 - Add goodnessOfFit documentation [ngeo#9819](https://github.com/camptocamp/ngeo/pull/9819)
