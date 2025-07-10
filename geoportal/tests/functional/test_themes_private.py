@@ -58,6 +58,7 @@ class TestThemesPrivateView(TestCase):
         from c2cgeoportal_commons.models.static import User
 
         main = Interface(name="desktop")
+        anonymous_role = DBSession.query(Role).filter(Role.name == "anonymous").one()
         role = Role(name="__test_role")
         user = User(username="__test_user", password="__test_user", settings_role=role, roles=[role])
         user.email = "__test_user@example.com"
@@ -75,6 +76,11 @@ class TestThemesPrivateView(TestCase):
         layer_wms_private.layer = "testpoint_protected"
         layer_wms_private.interfaces = [main]
         layer_wms_private.ogc_server = ogc_server_internal
+
+        layer_wms_private_ra = LayerWMS(name="__test_layer_wms_private_ra", public=False)
+        layer_wms_private_ra.layer = "testpoint_anonymous_ra"
+        layer_wms_private_ra.interfaces = [main]
+        layer_wms_private_ra.ogc_server = ogc_server_internal
 
         layer_wms_private2 = LayerWMS(name="__test_layer_wms_private2", public=False)
         layer_wms_private2.layer = "__test_private_layer2"
@@ -96,6 +102,7 @@ class TestThemesPrivateView(TestCase):
         layer_group.children = [
             layer_wms,
             layer_wms_private,
+            layer_wms_private_ra,
             layer_wms_private2,
             layer_wmts,
             layer_wmts_private,
@@ -111,8 +118,14 @@ class TestThemesPrivateView(TestCase):
             roles=[role],
         )
         restriction_area2 = RestrictionArea(name="__test_ra2", layers=[layer_wms_private2], roles=[role2])
+        restriction_area3 = RestrictionArea(
+            name="__test_ra3",
+            layers=[layer_wms_private_ra],
+            roles=[anonymous_role],
+        )
 
-        DBSession.add_all([theme, restriction_area, restriction_area2, user])
+        DBSession.add_all([theme, restriction_area, restriction_area2, restriction_area3, user])
+        # DBSession.add_all([theme, restriction_area, restriction_area2, user])
 
         transaction.commit()
 
@@ -206,7 +219,11 @@ class TestThemesPrivateView(TestCase):
                 "children": [
                     {
                         "name": "__test_layer_group",
-                        "children": [{"name": "__test_layer_wms"}, {"name": "__test_layer_wmts"}],
+                        "children": [
+                            {"name": "__test_layer_wms"},
+                            {"name": "__test_layer_wms_private_ra"},
+                            {"name": "__test_layer_wmts"},
+                        ],
                     },
                 ],
             },
@@ -230,6 +247,7 @@ class TestThemesPrivateView(TestCase):
                         "children": [
                             {"name": "__test_layer_wms"},
                             {"name": "__test_layer_wms_private"},
+                            {"name": "__test_layer_wms_private_ra"},
                             {"name": "__test_layer_wmts"},
                             {"name": "__test_layer_wmts_private"},
                         ],
@@ -237,6 +255,24 @@ class TestThemesPrivateView(TestCase):
                 ],
             },
         ]
+        self.assertEqual(
+            [self._only_name(t, attribute="public") for t in themes["themes"]],
+            [
+                {
+                    "children": [
+                        {
+                            "children": [
+                                {"public": True},  # __test_layer_wms
+                                {"public": False},  # __test_layer_wms_private
+                                {"public": True},  # __test_layer_wms_private_ra (due to __test_ra3)
+                                {"public": True},  # __test_layer_wmts
+                                {"public": False},  # __test_layer_wmts_private
+                            ],
+                        }
+                    ],
+                }
+            ],
+        )
 
     def test_private_multirole(self) -> None:
         from c2cgeoportal_commons.models import DBSession
@@ -256,6 +292,7 @@ class TestThemesPrivateView(TestCase):
                         "children": [
                             {"name": "__test_layer_wms"},
                             {"name": "__test_layer_wms_private"},
+                            {"name": "__test_layer_wms_private_ra"},
                             {"name": "__test_layer_wms_private2"},
                             {"name": "__test_layer_wmts"},
                             {"name": "__test_layer_wmts_private"},
