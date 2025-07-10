@@ -405,7 +405,11 @@ class Theme:
         layer_info = {
             "id": layer.id,
             "name": layer.name,
-            "public": layer.public,
+            "public": (
+                layer.public
+                or self.request.get_organization_role("anonymous")
+                in [r.name for ra in layer.restrictionareas for r in ra.roles]
+            ),
             "metadata": self._get_metadata_list(layer, errors),
         }
         if re.search("[/?#]", layer.name):

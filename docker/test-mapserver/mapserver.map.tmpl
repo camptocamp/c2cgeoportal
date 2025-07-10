@@ -147,6 +147,41 @@ MAP
         END
     END
     LAYER
+        NAME "testpoint_anonymous_ra"
+        EXTENT 420000 40500 839000 306400
+        GROUP "testpoint_group"
+        TYPE POINT
+        STATUS ON
+        CONNECTIONTYPE POSTGIS
+        CONNECTION "host=${PGHOST} port=${PGPORT} user=${PGUSER} password=${PGPASSWORD} dbname=${PGDATABASE}"
+        DATA "geom from (SELECT tp.* FROM geodata.testpoint AS tp, ${MAPSERVER_JOIN_TABLES} WHERE ST_Contains(ra.area, ST_GeomFromText(ST_AsText(tp.geom), 21781)) AND ${MAPSERVER_JOIN_WHERE} 'testpoint_protected_2') as foo USING unique id USING srid=21781"
+        TEMPLATE fooOnlyForWMSGetFeatureInfo
+        METADATA
+            "wms_title" "countries"
+            # gml_ settings for GetFeatureInfo
+            "gml_include_items" "all"
+            "gml_exclude_items" "id"
+            "gml_geometries" "geom"
+            "gml_geom_type" "point"
+        END
+        VALIDATION
+            "default_role_ids" "-1"
+            "role_ids" "^-?[0-9,]*$"
+        END
+        PROJECTION
+            "init=epsg:21781"
+        END
+        CLASS
+            NAME "testpoint_anonymous_ra"
+            STYLE
+                SYMBOL "square"
+                SIZE 16
+                COLOR 0 0 0
+                OUTLINECOLOR 0 0 0
+            END
+        END
+    END
+    LAYER
         NAME "testpoint_protected_query_with_collect"
         EXTENT 420000 40500 839000 306400
         TYPE POINT
