@@ -865,8 +865,7 @@ class Theme:
                     "name": theme.name,
                     "public": (
                         theme.public
-                        or self.request.get_organization_role("anonymous")
-                        in theme.restricted_roles
+                        or self.request.get_organization_role("anonymous") in theme.restricted_roles
                     ),
                     "icon": icon,
                     "children": children,
