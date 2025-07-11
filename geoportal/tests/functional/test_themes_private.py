@@ -244,7 +244,7 @@ class TestThemesPrivateView(TestCase):
                             "children": [
                                 {"name": "__test_layer_wms"},
                                 {"name": "__test_layer_wms_private"},
-                            {"name": "__test_layer_wms_private_ra"},
+                                {"name": "__test_layer_wms_private_ra"},
                                 {"name": "__test_layer_wmts"},
                                 {"name": "__test_layer_wmts_private"},
                             ],
@@ -292,7 +292,7 @@ class TestThemesPrivateView(TestCase):
                             "children": [
                                 {"name": "__test_layer_wms"},
                                 {"name": "__test_layer_wms_private"},
-                            {"name": "__test_layer_wms_private_ra"},
+                                {"name": "__test_layer_wms_private_ra"},
                                 {"name": "__test_layer_wms_private2"},
                                 {"name": "__test_layer_wmts"},
                                 {"name": "__test_layer_wmts_private"},
