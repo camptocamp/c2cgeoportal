@@ -1,3 +1,7 @@
+##### 2.9.0.221
+
+- Audit Dpkg 2.9 [c2cgeoportal#12145](https://github.com/camptocamp/c2cgeoportal/pull/12145)
+
 ##### 2.9.0.220
 
 - [Backport 2.9] Export the attribute whether a layer is public or not in the themes dict [c2cgeoportal#12139](https://github.com/camptocamp/c2cgeoportal/pull/12139)
