@@ -1,3 +1,7 @@
+##### 2.9.0.220
+
+- [Backport 2.9] Export the attribute whether a layer is public or not in the themes dict [c2cgeoportal#12139](https://github.com/camptocamp/c2cgeoportal/pull/12139)
+
 ##### 2.9.0.219
 
 - Audit Snyk check/fix 2.9 [ngeo#9822](https://github.com/camptocamp/ngeo/pull/9822)
