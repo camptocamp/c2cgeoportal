@@ -863,6 +863,11 @@ class Theme:
                 theme_theme = {
                     "id": theme.id,
                     "name": theme.name,
+                    "public": (
+                        theme.public
+                        or self.request.get_organization_role("anonymous")
+                        in theme.restricted_roles
+                    ),
                     "icon": icon,
                     "children": children,
                     "functionalities": self._get_functionalities(theme),
