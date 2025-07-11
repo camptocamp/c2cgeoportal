@@ -1,0 +1,12 @@
+Backport of #12138 to master
+
+Error on cherry-picking: 7ad39dea722f2660adc586ebec4ae0b62dd818f5
+
+To continue do:
+```bash
+git fetch && \
+  git checkout ghci/backport/12138-to-master && \
+  git reset --hard HEAD^ && \
+  git cherry-pick 7ad39dea722f2660adc586ebec4ae0b62dd818f5
+git push origin ghci/backport/12138-to-master --force
+```
