@@ -21,6 +21,8 @@ RUN mv webpack.apps.js webpack.apps.js.tmpl
 ENTRYPOINT [ "/usr/bin/eval-templates" ]
 CMD [ "webpack-dev-server", "--mode=development", "--debug", "--watch", "--no-inline" ]
 
+RUN ls -l /usr/lib/node_modules/ngeo/dist/ && echo ==========================  && ls -l /etc/static-ngeo/ && false
+
 ###############################################################################
 
 FROM camptocamp/geomapfish:{{cookiecutter.geomapfish_major_version_tag_env}} as runner
