@@ -1,3 +1,7 @@
+##### 2.8.1.234
+
+- Update dependency certifi to v2025.7.14 (2.8) [c2cgeoportal#12147](https://github.com/camptocamp/c2cgeoportal/pull/12147)
+
 ##### 2.8.1.233
 
 - Remove duplicated js files [c2cgeoportal#12138](https://github.com/camptocamp/c2cgeoportal/pull/12138)
