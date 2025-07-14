@@ -33,8 +33,8 @@ WORKDIR /app
 COPY . /app
 # Workaround, see:https://github.com/moby/moby/issues/37965
 RUN true
-COPY --from=builder /opt/c2cgeoportal/geoportal/node_modules/ngeo/dist/* /etc/static-ngeo/
-RUN rm /etc/static-ngeo/*.html
+COPY --from=builder /opt/c2cgeoportal/geoportal/node_modules/ngeo/dist/vendor.* /etc/static-ngeo/
+COPY --from=builder /opt/c2cgeoportal/geoportal/node_modules/ngeo/dist/*_alt.* /etc/static-ngeo/
 COPY --from=builder /etc/static-ngeo/* /etc/static-ngeo/
 COPY --from=builder /app/alembic.ini /app/alembic.yaml ./
 RUN chmod go+w /etc/static-ngeo/
