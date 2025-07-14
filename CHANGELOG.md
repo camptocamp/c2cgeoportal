@@ -1,3 +1,5 @@
+##### 2.6.0.300
+* Update dependency certifi to v2025.7.14 (2.6) [c2cgeoportal#12146](https://github.com/camptocamp/c2cgeoportal/pull/12146)
 ##### 2.6.0.299
 * Update dependency certifi to v2025.7.9 (2.6) [c2cgeoportal#12134](https://github.com/camptocamp/c2cgeoportal/pull/12134)
 ##### 2.6.0.298
