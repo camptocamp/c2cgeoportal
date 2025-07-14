@@ -1,3 +1,7 @@
+##### 2.8.1.235
+
+- Update dependency requests to v2.32.4 [SECURITY] (2.8) [ngeo#9786](https://github.com/camptocamp/ngeo/pull/9786)
+
 ##### 2.8.1.234
 
 - Update dependency certifi to v2025.7.14 (2.8) [c2cgeoportal#12147](https://github.com/camptocamp/c2cgeoportal/pull/12147)
