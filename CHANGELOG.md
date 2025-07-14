@@ -1,3 +1,7 @@
+##### 2.9.0.223
+
+- Audit Dpkg 2.9 [c2cgeoportal#12150](https://github.com/camptocamp/c2cgeoportal/pull/12150)
+
 ##### 2.9.0.222
 
 - [Backport 2.9] Remove duplicated js files [c2cgeoportal#12142](https://github.com/camptocamp/c2cgeoportal/pull/12142)
