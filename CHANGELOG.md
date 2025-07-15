@@ -1,3 +1,7 @@
+##### 2.9.0.225
+
+- [Backport 2.9] Fix select button [ngeo#9827](https://github.com/camptocamp/ngeo/pull/9827)
+
 ##### 2.9.0.224
 
 - Audit Snyk check/fix 2.9 [ngeo#9824](https://github.com/camptocamp/ngeo/pull/9824)
