@@ -1,3 +1,7 @@
+##### 2.8.1.236
+
+- Fix select button [ngeo#9823](https://github.com/camptocamp/ngeo/pull/9823)
+
 ##### 2.8.1.235
 
 - Update dependency requests to v2.32.4 [SECURITY] (2.8) [ngeo#9786](https://github.com/camptocamp/ngeo/pull/9786)
