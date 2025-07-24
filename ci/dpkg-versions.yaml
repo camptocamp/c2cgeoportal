@@ -2712,7 +2712,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/hostname: 3.23+nmu2ubuntu2
   ubuntu_24_04/init-system-helpers: 1.66ubuntu1
   ubuntu_24_04/iproute2: 6.1.0-1ubuntu6
-  ubuntu_24_04/iputils-ping: 3:20240117-1build1
+  ubuntu_24_04/iputils-ping: 3:20240117-1ubuntu0.1
   ubuntu_24_04/iso-codes: 4.16.0-1
   ubuntu_24_04/keyboxd: 2.4.4-2ubuntu17.3
   ubuntu_24_04/libabsl20240116: 20240116.2-2~24.04.sav0
