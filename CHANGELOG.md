@@ -1,3 +1,7 @@
+##### 2.8.1.238
+
+- No error on closing the query window [ngeo#9839](https://github.com/camptocamp/ngeo/pull/9839)
+
 ##### 2.8.1.236
 
 - Fix select button [ngeo#9823](https://github.com/camptocamp/ngeo/pull/9823)
