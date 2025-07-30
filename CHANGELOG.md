@@ -1,3 +1,7 @@
+##### 2.9.0.241
+
+- Expand date boundaries to support broader time ranges [ngeo#9842](https://github.com/camptocamp/ngeo/pull/9842)
+
 ##### 2.9.0.240
 
 - [Backport 2.9] No error on closing the query window [ngeo#9841](https://github.com/camptocamp/ngeo/pull/9841)
