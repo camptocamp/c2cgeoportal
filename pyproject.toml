@@ -58,7 +58,7 @@ prospector = { extras = ["with_mypy", "with_bandit"], version = "1.9.0" }
 setuptools = { version = "67.1.0", optional = true }
 pygments = "2.15.1"
 cryptography = { version = "45.0.5", optional = true }
-gitpython = "3.1.44"
+gitpython = "3.1.45"
 pillow = "10.3.0"
 urllib3 = { version = "1.26.20", optional = true }
 bandit = { version = "1.7.10", optional = true }
