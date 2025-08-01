@@ -1,3 +1,8 @@
+##### 2.8.1.239
+
+- Update dependency gitpython to v3.1.45 (2.8) [c2cgeoportal#12173](https://github.com/camptocamp/c2cgeoportal/pull/12173)
+- Update dependency pre-commit to v4 (2.8) [c2cgeoportal#12175](https://github.com/camptocamp/c2cgeoportal/pull/12175)
+
 ##### 2.8.1.238
 
 - No error on closing the query window [ngeo#9839](https://github.com/camptocamp/ngeo/pull/9839)
