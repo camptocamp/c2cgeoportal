@@ -338,7 +338,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libpcre3: 2:8.39-13ubuntu0.22.04.1
   ubuntu_22_04/libpdal-base13: 2.3.0+ds-2ubuntu4
   ubuntu_22_04/libpdal-util13: 2.3.0+ds-2ubuntu4
-  ubuntu_22_04/libperl5.34: 5.34.0-3ubuntu1.4
+  ubuntu_22_04/libperl5.34: 5.34.0-3ubuntu1.5
   ubuntu_22_04/libpixman-1-0: 0.40.0-1ubuntu0.22.04.1
   ubuntu_22_04/libpng16-16: 1.6.37-3build5
   ubuntu_22_04/libpoppler118: 22.02.0-2ubuntu0.9
@@ -504,9 +504,9 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/openssl: 3.0.2-0ubuntu1.19
   ubuntu_22_04/passwd: 1:4.8.1-2ubuntu2.2
   ubuntu_22_04/pdal: 2.3.0+ds-2ubuntu4
-  ubuntu_22_04/perl: 5.34.0-3ubuntu1.4
-  ubuntu_22_04/perl-base: 5.34.0-3ubuntu1.4
-  ubuntu_22_04/perl-modules-5.34: 5.34.0-3ubuntu1.4
+  ubuntu_22_04/perl: 5.34.0-3ubuntu1.5
+  ubuntu_22_04/perl-base: 5.34.0-3ubuntu1.5
+  ubuntu_22_04/perl-modules-5.34: 5.34.0-3ubuntu1.5
   ubuntu_22_04/procps: 2:3.3.17-6ubuntu2.1
   ubuntu_22_04/proj-data: 8.2.1-1
   ubuntu_22_04/python-is-python3: 3.9.2-2
@@ -785,7 +785,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libpcre3: 2:8.39-13ubuntu0.22.04.1
   ubuntu_22_04/libpdal-base13: 2.3.0+ds-2ubuntu4
   ubuntu_22_04/libpdal-util13: 2.3.0+ds-2ubuntu4
-  ubuntu_22_04/libperl5.34: 5.34.0-3ubuntu1.4
+  ubuntu_22_04/libperl5.34: 5.34.0-3ubuntu1.5
   ubuntu_22_04/libpixman-1-0: 0.40.0-1ubuntu0.22.04.1
   ubuntu_22_04/libpng16-16: 1.6.37-3build5
   ubuntu_22_04/libpoppler118: 22.02.0-2ubuntu0.9
@@ -951,9 +951,9 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/openssl: 3.0.2-0ubuntu1.19
   ubuntu_22_04/passwd: 1:4.8.1-2ubuntu2.2
   ubuntu_22_04/pdal: 2.3.0+ds-2ubuntu4
-  ubuntu_22_04/perl: 5.34.0-3ubuntu1.4
-  ubuntu_22_04/perl-base: 5.34.0-3ubuntu1.4
-  ubuntu_22_04/perl-modules-5.34: 5.34.0-3ubuntu1.4
+  ubuntu_22_04/perl: 5.34.0-3ubuntu1.5
+  ubuntu_22_04/perl-base: 5.34.0-3ubuntu1.5
+  ubuntu_22_04/perl-modules-5.34: 5.34.0-3ubuntu1.5
   ubuntu_22_04/procps: 2:3.3.17-6ubuntu2.1
   ubuntu_22_04/proj-data: 8.2.1-1
   ubuntu_22_04/python-is-python3: 3.9.2-2
@@ -2711,7 +2711,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/handlebars: 3:4.7.7+~4.1.0-1
   ubuntu_24_04/hostname: 3.23+nmu2ubuntu2
   ubuntu_24_04/init-system-helpers: 1.66ubuntu1
-  ubuntu_24_04/iproute2: 6.1.0-1ubuntu6
+  ubuntu_24_04/iproute2: 6.1.0-1ubuntu6.2
   ubuntu_24_04/iputils-ping: 3:20240117-1ubuntu0.1
   ubuntu_24_04/iso-codes: 4.16.0-1
   ubuntu_24_04/keyboxd: 2.4.4-2ubuntu17.3
