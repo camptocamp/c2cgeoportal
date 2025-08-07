@@ -135,11 +135,11 @@ def main() -> None:
         docker_compose_build_cmd = [*docker_compose_command, "build"]
 
         if args.no_cache:
-            print('docker cache disabled')
+            print("docker cache disabled")
             docker_compose_build_cmd.append("--no-cache")
 
         if args.verbose:
-            print('docker plain progress')
+            print("docker plain progress")
             docker_compose_build_cmd.append("--progress=plain")
 
         if not args.no_pull:
