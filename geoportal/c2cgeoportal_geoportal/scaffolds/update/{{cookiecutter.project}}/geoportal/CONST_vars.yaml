@@ -765,7 +765,7 @@ vars:
       - name: directedFilterAttributes
         type: list
         description: >
-          Comma-separated list of attributes names which should have rules already ready when using the
+          Comma-separated list of attribute names which should have rules already ready when using the
           filter tools.
         relevant_for:
           - layer_wms

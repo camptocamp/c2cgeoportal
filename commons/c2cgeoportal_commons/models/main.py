@@ -769,8 +769,8 @@ class OGCServer(Base):  # type: ignore[valid-type,misc]
             "colanderalchemy": {
                 "title": _("Name"),
                 "description": _(
-                    "The name of the OGC Server, should contains only no unaccentuated letters, numbers and _. "
-                    "When you rename it don't miss to update the <code>ogcServer<code> metadata on the "
+                    "The name of the OGC Server should contain only unaccentuated letters, numbers and _. "
+                    "When you rename it, do not forget to update the <code>ogcServer<code> metadata on the "
                     "WMTS and COG layers.",
                 ),
             },
@@ -1254,8 +1254,8 @@ class LayerCOG(Layer):
             <div class="help-block">
                 <p>Definition of a <code>COG Layer</code> (COG for
                 <a href="https://www.cogeo.org/">Cloud Optimized GeoTIFF</a>).</p>
-                <p>Note: The layers named <code>cog-defaults</code> contains the values
-                used when we create a new <code>COG layer</code>.</p>
+                <p>Note: The layer named <code>cog-defaults</code> contain the values
+                used when a new <code>COG layer</code> is created.</p>
             </div>
                 """,
             ),
@@ -1365,7 +1365,7 @@ class LayerVectorTiles(DimensionLayer):
         info={
             "colanderalchemy": {
                 "title": _("SQL query"),
-                "description": _("A SQL query to get the vector tiles data."),
+                "description": _("An SQL query to retrieve the vector tiles data."),
                 "column": 2,
                 "widget": TextAreaWidget(rows=15),
             },
