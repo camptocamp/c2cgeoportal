@@ -1,3 +1,7 @@
+##### 2.9.0.245
+
+- Audit Dpkg 2.9 [c2cgeoportal#12187](https://github.com/camptocamp/c2cgeoportal/pull/12187)
+
 ##### 2.9.0.244
 
 - Add QGIS server 3.40 [c2cgeoportal#12185](https://github.com/camptocamp/c2cgeoportal/pull/12185)
