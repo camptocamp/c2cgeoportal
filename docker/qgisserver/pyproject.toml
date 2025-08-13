@@ -26,6 +26,6 @@ pytz = "2025.2"
 prospector = { version = "1.17.2", extras = ["with_mypy", "with_bandit", "with_ruff"] }
 prospector-profile-duplicated = "1.10.5"
 prospector-profile-utils  = "1.25.0"
-ruff = "0.12.1"
+ruff = "0.12.8"
 types-pyyaml = "6.0.12.20250516"
 pytest = "8.4.1"
