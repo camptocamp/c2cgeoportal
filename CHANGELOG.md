@@ -1,3 +1,7 @@
+##### 2.9.0.244
+
+- Add QGIS server 3.40 [c2cgeoportal#12185](https://github.com/camptocamp/c2cgeoportal/pull/12185)
+
 ##### 2.9.0.243
 
 - Update CI dependencies (2.9) [c2cgeoportal#12176](https://github.com/camptocamp/c2cgeoportal/pull/12176)
