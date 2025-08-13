@@ -83,7 +83,7 @@ def functionalities_widget(model: type[Any]) -> colander.deferred:
 
 
 def functionalities_schema_node(
-    prop: InstrumentedAttribute[Any],
+    prop: InstrumentedAttribute[Any],  # pylint: disable=unsubscriptable-object
     model: type[Any],
 ) -> colander.SequenceSchema:
     """Get the schema of the functionalities."""
