@@ -1,3 +1,7 @@
+##### 2.9.0.242
+
+- Audit Dpkg 2.9 [c2cgeoportal#12164](https://github.com/camptocamp/c2cgeoportal/pull/12164)
+
 ##### 2.9.0.241
 
 - Expand date boundaries to support broader time ranges [ngeo#9842](https://github.com/camptocamp/ngeo/pull/9842)
