@@ -53,6 +53,8 @@ dependencies = [
     "Shapely",
     "SQLAlchemy",
     "transaction",
+    "simple_openid_connect",
+    "pkce",
 ]
 
 [project.urls]
