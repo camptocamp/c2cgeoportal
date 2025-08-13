@@ -51,6 +51,8 @@ jobs:
           - '3.34'
           # Used as default version
           - 3.34-gdal3.8
+          - '3.40'
+          - 3.40-gdal3.10
           - ltr
           - lr
           - lr-debug
