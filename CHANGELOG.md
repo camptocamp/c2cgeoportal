@@ -1,3 +1,9 @@
+##### 2.9.0.243
+
+- Update CI dependencies (2.9) [c2cgeoportal#12176](https://github.com/camptocamp/c2cgeoportal/pull/12176)
+- Update all patch/minor versions (2.9) [c2cgeoportal#12177](https://github.com/camptocamp/c2cgeoportal/pull/12177)
+- Update dependency cryptography to v45.0.6 (2.9) [c2cgeoportal#12182](https://github.com/camptocamp/c2cgeoportal/pull/12182)
+
 ##### 2.9.0.242
 
 - Audit Dpkg 2.9 [c2cgeoportal#12164](https://github.com/camptocamp/c2cgeoportal/pull/12164)
