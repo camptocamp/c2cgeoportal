@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2024, Camptocamp SA
+# Copyright (c) 2018-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -78,7 +78,7 @@ def functionalities_widget(model: type[Any]) -> colander.deferred:
 
 
 def functionalities_schema_node(
-    prop: InstrumentedAttribute[Any], model: type[Any]
+    prop: InstrumentedAttribute[Any], model: type[Any]  # pylint: disable=unsubscriptable-object
 ) -> colander.SequenceSchema:
     """Get the schema of the functionalities."""
 
