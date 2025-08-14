@@ -1,3 +1,7 @@
+##### 2.9.0.249
+
+- Audit Dpkg 2.9 [c2cgeoportal#12194](https://github.com/camptocamp/c2cgeoportal/pull/12194)
+
 ##### 2.9.0.248
 
 - Add missing QGIS image publish [c2cgeoportal#12190](https://github.com/camptocamp/c2cgeoportal/pull/12190)
