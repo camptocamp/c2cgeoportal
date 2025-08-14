@@ -8,10 +8,10 @@
     "snyk-protect": "snyk-protect"
   },
   "dependencies": {
-    "@snyk/protect": "1.1297.3",
+    "@snyk/protect": "1.1298.3",
     "ngeo": "2.10.0-latest.20250801T191343Z.1fad1c446",
     "ol": "10.6.1",
-    "puppeteer": "24.11.2"
+    "puppeteer": "24.16.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "3.3.1",
