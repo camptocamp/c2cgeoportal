@@ -1,3 +1,7 @@
+##### 2.9.0.247
+
+- Language syntax fixes [c2cgeoportal#12184](https://github.com/camptocamp/c2cgeoportal/pull/12184)
+
 ##### 2.9.0.246
 
 - Add missing package, use simple_openid_connect from pypi [c2cgeoportal#12186](https://github.com/camptocamp/c2cgeoportal/pull/12186)
