@@ -29,8 +29,7 @@ To configure these web services, you need to set the ``raster`` variable in the 
 ``raster`` is a list of "DEM layers".
 
 ``file`` provides the path to the shape index that references the raster files.
-The raster files should be in the Binary Terrain (BT/VTP .bt 1.3) format.
-One may use GDAL/OGR to convert data to such a format.
+The raster files should be in file readable by GDAL/OGR.
 
 ``type`` ``shp_index`` (default) for Mapserver shape index, or ``gdal`` for all supported GDAL sources.
 We recommend to use a `vrt <https://www.gdal.org/gdal_vrttut.html>`_ file built with

@@ -15,7 +15,6 @@ doc/Makefile -whitespace
 *.gif binary
 *.enc binary
 *.gz binary
-*.bt binary
 *.dbf binary
 *.shp binary
 *.shx binary

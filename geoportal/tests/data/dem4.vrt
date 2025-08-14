@@ -4,7 +4,7 @@
   <VRTRasterBand dataType="Float32" band="1">
     <NoDataValue>-32768</NoDataValue>
     <ComplexSource>
-      <SourceFilename relativeToVRT="1">dem4.bt</SourceFilename>
+      <SourceFilename relativeToVRT="1">dem4.tiff</SourceFilename>
       <SourceBand>1</SourceBand>
       <SourceProperties RasterXSize="7" RasterYSize="7" DataType="Float32" BlockXSize="1" BlockYSize="7" />
       <SrcRect xOff="0" yOff="0" xSize="7" ySize="7" />

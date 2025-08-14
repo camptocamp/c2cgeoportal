@@ -85,7 +85,7 @@ class TestRasterViews(TestCase):
         request.registry.settings = {
             "raster": {
                 "dem5": {
-                    "file": "/opt/c2cgeoportal/geoportal/tests/data/dem4.bt",
+                    "file": "/opt/c2cgeoportal/geoportal/tests/data/dem4.tiff",
                     "type": "gdal",
                     "round": 0.01,
                 },
@@ -152,7 +152,7 @@ class TestRasterViews(TestCase):
 
         assert (
             tiles[0]["properties"]["location"]
-            == "/home/sbrunner/regiogis/regiogis/c2cgeoportal/c2cgeoportal/tests/data/dem.bt"
+            == "/home/sbrunner/regiogis/regiogis/c2cgeoportal/c2cgeoportal/tests/data/dem.tiff"
         )
 
     def test_profile_json(self) -> None:
