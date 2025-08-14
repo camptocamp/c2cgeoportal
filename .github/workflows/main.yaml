@@ -50,12 +50,12 @@ jobs:
       - run: sudo rm -rf /usr/local/lib/android /usr/share/dotnet "$AGENT_TOOLSDIRECTORY"
       - run: df -h
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
           token: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
         if: env.HAS_SECRETS == 'HAS_SECRETS'
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
         if: env.HAS_SECRETS != 'HAS_SECRETS'

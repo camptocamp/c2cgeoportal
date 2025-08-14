@@ -27,7 +27,7 @@ jobs:
     if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -70,7 +70,7 @@ jobs:
       success-master: ${{ steps.success.outputs.success-master }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -91,11 +91,14 @@ jobs:
         if: env.HAS_SECRETS == 'HAS_SECRETS'
 
       - name: Download artifacts (Docker images) from previous workflows
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
+        with:
+          name: tools.docker
+          path: /tmp/
 
       - name: Load Docker images from previous workflows
         run: |
-          docker load --input=tools.docker/tools.docker
+          docker load --input=/tmp/tools.docker
 
       - run: make build-test-db
 
