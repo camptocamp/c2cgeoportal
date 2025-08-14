@@ -1,3 +1,7 @@
+##### 2.9.0.246
+
+- Add missing package, use simple_openid_connect from pypi [c2cgeoportal#12186](https://github.com/camptocamp/c2cgeoportal/pull/12186)
+
 ##### 2.9.0.245
 
 - Audit Dpkg 2.9 [c2cgeoportal#12187](https://github.com/camptocamp/c2cgeoportal/pull/12187)
