@@ -52,8 +52,7 @@ c2cwsgiutils = { version = "6.1.7", extras = ["broadcast", "standard", "oauth2",
 oauthlib = "3.3.1"
 tilecloud = "1.13.2" # geoportal
 azure-storage-blob = "12.25.1"
-# simple_openid_connect = '1.0.1' # geoportal
-simple_openid_connect = { git = "https://github.com/sbrunner/py_simple_openid_connect.git", branch = "allows-pkce" } # geoportal
+simple_openid_connect = '1.1.0' # geoportal
 pkce = '1.0.3' # geoportal
 basicauth = "1.0.0"
 prospector = { version = "1.17.2", extras = ["with_mypy", "with_bandit", "with_pyroma", "with_ruff"] }
