@@ -92,10 +92,13 @@ jobs:
 
       - name: Download artifacts (Docker images) from previous workflows
         uses: actions/download-artifact@v5
+        with:
+          name: tools.docker
+          path: /tmp/
 
       - name: Load Docker images from previous workflows
         run: |
-          docker load --input=tools.docker/tools.docker
+          docker load --input=/tmp/tools.docker
 
       - run: make build-test-db
 
