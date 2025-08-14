@@ -476,28 +476,7 @@ or <code class="docutils literal notranslate"><span class="pre">AZURE_STORAGE_AC
 </pre></div>
 </div>
 <p>You should also configure the <code class="docutils literal notranslate"><span class="pre">http_url</span></code> of the used cache, to something like
-<code class="docutils literal notranslate"><span class="pre">https://%(host)s/${instanceid}/tiles</span></code> or like <code class="docutils literal notranslate"><span class="pre">https://%(host)s/${instanceid}/wsgi/tiles</span></code> if you use the
-Pyramid view.</p>
-<section id="pyramid-view">
-<h3>Pyramid view<a class="headerlink" href="#pyramid-view" title="Permalink to this headline">¶</a></h3>
-<p>To use the pyramid view use the following configuration:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">config</span><span class="o">.</span><span class="n">get_settings</span><span class="p">()</span><span class="o">.</span><span class="n">update</span><span class="p">({</span>
-    <span class="s1">&#39;tilegeneration_configfile&#39;</span><span class="p">:</span> <span class="s1">&#39;&lt;the configuration file&gt;&#39;</span><span class="p">,</span>
-<span class="p">})</span>
-<span class="n">config</span><span class="o">.</span><span class="n">add_route</span><span class="p">(</span><span class="s1">&#39;tiles&#39;</span><span class="p">,</span> <span class="s1">&#39;/tiles/\*path&#39;</span><span class="p">)</span>
-<span class="n">config</span><span class="o">.</span><span class="n">add_view</span><span class="p">(</span><span class="s1">&#39;tilecloud_chain.server:PyramidView&#39;</span><span class="p">,</span> <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;tiles&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</section>
-<section id="internal-wsgi-server">
-<h3>Internal WSGI server<a class="headerlink" href="#internal-wsgi-server" title="Permalink to this headline">¶</a></h3>
-<p>in <code class="docutils literal notranslate"><span class="pre">application.ini</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">app</span><span class="p">:</span><span class="n">tiles</span><span class="p">]</span>
-<span class="n">use</span> <span class="o">=</span> <span class="n">egg</span><span class="p">:</span><span class="n">tilecloud_chain</span><span class="c1">#server</span>
-<span class="n">configfile</span> <span class="o">=</span> <span class="o">%</span><span class="p">(</span><span class="n">here</span><span class="p">)</span><span class="n">s</span><span class="o">/</span><span class="n">tilegeneration</span><span class="o">/</span><span class="n">config</span><span class="o">.</span><span class="n">yaml</span>
-</pre></div>
-</div>
-</section>
+<code class="docutils literal notranslate"><span class="pre">https://%(host)s/${instanceid}/tiles</span></code>.</p>
 </section>
 <section id="commands">
 <h2>Commands<a class="headerlink" href="#commands" title="Permalink to this headline">¶</a></h2>
@@ -603,25 +582,13 @@ change them we should regenerate all the tiles).</p>
 (default: <code class="docutils literal notranslate"><span class="pre">/etc/tilegeneration/hosts.yaml</span></code>)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">TILEGENERATION_MAX_GENERATION_TIME</span></code>: Maximum tile generation time in seconds before timeout
 (default: <code class="docutils literal notranslate"><span class="pre">60</span></code>)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">TILE_NB_THREAD</span></code>: Number of threads for tile generation when using metatiles
-(default: <code class="docutils literal notranslate"><span class="pre">2</span></code>)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">METATILE_NB_THREAD</span></code>: Number of threads for metatile generation
-(default: <code class="docutils literal notranslate"><span class="pre">25</span></code>)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">SERVER_NB_THREAD</span></code>: Number of server threads for metatile generation
-(default: <code class="docutils literal notranslate"><span class="pre">10</span></code>)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">TILE_QUEUE_SIZE</span></code>: Size of post-Redis queue
-(default: <code class="docutils literal notranslate"><span class="pre">2</span></code>)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">TILE_CHUNK_SIZE</span></code>: Number of tiles to process in one chunk after metatile generation
-(default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN_MAX_OUTPUT_LENGTH</span></code>: Maximum output length shown in admin interface
 (default: <code class="docutils literal notranslate"><span class="pre">1000</span></code>)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN_CONCURRENT_GET_LEGEND</span></code>: Number of concurrent legend image requests
-(default: <code class="docutils literal notranslate"><span class="pre">10</span></code>)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">LOG_TYPE</span></code>: Logging output format, either <code class="docutils literal notranslate"><span class="pre">console</span></code> or <code class="docutils literal notranslate"><span class="pre">json</span></code> for Logstash
-(default: <code class="docutils literal notranslate"><span class="pre">console</span></code>)</p></li>
 </ul>
 <p>Logging Configuration:</p>
 <ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">LOG_TYPE</span></code>: Logging output format, either <code class="docutils literal notranslate"><span class="pre">console</span></code> or <code class="docutils literal notranslate"><span class="pre">json</span></code> for Logstash
+(default: <code class="docutils literal notranslate"><span class="pre">console</span></code>)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN_LOG_LEVEL</span></code>: Log level for TileCloud Chain
 (default: <code class="docutils literal notranslate"><span class="pre">INFO</span></code>)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_LOG_LEVEL</span></code>: Log level for TileCloud core
@@ -642,6 +609,13 @@ change them we should regenerate all the tiles).</p>
 (default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">VISIBLE_ENTRY_POINT</span></code>: Base URL path for tile access
 (default: <code class="docutils literal notranslate"><span class="pre">/tiles/</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILEGENERATION_HOSTS_LIMIT</span></code>: File that contains the maximum request per host
+(default: <code class="docutils literal notranslate"><span class="pre">/etc/tilegeneration/hosts_limit.yaml</span></code>)</p></li>
+</ul>
+<p>Worker Configuration:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN_NB_TASKS</span></code>: Number of concurrent tasks to run in parallel
+(default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></li>
 </ul>
 </section>
 </section>

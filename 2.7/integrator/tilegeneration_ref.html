@@ -1085,6 +1085,39 @@
 </tbody>
 </table>
 </section>
+<section id="layer-srs">
+<span id="layer-srs"></span><h3>Layer SRS<a class="headerlink" href="#layer-srs" title="Permalink to this headline">¶</a></h3>
+<p>The projection reference, used for the bbox, the geoms, and the –bbox argument.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td><p>pattern</p></td>
+<td><p>^EPSG:[0-9]+$</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="layer-proj4-literal">
+<span id="layer-proj4-literal"></span><h3>Layer Proj4 literal<a class="headerlink" href="#layer-proj4-literal" title="Permalink to this headline">¶</a></h3>
+<p>The Proj4 definition, used for the bbox, the geoms, and the –bbox argument.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="layer-bounding-box">
 <span id="layer-bounding-box"></span><h3>Layer bounding box<a class="headerlink" href="#layer-bounding-box" title="Permalink to this headline">¶</a></h3>
 <p>The bounding box where we will generate the tiles</p>
@@ -1828,6 +1861,18 @@
 <td colspan="3"><p><a class="reference internal" href="#layer-grids">Layer grids</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
+<li><p>srs</p></li>
+</ul>
+</td>
+<td colspan="3"><p><a class="reference internal" href="#layer-srs">Layer SRS</a></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>proj4_literal</p></li>
+</ul>
+</td>
+<td colspan="3"><p><a class="reference internal" href="#layer-proj4-literal">Layer Proj4 literal</a></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
 <li><p>bbox</p></li>
 </ul>
 </td>
@@ -2087,6 +2132,18 @@
 </ul>
 </td>
 <td colspan="4"><p><a class="reference internal" href="#layer-grids">Layer grids</a></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>srs</p></li>
+</ul>
+</td>
+<td colspan="4"><p><a class="reference internal" href="#layer-srs">Layer SRS</a></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>proj4_literal</p></li>
+</ul>
+</td>
+<td colspan="4"><p><a class="reference internal" href="#layer-proj4-literal">Layer Proj4 literal</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p>bbox</p></li>
@@ -2999,35 +3056,7 @@
 <td colspan="3"><p><em>string</em></p></td>
 </tr>
 <tr class="row-odd"><td><p>default</p></td>
-<td colspan="3"><p>wmts</p></td>
-</tr>
-<tr class="row-even"><td rowspan="4"><ul class="simple">
-<li><p>static_path</p></li>
-</ul>
-</td>
-<td colspan="4"><p><em>Static path</em></p></td>
-</tr>
-<tr class="row-odd"><td colspan="4"><p>The sub-path for the static files (main configuration)</p></td>
-</tr>
-<tr class="row-even"><td><p>type</p></td>
-<td colspan="3"><p><em>string</em></p></td>
-</tr>
-<tr class="row-odd"><td><p>default</p></td>
-<td colspan="3"><p>static</p></td>
-</tr>
-<tr class="row-even"><td rowspan="4"><ul class="simple">
-<li><p>admin_path</p></li>
-</ul>
-</td>
-<td colspan="4"><p><em>Admin path</em></p></td>
-</tr>
-<tr class="row-odd"><td colspan="4"><p>The sub-path for the admin (main configuration)</p></td>
-</tr>
-<tr class="row-even"><td><p>type</p></td>
-<td colspan="3"><p><em>string</em></p></td>
-</tr>
-<tr class="row-odd"><td><p>default</p></td>
-<td colspan="3"><p>admin</p></td>
+<td colspan="3"></td>
 </tr>
 <tr class="row-even"><td rowspan="4"><ul class="simple">
 <li><p>expires</p></li>
