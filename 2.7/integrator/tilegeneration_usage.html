@@ -48,20 +48,18 @@
 <p>The <code class="docutils literal notranslate"><span class="pre">grid</span></code> configuration describes how map tiles are arranged in your tileset.</p>
 <p>For cloud storage backends like <code class="docutils literal notranslate"><span class="pre">s3</span></code> or <code class="docutils literal notranslate"><span class="pre">azure</span></code>, carefully consider grid settings before generating tiles, as changing them later requires regenerating all tiles.</p>
 <p>Key grid settings:</p>
-<ul>
+<ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">resolutions</span></code>: Tile resolutions in pixels/meter. For raster layers, consider the maximum resolution of source files. OpenLayers client zoom can handle display at smaller resolutions.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">bbox</span></code>: Bounding box that matches resolution extent. Warning: Do not use this to restrict tile generation area - use layer <code class="docutils literal notranslate"><span class="pre">bbox</span></code> instead.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">srs</span></code>: Projection code (e.g. <code class="docutils literal notranslate"><span class="pre">EPSG:3857</span></code>)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">unit</span></code>: Unit used by projection (e.g. <code class="docutils literal notranslate"><span class="pre">meters</span></code>)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">tile_size</span></code>: Tile dimensions in pixels (default: <code class="docutils literal notranslate"><span class="pre">256</span></code>)</p></li>
-<li><dl>
-<dt><code class="docutils literal notranslate"><span class="pre">matrix_identifier</span></code>: How z-index is built for tile storage:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">matrix_identifier</span></code>: How z-index is built for tile storage:</p>
+<ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">zoom</span></code> (default): Uses zoom levels <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1,</span> <span class="pre">2]</span></code> for the resolutions <code class="docutils literal notranslate"><span class="pre">[2,</span> <span class="pre">1,</span> <span class="pre">0.5]</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">resolution</span></code>: Uses resolution values <code class="docutils literal notranslate"><span class="pre">[2,</span> <span class="pre">1,</span> <span class="pre">0_5]</span></code> for the same resolutions</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">resolution</span></code>: Uses resolution values <code class="docutils literal notranslate"><span class="pre">[2,</span> <span class="pre">1,</span> <span class="pre">0_5]</span></code> for the same resolutions
+Resolution-based indexing allows adding resolutions without regenerating tiles, but is incompatible with MapCache.</p></li>
 </ul>
-<p>Resolution-based indexing allows adding resolutions without regenerating tiles, but is incompatible with MapCache.</p>
-</dd>
-</dl>
 </li>
 </ul>
 </section>
