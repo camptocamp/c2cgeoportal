@@ -1,3 +1,5 @@
+##### 2.6.0.301
+* Remove no more available postgres apt repository [c2cgeoportal#12192](https://github.com/camptocamp/c2cgeoportal/pull/12192)
 ##### 2.6.0.300
 * Update dependency certifi to v2025.7.14 (2.6) [c2cgeoportal#12146](https://github.com/camptocamp/c2cgeoportal/pull/12146)
 ##### 2.6.0.299
