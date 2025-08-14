@@ -62,6 +62,8 @@ jobs:
     outputs:
       success-3-34: ${{ steps.success.outputs.success-3-34 }}
       success-3-34-gdal3-8: ${{ steps.success.outputs.success-3-34-gdal3-8 }}
+      success-3-40: ${{ steps.success.outputs.success-3-40 }}
+      success-3-40-gdal3-10: ${{ steps.success.outputs.success-3-40-gdal3-10 }}
       success-ltr: ${{ steps.success.outputs.success-ltr }}
       success-lr: ${{ steps.success.outputs.success-lr }}
       success-lr-debug: ${{ steps.success.outputs.success-lr-debug }}
@@ -161,6 +163,8 @@ jobs:
     steps:
       - run: '[[ "${{ needs.main.outputs.success-3-34 }}" == "true" ]]'
       - run: '[[ "${{ needs.main.outputs.success-3-34-gdal3-8 }}" == "true" ]]'
+      - run: '[[ "${{ needs.main.outputs.success-3-40 }}" == "true" ]]'
+      - run: '[[ "${{ needs.main.outputs.success-3-40-gdal3-10 }}" == "true" ]]'
       - run: '[[ "${{ needs.main.outputs.success-ltr }}" == "true" ]]'
       - run: '[[ "${{ needs.main.outputs.success-lr }}" == "true" ]]'
       - run: '[[ "${{ needs.main.outputs.success-lr-debug }}" == "true" ]]'
