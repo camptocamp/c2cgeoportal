@@ -1,3 +1,5 @@
+##### 2.6.0.303
+* Update all patch/minor versions (2.6) [c2cgeoportal#12171](https://github.com/camptocamp/c2cgeoportal/pull/12171)
 ##### 2.6.0.302
 * Update dependency certifi to v2025.8.3 (2.6) [c2cgeoportal#12178](https://github.com/camptocamp/c2cgeoportal/pull/12178)
 ##### 2.6.0.301
