@@ -1,3 +1,7 @@
+##### 2.9.0.248
+
+- Add missing QGIS image publish [c2cgeoportal#12190](https://github.com/camptocamp/c2cgeoportal/pull/12190)
+
 ##### 2.9.0.247
 
 - Language syntax fixes [c2cgeoportal#12184](https://github.com/camptocamp/c2cgeoportal/pull/12184)
