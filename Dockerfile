@@ -62,9 +62,6 @@ CMD ["tail", "-f", "/dev/null"]
 # hadolint ignore=SC1091,DL3008
 RUN \
     . /etc/os-release && \
-    echo deb http://apt.postgresql.org/pub/repos/apt/ "${VERSION_CODENAME}-pgdg" main > \
-    /etc/apt/sources.list.d/pgdg.list && \
-    curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
     apt-get update && \
     apt-get install --assume-yes --no-install-recommends git make python3.8-dev gcc postgresql-client \
     net-tools iputils-ping vim vim-editorconfig vim-addon-manager tree groff-base libxml2-utils \
