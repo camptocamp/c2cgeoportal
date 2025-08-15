@@ -55,7 +55,7 @@ azure-storage-blob = "12.26.0"
 simple_openid_connect = '1.1.0' # geoportal
 pkce = '1.0.3' # geoportal
 basicauth = "1.0.0"
-prospector = { version = "1.17.2", extras = ["with_mypy", "with_bandit", "with_pyroma", "with_ruff"] }
+prospector = { version = "1.17.3", extras = ["with_mypy", "with_bandit", "with_pyroma", "with_ruff"] }
 prospector-profile-duplicated = "1.10.5"
 prospector-profile-utils  = "1.25.0"
 ruff = "0.12.8"

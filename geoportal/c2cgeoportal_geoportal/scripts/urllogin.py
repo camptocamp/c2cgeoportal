@@ -30,10 +30,9 @@ import binascii
 import json
 import sys
 import time
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
 from Crypto.Cipher import AES  # nosec
-from git import TYPE_CHECKING  # nosec
 
 from c2cgeoportal_geoportal.scripts import fill_arguments, get_appsettings
 
