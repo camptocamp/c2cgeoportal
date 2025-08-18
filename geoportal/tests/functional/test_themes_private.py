@@ -257,6 +257,7 @@ class TestThemesPrivateView(TestCase):
             [self._only_name(t, attribute="public") for t in themes["themes"]],
             [
                 {
+                    "public": True,  # from theme
                     "children": [
                         {
                             "children": [
