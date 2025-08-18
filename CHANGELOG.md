@@ -1,3 +1,7 @@
+##### 2.9.0.254
+
+- Audit Dpkg 2.9 [c2cgeoportal#12198](https://github.com/camptocamp/c2cgeoportal/pull/12198)
+
 ##### 2.9.0.253
 
 - [Backport 2.9] Export the public attribute defined for themes [c2cgeoportal#12189](https://github.com/camptocamp/c2cgeoportal/pull/12189)
