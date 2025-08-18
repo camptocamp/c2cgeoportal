@@ -1,3 +1,7 @@
+##### 2.9.0.253
+
+- [Backport 2.9] Export the public attribute defined for themes [c2cgeoportal#12189](https://github.com/camptocamp/c2cgeoportal/pull/12189)
+
 ##### 2.9.0.252
 
 - Audit Snyk check/fix 2.9 [ngeo#9861](https://github.com/camptocamp/ngeo/pull/9861)
