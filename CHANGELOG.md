@@ -1,3 +1,7 @@
+##### 2.8.1.242
+
+- Fix for non querryable layer [ngeo#9864](https://github.com/camptocamp/ngeo/pull/9864)
+
 ##### 2.8.1.241
 
 - Update dependency cryptography to v45.0.6 (2.8) [c2cgeoportal#12181](https://github.com/camptocamp/c2cgeoportal/pull/12181)
