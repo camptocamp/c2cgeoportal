@@ -1,3 +1,8 @@
+##### 2.9.0.255
+
+- Audit Snyk check/fix 2.9 [ngeo#9865](https://github.com/camptocamp/ngeo/pull/9865)
+- [Backport 2.9] Fix for non querryable layer [ngeo#9868](https://github.com/camptocamp/ngeo/pull/9868)
+
 ##### 2.9.0.254
 
 - Audit Dpkg 2.9 [c2cgeoportal#12198](https://github.com/camptocamp/c2cgeoportal/pull/12198)
