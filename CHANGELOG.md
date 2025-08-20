@@ -1,3 +1,7 @@
+##### 2.9.0.258
+
+- Audit Dpkg 2.9 [c2cgeoportal#12202](https://github.com/camptocamp/c2cgeoportal/pull/12202)
+
 ##### 2.9.0.257
 
 - [Backport 2.9] Fix close button icon in query window [ngeo#9871](https://github.com/camptocamp/ngeo/pull/9871)
