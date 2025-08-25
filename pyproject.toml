@@ -16,6 +16,7 @@ convention = "numpy"
 "**/tests/**" = ["ANN", "ARG", "B904", "D", "E722", "E741", "INP001", "PT009", "PT027", "RET", "RUF012", "RUF100", "SLF"]
 "**/test_*.py" = ["ANN", "ARG", "B904", "D", "E722", "E741", "INP001", "PT009", "PT027", "RET", "RUF012", "RUF100", "SLF"]
 "**/*_test.py" = ["ANN", "ARG", "B904", "D", "E722", "E741", "INP001", "PT009", "PT027", "RET", "RUF012", "RUF100", "SLF"]
+
 [tool.poetry]
 version = "0.0.0"
 
