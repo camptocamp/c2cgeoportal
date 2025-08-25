@@ -1,3 +1,7 @@
+##### 2.9.0.263
+
+- Upgrade ol mapbox style [ngeo#9877](https://github.com/camptocamp/ngeo/pull/9877)
+
 ##### 2.9.0.261
 
 - Audit Snyk check/fix 2.9 [ngeo#9876](https://github.com/camptocamp/ngeo/pull/9876)
