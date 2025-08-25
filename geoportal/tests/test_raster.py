@@ -61,14 +61,14 @@ class TestRasterViews(TestCase):
         request.params["lat"] = "216000"
         result = raster.raster()
         self.assertAlmostEqual(result["dem1"], Decimal("1171.6"))
-        self.assertAlmostEqual(result["dem2"], Decimal("1172"))
+        self.assertAlmostEqual(result["dem2"], Decimal(1172))
         self.assertAlmostEqual(result["dem3"], Decimal("1171.62"))
 
         request.params["layers"] = "dem2"
         result = raster.raster()
         assert "dem1" not in result
         assert "dem3" not in result
-        self.assertAlmostEqual(result["dem2"], Decimal("1172"))
+        self.assertAlmostEqual(result["dem2"], Decimal(1172))
 
         # test wrong layer name
         request.params["layers"] = "wrong"
@@ -246,7 +246,7 @@ class TestRasterViews(TestCase):
         self.assertAlmostEqual(result["profile"][2]["x"], 548003.6666666666)
         self.assertAlmostEqual(result["profile"][3]["y"], 216006.33333333334)
         self.assertAlmostEqual(result["profile"][3]["values"]["dem"], 1154)
-        self.assertAlmostEqual(result["profile"][3]["dist"], Decimal("9"))
+        self.assertAlmostEqual(result["profile"][3]["dist"], Decimal(9))
         self.assertAlmostEqual(result["profile"][3]["x"], 548006.3333333334)
         self.assertAlmostEqual(result["profile"][4]["y"], 216009.0)
         self.assertAlmostEqual(result["profile"][4]["values"]["dem"], 1158)
