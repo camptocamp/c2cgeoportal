@@ -1143,7 +1143,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40:
   ubuntu_24_04/libgsl27: 2.7.1+dfsg-6ubuntu2
   ubuntu_24_04/libgslcblas0: 2.7.1+dfsg-6ubuntu2
   ubuntu_24_04/libgssapi-krb5-2: 1.20.1-6ubuntu2.6
-  ubuntu_24_04/libgstreamer-plugins-base1.0-0: 1.24.2-1ubuntu0.2
+  ubuntu_24_04/libgstreamer-plugins-base1.0-0: 1.24.2-1ubuntu0.3
   ubuntu_24_04/libgstreamer1.0-0: 1.24.2-1ubuntu0.1
   ubuntu_24_04/libgudev-1.0-0: 1:238-5ubuntu1
   ubuntu_24_04/libharfbuzz0b: 8.3.0-2build2
@@ -1549,7 +1549,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40-gdal3.10:
   ubuntu_24_04/libgsl27: 2.7.1+dfsg-6ubuntu2
   ubuntu_24_04/libgslcblas0: 2.7.1+dfsg-6ubuntu2
   ubuntu_24_04/libgssapi-krb5-2: 1.20.1-6ubuntu2.6
-  ubuntu_24_04/libgstreamer-plugins-base1.0-0: 1.24.2-1ubuntu0.2
+  ubuntu_24_04/libgstreamer-plugins-base1.0-0: 1.24.2-1ubuntu0.3
   ubuntu_24_04/libgstreamer1.0-0: 1.24.2-1ubuntu0.1
   ubuntu_24_04/libgudev-1.0-0: 1:238-5ubuntu1
   ubuntu_24_04/libharfbuzz0b: 8.3.0-2build2
@@ -1956,7 +1956,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_24_04/libgsl27: 2.7.1+dfsg-6ubuntu2
   ubuntu_24_04/libgslcblas0: 2.7.1+dfsg-6ubuntu2
   ubuntu_24_04/libgssapi-krb5-2: 1.20.1-6ubuntu2.6
-  ubuntu_24_04/libgstreamer-plugins-base1.0-0: 1.24.2-1ubuntu0.2
+  ubuntu_24_04/libgstreamer-plugins-base1.0-0: 1.24.2-1ubuntu0.3
   ubuntu_24_04/libgstreamer1.0-0: 1.24.2-1ubuntu0.1
   ubuntu_24_04/libgudev-1.0-0: 1:238-5ubuntu1
   ubuntu_24_04/libharfbuzz0b: 8.3.0-2build2
@@ -2364,7 +2364,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_24_04/libgsl27: 2.7.1+dfsg-6ubuntu2
   ubuntu_24_04/libgslcblas0: 2.7.1+dfsg-6ubuntu2
   ubuntu_24_04/libgssapi-krb5-2: 1.20.1-6ubuntu2.6
-  ubuntu_24_04/libgstreamer-plugins-base1.0-0: 1.24.2-1ubuntu0.2
+  ubuntu_24_04/libgstreamer-plugins-base1.0-0: 1.24.2-1ubuntu0.3
   ubuntu_24_04/libgstreamer1.0-0: 1.24.2-1ubuntu0.1
   ubuntu_24_04/libgudev-1.0-0: 1:238-5ubuntu1
   ubuntu_24_04/libharfbuzz0b: 8.3.0-2build2
@@ -2773,7 +2773,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/libgsl27: 2.7.1+dfsg-6ubuntu2
   ubuntu_24_04/libgslcblas0: 2.7.1+dfsg-6ubuntu2
   ubuntu_24_04/libgssapi-krb5-2: 1.20.1-6ubuntu2.6
-  ubuntu_24_04/libgstreamer-plugins-base1.0-0: 1.24.2-1ubuntu0.2
+  ubuntu_24_04/libgstreamer-plugins-base1.0-0: 1.24.2-1ubuntu0.3
   ubuntu_24_04/libgstreamer1.0-0: 1.24.2-1ubuntu0.1
   ubuntu_24_04/libgudev-1.0-0: 1:238-5ubuntu1
   ubuntu_24_04/libharfbuzz0b: 8.3.0-2build2
@@ -3182,7 +3182,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_24_04/libgsl27: 2.7.1+dfsg-6ubuntu2
   ubuntu_24_04/libgslcblas0: 2.7.1+dfsg-6ubuntu2
   ubuntu_24_04/libgssapi-krb5-2: 1.20.1-6ubuntu2.6
-  ubuntu_24_04/libgstreamer-plugins-base1.0-0: 1.24.2-1ubuntu0.2
+  ubuntu_24_04/libgstreamer-plugins-base1.0-0: 1.24.2-1ubuntu0.3
   ubuntu_24_04/libgstreamer1.0-0: 1.24.2-1ubuntu0.1
   ubuntu_24_04/libgudev-1.0-0: 1:238-5ubuntu1
   ubuntu_24_04/libharfbuzz0b: 8.3.0-2build2
