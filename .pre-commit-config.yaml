@@ -50,6 +50,11 @@ repos:
           - prospector-profile-utils==1.26.5 # pypi
         args:
           - --test=.prospector-test.yaml
+        exclude: |-
+          (?x)(
+            geoportal/c2cgeoportal_geoportal/scaffolds/advance_create/{{cookiecutter\.project}}/geoportal/.prospector.yaml
+            |docker/qgisserver/.prospector.yaml
+          )$
   - repo: https://github.com/codespell-project/codespell
     rev: v2.4.1
     hooks:
