@@ -47,7 +47,7 @@ repos:
       - id: prospector-to-ruff
         additional_dependencies:
           - prospector-profile-duplicated==1.10.5 # pypi
-          - prospector-profile-utils==1.26.1 # pypi
+          - prospector-profile-utils==1.26.5 # pypi
         args:
           - --test=.prospector-test.yaml
   - repo: https://github.com/codespell-project/codespell
@@ -128,7 +128,7 @@ repos:
           - --without-tool=mypy
         additional_dependencies:
           - prospector-profile-duplicated==1.10.5 # pypi
-          - prospector-profile-utils==1.26.4 # pypi
+          - prospector-profile-utils==1.26.5 # pypi
           - ruff==0.12.10 # pypi
           - pylint[spelling]==3.3.8 # pypi
         exclude: |-
@@ -148,7 +148,7 @@ repos:
           - --profile=.prospector-test.yaml
           - --profile=utils:pre-commit
         additional_dependencies:
-          - prospector-profile-utils==1.26.4 # pypi
+          - prospector-profile-utils==1.26.5 # pypi
         exclude: |-
           (?x)(
             geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/\{\{cookiecutter.project\}\}/.*

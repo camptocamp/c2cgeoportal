@@ -60,7 +60,7 @@ class TestFilterCapabilities(TestCase):
     def _filter_xml(xml, tag_name, layers_whitelist):
         from c2cgeoportal_geoportal.lib.filter_capabilities import _CapabilitiesFilter
 
-        parser = sax.make_parser()
+        parser = sax.make_parser()  # noqa: S317
         result = StringIO()
         downstream_handler = XMLGenerator(result, "utf-8")
         filter_handler = _CapabilitiesFilter(

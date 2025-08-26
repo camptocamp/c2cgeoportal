@@ -21,9 +21,7 @@ def restriction_area_test_data(dbsession, transact):
         Role,
     )
 
-    roles = []
-    for i in range(4):
-        roles.append(Role("secretary_" + str(i)))
+    roles = [Role("secretary_" + str(i)) for i in range(4)]
     dbsession.add_all(roles)
 
     ogc_server = OGCServer(name="test_server")

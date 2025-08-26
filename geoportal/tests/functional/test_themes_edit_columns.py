@@ -127,14 +127,14 @@ class TestThemesEditColumns(TestCase):
         from sqlalchemy.ext.declarative import declarative_base
 
         self.__class__._table_index += 1
-        id = self.__class__._table_index
+        id_ = self.__class__._table_index
 
         engine = DBSession.c2c_rw_bind
         with engine.begin() as connection:
             if not self.metadata:
                 self.metadata = declarative_base().metadata
 
-            tablename = f"geo_table_{id}"
+            tablename = f"geo_table_{id_}"
             schemaname = "geodata"
 
             table1 = Table(
@@ -188,7 +188,7 @@ class TestThemesEditColumns(TestCase):
 
             layer = LayerWMS(name="test_WMS_1", public=True)
             layer.layer = "testpoint_unprotected"
-            layer.id = id
+            layer.id = id_
             layer.geo_table = f"{schemaname}.{tablename}"
             layer.interfaces = [self.main]
             layer.ogc_server = self.ogc_server
@@ -213,8 +213,8 @@ class TestThemesEditColumns(TestCase):
 
             transaction.commit()
 
-            self.layer_ids.append(id)
-            return id
+            self.layer_ids.append(id_)
+            return id_
 
     @staticmethod
     def _get_request(layerid, username=None, params=None) -> None:

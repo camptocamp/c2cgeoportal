@@ -125,4 +125,3 @@ class TestVectorTilesViews:
 
         with pytest.raises(HTTPNotFound):
             VectorTilesViews(request).vector_tiles()
-        assert "Not found any vector tile layer named not_existing_layer_name"

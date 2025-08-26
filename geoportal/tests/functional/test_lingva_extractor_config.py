@@ -71,7 +71,7 @@ def settings():
 
     settings = {
         **configuration.get_config(),
-        **yaml.load(GMF_CONFIG, Loader=yaml.BaseLoader)["vars"],
+        **yaml.load(GMF_CONFIG, Loader=yaml.SafeLoader)["vars"],
     }
 
     with patch(

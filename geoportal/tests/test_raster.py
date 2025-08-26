@@ -148,7 +148,7 @@ class TestRasterViews(TestCase):
         import fiona
 
         with fiona.open("/opt/c2cgeoportal/geoportal/tests/data/dem_absolute.shp") as collection:
-            tiles = [e for e in collection.filter(mask={"type": "Point", "coordinates": [548000, 216000]})]
+            tiles = list(collection.filter(mask={"type": "Point", "coordinates": [548000, 216000]}))
 
         assert (
             tiles[0]["properties"]["location"]

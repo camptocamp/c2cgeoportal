@@ -124,14 +124,14 @@ class TestLayers(TestCase):
             self._tables = []
 
         self.__class__._table_index += 1
-        id = self.__class__._table_index
+        id_ = self.__class__._table_index
 
         engine = DBSession.c2c_rw_bind
         with engine.begin() as connection:
             if not self.metadata:
                 self.metadata = declarative_base().metadata
 
-            tablename = f"table_{id:d}"
+            tablename = f"table_{id_:d}"
 
             table1 = Table(
                 f"{tablename!s}_child",
@@ -195,8 +195,8 @@ class TestLayers(TestCase):
 
             ogc_server = DBSession.query(OGCServer).filter(OGCServer.name == "__test_ogc_server").one()
             layer = LayerWMS()
-            layer.id = id
-            layer.name = str(id)
+            layer.id = id_
+            layer.name = str(id_)
             layer.ogc_server = ogc_server
             layer.geo_table = tablename
             layer.public = public
@@ -223,8 +223,8 @@ class TestLayers(TestCase):
 
             transaction.commit()
 
-            self.layer_ids.append(id)
-            return id
+            self.layer_ids.append(id_)
+            return id_
 
     @staticmethod
     def _get_request(layerid, username=None) -> None:

@@ -184,7 +184,7 @@ class TestTinyOWSProxyView(TestCase):
         from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
 
         request = _create_dummy_request(username="__test_user1")
-        request.params.update(dict(service="wfs", version="1.1.0", request="GetCapabilities"))
+        request.params.update({"service": "wfs", "version": "1.1.0", "request": "GetCapabilities"})
 
         responses.get(
             url="http://localhost/tinyows",
@@ -245,7 +245,12 @@ class TestTinyOWSProxyView(TestCase):
             },
         )
         request.params.update(
-            dict(service="wfs", version="1.1.0", request="DescribeFeatureType", typename="tows:layer_1"),
+            {
+                "service": "wfs",
+                "version": "1.1.0",
+                "request": "DescribeFeatureType",
+                "typename": "tows:layer_1",
+            },
         )
 
         responses.get(
@@ -263,7 +268,12 @@ class TestTinyOWSProxyView(TestCase):
 
         request = _create_dummy_request(username="__test_user1")
         request.params.update(
-            dict(service="wfs", version="1.1.0", request="DescribeFeatureType", typename="tows:layer_3"),
+            {
+                "service": "wfs",
+                "version": "1.1.0",
+                "request": "DescribeFeatureType",
+                "typename": "tows:layer_3",
+            },
         )
 
         with pytest.raises(HTTPForbidden):

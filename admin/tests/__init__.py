@@ -68,13 +68,13 @@ def factory_build_layers(layer_builder, dbsession, add_dimension=True):
 
         if add_dimension:
             layer.dimensions = [
-                Dimension(name=dimensions_protos[id][0], value=dimensions_protos[id][1], layer=layer)
-                for id in [i % 3, (i + 2) % 4, (i + 3) % 4]
+                Dimension(name=dimensions_protos[id_][0], value=dimensions_protos[id_][1], layer=layer)
+                for id_ in [i % 3, (i + 2) % 4, (i + 3) % 4]
             ]
 
         layer.metadatas = [
-            Metadata(name=metadatas_protos[id][0], value=metadatas_protos[id][1])
-            for id in [i % 3, (i + 2) % 3]
+            Metadata(name=metadatas_protos[id_][0], value=metadatas_protos[id_][1])
+            for id_ in [i % 3, (i + 2) % 3]
         ]
         for metadata in layer.metadatas:
             metadata.item = layer
@@ -154,7 +154,7 @@ class AbstractViewsTests:
             field = form.get(name, index=i)
             checkbox = form.html.select_one(f"#{field.id}")
             label = form.html.select_one(f"label[for={field.id}]")
-            assert exp["label"] == list(label.stripped_strings)[0]
+            assert exp["label"] == next(iter(label.stripped_strings))
             assert exp["value"] == checkbox["value"]
             assert exp["checked"] == field.checked
 

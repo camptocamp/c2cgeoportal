@@ -37,7 +37,7 @@ class TestLocalNegociator(TestCase):
     def test_lang_param(self) -> None:
         from c2cgeoportal_geoportal import locale_negotiator
 
-        request = DummyRequest(params=dict(lang="fr"))
+        request = DummyRequest(params={"lang": "fr"})
         lang = locale_negotiator(request)
         assert lang == "fr"
 
