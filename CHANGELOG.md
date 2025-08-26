@@ -1,3 +1,7 @@
+##### 2.9.0.264
+
+- Fix URL length check for fragment used by Geogiraf [c2cgeoportal#12211](https://github.com/camptocamp/c2cgeoportal/pull/12211)
+
 ##### 2.9.0.263
 
 - Upgrade ol mapbox style [ngeo#9877](https://github.com/camptocamp/ngeo/pull/9877)
