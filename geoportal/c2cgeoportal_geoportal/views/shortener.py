@@ -90,9 +90,15 @@ class Shortener:
 
         url = self.request.params["url"]
 
+        url_length = len(url)
+        if "#" in url:
+            url_parsed = urlparse(url)
+            if url_parsed.fragment:
+                url_length -= len(url_parsed.fragment) + 1
+
         # see: https://httpd.apache.org/docs/2.2/mod/core.html#limitrequestline
-        if len(url) > 8190:
-            raise HTTPBadRequest(f"The parameter url is too long ({len(url)} > {8190})")
+        if url_length > 8190:
+            raise HTTPBadRequest(f"The parameter url is too long ({url_length} > {8190})")
 
         allowed_hosts = self.settings.get("allowed_hosts", [])
         url_hostname, ok = is_allowed_url(self.request, url, allowed_hosts)
