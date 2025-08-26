@@ -27,8 +27,8 @@ def layer_groups_test_data(dbsession, transact):
     for i in range(12):
         group = LayerGroup(name=f"groups_{i:02d}")
         group.metadatas = [
-            Metadata(name=metadatas_protos[id][0], value=metadatas_protos[id][1])
-            for id in [i % 3, (i + 2) % 3]
+            Metadata(name=metadatas_protos[id_][0], value=metadatas_protos[id_][1])
+            for id_ in [i % 3, (i + 2) % 3]
         ]
         for metadata in group.metadatas:
             metadata.item = group

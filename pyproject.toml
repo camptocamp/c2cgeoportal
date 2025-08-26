@@ -1,9 +1,21 @@
 [tool.ruff]
 target-version = "py310"
 line-length = 110
+fix = true
+
+[tool.ruff.lint]
+select = []
+ignore = ["ANN401", "ARG005", "B904", "BLE001", "C90", "D100", "D102", "D104", "D105", "D107", "D200", "D202", "D207", "D208", "D212", "E501", "E722", "EM101", "EM102", "ERA001", "FA", "FBT001", "FBT002", "FIX001", "FIX002", "I001", "N806", "PERF203", "PLR09", "PLR2004", "PTH", "Q000", "S101", "S110", "S113", "S603", "S607", "SIM105", "T201", "TD001", "TD002", "TD003", "TRY003", "W293"]
+extend-select = ["UP", "I", "S", "B", "ALL"]
 
 [tool.ruff.lint.pydocstyle]
 convention = "numpy"
+
+[tool.ruff.lint.extend-per-file-ignores]
+"tests/**" = ["ANN", "ARG", "ASYNC", "B904", "BLE001", "D", "DTZ", "E722", "E741", "FBT003", "INP001", "N", "PGH003", "PLC", "PLR2004", "PLW0603", "PLW1641", "PT009", "PT027", "RET", "RUF012", "RUF100", "S104", "S105", "S106", "S108", "S113", "S324", "S603", "S607", "S608", "SLF", "TRY003", "TRY301"]
+"**/tests/**" = ["ANN", "ARG", "ASYNC", "B904", "BLE001", "D", "DTZ", "E722", "E741", "FBT003", "INP001", "N", "PGH003", "PLC", "PLR2004", "PLW0603", "PLW1641", "PT009", "PT027", "RET", "RUF012", "RUF100", "S104", "S105", "S106", "S108", "S113", "S324", "S603", "S607", "S608", "SLF", "TRY003", "TRY301"]
+"**/test_*.py" = ["ANN", "ARG", "ASYNC", "B904", "BLE001", "D", "DTZ", "E722", "E741", "FBT003", "INP001", "N", "PGH003", "PLC", "PLR2004", "PLW0603", "PLW1641", "PT009", "PT027", "RET", "RUF012", "RUF100", "S104", "S105", "S106", "S108", "S113", "S324", "S603", "S607", "S608", "SLF", "TRY003", "TRY301"]
+"**/*_test.py" = ["ANN", "ARG", "ASYNC", "B904", "BLE001", "D", "DTZ", "E722", "E741", "FBT003", "INP001", "N", "PGH003", "PLC", "PLR2004", "PLW0603", "PLW1641", "PT009", "PT027", "RET", "RUF012", "RUF100", "S104", "S105", "S106", "S108", "S113", "S324", "S603", "S607", "S608", "SLF", "TRY003", "TRY301"]
 
 [tool.poetry]
 version = "0.0.0"

@@ -269,9 +269,9 @@ class TestThemesPrivateView(TestCase):
                                 {"public": True},  # __test_layer_wmts
                                 {"public": False},  # __test_layer_wmts_private
                             ],
-                        }
+                        },
                     ],
-                }
+                },
             ],
         )
 

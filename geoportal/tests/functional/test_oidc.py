@@ -95,7 +95,7 @@ class TestLogin(TestCase):
         assert "code_challenge" in query
         assert query["code_challenge_method"] == ["S256"]
 
-        set_cookies = {k: v for k, v in [v.split("=", 1) for v in response.headers.getall("Set-Cookie")]}
+        set_cookies = dict([v.split("=", 1) for v in response.headers.getall("Set-Cookie")])
         assert re.match(
             r"^.*; Domain=example\.com; Max\-Age=600; Path=/; expires=.*; secure; HttpOnly; SameSite=Lax$",
             set_cookies["code_verifier"],
@@ -159,7 +159,7 @@ class TestLogin(TestCase):
         assert response.status_int == 302
         assert response.headers["Location"] == "/came_from"
 
-        set_cookies = {k: v for k, v in [v.split("=", 1) for v in response.headers.getall("Set-Cookie")]}
+        set_cookies = dict([v.split("=", 1) for v in response.headers.getall("Set-Cookie")])
         assert set_cookies["came_from"].startswith("; Max-Age=0; Path=/; expires="), set_cookies["came_from"]
         assert set_cookies["code_verifier"].startswith("; Max-Age=0; Path=/; expires="), set_cookies[
             "code_verifier"

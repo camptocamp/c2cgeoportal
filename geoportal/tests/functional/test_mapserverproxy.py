@@ -274,15 +274,15 @@ class TestMapserverproxyView(TestCase):
 
         request = self._create_dummy_request()
         request.params.update(
-            dict(
-                service="wms",
-                version="1.1.1",
-                request="getlegendgraphic",
-                layer="testpoint_unprotected",
-                srs="EPSG:21781",
-                format="image/png",
-                extraparam="with spéciàl chârs",
-            ),
+            {
+                "service": "wms",
+                "version": "1.1.1",
+                "request": "getlegendgraphic",
+                "layer": "testpoint_unprotected",
+                "srs": "EPSG:21781",
+                "format": "image/png",
+                "extraparam": "with spéciàl chârs",
+            },
         )
         response = MapservProxy(request).proxy()
         assert not response.cache_control.public
@@ -296,15 +296,15 @@ class TestMapserverproxyView(TestCase):
             {"headers": {"mapserver": {"cache_control_max_age": 0, "access_control_allow_origin": "*"}}},
         )
         request.params.update(
-            dict(
-                service="wms",
-                version="1.1.1",
-                request="getlegendgraphic",
-                layer="testpoint_unprotected",
-                srs="EPSG:21781",
-                format="image/png",
-                extraparam="with spéciàl chârs",
-            ),
+            {
+                "service": "wms",
+                "version": "1.1.1",
+                "request": "getlegendgraphic",
+                "layer": "testpoint_unprotected",
+                "srs": "EPSG:21781",
+                "format": "image/png",
+                "extraparam": "with spéciàl chârs",
+            },
         )
         response = MapservProxy(request).proxy()
         assert response.headers["Cache-Control"] == "max-age=0, must-revalidate, no-cache, no-store"
@@ -314,21 +314,21 @@ class TestMapserverproxyView(TestCase):
 
         request = self._create_dummy_request()
         request.params.update(
-            dict(
-                service="wms",
-                version="1.1.1",
-                request="getfeatureinfo",
-                bbox="599910,199955,600090,200000",
-                layers="testpoint_unprotected",
-                query_layers="testpoint_unprotected",
-                srs="EPSG:21781",
-                format="image/png",
-                info_format="application/vnd.ogc.gml",
-                width="600",
-                height="400",
-                x="0",
-                y="400",
-            ),
+            {
+                "service": "wms",
+                "version": "1.1.1",
+                "request": "getfeatureinfo",
+                "bbox": "599910,199955,600090,200000",
+                "layers": "testpoint_unprotected",
+                "query_layers": "testpoint_unprotected",
+                "srs": "EPSG:21781",
+                "format": "image/png",
+                "info_format": "application/vnd.ogc.gml",
+                "width": "600",
+                "height": "400",
+                "x": "0",
+                "y": "400",
+            },
         )
         response = MapservProxy(request).proxy()
 
@@ -375,21 +375,21 @@ class TestMapserverproxyView(TestCase):
 
         request = self._create_dummy_request()
         request.params.update(
-            dict(
-                service="wms",
-                version="1.1.1",
-                request="getmap",
-                bbox="599820,199910,600180,200090",
-                layers="testpoint_unprotected",
-                width="600",
-                height="400",
-                srs="EPSG:21781",
-                format="image/png",
-            ),
+            {
+                "service": "wms",
+                "version": "1.1.1",
+                "request": "getmap",
+                "bbox": "599820,199910,600180,200090",
+                "layers": "testpoint_unprotected",
+                "width": "600",
+                "height": "400",
+                "srs": "EPSG:21781",
+                "format": "image/png",
+            },
         )
         response = MapservProxy(request).proxy()
 
-        assert response.status_int, 200
+        assert response.status_int == 200
         assert str(response.cache_control) == "max-age=10, must-revalidate, no-cache, no-store, private"
         # 4 points
         md5sum = hashlib.md5(response.body).hexdigest()
@@ -400,21 +400,21 @@ class TestMapserverproxyView(TestCase):
 
         request = self._create_dummy_request(username="__test_user1")
         request.params.update(
-            dict(
-                service="wms",
-                version="1.1.1",
-                request="getmap",
-                bbox="599820,199910,600180,200090",
-                layers="testpoint_unprotected",
-                width="600",
-                height="400",
-                srs="EPSG:21781",
-                format="image/png",
-            ),
+            {
+                "service": "wms",
+                "version": "1.1.1",
+                "request": "getmap",
+                "bbox": "599820,199910,600180,200090",
+                "layers": "testpoint_unprotected",
+                "width": "600",
+                "height": "400",
+                "srs": "EPSG:21781",
+                "format": "image/png",
+            },
         )
         response = MapservProxy(request).proxy()
 
-        assert response.status_int, 200
+        assert response.status_int == 200
         assert str(response.cache_control) == "max-age=10, must-revalidate, no-cache, no-store, private"
         # 4 points
         md5sum = hashlib.md5(response.body).hexdigest()
@@ -425,21 +425,21 @@ class TestMapserverproxyView(TestCase):
 
         request = self._create_dummy_request(username="__test_user2")
         request.params.update(
-            dict(
-                service="wms",
-                version="1.1.1",
-                request="getmap",
-                bbox="599820,199910,600180,200090",
-                layers="testpoint_unprotected",
-                width="600",
-                height="400",
-                srs="EPSG:21781",
-                format="image/png",
-            ),
+            {
+                "service": "wms",
+                "version": "1.1.1",
+                "request": "getmap",
+                "bbox": "599820,199910,600180,200090",
+                "layers": "testpoint_unprotected",
+                "width": "600",
+                "height": "400",
+                "srs": "EPSG:21781",
+                "format": "image/png",
+            },
         )
         response = MapservProxy(request).proxy()
 
-        assert response.status_int, 200
+        assert response.status_int == 200
         assert str(response.cache_control) == "max-age=10, must-revalidate, no-cache, no-store, private"
         # 4 points
         md5sum = hashlib.md5(response.body).hexdigest()
@@ -450,21 +450,21 @@ class TestMapserverproxyView(TestCase):
 
         request = self._create_dummy_request()
         request.params.update(
-            dict(
-                service="wms",
-                version="1.1.1",
-                request="getmap",
-                bbox="599820,199910,600180,200090",
-                layers="testpoint_protected",
-                width="600",
-                height="400",
-                srs="EPSG:21781",
-                format="image/png",
-            ),
+            {
+                "service": "wms",
+                "version": "1.1.1",
+                "request": "getmap",
+                "bbox": "599820,199910,600180,200090",
+                "layers": "testpoint_protected",
+                "width": "600",
+                "height": "400",
+                "srs": "EPSG:21781",
+                "format": "image/png",
+            },
         )
         response = MapservProxy(request).proxy()
 
-        assert response.status_int, 200
+        assert response.status_int == 200
         assert str(response.cache_control) == "max-age=10, must-revalidate, no-cache, no-store, private"
         # empty
         md5sum = hashlib.md5(response.body).hexdigest()
@@ -475,21 +475,21 @@ class TestMapserverproxyView(TestCase):
 
         request = self._create_dummy_request(username="__test_user1")
         request.params.update(
-            dict(
-                service="wms",
-                version="1.1.1",
-                request="getmap",
-                bbox="599820,199910,600180,200090",
-                layers="testpoint_protected",
-                width="600",
-                height="400",
-                srs="EPSG:21781",
-                format="image/png",
-            ),
+            {
+                "service": "wms",
+                "version": "1.1.1",
+                "request": "getmap",
+                "bbox": "599820,199910,600180,200090",
+                "layers": "testpoint_protected",
+                "width": "600",
+                "height": "400",
+                "srs": "EPSG:21781",
+                "format": "image/png",
+            },
         )
         response = MapservProxy(request).proxy()
 
-        assert response.status_int, 200
+        assert response.status_int == 200
         assert str(response.cache_control) == "max-age=10, must-revalidate, no-cache, no-store, private"
         # two points
         md5sum = hashlib.md5(response.body).hexdigest()
@@ -500,17 +500,17 @@ class TestMapserverproxyView(TestCase):
 
         request = self._create_dummy_request(username="__test_user2")
         request.params.update(
-            dict(
-                service="wms",
-                version="1.1.1",
-                request="getmap",
-                bbox="599820,199910,600180,200090",
-                layers="testpoint_protected",
-                width="600",
-                height="400",
-                srs="EPSG:21781",
-                format="image/png",
-            ),
+            {
+                "service": "wms",
+                "version": "1.1.1",
+                "request": "getmap",
+                "bbox": "599820,199910,600180,200090",
+                "layers": "testpoint_protected",
+                "width": "600",
+                "height": "400",
+                "srs": "EPSG:21781",
+                "format": "image/png",
+            },
         )
         response = MapservProxy(request).proxy()
 
@@ -524,21 +524,21 @@ class TestMapserverproxyView(TestCase):
 
         request = self._create_dummy_request(username="__test_user1")
         request.params.update(
-            dict(
-                service="wms",
-                version="1.1.1",
-                request="getmap",
-                bbox="599820,199910,600180,200090",
-                layers="testpoint_protected_query_with_collect",
-                width="600",
-                height="400",
-                srs="EPSG:21781",
-                format="image/png",
-            ),
+            {
+                "service": "wms",
+                "version": "1.1.1",
+                "request": "getmap",
+                "bbox": "599820,199910,600180,200090",
+                "layers": "testpoint_protected_query_with_collect",
+                "width": "600",
+                "height": "400",
+                "srs": "EPSG:21781",
+                "format": "image/png",
+            },
         )
         response = MapservProxy(request).proxy()
 
-        assert response.status_int, 200
+        assert response.status_int == 200
         assert str(response.cache_control) == "max-age=10, must-revalidate, no-cache, no-store, private"
         # two points
         md5sum = hashlib.md5(response.body).hexdigest()
@@ -549,21 +549,21 @@ class TestMapserverproxyView(TestCase):
 
         request = self._create_dummy_request(username="__test_user2")
         request.params.update(
-            dict(
-                service="wms",
-                version="1.1.1",
-                request="getmap",
-                bbox="599820,199910,600180,200090",
-                layers="testpoint_protected_query_with_collect",
-                width="600",
-                height="400",
-                srs="EPSG:21781",
-                format="image/png",
-            ),
+            {
+                "service": "wms",
+                "version": "1.1.1",
+                "request": "getmap",
+                "bbox": "599820,199910,600180,200090",
+                "layers": "testpoint_protected_query_with_collect",
+                "width": "600",
+                "height": "400",
+                "srs": "EPSG:21781",
+                "format": "image/png",
+            },
         )
         response = MapservProxy(request).proxy()
 
-        assert response.status_int, 200
+        assert response.status_int == 200
         assert str(response.cache_control) == "max-age=10, must-revalidate, no-cache, no-store, private"
         # empty
         md5sum = hashlib.md5(response.body).hexdigest()
@@ -574,21 +574,21 @@ class TestMapserverproxyView(TestCase):
 
         request = self._create_dummy_request(username="__test_user3")
         request.params.update(
-            dict(
-                service="wms",
-                version="1.1.1",
-                request="getmap",
-                bbox="599820,199910,600180,200090",
-                layers="testpoint_protected_query_with_collect",
-                width="600",
-                height="400",
-                srs="EPSG:21781",
-                format="image/png",
-            ),
+            {
+                "service": "wms",
+                "version": "1.1.1",
+                "request": "getmap",
+                "bbox": "599820,199910,600180,200090",
+                "layers": "testpoint_protected_query_with_collect",
+                "width": "600",
+                "height": "400",
+                "srs": "EPSG:21781",
+                "format": "image/png",
+            },
         )
         response = MapservProxy(request).proxy()
 
-        assert response.status_int, 200
+        assert response.status_int == 200
         assert str(response.cache_control) == "max-age=10, must-revalidate, no-cache, no-store, private"
         # two points
         md5sum = hashlib.md5(response.body).hexdigest()
@@ -650,12 +650,12 @@ class TestMapserverproxyView(TestCase):
         from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_getcap_request()
-        request.params.update(dict(service="wms", version="1.1.1", request="getcapabilities"))
+        request.params.update({"service": "wms", "version": "1.1.1", "request": "getcapabilities"})
         response = MapservProxy(request).proxy()
         assert "<Name>testpoint_protected</Name>" not in response.body.decode("utf-8")
 
         request = self._create_getcap_request(username="__test_user1")
-        request.params.update(dict(service="wms", version="1.1.1", request="getcapabilities"))
+        request.params.update({"service": "wms", "version": "1.1.1", "request": "getcapabilities"})
         response = MapservProxy(request).proxy()
         assert "<Name>testpoint_protected</Name>" in response.body.decode("utf-8")
 
@@ -663,12 +663,12 @@ class TestMapserverproxyView(TestCase):
         from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_getcap_request()
-        request.params.update(dict(service="wfs", version="1.1.1", request="getcapabilities"))
+        request.params.update({"service": "wfs", "version": "1.1.1", "request": "getcapabilities"})
         response = MapservProxy(request).proxy()
         assert "<Name>testpoint_protected</Name>" not in response.body.decode("utf-8")
 
         request = self._create_getcap_request(username="__test_user1")
-        request.params.update(dict(service="wfs", version="1.1.1", request="getcapabilities"))
+        request.params.update({"service": "wfs", "version": "1.1.1", "request": "getcapabilities"})
         response = MapservProxy(request).proxy()
         assert "<Name>testpoint_protected</Name>" in response.body.decode("utf-8")
 
@@ -692,21 +692,21 @@ class TestMapserverproxyView(TestCase):
 
     def test_get_feature_is_equal_to(self) -> None:
         response = self._get_feature_is_equal_to("foo")
-        assert response.status_int, 200
+        assert response.status_int == 200
         assert "foo" in response.body.decode("utf-8")
         assert "bar" not in response.body.decode("utf-8")
         assert "éàè" not in response.body.decode("utf-8")
         assert "123" not in response.body.decode("utf-8")
 
         response = self._get_feature_is_equal_to("éàè")
-        assert response.status_int, 200  # 500)
+        assert response.status_int == 200  # 500)
         assert "foo" not in response.body.decode("utf-8")
         assert "bar" not in response.body.decode("utf-8")
         assert "éàè" in response.body.decode("utf-8")
         assert "123" not in response.body.decode("utf-8")
 
         response = self._get_feature_is_equal_to("123")
-        assert response.status_int, 200
+        assert response.status_int == 200
         assert "foo" not in response.body.decode("utf-8")
         assert "bar" not in response.body.decode("utf-8")
         assert "éàè" not in response.body.decode("utf-8")
@@ -739,21 +739,21 @@ class TestMapserverproxyView(TestCase):
 
     def test_get_feature_is_not_equal_to(self) -> None:
         response = self._get_feature_is_not_equal_to("foo")
-        assert response.status_int, 200
+        assert response.status_int == 200
         assert "foo" not in response.body.decode("utf-8")
         assert "bar" in response.body.decode("utf-8")
         assert "éàè" in response.body.decode("utf-8")
         assert "123" in response.body.decode("utf-8")
 
         response = self._get_feature_is_not_equal_to("éàè")
-        assert response.status_int, 200
+        assert response.status_int == 200
         assert "foo" in response.body.decode("utf-8")
         assert "bar" in response.body.decode("utf-8")
         assert "éàè" not in response.body.decode("utf-8")
         assert "123" in response.body.decode("utf-8")
 
         response = self._get_feature_is_not_equal_to("123")
-        assert response.status_int, 200
+        assert response.status_int == 200
         assert "foo" in response.body.decode("utf-8")
         assert "bar" in response.body.decode("utf-8")
         assert "éàè" in response.body.decode("utf-8")
@@ -761,35 +761,35 @@ class TestMapserverproxyView(TestCase):
 
     def test_authenticated_get_feature(self) -> None:
         response = self._get_feature_is_not_equal_to("toto", "city", "testpoint_protected")
-        assert response.status_int, 200
+        assert response.status_int == 200
         assert "Lausanne" not in response.body.decode("utf-8")
         assert "Chambéry" not in response.body.decode("utf-8")
         assert "Paris" not in response.body.decode("utf-8")
         assert "Londre" not in response.body.decode("utf-8")
 
         response = self._get_feature_is_not_equal_to("toto", "city", "testpoint_protected", "__test_user1")
-        assert response.status_int, 200
+        assert response.status_int == 200
         assert "Lausanne" not in response.body.decode("utf-8")
         assert "Chambéry" in response.body.decode("utf-8")
         assert "Paris" in response.body.decode("utf-8")
         assert "Londre" not in response.body.decode("utf-8")
 
         response = self._get_feature_is_not_equal_to("toto", "city", "testpoint_protected", "__test_user2")
-        assert response.status_int, 200
+        assert response.status_int == 200
         assert "Lausanne" not in response.body.decode("utf-8")
         assert "Chambéry" not in response.body.decode("utf-8")
         assert "Paris" not in response.body.decode("utf-8")
         assert "Londre" not in response.body.decode("utf-8")
 
         response = self._get_feature_is_not_equal_to("toto", "city", "testpoint_protected", "__test_user3")
-        assert response.status_int, 200
+        assert response.status_int == 200
         assert "Lausanne" not in response.body.decode("utf-8")
         assert "Chambéry" not in response.body.decode("utf-8")
         assert "Paris" not in response.body.decode("utf-8")
         assert "Londre" not in response.body.decode("utf-8")
 
         response = self._get_feature_is_not_equal_to("toto", "city", "testpoint_protected", "__test_user4")
-        assert response.status_int, 200
+        assert response.status_int == 200
         assert "Lausanne" in response.body.decode("utf-8")
         assert "Chambéry" in response.body.decode("utf-8")
         assert "Paris" not in response.body.decode("utf-8")
@@ -815,21 +815,21 @@ class TestMapserverproxyView(TestCase):
 
     def test_get_feature_is_like(self) -> None:
         response = self._get_feature_is_like("*o*")
-        assert response.status_int, 200
+        assert response.status_int == 200
         assert "foo" in response.body.decode("utf-8")
         assert "bar" not in response.body.decode("utf-8")
         assert "éàè" not in response.body.decode("utf-8")
         assert "123" not in response.body.decode("utf-8")
 
         response = self._get_feature_is_like("*à*")
-        assert response.status_int, 200
+        assert response.status_int == 200
         assert "foo" not in response.body.decode("utf-8")
         assert "bar" not in response.body.decode("utf-8")
         assert "éàè" in response.body.decode("utf-8")
         assert "123" not in response.body.decode("utf-8")
 
         response = self._get_feature_is_like("*2*")
-        assert response.status_int, 200
+        assert response.status_int == 200
         assert "foo" not in response.body.decode("utf-8")
         assert "bar" not in response.body.decode("utf-8")
         assert "éàè" not in response.body.decode("utf-8")
@@ -846,13 +846,13 @@ class TestMapserverproxyView(TestCase):
             fid2=self.id_paris,
         )
         request.params.update(
-            dict(
-                service="wfs",
-                version="1.0.0",
-                request="getfeature",
-                typename="testpoint_unprotected",
-                featureid=featureid,
-            ),
+            {
+                "service": "wfs",
+                "version": "1.0.0",
+                "request": "getfeature",
+                "typename": "testpoint_unprotected",
+                "featureid": featureid,
+            },
         )
         response = MapservProxy(request).proxy()
         assert "Lausanne" in response.body.decode("utf-8")
@@ -872,13 +872,13 @@ class TestMapserverproxyView(TestCase):
             fid2=self.id_paris,
         )
         request.params.update(
-            dict(
-                service="wfs",
-                version="1.0.0",
-                request="getfeature",
-                typename="testpoint_unprotected",
-                featureid=featureid,
-            ),
+            {
+                "service": "wfs",
+                "version": "1.0.0",
+                "request": "getfeature",
+                "typename": "testpoint_unprotected",
+                "featureid": featureid,
+            },
         )
         response = MapservProxy(request).proxy()
 
@@ -895,15 +895,15 @@ class TestMapserverproxyView(TestCase):
         request.body = SUBSTITUTION_GETFEATURE_REQUEST
 
         response = MapservProxy(request).proxy()
-        assert response.status_int, 200
+        assert response.status_int == 200
         assert "foo" in response.body.decode("utf-8")
         assert "bar" not in response.body.decode("utf-8")
         assert "éàè" not in response.body.decode("utf-8")
         assert "123" not in response.body.decode("utf-8")
 
-        request.params.update(dict(s_name="bar"))
+        request.params.update({"s_name": "bar"})
         response = MapservProxy(request).proxy()
-        assert response.status_int, 200
+        assert response.status_int == 200
         assert "foo" in response.body.decode("utf-8")
         assert "bar" not in response.body.decode("utf-8")
         assert "éàè" not in response.body.decode("utf-8")
@@ -912,9 +912,9 @@ class TestMapserverproxyView(TestCase):
         request = self._create_dummy_request()
         request.method = "POST"
         request.body = SUBSTITUTION_GETFEATURE_REQUEST
-        request.params.update(dict(S_NAME="bar"))
+        request.params.update({"S_NAME": "bar"})
         response = MapservProxy(request).proxy()
-        assert response.status_int, 200
+        assert response.status_int == 200
         assert "foo" in response.body.decode("utf-8")
         assert "bar" not in response.body.decode("utf-8")
         assert "éàè" not in response.body.decode("utf-8")
@@ -926,7 +926,7 @@ class TestMapserverproxyView(TestCase):
         fill_tech_user_functionality("anonymous", (("mapserver_substitution", "name=bar"),), DBSession)
 
         response = MapservProxy(request).proxy()
-        assert response.status_int, 200
+        assert response.status_int == 200
         assert "foo" not in response.body.decode("utf-8")
         assert "bar" in response.body.decode("utf-8")
         assert "éàè" not in response.body.decode("utf-8")
@@ -939,7 +939,7 @@ class TestMapserverproxyView(TestCase):
             DBSession,
         )
         response = MapservProxy(request).proxy()
-        assert response.status_int, 200
+        assert response.status_int == 200
         assert "Lausanne" in response.body.decode("utf-8")
         assert "Swiss" in response.body.decode("utf-8")
 
@@ -949,7 +949,7 @@ class TestMapserverproxyView(TestCase):
             DBSession,
         )
         response = MapservProxy(request).proxy()
-        assert response.status_int, 200
+        assert response.status_int == 200
         assert "Lausanne" in response.body.decode("utf-8")
         assert "Swiss" not in response.body.decode("utf-8")
 
@@ -959,7 +959,7 @@ class TestMapserverproxyView(TestCase):
             DBSession,
         )
         response = MapservProxy(request).proxy()
-        assert response.status_int, 200
+        assert response.status_int == 200
         assert "Lausanne" not in response.body.decode("utf-8")
         assert "Swiss" in response.body.decode("utf-8")
 
@@ -969,7 +969,7 @@ class TestMapserverproxyView(TestCase):
             DBSession,
         )
         response = MapservProxy(request).proxy()
-        assert response.status_int, 200
+        assert response.status_int == 200
         assert "Lausanne" not in response.body.decode("utf-8")
         assert "Swiss" not in response.body.decode("utf-8")
 
@@ -981,7 +981,7 @@ class TestMapserverproxyView(TestCase):
         request.body = SUBSTITUTION_GETFEATURE_REQUEST
         fill_tech_user_functionality("anonymous", (("mapserver_substitution", "foo_bar"),), DBSession)
 
-        request.params.update(dict(s_test1="to be removed", S_TEST2="to be removed"))
+        request.params.update({"s_test1": "to be removed", "S_TEST2": "to be removed"})
         # just pass in the log message
         response = MapservProxy(request).proxy()
 
@@ -989,7 +989,7 @@ class TestMapserverproxyView(TestCase):
         from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_getcap_request(username="__test_user1")
-        request.params.update(dict(service="wms", version="1.1.1", request="getcapabilities"))
+        request.params.update({"service": "wms", "version": "1.1.1", "request": "getcapabilities"})
         response = MapservProxy(request).proxy()
         assert "<Name>testpoint_protected</Name>" in response.body.decode("utf-8")
 
@@ -999,6 +999,11 @@ class TestMapserverproxyView(TestCase):
 
         request = self._create_getcap_request()
         request.params.update(
-            dict(service="wms", version="1.1.1", request="getcapabilities", authentication_required="true"),
+            {
+                "service": "wms",
+                "version": "1.1.1",
+                "request": "getcapabilities",
+                "authentication_required": "true",
+            },
         )
         self.assertRaises(HTTPForbidden, MapservProxy(request).proxy)

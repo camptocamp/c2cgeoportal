@@ -122,7 +122,7 @@ class TestMapserverproxyViewGroup(TestCase):
         from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_getcap_request()
-        request.params.update(dict(service="wms", version="1.1.1", request="getcapabilities"))
+        request.params.update({"service": "wms", "version": "1.1.1", "request": "getcapabilities"})
         response = MapservProxy(request).proxy()
 
         assert "<Name>testpoint_protected</Name>" not in response.body.decode("utf-8")
@@ -134,7 +134,7 @@ class TestMapserverproxyViewGroup(TestCase):
         assert "<Name>testpoint_group_2</Name>" not in response.body.decode("utf-8")
 
         request = self._create_getcap_request(username="__test_user1")
-        request.params.update(dict(service="wms", version="1.1.1", request="getcapabilities"))
+        request.params.update({"service": "wms", "version": "1.1.1", "request": "getcapabilities"})
         response = MapservProxy(request).proxy()
         assert "<Name>testpoint_protected</Name>" in response.body.decode("utf-8")
         assert "<Name>testpoint_protected_2</Name>" in response.body.decode("utf-8")
@@ -146,7 +146,7 @@ class TestMapserverproxyViewGroup(TestCase):
         from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_getcap_request()
-        request.params.update(dict(service="wfs", version="1.1.1", request="getcapabilities"))
+        request.params.update({"service": "wfs", "version": "1.1.1", "request": "getcapabilities"})
         response = MapservProxy(request).proxy()
 
         assert "<Name>testpoint_protected</Name>" not in response.body.decode("utf-8")
@@ -155,7 +155,7 @@ class TestMapserverproxyViewGroup(TestCase):
         assert "<Name>testpoint_group</Name>" not in response.body.decode("utf-8")
 
         request = self._create_getcap_request(username="__test_user1")
-        request.params.update(dict(service="wfs", version="1.1.1", request="getcapabilities"))
+        request.params.update({"service": "wfs", "version": "1.1.1", "request": "getcapabilities"})
         response = MapservProxy(request).proxy()
         assert "<Name>testpoint_protected</Name>" in response.body.decode("utf-8")
         assert "<Name>testpoint_unprotected</Name>" in response.body.decode("utf-8")

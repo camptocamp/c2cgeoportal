@@ -1,6 +1,8 @@
 # pylint: disable=no-self-use,unsubscriptable-object
 
+import functools
 import json
+import operator
 import re
 
 import pyramid.httpexceptions
@@ -206,7 +208,7 @@ class TestRole(TestTreeGroup):
                 for f in sorted(
                     [
                         f
-                        for f in sum(functionalities.values(), [])
+                        for f in functools.reduce(operator.iadd, functionalities.values(), [])
                         if f.name in ("default_theme", "print_template")
                     ],
                     key=lambda f: (f.name, f.value),
@@ -256,10 +258,10 @@ class TestRole(TestTreeGroup):
             roles_test_data["functionalities"]["print_template"][1].id,
             roles_test_data["functionalities"]["print_template"][2].id,
         ]
-        form["functionalities"] = [str(id) for id in functionality_ids]
+        form["functionalities"] = [str(id_) for id_ in functionality_ids]
 
         ra_ids = [roles_test_data["restrictionareas"][2].id, roles_test_data["restrictionareas"][3].id]
-        form["restrictionareas"] = [str(id) for id in ra_ids]
+        form["restrictionareas"] = [str(id_) for id_ in ra_ids]
 
         resp = form.submit("submit")
 

@@ -216,7 +216,7 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from pyramid.httpexceptions import HTTPBadRequest
 
-        request = self._create_dummy_request(params=dict(query="text", limit="bad"))
+        request = self._create_dummy_request(params={"query": "text", "limit": "bad"})
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         assert isinstance(response, HTTPBadRequest)
@@ -225,7 +225,7 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from pyramid.httpexceptions import HTTPBadRequest
 
-        request = self._create_dummy_request(params=dict(query="text", partitionlimit="bad"))
+        request = self._create_dummy_request(params={"query": "text", "partitionlimit": "bad"})
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         assert isinstance(response, HTTPBadRequest)
@@ -234,7 +234,7 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from geojson.feature import FeatureCollection
 
-        request = self._create_dummy_request(params=dict(query="tra sol", limit=1))
+        request = self._create_dummy_request(params={"query": "tra sol", "limit": 1})
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         assert isinstance(response, FeatureCollection)
@@ -246,7 +246,7 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from geojson.feature import FeatureCollection
 
-        request = self._create_dummy_request(params=dict(query="tra sol", limit=2000))
+        request = self._create_dummy_request(params={"query": "tra sol", "limit": 2000})
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         assert isinstance(response, FeatureCollection)
@@ -260,7 +260,7 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from geojson.feature import FeatureCollection
 
-        request = self._create_dummy_request(params=dict(query="tra sol", partitionlimit=2000))
+        request = self._create_dummy_request(params={"query": "tra sol", "partitionlimit": 2000})
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         assert isinstance(response, FeatureCollection)
@@ -274,7 +274,7 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from geojson.feature import FeatureCollection
 
-        request = self._create_dummy_request(params=dict(query="tra sol", limit=40))
+        request = self._create_dummy_request(params={"query": "tra sol", "limit": 40})
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         assert isinstance(response, FeatureCollection)
@@ -288,7 +288,7 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from geojson.feature import FeatureCollection
 
-        request = self._create_dummy_request(params=dict(query="foo"))
+        request = self._create_dummy_request(params={"query": "foo"})
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         assert isinstance(response, FeatureCollection)
@@ -298,7 +298,7 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from geojson.feature import FeatureCollection
 
-        request = self._create_dummy_request(params=dict(query="pl sem", limit=40))
+        request = self._create_dummy_request(params={"query": "pl sem", "limit": 40})
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         assert isinstance(response, FeatureCollection)
@@ -308,7 +308,7 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from geojson.feature import FeatureCollection
 
-        request = self._create_dummy_request(params=dict(query="pl sem", limit=40), username="__test_user1")
+        request = self._create_dummy_request(params={"query": "pl sem", "limit": 40}, username="__test_user1")
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         assert isinstance(response, FeatureCollection)
@@ -320,7 +320,10 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from geojson.feature import FeatureCollection
 
-        request = self._create_dummy_request(params=dict(query="ven nei", limit=40), username="__test_user1")
+        request = self._create_dummy_request(
+            params={"query": "ven nei", "limit": 40},
+            username="__test_user1",
+        )
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         assert isinstance(response, FeatureCollection)
@@ -330,7 +333,10 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from geojson.feature import FeatureCollection
 
-        request = self._create_dummy_request(params=dict(query="ven nei", limit=40), username="__test_user2")
+        request = self._create_dummy_request(
+            params={"query": "ven nei", "limit": 40},
+            username="__test_user2",
+        )
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         assert isinstance(response, FeatureCollection)
@@ -342,7 +348,7 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from geojson.feature import FeatureCollection
 
-        request = self._create_dummy_request(params=dict(query="tra sol", limit=40, partitionlimit=1))
+        request = self._create_dummy_request(params={"query": "tra sol", "limit": 40, "partitionlimit": 1})
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         assert isinstance(response, FeatureCollection)
@@ -354,7 +360,7 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from geojson.feature import FeatureCollection
 
-        request = self._create_dummy_request(params=dict(query="lausanne", limit=10))
+        request = self._create_dummy_request(params={"query": "lausanne", "limit": 10})
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         assert isinstance(response, FeatureCollection)
@@ -367,7 +373,7 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from geojson.feature import FeatureCollection
 
-        request = self._create_dummy_request(params=dict(query="lausanne", limit=10, interface="main"))
+        request = self._create_dummy_request(params={"query": "lausanne", "limit": 10, "interface": "main"})
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         assert isinstance(response, FeatureCollection)
@@ -377,7 +383,7 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from geojson.feature import FeatureCollection
 
-        request = self._create_dummy_request(params=dict(query="simi", limit=3))
+        request = self._create_dummy_request(params={"query": "simi", "limit": 3})
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         assert isinstance(response, FeatureCollection)
@@ -390,7 +396,7 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from geojson.feature import FeatureCollection
 
-        request = self._create_dummy_request(params=dict(query="simi", limit=3, ranksystem="ts_rank_cd"))
+        request = self._create_dummy_request(params={"query": "simi", "limit": 3, "ranksystem": "ts_rank_cd"})
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         assert isinstance(response, FeatureCollection)
@@ -403,7 +409,7 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from geojson.feature import FeatureCollection
 
-        request = self._create_dummy_request(params=dict(query="tra 'sol"))
+        request = self._create_dummy_request(params={"query": "tra 'sol"})
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         assert isinstance(response, FeatureCollection)
@@ -417,7 +423,7 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from geojson.feature import FeatureCollection
 
-        request = self._create_dummy_request(params=dict(query="reg", limit=40))
+        request = self._create_dummy_request(params={"query": "reg", "limit": 40})
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, FeatureCollection))
@@ -427,7 +433,7 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from geojson.feature import FeatureCollection
 
-        request = self._create_dummy_request(params=dict(query="reg", limit=40), username="__test_user1")
+        request = self._create_dummy_request(params={"query": "reg", "limit": 40}, username="__test_user1")
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, FeatureCollection))

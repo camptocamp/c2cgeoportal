@@ -56,8 +56,8 @@ def theme_test_data(dbsession, transact):
         theme.public = i % 2 == 1
         theme.interfaces = [interfaces[i % 4], interfaces[(i + 2) % 4]]
         theme.metadatas = [
-            Metadata(name=metadatas_protos[id][0], value=metadatas_protos[id][1])
-            for id in [i % 3, (i + 2) % 3]
+            Metadata(name=metadatas_protos[id_][0], value=metadatas_protos[id_][1])
+            for id_ in [i % 3, (i + 2) % 3]
         ]
         for metadata in theme.metadatas:
             metadata.item = theme

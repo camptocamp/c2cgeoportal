@@ -52,9 +52,9 @@ class TestXSDGenerator(TestCase):
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
         self.maxDiff = None
 
-        Base = declarative_base()  # noqa
+        Base = declarative_base()
 
-        class Child(Base):  # type: ignore
+        class Child(Base):  # type: ignore[misc]
             __tablename__ = "child"
             id = Column(types.Integer, primary_key=True)
             name = Column(types.Unicode)
@@ -64,7 +64,7 @@ class TestXSDGenerator(TestCase):
                 self.name = name
                 self.custom_order = custom_order
 
-        class Parent(Base):  # type: ignore
+        class Parent(Base):  # type: ignore[misc]
             __tablename__ = "parent"
             id = Column(types.Integer, primary_key=True)
             child1_id = Column(types.Integer, ForeignKey("child.id"))
