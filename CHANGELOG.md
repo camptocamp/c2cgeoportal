@@ -1,3 +1,7 @@
+##### 2.9.0.265
+
+- Audit Dpkg 2.9 [c2cgeoportal#12214](https://github.com/camptocamp/c2cgeoportal/pull/12214)
+
 ##### 2.9.0.264
 
 - Fix URL length check for fragment used by Geogiraf [c2cgeoportal#12211](https://github.com/camptocamp/c2cgeoportal/pull/12211)
