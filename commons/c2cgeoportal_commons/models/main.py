@@ -1451,12 +1451,12 @@ class RestrictionArea(Base):  # type: ignore[valid-type,misc]
         },
     )
     area = mapped_column(
-        Geometry("POLYGON", srid=_srid),
+        Geometry("MULTIPOLYGON", srid=_srid),
         info={
             "colanderalchemy": {
                 "title": _("Area"),
                 "description": _("Active in the following area, if not defined, it is active everywhere."),
-                "typ": ColanderGeometry("POLYGON", srid=_srid, map_srid=_map_config["srid"]),
+                "typ": ColanderGeometry("MULTIPOLYGON", srid=_srid, map_srid=_map_config["srid"]),
                 "widget": MapWidget(map_options=_map_config),
             },
         },

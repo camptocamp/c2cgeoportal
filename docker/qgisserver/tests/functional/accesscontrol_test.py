@@ -10,7 +10,7 @@ from unittest.mock import Mock, patch
 import pytest
 from geoalchemy2.shape import from_shape
 from qgis.core import QgsProject, QgsVectorLayer
-from shapely.geometry import box
+from shapely.geometry import MultiPolygon, box
 
 from geomapfish_qgisserver.accesscontrol import (
     Access,
@@ -19,7 +19,7 @@ from geomapfish_qgisserver.accesscontrol import (
     OGCServerAccessControl,
 )
 
-area1 = box(485869.5728, 76443.1884, 837076.5648, 299941.7864)
+area1 = MultiPolygon([box(485869.5728, 76443.1884, 837076.5648, 299941.7864)])
 
 
 def set_request_parameters(server_iface, params, env=None) -> None:
@@ -365,9 +365,9 @@ class TestOGCServerAccessControl:
             for layer_name in ("public_layer", "private_layer1", "private_layer2", "private_layer3")
         ] + [
             ("user1", "public_layer", (Access.FULL, None)),
-            ("user1", "private_layer1", (Access.AREA, area1.wkt)),
+            ("user1", "private_layer1", (Access.AREA, area1.geoms[0].wkt)),
             ("user1", "private_layer2", (Access.NO, None)),
-            ("user1", "private_layer3", (Access.AREA, area1.wkt)),
+            ("user1", "private_layer3", (Access.AREA, area1.geoms[0].wkt)),
         ]:
             user = test_data["users"][user_name]
             set_request_parameters(
