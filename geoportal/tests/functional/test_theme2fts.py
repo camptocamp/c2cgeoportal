@@ -28,7 +28,7 @@
 # pylint: disable=missing-docstring
 
 import logging
-from typing import NamedTuple
+from collections import namedtuple
 from unittest.mock import patch
 
 import pytest
@@ -141,18 +141,7 @@ def options(**kwargs):
         "package": "Seems not used",
         "stats": False,
     }
-
-    class Options(NamedTuple):
-        locale_folder: str
-        interfaces: None
-        exclude_interfaces: list
-        name: bool
-        themes: bool
-        blocks: bool
-        layers: bool
-        package: str
-        stats: bool
-
+    Options = namedtuple("Options", default_options.keys())  # noqa: PYI024
     return Options(**{**default_options, **kwargs})
 
 
