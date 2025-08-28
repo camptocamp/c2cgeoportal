@@ -31,6 +31,7 @@
 import logging
 from unittest import TestCase
 
+import pytest
 import transaction
 from c2cgeoportal_geoportal.lib.caching import invalidate_region
 from geoalchemy2 import WKTElement
@@ -258,6 +259,7 @@ class TestThemeEntryView(TestCase):
 
         return request
 
+    @pytest.mark.asyncio
     async def test_theme(self) -> None:
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
@@ -286,6 +288,7 @@ class TestThemeEntryView(TestCase):
         layers = {l["name"] for l in themes[0]["children"][0]["children"]}
         assert layers == {"__test_private_layer_edit", "__test_public_layer", "__test_private_layer"}
 
+    @pytest.mark.asyncio
     async def test_no_layers(self) -> None:
         # mapfile error
         from c2cgeoportal_geoportal.views.theme import Theme
@@ -301,6 +304,7 @@ class TestThemeEntryView(TestCase):
             "The layer '__test_public_layer_no_layers' do not have any layers",
         }
 
+    @pytest.mark.asyncio
     async def test_not_in_mapfile(self) -> None:
         # mapfile error
         from c2cgeoportal_geoportal.views.theme import Theme
@@ -314,6 +318,7 @@ class TestThemeEntryView(TestCase):
             "The layer '__test_public_layer_not_in_mapfile' (__test_public_layer_not_in_mapfile) is not",
         }
 
+    @pytest.mark.asyncio
     async def test_notmapfile(self) -> None:
         # mapfile error
         from c2cgeoportal_geoportal.views.theme import Theme
@@ -327,6 +332,7 @@ class TestThemeEntryView(TestCase):
             "GetCapabilities from URL 'http://mapserver:8080/?map=not_a_mapfile&SERVICE=WMS&VERSION=1.1",
         }
 
+    @pytest.mark.asyncio
     async def test_theme_geoserver(self) -> None:
         from c2cgeoportal_geoportal.views.theme import Theme
 
