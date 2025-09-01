@@ -1,3 +1,9 @@
+##### 2.9.0.270
+
+- Update CI dependencies (2.9) [ngeo#9889](https://github.com/camptocamp/ngeo/pull/9889)
+- Update dependency requests to v2.32.5 (2.9) [ngeo#9890](https://github.com/camptocamp/ngeo/pull/9890)
+- Update webpack (2.9) [ngeo#9891](https://github.com/camptocamp/ngeo/pull/9891)
+
 ##### 2.9.0.268
 
 - Audit Snyk check/fix 2.9 [ngeo#9880](https://github.com/camptocamp/ngeo/pull/9880)
