@@ -1,3 +1,7 @@
+##### 2.9.0.271
+
+- Update dependency cryptography to v45.0.7 (2.9) [c2cgeoportal#12219](https://github.com/camptocamp/c2cgeoportal/pull/12219)
+
 ##### 2.9.0.270
 
 - Update CI dependencies (2.9) [ngeo#9889](https://github.com/camptocamp/ngeo/pull/9889)
