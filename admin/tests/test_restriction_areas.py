@@ -155,7 +155,7 @@ class TestRestrictionAreaViews(TestTreeGroup):
             (664577.4194513536, 5753148.2510447875),
             (1167544.3397631699, 5748064.729594703),
         ]
-        actual_coords = shape(json.loads(form["area"].value)).exterior.coords[:]
+        actual_coords = shape(json.loads(form["area"].value)).geoms[0].exterior.coords[:]
         assert len(expected_coords) == len(actual_coords)
         for expected, actual in zip(expected_coords, actual_coords, strict=False):
             assert all(abs(e - a) < 1 for e, a in zip(expected, actual, strict=False)), (
