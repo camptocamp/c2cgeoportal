@@ -28,7 +28,7 @@ services:
       - QGIS_CATCH_SEGV=1
 
   tests:
-    image: camptocamp/geomapfish
+    image: camptocamp/geomapfish-tools
     volumes:
       - ./acceptance-tests:/tests
     environment:
