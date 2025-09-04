@@ -182,11 +182,14 @@ RUN pip freeze > /requirements.txt
 
 FROM tools AS tools-cleaned
 
+WORKDIR /opt/c2cgeoportal
+
 # Removes unwanted and unsecured (see bandit checks) files
 RUN rm --recursive --force -- geoportal/c2cgeoportal_geoportal/scaffolds \
     */tests \
     commons/c2cgeoportal_commons/testing/ \
-    geoportal/c2cgeoportal_geoportal/scripts/c2cupgrade.py
+    geoportal/c2cgeoportal_geoportal/scripts/c2cupgrade.py \
+    geoportal/node_modules/
 
 #############################################################################################################
 # Image used to run the project
