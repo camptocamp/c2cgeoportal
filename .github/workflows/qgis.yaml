@@ -31,9 +31,9 @@ jobs:
         with:
           fetch-depth: 0
 
-      - run: make build-runner
+      - run: make build-tools
 
-      - run: docker save --output=/tmp/tools.docker camptocamp/geomapfish
+      - run: docker save --output=/tmp/tools.docker camptocamp/geomapfish-tools
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
