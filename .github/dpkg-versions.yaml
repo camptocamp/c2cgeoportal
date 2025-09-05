@@ -2772,7 +2772,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/libldap2: 2.6.7+dfsg-1~exp1ubuntu8
   ubuntu_24_04/liblerc4: 4.0.0+ds-4ubuntu2
   ubuntu_24_04/liblilv-0-0: 0.24.22-1build1
-  ubuntu_24_04/libllvm19: 1:19.1.1-1ubuntu1~24.04.2
+  ubuntu_24_04/libllvm20: 1:20.1.2-0ubuntu1~24.04.2
   ubuntu_24_04/liblmdb0: 0.9.31-1build1
   ubuntu_24_04/liblsan0: 14-20240412-0ubuntu1
   ubuntu_24_04/liblz4-1: 1.9.4-1build1.1
@@ -3512,7 +3512,7 @@ camptocamp/geomapfish:latest:
   ubuntu_24_04/libldap2: 2.6.7+dfsg-1~exp1ubuntu8
   ubuntu_24_04/liblerc4: 4.0.0+ds-4ubuntu2
   ubuntu_24_04/liblilv-0-0: 0.24.22-1build1
-  ubuntu_24_04/libllvm19: 1:19.1.1-1ubuntu1~24.04.2
+  ubuntu_24_04/libllvm20: 1:20.1.2-0ubuntu1~24.04.2
   ubuntu_24_04/liblz4-1: 1.9.4-1build1.1
   ubuntu_24_04/liblzma5: 5.6.1+really5.4.5-1build0.1
   ubuntu_24_04/libmd0: 1.1.0-2build1
@@ -4211,7 +4211,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_24_04/libldap2: 2.6.7+dfsg-1~exp1ubuntu8
   ubuntu_24_04/liblerc4: 4.0.0+ds-4ubuntu2
   ubuntu_24_04/liblilv-0-0: 0.24.22-1build1
-  ubuntu_24_04/libllvm19: 1:19.1.1-1ubuntu1~24.04.2
+  ubuntu_24_04/libllvm20: 1:20.1.2-0ubuntu1~24.04.2
   ubuntu_24_04/liblz4-1: 1.9.4-1build1.1
   ubuntu_24_04/liblzma5: 5.6.1+really5.4.5-1build0.1
   ubuntu_24_04/libmd0: 1.1.0-2build1
