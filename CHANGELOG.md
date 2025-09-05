@@ -1,3 +1,8 @@
+##### 2.9.0.275
+
+- Remove node_modules, fix tools-cleaned, add packages that should be managed [c2cgeoportal#12220](https://github.com/camptocamp/c2cgeoportal/pull/12220)
+- No formatting on package-lock.json [ngeo#9895](https://github.com/camptocamp/ngeo/pull/9895)
+
 ##### 2.9.0.273
 
 - Audit Snyk check/fix 2.9 [ngeo#9893](https://github.com/camptocamp/ngeo/pull/9893)
