@@ -72,6 +72,9 @@ prospector-profile-duplicated = "1.10.5"
 prospector-profile-utils  = "1.26.5"
 ruff = "0.12.10"
 beautifulsoup4 = "4.13.4"
+certifi = "2025.8.3"
+cryptography = "45.0.6"
+setuptools = "80.9.0"
 
 [tool.poetry.group.dev.dependencies]
 Babel = "2.17.0" # i18n
