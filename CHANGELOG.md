@@ -1,3 +1,7 @@
+##### 2.7.1.197
+
+- [Backport 2.7] Remove node_modules, fix tools-cleaned, add packages that should be managed [c2cgeoportal#12225](https://github.com/camptocamp/c2cgeoportal/pull/12225)
+
 ##### 2.7.1.196
 
 - Audit Snyk check/fix 2.7 [c2cgeoportal#12193](https://github.com/camptocamp/c2cgeoportal/pull/12193)
