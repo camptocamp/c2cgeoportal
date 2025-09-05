@@ -78,8 +78,8 @@ prospector = { extras = ["with_mypy", "with_bandit", "with_pyroma"], version = "
 prospector-profile-duplicated = "1.6.0"
 prospector-profile-utils  = "1.9.1"
 beautifulsoup4 = "4.12.3"
-certifi = "2023.11.17"
-cryptography = "41.0.7"
+certifi = "2025.8.3"
+cryptography = "45.0.7"
 setuptools = "75.8.0"
 
 [tool.poetry.group.dev.dependencies]
