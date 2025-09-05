@@ -42,10 +42,13 @@ module.exports = {
     publicPath: devServer ? '${VISIBLE_ENTRY_POINT}dev/' : '.__ENTRY_POINT__static-ngeo/',
   },
   devServer: {
-    publicPath: '${VISIBLE_WEB_PROTOCOL}://${VISIBLE_WEB_HOST}${VISIBLE_ENTRY_POINT}dev/',
+    devMiddleware: {
+      publicPath: '${VISIBLE_WEB_PROTOCOL}://${VISIBLE_WEB_HOST}${VISIBLE_ENTRY_POINT}dev/',
+    },
     port: 8080,
     host: 'webpack_dev_server',
     hot: true,
+    compress: false,
   },
   entry: entry,
   plugins: plugins,
