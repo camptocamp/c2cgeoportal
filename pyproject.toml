@@ -99,7 +99,7 @@ types-requests = "2.32.0.20250328"
 types-setuptools = "75.2.0.20241025"
 mappyfile = "1.0.2"
 # To be able to upgrade project from version <= 2.8
-c2cciutils = { version = "1.5.8", extras = ["checks"] }
+c2cciutils = { version = "1.5.16", extras = ["checks"] }
 pre-commit = "4.2.0"
 mapbox-vector-tile = "2.1.0"
 responses = "0.25.7"
