@@ -195,18 +195,22 @@ ENV PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
 ARG MAJOR_MINOR_VERSION
 ENV MAJOR_MINOR_VERSION=$MAJOR_MINOR_VERSION
 
-RUN pip freeze > /requirements.txt
+RUN ln -s /opt/c2cgeoportal/commons/c2cgeoportal_commons/alembic /opt \
+    && pip freeze > /requirements.txt
 
 #############################################################################################################
 # Cleaned image used to copy files to the runner
 
 FROM tools AS tools-cleaned
 
+WORKDIR /opt/c2cgeoportal
+
 # Removes unwanted and unsecured (see bandit checks) files
 RUN rm --recursive --force -- geoportal/c2cgeoportal_geoportal/scaffolds \
     */tests \
     commons/c2cgeoportal_commons/testing/ \
-    geoportal/c2cgeoportal_geoportal/scripts/c2cupgrade.py
+    geoportal/c2cgeoportal_geoportal/scripts/c2cupgrade.py \
+    geoportal/node_modules/
 
 #############################################################################################################
 # Image used to run the project
