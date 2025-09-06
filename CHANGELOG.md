@@ -1,3 +1,7 @@
+##### 2.9.0.276
+
+- Audit Snyk check/fix 2.9 [ngeo#9898](https://github.com/camptocamp/ngeo/pull/9898)
+
 ##### 2.9.0.275
 
 - Remove node_modules, fix tools-cleaned, add packages that should be managed [c2cgeoportal#12220](https://github.com/camptocamp/c2cgeoportal/pull/12220)
