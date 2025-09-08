@@ -69,8 +69,31 @@ OGC Server
                     "maxOccurs": "<the optional maximum occurs>"
                 }
             }
-        }
+        },
+        "uses": {
+            "map": {
+                "protocol": "<OGC protocol to be used to get the map>",
+                "url": "<URL to be used to get the map>",
+            },
+            "query": {
+                "protocol": "<OGC protocol to be used to do the queries>",
+                "url": "<URL to be used to do the queries>",
+            },
+            "edit": {
+                "protocol": "<OGC protocol to be used to do the edits>",
+                "url": "<URL to be used to do the edits>",
+            },
+        },
     }
+
+The ``protocol`` can be ``WMS``, ``WMS/GetFeatureInfo``, ``WFS/GetFeature``,
+``OGC API - Maps``, ``OGC API - Features``.
+
+The ``uses`` is used by ``GeoGirafe``, not by ``ngeo``.
+
+The ``urlWfs`` and ``wfsSupport`` are used by ``ngeo``, not by ``GeoGirafe`` (=> deprecated, will be removed in future version).
+
+The ``isSingleTile`` isn't used by any clients (=> deprecated, will be removed in future version).
 
 
 Theme
