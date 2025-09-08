@@ -1,3 +1,8 @@
+##### 2.9.0.277
+
+- Update security packages (2.9) (major) [c2cgeoportal#12222](https://github.com/camptocamp/c2cgeoportal/pull/12222)
+- Fix webpack_dev_server startup [c2cgeoportal#12229](https://github.com/camptocamp/c2cgeoportal/pull/12229)
+
 ##### 2.9.0.276
 
 - Audit Snyk check/fix 2.9 [ngeo#9898](https://github.com/camptocamp/ngeo/pull/9898)
