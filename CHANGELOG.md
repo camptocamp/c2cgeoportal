@@ -1,3 +1,7 @@
+##### 2.9.0.278
+
+- Audit Snyk check/fix 2.9 [c2cgeoportal#12234](https://github.com/camptocamp/c2cgeoportal/pull/12234)
+
 ##### 2.9.0.277
 
 - Update security packages (2.9) (major) [c2cgeoportal#12222](https://github.com/camptocamp/c2cgeoportal/pull/12222)
