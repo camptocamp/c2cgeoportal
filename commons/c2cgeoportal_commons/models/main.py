@@ -727,6 +727,17 @@ OGCSERVER_AUTH_STANDARD: OGCServerAuth = "Standard auth"
 OGCSERVER_AUTH_GEOSERVER: OGCServerAuth = "Geoserver auth"
 OGCSERVER_AUTH_PROXY: OGCServerAuth = "Proxy"
 
+OGCServerMapProtocol = Literal["WMS", "OGC API - Maps"]
+OGCSERVER_MAP_PROTOCOL_WMS: OGCServerMapProtocol = "WMS"
+OGCSERVER_MAP_PROTOCOL_OGCAPI: OGCServerMapProtocol = "OGC API - Maps"
+
+OGCServerFeatureProtocol = Literal["WMS/GetFeatureInfo", "WFS/GetFeature", "OGC API - Features"]
+OGCSERVER_FEATURE_PROTOCOL_WMS: OGCServerFeatureProtocol = "WMS/GetFeatureInfo"
+OGCSERVER_FEATURE_PROTOCOL_WFS: OGCServerFeatureProtocol = "WFS/GetFeature"
+OGCSERVER_FEATURE_PROTOCOL_OGCAPI: OGCServerFeatureProtocol = "OGC API - Features"
+
+OGCServerEditProtocol = Literal["OGC API - Features"]
+OGCSERVER_EDIT_PROTOCOL_OGCAPI: OGCServerEditProtocol = "OGC API - Features"
 
 ImageType = Literal["image/jpeg", "image/png"]
 TimeMode = Literal["disabled", "value", "range"]
@@ -768,10 +779,12 @@ class OGCServer(Base):  # type: ignore[valid-type,misc]
         info={
             "colanderalchemy": {
                 "title": _("Name"),
-                "description": _(
-                    "The name of the OGC Server should contain only unaccentuated letters, numbers and _. "
-                    "When you rename it, do not forget to update the <code>ogcServer<code> metadata on the "
-                    "WMTS and COG layers.",
+                "description": c2cgeoportal_commons.lib.literal.Literal(
+                    _(
+                        "The name of the OGC Server should contain only unaccented letters, numbers and _. "
+                        "When you rename it, do not forget to update the <code>ogcServer</code> metadata on the "
+                        "WMTS and COG layers.",
+                    ),
                 ),
             },
         },
@@ -785,25 +798,124 @@ class OGCServer(Base):  # type: ignore[valid-type,misc]
             },
         },
     )
+
     url: Mapped[str] = mapped_column(
         Unicode,
         nullable=False,
         info={
             "colanderalchemy": {
-                "title": _("Basic URL"),
-                "description": _("The server URL."),
+                "title": _("Base URL"),
+                "description": _(
+                    "The OGC server URL, used at least to get the map, as a default for querying and editing.",
+                ),
             },
         },
     )
-    url_wfs: Mapped[str | None] = mapped_column(
+    auth: Mapped[OGCServerAuth] = mapped_column(
+        Enum(*get_args(OGCServerAuth), native_enum=False),
+        default=OGCSERVER_AUTH_STANDARD,
+        nullable=False,
+        info={
+            "colanderalchemy": {
+                "title": _("Base authentication type"),
+                "description": _("The kind of authentication to use."),
+                "widget": SelectWidget(values=[(e, e) for e in get_args(OGCServerAuth)]),
+            },
+        },
+    )
+    map_protocol: Mapped[OGCServerMapProtocol] = mapped_column(
+        Enum(*get_args(OGCServerMapProtocol), native_enum=False),
+        default=OGCSERVER_MAP_PROTOCOL_WMS,
+        nullable=False,
+        info={
+            "colanderalchemy": {
+                "title": _("Map protocol"),
+                "description": _("The protocol to use for the map requests. Not used by ngeo."),
+                "widget": SelectWidget(values=[(e, e) for e in get_args(OGCServerMapProtocol)]),
+            },
+        },
+    )
+
+    query_url: Mapped[str | None] = mapped_column(
         Unicode,
         info={
             "colanderalchemy": {
-                "title": _("WFS URL"),
-                "description": _("The WFS server URL. If empty, the ``Basic URL`` is used."),
+                "title": _("Query URL"),
+                "description": _(
+                    "The URL to use for the map query requests. If empty, the <code>Base URL</code> is used. Not used by ngeo.",
+                ),
             },
         },
     )
+    query_auth: Mapped[OGCServerAuth] = mapped_column(
+        Enum(*get_args(OGCServerAuth), native_enum=False),
+        default=OGCSERVER_AUTH_STANDARD,
+        nullable=False,
+        info={
+            "colanderalchemy": {
+                "title": _("Query authentication type"),
+                "description": c2cgeoportal_commons.lib.literal.Literal(
+                    _(
+                        "The kind of authentication to use for the query, if <code>Query URL</code> is not set the <code>Authentication type</code> will be used. Not used by ngeo.",
+                    ),
+                ),
+                "widget": SelectWidget(values=[(e, e) for e in get_args(OGCServerAuth)]),
+            },
+        },
+    )
+    query_protocol: Mapped[OGCServerFeatureProtocol] = mapped_column(
+        Enum(*get_args(OGCServerFeatureProtocol), native_enum=False),
+        default=OGCSERVER_FEATURE_PROTOCOL_WFS,
+        nullable=False,
+        info={
+            "colanderalchemy": {
+                "title": _("Query protocol"),
+                "description": _("The protocol to use for the feature query requests. Not used by ngeo."),
+                "widget": SelectWidget(values=[(e, e) for e in get_args(OGCServerFeatureProtocol)]),
+            },
+        },
+    )
+
+    edit_url: Mapped[str | None] = mapped_column(
+        Unicode,
+        info={
+            "colanderalchemy": {
+                "title": _("Edit URL"),
+                "description": _(
+                    "The URL to use for the feature editing requests. If empty, the <code>Base URL</code> is used. Not used by ngeo.",
+                ),
+            },
+        },
+    )
+    edit_auth: Mapped[OGCServerAuth] = mapped_column(
+        Enum(*get_args(OGCServerAuth), native_enum=False),
+        default=OGCSERVER_AUTH_STANDARD,
+        nullable=False,
+        info={
+            "colanderalchemy": {
+                "title": _("Edit authentication type"),
+                "description": c2cgeoportal_commons.lib.literal.Literal(
+                    _(
+                        "The kind of authentication to use for the editing, if <code>Edit URL</code> is not set the <code>Authentication type</code> will be used. Not used by ngeo.",
+                    ),
+                ),
+                "widget": SelectWidget(values=[(e, e) for e in get_args(OGCServerAuth)]),
+            },
+        },
+    )
+    edit_protocol: Mapped[OGCServerEditProtocol | None] = mapped_column(
+        Enum(*get_args(OGCServerEditProtocol), native_enum=False),
+        default=OGCSERVER_EDIT_PROTOCOL_OGCAPI,
+        nullable=True,
+        info={
+            "colanderalchemy": {
+                "title": _("Edit protocol"),
+                "description": _("The protocol to use for the feature editing requests. Not used by ngeo."),
+                "widget": SelectWidget(values=[(e, e) for e in get_args(OGCServerEditProtocol)]),
+            },
+        },
+    )
+
     type: Mapped[OGCServerType] = mapped_column(
         Enum(*get_args(OGCServerType), native_enum=False),
         nullable=False,
@@ -811,9 +923,10 @@ class OGCServer(Base):  # type: ignore[valid-type,misc]
             "colanderalchemy": {
                 "title": _("Server type"),
                 "description": _(
-                    "The server type which is used to know which custom attribute will be used.",
+                    "The server type is used to know which custom attribute(s) will be sent to define the dpi, scale, bbox, ... for the legend, and the dpi for the map. used in webview and in the print.",
                 ),
                 "widget": SelectWidget(values=[(e, e) for e in get_args(OGCServerType)]),
+                "column": 2,
             },
         },
     )
@@ -823,20 +936,22 @@ class OGCServer(Base):  # type: ignore[valid-type,misc]
         info={
             "colanderalchemy": {
                 "title": _("Image type"),
-                "description": _("The MIME type of the images (e.g.: ``image/png``)."),
+                "description": c2cgeoportal_commons.lib.literal.Literal(
+                    _("The MIME type of the images (e.g.: <code>image/png</code>)."),
+                ),
                 "widget": SelectWidget(values=[(e, e) for e in get_args(ImageType)]),
                 "column": 2,
             },
         },
     )
-    auth: Mapped[OGCServerAuth] = mapped_column(
-        Enum(*get_args(OGCServerAuth), native_enum=False),
-        nullable=False,
+    url_wfs: Mapped[str | None] = mapped_column(
+        Unicode,
         info={
             "colanderalchemy": {
-                "title": _("Authentication type"),
-                "description": "The kind of authentication to use.",
-                "widget": SelectWidget(values=[(e, e) for e in get_args(OGCServerAuth)]),
+                "title": _("WFS URL"),
+                "description": _(
+                    "The WFS server URL. If empty, the <code>Base URL</code> is used. Not used by GeoGirafe.",
+                ),
                 "column": 2,
             },
         },
@@ -846,7 +961,7 @@ class OGCServer(Base):  # type: ignore[valid-type,misc]
         info={
             "colanderalchemy": {
                 "title": _("WFS support"),
-                "description": _("Whether WFS is supported by the server."),
+                "description": _("Whether WFS is supported by the server. Not used by GeoGirafe."),
                 "column": 2,
             },
         },
@@ -856,7 +971,7 @@ class OGCServer(Base):  # type: ignore[valid-type,misc]
         info={
             "colanderalchemy": {
                 "title": _("Single tile"),
-                "description": _("Whether to use the single tile mode (For future use)."),
+                "description": _("Whether to use the single tile mode (Legacy)."),
                 "column": 2,
             },
         },
@@ -890,6 +1005,20 @@ class OGCServer(Base):  # type: ignore[valid-type,misc]
     def url_description(self, request: pyramid.request.Request) -> str:
         errors: set[str] = set()
         url = get_url2(self.name, self.url, request, errors)
+        return url.url() if url else "\n".join(errors)
+
+    def query_url_description(self, request: pyramid.request.Request) -> str:
+        if not self.query_url:
+            return self.url_description(request)
+        errors: set[str] = set()
+        url = get_url2(self.name, self.query_url, request, errors)
+        return url.url() if url else "\n".join(errors)
+
+    def edit_url_description(self, request: pyramid.request.Request) -> str | None:
+        if not self.edit_url:
+            return self.url_description(request)
+        errors: set[str] = set()
+        url = get_url2(self.name, self.edit_url, request, errors)
         return url.url() if url else "\n".join(errors)
 
     def url_wfs_description(self, request: pyramid.request.Request) -> str | None:
