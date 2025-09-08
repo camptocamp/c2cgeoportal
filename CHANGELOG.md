@@ -1,3 +1,7 @@
+##### 2.8.1.244
+
+- [Backport 2.8] Remove node_modules, fix tools-cleaned, add packages that should be managed [c2cgeoportal#12224](https://github.com/camptocamp/c2cgeoportal/pull/12224)
+
 ##### 2.8.1.243
 
 - Update dependency cryptography to v45.0.7 (2.8) [c2cgeoportal#12218](https://github.com/camptocamp/c2cgeoportal/pull/12218)
