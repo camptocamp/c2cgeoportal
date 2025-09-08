@@ -1,3 +1,5 @@
+##### 2.6.0.304
+* Audit Snyk check/fix 2.6 [c2cgeoportal#12232](https://github.com/camptocamp/c2cgeoportal/pull/12232)
 ##### 2.6.0.303
 * Update all patch/minor versions (2.6) [c2cgeoportal#12171](https://github.com/camptocamp/c2cgeoportal/pull/12171)
 ##### 2.6.0.302
