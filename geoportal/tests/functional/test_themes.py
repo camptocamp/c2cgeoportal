@@ -55,6 +55,10 @@ def themes_setup(dbsession, transact, default_ogcserver):
     mobile = Interface(name="mobile")
     min_levels = Interface(name="min_levels")
 
+    ogc_server_internal = dbsession.query(OGCServer).filter(OGCServer.name == "__test_ogc_server").one()
+    ogc_server_internal.url_query = "http://other/ci/mapserv"
+    ogc_server_internal.url_edit = "http://other/ci/mapserv"
+
     ogc_server_external = OGCServer(
         name="__test_ogc_server_chtopo",
         url="https://wms.geo.admin.ch/",
@@ -62,6 +66,11 @@ def themes_setup(dbsession, transact, default_ogcserver):
         auth=OGCSERVER_AUTH_NOAUTH,
     )
     ogc_server_external.wfs_support = False
+    ogc_server_external.url_query = "https://wms.geo.admin.ch/query"
+    ogc_server_external.protocol_query = "WMS/GetFeatureInfo"
+    ogc_server_external.auth_query = OGCSERVER_AUTH_NOAUTH
+    ogc_server_external.url_edit = "https://wms.geo.admin.ch/edit"
+    ogc_server_external.auth_edit = OGCSERVER_AUTH_NOAUTH
 
     layer_internal_wms = LayerWMS(name="__test_layer_internal_wms", public=True)
     layer_internal_wms.layer = "__test_layer_internal_wms"
@@ -340,6 +349,20 @@ def test_ogc_server(dbsession, transact, themes_setup) -> None:
             "type": "mapserver",
             "url": "http://localhost/ci/mapserv?ogcserver=__test_ogc_server",
             "urlWfs": "http://localhost/ci/mapserv?ogcserver=__test_ogc_server",
+            "uses": {
+                "edit": {
+                    "protocol": "OGC API - Features",
+                    "url": "http://localhost/ci/mapserv?ogcserver=__test_ogc_server&ogcserver_type=edit",
+                },
+                "map": {
+                    "protocol": "WMS",
+                    "url": "http://localhost/ci/mapserv?ogcserver=__test_ogc_server&ogcserver_type=map",
+                },
+                "query": {
+                    "protocol": "WFS/GetFeature",
+                    "url": "http://localhost/ci/mapserv?ogcserver=__test_ogc_server&ogcserver_type=query",
+                },
+            },
             "wfsSupport": True,
         },
         "__test_ogc_server_chtopo": {
@@ -351,6 +374,20 @@ def test_ogc_server(dbsession, transact, themes_setup) -> None:
             "type": "mapserver",
             "url": "https://wms.geo.admin.ch/",
             "urlWfs": "https://wms.geo.admin.ch/",
+            "uses": {
+                "edit": {
+                    "protocol": "OGC API - Features",
+                    "url": "https://wms.geo.admin.ch/edit",
+                },
+                "map": {
+                    "protocol": "WMS",
+                    "url": "https://wms.geo.admin.ch/",
+                },
+                "query": {
+                    "protocol": "WMS/GetFeatureInfo",
+                    "url": "https://wms.geo.admin.ch/query",
+                },
+            },
             "wfsSupport": False,
         },
     }
