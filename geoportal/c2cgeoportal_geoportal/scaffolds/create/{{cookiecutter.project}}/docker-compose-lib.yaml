@@ -508,6 +508,8 @@ services:
       - AZURE_STORAGE_ACCESS_TOKEN
       - AZURE_STORAGE_ACCESS_KEY
       - AZURE_STORAGE_SAS_TOKEN
+    ports:
+      - 8080:8080
 
   db:
     image: camptocamp/postgres:${POSTGRES_TAG}

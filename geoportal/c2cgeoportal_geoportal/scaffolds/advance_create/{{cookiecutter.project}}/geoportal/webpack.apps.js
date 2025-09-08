@@ -49,6 +49,13 @@ module.exports = {
     host: 'webpack_dev_server',
     hot: true,
     compress: false,
+    client: {
+      webSocketURL: {
+        hostname: 'localhost',
+        port: 8080,
+        protocol: 'ws',
+      },
+    },
   },
   entry: entry,
   plugins: plugins,
