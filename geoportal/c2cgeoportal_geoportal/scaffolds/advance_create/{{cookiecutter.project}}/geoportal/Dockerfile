@@ -19,7 +19,7 @@ RUN make build
 RUN mv webpack.apps.js webpack.apps.js.tmpl
 
 ENTRYPOINT [ "/usr/bin/eval-templates" ]
-CMD [ "webpack", "serve", "--open", "--mode=development", "--watch", "--no-inline" ]
+CMD [ "webpack", "serve", "--open", "--mode=development" ]
 
 ###############################################################################
 
