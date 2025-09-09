@@ -1,3 +1,7 @@
+##### 2.8.1.246
+
+- Fix: Textual SQL expression should be explicitly declared as text [c2cgeoportal#12244](https://github.com/camptocamp/c2cgeoportal/pull/12244)
+
 ##### 2.8.1.245
 
 - Don't clean testing from commons [c2cgeoportal#12236](https://github.com/camptocamp/c2cgeoportal/pull/12236)
