@@ -1,3 +1,7 @@
+##### 2.7.1.198
+
+- [Backport 2.7] Don't clean testing from commons [c2cgeoportal#12241](https://github.com/camptocamp/c2cgeoportal/pull/12241)
+
 ##### 2.7.1.197
 
 - [Backport 2.7] Remove node_modules, fix tools-cleaned, add packages that should be managed [c2cgeoportal#12225](https://github.com/camptocamp/c2cgeoportal/pull/12225)
