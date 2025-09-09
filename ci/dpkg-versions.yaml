@@ -2793,7 +2793,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/liblcms2-2: 2.14-2build1
   ubuntu_24_04/libldap2: 2.6.7+dfsg-1~exp1ubuntu8.2
   ubuntu_24_04/liblerc4: 4.0.0+ds-4ubuntu2
-  ubuntu_24_04/libllvm19: 1:19.1.1-1ubuntu1~24.04.2
+  ubuntu_24_04/libllvm20: 1:20.1.2-0ubuntu1~24.04.2
   ubuntu_24_04/liblsan0: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/liblua5.4-0: 5.4.6-3build2
   ubuntu_24_04/liblz4-1: 1.9.4-1build1.1
