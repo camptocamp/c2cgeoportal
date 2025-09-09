@@ -133,8 +133,9 @@ class TestTinyOWSProxyView(TestCase):
         cleanup_db()
 
     def test_proxy_not_auth(self) -> None:
-        from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
         from pyramid.httpexceptions import HTTPUnauthorized
+
+        from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
 
         request = _create_dummy_request()
 
@@ -222,8 +223,9 @@ class TestTinyOWSProxyView(TestCase):
         assert response.status == "200 OK"
 
     def test_proxy_get_capabilities_post_invalid_body(self) -> None:
-        from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
         from pyramid.httpexceptions import HTTPBadRequest
+
+        from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
 
         request = _create_dummy_request(username="__test_user1")
         request.method = "POST"
@@ -263,8 +265,9 @@ class TestTinyOWSProxyView(TestCase):
         assert response.status == "200 OK"
 
     def test_proxy_describe_feature_type_invalid_layer(self) -> None:
-        from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
         from pyramid.httpexceptions import HTTPForbidden
+
+        from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
 
         request = _create_dummy_request(username="__test_user1")
         request.params.update(
@@ -297,8 +300,9 @@ class TestTinyOWSProxyView(TestCase):
         assert response.status == "200 OK"
 
     def test_proxy_describe_feature_type_post_multiple_types(self) -> None:
-        from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
         from pyramid.httpexceptions import HTTPBadRequest
+
+        from c2cgeoportal_geoportal.views.tinyowsproxy import TinyOWSProxy
 
         request = _create_dummy_request(username="__test_user1")
         request.method = "POST"

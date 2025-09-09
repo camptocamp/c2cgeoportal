@@ -35,10 +35,11 @@ from xml.etree.ElementTree import Element  # nosec
 
 import pyramid.request
 import requests
-from c2cgeoportal_commons.lib.url import get_url2
-from c2cgeoportal_commons.models import main
 from defusedxml import ElementTree
 from sqlalchemy.orm.session import Session
+
+from c2cgeoportal_commons.lib.url import get_url2
+from c2cgeoportal_commons.models import main
 
 
 class _DryRunTransaction:

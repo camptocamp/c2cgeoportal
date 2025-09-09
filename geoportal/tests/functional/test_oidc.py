@@ -6,10 +6,10 @@ from unittest import TestCase
 
 import jwt
 import responses
-from c2cgeoportal_geoportal.lib import oidc
 from cryptography.hazmat.primitives.asymmetric import rsa
 from pyramid import testing
 
+from c2cgeoportal_geoportal.lib import oidc
 from tests.functional import cleanup_db, create_dummy_request, setup_db
 from tests.functional import setup_common as setup_module
 from tests.functional import teardown_common as teardown_module

@@ -45,9 +45,6 @@ from c2cgeoform.views.abstract_views import (
     SaveResponse,
     UserMessage,
 )
-from c2cgeoportal_commons.lib.literal import Literal
-from c2cgeoportal_commons.models import cache_invalidate_cb
-from c2cgeoportal_commons.models.main import LogAction, OGCServer
 from deform.widget import FormWidget
 from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config, view_defaults
@@ -56,6 +53,9 @@ from sqlalchemy import inspect
 from c2cgeoportal_admin import _
 from c2cgeoportal_admin.lib.ogcserver_synchronizer import OGCServerSynchronizer
 from c2cgeoportal_admin.views.logged_views import LoggedViews
+from c2cgeoportal_commons.lib.literal import Literal
+from c2cgeoportal_commons.models import cache_invalidate_cb
+from c2cgeoportal_commons.models.main import LogAction, OGCServer
 
 _list_field = partial(ListField, OGCServer)
 

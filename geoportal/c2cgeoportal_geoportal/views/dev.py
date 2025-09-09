@@ -31,10 +31,10 @@ import re
 
 import pyramid.request
 import pyramid.response
-from c2cgeoportal_commons.lib.url import Url
 from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config
 
+from c2cgeoportal_commons.lib.url import Url
 from c2cgeoportal_geoportal.views.proxy import Proxy
 
 logger = logging.getLogger(__name__)

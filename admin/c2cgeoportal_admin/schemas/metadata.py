@@ -31,14 +31,14 @@ from typing import Any, Union, cast
 import colander
 import pyramid.request
 from c2cgeoform.schema import GeoFormSchemaNode
-from c2cgeoportal_commons.lib.validators import url
-from c2cgeoportal_commons.models.main import Metadata
 from deform.widget import MappingWidget, SelectWidget, SequenceWidget, TextAreaWidget
 from sqlalchemy import inspect
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 from sqlalchemy.orm.mapper import Mapper
 
 from c2cgeoportal_admin import _
+from c2cgeoportal_commons.lib.validators import url
+from c2cgeoportal_commons.models.main import Metadata
 
 
 def get_relevant_for(model: type[Any] | Mapper[Any]) -> set[str]:

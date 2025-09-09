@@ -37,7 +37,6 @@ from functools import partial
 from typing import TYPE_CHECKING, Any, Optional, cast
 
 import c2cgeoform
-import c2cgeoportal_commons.models
 import c2cwsgiutils
 import c2cwsgiutils.db
 import c2cwsgiutils.index
@@ -49,7 +48,6 @@ import sqlalchemy
 import sqlalchemy.orm
 import zope.event.classhandler
 from c2cgeoform import translator
-from c2cgeoportal_commons.models import InvalidateCacheEvent
 from c2cwsgiutils.health_check import HealthCheck
 from c2cwsgiutils.prometheus import MemoryMapCollector
 from deform import Form
@@ -62,7 +60,9 @@ from pyramid.path import AssetResolver
 from pyramid_mako import add_mako_renderer
 from sqlalchemy.orm import joinedload
 
+import c2cgeoportal_commons.models
 import c2cgeoportal_geoportal.views
+from c2cgeoportal_commons.models import InvalidateCacheEvent
 from c2cgeoportal_geoportal.lib import (
     C2CPregenerator,
     caching,

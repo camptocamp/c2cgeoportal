@@ -31,9 +31,11 @@
 from unittest import TestCase
 from unittest.mock import patch
 
-import c2cgeoportal_geoportal
 import pytest
 from c2c.template.config import config
+from pyramid import testing
+
+import c2cgeoportal_geoportal
 from c2cgeoportal_geoportal import (
     call_hook,
     create_get_user_from_request,
@@ -41,8 +43,6 @@ from c2cgeoportal_geoportal import (
     is_valid_referrer,
     set_user_validator,
 )
-from pyramid import testing
-
 from tests import DummyRequest
 
 

@@ -34,8 +34,9 @@ import urllib.parse
 import warnings
 
 import sqlalchemy.exc
-from c2cgeoportal_geoportal.lib import caching
 from pyramid.testing import DummyRequest as PyramidDummyRequest
+
+from c2cgeoportal_geoportal.lib import caching
 
 with warnings.catch_warnings():
     warnings.simplefilter("ignore", category=sqlalchemy.exc.SAWarning)

@@ -37,7 +37,6 @@ from c2cgeoportal_geoportal.lib.common_headers import (
     Cache,
     set_common_headers,
 )
-
 from tests import DummyRequest
 
 

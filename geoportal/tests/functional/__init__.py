@@ -32,19 +32,19 @@ import logging
 from configparser import ConfigParser
 from typing import TYPE_CHECKING, Any
 
-import c2cgeoportal_geoportal
-import c2cgeoportal_geoportal.lib
 import pyramid.registry
 import pyramid.request
 import transaction
 import webob.acceptparse
 from c2c.template.config import config as configuration
-from c2cgeoportal_commons import models
-from c2cgeoportal_geoportal.lib import caching
 from pyramid import testing
 from sqlalchemy.orm.session import Session
 
+import c2cgeoportal_geoportal
+import c2cgeoportal_geoportal.lib
 import tests
+from c2cgeoportal_commons import models
+from c2cgeoportal_geoportal.lib import caching
 
 if TYPE_CHECKING:
     from c2cgeoportal_commons.models import main, static
@@ -247,9 +247,10 @@ def create_dummy_request(
     *args: Any,
     **kargs: Any,
 ) -> pyramid.request.Request:
+    from pyramid.interfaces import IAuthenticationPolicy
+
     from c2cgeoportal_geoportal import create_get_user_from_request
     from c2cgeoportal_geoportal.lib.authentication import create_authentication
-    from pyramid.interfaces import IAuthenticationPolicy
 
     if additional_settings is None:
         additional_settings = {}

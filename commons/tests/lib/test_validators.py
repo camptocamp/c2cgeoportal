@@ -1,6 +1,7 @@
 # pylint: disable=no-self-use
 
 import pytest
+
 from c2cgeoportal_commons.lib.validators import url
 
 

@@ -34,14 +34,10 @@ import sys
 import urllib.parse
 from typing import Any
 
-import c2cgeoportal_commons.lib.url
 import pkce
 import pyotp
 import pyramid.request
 import pyramid.response
-from c2cgeoportal_commons import models
-from c2cgeoportal_commons.lib.email_ import send_email_config
-from c2cgeoportal_commons.models import static
 from pyramid.httpexceptions import (
     HTTPBadRequest,
     HTTPForbidden,
@@ -54,6 +50,10 @@ from pyramid.security import forget, remember
 from pyramid.view import forbidden_view_config, view_config
 from sqlalchemy.orm.exc import NoResultFound  # type: ignore[attr-defined]
 
+import c2cgeoportal_commons.lib.url
+from c2cgeoportal_commons import models
+from c2cgeoportal_commons.lib.email_ import send_email_config
+from c2cgeoportal_commons.models import static
 from c2cgeoportal_geoportal import is_allowed_url, is_valid_referrer
 from c2cgeoportal_geoportal.lib import get_setting, is_intranet, oauth2, oidc
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers

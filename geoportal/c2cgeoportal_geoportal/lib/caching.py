@@ -33,13 +33,14 @@ from typing import TYPE_CHECKING, Any
 
 import pyramid.interfaces
 import zope.interface
-from c2cgeoportal_commons.models import Base
 from dogpile.cache.api import NO_VALUE, CacheBackend, CachedValue, NoValue
 from dogpile.cache.backends.memory import MemoryBackend
 from dogpile.cache.backends.redis import RedisBackend, RedisSentinelBackend
 from dogpile.cache.region import CacheRegion, make_region
 from dogpile.cache.util import sha1_mangle_key
 from sqlalchemy.orm.util import identity_key
+
+from c2cgeoportal_commons.models import Base
 
 if TYPE_CHECKING:
     from dogpile.cache.api import SerializedReturnType

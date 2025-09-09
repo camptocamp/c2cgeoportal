@@ -41,7 +41,6 @@ import sqlalchemy.orm
 import yaml
 from bottle import MakoTemplate, template
 from c2c.template.config import config
-from c2cgeoportal_commons.lib.url import Url, get_url2
 from defusedxml.minidom import parseString
 from geoalchemy2.types import Geometry
 from lingva.extractors import Extractor, Message
@@ -54,6 +53,7 @@ from sqlalchemy.orm.properties import ColumnProperty
 from sqlalchemy.orm.util import class_mapper
 
 import c2cgeoportal_geoportal
+from c2cgeoportal_commons.lib.url import Url, get_url2
 from c2cgeoportal_geoportal.lib.bashcolor import Color, colorize
 from c2cgeoportal_geoportal.lib.caching import init_region
 from c2cgeoportal_geoportal.views.layers import Layers, get_layer_class

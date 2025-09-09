@@ -39,12 +39,12 @@ import defusedxml.expatreader
 import pyramid.httpexceptions
 import pyramid.request
 import requests
-from c2cgeoportal_commons.lib.url import Url
 from owslib.map.wms111 import ContentMetadata as ContentMetadata111
 from owslib.map.wms130 import ContentMetadata as ContentMetadata130
 from owslib.wms import WebMapService
 from pyramid.httpexceptions import HTTPBadGateway
 
+from c2cgeoportal_commons.lib.url import Url
 from c2cgeoportal_geoportal.lib import (
     caching,
     get_ogc_server_wfs_url_ids,

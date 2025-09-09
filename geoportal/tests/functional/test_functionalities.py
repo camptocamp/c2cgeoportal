@@ -38,6 +38,7 @@ from tests.functional import teardown_common as teardown_module  # noqa
 class TestFunctionalities(TestCase):
     def setup_method(self, _) -> None:
         import transaction
+
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import Functionality, Role
         from c2cgeoportal_commons.models.static import User
@@ -69,6 +70,7 @@ class TestFunctionalities(TestCase):
 
     def teardown_method(self, _) -> None:
         import transaction
+
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import Functionality, OGCServer, Role
         from c2cgeoportal_commons.models.static import User
@@ -93,7 +95,6 @@ class TestFunctionalities(TestCase):
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
         from c2cgeoportal_geoportal.lib.functionality import get_functionality
-
         from tests.functional import create_dummy_request
 
         request = create_dummy_request()
@@ -200,7 +201,6 @@ class TestFunctionalities(TestCase):
     def test_web_client_functionalities(self) -> None:
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
-
         from tests.functional import create_dummy_request
 
         request = create_dummy_request()

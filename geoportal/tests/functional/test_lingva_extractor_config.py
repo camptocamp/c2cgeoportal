@@ -32,8 +32,8 @@ from unittest.mock import Mock, mock_open, patch
 import pytest
 import yaml
 from c2c.template.config import config as configuration
-from c2cgeoportal_geoportal.lib.lingva_extractor import GeomapfishConfigExtractor
 
+from c2cgeoportal_geoportal.lib.lingva_extractor import GeomapfishConfigExtractor
 from tests.functional import setup_common as setup_module
 
 GMF_CONFIG = """
@@ -93,8 +93,9 @@ def dbsession_db1(settings, dbsession_old):
 
 @pytest.fixture
 def test_data(dbsession_db1, transact_old) -> None:
-    from c2cgeoportal_commons.models import main
     from sqlalchemy import text
+
+    from c2cgeoportal_commons.models import main
 
     dbsession_db1.execute(
         text(

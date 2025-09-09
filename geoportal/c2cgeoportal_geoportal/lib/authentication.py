@@ -35,7 +35,6 @@ import time
 from collections.abc import Callable
 from typing import Any, cast
 
-import c2cgeoportal_commons.models
 import pyramid.request
 from Crypto.Cipher import AES  # nosec
 from pyramid.authentication import (
@@ -48,6 +47,7 @@ from pyramid.security import remember
 from pyramid_multiauth import MultiAuthenticationPolicy
 from zope.interface import implementer
 
+import c2cgeoportal_commons.models
 from c2cgeoportal_geoportal.lib import oauth2
 from c2cgeoportal_geoportal.resources import defaultgroupsfinder
 

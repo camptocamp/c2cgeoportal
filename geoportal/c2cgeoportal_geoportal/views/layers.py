@@ -40,7 +40,6 @@ import shapely.geometry
 import sqlalchemy.ext.declarative
 import sqlalchemy.orm
 import sqlalchemy.orm.query
-from c2cgeoportal_commons import models
 from geoalchemy2 import Geometry
 from geoalchemy2.shape import from_shape, to_shape
 from geojson.feature import Feature, FeatureCollection
@@ -65,6 +64,7 @@ from sqlalchemy.orm.properties import ColumnProperty
 from sqlalchemy.orm.util import class_mapper
 from sqlalchemy.sql import and_, or_
 
+from c2cgeoportal_commons import models
 from c2cgeoportal_geoportal.lib import get_roles_id
 from c2cgeoportal_geoportal.lib.caching import get_region
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers

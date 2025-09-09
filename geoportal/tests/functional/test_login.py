@@ -106,10 +106,11 @@ class TestLoginView(TestCase):
     #
 
     def test_login_success(self) -> None:
+        from pyramid.httpexceptions import HTTPUnauthorized
+
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.static import User
         from c2cgeoportal_geoportal.views.login import Login
-        from pyramid.httpexceptions import HTTPUnauthorized
 
         user = DBSession.query(User).filter_by(username="__test_user1").one()
         user.is_password_changed = True
@@ -141,8 +142,9 @@ class TestLoginView(TestCase):
         self.assertRaises(HTTPUnauthorized, login.login)
 
     def test_logout_no_auth(self) -> None:
-        from c2cgeoportal_geoportal.views.login import Login
         from pyramid.httpexceptions import HTTPUnauthorized
+
+        from c2cgeoportal_geoportal.views.login import Login
 
         request = self._create_request_obj(path="/", params={"came_from": "/came_from"})
         login = Login(request)
@@ -214,16 +216,18 @@ class TestLoginView(TestCase):
         assert len(user.password) != 0
 
     def test_change_password_no_params(self) -> None:
-        from c2cgeoportal_geoportal.views.login import Login
         from pyramid.httpexceptions import HTTPBadRequest
+
+        from c2cgeoportal_geoportal.views.login import Login
 
         request = self._create_request_obj(username="__test_user1", params={"lang": "en"}, POST={})
         login = Login(request)
         self.assertRaises(HTTPBadRequest, login.change_password)
 
     def test_change_password_wrong_old(self) -> None:
-        from c2cgeoportal_geoportal.views.login import Login
         from pyramid.httpexceptions import HTTPUnauthorized
+
+        from c2cgeoportal_geoportal.views.login import Login
 
         request = self._create_request_obj(
             username="__test_user1",
@@ -235,8 +239,9 @@ class TestLoginView(TestCase):
             login.change_password()
 
     def test_change_password_different(self) -> None:
-        from c2cgeoportal_geoportal.views.login import Login
         from pyramid.httpexceptions import HTTPBadRequest
+
+        from c2cgeoportal_geoportal.views.login import Login
 
         request = self._create_request_obj(
             username="__test_user1",
@@ -370,7 +375,6 @@ class TestLoginView(TestCase):
 
     def test_intranet(self) -> None:
         from c2cgeoportal_geoportal.views.login import Login
-
         from tests import DummyRequest
 
         request = DummyRequest()

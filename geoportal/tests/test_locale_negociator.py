@@ -42,9 +42,10 @@ class TestLocalNegociator(TestCase):
         assert lang == "fr"
 
     def test_lang_is_not_available(self) -> None:
-        from c2cgeoportal_geoportal import locale_negotiator
         from pyramid.request import Request
         from pyramid.threadlocal import get_current_registry
+
+        from c2cgeoportal_geoportal import locale_negotiator
 
         request = Request.blank("/")
         request.registry = get_current_registry()
@@ -55,9 +56,10 @@ class TestLocalNegociator(TestCase):
         assert lang == "de"
 
     def test_lang_is_available(self) -> None:
-        from c2cgeoportal_geoportal import locale_negotiator
         from pyramid.request import Request
         from pyramid.threadlocal import get_current_registry
+
+        from c2cgeoportal_geoportal import locale_negotiator
 
         request = Request.blank("/")
         request.registry = get_current_registry()

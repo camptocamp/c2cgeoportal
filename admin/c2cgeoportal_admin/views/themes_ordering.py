@@ -31,7 +31,6 @@ from typing import Any
 import colander
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import AbstractViews, ObjectResponse, SaveResponse
-from c2cgeoportal_commons.models.main import Theme, TreeItem
 from deform import ValidationFailure
 from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config
@@ -39,6 +38,7 @@ from pyramid.view import view_config
 from c2cgeoportal_admin import _
 from c2cgeoportal_admin.schemas.treegroup import treeitem_edit_url
 from c2cgeoportal_admin.widgets import ChildrenWidget, ChildWidget
+from c2cgeoportal_commons.models.main import Theme, TreeItem
 
 
 class ThemeOrderSchema(GeoFormSchemaNode):  # pylint: disable=abstract-method
