@@ -1,3 +1,7 @@
+##### 2.9.0.279
+
+- [Backport 2.9] Don't clean testing from commons [c2cgeoportal#12242](https://github.com/camptocamp/c2cgeoportal/pull/12242)
+
 ##### 2.9.0.278
 
 - Audit Snyk check/fix 2.9 [c2cgeoportal#12234](https://github.com/camptocamp/c2cgeoportal/pull/12234)
