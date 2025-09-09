@@ -97,7 +97,7 @@ def _main() -> None:
                     [
                         "docker",
                         "pull",
-                        f"camptocamp/geomapfish:{major_version}",
+                        f"ghcr.io/camptocamp/geomapfish:{major_version}",
                     ],
                 )
                 subprocess.check_call(["docker", "pull", f"camptocamp/geomapfish-tools:{args.version}"])
@@ -105,7 +105,7 @@ def _main() -> None:
                     [
                         "docker",
                         "pull",
-                        f"camptocamp/geomapfish-config:{major_version}",
+                        f"ghcr.io/camptocamp/geomapfish-config:{major_version}",
                     ],
                 )
 
@@ -128,7 +128,7 @@ def _main() -> None:
                     "--env=CI",
                     f"--volume={os.getcwd()}:/src",
                     *debug_volumes,
-                    f"camptocamp/geomapfish-tools:{args.version}",
+                    f"ghcr.io/camptocamp/geomapfish-tools:{args.version}",
                     "run-git",
                     subprocess.check_output(["git", "config", "--get", "user.name"]).decode().strip(),
                     subprocess.check_output(["git", "config", "--get", "user.email"]).decode().strip(),

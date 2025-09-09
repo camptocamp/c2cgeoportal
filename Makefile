@@ -79,6 +79,7 @@ additionallint: ## Check that we should replace some strings in the code
 build-tools:
 	docker build --target=tools --tag=camptocamp/geomapfish-tools:$(DOCKER_TAG) \
 		--build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --build-arg=MAJOR_MINOR_VERSION=$(MAJOR_MINOR_VERSION) --build-arg=VERSION=$(VERSION) .
+	docker tag camptocamp/geomapfish-tools:$(DOCKER_TAG) ghcr.io/camptocamp/geomapfish-tools:$(DOCKER_TAG)
 
 .PHONY: build-checks
 build-checks:
@@ -89,11 +90,13 @@ build-checks:
 build-config:
 	docker build --tag=camptocamp/geomapfish-config:$(DOCKER_TAG) \
 		--build-arg=VERSION=$(MAJOR_VERSION) --build-arg=MAJOR_MINOR_VERSION=$(MAJOR_MINOR_VERSION) docker/config
+	docker tag camptocamp/geomapfish-config:$(DOCKER_TAG) ghcr.io/camptocamp/geomapfish-config:$(DOCKER_TAG)
 
 .PHONY: build-runner
 build-runner:
 	docker build --target=runner --tag=camptocamp/geomapfish:$(DOCKER_TAG) \
 		--build-arg=MAJOR_VERSION=$(MAJOR_VERSION) --build-arg=MAJOR_MINOR_VERSION=$(MAJOR_MINOR_VERSION) --build-arg=VERSION=$(VERSION) .
+	docker tag camptocamp/geomapfish:$(DOCKER_TAG) ghcr.io/camptocamp/geomapfish:$(DOCKER_TAG)
 
 QGIS_VERSION ?= lr
 .PHONY: build-qgisserver
@@ -101,6 +104,8 @@ build-qgisserver:
 	docker build --target=runner --build-arg=VERSION=$(QGIS_VERSION) \
 		--build-arg=GEOMAPFISH_VERSION=$(MAJOR_VERSION) \
 		--tag=camptocamp/geomapfish-qgisserver:gmf${MAJOR_VERSION}-qgis$(QGIS_VERSION) docker/qgisserver
+	docker tag camptocamp/geomapfish-qgisserver:gmf${MAJOR_VERSION}-qgis$(QGIS_VERSION) \
+		ghcr.io/camptocamp/geomapfish-qgisserver:gmf${MAJOR_VERSION}-qgis$(QGIS_VERSION)
 
 .PHONY: build-qgisserver-tests
 build-qgisserver-tests:
