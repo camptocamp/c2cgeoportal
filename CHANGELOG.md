@@ -1,3 +1,7 @@
+##### 2.8.1.245
+
+- Don't clean testing from commons [c2cgeoportal#12236](https://github.com/camptocamp/c2cgeoportal/pull/12236)
+
 ##### 2.8.1.244
 
 - [Backport 2.8] Remove node_modules, fix tools-cleaned, add packages that should be managed [c2cgeoportal#12224](https://github.com/camptocamp/c2cgeoportal/pull/12224)
