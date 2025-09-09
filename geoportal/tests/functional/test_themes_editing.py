@@ -52,6 +52,10 @@ class TestThemeEditing(TestCase):
         self.maxDiff = None
         self._tables = []
 
+        from geoalchemy2 import Geometry
+        from sqlalchemy import Column, Table, types
+        from sqlalchemy.ext.declarative import declarative_base
+
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import (
             Interface,
@@ -62,9 +66,6 @@ class TestThemeEditing(TestCase):
             Theme,
         )
         from c2cgeoportal_commons.models.static import User
-        from geoalchemy2 import Geometry
-        from sqlalchemy import Column, Table, types
-        from sqlalchemy.ext.declarative import declarative_base
 
         setup_db()
 

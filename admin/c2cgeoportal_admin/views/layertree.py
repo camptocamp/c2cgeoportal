@@ -30,6 +30,11 @@ from typing import Any
 
 import pyramid.request
 from c2cgeoform.views.abstract_views import DeleteResponse, ItemAction
+from pyramid.httpexceptions import HTTPNotFound
+from pyramid.view import view_config, view_defaults
+from translationstring import TranslationStringFactory
+
+from c2cgeoportal_admin import _
 from c2cgeoportal_commons.models.main import (
     Interface,
     Layer,
@@ -37,11 +42,6 @@ from c2cgeoportal_commons.models.main import (
     Theme,
     TreeItem,
 )
-from pyramid.httpexceptions import HTTPNotFound
-from pyramid.view import view_config, view_defaults
-from translationstring import TranslationStringFactory
-
-from c2cgeoportal_admin import _
 
 itemtypes_tables = {
     "theme": "themes",

@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2024, Camptocamp SA
+# Copyright (c) 2018-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -30,9 +30,10 @@ from typing import Any
 
 import colander
 from c2cgeoform.schema import GeoFormSchemaNode
-from c2cgeoportal_commons.models.main import Dimension
 from deform.widget import MappingWidget, SequenceWidget
 from sqlalchemy.orm.attributes import InstrumentedAttribute
+
+from c2cgeoportal_commons.models.main import Dimension
 
 
 def dimensions_schema_node(

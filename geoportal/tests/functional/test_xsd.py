@@ -42,11 +42,12 @@ class TestXSDGenerator(TestCase):
         setup_module()
 
         import transaction
-        from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_geoportal.lib.dbreflection import _AssociationProxy
         from sqlalchemy import Column, ForeignKey, types
         from sqlalchemy.ext.declarative import declarative_base
         from sqlalchemy.orm import relationship
+
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_geoportal.lib.dbreflection import _AssociationProxy
 
         # Always see the diff
         # https://docs.python.org/2/library/unittest.html#unittest.TestCase.maxDiff
@@ -89,6 +90,7 @@ class TestXSDGenerator(TestCase):
 
     def teardown_method(self, _) -> None:
         import transaction
+
         from c2cgeoportal_commons.models import DBSession
 
         transaction.commit()
@@ -114,8 +116,9 @@ class TestXSDGenerator(TestCase):
     @patch("c2cgeoportal_geoportal.lib.xsd.XSDGenerator.add_association_proxy_xsd")
     @patch("c2cgeoportal_geoportal.lib.xsd.PapyrusXSDGenerator.add_column_property_xsd")
     def test_add_column_property_xsd(self, column_mock, proxy_mock) -> None:
-        from c2cgeoportal_geoportal.lib.xsd import XSDGenerator
         from sqlalchemy.orm.util import class_mapper
+
+        from c2cgeoportal_geoportal.lib.xsd import XSDGenerator
 
         gen = XSDGenerator(include_foreign_keys=True)
 
@@ -133,8 +136,9 @@ class TestXSDGenerator(TestCase):
     def test_add_column_readonly(self) -> None:
         from xml.etree.ElementTree import TreeBuilder, tostring
 
-        from c2cgeoportal_geoportal.lib.xsd import XSDGenerator
         from sqlalchemy.orm.util import class_mapper
+
+        from c2cgeoportal_geoportal.lib.xsd import XSDGenerator
 
         gen = XSDGenerator(include_foreign_keys=True)
         mapper = class_mapper(self.cls)
@@ -158,8 +162,9 @@ class TestXSDGenerator(TestCase):
     def test_add_association_proxy_xsd(self) -> None:
         from xml.etree.ElementTree import TreeBuilder, tostring
 
-        from c2cgeoportal_geoportal.lib.xsd import XSDGenerator
         from sqlalchemy.orm.util import class_mapper
+
+        from c2cgeoportal_geoportal.lib.xsd import XSDGenerator
 
         gen = XSDGenerator(include_foreign_keys=True)
 

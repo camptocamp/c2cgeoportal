@@ -994,8 +994,9 @@ class TestMapserverproxyView(TestCase):
         assert "<Name>testpoint_protected</Name>" in response.body.decode("utf-8")
 
     def test_authentication_required(self) -> None:
-        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
         from pyramid.httpexceptions import HTTPForbidden
+
+        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
 
         request = self._create_getcap_request()
         request.params.update(

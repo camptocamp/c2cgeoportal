@@ -34,6 +34,9 @@ import pytest
 import sqlalchemy.orm
 import transaction
 from c2c.template.config import config as configuration
+from pyramid.testing import DummyRequest
+from sqlalchemy.orm.session import Session, SessionTransaction
+
 from c2cgeoportal_commons.testing import (
     generate_mappers,
     get_engine,
@@ -42,9 +45,6 @@ from c2cgeoportal_commons.testing import (
 )
 from c2cgeoportal_commons.testing.initializedb import truncate_tables
 from c2cgeoportal_geoportal.lib import caching
-from pyramid.testing import DummyRequest
-from sqlalchemy.orm.session import Session, SessionTransaction
-
 from tests.functional import setup_common as setup_module
 
 _LOG = logging.getLogger(__name__)

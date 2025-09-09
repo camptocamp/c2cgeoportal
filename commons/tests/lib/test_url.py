@@ -29,8 +29,9 @@
 
 from unittest import TestCase
 
-from c2cgeoportal_commons.lib.url import Url, get_url2
 from pyramid.testing import DummyRequest
+
+from c2cgeoportal_commons.lib.url import Url, get_url2
 
 
 class TestUrl(TestCase):

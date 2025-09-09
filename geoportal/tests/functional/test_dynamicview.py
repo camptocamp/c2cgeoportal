@@ -31,10 +31,10 @@
 from unittest import TestCase
 
 import pyramid.url
-from c2cgeoportal_geoportal.lib.caching import init_region
 from pyramid import testing
 from pyramid.testing import testConfig as setupConfig
 
+from c2cgeoportal_geoportal.lib.caching import init_region
 from tests import DummyRequest
 from tests.functional import setup_common as setup_module
 from tests.functional import teardown_common as teardown_module
@@ -51,10 +51,11 @@ use(teardown_module)
 class TestDynamicView(TestCase):
     def setup_method(self, _) -> None:
         import transaction
-        from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import FullTextSearch
         from geoalchemy2 import WKTElement
         from sqlalchemy import func
+
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.main import FullTextSearch
 
         entry1 = FullTextSearch()
         entry1.label = "label 1"
@@ -88,6 +89,7 @@ class TestDynamicView(TestCase):
         testing.tearDown()
 
         import transaction
+
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import FullTextSearch
 

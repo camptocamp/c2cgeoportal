@@ -31,9 +31,6 @@ from typing import Any
 
 import pyramid.request
 import sqlalchemy.exc
-from c2cgeoportal_commons import models
-from c2cgeoportal_commons.lib.url import Url
-from c2cgeoportal_commons.models import main
 from defusedxml import ElementTree
 from pyramid.httpexceptions import (
     HTTPBadRequest,
@@ -43,6 +40,9 @@ from pyramid.httpexceptions import (
 )
 from pyramid.view import view_config
 
+from c2cgeoportal_commons import models
+from c2cgeoportal_commons.lib.url import Url
+from c2cgeoportal_commons.models import main
 from c2cgeoportal_geoportal.lib.common_headers import Cache
 from c2cgeoportal_geoportal.lib.filter_capabilities import (
     filter_wfst_capabilities,

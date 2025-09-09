@@ -30,9 +30,10 @@
 
 from unittest import TestCase
 
-from c2cgeoportal_geoportal import MapserverproxyRoutePredicate
 from pyramid.request import Request
 from pyramid.threadlocal import get_current_registry
+
+from c2cgeoportal_geoportal import MapserverproxyRoutePredicate
 
 
 class TestMapserverproxyRoutePredicate(TestCase):

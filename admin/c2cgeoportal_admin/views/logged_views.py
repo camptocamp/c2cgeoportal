@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024, Camptocamp SA
+# Copyright (c) 2023-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -29,9 +29,10 @@ import datetime
 from typing import Generic, TypeVar
 
 from c2cgeoform.views.abstract_views import AbstractViews, DeleteResponse, SaveResponse
+from pyramid.httpexceptions import HTTPFound
+
 from c2cgeoportal_commons.models import Base
 from c2cgeoportal_commons.models.main import Log, LogAction
-from pyramid.httpexceptions import HTTPFound
 
 _T = TypeVar("_T", bound=Log)
 

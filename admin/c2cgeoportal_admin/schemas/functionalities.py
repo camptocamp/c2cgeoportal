@@ -31,10 +31,11 @@ from typing import Any
 import colander
 from c2cgeoform.ext.deform_ext import RelationCheckBoxListWidget
 from c2cgeoform.schema import GeoFormManyToManySchemaNode, manytomany_validator
-from c2cgeoportal_commons.models.main import Functionality
 from sqlalchemy import inspect, select
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 from sqlalchemy.sql.functions import concat
+
+from c2cgeoportal_commons.models.main import Functionality
 
 
 def available_functionalities_for(settings: dict[str, Any], model: type[Any]) -> list[dict[str, Any]]:

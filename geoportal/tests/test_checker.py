@@ -31,7 +31,6 @@
 from unittest import TestCase
 
 from c2cgeoportal_geoportal.lib.checker import build_url
-
 from tests import DummyRequest
 
 

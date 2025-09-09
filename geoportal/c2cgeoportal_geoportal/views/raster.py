@@ -40,11 +40,11 @@ import numpy as np
 import pyramid.request
 import requests
 import zope.event.classhandler
-from c2cgeoportal_commons.models import InvalidateCacheEvent
 from pyramid.httpexceptions import HTTPBadRequest, HTTPInternalServerError, HTTPNotFound
 from pyramid.view import view_config
 from rasterio.io import DatasetReader
 
+from c2cgeoportal_commons.models import InvalidateCacheEvent
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
 
 if TYPE_CHECKING:

@@ -43,8 +43,9 @@ class TestRole:
         assert dbsession.query(user_role).count() == 0
 
     def test_delete_cascade_to_tsearch(self, dbsession) -> None:
-        from c2cgeoportal_commons.models.main import FullTextSearch, Role
         from sqlalchemy import func
+
+        from c2cgeoportal_commons.models.main import FullTextSearch, Role
 
         role = dbsession.query(Role).filter(Role.name == "secretary").one()
         role_id = role.id

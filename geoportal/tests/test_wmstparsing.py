@@ -204,8 +204,9 @@ class TestParseDuration(TestCase):
         assert _parse_duration("PT10S") == (0, 0, 0, 10)
 
     def test_invalid(self) -> None:
-        from c2cgeoportal_geoportal.lib.wmstparsing import _parse_duration
         from isodate import ISO8601Error
+
+        from c2cgeoportal_geoportal.lib.wmstparsing import _parse_duration
 
         self.assertRaises(ISO8601Error, _parse_duration, "10S")
 

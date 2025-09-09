@@ -36,9 +36,10 @@ from c2cgeoform.views.abstract_views import (
     ItemAction,
     ListField,
 )
+from pyramid.view import view_config, view_defaults
+
 from c2cgeoportal_commons.models import _
 from c2cgeoportal_commons.models.main import AbstractLog
-from pyramid.view import view_config, view_defaults
 
 _list_field = partial(ListField, AbstractLog)
 

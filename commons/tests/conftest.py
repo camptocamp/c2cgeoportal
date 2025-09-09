@@ -6,6 +6,8 @@ import plaster
 import pytest
 import transaction
 from c2c.template.config import config
+from sqlalchemy.exc import DBAPIError
+
 from c2cgeoportal_commons.testing import (
     generate_mappers,
     get_engine,
@@ -13,7 +15,6 @@ from c2cgeoportal_commons.testing import (
     get_tm_session,
 )
 from c2cgeoportal_commons.testing.initializedb import truncate_tables
-from sqlalchemy.exc import DBAPIError
 
 
 @pytest.fixture(scope="session")

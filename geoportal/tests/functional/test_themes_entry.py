@@ -33,10 +33,10 @@ from unittest import TestCase
 
 import pytest
 import transaction
-from c2cgeoportal_geoportal.lib.caching import invalidate_region
 from geoalchemy2 import WKTElement
 from pyramid import testing
 
+from c2cgeoportal_geoportal.lib.caching import invalidate_region
 from tests.functional import (
     cleanup_db,
     create_default_ogcserver,
@@ -65,6 +65,10 @@ class TestThemeEntryView(TestCase):
         self.maxDiff = None  # pylint: disable=invalid-name
         self._tables = []
 
+        from geoalchemy2 import Geometry
+        from sqlalchemy import Column, Table, func, types
+        from sqlalchemy.ext.declarative import declarative_base
+
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import (
             OGCSERVER_AUTH_GEOSERVER,
@@ -80,9 +84,6 @@ class TestThemeEntryView(TestCase):
             Theme,
         )
         from c2cgeoportal_commons.models.static import User
-        from geoalchemy2 import Geometry
-        from sqlalchemy import Column, Table, func, types
-        from sqlalchemy.ext.declarative import declarative_base
 
         setup_db()
 

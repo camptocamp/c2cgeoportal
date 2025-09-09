@@ -31,12 +31,12 @@ import urllib.parse
 from typing import Any, cast
 
 import pyramid.request
-from c2cgeoportal_commons import models
-from c2cgeoportal_commons.models import main
 from pyramid.httpexceptions import HTTPNotFound
 from pyramid.view import view_config
 from sqlalchemy import func
 
+from c2cgeoportal_commons import models
+from c2cgeoportal_commons.models import main
 from c2cgeoportal_geoportal import is_allowed_host
 from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
 from c2cgeoportal_geoportal.lib.caching import get_region

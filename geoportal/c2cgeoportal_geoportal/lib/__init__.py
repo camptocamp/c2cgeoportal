@@ -38,10 +38,10 @@ from typing import Any, cast
 import dateutil
 import pyramid.request
 import pyramid.response
-from c2cgeoportal_commons.lib.url import get_url2
 from pyramid.interfaces import IRoutePregenerator
 from zope.interface import implementer
 
+from c2cgeoportal_commons.lib.url import get_url2
 from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
 from c2cgeoportal_geoportal.lib.caching import get_region
 

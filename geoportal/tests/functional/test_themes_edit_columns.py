@@ -58,6 +58,7 @@ class TestThemesEditColumns(TestCase):
         self._tables = []
 
         import transaction
+
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import (
             OGCSERVER_AUTH_NOAUTH,
@@ -99,6 +100,7 @@ class TestThemesEditColumns(TestCase):
 
     def teardown_method(self, _: Any) -> None:
         import transaction
+
         from c2cgeoportal_commons.models import DBSession
 
         cleanup_db()
@@ -120,11 +122,12 @@ class TestThemesEditColumns(TestCase):
         It creates a layer with two features, and associates a restriction area to it.
         """
         import transaction
-        from c2cgeoportal_commons.models import DBSession
-        from c2cgeoportal_commons.models.main import LayerWMS, RestrictionArea
         from geoalchemy2 import Geometry
         from sqlalchemy import Column, ForeignKey, Table, types
         from sqlalchemy.ext.declarative import declarative_base
+
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.main import LayerWMS, RestrictionArea
 
         self.__class__._table_index += 1
         id_ = self.__class__._table_index

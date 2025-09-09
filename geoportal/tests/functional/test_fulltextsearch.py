@@ -42,11 +42,12 @@ from tests.functional import teardown_common as teardown_module  # noqa
 class TestFulltextsearchView(TestCase):
     def setup_method(self, _) -> None:
         import transaction
+        from geoalchemy2 import WKTElement
+        from sqlalchemy import func
+
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import FullTextSearch, Interface, Role
         from c2cgeoportal_commons.models.static import User
-        from geoalchemy2 import WKTElement
-        from sqlalchemy import func
 
         DBSession.query(User).delete()
         DBSession.query(Role).delete()
@@ -153,6 +154,7 @@ class TestFulltextsearchView(TestCase):
         testing.tearDown()
 
         import transaction
+
         from c2cgeoportal_commons.models import DBSession
         from c2cgeoportal_commons.models.main import FullTextSearch, Interface, Role
         from c2cgeoportal_commons.models.static import User
@@ -181,8 +183,9 @@ class TestFulltextsearchView(TestCase):
         return request
 
     def test_no_default_laguage(self) -> None:
-        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from pyramid.httpexceptions import HTTPInternalServerError
+
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request()
         del request.registry.settings["default_locale_name"]
@@ -193,8 +196,9 @@ class TestFulltextsearchView(TestCase):
         assert isinstance(response, HTTPInternalServerError)
 
     def test_unknown_laguage(self) -> None:
-        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from pyramid.httpexceptions import HTTPInternalServerError
+
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request()
         request.registry.settings["default_locale_name"] = "it"
@@ -204,8 +208,9 @@ class TestFulltextsearchView(TestCase):
         assert isinstance(response, HTTPInternalServerError)
 
     def test_badrequest_noquery(self) -> None:
-        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from pyramid.httpexceptions import HTTPBadRequest
+
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request()
         fts = FullTextSearchView(request)
@@ -213,8 +218,9 @@ class TestFulltextsearchView(TestCase):
         assert isinstance(response, HTTPBadRequest)
 
     def test_badrequest_limit(self) -> None:
-        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from pyramid.httpexceptions import HTTPBadRequest
+
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request(params={"query": "text", "limit": "bad"})
         fts = FullTextSearchView(request)
@@ -222,8 +228,9 @@ class TestFulltextsearchView(TestCase):
         assert isinstance(response, HTTPBadRequest)
 
     def test_badrequest_partitionlimit(self) -> None:
-        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from pyramid.httpexceptions import HTTPBadRequest
+
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request(params={"query": "text", "partitionlimit": "bad"})
         fts = FullTextSearchView(request)
@@ -231,8 +238,9 @@ class TestFulltextsearchView(TestCase):
         assert isinstance(response, HTTPBadRequest)
 
     def test_limit(self) -> None:
-        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from geojson.feature import FeatureCollection
+
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request(params={"query": "tra sol", "limit": 1})
         fts = FullTextSearchView(request)
@@ -243,8 +251,9 @@ class TestFulltextsearchView(TestCase):
         assert response.features[0].properties["layer_name"] == "layer1"
 
     def test_toobig_limit(self) -> None:
-        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from geojson.feature import FeatureCollection
+
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request(params={"query": "tra sol", "limit": 2000})
         fts = FullTextSearchView(request)
@@ -257,8 +266,9 @@ class TestFulltextsearchView(TestCase):
         assert response.features[1].properties["layer_name"] == "layer1"
 
     def test_toobig_partitionlimit(self) -> None:
-        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from geojson.feature import FeatureCollection
+
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request(params={"query": "tra sol", "partitionlimit": 2000})
         fts = FullTextSearchView(request)
@@ -271,8 +281,9 @@ class TestFulltextsearchView(TestCase):
         assert response.features[1].properties["layer_name"] == "layer1"
 
     def test_match(self) -> None:
-        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from geojson.feature import FeatureCollection
+
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request(params={"query": "tra sol", "limit": 40})
         fts = FullTextSearchView(request)
@@ -285,8 +296,9 @@ class TestFulltextsearchView(TestCase):
         assert response.features[1].properties["layer_name"] == "layer1"
 
     def test_nomatch(self) -> None:
-        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from geojson.feature import FeatureCollection
+
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request(params={"query": "foo"})
         fts = FullTextSearchView(request)
@@ -295,8 +307,9 @@ class TestFulltextsearchView(TestCase):
         assert len(response.features) == 0
 
     def test_private_nomatch(self) -> None:
-        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from geojson.feature import FeatureCollection
+
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request(params={"query": "pl sem", "limit": 40})
         fts = FullTextSearchView(request)
@@ -305,8 +318,9 @@ class TestFulltextsearchView(TestCase):
         assert len(response.features) == 0
 
     def test_private_match(self) -> None:
-        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from geojson.feature import FeatureCollection
+
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request(params={"query": "pl sem", "limit": 40}, username="__test_user1")
         fts = FullTextSearchView(request)
@@ -317,8 +331,9 @@ class TestFulltextsearchView(TestCase):
         assert response.features[0].properties["layer_name"] == "layer2"
 
     def test_private_with_role_nomatch(self) -> None:
-        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from geojson.feature import FeatureCollection
+
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request(
             params={"query": "ven nei", "limit": 40},
@@ -330,8 +345,9 @@ class TestFulltextsearchView(TestCase):
         assert len(response.features) == 0
 
     def test_private_with_role_match(self) -> None:
-        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from geojson.feature import FeatureCollection
+
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request(
             params={"query": "ven nei", "limit": 40},
@@ -345,8 +361,9 @@ class TestFulltextsearchView(TestCase):
         assert response.features[0].properties["layer_name"] == "layer3"
 
     def test_match_partitionlimit(self) -> None:
-        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from geojson.feature import FeatureCollection
+
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request(params={"query": "tra sol", "limit": 40, "partitionlimit": 1})
         fts = FullTextSearchView(request)
@@ -357,8 +374,9 @@ class TestFulltextsearchView(TestCase):
         assert response.features[0].properties["layer_name"] == "layer1"
 
     def test_params_actions(self) -> None:
-        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from geojson.feature import FeatureCollection
+
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request(params={"query": "lausanne", "limit": 10})
         fts = FullTextSearchView(request)
@@ -370,8 +388,9 @@ class TestFulltextsearchView(TestCase):
         assert response.features[0].properties["actions"] == [{"action": "add_layer", "data": "layer1"}]
 
     def test_interface(self) -> None:
-        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from geojson.feature import FeatureCollection
+
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request(params={"query": "lausanne", "limit": 10, "interface": "main"})
         fts = FullTextSearchView(request)
@@ -380,8 +399,9 @@ class TestFulltextsearchView(TestCase):
         assert {feature.properties["label"] for feature in response.features} == {"label5", "label6"}
 
     def test_rank_order_with_similarity(self) -> None:
-        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from geojson.feature import FeatureCollection
+
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request(params={"query": "simi", "limit": 3})
         fts = FullTextSearchView(request)
@@ -393,8 +413,9 @@ class TestFulltextsearchView(TestCase):
         assert response.features[2].properties["label"] == "A 71 simi"
 
     def test_rank_order_with_ts_rank_cd(self) -> None:
-        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from geojson.feature import FeatureCollection
+
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request(params={"query": "simi", "limit": 3, "ranksystem": "ts_rank_cd"})
         fts = FullTextSearchView(request)
@@ -406,8 +427,9 @@ class TestFulltextsearchView(TestCase):
         assert [f.properties["label"] for f in response.features] == ["A 7 simi", "A 70 simi", "A 71 simi"]
 
     def test_extra_quote(self) -> None:
-        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from geojson.feature import FeatureCollection
+
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request(params={"query": "tra 'sol"})
         fts = FullTextSearchView(request)
@@ -420,8 +442,9 @@ class TestFulltextsearchView(TestCase):
         assert response.features[1].properties["layer_name"] == "layer1"
 
     def test_public_match_registered(self):
-        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from geojson.feature import FeatureCollection
+
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request(params={"query": "reg", "limit": 40})
         fts = FullTextSearchView(request)
@@ -430,8 +453,9 @@ class TestFulltextsearchView(TestCase):
         assert len(response.features) == 0
 
     def test_private_match_registered(self):
-        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
         from geojson.feature import FeatureCollection
+
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request(params={"query": "reg", "limit": 40}, username="__test_user1")
         fts = FullTextSearchView(request)
