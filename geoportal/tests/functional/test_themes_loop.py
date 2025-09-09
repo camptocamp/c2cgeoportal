@@ -30,6 +30,7 @@
 
 from unittest import TestCase
 
+import pytest
 import transaction
 from pyramid import testing
 
@@ -92,6 +93,7 @@ class TestLoopTheme(TestCase):
 
         transaction.commit()
 
+    @pytest.mark.asyncio
     async def test_theme(self) -> None:
         from c2cgeoportal_geoportal.views.theme import Theme
 

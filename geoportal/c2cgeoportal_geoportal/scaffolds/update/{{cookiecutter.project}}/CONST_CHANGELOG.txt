@@ -14,6 +14,9 @@ Information to know before starting the upgrade
    gdal_translate -of GTiff dem.bt dem.tiff
    ```
 
+2. The Restriction area becomes a multipolygon and the `ST_Contains`
+   doesn't match with invalid geometries as before (impact also editing).
+
 Information
 ===========
 
