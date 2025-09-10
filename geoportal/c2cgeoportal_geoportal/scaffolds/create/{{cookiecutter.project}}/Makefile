@@ -29,8 +29,8 @@ checks: prospector eslint ## Runs the checks
 prospector: ## Runs the Prospector checks
 	mkdir geoportal/.ruff_cache || true
 	chmod 777 geoportal/.ruff_cache || true
-	docker compose run --entrypoint= --no-deps --rm --volume=$(CURDIR)/geoportal:/app geoportal \
-		prospector --without=ruff --output-format=pylint --die-on-tool-error
+	docker compose run --entrypoint= --rm --volume=$(CURDIR)/geoportal:/app geoportal \
+		prospector --output-format=pylint --die-on-tool-error
 
 .PHONY: eslint
 eslint: ## Runs the eslint checks
