@@ -29,4 +29,7 @@ cd "${dir}"
 "$@"
 if [ "${user}" != '' ]; then
     chown -R "${user}:${group}" "${dir}"
+    if [ "$HOME" != '' ] && [ -d "${HOME}/.cache" ]; then
+        chown -R "${user}:${group}" "${HOME}/.cache"
+    fi
 fi
