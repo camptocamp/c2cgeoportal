@@ -26,6 +26,7 @@ group=$2
 dir=$3
 shift 3
 cd "${dir}"
+git config --global --add safe.directory "${dir}"
 "$@"
 if [ "${user}" != '' ]; then
     chown -R "${user}:${group}" "${dir}"
