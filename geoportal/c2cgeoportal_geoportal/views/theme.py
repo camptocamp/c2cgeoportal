@@ -1092,7 +1092,15 @@ class Theme:
                 return None, None, all_errors
             assert feature_type is not None
             namespace = feature_type.attrib.get("targetNamespace")
-            assert namespace is not None
+            if namespace is None:
+                all_errors.add(
+                    f"The targetNamespace is missing in DescribeFeatureType (OGC server: {ogc_server_name}).",
+                )
+                _LOG.error(
+                    "The targetNamespace is missing in DescribeFeatureType (OGC server: %s).",
+                    ogc_server_name,
+                )
+                return None, None, all_errors
             types: dict[Any, dict[str, Any]] = {}
             elements = {}
             for child in feature_type:
