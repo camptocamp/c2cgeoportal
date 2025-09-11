@@ -30,7 +30,7 @@ git config --global --add safe.directory "${dir}"
 "$@"
 if [ "${user}" != '' ]; then
     chown -R "${user}:${group}" "${dir}"
-    if [ "$HOME" != '' ] && [ -d "${HOME}/.cache" ]; then
-        chown -R "${user}:${group}" "${HOME}/.cache"
+    if [ "$HOME" != '' ] && [ -d "${HOME}/.cache/pre-commit" ]; then
+        chown -R "${user}:${group}" "${HOME}/.cache/pre-commit"
     fi
 fi
