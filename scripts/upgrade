@@ -119,6 +119,13 @@ def _main() -> None:
         )
 
         win = platform.system() == "Windows"
+        cache_volume = []
+        if not win:
+            home = os.path.expanduser("~")
+            cache_volume = [
+                f"--env=HOME={home}",
+                f"--volume={home}/.cache:{home}/.cache",
+            ]
         sys.exit(
             subprocess.call(
                 [
@@ -128,6 +135,7 @@ def _main() -> None:
                     "--env=CI",
                     f"--volume={os.getcwd()}:/src",
                     *debug_volumes,
+                    *cache_volume,
                     f"ghcr.io/camptocamp/geomapfish-tools:{args.version}",
                     "run-git",
                     subprocess.check_output(["git", "config", "--get", "user.name"]).decode().strip(),
