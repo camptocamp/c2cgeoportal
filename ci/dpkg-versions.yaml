@@ -476,7 +476,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libxkbcommon-x11-0: 1.4.0-1
   ubuntu_22_04/libxkbcommon0: 1.4.0-1
   ubuntu_22_04/libxkbfile1: 1:1.1.0-1build3
-  ubuntu_22_04/libxml2: 2.9.13+dfsg-1ubuntu0.8
+  ubuntu_22_04/libxml2: 2.9.13+dfsg-1ubuntu0.9
   ubuntu_22_04/libxmu6: 2:1.1.3-3
   ubuntu_22_04/libxmuu1: 2:1.1.3-3
   ubuntu_22_04/libxpm4: 1:3.5.12-1ubuntu0.22.04.2
@@ -923,7 +923,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libxkbcommon-x11-0: 1.4.0-1
   ubuntu_22_04/libxkbcommon0: 1.4.0-1
   ubuntu_22_04/libxkbfile1: 1:1.1.0-1build3
-  ubuntu_22_04/libxml2: 2.9.13+dfsg-1ubuntu0.8
+  ubuntu_22_04/libxml2: 2.9.13+dfsg-1ubuntu0.9
   ubuntu_22_04/libxmu6: 2:1.1.3-3
   ubuntu_22_04/libxmuu1: 2:1.1.3-3
   ubuntu_22_04/libxpm4: 1:3.5.12-1ubuntu0.22.04.2
