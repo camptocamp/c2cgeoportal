@@ -37,9 +37,9 @@ PCREATE_CMD="run /src pcreate --overwrite ${PACKAGE}"
 id
 # shellcheck disable=SC2086
 docker run --rm ${DOCKER_RUN_ENV_ARGS} ${DOCKER_RUN_ARGS} run /src id
-ls -als
+ls -al "${WORKSPACE}/${PACKAGE}"
 # shellcheck disable=SC2086
-docker run --rm ${DOCKER_RUN_ENV_ARGS} ${DOCKER_RUN_ARGS} run /src ls -als
+docker run --rm ${DOCKER_RUN_ENV_ARGS} ${DOCKER_RUN_ARGS} run /src ls -al
 
 # shellcheck disable=SC2086
 docker run --rm ${DOCKER_RUN_ENV_ARGS} ${DOCKER_RUN_ARGS} ${PCREATE_CMD} --scaffold=create
