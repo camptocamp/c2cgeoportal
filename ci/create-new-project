@@ -28,7 +28,7 @@ else
     PACKAGE=testgeomapfishapp
 fi
 rm -rf "${WORKSPACE:?}/${PACKAGE}"
-mkdir --parent "${WORKSPACE}/${PACKAGE}"
+mkdir --parent -- "${WORKSPACE}/${PACKAGE}"
 
 DOCKER_RUN_ENV_ARGS="--env=SRID=2056 --env=EXTENT=2489246.36,1078873.44,2837119.76,1296543.14"
 DOCKER_RUN_ARGS="--volume=${WORKSPACE}/${PACKAGE}:/src/${PACKAGE} --user=$(id -u):$(id -g) camptocamp/geomapfish-tools:${TAG}"
