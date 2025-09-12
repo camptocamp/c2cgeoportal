@@ -27,21 +27,12 @@ if [ $# -ge 2 ]; then
 else
     PACKAGE=testgeomapfishapp
 fi
-rm -rf "${WORKSPACE:?}/src"
-mkdir --parent -- "${WORKSPACE}/src"
 rm -rf "${WORKSPACE:?}/${PACKAGE}"
 mkdir --parent -- "${WORKSPACE}/${PACKAGE}"
 
 DOCKER_RUN_ENV_ARGS="--env=SRID=2056 --env=EXTENT=2489246.36,1078873.44,2837119.76,1296543.14"
-DOCKER_RUN_ARGS="--volume=${WORKSPACE}/src:/src --user=$(id -u):$(id -g) camptocamp/geomapfish-tools:${TAG}"
+DOCKER_RUN_ARGS="--volume=${WORKSPACE}:/src --user=$(id -u):$(id -g) camptocamp/geomapfish-tools:${TAG}"
 PCREATE_CMD="run /src pcreate --overwrite ${PACKAGE}"
-
-id
-# shellcheck disable=SC2086
-docker run --rm ${DOCKER_RUN_ENV_ARGS} ${DOCKER_RUN_ARGS} run /src id
-ls -al "${WORKSPACE}/${PACKAGE}"
-# shellcheck disable=SC2086
-docker run --rm ${DOCKER_RUN_ENV_ARGS} ${DOCKER_RUN_ARGS} run /src ls -al
 
 # shellcheck disable=SC2086
 docker run --rm ${DOCKER_RUN_ENV_ARGS} ${DOCKER_RUN_ARGS} ${PCREATE_CMD} --scaffold=create
