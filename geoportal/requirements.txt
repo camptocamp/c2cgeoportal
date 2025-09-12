@@ -31,4 +31,6 @@ SQLAlchemy
 transaction
 simple_openid_connect
 pkce
+basicauth
+tilecloud
 setuptools>=78.1.1 # not directly required, pinned by Snyk to avoid a vulnerability
