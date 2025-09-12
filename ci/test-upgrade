@@ -12,8 +12,9 @@ function pcreate {
     fi
     # shellcheck disable=SC2086
     docker run --rm ${DOCKER_ENV} \
-        --volume="$1:/src" "camptocamp/geomapfish-tools:$3" \
+        --volume="$1:/src" \
         --user="$(id -u):$(id -g)" \
+        "camptocamp/geomapfish-tools:$3" \
         run /src pcreate --scaffold="$2" testgeomapfish ${PCREATE_ARGS}
 }
 
