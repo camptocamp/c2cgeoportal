@@ -101,7 +101,13 @@ class MapservProxy(OGCProxy):
                 if use_cache and "role_ids" in self.params:
                     del self.params["role_ids"]
 
-            if "service" in self.lower_params and self.lower_params["service"] == "wfs":
+            if self.lower_params.get("ogcserver_type") == "map":
+                _url = self._get_wms_url(errors)
+            elif self.lower_params.get("ogcserver_type") == "query":
+                _url = self._get_query_url(errors)
+            elif self.lower_params.get("ogcserver_type") == "edit":
+                _url = self._get_edit_url(errors)
+            elif "service" in self.lower_params and self.lower_params["service"] == "wfs":
                 _url = self._get_wfs_url(errors)
             else:
                 _url = self._get_wms_url(errors)
@@ -128,7 +134,7 @@ class MapservProxy(OGCProxy):
 
         headers = self.get_headers()
         # Add headers for Geoserver
-        if self.ogc_server.auth == main.OGCSERVER_AUTH_GEOSERVER and self.user is not None:
+        if self._auth == main.OGCSERVER_AUTH_GEOSERVER and self.user is not None:
             headers["sec-username"] = self.user.username
             headers["sec-roles"] = ";".join(get_roles_name(self.request))
 
@@ -150,8 +156,17 @@ class MapservProxy(OGCProxy):
 
         return response
 
+    @property
+    def _auth(self) -> main.OGCServerAuth:
+        auth: main.OGCServerAuth = self.ogc_server.auth
+        if self.lower_params.get("ogcserver_type") == "query":
+            auth = self.ogc_server.auth_query
+        elif self.lower_params.get("ogcserver_type") == "edit":
+            auth = self.ogc_server.auth_edit
+        return auth
+
     def _setup_auth(self) -> None:
-        if self.ogc_server.auth == main.OGCSERVER_AUTH_STANDARD:
+        if self._auth == main.OGCSERVER_AUTH_STANDARD:
             self.params["role_ids"] = ",".join([str(e) for e in get_roles_id(self.request)])
 
             # In some application we want to display the features owned by a user than we need his id.
@@ -164,7 +179,7 @@ class MapservProxy(OGCProxy):
                 del self.params[k]
 
         if (
-            self.ogc_server.auth == main.OGCSERVER_AUTH_STANDARD
+            self._auth == main.OGCSERVER_AUTH_STANDARD
             and self.ogc_server.type == main.OGCSERVER_TYPE_MAPSERVER
         ):
             # Add functionalities params
@@ -197,7 +212,7 @@ class MapservProxy(OGCProxy):
 
         headers = self.get_headers()
         # Add headers for Geoserver
-        if self.ogc_server.auth == main.OGCSERVER_AUTH_GEOSERVER and self.user is not None:
+        if self._auth == main.OGCSERVER_AUTH_GEOSERVER and self.user is not None:
             headers["sec-username"] = self.user.username
             headers["sec-roles"] = ";".join(get_roles_name(self.request))
 
