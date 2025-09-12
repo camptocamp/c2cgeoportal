@@ -33,6 +33,14 @@ mkdir --parent "${WORKSPACE}/${PACKAGE}"
 DOCKER_RUN_ENV_ARGS="--env=SRID=2056 --env=EXTENT=2489246.36,1078873.44,2837119.76,1296543.14"
 DOCKER_RUN_ARGS="--volume=${WORKSPACE}/${PACKAGE}:/src/${PACKAGE} --user=$(id -u):$(id -g) camptocamp/geomapfish-tools:${TAG}"
 PCREATE_CMD="run /src pcreate --overwrite ${PACKAGE}"
+
+id
+# shellcheck disable=SC2086
+docker run --rm ${DOCKER_RUN_ENV_ARGS} ${DOCKER_RUN_ARGS} run /src id
+ls -als
+# shellcheck disable=SC2086
+docker run --rm ${DOCKER_RUN_ENV_ARGS} ${DOCKER_RUN_ARGS} run /src ls -als
+
 # shellcheck disable=SC2086
 docker run --rm ${DOCKER_RUN_ENV_ARGS} ${DOCKER_RUN_ARGS} ${PCREATE_CMD} --scaffold=create
 # shellcheck disable=SC2086
