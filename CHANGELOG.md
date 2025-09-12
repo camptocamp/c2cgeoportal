@@ -1,3 +1,7 @@
+##### 2.9.0.285
+
+- Audit Dpkg 2.9 [c2cgeoportal#12262](https://github.com/camptocamp/c2cgeoportal/pull/12262)
+
 ##### 2.9.0.284
 
 - Add missing dependencies to geoportal Python package [c2cgeoportal#12260](https://github.com/camptocamp/c2cgeoportal/pull/12260)
