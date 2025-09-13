@@ -182,7 +182,7 @@ if [ "$1" = "init" ]; then
     cd -
 
     create "${WORKSPACE}/v210" "${MAJOR_VERSION}"
-    create-old "${WORKSPACE}/v290" 2.9.0.0
+    create-old "${WORKSPACE}/v290" 2.9.0.133
     create-old "${WORKSPACE}/v280" 2.8.0.74
     create-old "${WORKSPACE}/v270" 2.7.0.65
 fi

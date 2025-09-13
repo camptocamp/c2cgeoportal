@@ -222,7 +222,8 @@ jobs:
       - run: ci/test-upgrade init ${HOME}/workspace
       - run: ci/test-upgrade 270 ${HOME}/workspace
       - run: ci/test-upgrade 280 ${HOME}/workspace
-      - run: ci/test-upgrade 29 ${HOME}/workspace
+      - run: ci/test-upgrade 290 ${HOME}/workspace
+      - run: ci/test-upgrade 210 ${HOME}/workspace
       - run: ci/test-upgrade cleanup ${HOME}/workspace
 
       - uses: actions/setup-python@v5
