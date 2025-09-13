@@ -121,8 +121,8 @@ def _main() -> None:
             home = os.path.expanduser("~")
             additional_args.extend(
                 [
-                    f"--env=HOME={home}",
-                    f"--volume={home}/.cache:{home}/.cache",
+                    # In the container the /tmp is the home directory of the user
+                    f"--volume={home}/.cache:/tmp/.cache",
                 ],
             )
 
