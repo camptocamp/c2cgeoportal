@@ -60,6 +60,65 @@ function create-advance {
     cd -
 }
 
+
+# $1: folder
+# $2: scaffold
+# $3: version
+function pcreate-old {
+    if [ "$2" == c2cgeoportal_create ]; then
+        DOCKER_ENV="--env=CI --env=SRID=21781 --env=EXTENT=489246.36,78873.44,837119.76,296543.14"
+    fi
+    # shellcheck disable=SC2086
+    docker run --rm ${DOCKER_ENV} \
+        --volume="$1:/src" \
+        "camptocamp/geomapfish-tools:$3" \
+        run "$(id -u)" "$(id -g)" /src pcreate --scaffold="$2" testgeomapfish ${PCREATE_ARGS}
+}
+
+# $1: folder
+# $2: version
+function create-old {
+    rm --recursive --force "$1"
+    mkdir --parent "$1"
+    pcreate-old "$1" c2cgeoportal_create "$2"
+    pcreate-old "$1" c2cgeoportal_update "$2"
+    cd "$1/testgeomapfish"
+    git init
+    git config user.email ci@camptocamp.com
+    git config user.name CI
+    git remote add origin . # add a fake remote
+    cd -
+    cd "$1/testgeomapfish"
+    git add --all
+    # Workaround for issue in 2.4.0
+    git add -f tilegeneration/config.yaml.tmpl || true
+    git commit --quiet --message="Initial commit"
+    git clean -fX
+    cd -
+}
+
+# $1: folder
+# $2: version
+function create-advance-old {
+    rm --recursive --force "$1"
+    mkdir --parent "$1"
+    pcreate-old "$1" c2cgeoportal_create "$2"
+    pcreate-old "$1" c2cgeoportal_advance_create "$2"
+    pcreate-old "$1" c2cgeoportal_update "$2"
+    pcreate-old "$1" c2cgeoportal_advance_update "$2"
+    cd "$1/testgeomapfish"
+    git init
+    git config user.email ci@camptocamp.com
+    git config user.name CI
+    git remote add origin . # add a fake remote
+    git add --all
+    # Workaround for issue in 2.4.0
+    git add -f tilegeneration/config.yaml.tmpl || true
+    git commit --quiet --message="Initial commit"
+    git clean -fX
+    cd -
+}
+
 function printdiff {
     ls -l .UPGRADE*
     for f in *.diff; do
@@ -120,9 +179,10 @@ if [ "$1" = "init" ]; then
     pre-commit run --all-files || true
     cd -
 
-    create "${WORKSPACE}/v29" "${MAJOR_VERSION}"
-    create "${WORKSPACE}/v280" 2.8.0.74
-    create "${WORKSPACE}/v270" 2.7.0.65
+    create "${WORKSPACE}/v210" "${MAJOR_VERSION}"
+    create-old "${WORKSPACE}/v290" 2.9.0.133
+    create-old "${WORKSPACE}/v280" 2.8.0.74
+    create-old "${WORKSPACE}/v270" 2.7.0.65
 fi
 
 if [ "$1" = "270" ]; then
@@ -133,11 +193,15 @@ if [ "$1" = "280" ]; then
     upgrade "$1"
 fi
 
-if [ "$1" = "29" ]; then
+if [ "$1" = "290" ]; then
+    upgrade "$1"
+fi
+
+if [ "$1" = "210" ]; then
     upgrade "$1"
 fi
 
 if [ "$1" = "cleanup" ]; then
-    rm --recursive --force "${WORKSPACE}/ref" "${WORKSPACE}/v270" "${WORKSPACE}/v28"
+    rm --recursive --force "${WORKSPACE}/ref" "${WORKSPACE}/v270" "${WORKSPACE}/v280" "${WORKSPACE}/v290" "${WORKSPACE}/v210"
     docker images --format '{{.Repository}}:{{.Tag}}' | grep 'camptocamp/geomapfish.*:2.[678]'
 fi
