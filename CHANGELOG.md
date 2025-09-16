@@ -1,3 +1,7 @@
+##### 2.9.0.291
+
+- Audit Dpkg 2.9 [c2cgeoportal#12272](https://github.com/camptocamp/c2cgeoportal/pull/12272)
+
 ##### 2.9.0.290
 
 - [Backport 2.9] Handle deactivated user on password change [c2cgeoportal#12269](https://github.com/camptocamp/c2cgeoportal/pull/12269)
