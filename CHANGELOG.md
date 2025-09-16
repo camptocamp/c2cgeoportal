@@ -1,3 +1,7 @@
+##### 2.9.0.289
+
+- [Backport 2.9] Don't print an exception on CTRL+C during build [c2cgeoportal#12268](https://github.com/camptocamp/c2cgeoportal/pull/12268)
+
 ##### 2.9.0.288
 
 - Audit Snyk check/fix 2.9 [ngeo#9901](https://github.com/camptocamp/ngeo/pull/9901)
