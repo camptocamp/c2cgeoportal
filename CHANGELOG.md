@@ -1,3 +1,7 @@
+##### 2.8.1.247
+
+- [Backport 2.8] Handle deactivated user on password change [c2cgeoportal#12270](https://github.com/camptocamp/c2cgeoportal/pull/12270)
+
 ##### 2.8.1.246
 
 - Fix: Textual SQL expression should be explicitly declared as text [c2cgeoportal#12244](https://github.com/camptocamp/c2cgeoportal/pull/12244)
