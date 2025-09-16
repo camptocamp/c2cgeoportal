@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2024, Camptocamp SA
+# Copyright (c) 2011-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -312,6 +312,10 @@ class Login:
             user = models.DBSession.query(static.User).filter_by(username=login).one_or_none()
             if user is None:
                 LOG.info("The login '%s' does not exist.", login)
+                raise HTTPUnauthorized("See server logs for details")
+
+            if user.deactivated:
+                LOG.info("The login '%s' is deactivated.", login)
                 raise HTTPUnauthorized("See server logs for details")
 
             if self.two_factor_auth:
