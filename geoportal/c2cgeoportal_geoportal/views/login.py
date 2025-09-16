@@ -314,6 +314,10 @@ class Login:
                 LOG.info("The login '%s' does not exist.", login)
                 raise HTTPUnauthorized("See server logs for details")
 
+            if user.deactivated:
+                LOG.info("The login '%s' is deactivated.", login)
+                raise HTTPUnauthorized("See server logs for details")
+
             if self.two_factor_auth:
                 if not self._validate_2fa_totp(user, otp):
                     LOG.info("The second factor is wrong for user '%s'.", login)
