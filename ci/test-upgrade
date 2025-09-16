@@ -12,8 +12,10 @@ function pcreate {
     fi
     # shellcheck disable=SC2086
     docker run --rm ${DOCKER_ENV} \
-        --volume="$1/testgeomapfish:/src/testgeomapfish" "camptocamp/geomapfish-tools:$3" \
-        run "$(id -u)" "$(id -g)" /src pcreate --scaffold="$2" testgeomapfish ${PCREATE_ARGS}
+        --volume="$1:/src" \
+        --user="$(id -u):$(id -g)" \
+        "camptocamp/geomapfish-tools:$3" \
+        run /src pcreate --scaffold="$2" testgeomapfish ${PCREATE_ARGS}
 }
 
 # $1: folder
@@ -176,7 +178,6 @@ if [ "$1" = "init" ]; then
     rm --recursive --force $(find c2cgeoportal/scaffolds -name __pycache__)
     create-advance "${WORKSPACE}/ref" "${MAJOR_VERSION}"
     cd "${WORKSPACE}/ref/testgeomapfish"
-    pre-commit run --all-files || true
     cd -
 
     create "${WORKSPACE}/v210" "${MAJOR_VERSION}"

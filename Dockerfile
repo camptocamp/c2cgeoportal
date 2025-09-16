@@ -172,7 +172,8 @@ WORKDIR /src
 ENV PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
 
 ARG MAJOR_MINOR_VERSION
-ENV MAJOR_MINOR_VERSION=$MAJOR_MINOR_VERSION
+ENV MAJOR_MINOR_VERSION=$MAJOR_MINOR_VERSION \
+    HOME=/tmp
 
 RUN ln -s /opt/c2cgeoportal/commons/c2cgeoportal_commons/alembic /opt \
     && pip freeze > /requirements.txt

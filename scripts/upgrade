@@ -109,23 +109,30 @@ def _main() -> None:
                     ],
                 )
 
-        debug_volumes = (
-            [
-                f"--volume={args.debug}/geoportal/c2cgeoportal_geoportal/scripts/c2cupgrade.py:",
+        additional_args = []
+        if args.debug:
+            additional_args.append(
+                f"--volume={args.debug}/geoportal/c2cgeoportal_geoportal/scripts/c2cupgrade.py:"
                 "/opt/c2cgeoportal/geoportal/c2cgeoportal_geoportal/scripts/c2cupgrade.py",
-            ]
-            if args.debug
-            else []
-        )
+            )
 
         win = platform.system() == "Windows"
-        cache_volume = []
         if not win:
             home = os.path.expanduser("~")
-            cache_volume = [
-                f"--env=HOME={home}",
-                f"--volume={home}/.cache:{home}/.cache",
-            ]
+            additional_args.extend(
+                [
+                    # In the container the /tmp is the home directory of the user
+                    f"--volume={home}/.cache:/tmp/.cache",
+                ],
+            )
+
+            uid = subprocess.check_output(["id", "-u"]).decode().strip()
+            gid = subprocess.check_output(["id", "-g"]).decode().strip()
+            if not (uid.isdigit() and gid.isdigit()):
+                print("Error: Failed to retrieve numeric UID and GID from system commands.", file=sys.stderr)
+                sys.exit(1)
+            additional_args.append(f"--user={uid}:{gid}")
+
         sys.exit(
             subprocess.call(
                 [
@@ -134,14 +141,11 @@ def _main() -> None:
                     "--rm",
                     "--env=CI",
                     f"--volume={os.getcwd()}:/src",
-                    *debug_volumes,
-                    *cache_volume,
+                    *additional_args,
                     f"ghcr.io/camptocamp/geomapfish-tools:{args.version}",
                     "run-git",
                     subprocess.check_output(["git", "config", "--get", "user.name"]).decode().strip(),
                     subprocess.check_output(["git", "config", "--get", "user.email"]).decode().strip(),
-                    "" if win else subprocess.check_output(["id", "-u"]).decode().strip(),
-                    "" if win else subprocess.check_output(["id", "-g"]).decode().strip(),
                     "/src",
                     "c2cupgrade",
                     *c2cupgrade_args,
