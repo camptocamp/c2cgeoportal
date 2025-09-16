@@ -156,6 +156,8 @@ def main() -> None:
             env = {"DOCKER_BUILDKIT": "1", "COMPOSE_DOCKER_CLI_BUILD": "1"}
             env.update(os.environ)
             run(args, docker_compose_build_cmd, env=env)  # nosec
+        except KeyboardInterrupt:
+            sys.exit(1)
         except subprocess.CalledProcessError as e:
             print("Error with command: " + " ".join(print_args))
             sys.exit(e.returncode)
