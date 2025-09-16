@@ -1,3 +1,7 @@
+##### 2.9.0.290
+
+- [Backport 2.9] Handle deactivated user on password change [c2cgeoportal#12269](https://github.com/camptocamp/c2cgeoportal/pull/12269)
+
 ##### 2.9.0.289
 
 - [Backport 2.9] Don't print an exception on CTRL+C during build [c2cgeoportal#12268](https://github.com/camptocamp/c2cgeoportal/pull/12268)
