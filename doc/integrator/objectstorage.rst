@@ -252,7 +252,7 @@ Then you can add a raster layer with:
 
 * Open from the menu ``Layer`` / ``Add Layer`` / ``Add Raster Layer``.
 * Section: ``Raster``.
-* ``Source type``: ``Protocole: HTTP(S), cloud, etc.``.
+* ``Source type``: ``Protocol: HTTP(S), cloud, etc.``.
 * ``Type``: ``AWS S3`` or ``Microsoft Azure Blob``.
 * ``Bucket or container``: <bucket> or <container>.
 * ``Object key``: <folder>/index.vrt.
