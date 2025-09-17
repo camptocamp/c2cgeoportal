@@ -110,7 +110,7 @@ Makefile config variables
 
     This is not possible in the simple application mode
 
-The following variables may be set in the makefiles:
+The following variables may be set in the Makefiles:
 
 * ``DISABLE_BUILD_RULES``: List of rules we want to disable, default is empty.
 * ``LANGUAGES``: List of available languages, default is ``en fr de``.
