@@ -1,3 +1,7 @@
+##### 2.9.0.293
+
+- Add missing bs4 package [c2cgeoportal#12279](https://github.com/camptocamp/c2cgeoportal/pull/12279)
+
 ##### 2.9.0.292
 
 - Update dependency cryptography to v46 (2.9) [c2cgeoportal#12276](https://github.com/camptocamp/c2cgeoportal/pull/12276)
