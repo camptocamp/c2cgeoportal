@@ -1,3 +1,7 @@
+##### 2.7.1.199
+
+- Update dependency cryptography to v46 (2.7) [c2cgeoportal#12274](https://github.com/camptocamp/c2cgeoportal/pull/12274)
+
 ##### 2.7.1.198
 
 - [Backport 2.7] Don't clean testing from commons [c2cgeoportal#12241](https://github.com/camptocamp/c2cgeoportal/pull/12241)
