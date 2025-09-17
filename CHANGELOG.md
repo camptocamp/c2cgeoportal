@@ -1,3 +1,7 @@
+##### 2.8.1.248
+
+- Update dependency cryptography to v46 (2.8) [c2cgeoportal#12275](https://github.com/camptocamp/c2cgeoportal/pull/12275)
+
 ##### 2.8.1.247
 
 - [Backport 2.8] Handle deactivated user on password change [c2cgeoportal#12270](https://github.com/camptocamp/c2cgeoportal/pull/12270)
