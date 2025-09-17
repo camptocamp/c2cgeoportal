@@ -1,3 +1,7 @@
+##### 2.9.0.292
+
+- Update dependency cryptography to v46 (2.9) [c2cgeoportal#12276](https://github.com/camptocamp/c2cgeoportal/pull/12276)
+
 ##### 2.9.0.291
 
 - Audit Dpkg 2.9 [c2cgeoportal#12272](https://github.com/camptocamp/c2cgeoportal/pull/12272)
