@@ -79,7 +79,7 @@ prospector-profile-duplicated = "1.6.0"
 prospector-profile-utils  = "1.9.1"
 beautifulsoup4 = "4.12.3"
 certifi = "2025.8.3"
-cryptography = "45.0.7"
+cryptography = "46.0.1"
 setuptools = "75.8.0"
 urllib3 = "2.5.0"
 
