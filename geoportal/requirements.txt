@@ -33,4 +33,5 @@ simple_openid_connect
 pkce
 basicauth
 tilecloud
+bs4
 setuptools>=78.1.1 # not directly required, pinned by Snyk to avoid a vulnerability
