@@ -1,3 +1,7 @@
+##### 2.9.0.294
+
+- Audit Dpkg 2.9 [c2cgeoportal#12281](https://github.com/camptocamp/c2cgeoportal/pull/12281)
+
 ##### 2.9.0.293
 
 - Add missing bs4 package [c2cgeoportal#12279](https://github.com/camptocamp/c2cgeoportal/pull/12279)
