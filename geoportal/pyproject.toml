@@ -56,7 +56,8 @@ dependencies = [
     "simple_openid_connect",
     "pkce",
     "basicauth",
-    "tilecloud"
+    "tilecloud",
+    "bs4"
 ]
 
 [project.urls]
