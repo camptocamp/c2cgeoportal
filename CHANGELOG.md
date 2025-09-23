@@ -1,3 +1,7 @@
+##### 2.8.1.249
+
+- Checks: The `--no-deps` argument isn't working [c2cgeoportal#12284](https://github.com/camptocamp/c2cgeoportal/pull/12284)
+
 ##### 2.8.1.248
 
 - Update dependency cryptography to v46 (2.8) [c2cgeoportal#12275](https://github.com/camptocamp/c2cgeoportal/pull/12275)
