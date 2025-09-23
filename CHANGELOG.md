@@ -1,3 +1,7 @@
+##### 2.9.0.297
+
+- [Backport 2.9] Checks: The `--no-deps` argument isn't working [c2cgeoportal#12288](https://github.com/camptocamp/c2cgeoportal/pull/12288)
+
 ##### 2.9.0.296
 
 - Fix the documentation about the list of languages [c2cgeoportal#12277](https://github.com/camptocamp/c2cgeoportal/pull/12277)
