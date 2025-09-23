@@ -5,12 +5,7 @@
 Internationalization
 ====================
 
-In the file ``<package>.mk``, define the supported languages with (default),
-in the simple application mode, the list of languages is constant: en fr de it.
-
-.. code:: make
-
-   LANGUAGES ?= en fr de
+The list of available languages is defined by the folder present in the ``geoportal/<package>_geoportal/locale/`` folder.
 
 In the file ``vars.yaml``, define the default locale:
 
