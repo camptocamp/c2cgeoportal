@@ -1,3 +1,7 @@
+##### 2.9.0.296
+
+- Fix the documentation about the list of languages [c2cgeoportal#12277](https://github.com/camptocamp/c2cgeoportal/pull/12277)
+
 ##### 2.9.0.295
 
 - Audit Dpkg 2.9 [c2cgeoportal#12282](https://github.com/camptocamp/c2cgeoportal/pull/12282)
