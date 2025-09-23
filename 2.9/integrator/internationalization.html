@@ -37,11 +37,7 @@
             
   <section id="internationalization">
 <span id="id1"></span><h1>Internationalization<a class="headerlink" href="#internationalization" title="Link to this heading">¶</a></h1>
-<p>In the file <code class="docutils literal notranslate"><span class="pre">&lt;package&gt;.mk</span></code>, define the supported languages with (default),
-in the simple application mode, the list of languages is constant: en fr de it.</p>
-<div class="highlight-make notranslate"><div class="highlight"><pre><span></span><span class="nv">LANGUAGES</span><span class="w"> </span><span class="o">?=</span><span class="w"> </span>en<span class="w"> </span>fr<span class="w"> </span>de
-</pre></div>
-</div>
+<p>The list of available languages is defined by the folder present in the <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/locale/</span></code> folder.</p>
 <p>In the file <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code>, define the default locale:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
 <span class="w">     </span><span class="l l-Scalar l-Scalar-Plain">...</span>
