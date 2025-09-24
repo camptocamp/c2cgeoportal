@@ -1,3 +1,7 @@
+##### 2.9.0.298
+
+- Audit Dpkg 2.9 [c2cgeoportal#12291](https://github.com/camptocamp/c2cgeoportal/pull/12291)
+
 ##### 2.9.0.297
 
 - [Backport 2.9] Checks: The `--no-deps` argument isn't working [c2cgeoportal#12288](https://github.com/camptocamp/c2cgeoportal/pull/12288)
