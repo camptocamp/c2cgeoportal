@@ -1,3 +1,7 @@
+##### 2.9.0.300
+
+- Enable urllogin on custom interface [c2cgeoportal#12292](https://github.com/camptocamp/c2cgeoportal/pull/12292)
+
 ##### 2.9.0.299
 
 - Audit Snyk check/fix 2.9 [ngeo#9907](https://github.com/camptocamp/ngeo/pull/9907)
