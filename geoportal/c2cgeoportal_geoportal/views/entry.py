@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2024, Camptocamp SA
+# Copyright (c) 2011-2025, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -148,9 +148,11 @@ def canvas_view(request: pyramid.request.Request, interface_config: dict[str, An
 def custom_view(
     request: pyramid.request.Request, interface_config: dict[str, Any]
 ) -> pyramid.response.Response:
-    """Get view used as entry point of a canvas interface."""
+    """Get view used as entry point of a canvas or custom interface."""
 
     set_common_headers(request, "index", Cache.PUBLIC_NO, content_type="text/html")
+    # Force urllogin to be converted to cookie when requesting the main HTML page
+    request.user  # noqa
 
     html_filename = interface_config.get("html_filename", f"{interface_config['name']}.html")
     if not html_filename.startswith("/"):
