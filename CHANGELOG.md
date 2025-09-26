@@ -1,3 +1,7 @@
+##### 2.9.0.303
+
+- Audit Snyk check/fix 2.9 [ngeo#9908](https://github.com/camptocamp/ngeo/pull/9908)
+
 ##### 2.9.0.302
 
 - Update dependency c2cwsgiutils to v6.1.8 (2.9) [c2cgeoportal#12296](https://github.com/camptocamp/c2cgeoportal/pull/12296)
