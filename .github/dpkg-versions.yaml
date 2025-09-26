@@ -3257,7 +3257,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/pkgconf-bin: 1.8.1-2build1
   ubuntu_24_04/polkitd: 124-2ubuntu1
   ubuntu_24_04/postgresql-client: 17+264.pgdg24.04+1
-  ubuntu_24_04/postgresql-client-17: 17.0-1.pgdg24.04+1
+  ubuntu_24_04/postgresql-client-18: 18.0-1.pgdg24.04+3
   ubuntu_24_04/postgresql-client-common: 264.pgdg24.04+1
   ubuntu_24_04/procps: 2:4.0.4-4ubuntu3.1
   ubuntu_24_04/proj-data: 9.4.0-1build2
