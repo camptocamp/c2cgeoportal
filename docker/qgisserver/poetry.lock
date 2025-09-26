@@ -86,14 +86,14 @@ pyyaml-include = ">=2.0"
 
 [[package]]
 name = "c2cwsgiutils"
-version = "6.1.7"
+version = "6.1.8"
 description = "Common utilities for Camptocamp WSGI applications"
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "c2cwsgiutils-6.1.7-py3-none-any.whl", hash = "sha256:ca141a151a0dd19975f76aba91cac12c4a28aec69fb29cf665d8018d0ace6d61"},
-    {file = "c2cwsgiutils-6.1.7.tar.gz", hash = "sha256:21b43e9b476bc73540279817a2ad4eb69a08216f78c0cdecc4e5c979bf0795e4"},
+    {file = "c2cwsgiutils-6.1.8-py3-none-any.whl", hash = "sha256:c70b5ee20bc22f9279bdb2a263b0cadc2bd8b307cc6109964de43adcd0e87b5e"},
+    {file = "c2cwsgiutils-6.1.8.tar.gz", hash = "sha256:3652aec8ae6a967107a10e0f9869f222b89aa6bce1c12c04a6f7ae744539bf31"},
 ]
 
 [package.dependencies]
@@ -102,6 +102,7 @@ pyyaml = "*"
 redis = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"broadcast\" or extra == \"all\""}
 requests = "*"
 ujson = "*"
+urllib3 = "*"
 
 [package.extras]
 alembic = ["alembic"]
@@ -2146,4 +2147,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.13"
-content-hash = "0df9c760a269173bca8762fa6d1a0f57115d8ddd9e68890ea8c9458fe2d6a2a8"
+content-hash = "8f96277e819e0d49a1d04a7d125227ec6769e40f79240c59f3b9cb434450610a"
