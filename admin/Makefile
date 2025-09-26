@@ -15,8 +15,8 @@ help: ## Display this help message
 
 .PHONY: preparedev
 preparedev: ## Run this once before serve
-	make --directory=.. build-runner
-	docker buildx rm --all-inactive --force # to be sure that we get the new image
+	make --directory=.. build-tools
+	# docker buildx rm --all-inactive --force # to be sure that we get the new image
 	docker compose build
 	docker compose up --detach db
 	docker compose run --rm admin wait-db || (docker compose logs db && false)
