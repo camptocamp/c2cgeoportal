@@ -1,3 +1,7 @@
+##### 2.9.0.305
+
+- Use the same panel name in the tool button and panel listener [ngeo#9909](https://github.com/camptocamp/ngeo/pull/9909)
+
 ##### 2.9.0.303
 
 - Audit Snyk check/fix 2.9 [ngeo#9908](https://github.com/camptocamp/ngeo/pull/9908)
