@@ -1,3 +1,7 @@
+##### 2.9.0.306
+
+- Really fix edit panel activation [ngeo#9911](https://github.com/camptocamp/ngeo/pull/9911)
+
 ##### 2.9.0.305
 
 - Use the same panel name in the tool button and panel listener [ngeo#9909](https://github.com/camptocamp/ngeo/pull/9909)
