@@ -1,3 +1,7 @@
+##### 2.7.1.205
+
+- Add missing pre-commit install [ngeo#9916](https://github.com/camptocamp/ngeo/pull/9916)
+
 ##### 2.7.1.204
 
 - Update dependency @types/jquery to v3.5.33 (2.7) [ngeo#9886](https://github.com/camptocamp/ngeo/pull/9886)
