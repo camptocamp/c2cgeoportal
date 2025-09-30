@@ -1,3 +1,8 @@
+##### 2.7.1.202
+
+- Update dependency requests to v2.32.5 (2.7) [ngeo#9887](https://github.com/camptocamp/ngeo/pull/9887)
+- Audit Snyk check/fix 2.7 [ngeo#9905](https://github.com/camptocamp/ngeo/pull/9905)
+
 ##### 2.7.1.201
 
 - Fix copyright [ngeo#9914](https://github.com/camptocamp/ngeo/pull/9914)
