@@ -1,3 +1,7 @@
+##### 2.7.1.201
+
+- Fix copyright [ngeo#9914](https://github.com/camptocamp/ngeo/pull/9914)
+
 ##### 2.7.1.200
 
 - Audit Snyk check/fix 2.7 [c2cgeoportal#12290](https://github.com/camptocamp/c2cgeoportal/pull/12290)
