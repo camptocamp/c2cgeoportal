@@ -1,3 +1,7 @@
+##### 2.7.1.206
+
+- Update dependency requests to v2.32.5 (2.7) [c2cgeoportal#12311](https://github.com/camptocamp/c2cgeoportal/pull/12311)
+
 ##### 2.7.1.205
 
 - Add missing pre-commit install [ngeo#9916](https://github.com/camptocamp/ngeo/pull/9916)
