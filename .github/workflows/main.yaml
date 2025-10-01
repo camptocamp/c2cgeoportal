@@ -67,7 +67,7 @@ jobs:
           patterns: pypi docker transifex
         if: env.HAS_SECRETS == 'HAS_SECRETS'
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.13'
       - run: python3 -m pip install --requirement=ci/requirements.txt
@@ -191,7 +191,7 @@ jobs:
         if: failure()
 
       # Use minimal version from the documentation
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: '${{ env.MIN_PYTHON_VERSION }}'
       - run: pip install --requirement=ci/requirements-project.txt
@@ -226,7 +226,7 @@ jobs:
       - run: ci/test-upgrade 270 ${HOME}/workspace
       - run: ci/test-upgrade cleanup ${HOME}/workspace
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.13'
       - run: pip install --requirement=ci/requirements-back.txt
