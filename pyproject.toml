@@ -26,7 +26,7 @@ version = "0.0.0"
 
 [tool.poetry.dependencies]
 python = ">=3.12,<4"
-alembic = "1.16.4" # geoportal
+alembic = "1.16.5" # geoportal
 "c2c.template" = "2.4.2" # geoportal
 c2cgeoform = "2.5.0" # commons
 colander = "2.0" # commons, admin
@@ -34,7 +34,7 @@ ColanderAlchemy = "0.3.4" # commons
 cookiecutter = "2.6.0" # geoportal
 deform = "2.0.15" # commons, admin
 defusedxml = "0.7.1" # geoportal
-"dogpile.cache" = "1.4.0" # geoportal
+"dogpile.cache" = "1.4.1" # geoportal
 Fiona = "1.10.1" # geoportal raster
 GeoAlchemy2 = "0.18.0" # commons, geoportal
 geojson = "3.2.0" # geoportal
@@ -46,7 +46,7 @@ papyrus = "2.6.2" # commons, geoportal
 passwordgenerator = "1.5.1" # geoportal
 psycopg2 = "2.9.10" # geoportal
 pycryptodome = "3.23.0" # geoportal
-pyproj = "3.7.1" # admin, other?
+pyproj = "3.7.2" # admin, other?
 pyotp = "2.9.0" # geoportal
 pyramid = "2.0.2" # geoportal
 pyramid_debugtoolbar = "4.12.1" # geoportal
@@ -57,9 +57,9 @@ pyramid_tm = "2.6" # geoportal
 python-dateutil = "2.9.0.post0" # geoportal
 PyYAML = "6.0.1" # geoportal
 rasterio = "1.4.3" # geoportal raster
-requests = "2.32.4" # geoportal
+requests = "2.32.5" # geoportal
 redis = "6.4.0" # geoportal cache
-Shapely = "2.1.1" # geoportal
+Shapely = "2.1.2" # geoportal
 SQLAlchemy = "2.0.43"
 transaction = "5.0" # commons, geoportal
 translationstring = "1.4" # admin
@@ -75,27 +75,27 @@ prospector = { version = "1.17.3", extras = ["with_mypy", "with_bandit", "with_p
 prospector-profile-duplicated = "1.10.5"
 prospector-profile-utils  = "1.26.5"
 ruff = "0.12.10"
-beautifulsoup4 = "4.13.4"
+beautifulsoup4 = "4.14.2"
 certifi = "2025.8.3"
 cryptography = "46.0.1"
 setuptools = "80.9.0"
 
 [tool.poetry.group.dev.dependencies]
 Babel = "2.17.0" # i18n
-beautifulsoup4 = "4.13.4" # admin tests
+beautifulsoup4 = "4.14.2" # admin tests
 Jinja2 = "3.1.6" # c2c.template
 lingva = "5.0.6" # i18n
 PasteScript = "3.7.0" # geoportal pcreate
 polib = "1.2.0" # i18n
 pykwalify = "1.8.0" # Validate config
-pytest = "8.4.1" # tests
-pytest-asyncio = "1.1.0" # tests
+pytest = "8.4.2" # tests
+pytest-asyncio = "1.2.0" # tests
 WebTest = "3.0.6" # admin tests
 types-pytz = "2025.2.0.20250809"
-types-pyyaml = "6.0.12.20250809"
-types-python-dateutil = "2.9.0.20250809"
+types-pyyaml = "6.0.12.20250915"
+types-python-dateutil = "2.9.0.20250822"
 types-requests = "2.*"
-types-setuptools = "80.9.0.20250809"
+types-setuptools = "80.9.0.20250822"
 mappyfile = "1.0.2"
 # To be able to upgrade project from version <= 2.8
 c2cciutils = { version = "1.5.14", extras = ["checks"] }
@@ -103,7 +103,7 @@ pre-commit = "4.3.0"
 mapbox-vector-tile = "2.2.0"
 responses = "0.25.8"
 waitress = "3.0.2"
-boto3 = "1.40.9"
+boto3 = "1.40.42"
 
 [project]
 classifiers = [
