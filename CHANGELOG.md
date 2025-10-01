@@ -1,3 +1,7 @@
+##### 2.9.0.311
+
+- Update dependency c2cciutils to v1.7.4 (2.9) [c2cgeoportal#12335](https://github.com/camptocamp/c2cgeoportal/pull/12335)
+
 ##### 2.9.0.310
 
 - Audit Dpkg 2.9 [c2cgeoportal#12333](https://github.com/camptocamp/c2cgeoportal/pull/12333)
