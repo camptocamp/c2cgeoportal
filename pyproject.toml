@@ -68,7 +68,7 @@ c2cwsgiutils = { version = "6.1.8", extras = ["broadcast", "standard", "oauth2",
 oauthlib = "3.3.1"
 tilecloud = "1.13.2" # geoportal
 azure-storage-blob = "12.26.0"
-simple_openid_connect = '1.1.0' # geoportal
+simple_openid_connect = '2.3.2' # geoportal
 pkce = '1.0.3' # geoportal
 basicauth = "1.0.0"
 prospector = { version = "1.17.3", extras = ["with_mypy", "with_bandit", "with_pyroma", "with_ruff"] }
