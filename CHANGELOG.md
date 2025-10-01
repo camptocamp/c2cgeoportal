@@ -1,3 +1,8 @@
+##### 2.9.0.307
+
+- Update CI dependencies (2.9) [c2cgeoportal#12315](https://github.com/camptocamp/c2cgeoportal/pull/12315)
+- Update dependency cryptography to v46.0.2 (2.9) [c2cgeoportal#12319](https://github.com/camptocamp/c2cgeoportal/pull/12319)
+
 ##### 2.9.0.306
 
 - Really fix edit panel activation [ngeo#9911](https://github.com/camptocamp/ngeo/pull/9911)
