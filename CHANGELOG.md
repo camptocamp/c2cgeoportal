@@ -1,3 +1,7 @@
+##### 2.7.1.211
+
+- Audit Snyk check/fix 2.7 [c2cgeoportal#12329](https://github.com/camptocamp/c2cgeoportal/pull/12329)
+
 ##### 2.7.1.210
 
 - CI updates [ngeo#9931](https://github.com/camptocamp/ngeo/pull/9931)
