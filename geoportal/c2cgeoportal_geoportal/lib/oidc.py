@@ -265,6 +265,7 @@ class OidcRemember:
             raise HTTPUnauthorized("See server logs for details")
 
         openid_connect = self.authentication_settings.get("openid_connect", {})
+        assert token_response.expires_in is not None
         remember_object: OidcRememberObject = {
             "access_token": token_response.access_token,
             "access_token_expires": (

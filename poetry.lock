@@ -4496,14 +4496,14 @@ test = ["pytest", "pytest-cov", "scipy-doctest"]
 
 [[package]]
 name = "simple-openid-connect"
-version = "1.1.0"
+version = "2.3.2"
 description = "Simple and opinionated OpenID-Connect relying party and resource server implementation"
 optional = false
 python-versions = "~=3.9"
 groups = ["main"]
 files = [
-    {file = "simple_openid_connect-1.1.0-py3-none-any.whl", hash = "sha256:17edbf1e7c9651d3845511c21f0293e958e75b83f6da0ffc82d1d7975d730d91"},
-    {file = "simple_openid_connect-1.1.0.tar.gz", hash = "sha256:6b7b78c71fd6b627c6d606a0b35439cd512b8274ee5612868d34b6460d4a9e4f"},
+    {file = "simple_openid_connect-2.3.2-py3-none-any.whl", hash = "sha256:270451343ac8ddc8fe14462f8f92a46856b61d8f34432ae22df3413717f0c918"},
+    {file = "simple_openid_connect-2.3.2.tar.gz", hash = "sha256:379f46daff7fcddecda555dc634974e5a9b79ef202048f72b25e0ef41ede1e0f"},
 ]
 
 [package.dependencies]
@@ -4513,8 +4513,8 @@ pydantic = ">=2.6,<3.0"
 requests = ">=2.31,<3.0"
 
 [package.extras]
-django = ["django (>=3.2)"]
-djangorestframework = ["djangorestframework (>=3.13,<4.0)"]
+django = ["django (>=4.2)"]
+djangorestframework = ["djangorestframework (>=3.14,<4.0)"]
 
 [[package]]
 name = "six"
@@ -5239,4 +5239,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<4"
-content-hash = "2faae286919755d55a40185c41fcc6a157ef5e9f62b8b506318cb7086336e4f0"
+content-hash = "616d42479a5df3cd725c6a203a6603d5deaad216fbada0068e8acb9639369899"
