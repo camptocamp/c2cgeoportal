@@ -17,7 +17,7 @@ GeoAlchemy2 = "0.18.0"
 SQLAlchemy = "2.0.43" # commons
 "zope.event" = "5.1.1" # commons
 "zope.sqlalchemy" = "3.1" # commons
-shapely = "2.1.1"
+shapely = "2.1.2"
 cee-syslog-handler = "0.6.0"
 psycopg2 = "2.9.10"
 pytz = "2025.2"
@@ -27,5 +27,5 @@ prospector = { version = "1.17.3", extras = ["with_mypy", "with_bandit", "with_r
 prospector-profile-duplicated = "1.10.5"
 prospector-profile-utils  = "1.26.5"
 ruff = "0.12.10"
-types-pyyaml = "6.0.12.20250809"
-pytest = "8.4.1"
+types-pyyaml = "6.0.12.20250915"
+pytest = "8.4.2"
