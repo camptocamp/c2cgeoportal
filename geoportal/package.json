@@ -11,7 +11,7 @@
     "@snyk/protect": "1.1299.1",
     "ngeo": "2.10.0-latest.20250930T100822Z.7f6ed98ce",
     "ol": "10.6.1",
-    "puppeteer": "24.22.3"
+    "puppeteer": "24.23.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "3.3.1",
