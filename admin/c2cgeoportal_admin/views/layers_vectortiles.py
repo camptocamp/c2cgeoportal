@@ -69,7 +69,7 @@ class LayerVectorTilesViews(DimensionLayerViews[LayerVectorTiles]):
     """The vector tiles administration view."""
 
     _list_fields = [  # noqa: RUF012
-        *DimensionLayerViews._list_fields,  # type: ignore[misc] # pylint: disable=protected-access # noqa: SLF001
+        *DimensionLayerViews._list_fields,  # pylint: disable=protected-access # noqa: SLF001
         _list_field("style"),
         _list_field("xyz"),
         *DimensionLayerViews._extra_list_fields,  # pylint: disable=protected-access # noqa: SLF001

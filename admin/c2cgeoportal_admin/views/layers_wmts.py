@@ -77,7 +77,7 @@ class LayerWmtsViews(DimensionLayerViews[LayerWMTS]):
     """The WMTS layer administration view."""
 
     _list_fields = [  # noqa: RUF012
-        *DimensionLayerViews._list_fields,  # type: ignore[misc] # pylint: disable=protected-access # noqa: SLF001
+        *DimensionLayerViews._list_fields,  # pylint: disable=protected-access # noqa: SLF001
         _list_field("url"),
         _list_field("layer"),
         _list_field("style"),
@@ -109,7 +109,7 @@ class LayerWmtsViews(DimensionLayerViews[LayerWMTS]):
 
     def _item_actions(self, item: LayerWMTS, readonly: bool = False) -> list[ItemAction]:
         actions: list[ItemAction] = super()._item_actions(item, readonly)
-        if inspect(item).persistent:  # type: ignore[attr-defined]
+        if inspect(item).persistent:
             actions.insert(
                 next((i for i, v in enumerate(actions) if v.name() == "delete")),
                 ItemAction(

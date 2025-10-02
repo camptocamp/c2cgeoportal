@@ -68,7 +68,7 @@ class ThemeViews(TreeItemViews[Theme]):
     """The theme administration view."""
 
     _list_fields = [  # noqa: RUF012
-        *TreeItemViews._list_fields,  # type: ignore[misc] # pylint: disable=protected-access # noqa: SLF001
+        *TreeItemViews._list_fields,  # pylint: disable=protected-access # noqa: SLF001
         _list_field("ordering"),
         _list_field("public"),
         _list_field("icon"),

@@ -77,7 +77,7 @@ class LayerWmsViews(DimensionLayerViews[LayerWMS]):
     """The WMS layer administration view."""
 
     _list_fields = [  # noqa: RUF012
-        *DimensionLayerViews._list_fields,  # type: ignore[misc] # pylint: disable=protected-access # noqa: SLF001
+        *DimensionLayerViews._list_fields,  # pylint: disable=protected-access # noqa: SLF001
         _list_field(
             "ogc_server",
             renderer=lambda layer_wms: layer_wms.ogc_server.name,
@@ -118,7 +118,7 @@ class LayerWmsViews(DimensionLayerViews[LayerWMS]):
 
     def _item_actions(self, item: LayerWMS, readonly: bool = False) -> list[ItemAction]:
         actions: list[ItemAction] = super()._item_actions(item, readonly)
-        if inspect(item).persistent:  # type: ignore[attr-defined]
+        if inspect(item).persistent:
             actions.insert(
                 next((i for i, v in enumerate(actions) if v.name() == "delete")),
                 ItemAction(

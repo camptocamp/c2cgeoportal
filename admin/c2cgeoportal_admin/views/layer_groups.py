@@ -61,7 +61,7 @@ base_schema.add(parent_id_node(TreeGroup))
 class LayerGroupsViews(TreeItemViews[LayerGroup]):
     """The layer group administration view."""
 
-    _list_fields = TreeItemViews._list_fields + TreeItemViews._extra_list_fields  # type: ignore[misc] # pylint: disable=protected-access # noqa: SLF001
+    _list_fields = TreeItemViews._list_fields + TreeItemViews._extra_list_fields  # pylint: disable=protected-access # noqa: SLF001
 
     _id_field = "id"
     _model = LayerGroup
