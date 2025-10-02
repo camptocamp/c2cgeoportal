@@ -30,7 +30,7 @@ jobs:
           github-gopass-ci-token: ${{'{{'}} secrets.GOPASS_CI_GITHUB_TOKEN }}
           patterns: docker
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.13'
       - run: python3 -m pip install --requirement=ci/requirements.txt
