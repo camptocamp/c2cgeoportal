@@ -1,3 +1,7 @@
+##### 2.9.0.312
+
+- Update all patch/minor versions (2.9) [c2cgeoportal#12314](https://github.com/camptocamp/c2cgeoportal/pull/12314)
+
 ##### 2.9.0.311
 
 - Update dependency c2cciutils to v1.7.4 (2.9) [c2cgeoportal#12335](https://github.com/camptocamp/c2cgeoportal/pull/12335)
