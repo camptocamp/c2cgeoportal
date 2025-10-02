@@ -2066,14 +2066,14 @@ test = ["zope.testrunner"]
 
 [[package]]
 name = "zope-event"
-version = "5.1.1"
+version = "6.0"
 description = "Very basic event publishing system"
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "zope_event-5.1.1-py3-none-any.whl", hash = "sha256:8d5ea7b992c42ce73a6fa9c2ba99a004c52cd9f05d87f3220768ef0329b92df7"},
-    {file = "zope_event-5.1.1.tar.gz", hash = "sha256:c1ac931abf57efba71a2a313c5f4d57768a19b15c37e3f02f50eb1536be12d4e"},
+    {file = "zope_event-6.0-py3-none-any.whl", hash = "sha256:6f0922593407cc673e7d8766b492c519f91bdc99f3080fe43dcec0a800d682a3"},
+    {file = "zope_event-6.0.tar.gz", hash = "sha256:0ebac894fa7c5f8b7a89141c272133d8c1de6ddc75ea4b1f327f00d1f890df92"},
 ]
 
 [package.dependencies]
@@ -2081,7 +2081,7 @@ setuptools = ">=75.8.2"
 
 [package.extras]
 docs = ["Sphinx"]
-test = ["zope.testrunner"]
+test = ["zope.testrunner (>=6.4)"]
 
 [[package]]
 name = "zope-interface"
@@ -2163,4 +2163,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.13"
-content-hash = "be1bfc297d2939252cf04cf6de41e536406b3d590d103c72569cb0f1b32568ad"
+content-hash = "58bbf7c7662695d426ad121371b10daa836399e0aaf45a16f0faf532d707b053"
