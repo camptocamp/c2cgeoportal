@@ -1,3 +1,7 @@
+##### 2.8.1.252
+
+- Update dependency cryptography to v46.0.2 (2.8) [c2cgeoportal#12318](https://github.com/camptocamp/c2cgeoportal/pull/12318)
+
 ##### 2.8.1.251
 
 - Update dependency requests to v2.32.5 (2.8) [c2cgeoportal#12312](https://github.com/camptocamp/c2cgeoportal/pull/12312)
