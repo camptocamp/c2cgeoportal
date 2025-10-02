@@ -41,7 +41,6 @@ from json.decoder import JSONDecodeError
 from subprocess import call, check_call, check_output  # nosec
 from typing import Any, cast
 
-import pkg_resources
 import requests
 import yaml
 
@@ -822,8 +821,7 @@ class C2cUpgradeTool:
             [
                 "git",
                 "commit",
-                "--message=Upgrade to GeoMapFish "
-                f"{pkg_resources.get_distribution('c2cgeoportal_commons').version}",
+                f"--message=Upgrade to GeoMapFish {os.environ.get('VERSION')}",
             ],
         )
 
