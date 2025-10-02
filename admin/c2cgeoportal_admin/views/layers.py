@@ -46,7 +46,7 @@ class LayerViews(TreeItemViews[_T], Generic[_T]):
     """The layer administration view."""
 
     _list_fields = [  # noqa: RUF012
-        *TreeItemViews._list_fields,  # type: ignore[misc] # pylint: disable=protected-access # noqa: SLF001
+        *TreeItemViews._list_fields,  # pylint: disable=protected-access # noqa: SLF001
         _list_field("public"),
         _list_field("geo_table"),
         _list_field("exclude_properties"),
