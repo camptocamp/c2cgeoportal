@@ -2140,20 +2140,20 @@ testing = ["coverage[toml]", "zope.event", "zope.testing"]
 
 [[package]]
 name = "zope-sqlalchemy"
-version = "3.1"
+version = "4.0"
 description = "Minimal Zope/SQLAlchemy transaction integration"
 optional = false
 python-versions = ">=3.7"
 groups = ["main"]
 files = [
-    {file = "zope.sqlalchemy-3.1-py3-none-any.whl", hash = "sha256:fdc7d65d8da335a34b90fb993e8217ef12808bad3025d2e3a6720db4138e4985"},
-    {file = "zope.sqlalchemy-3.1.tar.gz", hash = "sha256:d9c2c3be695c213c5e22b7f7c6a4a214fa8eb5940b033465ba1c10a9d8b346db"},
+    {file = "zope_sqlalchemy-4.0-py3-none-any.whl", hash = "sha256:3fd2026271056818a04d3320e610525fd4773bc56300158411ed22909c72cd6e"},
+    {file = "zope_sqlalchemy-4.0.tar.gz", hash = "sha256:d4aeb6d06aa7d0855d67fd3434b56674f01307c4cad50105c94bcfe391ee729d"},
 ]
 
 [package.dependencies]
 packaging = "*"
 setuptools = "*"
-SQLAlchemy = ">=1.1,<1.4.0 || >1.4.0,<1.4.1 || >1.4.1,<1.4.2 || >1.4.2,<1.4.3 || >1.4.3,<1.4.4 || >1.4.4,<1.4.5 || >1.4.5,<1.4.6 || >1.4.6"
+SQLAlchemy = ">=1.1,<1.4.0 || >1.4.0,<1.4.1 || >1.4.1,<1.4.2 || >1.4.2,<1.4.3 || >1.4.3,<1.4.4 || >1.4.4,<1.4.5 || >1.4.5,<1.4.6 || >1.4.6,<2.0.32 || >2.0.32,<2.0.33 || >2.0.33,<2.0.34 || >2.0.34,<2.0.35 || >2.0.35"
 transaction = ">=1.6.0"
 "zope.interface" = ">=3.6.0"
 
@@ -2163,4 +2163,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.13"
-content-hash = "58bbf7c7662695d426ad121371b10daa836399e0aaf45a16f0faf532d707b053"
+content-hash = "d7d1888f92f99110b6e3abec79732b82edc0fef1c65b24d56e781f6f427e90c0"
