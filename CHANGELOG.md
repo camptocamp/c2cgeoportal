@@ -1,3 +1,7 @@
+##### 2.8.1.250
+
+- CI updates [c2cgeoportal#12322](https://github.com/camptocamp/c2cgeoportal/pull/12322)
+
 ##### 2.8.1.249
 
 - Checks: The `--no-deps` argument isn't working [c2cgeoportal#12284](https://github.com/camptocamp/c2cgeoportal/pull/12284)
