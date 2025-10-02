@@ -1,3 +1,7 @@
+##### 2.8.1.253
+
+- Audit Snyk check/fix 2.8 [c2cgeoportal#12338](https://github.com/camptocamp/c2cgeoportal/pull/12338)
+
 ##### 2.8.1.252
 
 - Update dependency cryptography to v46.0.2 (2.8) [c2cgeoportal#12318](https://github.com/camptocamp/c2cgeoportal/pull/12318)
