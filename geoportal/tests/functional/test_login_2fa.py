@@ -152,7 +152,7 @@ class Test2faView(TestCase):
         user.is_password_changed = True
 
         request = self._create_request_obj(POST={"login": "__test_user", "otp": totp.now()})
-        _, _, password, error = Login(request)._loginresetpassword()
+        _user, _username, password, _error = Login(request)._loginresetpassword()
 
         request = self._create_request_obj(
             POST={"login": "__test_user", "password": password, "otp": totp.now()},
