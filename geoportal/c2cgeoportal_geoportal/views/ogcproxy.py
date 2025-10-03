@@ -101,7 +101,7 @@ class OGCProxy(Proxy):
         ogc_server = self.ogc_server
         url = get_url2(
             f"The OGC server (Query) '{ogc_server.name}'",
-            ogc_server.url_query or ogc_server.url,
+            ogc_server.query_url or ogc_server.url,
             self.request,
             errors,
         )
@@ -113,7 +113,7 @@ class OGCProxy(Proxy):
         ogc_server = self.ogc_server
         url = get_url2(
             f"The OGC server (Edit) '{ogc_server.name}'",
-            ogc_server.url_edit or ogc_server.url,
+            ogc_server.edit_url or ogc_server.url,
             self.request,
             errors,
         )

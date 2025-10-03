@@ -111,16 +111,16 @@ class OGCServerViews(LoggedViews[OGCServer]):
                 obj.url_description(self._request),
             ),
         )
-        schema["url_query"].description = Literal(
+        schema["query_url"].description = Literal(
             _("{}<br>Current runtime value is: <code>{}</code>").format(
-                schema["url_query"].description,
-                obj.url_query_description(self._request),
+                schema["query_url"].description,
+                obj.query_url_description(self._request),
             ),
         )
-        schema["url_edit"].description = Literal(
+        schema["edit_url"].description = Literal(
             _("{}<br>Current runtime value is: <code>{}</code>").format(
-                schema["url_edit"].description,
-                obj.url_edit_description(self._request),
+                schema["edit_url"].description,
+                obj.edit_url_description(self._request),
             ),
         )
         schema["url_wfs"].description = Literal(

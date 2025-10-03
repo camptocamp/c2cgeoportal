@@ -1014,12 +1014,12 @@ class Theme:
         errors: set[str],
     ) -> tuple[Url | None, Url | None, Url | None, str, str, str]:
         # required to do every time to validate the url.
-        url_map: str
+        map_url: str
         if ogc_server.auth != main.OGCSERVER_AUTH_NOAUTH:
             url: Url | None = Url(
                 self.request.route_url("mapserverproxy", _query={"ogcserver": ogc_server.name}),
             )
-            url_map = self.request.route_url(
+            map_url = self.request.route_url(
                 "mapserverproxy",
                 _query={"ogcserver": ogc_server.name, "ogcserver_type": "map"},
             )
@@ -1032,7 +1032,7 @@ class Theme:
             )
         else:
             url = get_url2(f"The OGC server '{ogc_server.name}'", ogc_server.url, self.request, errors=errors)
-            url_map = ogc_server.url
+            map_url = ogc_server.url
             url_wfs = (
                 get_url2(
                     f"The OGC server (WFS) '{ogc_server.name}'",
@@ -1045,27 +1045,27 @@ class Theme:
             )
             url_internal_wfs = url_wfs
 
-        url_query = url_map
-        if ogc_server.url_query is not None and ogc_server.url_query != "":
-            if ogc_server.auth_query != main.OGCSERVER_AUTH_NOAUTH:
-                url_query = self.request.route_url(
+        query_url = map_url
+        if ogc_server.query_url is not None and ogc_server.query_url != "":
+            if ogc_server.query_auth != main.OGCSERVER_AUTH_NOAUTH:
+                query_url = self.request.route_url(
                     "mapserverproxy",
                     _query={"ogcserver": ogc_server.name, "ogcserver_type": "query"},
                 )
             else:
-                url_query = ogc_server.url_query
+                query_url = ogc_server.query_url
 
-        url_edit = url_map
-        if ogc_server.url_edit is not None and ogc_server.url_edit != "":
-            if ogc_server.auth_edit != main.OGCSERVER_AUTH_NOAUTH:
-                url_edit = self.request.route_url(
+        edit_url = map_url
+        if ogc_server.edit_url is not None and ogc_server.edit_url != "":
+            if ogc_server.edit_auth != main.OGCSERVER_AUTH_NOAUTH:
+                edit_url = self.request.route_url(
                     "mapserverproxy",
                     _query={"ogcserver": ogc_server.name, "ogcserver_type": "edit"},
                 )
             else:
-                url_edit = ogc_server.url_edit
+                edit_url = ogc_server.edit_url
 
-        return url_internal_wfs, url, url_wfs, url_map, url_query, url_edit
+        return url_internal_wfs, url, url_wfs, map_url, query_url, edit_url
 
     async def _preload(self, errors: set[str]) -> None:
         assert models.DBSession is not None
@@ -1265,7 +1265,7 @@ class Theme:
 
                 _LOG.debug("Process OGC server '%s'", ogc_server.name)
 
-                url_internal_wfs, url, url_wfs, url_map, url_query, url_edit = self.get_url_internal_wfs(
+                url_internal_wfs, url, url_wfs, map_url, query_url, edit_url = self.get_url_internal_wfs(
                     ogc_server,
                     all_errors,
                 )
@@ -1307,16 +1307,16 @@ class Theme:
                     "urlWfs": url_wfs.url() if url_wfs else None,
                     "uses": {
                         "map": {
-                            "url": url_map,
-                            "protocol": ogc_server.protocol_map,
+                            "url": map_url,
+                            "protocol": ogc_server.map_protocol,
                         },
                         "query": {
-                            "url": url_query,
-                            "protocol": ogc_server.protocol_query,
+                            "url": query_url,
+                            "protocol": ogc_server.query_protocol,
                         },
                         "edit": {
-                            "url": url_edit,
-                            "protocol": ogc_server.protocol_edit,
+                            "url": edit_url,
+                            "protocol": ogc_server.edit_protocol,
                         },
                     },
                     "type": ogc_server.type,

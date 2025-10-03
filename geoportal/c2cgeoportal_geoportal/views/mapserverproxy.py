@@ -162,9 +162,9 @@ class MapservProxy(OGCProxy):
     def _auth(self) -> main.OGCServerAuth:
         auth: main.OGCServerAuth = self.ogc_server.auth
         if self.lower_params.get("ogcserver_type") == "query":
-            auth = self.ogc_server.auth_query
+            auth = self.ogc_server.query_auth
         elif self.lower_params.get("ogcserver_type") == "edit":
-            auth = self.ogc_server.auth_edit
+            auth = self.ogc_server.edit_auth
         return auth
 
     def _setup_auth(self) -> None:

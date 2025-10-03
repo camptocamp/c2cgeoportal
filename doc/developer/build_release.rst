@@ -229,6 +229,8 @@ Configure the new branch
 In the file ``.github/workflows/main.yaml`` and ``.github/workflows/qgis.yaml`` set ``MAJOR_VERSION`` to
   ``<next version>``.
 
+In the Makefile, update the default value for ``MAJOR_VERSION``, ``MAJOR_MINOR_VERSION`` and ``VERSION``.
+
 Reset the change log
 --------------------
 

@@ -805,7 +805,9 @@ class OGCServer(Base):  # type: ignore[valid-type,misc]
         info={
             "colanderalchemy": {
                 "title": _("Base URL"),
-                "description": _("The OGC server URL, used at least to get the map."),
+                "description": _(
+                    "The OGC server URL, used at least to get the map, as a default for querying and editing.",
+                ),
             },
         },
     )
@@ -821,7 +823,7 @@ class OGCServer(Base):  # type: ignore[valid-type,misc]
             },
         },
     )
-    protocol_map: Mapped[OGCServerMapProtocol] = mapped_column(
+    map_protocol: Mapped[OGCServerMapProtocol] = mapped_column(
         Enum(*get_args(OGCServerMapProtocol), native_enum=False),
         default=OGCSERVER_MAP_PROTOCOL_WMS,
         nullable=False,
@@ -834,7 +836,7 @@ class OGCServer(Base):  # type: ignore[valid-type,misc]
         },
     )
 
-    url_query: Mapped[str | None] = mapped_column(
+    query_url: Mapped[str | None] = mapped_column(
         Unicode,
         info={
             "colanderalchemy": {
@@ -845,7 +847,7 @@ class OGCServer(Base):  # type: ignore[valid-type,misc]
             },
         },
     )
-    auth_query: Mapped[OGCServerAuth] = mapped_column(
+    query_auth: Mapped[OGCServerAuth] = mapped_column(
         Enum(*get_args(OGCServerAuth), native_enum=False),
         default=OGCSERVER_AUTH_STANDARD,
         nullable=False,
@@ -861,7 +863,7 @@ class OGCServer(Base):  # type: ignore[valid-type,misc]
             },
         },
     )
-    protocol_query: Mapped[OGCServerFeatureProtocol] = mapped_column(
+    query_protocol: Mapped[OGCServerFeatureProtocol] = mapped_column(
         Enum(*get_args(OGCServerFeatureProtocol), native_enum=False),
         default=OGCSERVER_FEATURE_PROTOCOL_WFS,
         nullable=False,
@@ -874,7 +876,7 @@ class OGCServer(Base):  # type: ignore[valid-type,misc]
         },
     )
 
-    url_edit: Mapped[str | None] = mapped_column(
+    edit_url: Mapped[str | None] = mapped_column(
         Unicode,
         info={
             "colanderalchemy": {
@@ -885,7 +887,7 @@ class OGCServer(Base):  # type: ignore[valid-type,misc]
             },
         },
     )
-    auth_edit: Mapped[OGCServerAuth] = mapped_column(
+    edit_auth: Mapped[OGCServerAuth] = mapped_column(
         Enum(*get_args(OGCServerAuth), native_enum=False),
         default=OGCSERVER_AUTH_STANDARD,
         nullable=False,
@@ -901,7 +903,7 @@ class OGCServer(Base):  # type: ignore[valid-type,misc]
             },
         },
     )
-    protocol_edit: Mapped[OGCServerEditProtocol | None] = mapped_column(
+    edit_protocol: Mapped[OGCServerEditProtocol | None] = mapped_column(
         Enum(*get_args(OGCServerEditProtocol), native_enum=False),
         default=OGCSERVER_EDIT_PROTOCOL_OGCAPI,
         nullable=True,
@@ -1005,18 +1007,18 @@ class OGCServer(Base):  # type: ignore[valid-type,misc]
         url = get_url2(self.name, self.url, request, errors)
         return url.url() if url else "\n".join(errors)
 
-    def url_query_description(self, request: pyramid.request.Request) -> str:
-        if not self.url_query:
+    def query_url_description(self, request: pyramid.request.Request) -> str:
+        if not self.query_url:
             return self.url_description(request)
         errors: set[str] = set()
-        url = get_url2(self.name, self.url_query, request, errors)
+        url = get_url2(self.name, self.query_url, request, errors)
         return url.url() if url else "\n".join(errors)
 
-    def url_edit_description(self, request: pyramid.request.Request) -> str | None:
-        if not self.url_edit:
+    def edit_url_description(self, request: pyramid.request.Request) -> str | None:
+        if not self.edit_url:
             return self.url_description(request)
         errors: set[str] = set()
-        url = get_url2(self.name, self.url_edit, request, errors)
+        url = get_url2(self.name, self.edit_url, request, errors)
         return url.url() if url else "\n".join(errors)
 
     def url_wfs_description(self, request: pyramid.request.Request) -> str | None:
