@@ -1012,11 +1012,16 @@ class Theme:
         self,
         ogc_server: main.OGCServer,
         errors: set[str],
-    ) -> tuple[Url | None, Url | None, Url | None]:
+    ) -> tuple[Url | None, Url | None, Url | None, str, str, str]:
         # required to do every time to validate the url.
+        map_url: str
         if ogc_server.auth != main.OGCSERVER_AUTH_NOAUTH:
             url: Url | None = Url(
                 self.request.route_url("mapserverproxy", _query={"ogcserver": ogc_server.name}),
+            )
+            map_url = self.request.route_url(
+                "mapserverproxy",
+                _query={"ogcserver": ogc_server.name, "ogcserver_type": "map"},
             )
             url_wfs: Url | None = url
             url_internal_wfs = get_url2(
@@ -1027,6 +1032,7 @@ class Theme:
             )
         else:
             url = get_url2(f"The OGC server '{ogc_server.name}'", ogc_server.url, self.request, errors=errors)
+            map_url = ogc_server.url
             url_wfs = (
                 get_url2(
                     f"The OGC server (WFS) '{ogc_server.name}'",
@@ -1038,7 +1044,28 @@ class Theme:
                 else url
             )
             url_internal_wfs = url_wfs
-        return url_internal_wfs, url, url_wfs
+
+        query_url = map_url
+        if ogc_server.query_url is not None and ogc_server.query_url != "":
+            if ogc_server.query_auth != main.OGCSERVER_AUTH_NOAUTH:
+                query_url = self.request.route_url(
+                    "mapserverproxy",
+                    _query={"ogcserver": ogc_server.name, "ogcserver_type": "query"},
+                )
+            else:
+                query_url = ogc_server.query_url
+
+        edit_url = map_url
+        if ogc_server.edit_url is not None and ogc_server.edit_url != "":
+            if ogc_server.edit_auth != main.OGCSERVER_AUTH_NOAUTH:
+                edit_url = self.request.route_url(
+                    "mapserverproxy",
+                    _query={"ogcserver": ogc_server.name, "ogcserver_type": "edit"},
+                )
+            else:
+                edit_url = ogc_server.edit_url
+
+        return url_internal_wfs, url, url_wfs, map_url, query_url, edit_url
 
     async def _preload(self, errors: set[str]) -> None:
         assert models.DBSession is not None
@@ -1058,7 +1085,7 @@ class Theme:
             _LOG.debug("%i layers for OGC server '%s'", nb_layers, ogc_server.name)
             if nb_layers > 0:
                 _LOG.debug("Preload OGC server '%s'", ogc_server.name)
-                url_internal_wfs, _, _ = self.get_url_internal_wfs(ogc_server, errors)
+                url_internal_wfs, _, _, _, _, _ = self.get_url_internal_wfs(ogc_server, errors)
                 if url_internal_wfs is not None:
                     tasks.add(self.preload_ogc_server(ogc_server, url_internal_wfs))
 
@@ -1238,7 +1265,10 @@ class Theme:
 
                 _LOG.debug("Process OGC server '%s'", ogc_server.name)
 
-                url_internal_wfs, url, url_wfs = self.get_url_internal_wfs(ogc_server, all_errors)
+                url_internal_wfs, url, url_wfs, map_url, query_url, edit_url = self.get_url_internal_wfs(
+                    ogc_server,
+                    all_errors,
+                )
 
                 attributes = None
                 namespace = None
@@ -1275,6 +1305,20 @@ class Theme:
                 result["ogcServers"][ogc_server.name] = {
                     "url": url.url() if url else None,
                     "urlWfs": url_wfs.url() if url_wfs else None,
+                    "uses": {
+                        "map": {
+                            "url": map_url,
+                            "protocol": ogc_server.map_protocol,
+                        },
+                        "query": {
+                            "url": query_url,
+                            "protocol": ogc_server.query_protocol,
+                        },
+                        "edit": {
+                            "url": edit_url,
+                            "protocol": ogc_server.edit_protocol,
+                        },
+                    },
                     "type": ogc_server.type,
                     "credential": ogc_server.auth != main.OGCSERVER_AUTH_NOAUTH,
                     "imageType": ogc_server.image_type,
@@ -1385,7 +1429,7 @@ class Theme:
 
     def _ogc_server_clear_cache(self, ogc_server: main.OGCServer) -> None:
         errors: set[str] = set()
-        url_internal_wfs, _, _ = self.get_url_internal_wfs(ogc_server, errors)
+        url_internal_wfs, _, _, _, _, _ = self.get_url_internal_wfs(ogc_server, errors)
         if errors:
             _LOG.error(
                 "Error while getting the URL of the OGC Server %s:\n%s",

@@ -106,13 +106,25 @@ class OGCServerViews(LoggedViews[OGCServer]):
 
         schema = cast("GeoFormSchemaNode", self._base_schema.clone())
         schema["url"].description = Literal(
-            _("{}<br>Current runtime value is: {}").format(
+            _("{}<br>Current runtime value is: <code>{}</code>").format(
                 schema["url"].description,
                 obj.url_description(self._request),
             ),
         )
+        schema["query_url"].description = Literal(
+            _("{}<br>Current runtime value is: <code>{}</code>").format(
+                schema["query_url"].description,
+                obj.query_url_description(self._request),
+            ),
+        )
+        schema["edit_url"].description = Literal(
+            _("{}<br>Current runtime value is: <code>{}</code>").format(
+                schema["edit_url"].description,
+                obj.edit_url_description(self._request),
+            ),
+        )
         schema["url_wfs"].description = Literal(
-            _("{}<br>Current runtime value is: {}").format(
+            _("{}<br>Current runtime value is: <code>{}</code>").format(
                 schema["url_wfs"].description,
                 obj.url_wfs_description(self._request),
             ),

@@ -97,6 +97,30 @@ class OGCProxy(Proxy):
             _LOG.error("\n".join(errors))
         return url
 
+    def _get_query_url(self, errors: set[str]) -> Url | None:
+        ogc_server = self.ogc_server
+        url = get_url2(
+            f"The OGC server (Query) '{ogc_server.name}'",
+            ogc_server.query_url or ogc_server.url,
+            self.request,
+            errors,
+        )
+        if errors:
+            _LOG.error("\n".join(errors))
+        return url
+
+    def _get_edit_url(self, errors: set[str]) -> Url | None:
+        ogc_server = self.ogc_server
+        url = get_url2(
+            f"The OGC server (Edit) '{ogc_server.name}'",
+            ogc_server.edit_url or ogc_server.url,
+            self.request,
+            errors,
+        )
+        if errors:
+            _LOG.error("\n".join(errors))
+        return url
+
     def _get_wfs_url(self, errors: set[str]) -> Url | None:
         ogc_server = self.ogc_server
         url = get_url2(
