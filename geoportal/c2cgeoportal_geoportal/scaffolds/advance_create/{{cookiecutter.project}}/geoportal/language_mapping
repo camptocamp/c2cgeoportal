@@ -1,3 +1,5 @@
 fr=fr-ch
 de=de-ch
 it=it-ch
+# Fallback on italian for Romansh
+rm=it-ch
