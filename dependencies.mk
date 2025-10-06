@@ -1,6 +1,7 @@
 TX_DEPENDENCIES = $(HOME)/.transifexrc .tx/config
 
-LANGUAGES = fr de it
+# rm is Romansh
+LANGUAGES = fr de it rm
 export LANGUAGES
 ALL_LANGUAGES = en $(LANGUAGES)
 
