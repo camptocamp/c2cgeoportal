@@ -1,3 +1,7 @@
+##### 2.9.0.316
+
+- Audit Snyk check/fix 2.9 [c2cgeoportal#12348](https://github.com/camptocamp/c2cgeoportal/pull/12348)
+
 ##### 2.9.0.315
 
 - Add Romansh [c2cgeoportal#12346](https://github.com/camptocamp/c2cgeoportal/pull/12346)
