@@ -1,3 +1,7 @@
+##### 2.9.0.315
+
+- Add Romansh [c2cgeoportal#12346](https://github.com/camptocamp/c2cgeoportal/pull/12346)
+
 ##### 2.9.0.314
 
 - Update dependency certifi to v2025.10.5 (2.9) [c2cgeoportal#12344](https://github.com/camptocamp/c2cgeoportal/pull/12344)
