@@ -197,6 +197,8 @@ vars:
       en: english
       de: german
       it: italian
+      # Fallback on italian for Romansh
+      rm: italian
 
   shortener:
     # Used to send a confirmation email
