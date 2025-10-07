@@ -69,8 +69,31 @@ OGC Server
                     "maxOccurs": "<the optional maximum occurs>"
                 }
             }
-        }
+        },
+        "uses": {
+            "map": {
+                "protocol": "<OGC protocol to be used to get the map>",
+                "url": "<URL to be used to get the map>",
+            },
+            "query": {
+                "protocol": "<OGC protocol to be used to do the queries>",
+                "url": "<URL to be used to do the queries>",
+            },
+            "edit": {
+                "protocol": "<OGC protocol to be used to do the edits>",
+                "url": "<URL to be used to do the edits>",
+            },
+        },
     }
+
+The ``protocol`` can be ``WMS``, ``WMS/GetFeatureInfo``, ``WFS/GetFeature``,
+``OGC API - Maps``, ``OGC API - Features``.
+
+The ``uses`` is used by ``GeoGirafe``, not by ``ngeo``.
+
+The ``urlWfs`` and ``wfsSupport`` are used by ``ngeo``, not by ``GeoGirafe`` (=> deprecated, will be removed in future version).
+
+The ``isSingleTile`` isn't used by any clients (=> deprecated, will be removed in future version).
 
 
 Theme
@@ -691,3 +714,17 @@ Parameters
  - ``wmslayer_regex``: Regular expression used to filter the WMS layers.
  - ``wmtslayer_regex``: Regular expression used to filter the WMTS layers.
  - ``ignore_i18n_errors``: ``TRUE`` to ignore most of the error expected during the extraction.
+
+
+Map server proxy
+================
+
+This is a proxy to access OGC servers.
+
+URL: ``.../mapserv_proxy`` or ``.../mapserv_proxy/<ogcserver>/...``
+
+Parameters
+----------
+
+ - ``ogcserver``: The OGC server name to use.
+ - ``ogcserver_type``: The type of request we want to do, can be ``map``, ``query`` or ``edit``, used to get the correct URL (and authentication type) in the OGC server configuration, it not provided we use the ``url_wfs`` if we detect a WFS request, else we use ``url``.

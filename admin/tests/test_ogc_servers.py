@@ -43,11 +43,11 @@ class TestOGCServer(AbstractViewsTests):
             ("id", "id", "true"),
             ("name", "Name", "true"),
             ("description", "Description", "true"),
-            ("url", "Basic URL", "true"),
+            ("url", "Base URL", "true"),
             ("url_wfs", "WFS URL", "true"),
             ("type", "Server type", "true"),
             ("image_type", "Image type", "true"),
-            ("auth", "Authentication type", "true"),
+            ("auth", "Base authentication type", "true"),
             ("wfs_support", "WFS support", "true"),
             ("is_single_tile", "Single tile", "true"),
         ]

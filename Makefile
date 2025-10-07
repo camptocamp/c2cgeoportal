@@ -1,6 +1,6 @@
-MAJOR_VERSION ?= $(shell scripts/get-version --major)
-MAJOR_MINOR_VERSION ?= $(shell scripts/get-version --major-minor)
-VERSION ?= $(shell scripts/get-version --full)
+MAJOR_VERSION ?= $(shell scripts/get-version --major 2> /dev/null || echo 2.10)
+MAJOR_MINOR_VERSION ?= $(shell scripts/get-version --major-minor 2> /dev/null || echo 2.10.0)
+VERSION ?= $(shell scripts/get-version --full 2> /dev/null || echo 2.10.0-fake-local-version)
 DOCKER_TAG ?= latest
 MAIN_BRANCH ?= fake-local-branch
 export MAJOR_VERSION

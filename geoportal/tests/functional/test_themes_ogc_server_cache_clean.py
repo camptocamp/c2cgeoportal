@@ -243,7 +243,7 @@ class TestThemesView(TestCase):
         request = create_dummy_request()
         theme = Theme(request)
         all_errors = set()
-        url_internal_wfs, _, _ = theme.get_url_internal_wfs(ogc_server, all_errors)
+        url_internal_wfs, _, _, _, _, _ = theme.get_url_internal_wfs(ogc_server, all_errors)
 
         responses.get(
             "http://mapserver:8080/?SERVICE=WMS&VERSION=1.1.1&REQUEST=GetCapabilities&ROLE_IDS=0&USER_ID=0",
