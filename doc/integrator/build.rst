@@ -113,7 +113,7 @@ Makefile config variables
 The following variables may be set in the Makefiles:
 
 * ``DISABLE_BUILD_RULES``: List of rules we want to disable, default is empty.
-* ``LANGUAGES``: List of available languages, default is ``en fr de``.
+* ``LANGUAGES``: List of available languages, default is ``en fr de it rm``.
 * ``NGEO_INTERFACES``: List of ngeo interfaces, default is ``mobile desktop``.
 
 
