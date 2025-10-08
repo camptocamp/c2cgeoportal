@@ -1,3 +1,9 @@
+##### 2.9.0.318
+
+- CI updates [ngeo#9926](https://github.com/camptocamp/ngeo/pull/9926)
+- CI updates [ngeo#9932](https://github.com/camptocamp/ngeo/pull/9932)
+- Better message on reset password [ngeo#9939](https://github.com/camptocamp/ngeo/pull/9939)
+
 ##### 2.9.0.317
 
 - Get the angular-locale files for it and rm [c2cgeoportal#12349](https://github.com/camptocamp/c2cgeoportal/pull/12349)
