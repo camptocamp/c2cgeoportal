@@ -1,3 +1,7 @@
+##### 2.9.0.317
+
+- Get the angular-locale files for it and rm [c2cgeoportal#12349](https://github.com/camptocamp/c2cgeoportal/pull/12349)
+
 ##### 2.9.0.316
 
 - Audit Snyk check/fix 2.9 [c2cgeoportal#12348](https://github.com/camptocamp/c2cgeoportal/pull/12348)
