@@ -1,3 +1,7 @@
+##### 2.9.0.320
+
+- Don't break the application when a field is missing in the cookie [c2cgeoportal#12352](https://github.com/camptocamp/c2cgeoportal/pull/12352)
+
 ##### 2.9.0.318
 
 - CI updates [ngeo#9926](https://github.com/camptocamp/ngeo/pull/9926)
