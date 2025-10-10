@@ -32,7 +32,6 @@ import string
 from typing import TYPE_CHECKING, Any, NamedTuple, Optional, TypedDict, Union
 
 import pyramid.request
-import pyramid.response
 import simple_openid_connect.client
 import simple_openid_connect.data
 from pyramid.httpexceptions import HTTPBadRequest, HTTPInternalServerError, HTTPUnauthorized
@@ -171,62 +170,66 @@ def get_user_from_remember(
     assert models.DBSession is not None
 
     user: static.User | DynamicUser | None
-    username = remember_object["username"]
-    assert username is not None
-    email = remember_object["email"]
-    assert email is not None
-    display_name = remember_object["display_name"] or email
+    try:
+        username = remember_object["username"]
+        assert username is not None
+        email = remember_object["email"]
+        assert email is not None
+        display_name = remember_object["display_name"] or email
 
-    openid_connect_configuration = request.registry.settings.get("authentication", {}).get(
-        "openid_connect", {}
-    )
-    provide_roles = openid_connect_configuration.get("provide_roles", False)
-    if provide_roles is False:
-        user_query = models.DBSession.query(static.User)
-        match_field = openid_connect_configuration.get("match_field", "username")
-        if match_field == "username":
-            user_query = user_query.filter_by(username=username)
-        elif match_field == "email":
-            user_query = user_query.filter_by(email=email)
-        else:
-            raise HTTPInternalServerError(
-                f"Unknown match_field: '{match_field}', allowed values are 'username' and 'email'"
-            )
-        user = user_query.one_or_none()
-        if update_create_user is True:
-            if user is not None:
-                for field in openid_connect_configuration.get("update_fields", []):
-                    if field == "username":
-                        user.username = username
-                    elif field == "display_name":
-                        user.display_name = display_name
-                    elif field == "email":
-                        user.email = email
-                    else:
-                        raise HTTPInternalServerError(
-                            f"Unknown update_field: '{field}', allowed values are 'username', 'display_name' and 'email'"
-                        )
-            elif openid_connect_configuration.get("create_user", False) is True:
-                user = static.User(username=username, email=email, display_name=display_name)
-                models.DBSession.add(user)
-    else:
-        roles = []
-        role_names = remember_object.get("roles", [])
-        if role_names:
-            query = models.DBSession.query(main.Role).filter(main.Role.name.in_(role_names))
-            roles = query.all()
-        user = DynamicUser(
-            id=-1,
-            username=username,
-            display_name=display_name,
-            email=email,
-            settings_role=(
-                models.DBSession.query(main.Role).filter_by(name=remember_object["settings_role"]).first()
-                if remember_object.get("settings_role") is not None
-                else None
-            ),
-            roles=roles,
+        openid_connect_configuration = request.registry.settings.get("authentication", {}).get(
+            "openid_connect", {}
         )
+        provide_roles = openid_connect_configuration.get("provide_roles", False)
+        if provide_roles is False:
+            user_query = models.DBSession.query(static.User)
+            match_field = openid_connect_configuration.get("match_field", "username")
+            if match_field == "username":
+                user_query = user_query.filter_by(username=username)
+            elif match_field == "email":
+                user_query = user_query.filter_by(email=email)
+            else:
+                raise HTTPInternalServerError(
+                    f"Unknown match_field: '{match_field}', allowed values are 'username' and 'email'"
+                )
+            user = user_query.one_or_none()
+            if update_create_user is True:
+                if user is not None:
+                    for field in openid_connect_configuration.get("update_fields", []):
+                        if field == "username":
+                            user.username = username
+                        elif field == "display_name":
+                            user.display_name = display_name
+                        elif field == "email":
+                            user.email = email
+                        else:
+                            raise HTTPInternalServerError(
+                                f"Unknown update_field: '{field}', allowed values are 'username', 'display_name' and 'email'"
+                            )
+                elif openid_connect_configuration.get("create_user", False) is True:
+                    user = static.User(username=username, email=email, display_name=display_name)
+                    models.DBSession.add(user)
+        else:
+            roles = []
+            role_names = remember_object.get("roles", [])
+            if role_names:
+                query = models.DBSession.query(main.Role).filter(main.Role.name.in_(role_names))
+                roles = query.all()
+            user = DynamicUser(
+                id=-1,
+                username=username,
+                display_name=display_name,
+                email=email,
+                settings_role=(
+                    models.DBSession.query(main.Role).filter_by(name=remember_object["settings_role"]).first()
+                    if remember_object.get("settings_role") is not None
+                    else None
+                ),
+                roles=roles,
+            )
+    except KeyError:
+        _LOG.exception("Missing field in remember object")
+        return None
     return user
 
 
