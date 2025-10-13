@@ -149,7 +149,7 @@ polib = "==1.1.1"  # i18n
 pykwalify = "==1.7.0"  # Validate config
 pytest-cov = "==3.0.0"  # tests
 transifex-client = "==0.12.5"  # Makefile
-WebTest = "==3.0.6"  # admin tests
+WebTest = "==3.0.7"  # admin tests
 prospector = {extras = ["with_mypy", "with_bandit"], version = "==1.7.7"}
 flake8 = "==4.0.1"
 types-pytz = "==2021.3.8"
