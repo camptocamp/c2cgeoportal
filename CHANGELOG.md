@@ -1,3 +1,8 @@
+##### 2.9.0.322
+
+- Update dependency c2cciutils to v1.7.4 (2.9) [ngeo#9941](https://github.com/camptocamp/ngeo/pull/9941)
+- Update editorconfig-checker pre-commit to try to fix ghci [ngeo#9943](https://github.com/camptocamp/ngeo/pull/9943)
+
 ##### 2.9.0.320
 
 - Don't break the application when a field is missing in the cookie [c2cgeoportal#12352](https://github.com/camptocamp/c2cgeoportal/pull/12352)
