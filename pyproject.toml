@@ -77,7 +77,7 @@ prospector-profile-utils  = "1.26.5"
 ruff = "0.13.2"
 beautifulsoup4 = "4.14.2"
 certifi = "2025.10.5"
-cryptography = "46.0.2"
+cryptography = "46.0.3"
 setuptools = "80.9.0"
 
 [tool.poetry.group.dev.dependencies]
