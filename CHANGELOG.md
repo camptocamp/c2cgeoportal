@@ -1,3 +1,7 @@
+##### 2.8.1.257
+
+- Update dependency cryptography to v46.0.3 (2.8) [c2cgeoportal#12360](https://github.com/camptocamp/c2cgeoportal/pull/12360)
+
 ##### 2.8.1.256
 
 - Upgrade Redis [c2cgeoportal#12356](https://github.com/camptocamp/c2cgeoportal/pull/12356)
