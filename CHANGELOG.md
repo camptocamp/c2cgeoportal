@@ -1,3 +1,7 @@
+##### 2.9.0.323
+
+- Update dependency cryptography to v46.0.3 (2.9) [c2cgeoportal#12361](https://github.com/camptocamp/c2cgeoportal/pull/12361)
+
 ##### 2.9.0.322
 
 - Update dependency c2cciutils to v1.7.4 (2.9) [ngeo#9941](https://github.com/camptocamp/ngeo/pull/9941)
