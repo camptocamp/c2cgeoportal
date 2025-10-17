@@ -102,6 +102,10 @@ Changes to apply
    `main_ogc_server`, `api.ogc_server`, `tinyowsproxy.ogc_server`,
    `interfaces_config.<interface>.routes.ngeoPermalinkOgcserverUrl.params.ogcserver`.
 
+5. Now MapServer will work in multi project mode by default, normally the Alembic migration script
+   update the MapServer OGC Server URL to `config://mapserver/mapserv_proxy/MapServer?map=MapServer`
+   to make it working for WMS/WFS and for OGC API.
+
 
 =============
 Version 2.8.0
