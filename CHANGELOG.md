@@ -1,3 +1,7 @@
+##### 2.9.0.324
+
+- Update the changelog for MapServer multi-project [c2cgeoportal#12362](https://github.com/camptocamp/c2cgeoportal/pull/12362)
+
 ##### 2.9.0.323
 
 - Update dependency cryptography to v46.0.3 (2.9) [c2cgeoportal#12361](https://github.com/camptocamp/c2cgeoportal/pull/12361)
