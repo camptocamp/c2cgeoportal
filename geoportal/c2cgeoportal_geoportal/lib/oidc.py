@@ -84,9 +84,7 @@ def get_oidc_client(request: pyramid.request.Request, host: str) -> simple_openi
 class OidcRememberObject(TypedDict):
     """The JSON object that is stored in a cookie to remember the user."""
 
-    access_token: str
     access_token_expires: str
-    refresh_token: str | None
     refresh_token_expires: str | None
     username: str | None
     display_name: str | None
@@ -269,13 +267,30 @@ class OidcRemember:
 
         openid_connect = self.authentication_settings.get("openid_connect", {})
         assert token_response.expires_in is not None
+        self.request.response.set_cookie(
+            "access_token",
+            token_response.access_token,
+            max_age=token_response.expires_in,
+            secure=True,
+            httponly=True,
+            samesite="Lax",
+            domain=self.request.domain,
+        )
+        if token_response.refresh_expires_in is not None:
+            self.request.response.set_cookie(
+                "refresh_token",
+                token_response.refresh_token,
+                max_age=token_response.refresh_expires_in,
+                secure=True,
+                httponly=True,
+                samesite="Lax",
+                domain=self.request.domain,
+            )
         remember_object: OidcRememberObject = {
-            "access_token": token_response.access_token,
             "access_token_expires": (
                 datetime.datetime.now(tz=datetime.timezone.utc)
                 + datetime.timedelta(seconds=token_response.expires_in)
             ).isoformat(),
-            "refresh_token": token_response.refresh_token,
             "refresh_token_expires": (
                 None
                 if token_response.refresh_expires_in is None
