@@ -296,10 +296,11 @@ class Login:
         if self.authentication_settings.get("openid_connect", {}).get("enabled", False):
             client = oidc.get_oidc_client(self.request, self.request.host)
             if hasattr(client, "revoke_token"):
-                user_info = json.loads(self.request.authenticated_userid)
-                client.revoke_token(user_info["access_token"])
-                if user_info.get("refresh_token") is not None:
-                    client.revoke_token(user_info["refresh_token"])
+                access_token = self.request.cookies.get("access_token")
+                client.revoke_token(access_token)
+                refresh_token = self.request.cookies.get("refresh_token")
+                if refresh_token is not None:
+                    client.revoke_token(refresh_token)
 
         headers = forget(self.request)
 

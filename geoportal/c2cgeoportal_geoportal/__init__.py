@@ -416,6 +416,9 @@ def create_get_user_from_request(
                         if access_token_expires < datetime.datetime.now(datetime.timezone.utc):
                             if user_info_remember["refresh_token_expires"] is None:
                                 return None
+                            refresh_token = request.cookies.get("refresh_token")
+                            if refresh_token is None:
+                                return None
                             refresh_token_expires = dateutil.parser.isoparse(
                                 user_info_remember["refresh_token_expires"]
                             )
@@ -432,7 +435,7 @@ def create_get_user_from_request(
                                 return None
                             token_response = oidc.get_oidc_client(
                                 request, request.host
-                            ).exchange_refresh_token(user_info_remember["refresh_token"])
+                            ).exchange_refresh_token(refresh_token)
                             user_info_remember = oidc.OidcRemember(request).remember(
                                 token_response, request.host
                             )
