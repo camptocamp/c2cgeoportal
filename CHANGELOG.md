@@ -1,3 +1,7 @@
+##### 2.9.0.326
+
+- Upgrade codespell to fix pre-commit [ngeo#9945](https://github.com/camptocamp/ngeo/pull/9945)
+
 ##### 2.9.0.325
 
 - Move the access and refresh token into a separate cookie to avoid max… [c2cgeoportal#12364](https://github.com/camptocamp/c2cgeoportal/pull/12364)
