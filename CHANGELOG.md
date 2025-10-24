@@ -1,3 +1,7 @@
+##### 2.9.0.327
+
+- Audit Dpkg 2.9 [c2cgeoportal#12366](https://github.com/camptocamp/c2cgeoportal/pull/12366)
+
 ##### 2.9.0.326
 
 - Upgrade codespell to fix pre-commit [ngeo#9945](https://github.com/camptocamp/ngeo/pull/9945)
