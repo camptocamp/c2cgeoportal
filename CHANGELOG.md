@@ -1,3 +1,7 @@
+##### 2.7.1.216
+
+- The pip version 25.3 is not working [c2cgeoportal#12368](https://github.com/camptocamp/c2cgeoportal/pull/12368)
+
 ##### 2.7.1.215
 
 - Audit Snyk check/fix 2.7 [c2cgeoportal#12358](https://github.com/camptocamp/c2cgeoportal/pull/12358)
