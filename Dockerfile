@@ -16,7 +16,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     apt-get update \
     && apt-get upgrade --assume-yes \
     && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends python3-pip \
-    && pip install --upgrade pip
+    && pip install pip==25.2
 
 # Used to convert the locked packages by poetry to pip requirements format
 # We don't directly use `poetry install` because it force to use a virtual environment.
