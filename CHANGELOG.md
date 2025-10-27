@@ -1,3 +1,7 @@
+##### 2.8.1.258
+
+- Remove no more existing --no-use-pep517 pip argument [c2cgeoportal#12367](https://github.com/camptocamp/c2cgeoportal/pull/12367)
+
 ##### 2.8.1.257
 
 - Update dependency cryptography to v46.0.3 (2.8) [c2cgeoportal#12360](https://github.com/camptocamp/c2cgeoportal/pull/12360)
