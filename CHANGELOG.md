@@ -1,3 +1,7 @@
+##### 2.8.1.259
+
+- Fix Build and check by pinning used pip version [c2cgeoportal#12369](https://github.com/camptocamp/c2cgeoportal/pull/12369)
+
 ##### 2.8.1.258
 
 - Remove no more existing --no-use-pep517 pip argument [c2cgeoportal#12367](https://github.com/camptocamp/c2cgeoportal/pull/12367)
