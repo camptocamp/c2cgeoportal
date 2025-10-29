@@ -1,3 +1,12 @@
+##### 2.8.1.260
+
+- Update CI dependencies (2.8) [ngeo#9850](https://github.com/camptocamp/ngeo/pull/9850)
+- Update dependency requests to v2.32.5 (2.8) [ngeo#9888](https://github.com/camptocamp/ngeo/pull/9888)
+- [Backport 2.8] No formatting on package-lock.json [ngeo#9897](https://github.com/camptocamp/ngeo/pull/9897)
+- Audit Snyk check/fix 2.8 [ngeo#9906](https://github.com/camptocamp/ngeo/pull/9906)
+- CI updates [ngeo#9927](https://github.com/camptocamp/ngeo/pull/9927)
+- CI updates [ngeo#9930](https://github.com/camptocamp/ngeo/pull/9930)
+
 ##### 2.8.1.259
 
 - Fix Build and check by pinning used pip version [c2cgeoportal#12369](https://github.com/camptocamp/c2cgeoportal/pull/12369)
