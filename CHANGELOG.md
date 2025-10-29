@@ -1,3 +1,7 @@
+##### 2.9.0.329
+
+- [Backport 2.9] QGIS provide feature type int instead of integer [ngeo#9948](https://github.com/camptocamp/ngeo/pull/9948)
+
 ##### 2.9.0.328
 
 - Update dependency c2cciutils to v1.7.5 (2.9) [c2cgeoportal#12371](https://github.com/camptocamp/c2cgeoportal/pull/12371)
