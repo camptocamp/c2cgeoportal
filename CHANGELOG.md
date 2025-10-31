@@ -1,3 +1,7 @@
+##### 2.9.0.331
+
+- Audit Dpkg 2.9 [c2cgeoportal#12375](https://github.com/camptocamp/c2cgeoportal/pull/12375)
+
 ##### 2.9.0.330
 
 - Better error on missing cookies [c2cgeoportal#12373](https://github.com/camptocamp/c2cgeoportal/pull/12373)
