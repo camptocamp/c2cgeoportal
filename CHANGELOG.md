@@ -1,3 +1,7 @@
+##### 2.9.0.330
+
+- Better error on missing cookies [c2cgeoportal#12373](https://github.com/camptocamp/c2cgeoportal/pull/12373)
+
 ##### 2.9.0.329
 
 - [Backport 2.9] QGIS provide feature type int instead of integer [ngeo#9948](https://github.com/camptocamp/ngeo/pull/9948)
