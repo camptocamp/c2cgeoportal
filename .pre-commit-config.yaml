@@ -45,7 +45,7 @@ repos:
           - poetry==1.8.5 # pypi
       - id: npm-lock
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.3.0
+    rev: v2.4.1
     hooks:
       - id: codespell
         exclude: |-
