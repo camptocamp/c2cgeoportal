@@ -645,6 +645,9 @@ class Login:
         client = oidc.get_oidc_client(self.request, self.request.host)
         assert models.DBSession is not None
 
+        if "code_verifier" not in self.request.cookies or "code_challenge" not in self.request.cookies:
+            raise HTTPBadRequest("Missing code verifier or code challenge cookies.")
+
         token_response = client.authorization_code_flow.handle_authentication_result(
             "?" + urllib.parse.urlencode(self.request.params),
             code_verifier=self.request.cookies["code_verifier"],
