@@ -1,3 +1,7 @@
+##### 2.9.0.333
+
+- Update CI dependencies (2.9) [c2cgeoportal#12388](https://github.com/camptocamp/c2cgeoportal/pull/12388)
+
 ##### 2.9.0.331
 
 - Audit Dpkg 2.9 [c2cgeoportal#12375](https://github.com/camptocamp/c2cgeoportal/pull/12375)
