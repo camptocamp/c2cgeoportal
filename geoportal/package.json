@@ -42,7 +42,7 @@
     "neat-csv": "7.0.0",
     "parse-absolute-css-unit": "1.0.2",
     "sass": "1.80.7",
-    "sass-loader": "16.0.5",
+    "sass-loader": "16.0.6",
     "simple-html-tokenizer": "0.5.11",
     "svgo": "3.3.2",
     "svgo-loader": "4.0.0",
