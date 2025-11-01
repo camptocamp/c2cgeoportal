@@ -361,18 +361,18 @@ test-tox-coverage = ["coverage (>=5.5)"]
 
 [[package]]
 name = "boto3"
-version = "1.40.43"
+version = "1.40.64"
 description = "The AWS SDK for Python"
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "boto3-1.40.43-py3-none-any.whl", hash = "sha256:c5d64ba2fb2d90c33c3969f3751869c45746d5efb5136e4cc619e3630ece89a3"},
-    {file = "boto3-1.40.43.tar.gz", hash = "sha256:9ad9190672ce8736898bec2d94875aea6ae1ead2ac6d158e01d820f3ff9c23e0"},
+    {file = "boto3-1.40.64-py3-none-any.whl", hash = "sha256:35ca3dd80dd90d5f4e8ed032440f28790696fdf50f48c0d16a09a75675f9112f"},
+    {file = "boto3-1.40.64.tar.gz", hash = "sha256:b92d6961c352f2bb8710c9892557d4b0e11258b70967d4e740e1c97375bcd779"},
 ]
 
 [package.dependencies]
-botocore = ">=1.40.43,<1.41.0"
+botocore = ">=1.40.64,<1.41.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.14.0,<0.15.0"
 
@@ -381,14 +381,14 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.40.43"
+version = "1.40.64"
 description = "Low-level, data-driven core of boto 3."
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "botocore-1.40.43-py3-none-any.whl", hash = "sha256:1639f38999fc0cf42c92c5c83c5fbe189a4857a86f55b842be868e3283c6d3bb"},
-    {file = "botocore-1.40.43.tar.gz", hash = "sha256:d87412dc1ea785df156f412627d3417c9f9eb45601fd0846d8fe96fe3c78b630"},
+    {file = "botocore-1.40.64-py3-none-any.whl", hash = "sha256:6902b3dadfba1fbacc9648171bef3942530d8f823ff2bdb0e585a332323f89fc"},
+    {file = "botocore-1.40.64.tar.gz", hash = "sha256:a13af4009f6912eafe32108f6fa584fb26e24375149836c2bcaaaaec9a7a9e58"},
 ]
 
 [package.dependencies]
@@ -3095,14 +3095,14 @@ urllib3 = "*"
 
 [[package]]
 name = "sphinx-substitution-extensions"
-version = "2025.6.6"
+version = "2025.10.24"
 description = "Extensions for Sphinx which allow for substitutions."
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "sphinx_substitution_extensions-2025.6.6-py2.py3-none-any.whl", hash = "sha256:96206ba7a2cdf43237edec81f87770a5683a91a1de3bf93f7a22309509ecbfd8"},
-    {file = "sphinx_substitution_extensions-2025.6.6.tar.gz", hash = "sha256:241ddb9f88962422a8b436243d2601f9d94616e94b520ce1a6a528d9a3b7804a"},
+    {file = "sphinx_substitution_extensions-2025.10.24-py2.py3-none-any.whl", hash = "sha256:243619a13616566be8f00fa75e5f946116ec53dd6dc30ff837d62b53bdbee95f"},
+    {file = "sphinx_substitution_extensions-2025.10.24.tar.gz", hash = "sha256:95f9fd2fed1a11809191c31340b13ab9ad41df6e29b1567b8da28897725a803a"},
 ]
 
 [package.dependencies]
@@ -3112,8 +3112,8 @@ myst-parser = ">=4.0.0"
 sphinx = ">=8.1.0"
 
 [package.extras]
-dev = ["actionlint-py (==1.7.7.23)", "check-manifest (==0.50)", "deptry (==0.23.0)", "doc8 (==1.1.2)", "doccmd (==2025.4.8)", "docformatter (==1.7.7)", "interrogate (==1.7.0)", "mypy-strict-kwargs (==2025.4.3)", "mypy[faster-cache] (==1.16.0)", "pre-commit (==4.2.0)", "pyenchant (==3.3.0rc1)", "pylint (==3.3.7)", "pyproject-fmt (==2.6.0)", "pyright (==1.1.401)", "pyroma (==4.2)", "pytest (==8.4.0)", "pytest-cov (==6.1.1)", "ruff (==0.11.13)", "shellcheck-py (==0.10.0.1)", "shfmt-py (==3.11.0.2)", "sphinx-lint (==1.0.0)", "sphinx-toolbox (==4.0.0)", "types-docutils (==0.21.0.20250604)", "vulture (==2.14)", "yamlfix (==1.17.0)"]
-release = ["check-wheel-contents (==0.6.2)"]
+dev = ["actionlint-py (==1.7.8.24)", "check-manifest (==0.51)", "deptry (==0.23.1)", "doc8 (==2.0.0)", "doccmd (==2025.10.18)", "docformatter (==1.7.7)", "interrogate (==1.7.0)", "mypy-strict-kwargs (==2025.4.3)", "mypy[faster-cache] (==1.18.2)", "pre-commit (==4.3.0)", "pylint[spelling] (==4.0.2)", "pyproject-fmt (==2.11.0)", "pyright (==1.1.406)", "pyroma (==5.0)", "pytest (==8.4.2)", "pytest-cov (==7.0.0)", "ruff (==0.14.1)", "shellcheck-py (==0.11.0.1)", "shfmt-py (==3.12.0.2)", "sphinx-lint (==1.0.0)", "sphinx-toolbox (==4.0.0)", "types-docutils (==0.22.2.20251006)", "vulture (==2.14)", "yamlfix (==1.19.0)"]
+release = ["check-wheel-contents (==0.6.3)"]
 
 [[package]]
 name = "sphinxcontrib-applehelp"
@@ -3856,4 +3856,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<3.13"
-content-hash = "da2d4254f78187a32a2484e7461d01509aec6320c8c4659bb7eeb72ea012b65f"
+content-hash = "71a7e0540af19c87c3c222d256f3b1dbf296d3a1d2dea0606c0f7f156b6eea1e"
