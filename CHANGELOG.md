@@ -1,3 +1,7 @@
+##### 2.8.1.261
+
+- Update all patch/minor versions (2.8) [c2cgeoportal#12386](https://github.com/camptocamp/c2cgeoportal/pull/12386)
+
 ##### 2.8.1.260
 
 - Update CI dependencies (2.8) [ngeo#9850](https://github.com/camptocamp/ngeo/pull/9850)
