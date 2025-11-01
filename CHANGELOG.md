@@ -1,3 +1,7 @@
+##### 2.7.1.218
+
+- Update dependency PyYAML to v6.0.3 (2.7) [ngeo#9956](https://github.com/camptocamp/ngeo/pull/9956)
+
 ##### 2.7.1.216
 
 - The pip version 25.3 is not working [c2cgeoportal#12368](https://github.com/camptocamp/c2cgeoportal/pull/12368)
