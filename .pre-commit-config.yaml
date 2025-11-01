@@ -135,7 +135,7 @@ repos:
           - prospector-profile-duplicated==1.10.5 # pypi
           - prospector-profile-utils==1.26.5 # pypi
           - ruff==0.14.3 # pypi
-          - pylint[spelling]==3.3.9 # pypi
+          - pylint[spelling]==4.0.2 # pypi
         exclude: |-
           (?x)(
             ^tests?/?
