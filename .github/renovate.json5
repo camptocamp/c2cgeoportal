@@ -133,19 +133,25 @@
       groupName: 'Ngeo',
       matchDepNames: ['ngeo'],
     },
-    /** No Alabaster update on 2.7 */
+    /** Don't update Alabaster on branch 2.7 */
     {
       matchBaseBranches: ['2.7'],
       enabled: false,
       matchDepNames: ['alabaster'],
     },
-    /** No types-pyyaml from 2.8 */
+    /** Don't update types-pyyaml on branch 2.8 */
     {
       matchBaseBranches: ['2.8'],
       enabled: false,
       matchDepNames: ['types-pyyaml'],
     },
-    /** No update alabaster on branch 2.6 */
+    /** Don't update pyproj on branch 2.9 */
+    {
+      matchBaseBranches: ['2.9'],
+      enabled: false,
+      matchDepNames: ['pyproj'],
+    },
+    /** Don't update alabaster on branch 2.6 */
     {
       matchBaseBranches: ['2.6'],
       enabled: false,
