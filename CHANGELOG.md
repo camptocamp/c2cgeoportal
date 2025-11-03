@@ -1,3 +1,7 @@
+##### 2.8.1.262
+
+- QGIS provide feature type int instead of integer [ngeo#9947](https://github.com/camptocamp/ngeo/pull/9947)
+
 ##### 2.8.1.261
 
 - Update all patch/minor versions (2.8) [c2cgeoportal#12386](https://github.com/camptocamp/c2cgeoportal/pull/12386)
