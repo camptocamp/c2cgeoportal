@@ -65,10 +65,7 @@ Changes to apply
    be sure that you import the `gmf/controller/<interface>.scss` at the top of the file, before you
    can't use the variables.
 
-2. The environment variable TILECLOUD_CHAIN_SESSION_SECRET and TILECLOUD_CHAIN_SESSION_SALT from the file
-   `env.project` should be uncomment and filled with a strong secret, e.g. with `pwgen --secure 16`.
-
-3. Nginject migration:
+2. Nginject migration:
    the @ngInject annotation is no more used, you should pass an array in the function or use the $inject property.
    e.g. before:
    ```javascript
@@ -95,7 +92,7 @@ Changes to apply
    Controller.$inject = ['$scope', '$injector'];
    ```
 
-4. The OGC Server 'source for image/png' is renamed to 'MapServer' and
+3. The OGC Server 'source for image/png' is renamed to 'MapServer' and
    'source for image/jpeg' is renamed to 'MapServer_JPEG'.
    This is done to be able to add them in the URL path, for OGC API compatibility.
    If you use one of them in the `vars.yaml` you have to update them. Concerned variables are:
