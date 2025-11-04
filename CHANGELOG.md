@@ -1,3 +1,8 @@
+##### 2.9.0.335
+
+- Fix typo in C2C_AUTH_GITHUB_PROXY_URL [c2cgeoportal#12400](https://github.com/camptocamp/c2cgeoportal/pull/12400)
+- Fix tilecloudchain secrets 2.9 [c2cgeoportal#12401](https://github.com/camptocamp/c2cgeoportal/pull/12401)
+
 ##### 2.9.0.334
 
 - Update all patch/minor versions (2.9) [c2cgeoportal#12387](https://github.com/camptocamp/c2cgeoportal/pull/12387)
