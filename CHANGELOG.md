@@ -1,3 +1,7 @@
+##### 2.7.1.219
+
+- Update dependency beaker to v1.12.0 [SECURITY] (2.7) [c2cgeoportal#12425](https://github.com/camptocamp/c2cgeoportal/pull/12425)
+
 ##### 2.7.1.218
 
 - Update dependency PyYAML to v6.0.3 (2.7) [ngeo#9956](https://github.com/camptocamp/ngeo/pull/9956)
