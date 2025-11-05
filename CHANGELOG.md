@@ -1,3 +1,7 @@
+##### 2.9.0.341
+
+- Update dependency requests to v2.32.4 [SECURITY] (2.9) [c2cgeoportal#12443](https://github.com/camptocamp/c2cgeoportal/pull/12443)
+
 ##### 2.9.0.340
 
 - Update dependency PyYAML to v5 [SECURITY] (2.9) [c2cgeoportal#12444](https://github.com/camptocamp/c2cgeoportal/pull/12444)
