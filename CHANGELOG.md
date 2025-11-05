@@ -1,3 +1,8 @@
+##### 2.7.1.223
+
+- Update all patch/minor versions (2.7) [c2cgeoportal#12385](https://github.com/camptocamp/c2cgeoportal/pull/12385)
+- Update dependency redis to v4.4.4 [SECURITY] (2.7) [c2cgeoportal#12426](https://github.com/camptocamp/c2cgeoportal/pull/12426)
+
 ##### 2.7.1.222
 
 - Update dependency pyyaml to v5.4 [SECURITY] (2.7) [c2cgeoportal#12442](https://github.com/camptocamp/c2cgeoportal/pull/12442)
