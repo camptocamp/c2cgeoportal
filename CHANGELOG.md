@@ -1,3 +1,7 @@
+##### 2.9.0.338
+
+- Update dependency webpack-dev-server to v5.2.1 [SECURITY] (2.9) [c2cgeoportal#12437](https://github.com/camptocamp/c2cgeoportal/pull/12437)
+
 ##### 2.9.0.337
 
 - Update dependency pip to v25.3 [SECURITY] (2.9) [c2cgeoportal#12436](https://github.com/camptocamp/c2cgeoportal/pull/12436)
