@@ -1,3 +1,7 @@
+##### 2.8.1.263
+
+- Update dependency pip to v25.3 [SECURITY] (2.8) [c2cgeoportal#12432](https://github.com/camptocamp/c2cgeoportal/pull/12432)
+
 ##### 2.8.1.262
 
 - QGIS provide feature type int instead of integer [ngeo#9947](https://github.com/camptocamp/ngeo/pull/9947)
