@@ -1,3 +1,7 @@
+##### 2.6.0.313
+* Update dependency beaker to v1.12.0 [SECURITY] (2.6) [c2cgeoportal#12411](https://github.com/camptocamp/c2cgeoportal/pull/12411)
+* Update dependency pygments to v2.15.1 [SECURITY] (2.6) [c2cgeoportal#12413](https://github.com/camptocamp/c2cgeoportal/pull/12413)
+* Update dependency rsa to v4.7 [SECURITY] (2.6) [c2cgeoportal#12415](https://github.com/camptocamp/c2cgeoportal/pull/12415)
 ##### 2.6.0.312
 * Audit Snyk check/fix 2.6 [c2cgeoportal#12354](https://github.com/camptocamp/c2cgeoportal/pull/12354)
 ##### 2.6.0.311
