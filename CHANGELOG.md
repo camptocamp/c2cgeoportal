@@ -1,3 +1,7 @@
+##### 2.9.0.340
+
+- Update dependency PyYAML to v5 [SECURITY] (2.9) [c2cgeoportal#12444](https://github.com/camptocamp/c2cgeoportal/pull/12444)
+
 ##### 2.9.0.339
 
 - Be able to use prek in place of pre-commit [c2cgeoportal#12440](https://github.com/camptocamp/c2cgeoportal/pull/12440)
