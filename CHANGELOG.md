@@ -1,3 +1,7 @@
+##### 2.9.0.337
+
+- Update dependency pip to v25.3 [SECURITY] (2.9) [c2cgeoportal#12436](https://github.com/camptocamp/c2cgeoportal/pull/12436)
+
 ##### 2.9.0.335
 
 - Fix typo in C2C_AUTH_GITHUB_PROXY_URL [c2cgeoportal#12400](https://github.com/camptocamp/c2cgeoportal/pull/12400)
