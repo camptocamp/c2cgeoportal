@@ -42,6 +42,7 @@ repos:
         exclude: ^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/{{cookiecutter\.project}}/
         additional_dependencies:
           - poetry==2.2.1 # pypi
+        language_version: '3.14'
       - id: npm-lock
       - id: canonicalize
       - id: prospector-to-ruff
