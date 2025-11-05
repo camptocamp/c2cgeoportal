@@ -14,7 +14,7 @@ SQLAlchemy = "==1.4.54"  # commons
 "zope.sqlalchemy" = "==1.2"  # commons
 shapely = "==1.8.5.post1"
 cee-syslog-handler = "==0.6.0"
-setuptools = "==70.0.0"
+setuptools = "==78.1.1"
 psycopg2 = "==2.9.11"
 pytz = "==2025.2"
 # Lock dependencies
@@ -71,7 +71,7 @@ pylint-flask = "==0.6"
 pylint-plugin-utils = "==0.7"
 requirements-detector = "==0.7"
 setoptconf-tmp = "==0.3.1"
-setuptools = "==59.8.0"
+setuptools = "==78.1.1"
 smmap = "==5.0.2"
 snowballstemmer = "==2.2.0"
 stevedore = "==3.5.2"
