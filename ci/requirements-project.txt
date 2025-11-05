@@ -1,5 +1,5 @@
 # When we upgrade this we should also upgrade the requirements
 # in the documentation: doc/integrator/requirements.rst
 PyYAML==6.0
-requests==2.31.0
+requests==2.32.4
 c2cciutils==1.7.3
