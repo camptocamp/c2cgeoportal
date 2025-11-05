@@ -1,3 +1,5 @@
+##### 2.6.0.314
+* Update dependency pyyaml to v5.4 [SECURITY] (2.6) [c2cgeoportal#12441](https://github.com/camptocamp/c2cgeoportal/pull/12441)
 ##### 2.6.0.313
 * Update dependency beaker to v1.12.0 [SECURITY] (2.6) [c2cgeoportal#12411](https://github.com/camptocamp/c2cgeoportal/pull/12411)
 * Update dependency pygments to v2.15.1 [SECURITY] (2.6) [c2cgeoportal#12413](https://github.com/camptocamp/c2cgeoportal/pull/12413)
