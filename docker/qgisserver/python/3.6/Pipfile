@@ -33,7 +33,7 @@ venusian = "==3.0.0"
 webob = "==1.8.9"
 "zope.deprecation" = "==4.4.0"
 "zope.interface" = "==5.2.0"
-setuptools = "==45.2.0"
+setuptools = "==78.1.1"
 
 [dev-packages]
 mypy = "==0.790"  # lint
