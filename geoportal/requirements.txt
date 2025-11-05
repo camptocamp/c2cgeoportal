@@ -29,7 +29,7 @@ redis
 Shapely
 SQLAlchemy
 transaction
-jinja2>=2.11.3 # not directly required, pinned by Snyk to avoid a vulnerability
+jinja2>=3.1.6 # not directly required, pinned by Snyk to avoid a vulnerability
 pygments>=2.7.4 # not directly required, pinned by Snyk to avoid a vulnerability
 setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
 requests>=2.31.0 # not directly required, pinned by Snyk to avoid a vulnerability
