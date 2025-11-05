@@ -1,3 +1,7 @@
+##### 2.7.1.222
+
+- Update dependency pyyaml to v5.4 [SECURITY] (2.7) [c2cgeoportal#12442](https://github.com/camptocamp/c2cgeoportal/pull/12442)
+
 ##### 2.7.1.221
 
 - Update dependency @sentry/browser to v7 [SECURITY] (2.7) [ngeo#9963](https://github.com/camptocamp/ngeo/pull/9963)
