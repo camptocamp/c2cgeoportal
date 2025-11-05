@@ -1,3 +1,7 @@
+##### 2.9.0.339
+
+- Be able to use prek in place of pre-commit [c2cgeoportal#12440](https://github.com/camptocamp/c2cgeoportal/pull/12440)
+
 ##### 2.9.0.338
 
 - Update dependency webpack-dev-server to v5.2.1 [SECURITY] (2.9) [c2cgeoportal#12437](https://github.com/camptocamp/c2cgeoportal/pull/12437)
