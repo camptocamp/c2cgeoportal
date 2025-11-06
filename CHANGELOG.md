@@ -1,3 +1,7 @@
+##### 2.9.0.344
+
+- Update dependency setuptools to v78 [SECURITY] (2.9) [c2cgeoportal#12439](https://github.com/camptocamp/c2cgeoportal/pull/12439)
+
 ##### 2.9.0.343
 
 - Decrease WMS ratio to 1 by default [c2cgeoportal#12406](https://github.com/camptocamp/c2cgeoportal/pull/12406)
