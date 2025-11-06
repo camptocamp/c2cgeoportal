@@ -1,3 +1,5 @@
+##### 2.6.0.315
+* Update dependency pipenv to v2022 [SECURITY] (2.6) [c2cgeoportal#12421](https://github.com/camptocamp/c2cgeoportal/pull/12421)
 ##### 2.6.0.314
 * Update dependency pyyaml to v5.4 [SECURITY] (2.6) [c2cgeoportal#12441](https://github.com/camptocamp/c2cgeoportal/pull/12441)
 ##### 2.6.0.313
