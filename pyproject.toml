@@ -55,7 +55,7 @@ azure-storage-blob = "12.14.1"
 basicauth = "1.0.0"
 prospector = { extras = ["with_mypy", "with_bandit"], version = "1.9.0" }
 # pylint = "2.15.5"
-setuptools = { version = "67.1.0", optional = true }
+setuptools = { version = "78.1.1", optional = true }
 pygments = "2.15.1"
 cryptography = { version = "46.0.3", optional = true }
 gitpython = "3.1.45"
