@@ -1,3 +1,7 @@
+##### 2.9.0.343
+
+- Decrease WMS ratio to 1 by default [c2cgeoportal#12406](https://github.com/camptocamp/c2cgeoportal/pull/12406)
+
 ##### 2.9.0.342
 
 - Audit Dpkg 2.9 [c2cgeoportal#12446](https://github.com/camptocamp/c2cgeoportal/pull/12446)
