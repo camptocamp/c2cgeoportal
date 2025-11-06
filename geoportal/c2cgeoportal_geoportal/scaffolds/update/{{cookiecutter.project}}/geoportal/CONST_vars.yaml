@@ -310,8 +310,8 @@ vars:
           autoRotate: False
         gmfWMSSourceOptions:
           # The default value is 1.5 but it add a slight blur on the layer,
-          # 1 is also possible but the application will do a getMap on all the pan.
-          ratio: 2
+          # 2 is also possible but it uses many network and can break on some mobile devices.
+          ratio: 1
 
       dynamic_constants:
         interface: interface
