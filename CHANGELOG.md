@@ -1,3 +1,8 @@
+##### 2.8.1.264
+
+- [Backport 2.8] Fix typo in C2C_AUTH_GITHUB_PROXY_URL [c2cgeoportal#12404](https://github.com/camptocamp/c2cgeoportal/pull/12404)
+- Update dependency setuptools to v78 [SECURITY] (2.8) [c2cgeoportal#12434](https://github.com/camptocamp/c2cgeoportal/pull/12434)
+
 ##### 2.8.1.263
 
 - Update dependency pip to v25.3 [SECURITY] (2.8) [c2cgeoportal#12432](https://github.com/camptocamp/c2cgeoportal/pull/12432)
