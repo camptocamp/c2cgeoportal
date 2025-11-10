@@ -51,7 +51,7 @@ from c2cgeoform import translator
 from c2cwsgiutils.health_check import HealthCheck
 from c2cwsgiutils.prometheus import MemoryMapCollector
 from deform import Form
-from dogpile.cache import register_backend  # type: ignore[attr-defined]
+from dogpile.cache import register_backend
 from papyrus.renderers import GeoJSON
 from prometheus_client.core import REGISTRY
 from pyramid.config import Configurator
