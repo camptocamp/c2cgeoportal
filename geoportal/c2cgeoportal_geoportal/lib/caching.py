@@ -28,7 +28,7 @@
 
 import inspect
 import logging
-from collections.abc import Callable, Mapping, Sequence
+from collections.abc import Callable, Iterable, Mapping
 from typing import TYPE_CHECKING, Any
 
 import pyramid.interfaces
@@ -133,7 +133,7 @@ class HybridRedisBackend(CacheBackend):
     def get(self, key: str) -> CachedValue | bytes | NoValue:
         value = self._memory.get(key)
         if value == NO_VALUE:
-            val = self._redis.get_serialized(sha1_mangle_key(key.encode()))  # type: ignore[no-untyped-call]
+            val = self._redis.get_serialized(sha1_mangle_key(key.encode()))
             if val in (None, NO_VALUE):
                 return NO_VALUE
             assert isinstance(val, bytes)
@@ -143,14 +143,14 @@ class HybridRedisBackend(CacheBackend):
                 self._memory.set(key, value)
         return value
 
-    def get_multi(self, keys: Sequence[str]) -> list[CachedValue | bytes | NoValue]:
+    def get_multi(self, keys: Iterable[str]) -> list[CachedValue | bytes | NoValue]:
         return [self.get(key) for key in keys]
 
     def set(self, key: str, value: CachedValue | bytes) -> None:
         if self._use_memory_cache:
             self._memory.set(key, value)
         self._redis.set_serialized(
-            sha1_mangle_key(key.encode()),  # type: ignore[no-untyped-call]
+            sha1_mangle_key(key.encode()),
             self._redis.serializer(value),  # type: ignore[misc]
         )
 
@@ -162,7 +162,7 @@ class HybridRedisBackend(CacheBackend):
         self._memory.delete(key)
         self._redis.delete(key)
 
-    def delete_multi(self, keys: Sequence[str]) -> None:
+    def delete_multi(self, keys: Iterable[str]) -> None:
         self._memory.delete_multi(keys)
         self._redis.delete_multi(keys)
 
