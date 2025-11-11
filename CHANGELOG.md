@@ -1,3 +1,8 @@
+##### 2.7.1.225
+
+- Update dependency terser to v5.14.2 [SECURITY] (2.7) [ngeo#9962](https://github.com/camptocamp/ngeo/pull/9962)
+- Update dependency urllib3 to v2 [SECURITY] (2.7) [ngeo#9965](https://github.com/camptocamp/ngeo/pull/9965)
+
 ##### 2.7.1.224
 
 - Audit Snyk check/fix 2.7 [c2cgeoportal#12449](https://github.com/camptocamp/c2cgeoportal/pull/12449)
