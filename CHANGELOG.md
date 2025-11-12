@@ -1,3 +1,5 @@
+##### 2.6.0.316
+* Update dependency certifi to v2025.11.12 (2.6) [c2cgeoportal#12451](https://github.com/camptocamp/c2cgeoportal/pull/12451)
 ##### 2.6.0.315
 * Update dependency pipenv to v2022 [SECURITY] (2.6) [c2cgeoportal#12421](https://github.com/camptocamp/c2cgeoportal/pull/12421)
 ##### 2.6.0.314
