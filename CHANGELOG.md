@@ -1,3 +1,7 @@
+##### 2.9.0.345
+
+- Update dependency certifi to v2025.11.12 (2.9) [c2cgeoportal#12453](https://github.com/camptocamp/c2cgeoportal/pull/12453)
+
 ##### 2.9.0.344
 
 - Update dependency setuptools to v78 [SECURITY] (2.9) [c2cgeoportal#12439](https://github.com/camptocamp/c2cgeoportal/pull/12439)
