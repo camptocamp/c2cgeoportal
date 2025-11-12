@@ -1,3 +1,7 @@
+##### 2.8.1.265
+
+- Update dependency certifi to v2025.11.12 (2.8) [c2cgeoportal#12452](https://github.com/camptocamp/c2cgeoportal/pull/12452)
+
 ##### 2.8.1.264
 
 - [Backport 2.8] Fix typo in C2C_AUTH_GITHUB_PROXY_URL [c2cgeoportal#12404](https://github.com/camptocamp/c2cgeoportal/pull/12404)
