@@ -1,3 +1,7 @@
+##### 2.8.1.266
+
+- Audit Snyk check/fix 2.8 [c2cgeoportal#12457](https://github.com/camptocamp/c2cgeoportal/pull/12457)
+
 ##### 2.8.1.265
 
 - Update dependency certifi to v2025.11.12 (2.8) [c2cgeoportal#12452](https://github.com/camptocamp/c2cgeoportal/pull/12452)
