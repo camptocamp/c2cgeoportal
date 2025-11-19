@@ -1,3 +1,7 @@
+##### 2.9.0.348
+
+- Audit Dpkg 2.9 [c2cgeoportal#12460](https://github.com/camptocamp/c2cgeoportal/pull/12460)
+
 ##### 2.9.0.346
 
 - Audit Dpkg 2.9 [c2cgeoportal#12454](https://github.com/camptocamp/c2cgeoportal/pull/12454)
