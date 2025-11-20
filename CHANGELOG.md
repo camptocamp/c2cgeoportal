@@ -1,3 +1,7 @@
+##### 2.9.0.349
+
+- Add WebP option in admin interface [c2cgeoportal#12461](https://github.com/camptocamp/c2cgeoportal/pull/12461)
+
 ##### 2.9.0.348
 
 - Audit Dpkg 2.9 [c2cgeoportal#12460](https://github.com/camptocamp/c2cgeoportal/pull/12460)
