@@ -671,12 +671,14 @@ class Layer(TreeItem):
         info={
             "colanderalchemy": {
                 "title": _("Exclude properties"),
-                "description": _(
-                    """
+                "description": c2cgeoportal_commons.lib.literal.Literal(
+                    _(
+                        """
                     The list of attributes (database columns) that should not appear in
                     the editing form so that they cannot be modified by the end user.
-                    For enumerable attributes (foreign key), the column name should end with '_id'.
+                    For enumerable attributes (foreign key), the column name should end with <code>_id</code>.
                     """
+                    )
                 ),
                 "missing": "",
             }
@@ -709,7 +711,7 @@ OGCSERVER_AUTH_GEOSERVER: OGCServerAuth = "Geoserver auth"
 OGCSERVER_AUTH_PROXY: OGCServerAuth = "Proxy"
 
 
-ImageType = Literal["image/jpeg", "image/png"]
+ImageType = Literal["image/jpeg", "image/png", "image/webp"]
 TimeMode = Literal["disabled", "value", "range"]
 TimeWidget = Literal["slider", "datepicker"]
 
@@ -747,10 +749,12 @@ class OGCServer(Base):  # type: ignore
         info={
             "colanderalchemy": {
                 "title": _("Name"),
-                "description": _(
-                    "The name of the OGC Server should contain only unaccentuated letters, numbers and _. "
-                    "When you rename it, do not forget to update the <code>ogcServer<code> metadata on the "
-                    "WMTS and COG layers."
+                "description": c2cgeoportal_commons.lib.literal.Literal(
+                    _(
+                        "The name of the OGC Server should contain only unaccentuated letters, numbers and _. "
+                        "When you rename it, do not forget to update the <code>ogcServer</code> metadata on the "
+                        "WMTS and COG layers."
+                    )
                 ),
             }
         },
@@ -779,7 +783,9 @@ class OGCServer(Base):  # type: ignore
         info={
             "colanderalchemy": {
                 "title": _("WFS URL"),
-                "description": _("The WFS server URL. If empty, the ``Basic URL`` is used."),
+                "description": c2cgeoportal_commons.lib.literal.Literal(
+                    _("The WFS server URL. If empty, the <code>Basic URL</code> is used.")
+                ),
             }
         },
     )
@@ -802,7 +808,11 @@ class OGCServer(Base):  # type: ignore
         info={
             "colanderalchemy": {
                 "title": _("Image type"),
-                "description": _("The MIME type of the images (e.g.: ``image/png``)."),
+                "description": c2cgeoportal_commons.lib.literal.Literal(
+                    _(
+                        "The MIME type of the images (e.g.: <code>image/png</code>, <code>image/webp</code> is experimental)."
+                    )
+                ),
                 "widget": SelectWidget(values=list((e, e) for e in get_args(ImageType))),
                 "column": 2,
             }
@@ -1164,7 +1174,7 @@ class LayerWMTS(DimensionLayer):
                 "description": c2cgeoportal_commons.lib.literal.Literal(
                     _(
                         """
-                        The MIME type of the images (e.g.: <code>image/png</code>).
+                        The MIME type of the images (e.g.: <code>image/png</code>, <code>image/webp</code> is experimental).
                         """
                     )
                 ),
