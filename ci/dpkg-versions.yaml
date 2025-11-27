@@ -351,10 +351,10 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libpulse0: 1:15.99.1+dfsg1-1ubuntu2.2
   ubuntu_22_04/libpython3-dev: 3.10.6-1~22.04.1
   ubuntu_22_04/libpython3-stdlib: 3.10.6-1~22.04.1
-  ubuntu_22_04/libpython3.10: 3.10.12-1~22.04.11
-  ubuntu_22_04/libpython3.10-dev: 3.10.12-1~22.04.11
-  ubuntu_22_04/libpython3.10-minimal: 3.10.12-1~22.04.11
-  ubuntu_22_04/libpython3.10-stdlib: 3.10.12-1~22.04.11
+  ubuntu_22_04/libpython3.10: 3.10.12-1~22.04.12
+  ubuntu_22_04/libpython3.10-dev: 3.10.12-1~22.04.12
+  ubuntu_22_04/libpython3.10-minimal: 3.10.12-1~22.04.12
+  ubuntu_22_04/libpython3.10-stdlib: 3.10.12-1~22.04.12
   ubuntu_22_04/libqca-qt5-2: 2.3.4-1build1
   ubuntu_22_04/libqca-qt5-2-plugins: 2.3.4-1build1
   ubuntu_22_04/libqhull-r8.0: 2020.2-4
@@ -529,10 +529,10 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/python3-setuptools-whl: 59.6.0-1.2ubuntu0.22.04.3
   ubuntu_22_04/python3-venv: 3.10.6-1~22.04.1
   ubuntu_22_04/python3-wheel: 0.37.1-2ubuntu0.22.04.1
-  ubuntu_22_04/python3.10: 3.10.12-1~22.04.11
-  ubuntu_22_04/python3.10-dev: 3.10.12-1~22.04.11
-  ubuntu_22_04/python3.10-minimal: 3.10.12-1~22.04.11
-  ubuntu_22_04/python3.10-venv: 3.10.12-1~22.04.11
+  ubuntu_22_04/python3.10: 3.10.12-1~22.04.12
+  ubuntu_22_04/python3.10-dev: 3.10.12-1~22.04.12
+  ubuntu_22_04/python3.10-minimal: 3.10.12-1~22.04.12
+  ubuntu_22_04/python3.10-venv: 3.10.12-1~22.04.12
   ubuntu_22_04/readline-common: 8.1.2-1
   ubuntu_22_04/rpcsvc-proto: 1.4.2-0ubuntu6
   ubuntu_22_04/sed: 4.8-1ubuntu2
@@ -798,10 +798,10 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libpulse0: 1:15.99.1+dfsg1-1ubuntu2.2
   ubuntu_22_04/libpython3-dev: 3.10.6-1~22.04.1
   ubuntu_22_04/libpython3-stdlib: 3.10.6-1~22.04.1
-  ubuntu_22_04/libpython3.10: 3.10.12-1~22.04.11
-  ubuntu_22_04/libpython3.10-dev: 3.10.12-1~22.04.11
-  ubuntu_22_04/libpython3.10-minimal: 3.10.12-1~22.04.11
-  ubuntu_22_04/libpython3.10-stdlib: 3.10.12-1~22.04.11
+  ubuntu_22_04/libpython3.10: 3.10.12-1~22.04.12
+  ubuntu_22_04/libpython3.10-dev: 3.10.12-1~22.04.12
+  ubuntu_22_04/libpython3.10-minimal: 3.10.12-1~22.04.12
+  ubuntu_22_04/libpython3.10-stdlib: 3.10.12-1~22.04.12
   ubuntu_22_04/libqca-qt5-2: 2.3.4-1build1
   ubuntu_22_04/libqca-qt5-2-plugins: 2.3.4-1build1
   ubuntu_22_04/libqhull-r8.0: 2020.2-4
@@ -976,10 +976,10 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/python3-setuptools-whl: 59.6.0-1.2ubuntu0.22.04.3
   ubuntu_22_04/python3-venv: 3.10.6-1~22.04.1
   ubuntu_22_04/python3-wheel: 0.37.1-2ubuntu0.22.04.1
-  ubuntu_22_04/python3.10: 3.10.12-1~22.04.11
-  ubuntu_22_04/python3.10-dev: 3.10.12-1~22.04.11
-  ubuntu_22_04/python3.10-minimal: 3.10.12-1~22.04.11
-  ubuntu_22_04/python3.10-venv: 3.10.12-1~22.04.11
+  ubuntu_22_04/python3.10: 3.10.12-1~22.04.12
+  ubuntu_22_04/python3.10-dev: 3.10.12-1~22.04.12
+  ubuntu_22_04/python3.10-minimal: 3.10.12-1~22.04.12
+  ubuntu_22_04/python3.10-venv: 3.10.12-1~22.04.12
   ubuntu_22_04/readline-common: 8.1.2-1
   ubuntu_22_04/rpcsvc-proto: 1.4.2-0ubuntu6
   ubuntu_22_04/sed: 4.8-1ubuntu2
