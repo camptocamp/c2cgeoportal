@@ -103,7 +103,7 @@ mapbox-vector-tile = "2.1.0"
 responses = "0.25.8"
 waitress = "3.0.2"
 # Used on upgrade
-pre-commit = "4.3.0"
-prek = "0.2.13"
+pre-commit = "4.5.0"
+prek = "0.2.18"
 # To be able to upgrade project from version <= 2.8
 c2cciutils = { version = "1.5.16", extras = ["checks"] }
