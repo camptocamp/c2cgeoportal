@@ -13,10 +13,10 @@ c2cwsgiutils = { extras = ["broadcast"], version = "6.1.8" }
 papyrus = "2.6.2" # commons
 transaction = "5.0" # commons
 "c2c.template" = "2.4.2"
-GeoAlchemy2 = "0.18.0"
+GeoAlchemy2 = "0.18.1"
 SQLAlchemy = "2.0.44" # commons
 "zope.event" = "6.1" # commons
-"zope.sqlalchemy" = "4.0" # commons
+"zope.sqlalchemy" = "4.1" # commons
 shapely = "2.1.2"
 cee-syslog-handler = "0.6.0"
 psycopg2 = "2.9.11"
