@@ -398,14 +398,14 @@ tqdm = ["tqdm"]
 
 [[package]]
 name = "geoalchemy2"
-version = "0.18.0"
+version = "0.18.1"
 description = "Using SQLAlchemy with Spatial Databases"
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "geoalchemy2-0.18.0-py3-none-any.whl", hash = "sha256:ff0fe7339ba535c50845a2c7e8817a20c164364128991d795733b3c5904b1ee1"},
-    {file = "geoalchemy2-0.18.0.tar.gz", hash = "sha256:9a04690cc33fbc580d15c7c028d9b1b1ea08271489730096c7092e1d486c2b7a"},
+    {file = "geoalchemy2-0.18.1-py3-none-any.whl", hash = "sha256:a49d9559bf7acbb69129a01c6e1861657c15db420886ad0a09b1871fb0ff4bdb"},
+    {file = "geoalchemy2-0.18.1.tar.gz", hash = "sha256:4bdc7daf659e36f6456e2f2c3bcce222b879584921a4f50a803ab05fa2bb3124"},
 ]
 
 [package.dependencies]
@@ -2218,20 +2218,19 @@ testing = ["coverage[toml]", "zope.event", "zope.testing"]
 
 [[package]]
 name = "zope-sqlalchemy"
-version = "4.0"
+version = "4.1"
 description = "Minimal Zope/SQLAlchemy transaction integration"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "zope_sqlalchemy-4.0-py3-none-any.whl", hash = "sha256:3fd2026271056818a04d3320e610525fd4773bc56300158411ed22909c72cd6e"},
-    {file = "zope_sqlalchemy-4.0.tar.gz", hash = "sha256:d4aeb6d06aa7d0855d67fd3434b56674f01307c4cad50105c94bcfe391ee729d"},
+    {file = "zope_sqlalchemy-4.1-py3-none-any.whl", hash = "sha256:24c18895af4b962c0b214d84fbdf548df4ac504c9eb437b30d9bff25af0ae072"},
+    {file = "zope_sqlalchemy-4.1.tar.gz", hash = "sha256:1912525fa0b2b6ff0c3cab46aab59fed45302d4de4e4b03e0d11386e770f4531"},
 ]
 
 [package.dependencies]
 packaging = "*"
-setuptools = "*"
-SQLAlchemy = ">=1.1,<1.4.0 || >1.4.0,<1.4.1 || >1.4.1,<1.4.2 || >1.4.2,<1.4.3 || >1.4.3,<1.4.4 || >1.4.4,<1.4.5 || >1.4.5,<1.4.6 || >1.4.6,<2.0.32 || >2.0.32,<2.0.33 || >2.0.33,<2.0.34 || >2.0.34,<2.0.35 || >2.0.35"
+SQLAlchemy = ">=1.2,<1.4.0 || >1.4.0,<1.4.1 || >1.4.1,<1.4.2 || >1.4.2,<1.4.3 || >1.4.3,<1.4.4 || >1.4.4,<1.4.5 || >1.4.5,<1.4.6 || >1.4.6,<2.0.32 || >2.0.32,<2.0.33 || >2.0.33,<2.0.34 || >2.0.34,<2.0.35 || >2.0.35"
 transaction = ">=1.6.0"
 "zope.interface" = ">=3.6.0"
 
@@ -2241,4 +2240,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.13"
-content-hash = "0edffe2dffc3dc394c4d3e99442012a21a4db5cebd1572fd1aa667b4ef01ded4"
+content-hash = "c9dd8135973b140c5191b4de84087e72e4a10a9126e1e0ccc00918dffc2efad7"
