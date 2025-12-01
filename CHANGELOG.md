@@ -1,3 +1,9 @@
+##### 2.8.1.267
+
+- Update dependency @sentry/browser to v7.119.1 [SECURITY] (2.8) [ngeo#9967](https://github.com/camptocamp/ngeo/pull/9967)
+- Update dependency urllib3 to v2 [SECURITY] (2.8) [ngeo#9968](https://github.com/camptocamp/ngeo/pull/9968)
+- Update dependency webpack-dev-server to v5 [SECURITY] (2.8) [ngeo#9969](https://github.com/camptocamp/ngeo/pull/9969)
+
 ##### 2.8.1.266
 
 - Audit Snyk check/fix 2.8 [c2cgeoportal#12457](https://github.com/camptocamp/c2cgeoportal/pull/12457)
