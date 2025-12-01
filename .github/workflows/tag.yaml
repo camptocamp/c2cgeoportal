@@ -16,12 +16,12 @@ jobs:
     if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - run: scripts/get-main-version --github
         id: main-version
 
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           ref: ${{ steps.main-version.outputs.main_branch }}
 
