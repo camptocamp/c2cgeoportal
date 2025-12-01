@@ -2843,6 +2843,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/libsystemd-shared: 255.4-1ubuntu8.4
   ubuntu_24_04/libsystemd0: 255.4-1ubuntu8.4
   ubuntu_24_04/libtasn1-6: 4.19.0-3build1
+  ubuntu_24_04/libtcmalloc-minimal4t64: 2.15-3build1
   ubuntu_24_04/libthai-data: 0.1.29-2build1
   ubuntu_24_04/libthai0: 0.1.29-2build1
   ubuntu_24_04/libtiff6: 4.5.1+git230720-4ubuntu2.2
@@ -3567,6 +3568,7 @@ camptocamp/geomapfish:latest:
   ubuntu_24_04/libsystemd-shared: 255.4-1ubuntu8.4
   ubuntu_24_04/libsystemd0: 255.4-1ubuntu8.4
   ubuntu_24_04/libtasn1-6: 4.19.0-3build1
+  ubuntu_24_04/libtcmalloc-minimal4t64: 2.15-3build1
   ubuntu_24_04/libthai-data: 0.1.29-2build1
   ubuntu_24_04/libthai0: 0.1.29-2build1
   ubuntu_24_04/libtiff6: 4.5.1+git230720-4ubuntu2.2
@@ -4266,6 +4268,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_24_04/libsystemd-shared: 255.4-1ubuntu8.4
   ubuntu_24_04/libsystemd0: 255.4-1ubuntu8.4
   ubuntu_24_04/libtasn1-6: 4.19.0-3build1
+  ubuntu_24_04/libtcmalloc-minimal4t64: 2.15-3build1
   ubuntu_24_04/libthai-data: 0.1.29-2build1
   ubuntu_24_04/libthai0: 0.1.29-2build1
   ubuntu_24_04/libtiff6: 4.5.1+git230720-4ubuntu2.2
