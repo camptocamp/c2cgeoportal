@@ -1,3 +1,7 @@
+##### 2.8.1.268
+
+- Update dependency pre-commit to v4.5.0 (2.8) [c2cgeoportal#12474](https://github.com/camptocamp/c2cgeoportal/pull/12474)
+
 ##### 2.8.1.267
 
 - Update dependency @sentry/browser to v7.119.1 [SECURITY] (2.8) [ngeo#9967](https://github.com/camptocamp/ngeo/pull/9967)
