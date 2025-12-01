@@ -10,7 +10,7 @@ alabaster = "1.0.0" # theme
 Pygments = "2.19.2"
 Sphinx = "8.2.3"
 sphinx-prompt = "1.10.2"
-sphinx-jsonschema = "1.19.1"
+sphinx-jsonschema = "1.19.2"
 sphinx-argparse = "0.5.2"
 Sphinx-Substitution-Extensions = { extras = ["prompt"], version = "2025.11.17" }
 sphinxcontrib-mermaid = "1.2.3"

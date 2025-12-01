@@ -3172,13 +3172,13 @@ test = ["coverage (>=6.5)", "lxml (>=4.9)", "pytest (>=8.0)", "setuptools (>=70.
 
 [[package]]
 name = "sphinx-jsonschema"
-version = "1.19.1"
+version = "1.19.2"
 description = "Sphinx extension to display JSON Schema"
 optional = false
 python-versions = "*"
 groups = ["main"]
 files = [
-    {file = "sphinx-jsonschema-1.19.1.tar.gz", hash = "sha256:b2385fe1c7acf2e759152aefed0cb17c920645b2a75c9934000c9c528e7d53c1"},
+    {file = "sphinx_jsonschema-1.19.2.tar.gz", hash = "sha256:1a48954217c2b3c6759c89b9ddd2c8e5b668b8730564e0283b009f23932be150"},
 ]
 
 [package.dependencies]
@@ -3998,4 +3998,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<3.13"
-content-hash = "47ee769e7c28b842a02e3238abaa85630547ca7e491708af19b38f265c8a7ebd"
+content-hash = "c17c65f9da65adfdc16ed827dc1a86d6ef15d57f3d7ddc03c35f7aaa81e3732b"
