@@ -60,6 +60,7 @@ repos:
     rev: v2.4.1
     hooks:
       - id: codespell
+        language_version: '3.14'
         exclude: |-
           (?x)^(
             (.*/)?package-lock\.json$
@@ -177,6 +178,6 @@ repos:
     hooks:
       - id: renovate-config-validator
   - repo: https://github.com/sbrunner/python-versions-hook
-    rev: 1.3.0
+    rev: 1.1.2
     hooks:
       - id: python-versions
