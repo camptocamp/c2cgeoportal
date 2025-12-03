@@ -342,7 +342,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libpixman-1-0: 0.40.0-1ubuntu0.22.04.1
   ubuntu_22_04/libpng16-16: 1.6.37-3build5
   ubuntu_22_04/libpoppler118: 22.02.0-2ubuntu0.12
-  ubuntu_22_04/libpq5: 14.19-0ubuntu0.22.04.1
+  ubuntu_22_04/libpq5: 14.20-0ubuntu0.22.04.1
   ubuntu_22_04/libprocps8: 2:3.3.17-6ubuntu2.1
   ubuntu_22_04/libproj22: 8.2.1-1
   ubuntu_22_04/libprotobuf-lite23: 3.12.4-1ubuntu7.22.04.4
@@ -488,7 +488,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libxxhash0: 0.8.1-1
   ubuntu_22_04/libzip4: 1.7.3-1ubuntu2
   ubuntu_22_04/libzstd1: 1.4.8+dfsg-3build1
-  ubuntu_22_04/linux-libc-dev: 5.15.0-161.171
+  ubuntu_22_04/linux-libc-dev: 5.15.0-163.173
   ubuntu_22_04/login: 1:4.8.1-2ubuntu2.2
   ubuntu_22_04/logsave: 1.46.5-2ubuntu1.2
   ubuntu_22_04/lsb-base: 11.1.0ubuntu4
@@ -789,7 +789,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libpixman-1-0: 0.40.0-1ubuntu0.22.04.1
   ubuntu_22_04/libpng16-16: 1.6.37-3build5
   ubuntu_22_04/libpoppler118: 22.02.0-2ubuntu0.12
-  ubuntu_22_04/libpq5: 14.19-0ubuntu0.22.04.1
+  ubuntu_22_04/libpq5: 14.20-0ubuntu0.22.04.1
   ubuntu_22_04/libprocps8: 2:3.3.17-6ubuntu2.1
   ubuntu_22_04/libproj22: 8.2.1-1
   ubuntu_22_04/libprotobuf-lite23: 3.12.4-1ubuntu7.22.04.4
@@ -935,7 +935,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libxxhash0: 0.8.1-1
   ubuntu_22_04/libzip4: 1.7.3-1ubuntu2
   ubuntu_22_04/libzstd1: 1.4.8+dfsg-3build1
-  ubuntu_22_04/linux-libc-dev: 5.15.0-161.171
+  ubuntu_22_04/linux-libc-dev: 5.15.0-163.173
   ubuntu_22_04/login: 1:4.8.1-2ubuntu2.2
   ubuntu_22_04/logsave: 1.46.5-2ubuntu1.2
   ubuntu_22_04/lsb-base: 11.1.0ubuntu4
@@ -1206,7 +1206,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40:
   ubuntu_24_04/libperl5.38t64: 5.38.2-3.2ubuntu0.2
   ubuntu_24_04/libpixman-1-0: 0.42.2-1build1
   ubuntu_24_04/libpng16-16t64: 1.6.43-5build1
-  ubuntu_24_04/libpq5: 16.10-0ubuntu0.24.04.1
+  ubuntu_24_04/libpq5: 16.11-0ubuntu0.24.04.1
   ubuntu_24_04/libproc2-0: 2:4.0.4-4ubuntu3.2
   ubuntu_24_04/libproj25: 9.4.0-1build2
   ubuntu_24_04/libprotobuf-lite32t64: 3.21.12-8.2ubuntu0.2
@@ -1612,7 +1612,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40-gdal3.10:
   ubuntu_24_04/libperl5.38t64: 5.38.2-3.2ubuntu0.2
   ubuntu_24_04/libpixman-1-0: 0.42.2-1build1
   ubuntu_24_04/libpng16-16t64: 1.6.43-5build1
-  ubuntu_24_04/libpq5: 16.10-0ubuntu0.24.04.1
+  ubuntu_24_04/libpq5: 16.11-0ubuntu0.24.04.1
   ubuntu_24_04/libproc2-0: 2:4.0.4-4ubuntu3.2
   ubuntu_24_04/libproj25: 9.4.0-1build2
   ubuntu_24_04/libprotobuf-lite32t64: 3.21.12-8.2ubuntu0.2
@@ -2016,7 +2016,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_24_04/libperl5.38t64: 5.38.2-3.2ubuntu0.2
   ubuntu_24_04/libpixman-1-0: 0.42.2-1build1
   ubuntu_24_04/libpng16-16t64: 1.6.43-5build1
-  ubuntu_24_04/libpq5: 16.10-0ubuntu0.24.04.1
+  ubuntu_24_04/libpq5: 16.11-0ubuntu0.24.04.1
   ubuntu_24_04/libproc2-0: 2:4.0.4-4ubuntu3.2
   ubuntu_24_04/libproj25: 9.4.0-1build2
   ubuntu_24_04/libprotobuf-lite32t64: 3.21.12-8.2ubuntu0.2
@@ -2421,7 +2421,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_24_04/libperl5.38t64: 5.38.2-3.2ubuntu0.2
   ubuntu_24_04/libpixman-1-0: 0.42.2-1build1
   ubuntu_24_04/libpng16-16t64: 1.6.43-5build1
-  ubuntu_24_04/libpq5: 16.10-0ubuntu0.24.04.1
+  ubuntu_24_04/libpq5: 16.11-0ubuntu0.24.04.1
   ubuntu_24_04/libproc2-0: 2:4.0.4-4ubuntu3.2
   ubuntu_24_04/libproj25: 9.4.0-1build2
   ubuntu_24_04/libprotobuf-lite32t64: 3.21.12-8.2ubuntu0.2
@@ -2826,7 +2826,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/libperl5.38t64: 5.38.2-3.2ubuntu0.2
   ubuntu_24_04/libpixman-1-0: 0.42.2-1build1
   ubuntu_24_04/libpng16-16t64: 1.6.43-5build1
-  ubuntu_24_04/libpq5: 16.10-0ubuntu0.24.04.1
+  ubuntu_24_04/libpq5: 16.11-0ubuntu0.24.04.1
   ubuntu_24_04/libproc2-0: 2:4.0.4-4ubuntu3.2
   ubuntu_24_04/libproj25: 9.4.0-1build2
   ubuntu_24_04/libprotobuf-lite32t64: 3.21.12-8.2ubuntu0.2
@@ -3230,7 +3230,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_24_04/libperl5.38t64: 5.38.2-3.2ubuntu0.2
   ubuntu_24_04/libpixman-1-0: 0.42.2-1build1
   ubuntu_24_04/libpng16-16t64: 1.6.43-5build1
-  ubuntu_24_04/libpq5: 16.10-0ubuntu0.24.04.1
+  ubuntu_24_04/libpq5: 16.11-0ubuntu0.24.04.1
   ubuntu_24_04/libproc2-0: 2:4.0.4-4ubuntu3.2
   ubuntu_24_04/libproj25: 9.4.0-1build2
   ubuntu_24_04/libprotobuf-lite32t64: 3.21.12-8.2ubuntu0.2
@@ -4423,7 +4423,7 @@ camptocamp/geomapfish:latest:
   ubuntu_24_04/libpng16-16t64: 1.6.43-5build1
   ubuntu_24_04/libpolkit-agent-1-0: 124-2ubuntu1.24.04.2
   ubuntu_24_04/libpolkit-gobject-1-0: 124-2ubuntu1.24.04.2
-  ubuntu_24_04/libpq5: 16.10-0ubuntu0.24.04.1
+  ubuntu_24_04/libpq5: 16.11-0ubuntu0.24.04.1
   ubuntu_24_04/libproc2-0: 2:4.0.4-4ubuntu3.2
   ubuntu_24_04/libproj25: 9.4.0-1build2
   ubuntu_24_04/libpsl5t64: 0.21.2-1.1build1
@@ -5125,7 +5125,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_24_04/libpng16-16t64: 1.6.43-5build1
   ubuntu_24_04/libpolkit-agent-1-0: 124-2ubuntu1.24.04.2
   ubuntu_24_04/libpolkit-gobject-1-0: 124-2ubuntu1.24.04.2
-  ubuntu_24_04/libpq5: 16.10-0ubuntu0.24.04.1
+  ubuntu_24_04/libpq5: 16.11-0ubuntu0.24.04.1
   ubuntu_24_04/libproc2-0: 2:4.0.4-4ubuntu3.2
   ubuntu_24_04/libproj25: 9.4.0-1build2
   ubuntu_24_04/libpsl5t64: 0.21.2-1.1build1
