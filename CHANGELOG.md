@@ -1,3 +1,7 @@
+##### 2.7.1.229
+
+- Update dependency pre-commit to v4.5.0 (2.7) [ngeo#9981](https://github.com/camptocamp/ngeo/pull/9981)
+
 ##### 2.7.1.228
 
 - Update dependency urllib3 to v2.6.0 [SECURITY] (2.7) [ngeo#9987](https://github.com/camptocamp/ngeo/pull/9987)
