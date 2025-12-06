@@ -15,7 +15,7 @@ jobs:
     timeout-minutes: 10
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       # To publish the images to be used on Kubernetes
       # Requires CI_GPG_PRIVATE_KEY and GOPASS_CI_GITHUB_TOKEN secrets.

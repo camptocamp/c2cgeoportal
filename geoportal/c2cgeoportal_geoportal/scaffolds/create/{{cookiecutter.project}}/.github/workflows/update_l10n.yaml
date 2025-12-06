@@ -21,7 +21,7 @@ jobs:
             base_url: prod.customer.ch
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           ref: ${{'{{'}} matrix.branch {{'}}'}}
           token: ${{'{{'}} secrets.GOPASS_CI_GITHUB_TOKEN {{'}}'}}
