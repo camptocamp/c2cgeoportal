@@ -19,7 +19,7 @@ jobs:
           - prod-{{cookiecutter.geomapfish_main_version_dash}}
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           ref: ${{'{{'}} matrix.branch }}
 
