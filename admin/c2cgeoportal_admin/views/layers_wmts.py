@@ -99,11 +99,11 @@ class LayerWmtsViews(DimensionLayerViews[LayerWMTS]):
         del query
         return self._base_query()
 
-    @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")  # type: ignore[misc]
+    @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")  # type: ignore[untyped-decorator]
     def index(self) -> IndexResponse[LayerWMTS]:
         return super().index()
 
-    @view_config(route_name="c2cgeoform_grid", renderer="fast_json")  # type: ignore[misc]
+    @view_config(route_name="c2cgeoform_grid", renderer="fast_json")  # type: ignore[untyped-decorator]
     def grid(self) -> GridResponse:
         return super().grid()
 
@@ -123,7 +123,7 @@ class LayerWmtsViews(DimensionLayerViews[LayerWMTS]):
             )
         return actions
 
-    @view_config(  # type: ignore[misc]
+    @view_config(  # type: ignore[untyped-decorator]
         route_name="c2cgeoform_item",
         request_method="GET",
         renderer="../templates/edit.jinja2",
@@ -136,7 +136,7 @@ class LayerWmtsViews(DimensionLayerViews[LayerWMTS]):
                 return self.copy(default_wmts, excludes=["name", "layer"])
         return super().edit()
 
-    @view_config(  # type: ignore[misc]
+    @view_config(  # type: ignore[untyped-decorator]
         route_name="c2cgeoform_item",
         request_method="POST",
         renderer="../templates/edit.jinja2",
@@ -144,11 +144,11 @@ class LayerWmtsViews(DimensionLayerViews[LayerWMTS]):
     def save(self) -> SaveResponse:
         return super().save()
 
-    @view_config(route_name="c2cgeoform_item", request_method="DELETE", renderer="fast_json")  # type: ignore[misc]
+    @view_config(route_name="c2cgeoform_item", request_method="DELETE", renderer="fast_json")  # type: ignore[untyped-decorator]
     def delete(self) -> DeleteResponse:
         return super().delete()
 
-    @view_config(  # type: ignore[misc]
+    @view_config(  # type: ignore[untyped-decorator]
         route_name="c2cgeoform_item_duplicate",
         request_method="GET",
         renderer="../templates/edit.jinja2",
@@ -156,7 +156,7 @@ class LayerWmtsViews(DimensionLayerViews[LayerWMTS]):
     def duplicate(self) -> ObjectResponse:
         return super().duplicate()
 
-    @view_config(route_name="convert_to_wms", request_method="POST", renderer="fast_json")  # type: ignore[misc]
+    @view_config(route_name="convert_to_wms", request_method="POST", renderer="fast_json")  # type: ignore[untyped-decorator]
     def convert_to_wms(self) -> JSONDict:
         src = self._get_object()
         dbsession = self._request.dbsession

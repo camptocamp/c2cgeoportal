@@ -887,7 +887,7 @@ class Theme:
                 result[functionality.name] = [functionality.value]
         return result
 
-    @view_config(route_name="invalidate", renderer="json")  # type: ignore[misc]
+    @view_config(route_name="invalidate", renderer="json")  # type: ignore[untyped-decorator]
     def invalidate_cache(self) -> dict[str, bool]:
         auth_view(self.request)
         models.cache_invalidate_cb()
@@ -1220,7 +1220,7 @@ class Theme:
             ogc_server.name,
         )
 
-    @view_config(route_name="themes", renderer="json")  # type: ignore[misc]
+    @view_config(route_name="themes", renderer="json")  # type: ignore[untyped-decorator]
     def themes(self) -> dict[str, dict[str, dict[str, Any]] | list[str]]:
         is_allowed_host(self.request)
 
@@ -1399,7 +1399,7 @@ class Theme:
                 },
             )
 
-    @view_config(route_name="ogc_server_clear_cache", renderer="json")  # type: ignore[misc]
+    @view_config(route_name="ogc_server_clear_cache", renderer="json")  # type: ignore[untyped-decorator]
     def ogc_server_clear_cache_view(self) -> dict[str, Any]:
         assert models.DBSession is not None
 

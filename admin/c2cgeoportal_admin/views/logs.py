@@ -64,11 +64,11 @@ class LogViews(AbstractViews[AbstractLog]):
     _id_field = "id"
     _model = AbstractLog
 
-    @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")  # type: ignore[misc]
+    @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")  # type: ignore[untyped-decorator]
     def index(self) -> IndexResponse[AbstractLog]:
         return super().index()
 
-    @view_config(route_name="c2cgeoform_grid", renderer="fast_json")  # type: ignore[misc]
+    @view_config(route_name="c2cgeoform_grid", renderer="fast_json")  # type: ignore[untyped-decorator]
     def grid(self) -> GridResponse:
         return super().grid()
 

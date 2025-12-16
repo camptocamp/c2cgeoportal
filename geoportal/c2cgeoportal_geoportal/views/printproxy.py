@@ -53,7 +53,7 @@ class PrintProxy(Proxy):
     def __init__(self, request: pyramid.request.Request) -> None:
         Proxy.__init__(self, request)
 
-    @view_config(route_name="printproxy_capabilities")  # type: ignore[misc]
+    @view_config(route_name="printproxy_capabilities")  # type: ignore[untyped-decorator]
     def capabilities(self) -> pyramid.response.Response:
         """Get print capabilities."""
         templates = get_functionality("print_template", self.request, is_intranet(self.request))
@@ -117,7 +117,7 @@ class PrintProxy(Proxy):
 
         return response, content
 
-    @view_config(route_name="printproxy_report_create")  # type: ignore[misc]
+    @view_config(route_name="printproxy_report_create")  # type: ignore[untyped-decorator]
     def report_create(self) -> pyramid.response.Response:
         """Create PDF."""
         return self._proxy_response(
@@ -125,7 +125,7 @@ class PrintProxy(Proxy):
             Url(f"{self.request.get_organization_print_url()}/report.{self.request.matchdict.get('format')}"),
         )
 
-    @view_config(route_name="printproxy_status")  # type: ignore[misc]
+    @view_config(route_name="printproxy_status")  # type: ignore[untyped-decorator]
     def status(self) -> pyramid.response.Response:
         """PDF status."""
         return self._proxy_response(
@@ -135,7 +135,7 @@ class PrintProxy(Proxy):
             ),
         )
 
-    @view_config(route_name="printproxy_cancel")  # type: ignore[misc]
+    @view_config(route_name="printproxy_cancel")  # type: ignore[untyped-decorator]
     def cancel(self) -> pyramid.response.Response:
         """PDF cancel."""
         return self._proxy_response(
@@ -143,7 +143,7 @@ class PrintProxy(Proxy):
             Url(f"{self.request.get_organization_print_url()}/cancel/{self.request.matchdict.get('ref')}"),
         )
 
-    @view_config(route_name="printproxy_report_get")  # type: ignore[misc]
+    @view_config(route_name="printproxy_report_get")  # type: ignore[untyped-decorator]
     def report_get(self) -> pyramid.response.Response:
         """Get the PDF."""
         url = Url(f"{self.request.get_organization_print_url()}/report/{self.request.matchdict.get('ref')}")

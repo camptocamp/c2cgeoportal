@@ -124,7 +124,7 @@ class DynamicView:
 
         return constants
 
-    @view_config(route_name="dynamic", renderer="json")  # type: ignore[misc]
+    @view_config(route_name="dynamic", renderer="json")  # type: ignore[untyped-decorator]
     def dynamic(self) -> dict[str, Any]:
         is_allowed_host(self.request)
         self.request.response.headers["Vary"] = "Host"

@@ -49,7 +49,7 @@ class ThemeOrderSchema(GeoFormSchemaNode):  # pylint: disable=abstract-method
         return super().objectify(dict_, context)
 
 
-@colander.deferred  # type: ignore[misc]
+@colander.deferred  # type: ignore[untyped-decorator]
 def themes(node: Any, kw: Any) -> list[dict[str, Any]]:  # pylint: disable=unused-argument
     """Get some theme metadata."""
     del node  # unused
@@ -98,7 +98,7 @@ class ThemesOrdering(AbstractViews[ThemesOrderingSchema]):
 
     _base_schema = ThemesOrderingSchema()
 
-    @view_config(route_name="layertree_ordering", request_method="GET", renderer="../templates/edit.jinja2")  # type: ignore[misc]
+    @view_config(route_name="layertree_ordering", request_method="GET", renderer="../templates/edit.jinja2")  # type: ignore[untyped-decorator]
     def view(self) -> ObjectResponse:
         form = self._form()
         dict_ = {
@@ -115,7 +115,7 @@ class ThemesOrdering(AbstractViews[ThemesOrderingSchema]):
             "deform_dependencies": form.get_widget_resources(),
         }
 
-    @view_config(route_name="layertree_ordering", request_method="POST", renderer="../templates/edit.jinja2")  # type: ignore[misc]
+    @view_config(route_name="layertree_ordering", request_method="POST", renderer="../templates/edit.jinja2")  # type: ignore[untyped-decorator]
     def save(self) -> SaveResponse:
         try:
             form = self._form()

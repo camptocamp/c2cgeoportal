@@ -103,19 +103,19 @@ class UserViews(LoggedViews[User]):
             .options(subqueryload(User.roles))
         )
 
-    @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")  # type: ignore[misc]
+    @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")  # type: ignore[untyped-decorator]
     def index(self) -> IndexResponse[User]:
         return super().index()
 
-    @view_config(route_name="c2cgeoform_grid", renderer="fast_json")  # type: ignore[misc]
+    @view_config(route_name="c2cgeoform_grid", renderer="fast_json")  # type: ignore[untyped-decorator]
     def grid(self) -> GridResponse:
         return super().grid()
 
-    @view_config(route_name="c2cgeoform_item", request_method="GET", renderer="../templates/edit.jinja2")  # type: ignore[misc]
+    @view_config(route_name="c2cgeoform_item", request_method="GET", renderer="../templates/edit.jinja2")  # type: ignore[untyped-decorator]
     def view(self) -> ObjectResponse:
         return super().edit()
 
-    @view_config(route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2")  # type: ignore[misc]
+    @view_config(route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2")  # type: ignore[untyped-decorator]
     def save(self) -> SaveResponse:
         if self._is_new():
             response = super().save()
@@ -145,11 +145,11 @@ class UserViews(LoggedViews[User]):
 
         return super().save()
 
-    @view_config(route_name="c2cgeoform_item", request_method="DELETE", renderer="fast_json")  # type: ignore[misc]
+    @view_config(route_name="c2cgeoform_item", request_method="DELETE", renderer="fast_json")  # type: ignore[untyped-decorator]
     def delete(self) -> DeleteResponse:
         return super().delete()
 
-    @view_config(  # type: ignore[misc]
+    @view_config(  # type: ignore[untyped-decorator]
         route_name="c2cgeoform_item_duplicate",
         request_method="GET",
         renderer="../templates/edit.jinja2",

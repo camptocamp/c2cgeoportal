@@ -62,7 +62,7 @@ class Raster:
         self.request = request
         self.rasters = self.request.registry.settings["raster"]
 
-        @zope.event.classhandler.handler(InvalidateCacheEvent)  # type: ignore[misc]
+        @zope.event.classhandler.handler(InvalidateCacheEvent)  # type: ignore[untyped-decorator]
         def handle(event: InvalidateCacheEvent) -> None:
             del event
             for v in Raster.data.values():
@@ -84,7 +84,7 @@ class Raster:
             )
         return result
 
-    @view_config(route_name="raster", renderer="fast_json")  # type: ignore[misc]
+    @view_config(route_name="raster", renderer="fast_json")  # type: ignore[untyped-decorator]
     def raster(self) -> dict[str, Any]:
         lon = self._get_required_finite_float_param("lon")
         lat = self._get_required_finite_float_param("lat")

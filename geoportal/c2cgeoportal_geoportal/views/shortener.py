@@ -74,19 +74,19 @@ class Shortener:
 
         return short_urls[0].url
 
-    @view_config(route_name="shortener_get")  # type: ignore[misc]
+    @view_config(route_name="shortener_get")  # type: ignore[untyped-decorator]
     def get(self) -> HTTPFound:
         long_url = self._read()
         set_common_headers(self.request, "shortener", Cache.PUBLIC_NO)
         return HTTPFound(location=long_url)
 
-    @view_config(route_name="shortener_fetch", renderer="json")  # type: ignore[misc]
+    @view_config(route_name="shortener_fetch", renderer="json")  # type: ignore[untyped-decorator]
     def fetch(self) -> dict[str, str]:
         long_url = self._read()
         set_common_headers(self.request, "shortener", Cache.PUBLIC_NO)
         return {"long_url": long_url}
 
-    @view_config(route_name="shortener_create", renderer="json")  # type: ignore[misc]
+    @view_config(route_name="shortener_create", renderer="json")  # type: ignore[untyped-decorator]
     def create(self) -> dict[str, str]:
         assert DBSession is not None
 

@@ -25,7 +25,7 @@ class IsAdminPredicate:
         return path.startswith("/admin/") or path == "/admin"
 
 
-@view_config(context=pyramid.httpexceptions.HTTPNotFound, is_admin=True, renderer="../templates/404.jinja2")  # type: ignore[misc]
+@view_config(context=pyramid.httpexceptions.HTTPNotFound, is_admin=True, renderer="../templates/404.jinja2")  # type: ignore[untyped-decorator]
 def _not_found_view(request=pyramid.request.Request) -> dict[str, str]:  # type: ignore[no-untyped-def] # noqa: ANN001
     del request
 

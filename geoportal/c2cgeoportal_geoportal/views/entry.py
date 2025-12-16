@@ -50,7 +50,7 @@ class Entry:
     def __init__(self, request: pyramid.request.Request) -> None:
         self.request = request
 
-    @view_config(route_name="testi18n", renderer="testi18n.html")  # type: ignore[misc]
+    @view_config(route_name="testi18n", renderer="testi18n.html")  # type: ignore[untyped-decorator]
     def testi18n(self) -> dict[str, Any]:
         _ = self.request.translate
         return {"title": _("title i18n")}
@@ -77,7 +77,7 @@ class Entry:
 
         return "\n".join(api)
 
-    @view_config(route_name="apijs")  # type: ignore[misc]
+    @view_config(route_name="apijs")  # type: ignore[untyped-decorator]
     def apijs(self) -> pyramid.response.Response:
         self.request.response.text = self.get_apijs(
             self.request.registry.settings["static_files"]["api.js"],

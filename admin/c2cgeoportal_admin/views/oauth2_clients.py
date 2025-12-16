@@ -69,15 +69,15 @@ class OAuth2ClientViews(LoggedViews[OAuth2Client]):
     def _base_query(self) -> sqlalchemy.orm.query.Query[OAuth2Client]:
         return cast("sqlalchemy.orm.Session", self._request.dbsession).query(OAuth2Client)
 
-    @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")  # type: ignore[misc]
+    @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")  # type: ignore[untyped-decorator]
     def index(self) -> IndexResponse[OAuth2Client]:
         return super().index()
 
-    @view_config(route_name="c2cgeoform_grid", renderer="fast_json")  # type: ignore[misc]
+    @view_config(route_name="c2cgeoform_grid", renderer="fast_json")  # type: ignore[untyped-decorator]
     def grid(self) -> GridResponse:
         return super().grid()
 
-    @view_config(  # type: ignore[misc]
+    @view_config(  # type: ignore[untyped-decorator]
         route_name="c2cgeoform_item",
         request_method="GET",
         renderer="../templates/edit.jinja2",
@@ -85,15 +85,15 @@ class OAuth2ClientViews(LoggedViews[OAuth2Client]):
     def view(self) -> ObjectResponse:
         return super().edit()
 
-    @view_config(route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2")  # type: ignore[misc]
+    @view_config(route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2")  # type: ignore[untyped-decorator]
     def save(self) -> SaveResponse:
         return super().save()
 
-    @view_config(route_name="c2cgeoform_item", request_method="DELETE", renderer="fast_json")  # type: ignore[misc]
+    @view_config(route_name="c2cgeoform_item", request_method="DELETE", renderer="fast_json")  # type: ignore[untyped-decorator]
     def delete(self) -> DeleteResponse:
         return super().delete()
 
-    @view_config(  # type: ignore[misc]
+    @view_config(  # type: ignore[untyped-decorator]
         route_name="c2cgeoform_item_duplicate",
         request_method="GET",
         renderer="../templates/edit.jinja2",
