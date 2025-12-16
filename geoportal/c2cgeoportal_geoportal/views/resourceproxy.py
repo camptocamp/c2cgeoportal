@@ -48,7 +48,7 @@ class ResourceProxy(Proxy):
         self.request = request
         self.settings = request.registry.settings.get("resourceproxy", {})
 
-    @view_config(route_name="resourceproxy")  # type: ignore[misc]
+    @view_config(route_name="resourceproxy")  # type: ignore[untyped-decorator]
     def proxy(self) -> pyramid.response.Response:
         target = self.request.params.get("target", "")
         targets = self.settings.get("targets", [])

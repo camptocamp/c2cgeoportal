@@ -65,7 +65,7 @@ class FullTextSearchView:
 
         return DBSession.query(Interface).filter_by(name=interface).one().id
 
-    @view_config(route_name="fulltextsearch", renderer="geojson")  # type: ignore[misc]
+    @view_config(route_name="fulltextsearch", renderer="geojson")  # type: ignore[untyped-decorator]
     def fulltextsearch(self) -> FeatureCollection:
         assert DBSession is not None
 

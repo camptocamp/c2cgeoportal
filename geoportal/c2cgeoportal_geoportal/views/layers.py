@@ -333,7 +333,7 @@ class Layers:
             raise feature
         return feature
 
-    @view_config(route_name="layers_read_many", renderer="geojson")  # type: ignore[misc]
+    @view_config(route_name="layers_read_many", renderer="geojson")  # type: ignore[untyped-decorator]
     def read_many(self) -> FeatureCollection:
         set_common_headers(self.request, "layers", Cache.PRIVATE_NO)
 
@@ -345,7 +345,7 @@ class Layers:
 
         return FeatureCollection(features)
 
-    @view_config(route_name="layers_read_one", renderer="geojson")  # type: ignore[misc]
+    @view_config(route_name="layers_read_one", renderer="geojson")  # type: ignore[untyped-decorator]
     def read_one(self) -> Feature:
         from c2cgeoportal_commons.models.main import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             Layer,
@@ -386,7 +386,7 @@ class Layers:
 
         return feature
 
-    @view_config(route_name="layers_count", renderer="string")  # type: ignore[misc]
+    @view_config(route_name="layers_count", renderer="string")  # type: ignore[untyped-decorator]
     def count(self) -> int:
         set_common_headers(self.request, "layers", Cache.PRIVATE_NO)
 
@@ -396,7 +396,7 @@ class Layers:
             raise count
         return cast("int", count)
 
-    @view_config(route_name="layers_create", renderer="geojson")  # type: ignore[misc]
+    @view_config(route_name="layers_create", renderer="geojson")  # type: ignore[untyped-decorator]
     def create(self) -> FeatureCollection | None:
         set_common_headers(self.request, "layers", Cache.PRIVATE_NO)
 
@@ -421,7 +421,7 @@ class Layers:
         else:
             return features
 
-    @view_config(route_name="layers_update", renderer="geojson")  # type: ignore[misc]
+    @view_config(route_name="layers_update", renderer="geojson")  # type: ignore[untyped-decorator]
     def update(self) -> Feature:
         set_common_headers(self.request, "layers", Cache.PRIVATE_NO)
 
@@ -475,7 +475,7 @@ class Layers:
             return should_validate.lower() != "false"
         return cast("bool", cls._get_settings(request).get("geometry_validation", False))
 
-    @view_config(route_name="layers_delete")  # type: ignore[misc]
+    @view_config(route_name="layers_delete")  # type: ignore[untyped-decorator]
     def delete(self) -> pyramid.response.Response:
         if self.request.user is None:
             raise HTTPForbidden
@@ -488,7 +488,7 @@ class Layers:
         set_common_headers(self.request, "layers", Cache.PRIVATE_NO, response=response)
         return response
 
-    @view_config(route_name="layers_metadata", renderer="xsd")  # type: ignore[misc]
+    @view_config(route_name="layers_metadata", renderer="xsd")  # type: ignore[untyped-decorator]
     def metadata(self) -> pyramid.response.Response:
         set_common_headers(self.request, "layers", Cache.PRIVATE)
 
@@ -498,7 +498,7 @@ class Layers:
 
         return get_layer_class(layer, with_last_update_columns=True)
 
-    @view_config(route_name="layers_enumerate_attribute_values", renderer="json")  # type: ignore[misc]
+    @view_config(route_name="layers_enumerate_attribute_values", renderer="json")  # type: ignore[untyped-decorator]
     def enumerate_attribute_values(self) -> dict[str, Any]:
         set_common_headers(self.request, "layers", Cache.PUBLIC)
 

@@ -648,7 +648,7 @@ def includeme(config: pyramid.config.Configurator) -> None:
         for name, cache_config in settings["cache"].items():
             caching.init_region(cache_config, name)
 
-        @zope.event.classhandler.handler(InvalidateCacheEvent)  # type: ignore[misc]
+        @zope.event.classhandler.handler(InvalidateCacheEvent)  # type: ignore[untyped-decorator]
         def handle(event: InvalidateCacheEvent) -> None:
             del event
             caching.invalidate_region("ogc-server")
@@ -878,7 +878,7 @@ def includeme(config: pyramid.config.Configurator) -> None:
 
     admin_interface = (
         config.get_settings().get("enable_admin_interface", False)
-        and importlib.util.find_spec("c2cgeoportal_admin") is not None
+        and importlib.util.find_spec("c2cgeoportal_admin") is not None  # type: ignore[attr-defined]
     )
     if admin_interface:
         add_admin_interface(config)

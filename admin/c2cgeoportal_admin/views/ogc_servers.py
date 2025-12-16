@@ -93,11 +93,11 @@ class OGCServerViews(LoggedViews[OGCServer]):
         ),
     }
 
-    @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")  # type: ignore[misc]
+    @view_config(route_name="c2cgeoform_index", renderer="../templates/index.jinja2")  # type: ignore[untyped-decorator]
     def index(self) -> IndexResponse[OGCServer]:
         return super().index()
 
-    @view_config(route_name="c2cgeoform_grid", renderer="fast_json")  # type: ignore[misc]
+    @view_config(route_name="c2cgeoform_grid", renderer="fast_json")  # type: ignore[untyped-decorator]
     def grid(self) -> GridResponse:
         return super().grid()
 
@@ -161,7 +161,7 @@ class OGCServerViews(LoggedViews[OGCServer]):
             )
         return actions
 
-    @view_config(  # type: ignore[misc]
+    @view_config(  # type: ignore[untyped-decorator]
         route_name="c2cgeoform_item",
         request_method="GET",
         renderer="../templates/edit.jinja2",
@@ -169,7 +169,7 @@ class OGCServerViews(LoggedViews[OGCServer]):
     def view(self) -> ObjectResponse:
         return super().edit(self.schema())
 
-    @view_config(  # type: ignore[misc]
+    @view_config(  # type: ignore[untyped-decorator]
         route_name="c2cgeoform_item",
         request_method="POST",
         renderer="../templates/edit.jinja2",
@@ -181,7 +181,7 @@ class OGCServerViews(LoggedViews[OGCServer]):
             self._update_cache(self._obj)
         return result
 
-    @view_config(route_name="c2cgeoform_item", request_method="DELETE", renderer="fast_json")  # type: ignore[misc]
+    @view_config(route_name="c2cgeoform_item", request_method="DELETE", renderer="fast_json")  # type: ignore[untyped-decorator]
     def delete(self) -> DeleteResponse:
         obj = self._get_object()
         if len(obj.layers) > 0:
@@ -198,7 +198,7 @@ class OGCServerViews(LoggedViews[OGCServer]):
         cache_invalidate_cb()
         return result
 
-    @view_config(  # type: ignore[misc]
+    @view_config(  # type: ignore[untyped-decorator]
         route_name="c2cgeoform_item_duplicate",
         request_method="GET",
         renderer="../templates/edit.jinja2",
@@ -206,7 +206,7 @@ class OGCServerViews(LoggedViews[OGCServer]):
     def duplicate(self) -> ObjectResponse:
         return super().duplicate()
 
-    @view_config(  # type: ignore[misc]
+    @view_config(  # type: ignore[untyped-decorator]
         route_name="ogcserver_synchronize",
         renderer="../templates/ogcserver_synchronize.jinja2",
     )

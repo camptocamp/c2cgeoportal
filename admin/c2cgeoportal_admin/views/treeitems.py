@@ -78,7 +78,7 @@ class TreeItemViews(LoggedViews[_T], Generic[_T]):
         *_extra_list_fields_no_parents,
     ]
 
-    @view_config(route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2")  # type: ignore[misc]
+    @view_config(route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2")  # type: ignore[untyped-decorator]
     def save(self) -> SaveResponse:
         response = super().save()
         # correctly handles the validation error as if there is a validation error, cstruct is empty

@@ -378,7 +378,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):  # type: ignore[misc]
             InvalidateCacheEvent,
         )
 
-        @zope.event.classhandler.handler(InvalidateCacheEvent)  # type: ignore[misc]
+        @zope.event.classhandler.handler(InvalidateCacheEvent)  # type: ignore[untyped-decorator]
         def handle(_: InvalidateCacheEvent) -> None:
             _LOG.info("=== invalidate ===")
             self._init(ogcserver_name)
