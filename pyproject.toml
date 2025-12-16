@@ -60,7 +60,7 @@ pygments = "2.15.1"
 cryptography = { version = "46.0.3", optional = true }
 gitpython = "3.1.45"
 pillow = "10.3.0"
-urllib3 = { version = "1.26.20", optional = true }
+urllib3 = { version = "2.6.0", optional = true }
 bandit = { version = "1.7.10", optional = true }
 idna = { version = "3.7", optional = true }
 gunicorn = "22.0.0"
@@ -86,6 +86,6 @@ types-python-dateutil = "2.8.19.20240311"
 types-requests = "2.28.11.17"
 types-setuptools = "67.1.0.2"
 mappyfile = "0.9.7"
-c2cciutils = { version = "1.4.22", extras = ["checks"] }
+c2cciutils = { version = "1.4.24", extras = ["checks"] }
 mapbox-vector-tile = "2.0.1"
 responses = "0.22.0"
