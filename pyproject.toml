@@ -25,7 +25,7 @@ known-first-party = ["c2cgeoportal_commons", "c2cgeoportal_geoportal", "c2cgeopo
 version = "0.0.0"
 
 [tool.poetry.dependencies]
-python = ">=3.12,<4"
+python = ">=3.11,<4"
 alembic = "1.17.2" # geoportal
 "c2c.template" = "2.4.2" # geoportal
 c2cgeoform = "2.5.0" # commons
@@ -74,7 +74,7 @@ basicauth = "1.0.0"
 prospector = { version = "1.17.3", extras = ["with_mypy", "with_bandit", "with_pyroma", "with_ruff"] }
 prospector-profile-duplicated = "1.10.5"
 prospector-profile-utils  = "1.26.5"
-ruff = "0.14.3"
+ruff = "0.14.7"
 beautifulsoup4 = "4.14.3"
 certifi = "2025.11.12"
 cryptography = "46.0.3"
