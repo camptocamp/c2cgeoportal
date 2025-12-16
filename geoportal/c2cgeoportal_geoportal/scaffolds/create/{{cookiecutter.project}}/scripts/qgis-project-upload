@@ -1,0 +1,59 @@
+#!/usr/bin/env python3
+
+import argparse
+import os
+from pathlib import Path
+
+import psycopg2
+from psycopg2 import sql
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Upload QGIS project to database",
+        epilog="""
+Example usage:
+
+    # Build with target environment
+    ./build --env [env.local|env.int|env.prod]
+
+    # Download QGIS project file from database
+    docker compose run --rm --user `id -u`:`id -g` tools \\
+        python3 /src/scripts/qgis-project-download qgis myproject myproject.qgz
+        """,
+        formatter_class=argparse.RawTextHelpFormatter,
+    )
+    parser.add_argument("filename", default="qgisserver/project.qgz", help="Source file name")
+    parser.add_argument("schema", default="qgis", help="Destination PostgreSQL schema name")
+    parser.add_argument("project", default="project.qgz", help="Destination QGIS project name")
+    args = parser.parse_args()
+
+    # Connect to a DB, e.g., the test DB on your localhost, and get a cursor
+    with psycopg2.connect(f"dbname={os.environ['PGDATABASE']}") as connection:
+        with connection.cursor() as cursor:
+
+            path = Path("/src/qgisserver") / args.filename
+            with path.open("rb") as f:
+                data = f.read()
+
+            query = sql.SQL(
+                """
+                UPDATE {}.qgis_projects
+                SET content = %(content)s
+                WHERE name = %(name)s;
+            """
+            ).format(sql.Identifier(args.schema))
+
+            cursor.execute(
+                query,
+                {
+                    "content": psycopg2.Binary(data),
+                    "name": args.project,
+                },
+            )
+
+    print(f"Project {args.filename} uploaded in schema {args.schema} with name {args.project}")
+
+
+if __name__ == "__main__":
+    main()
