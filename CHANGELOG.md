@@ -1,3 +1,7 @@
+##### 2.8.1.272
+
+- Audit Snyk check/fix 2.8 [c2cgeoportal#12493](https://github.com/camptocamp/c2cgeoportal/pull/12493)
+
 ##### 2.8.1.271
 
 - Update dependency urllib3 to v2 [SECURITY] (2.8) [c2cgeoportal#12435](https://github.com/camptocamp/c2cgeoportal/pull/12435)
