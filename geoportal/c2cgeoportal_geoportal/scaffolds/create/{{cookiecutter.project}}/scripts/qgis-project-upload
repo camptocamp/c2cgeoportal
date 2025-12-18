@@ -31,7 +31,6 @@ Example usage:
     # Connect to a DB, e.g., the test DB on your localhost, and get a cursor
     with psycopg2.connect(f"dbname={os.environ['PGDATABASE']}") as connection:
         with connection.cursor() as cursor:
-
             path = Path("/src/qgisserver") / args.filename
             with path.open("rb") as f:
                 data = f.read()
