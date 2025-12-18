@@ -1,3 +1,7 @@
+##### 2.9.0.364
+
+- QGIS desktop fix [c2cgeoportal#12496](https://github.com/camptocamp/c2cgeoportal/pull/12496)
+
 ##### 2.9.0.363
 
 - Audit Dpkg 2.9 [c2cgeoportal#12494](https://github.com/camptocamp/c2cgeoportal/pull/12494)
