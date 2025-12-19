@@ -1,5 +1,5 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.25.0
+version: v1.25.1
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
   SNYK-JS-NTHCHECK-1586032:
@@ -24,6 +24,12 @@ ignore:
         created: 2024-08-15T05:36:35.132Z
   SNYK-PYTHON-PYYAML-590151:
     - '*':
-        reason: Unable to install this version, we shouldn't be impacted by this vulnerability
+        reason: >-
+          Unable to install this version, we shouldn't be impacted by this
+          vulnerability
         created: 2024-08-15T05:44:53.724Z
+  SNYK-PYTHON-FILELOCK-14458335:
+    - '*':
+        reason: Requires a new Python version
+        created: 2025-12-19T10:28:20.344Z
 patch: {}
