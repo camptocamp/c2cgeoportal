@@ -1231,6 +1231,21 @@
 </tbody>
 </table>
 </section>
+<section id="layer-meta-save-options">
+<span id="layer-meta-save-options"></span><h3>Layer meta save options<a class="headerlink" href="#layer-meta-save-options" title="Permalink to this headline">¶</a></h3>
+<p>The Pillow options used to save the tile generated from the meta-tiles</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>object</em></p></td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="layer-layers">
 <span id="layer-layers"></span><h3>Layer layers<a class="headerlink" href="#layer-layers" title="Permalink to this headline">¶</a></h3>
 <p>The WMS layers</p>
@@ -1915,178 +1930,184 @@
 <tr class="row-even"><td colspan="3"><p><a class="reference internal" href="#layer-meta-buffer">Layer meta buffer</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
+<li><p>meta_save_options</p></li>
+</ul>
+</td>
+<td colspan="3"><p><a class="reference internal" href="#layer-meta-save-options">Layer meta save options</a></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
 <li><p><strong>layers</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p><a class="reference internal" href="#layer-layers">Layer layers</a></p></td>
 </tr>
-<tr class="row-even"><td><ul class="simple">
+<tr class="row-odd"><td><ul class="simple">
 <li><p><strong>wmts_style</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p><a class="reference internal" href="#layer-wmts-style">Layer WMTS style</a></p></td>
 </tr>
-<tr class="row-odd"><td><ul class="simple">
+<tr class="row-even"><td><ul class="simple">
 <li><p><strong>mime_type</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p><a class="reference internal" href="#layer-mime-type">Layer MIME type</a></p></td>
 </tr>
-<tr class="row-even"><td><ul class="simple">
+<tr class="row-odd"><td><ul class="simple">
 <li><p><strong>extension</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p><a class="reference internal" href="#layer-extension">Layer extension</a></p></td>
 </tr>
-<tr class="row-odd"><td><ul class="simple">
+<tr class="row-even"><td><ul class="simple">
 <li><p>dimensions</p></li>
 </ul>
 </td>
 <td colspan="3"><p><a class="reference internal" href="#layer-dimensions">layer dimensions</a></p></td>
 </tr>
-<tr class="row-even"><td><ul class="simple">
+<tr class="row-odd"><td><ul class="simple">
 <li><p>legends</p></li>
 </ul>
 </td>
 <td colspan="3"><p><a class="reference internal" href="#layer-legends">Layer legends</a></p></td>
 </tr>
-<tr class="row-odd"><td><ul class="simple">
+<tr class="row-even"><td><ul class="simple">
 <li><p>legend_mime</p></li>
 </ul>
 </td>
 <td colspan="3"><p><a class="reference internal" href="#layer-legend-mime">Layer legend MIME</a></p></td>
 </tr>
-<tr class="row-even"><td><ul class="simple">
+<tr class="row-odd"><td><ul class="simple">
 <li><p>legend_extension</p></li>
 </ul>
 </td>
 <td colspan="3"><p><a class="reference internal" href="#layer-legend-extension">Layer legend extension</a></p></td>
 </tr>
-<tr class="row-odd"><td><ul class="simple">
+<tr class="row-even"><td><ul class="simple">
 <li><p>pre_hash_post_process</p></li>
 </ul>
 </td>
 <td colspan="3"><p><a class="reference internal" href="#layer-pre-hash-post-process">Layer pre hash post process</a></p></td>
 </tr>
-<tr class="row-even"><td><ul class="simple">
+<tr class="row-odd"><td><ul class="simple">
 <li><p>post_process</p></li>
 </ul>
 </td>
 <td colspan="3"><p><a class="reference internal" href="#layer-post-process">Layer post process</a></p></td>
 </tr>
-<tr class="row-odd"><td><ul class="simple">
+<tr class="row-even"><td><ul class="simple">
 <li><p>geoms</p></li>
 </ul>
 </td>
 <td colspan="3"><p><a class="reference internal" href="#layer-geometries">Layer geometries</a></p></td>
 </tr>
-<tr class="row-even"><td><ul class="simple">
+<tr class="row-odd"><td><ul class="simple">
 <li><p>empty_tile_detection</p></li>
 </ul>
 </td>
 <td colspan="3"><p><a class="reference internal" href="#layer-empty-tile-detection">Layer empty tile detection</a></p></td>
 </tr>
-<tr class="row-odd"><td><ul class="simple">
+<tr class="row-even"><td><ul class="simple">
 <li><p>empty_metatile_detection</p></li>
 </ul>
 </td>
 <td colspan="3"><p><a class="reference internal" href="#layer-empty-meta-tile-detection">Layer empty meta-tile detection</a></p></td>
 </tr>
-<tr class="row-even"><td><ul class="simple">
+<tr class="row-odd"><td><ul class="simple">
 <li><p>cost</p></li>
 </ul>
 </td>
 <td colspan="3"><p><a class="reference internal" href="#layer-cost">Layer cost</a></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p><strong>url</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p><em>URL</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p>The WMS service URL</p></td>
+<tr class="row-odd"><td colspan="3"><p>The WMS service URL</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="4"><ul class="simple">
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
 <li><p>generate_salt</p></li>
 </ul>
 </td>
 <td colspan="3"><p><em>Generate salt</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="3"><p>Should generate a salt to drop the cache</p></td>
+<tr class="row-even"><td colspan="3"><p>Should generate a salt to drop the cache</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>boolean</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>default</p></td>
+<tr class="row-even"><td><p>default</p></td>
 <td colspan="2"><p>False</p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p>query_layers</p></li>
 </ul>
 </td>
 <td colspan="3"><p><em>Query layers</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="3"><p>The layers use for query (To be used with the server)</p></td>
+<tr class="row-even"><td colspan="3"><p>The layers use for query (To be used with the server)</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<tr class="row-even"><td rowspan="4"><ul class="simple">
 <li><p>info_formats</p></li>
 </ul>
 </td>
 <td colspan="3"><p><em>Info formats</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p>The query info format</p></td>
+<tr class="row-odd"><td colspan="3"><p>The query info format</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>array</em></p></td>
 </tr>
-<tr class="row-even"><td><p>items</p></td>
+<tr class="row-odd"><td><p>items</p></td>
 <td><p>type</p></td>
 <td><p><em>string</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="5"><ul class="simple">
+<tr class="row-even"><td rowspan="5"><ul class="simple">
 <li><p>params</p></li>
 </ul>
 </td>
 <td colspan="3"><p><em>Parameters</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p>Additional parameters to the WMS query (like dimension)</p></td>
+<tr class="row-odd"><td colspan="3"><p>Additional parameters to the WMS query (like dimension)</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>object</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="2"><p>additionalProperties</p></td>
+<tr class="row-odd"><td rowspan="2"><p>additionalProperties</p></td>
 <td colspan="2"><p>The parameter value</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td><p><em>string</em></p></td>
 </tr>
-<tr class="row-even"><td><ul class="simple">
+<tr class="row-odd"><td><ul class="simple">
 <li><p>headers</p></li>
 </ul>
 </td>
 <td colspan="3"><p><a class="reference internal" href="#headers">Headers</a></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<tr class="row-even"><td rowspan="4"><ul class="simple">
 <li><p>version</p></li>
 </ul>
 </td>
 <td colspan="3"><p><em>Version</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p>The used WMS version</p></td>
+<tr class="row-odd"><td colspan="3"><p>The used WMS version</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
 </tr>
-<tr class="row-even"><td><p>default</p></td>
+<tr class="row-odd"><td><p>default</p></td>
 <td colspan="2"><p>1.1.1</p></td>
 </tr>
-<tr class="row-odd"><td><p>additionalProperties</p></td>
+<tr class="row-even"><td><p>additionalProperties</p></td>
 <td colspan="3"><p>False</p></td>
 </tr>
 </tbody>
