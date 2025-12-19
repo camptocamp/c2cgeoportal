@@ -1,5 +1,5 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.25.0
+version: v1.25.1
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
   SNYK-PYTHON-NETWORKX-1062709:
@@ -25,11 +25,15 @@ ignore:
         reason: Will probably never been fixed
         created: 2024-08-19T12:47:12.462Z
   SNYK-PYTHON-WAITRESS-8309635:
-      - '*':
-            reason: Requires a newer python version
-            created: 2024-11-01T09:43:34.583Z
+    - '*':
+        reason: Requires a newer python version
+        created: 2024-11-01T09:43:34.583Z
   SNYK-PYTHON-WAITRESS-8309636:
-      - '*':
-            reason: Requires a newer python version
-            created: 2024-11-01T09:43:47.251Z
+    - '*':
+        reason: Requires a newer python version
+        created: 2024-11-01T09:43:47.251Z
+  SNYK-PYTHON-FILELOCK-14458335:
+    - '*':
+        reason: Requires a new Python version
+        created: 2025-12-19T10:25:15.887Z
 patch: {}
