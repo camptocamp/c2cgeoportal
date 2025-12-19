@@ -1,3 +1,9 @@
+##### 2.7.1.230
+
+- Update all patch/minor versions (2.7) [c2cgeoportal#12473](https://github.com/camptocamp/c2cgeoportal/pull/12473)
+- Audit Snyk check/fix 2.7 [c2cgeoportal#12492](https://github.com/camptocamp/c2cgeoportal/pull/12492)
+- Audit Snyk check/fix 2.7 [c2cgeoportal#12498](https://github.com/camptocamp/c2cgeoportal/pull/12498)
+
 ##### 2.7.1.229
 
 - Update dependency pre-commit to v4.5.0 (2.7) [ngeo#9981](https://github.com/camptocamp/ngeo/pull/9981)
