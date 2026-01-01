@@ -59,11 +59,11 @@ pyramid_multiauth = "1.0.2" # geoportal
 pyramid_tm = "2.5" # geoportal
 python-dateutil = "2.9.0.post0" # geoportal
 PyYAML = "6.0.1" # geoportal
-rasterio = "1.4.3" # geoportal raster
+rasterio = "1.4.4" # geoportal raster
 requests = "2.32.5" # geoportal
 redis = "5.2.1" # geoportal cache
 Shapely = "2.0.7" # geoportal
-SQLAlchemy = "2.0.44"
+SQLAlchemy = "2.0.45"
 transaction = "5.0" # commons, geoportal
 translationstring = "1.4" # admin
 "zope.event" = "5.0" # commons, geoportal
@@ -81,7 +81,7 @@ beautifulsoup4 = "4.12.3"
 certifi = "2025.11.12"
 cryptography = "46.0.3"
 setuptools = "78.1.1"
-urllib3 = "2.6.0"
+urllib3 = "2.6.2"
 
 [tool.poetry.group.dev.dependencies]
 Babel = "2.16.0" # i18n
@@ -103,7 +103,7 @@ mapbox-vector-tile = "2.1.0"
 responses = "0.25.8"
 waitress = "3.0.2"
 # Used on upgrade
-pre-commit = "4.5.0"
-prek = "0.2.18"
+pre-commit = "4.5.1"
+prek = "0.2.24"
 # To be able to upgrade project from version <= 2.8
 c2cciutils = { version = "1.5.16", extras = ["checks"] }
