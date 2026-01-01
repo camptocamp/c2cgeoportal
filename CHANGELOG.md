@@ -1,3 +1,9 @@
+##### 2.9.0.365
+
+- Add useful scripts for QGIS projects stored in database [c2cgeoportal#12495](https://github.com/camptocamp/c2cgeoportal/pull/12495)
+- Update all patch/minor versions (2.9) [c2cgeoportal#12516](https://github.com/camptocamp/c2cgeoportal/pull/12516)
+- Update CI dependencies (2.9) [c2cgeoportal#12517](https://github.com/camptocamp/c2cgeoportal/pull/12517)
+
 ##### 2.9.0.364
 
 - QGIS desktop fix [c2cgeoportal#12496](https://github.com/camptocamp/c2cgeoportal/pull/12496)
