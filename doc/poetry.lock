@@ -393,18 +393,18 @@ test-tox-coverage = ["coverage (>=5.5)"]
 
 [[package]]
 name = "boto3"
-version = "1.42.0"
+version = "1.42.19"
 description = "The AWS SDK for Python"
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "boto3-1.42.0-py3-none-any.whl", hash = "sha256:af32b7f61dd6293cad728ec205bcb3611ab1bf7b7dbccfd0f2bd7b9c9af96039"},
-    {file = "boto3-1.42.0.tar.gz", hash = "sha256:9c67729a6112b7dced521ea70b0369fba138e89852b029a7876041cd1460c084"},
+    {file = "boto3-1.42.19-py3-none-any.whl", hash = "sha256:c55b8b303c64931272536813a476f130b90ea7041d7b79c154d89cf1c18256b4"},
+    {file = "boto3-1.42.19.tar.gz", hash = "sha256:5933696a28bf8eb62fc54e4de5583f78a0efef59c8164ee1850436aa22f53aa7"},
 ]
 
 [package.dependencies]
-botocore = ">=1.41.6,<1.42.0"
+botocore = ">=1.42.19,<1.43.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.16.0,<0.17.0"
 
@@ -413,14 +413,14 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.41.6"
+version = "1.42.19"
 description = "Low-level, data-driven core of boto 3."
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "botocore-1.41.6-py3-none-any.whl", hash = "sha256:963cc946e885acb941c96e7d343cb6507b479812ca22566ceb3e9410d0588de0"},
-    {file = "botocore-1.41.6.tar.gz", hash = "sha256:08fe47e9b306f4436f5eaf6a02cb6d55c7745d13d2d093ce5d917d3ef3d3df75"},
+    {file = "botocore-1.42.19-py3-none-any.whl", hash = "sha256:30c276e0a96d822826d74e961089b9af16b274ac7ddcf7dcf6440bc90d856d88"},
+    {file = "botocore-1.42.19.tar.gz", hash = "sha256:8d38f30de983720303e95951380a2c9ac515159636ee6b5ba4227d65f14551a4"},
 ]
 
 [package.dependencies]
@@ -429,7 +429,7 @@ python-dateutil = ">=2.1,<3.0.0"
 urllib3 = {version = ">=1.25.4,<2.2.0 || >2.2.0,<3", markers = "python_version >= \"3.10\""}
 
 [package.extras]
-crt = ["awscrt (==0.29.1)"]
+crt = ["awscrt (==0.29.2)"]
 
 [[package]]
 name = "bottle"
@@ -3208,24 +3208,24 @@ urllib3 = "*"
 
 [[package]]
 name = "sphinx-substitution-extensions"
-version = "2025.11.17"
+version = "2025.12.15"
 description = "Extensions for Sphinx which allow for substitutions."
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "sphinx_substitution_extensions-2025.11.17-py2.py3-none-any.whl", hash = "sha256:ac18455bdc8324b337b0fe7498c1c0d0b1cb65c74d131459be4dea9edb6abbef"},
-    {file = "sphinx_substitution_extensions-2025.11.17.tar.gz", hash = "sha256:aae17f8db9efc3d454a304373ae3df763f8739e05e0b98d5381db46f6d250b27"},
+    {file = "sphinx_substitution_extensions-2025.12.15-py2.py3-none-any.whl", hash = "sha256:60b6d992f66489d90c73e789f8e0b667dc951a6bad01559304d8e4168fefa33e"},
+    {file = "sphinx_substitution_extensions-2025.12.15.tar.gz", hash = "sha256:7b0a494337b7b7995b8fec84a9b4f6dd13b545cc5722a079dde87f67715a023e"},
 ]
 
 [package.dependencies]
-beartype = ">=0.18.5"
+beartype = ">=0.22.9"
 docutils = ">=0.19"
 myst-parser = ">=4.0.0"
 sphinx = ">=8.1.0"
 
 [package.extras]
-dev = ["actionlint-py (==1.7.8.24)", "check-manifest (==0.51)", "deptry (==0.24.0)", "doc8 (==2.0.0)", "doccmd (==2025.11.8.1)", "docformatter (==1.7.7)", "interrogate (==1.7.0)", "mypy-strict-kwargs (==2025.4.3)", "mypy[faster-cache] (==1.18.2)", "pre-commit (==4.4.0)", "pylint[spelling] (==4.0.3)", "pyproject-fmt (==2.11.1)", "pyright (==1.1.407)", "pyroma (==5.0)", "pytest (==9.0.1)", "pytest-cov (==7.0.0)", "ruff (==0.14.5)", "shellcheck-py (==0.11.0.1)", "shfmt-py (==3.12.0.2)", "sphinx-lint (==1.0.1)", "sphinx-toolbox (==4.0.0)", "types-docutils (==0.22.2.20251006)", "vulture (==2.14)", "yamlfix (==1.19.0)"]
+dev = ["actionlint-py (==1.7.9.24)", "check-manifest (==0.51)", "deptry (==0.24.0)", "doc8 (==2.0.0)", "doccmd (==2025.12.10)", "docformatter (==1.7.7)", "interrogate (==1.7.0)", "mypy-strict-kwargs (==2025.4.3)", "mypy[faster-cache] (==1.19.0)", "pre-commit (==4.5.0)", "pylint[spelling] (==4.0.4)", "pyproject-fmt (==2.11.1)", "pyright (==1.1.407)", "pyroma (==5.0.1)", "pytest (==9.0.2)", "pytest-cov (==7.0.0)", "ruff (==0.14.9)", "shellcheck-py (==0.11.0.1)", "shfmt-py (==3.12.0.2)", "sphinx-lint (==1.0.2)", "sphinx-toolbox (==4.1.0)", "ty (==0.0.1a34)", "types-docutils (==0.22.3.20251115)", "vulture (==2.14)", "yamlfix (==1.19.0)"]
 release = ["check-wheel-contents (==0.6.3)"]
 
 [[package]]
@@ -3989,4 +3989,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<3.13"
-content-hash = "c17c65f9da65adfdc16ed827dc1a86d6ef15d57f3d7ddc03c35f7aaa81e3732b"
+content-hash = "72fab9d6c055efe334ff8f1ab238755e838bb205a574cdbd462107d640018a01"

@@ -12,8 +12,8 @@ Sphinx = "8.2.3"
 sphinx-prompt = "1.10.2"
 sphinx-jsonschema = "1.19.2"
 sphinx-argparse = "0.5.2"
-Sphinx-Substitution-Extensions = { extras = ["prompt"], version = "2025.11.17" }
+Sphinx-Substitution-Extensions = { extras = ["prompt"], version = "2025.12.15" }
 sphinxcontrib-mermaid = "1.2.3"
 c2cwsgiutils = ">=6.0.0.dev148"
 tilecloud-chain = "1.23.1"
-boto3 = { version = "1.42.0", optional = true }
+boto3 = { version = "1.42.19", optional = true }
