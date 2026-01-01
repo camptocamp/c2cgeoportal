@@ -36,7 +36,7 @@ jobs:
       - run: docker save --output=/tmp/tools.docker camptocamp/geomapfish-tools
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: tools.docker
           path: /tmp/tools.docker
@@ -91,7 +91,7 @@ jobs:
         if: env.HAS_SECRETS == 'HAS_SECRETS'
 
       - name: Download artifacts (Docker images) from previous workflows
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: tools.docker
           path: /tmp/
@@ -143,7 +143,7 @@ jobs:
 
       - run: git diff --exit-code --patch > /tmp/dpkg-versions.patch || true
         if: failure()
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v6
         with:
           name: Update QGIS ${{ matrix.version }} dpkg versions list.patch
           path: /tmp/dpkg-versions.patch
