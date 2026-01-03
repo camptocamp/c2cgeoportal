@@ -1,3 +1,7 @@
+##### 2.9.0.366
+
+- Audit Snyk check/fix 2.9 [c2cgeoportal#12523](https://github.com/camptocamp/c2cgeoportal/pull/12523)
+
 ##### 2.9.0.365
 
 - Add useful scripts for QGIS projects stored in database [c2cgeoportal#12495](https://github.com/camptocamp/c2cgeoportal/pull/12495)
