@@ -76,7 +76,7 @@ prospector-profile-duplicated = "1.10.5"
 prospector-profile-utils  = "1.26.5"
 ruff = "0.14.7"
 beautifulsoup4 = "4.14.3"
-certifi = "2025.11.12"
+certifi = "2026.1.4"
 cryptography = "46.0.3"
 setuptools = "80.9.0"
 
