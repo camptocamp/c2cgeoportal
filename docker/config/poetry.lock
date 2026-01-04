@@ -38,7 +38,7 @@ pyyaml-include = "*"
 
 [[package]]
 name = "certifi"
-version = "2025.6.15"
+version = "2026.1.4"
 description = "Python package for providing Mozilla's CA Bundle."
 category = "main"
 optional = false
@@ -198,7 +198,7 @@ toml = ["toml"]
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.10,<3.11"
-content-hash = "bcdc9b6e05d4fad09c2773ed6e2d1e70deccb798b99eca36789be6825a2a8ea2"
+content-hash = "46fdb6e540d110584d9edb72d77173b066e55429227d201437e378ca438466af"
 
 [metadata.files]
 attrs = [
@@ -213,8 +213,8 @@ c2c-template = [
     {file = "c2c.template-2.3.0-py3-none-any.whl", hash = "sha256:d9dd6ee0f7c2b01e9eb5e2f0e3d5692bb72983b807a352062b99c072ebb0c81c"},
 ]
 certifi = [
-    {file = "certifi-2025.6.15-py3-none-any.whl", hash = "sha256:2e0c7ce7cb5d8f8634ca55d2ba7e6ec2689a2fd6537d8dec1296a477a4910057"},
-    {file = "certifi-2025.6.15.tar.gz", hash = "sha256:d747aa5a8b9bbbb1bb8c22bb13e22bd1f18e9796defa16bab421f7f7a317323b"},
+    {file = "certifi-2026.1.4-py3-none-any.whl", hash = "sha256:9943707519e4add1115f44c2bc244f782c0249876bf51b6599fee1ffbedd685c"},
+    {file = "certifi-2026.1.4.tar.gz", hash = "sha256:ac726dd470482006e014ad384921ed6438c457018f4b3d204aea4281258b2120"},
 ]
 click = [
     {file = "click-8.1.3-py3-none-any.whl", hash = "sha256:bb4d8133cb15a609f44e8213d9b391b0809795062913b383c62be0ee95b1db48"},
