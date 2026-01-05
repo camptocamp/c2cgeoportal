@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2025, Camptocamp SA
+# Copyright (c) 2021-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -250,7 +250,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore[misc]
             .filter(static.OAuth2Client.client_id == client_id)
             .filter(static.OAuth2AuthorizationCode.redirect_uri == redirect_uri)
             .filter(
-                static.OAuth2AuthorizationCode.expire_at > datetime.datetime.now(tz=datetime.timezone.utc),
+                static.OAuth2AuthorizationCode.expire_at > datetime.datetime.now(tz=datetime.UTC),
             )
             .one_or_none()
         )
@@ -599,14 +599,14 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore[misc]
 
         if authorization_code is not None:
             authorization_code.expire_at = datetime.datetime.now(
-                tz=datetime.timezone.utc,
+                tz=datetime.UTC,
             ) + datetime.timedelta(minutes=self.authorization_expires_in)
         else:
             authorization_code = static.OAuth2AuthorizationCode()
             authorization_code.client_id = request.client.id
             authorization_code.user_id = user.id
             authorization_code.expire_at = datetime.datetime.now(
-                tz=datetime.timezone.utc,
+                tz=datetime.UTC,
             ) + datetime.timedelta(minutes=self.authorization_expires_in)
             authorization_code.state = code.get("state")
 
@@ -702,7 +702,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore[misc]
 
         bearer_token.access_token = token["access_token"]
         bearer_token.refresh_token = token["refresh_token"]
-        bearer_token.expire_at = datetime.datetime.now(tz=datetime.timezone.utc) + datetime.timedelta(
+        bearer_token.expire_at = datetime.datetime.now(tz=datetime.UTC) + datetime.timedelta(
             seconds=float(token["expires_in"]),
         )
         bearer_token.state = token.get("state")
@@ -778,7 +778,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore[misc]
             DBSession.query(static.OAuth2BearerToken)
             .join(static.User)
             .filter(static.OAuth2BearerToken.access_token == token)
-            .filter(static.OAuth2BearerToken.expire_at > datetime.datetime.now(tz=datetime.timezone.utc))
+            .filter(static.OAuth2BearerToken.expire_at > datetime.datetime.now(tz=datetime.UTC))
         ).one_or_none()
 
         if bearer_token is not None:
@@ -885,7 +885,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore[misc]
             .filter(static.OAuth2AuthorizationCode.code == code)
             .filter(static.OAuth2AuthorizationCode.client_id == client.id)
             .filter(
-                static.OAuth2AuthorizationCode.expire_at > datetime.datetime.now(tz=datetime.timezone.utc),
+                static.OAuth2AuthorizationCode.expire_at > datetime.datetime.now(tz=datetime.UTC),
             )
         )
         if client.state_required:

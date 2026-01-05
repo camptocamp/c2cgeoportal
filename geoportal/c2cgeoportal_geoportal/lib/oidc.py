@@ -1,4 +1,4 @@
-# Copyright (c) 2024-2025, Camptocamp SA
+# Copyright (c) 2024-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -288,14 +288,13 @@ class OidcRemember:
             )
         remember_object: OidcRememberObject = {
             "access_token_expires": (
-                datetime.datetime.now(tz=datetime.timezone.utc)
-                + datetime.timedelta(seconds=token_response.expires_in)
+                datetime.datetime.now(tz=datetime.UTC) + datetime.timedelta(seconds=token_response.expires_in)
             ).isoformat(),
             "refresh_token_expires": (
                 None
                 if token_response.refresh_expires_in is None
                 else (
-                    datetime.datetime.now(tz=datetime.timezone.utc)
+                    datetime.datetime.now(tz=datetime.UTC)
                     + datetime.timedelta(seconds=token_response.refresh_expires_in)
                 ).isoformat()
             ),

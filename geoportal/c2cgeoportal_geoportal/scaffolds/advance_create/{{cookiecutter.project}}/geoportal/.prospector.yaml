@@ -4,8 +4,8 @@ inherits:
 
 mypy:
   options:
-    python-version: '3.10'
+    python-version: '3.11'
 
 ruff:
   options:
-    target-version: py310
+    target-version: py311

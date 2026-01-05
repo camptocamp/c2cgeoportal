@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025, Camptocamp SA
+# Copyright (c) 2023-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -72,7 +72,7 @@ class LoggedViews(AbstractViews[_T], Generic[_T]):
         assert self._name_field is not None
         assert self._id_field is not None
         log = self._log_model(
-            date=datetime.datetime.now(datetime.timezone.utc),
+            date=datetime.datetime.now(datetime.UTC),
             action=action,
             element_type=self._model.__tablename__,
             element_id=getattr(obj, self._id_field),

@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2025, Camptocamp SA
+# Copyright (c) 2013-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -70,7 +70,7 @@ class Shortener:
             raise HTTPNotFound(f"Ref '{ref!s}' not found")
 
         short_urls[0].nb_hits += 1
-        short_urls[0].last_hit = datetime.datetime.now(datetime.timezone.utc)
+        short_urls[0].last_hit = datetime.datetime.now(datetime.UTC)
 
         return short_urls[0].url
 
@@ -147,7 +147,7 @@ class Shortener:
             short_url.url = url
             short_url.ref = ref
             short_url.creator_email = user_email
-            short_url.creation = datetime.datetime.now(tz=datetime.timezone.utc)
+            short_url.creation = datetime.datetime.now(tz=datetime.UTC)
             short_url.nb_hits = 0
 
             DBSession.add(short_url)

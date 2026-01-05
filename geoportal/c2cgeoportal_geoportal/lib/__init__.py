@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2025, Camptocamp SA
+# Copyright (c) 2011-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -92,7 +92,7 @@ def get_typed(
         elif type_["type"] == "date":
             date = dateutil.parser.parse(
                 value,
-                default=datetime.datetime(1, 1, 1, 0, 0, 0, tzinfo=datetime.timezone.utc),
+                default=datetime.datetime(1, 1, 1, 0, 0, 0, tzinfo=datetime.UTC),
             )
             if date.time() != datetime.time(0, 0, 0):
                 errors.add(f"{prefix}The date attribute '{name}'='{value}' should not have any time")
@@ -101,7 +101,7 @@ def get_typed(
         elif type_["type"] == "time":
             date = dateutil.parser.parse(
                 value,
-                default=datetime.datetime(1, 1, 1, 0, 0, 0, tzinfo=datetime.timezone.utc),
+                default=datetime.datetime(1, 1, 1, 0, 0, 0, tzinfo=datetime.UTC),
             )
             if date.date() != datetime.date(1, 1, 1):
                 errors.add(f"{prefix}The time attribute '{name}'='{value}' should not have any date")
@@ -110,7 +110,7 @@ def get_typed(
         elif type_["type"] == "datetime":
             date = dateutil.parser.parse(
                 value,
-                default=datetime.datetime(1, 1, 1, 0, 0, 0, tzinfo=datetime.timezone.utc),
+                default=datetime.datetime(1, 1, 1, 0, 0, 0, tzinfo=datetime.UTC),
             )
             return datetime.datetime.strftime(date, "%Y-%m-%dT%H:%M:%S")
         elif type_["type"] == "url":

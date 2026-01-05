@@ -1,7 +1,6 @@
 # pylint: disable=no-self-use,unsubscriptable-object
 
 import datetime
-from datetime import timezone
 
 import pytest
 
@@ -19,7 +18,7 @@ def logs_test_data(dbsession, transact):
     logs = []
     for i in range(5):
         log = MainLog(
-            date=datetime.datetime.now(timezone.utc),
+            date=datetime.datetime.now(datetime.UTC),
             action=[LogAction.INSERT, LogAction.UPDATE, LogAction.DELETE][i % 3],
             element_type="role",
             element_id=i,
@@ -31,7 +30,7 @@ def logs_test_data(dbsession, transact):
         logs.append(log)
 
         log = StaticLog(
-            date=datetime.datetime.now(timezone.utc),
+            date=datetime.datetime.now(datetime.UTC),
             action=[LogAction.INSERT, LogAction.UPDATE, LogAction.DELETE][i % 3],
             element_type="user",
             element_id=i,
