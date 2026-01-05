@@ -306,6 +306,7 @@ jobs:
           git status --ignored || true
           make build-tools
           docker run --name=transifex -ti --rm --detach --volume=${HOME}:/root camptocamp/geomapfish-tools tail -f /dev/null
+          docker exec --env=TRANSIFEX_TOKEN=$(gopass show gs/ci/transifex/rw/token) transifex bash -c 'make transifex-private-credentials'
           docker exec transifex bash -c \
               '(cd /opt/c2cgeoportal; make --makefile=dependencies.mk transifex-send)'
           docker stop transifex
