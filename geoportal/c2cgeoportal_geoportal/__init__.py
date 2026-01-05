@@ -425,8 +425,8 @@ def create_get_user_from_request(
                                 "access_token_expires is not offset-aware, "
                                 "make it offset-aware by replacing tzinfo with UTC",
                             )
-                            access_token_expires = access_token_expires.replace(tzinfo=datetime.timezone.utc)
-                        if access_token_expires < datetime.datetime.now(tz=datetime.timezone.utc):
+                            access_token_expires = access_token_expires.replace(tzinfo=datetime.UTC)
+                        if access_token_expires < datetime.datetime.now(tz=datetime.UTC):
                             if user_info_remember["refresh_token_expires"] is None:
                                 return None
                             refresh_token = request.cookies.get("refresh_token")
@@ -442,9 +442,9 @@ def create_get_user_from_request(
                                     "make it offset-aware by replacing tzinfo with UTC",
                                 )
                                 refresh_token_expires = refresh_token_expires.replace(
-                                    tzinfo=datetime.timezone.utc,
+                                    tzinfo=datetime.UTC,
                                 )
-                            if refresh_token_expires < datetime.datetime.now(tz=datetime.timezone.utc):
+                            if refresh_token_expires < datetime.datetime.now(tz=datetime.UTC):
                                 return None
                             token_response = oidc.get_oidc_client(
                                 request,

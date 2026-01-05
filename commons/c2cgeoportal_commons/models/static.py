@@ -29,7 +29,7 @@
 import crypt  # pylint: disable=deprecated-module
 import logging
 import os
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from hashlib import sha1
 from hmac import compare_digest as compare_hash
 from typing import Any
@@ -376,10 +376,10 @@ class User(Base):  # type: ignore[valid-type,misc]
         return False
 
     def expired(self) -> bool:
-        return self.expire_on is not None and self.expire_on < datetime.now(timezone.utc)
+        return self.expire_on is not None and self.expire_on < datetime.now(UTC)
 
     def update_last_login(self) -> None:
-        self.last_login = datetime.now(timezone.utc)
+        self.last_login = datetime.now(UTC)
 
     def __str__(self) -> str:
         return self.username or ""
