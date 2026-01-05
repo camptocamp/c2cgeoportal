@@ -6,4 +6,8 @@ ignore:
     - '*':
         reason: Patched version not available tor used Python version
         created: 2025-05-05T08:11:48.681Z
+  SNYK-PYTHON-FILELOCK-14458335:
+    - '*':
+        reason: Requires a new Python version
+        created: 2026-01-05T08:09:49.981Z
 patch: {}
