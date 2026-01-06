@@ -1,3 +1,7 @@
+##### 2.9.0.369
+
+- Audit Dpkg 2.9 [c2cgeoportal#12534](https://github.com/camptocamp/c2cgeoportal/pull/12534)
+
 ##### 2.9.0.368
 
 - Update dependency @types/jasmine to v5.1.12 (2.9) [ngeo#9957](https://github.com/camptocamp/ngeo/pull/9957)
