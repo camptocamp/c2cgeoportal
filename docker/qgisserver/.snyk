@@ -22,4 +22,8 @@ ignore:
     - '*':
         reason: Patched version not available tor used Python version
         created: 2025-05-07T13:13:46.416Z
+  SNYK-PYTHON-ILELOCK-14458335:
+    - '*':
+        reason: Requires a new Python version
+        created: 2026-01-06T07:25:29.072Z
 patch: {}
