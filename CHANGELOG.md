@@ -1,3 +1,13 @@
+##### 2.8.1.276
+
+- Update dependency webpack-dev-server to v5.2.2 (2.8) [ngeo#9982](https://github.com/camptocamp/ngeo/pull/9982)
+- Update dependency urllib3 to v2.6.0 [SECURITY] (2.8) [ngeo#9988](https://github.com/camptocamp/ngeo/pull/9988)
+- Fix Mapillary API call sending no results [ngeo#9989](https://github.com/camptocamp/ngeo/pull/9989)
+- Update dependency urllib3 to v2.6.2 (2.8) [ngeo#10003](https://github.com/camptocamp/ngeo/pull/10003)
+- Update dependency urllib3 to v2.6.2 (2.8) [ngeo#10004](https://github.com/camptocamp/ngeo/pull/10004)
+- Audit Snyk check/fix 2.8 [ngeo#10008](https://github.com/camptocamp/ngeo/pull/10008)
+- Publish using Trusted publishing [ngeo#10010](https://github.com/camptocamp/ngeo/pull/10010)
+
 ##### 2.8.1.275
 
 - Update dependency certifi to v2026 (2.8) [c2cgeoportal#12527](https://github.com/camptocamp/c2cgeoportal/pull/12527)
