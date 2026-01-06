@@ -1,3 +1,20 @@
+##### 2.9.0.368
+
+- Update dependency @types/jasmine to v5.1.12 (2.9) [ngeo#9957](https://github.com/camptocamp/ngeo/pull/9957)
+- Update dependency sass-loader to v16.0.6 (2.9) [ngeo#9958](https://github.com/camptocamp/ngeo/pull/9958)
+- Update dependency c2cciutils to v1.7.5 (2.9) [ngeo#9961](https://github.com/camptocamp/ngeo/pull/9961)
+- Update dependency webpack-dev-server to v5.2.1 [SECURITY] (2.9) [ngeo#9970](https://github.com/camptocamp/ngeo/pull/9970)
+- Audit Snyk check/fix 2.9 [ngeo#9972](https://github.com/camptocamp/ngeo/pull/9972)
+- Update dependency glob to v11.1.0 [SECURITY] (2.9) [ngeo#9975](https://github.com/camptocamp/ngeo/pull/9975)
+- Update CI dependencies (2.9) [ngeo#9983](https://github.com/camptocamp/ngeo/pull/9983)
+- Update webpack (2.9) [ngeo#9984](https://github.com/camptocamp/ngeo/pull/9984)
+- [Backport 2.9] No error for new oeedit item [ngeo#9990](https://github.com/camptocamp/ngeo/pull/9990)
+- [Backport 2.9] Fix Mapillary API call sending no results [ngeo#9995](https://github.com/camptocamp/ngeo/pull/9995)
+- Update dependency pre-commit to v4.5.1 (2.9) [ngeo#10005](https://github.com/camptocamp/ngeo/pull/10005)
+- Update dependency terser-webpack-plugin to v5.3.16 (2.9) [ngeo#10006](https://github.com/camptocamp/ngeo/pull/10006)
+- Audit Snyk check/fix 2.9 [ngeo#10009](https://github.com/camptocamp/ngeo/pull/10009)
+- [Backport 2.9] Publish using Trusted publishing [ngeo#10011](https://github.com/camptocamp/ngeo/pull/10011)
+
 ##### 2.9.0.367
 
 - Update dependency certifi to v2026 (2.9) [c2cgeoportal#12528](https://github.com/camptocamp/c2cgeoportal/pull/12528)
