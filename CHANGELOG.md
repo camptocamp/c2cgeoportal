@@ -1,3 +1,7 @@
+##### 2.8.1.277
+
+- Update dependency urllib3 to v2.6.3 [SECURITY] (2.8) [c2cgeoportal#12540](https://github.com/camptocamp/c2cgeoportal/pull/12540)
+
 ##### 2.8.1.276
 
 - Update dependency webpack-dev-server to v5.2.2 (2.8) [ngeo#9982](https://github.com/camptocamp/ngeo/pull/9982)
