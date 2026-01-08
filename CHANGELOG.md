@@ -1,3 +1,7 @@
+##### 2.9.0.370
+
+- Update dependency c2cwsgiutils to v6.1.9 (2.9) [c2cgeoportal#12538](https://github.com/camptocamp/c2cgeoportal/pull/12538)
+
 ##### 2.9.0.369
 
 - Audit Dpkg 2.9 [c2cgeoportal#12534](https://github.com/camptocamp/c2cgeoportal/pull/12534)
