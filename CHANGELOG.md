@@ -1,3 +1,7 @@
+##### 2.9.0.371
+
+- Update dependency urllib3 to v2.6.3 [SECURITY] (2.9) [c2cgeoportal#12541](https://github.com/camptocamp/c2cgeoportal/pull/12541)
+
 ##### 2.9.0.370
 
 - Update dependency c2cwsgiutils to v6.1.9 (2.9) [c2cgeoportal#12538](https://github.com/camptocamp/c2cgeoportal/pull/12538)
