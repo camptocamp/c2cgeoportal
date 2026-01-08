@@ -16,7 +16,7 @@ camptocamp/geomapfish-config:latest:
   ubuntu_24_04/findutils: 4.9.0-5build1
   ubuntu_24_04/gcc-14-base: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/gettext-base: 0.21-14ubuntu2
-  ubuntu_24_04/gpgv: 2.4.4-2ubuntu17.3
+  ubuntu_24_04/gpgv: 2.4.4-2ubuntu17.4
   ubuntu_24_04/grep: 3.11-4build1
   ubuntu_24_04/gzip: 1.12-1ubuntu3.1
   ubuntu_24_04/hostname: 3.23+nmu2ubuntu2
@@ -146,7 +146,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/gcc-12-base: 12.3.0-1ubuntu1~22.04.2
   ubuntu_22_04/gdal-data: 3.4.1+dfsg-1build4
   ubuntu_22_04/glibc-tools: 0.0~git3.23fd2b9-0ubuntu1
-  ubuntu_22_04/gpgv: 2.2.27-3ubuntu2.4
+  ubuntu_22_04/gpgv: 2.2.27-3ubuntu2.5
   ubuntu_22_04/grep: 3.7-1build1
   ubuntu_22_04/gzip: 1.10-4ubuntu4.1
   ubuntu_22_04/hostname: 3.23ubuntu2
@@ -482,7 +482,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libxpm4: 1:3.5.12-1ubuntu0.22.04.2
   ubuntu_22_04/libxrender1: 1:0.9.10-1build4
   ubuntu_22_04/libxshmfence1: 1.3-1build4
-  ubuntu_22_04/libxslt1.1: 1.1.34-4ubuntu0.22.04.4
+  ubuntu_22_04/libxslt1.1: 1.1.34-4ubuntu0.22.04.5
   ubuntu_22_04/libxt6: 1:1.2.1-1
   ubuntu_22_04/libxxf86vm1: 1:1.1.4-1build3
   ubuntu_22_04/libxxhash0: 0.8.1-1
@@ -593,7 +593,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/gcc-12-base: 12.3.0-1ubuntu1~22.04.2
   ubuntu_22_04/gdal-data: 3.4.1+dfsg-1build4
   ubuntu_22_04/glibc-tools: 0.0~git3.23fd2b9-0ubuntu1
-  ubuntu_22_04/gpgv: 2.2.27-3ubuntu2.4
+  ubuntu_22_04/gpgv: 2.2.27-3ubuntu2.5
   ubuntu_22_04/grep: 3.7-1build1
   ubuntu_22_04/gzip: 1.10-4ubuntu4.1
   ubuntu_22_04/hostname: 3.23ubuntu2
@@ -929,7 +929,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libxpm4: 1:3.5.12-1ubuntu0.22.04.2
   ubuntu_22_04/libxrender1: 1:0.9.10-1build4
   ubuntu_22_04/libxshmfence1: 1.3-1build4
-  ubuntu_22_04/libxslt1.1: 1.1.34-4ubuntu0.22.04.4
+  ubuntu_22_04/libxslt1.1: 1.1.34-4ubuntu0.22.04.5
   ubuntu_22_04/libxt6: 1:1.2.1-1
   ubuntu_22_04/libxxf86vm1: 1:1.1.4-1build3
   ubuntu_22_04/libxxhash0: 0.8.1-1
@@ -1045,7 +1045,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40:
   ubuntu_24_04/gcc-14-base: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/gcc-x86-64-linux-gnu: 4:13.2.0-7ubuntu1
   ubuntu_24_04/glibc-tools: 0.0~git3.23fd2b9-0ubuntu1
-  ubuntu_24_04/gpgv: 2.4.4-2ubuntu17.3
+  ubuntu_24_04/gpgv: 2.4.4-2ubuntu17.4
   ubuntu_24_04/grep: 3.11-4build1
   ubuntu_24_04/gzip: 1.12-1ubuntu3.1
   ubuntu_24_04/hostname: 3.23+nmu2ubuntu2
@@ -1339,7 +1339,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40:
   ubuntu_24_04/libxrandr2: 2:1.5.2-2build1
   ubuntu_24_04/libxrender1: 1:0.9.10-1.1build1
   ubuntu_24_04/libxshmfence1: 1.3-1build5
-  ubuntu_24_04/libxslt1.1: 1.1.39-0exp1ubuntu0.24.04.2
+  ubuntu_24_04/libxslt1.1: 1.1.39-0exp1ubuntu0.24.04.3
   ubuntu_24_04/libxt6t64: 1:1.2.1-1.2build1
   ubuntu_24_04/libxxf86vm1: 1:1.1.4-1build4
   ubuntu_24_04/libxxhash0: 0.8.2-2build1
@@ -1451,7 +1451,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40-gdal3.10:
   ubuntu_24_04/gcc-14-base: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/gcc-x86-64-linux-gnu: 4:13.2.0-7ubuntu1
   ubuntu_24_04/glibc-tools: 0.0~git3.23fd2b9-0ubuntu1
-  ubuntu_24_04/gpgv: 2.4.4-2ubuntu17.3
+  ubuntu_24_04/gpgv: 2.4.4-2ubuntu17.4
   ubuntu_24_04/grep: 3.11-4build1
   ubuntu_24_04/gzip: 1.12-1ubuntu3.1
   ubuntu_24_04/hostname: 3.23+nmu2ubuntu2
@@ -1745,7 +1745,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40-gdal3.10:
   ubuntu_24_04/libxrandr2: 2:1.5.2-2build1
   ubuntu_24_04/libxrender1: 1:0.9.10-1.1build1
   ubuntu_24_04/libxshmfence1: 1.3-1build5
-  ubuntu_24_04/libxslt1.1: 1.1.39-0exp1ubuntu0.24.04.2
+  ubuntu_24_04/libxslt1.1: 1.1.39-0exp1ubuntu0.24.04.3
   ubuntu_24_04/libxt6t64: 1:1.2.1-1.2build1
   ubuntu_24_04/libxxf86vm1: 1:1.1.4-1build4
   ubuntu_24_04/libxxhash0: 0.8.2-2build1
@@ -1857,7 +1857,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_24_04/gcc-14-base: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/gcc-x86-64-linux-gnu: 4:13.2.0-7ubuntu1
   ubuntu_24_04/glibc-tools: 0.0~git3.23fd2b9-0ubuntu1
-  ubuntu_24_04/gpgv: 2.4.4-2ubuntu17.3
+  ubuntu_24_04/gpgv: 2.4.4-2ubuntu17.4
   ubuntu_24_04/grep: 3.11-4build1
   ubuntu_24_04/gzip: 1.12-1ubuntu3.1
   ubuntu_24_04/hostname: 3.23+nmu2ubuntu2
@@ -2146,7 +2146,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_24_04/libxrandr2: 2:1.5.2-2build1
   ubuntu_24_04/libxrender1: 1:0.9.10-1.1build1
   ubuntu_24_04/libxshmfence1: 1.3-1build5
-  ubuntu_24_04/libxslt1.1: 1.1.39-0exp1ubuntu0.24.04.2
+  ubuntu_24_04/libxslt1.1: 1.1.39-0exp1ubuntu0.24.04.3
   ubuntu_24_04/libxt6t64: 1:1.2.1-1.2build1
   ubuntu_24_04/libxxf86vm1: 1:1.1.4-1build4
   ubuntu_24_04/libxxhash0: 0.8.2-2build1
@@ -2258,7 +2258,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_24_04/gcc-x86-64-linux-gnu: 4:13.2.0-7ubuntu1
   ubuntu_24_04/gdb: 15.0.50.20240403-0ubuntu1
   ubuntu_24_04/glibc-tools: 0.0~git3.23fd2b9-0ubuntu1
-  ubuntu_24_04/gpgv: 2.4.4-2ubuntu17.3
+  ubuntu_24_04/gpgv: 2.4.4-2ubuntu17.4
   ubuntu_24_04/grep: 3.11-4build1
   ubuntu_24_04/gzip: 1.12-1ubuntu3.1
   ubuntu_24_04/hostname: 3.23+nmu2ubuntu2
@@ -2553,7 +2553,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_24_04/libxrandr2: 2:1.5.2-2build1
   ubuntu_24_04/libxrender1: 1:0.9.10-1.1build1
   ubuntu_24_04/libxshmfence1: 1.3-1build5
-  ubuntu_24_04/libxslt1.1: 1.1.39-0exp1ubuntu0.24.04.2
+  ubuntu_24_04/libxslt1.1: 1.1.39-0exp1ubuntu0.24.04.3
   ubuntu_24_04/libxt6t64: 1:1.2.1-1.2build1
   ubuntu_24_04/libxxf86vm1: 1:1.1.4-1build4
   ubuntu_24_04/libxxhash0: 0.8.2-2build1
@@ -2665,7 +2665,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/gcc-14-base: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/gcc-x86-64-linux-gnu: 4:13.2.0-7ubuntu1
   ubuntu_24_04/glibc-tools: 0.0~git3.23fd2b9-0ubuntu1
-  ubuntu_24_04/gpgv: 2.4.4-2ubuntu17.3
+  ubuntu_24_04/gpgv: 2.4.4-2ubuntu17.4
   ubuntu_24_04/grep: 3.11-4build1
   ubuntu_24_04/gzip: 1.12-1ubuntu3.1
   ubuntu_24_04/hostname: 3.23+nmu2ubuntu2
@@ -2959,7 +2959,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/libxrandr2: 2:1.5.2-2build1
   ubuntu_24_04/libxrender1: 1:0.9.10-1.1build1
   ubuntu_24_04/libxshmfence1: 1.3-1build5
-  ubuntu_24_04/libxslt1.1: 1.1.39-0exp1ubuntu0.24.04.2
+  ubuntu_24_04/libxslt1.1: 1.1.39-0exp1ubuntu0.24.04.3
   ubuntu_24_04/libxt6t64: 1:1.2.1-1.2build1
   ubuntu_24_04/libxxf86vm1: 1:1.1.4-1build4
   ubuntu_24_04/libxxhash0: 0.8.2-2build1
@@ -3071,7 +3071,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_24_04/gcc-14-base: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/gcc-x86-64-linux-gnu: 4:13.2.0-7ubuntu1
   ubuntu_24_04/glibc-tools: 0.0~git3.23fd2b9-0ubuntu1
-  ubuntu_24_04/gpgv: 2.4.4-2ubuntu17.3
+  ubuntu_24_04/gpgv: 2.4.4-2ubuntu17.4
   ubuntu_24_04/grep: 3.11-4build1
   ubuntu_24_04/gzip: 1.12-1ubuntu3.1
   ubuntu_24_04/hostname: 3.23+nmu2ubuntu2
@@ -3360,7 +3360,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_24_04/libxrandr2: 2:1.5.2-2build1
   ubuntu_24_04/libxrender1: 1:0.9.10-1.1build1
   ubuntu_24_04/libxshmfence1: 1.3-1build5
-  ubuntu_24_04/libxslt1.1: 1.1.39-0exp1ubuntu0.24.04.2
+  ubuntu_24_04/libxslt1.1: 1.1.39-0exp1ubuntu0.24.04.3
   ubuntu_24_04/libxt6t64: 1:1.2.1-1.2build1
   ubuntu_24_04/libxxf86vm1: 1:1.1.4-1build4
   ubuntu_24_04/libxxhash0: 0.8.2-2build1
@@ -3465,7 +3465,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/debconf: 1.5.86ubuntu1
   ubuntu_24_04/debianutils: 5.17build1
   ubuntu_24_04/diffutils: 1:3.10-1build1
-  ubuntu_24_04/dirmngr: 2.4.4-2ubuntu17.3
+  ubuntu_24_04/dirmngr: 2.4.4-2ubuntu17.4
   ubuntu_24_04/distro-info-data: 0.60ubuntu0.3
   ubuntu_24_04/dnsutils: 1:9.18.39-0ubuntu0.24.04.2
   ubuntu_24_04/dpkg: 1.22.6ubuntu6.5
@@ -3493,13 +3493,13 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/gir1.2-packagekitglib-1.0: 1.2.8-2ubuntu1.2
   ubuntu_24_04/git: 1:2.43.0-1ubuntu7.3
   ubuntu_24_04/git-man: 1:2.43.0-1ubuntu7.3
-  ubuntu_24_04/gnupg: 2.4.4-2ubuntu17.3
-  ubuntu_24_04/gnupg-utils: 2.4.4-2ubuntu17.3
-  ubuntu_24_04/gpg: 2.4.4-2ubuntu17.3
-  ubuntu_24_04/gpg-agent: 2.4.4-2ubuntu17.3
-  ubuntu_24_04/gpgconf: 2.4.4-2ubuntu17.3
-  ubuntu_24_04/gpgsm: 2.4.4-2ubuntu17.3
-  ubuntu_24_04/gpgv: 2.4.4-2ubuntu17.3
+  ubuntu_24_04/gnupg: 2.4.4-2ubuntu17.4
+  ubuntu_24_04/gnupg-utils: 2.4.4-2ubuntu17.4
+  ubuntu_24_04/gpg: 2.4.4-2ubuntu17.4
+  ubuntu_24_04/gpg-agent: 2.4.4-2ubuntu17.4
+  ubuntu_24_04/gpgconf: 2.4.4-2ubuntu17.4
+  ubuntu_24_04/gpgsm: 2.4.4-2ubuntu17.4
+  ubuntu_24_04/gpgv: 2.4.4-2ubuntu17.4
   ubuntu_24_04/grep: 3.11-4build1
   ubuntu_24_04/groff-base: 1.23.0-3build2
   ubuntu_24_04/gyp: 0.1+20220404git9ecf45e-2
@@ -3510,7 +3510,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/iproute2: 6.1.0-1ubuntu6.2
   ubuntu_24_04/iputils-ping: 3:20240117-1ubuntu0.1
   ubuntu_24_04/iso-codes: 4.16.0-1
-  ubuntu_24_04/keyboxd: 2.4.4-2ubuntu17.3
+  ubuntu_24_04/keyboxd: 2.4.4-2ubuntu17.4
   ubuntu_24_04/libabsl20240116: 20240116.2-2~24.04.sav0
   ubuntu_24_04/libacl1: 2.3.2-1build1.1
   ubuntu_24_04/libapparmor1: 4.0.1really4.0.1-0ubuntu0.24.04.4
@@ -4241,7 +4241,7 @@ camptocamp/geomapfish:latest:
   ubuntu_24_04/debconf: 1.5.86ubuntu1
   ubuntu_24_04/debianutils: 5.17build1
   ubuntu_24_04/diffutils: 1:3.10-1build1
-  ubuntu_24_04/dirmngr: 2.4.4-2ubuntu17.3
+  ubuntu_24_04/dirmngr: 2.4.4-2ubuntu17.4
   ubuntu_24_04/distro-info-data: 0.60ubuntu0.3
   ubuntu_24_04/dpkg: 1.22.6ubuntu6.5
   ubuntu_24_04/e2fsprogs: 1.47.0-2.4~exp1ubuntu4.1
@@ -4259,13 +4259,13 @@ camptocamp/geomapfish:latest:
   ubuntu_24_04/gir1.2-packagekitglib-1.0: 1.2.8-2ubuntu1.2
   ubuntu_24_04/git: 1:2.43.0-1ubuntu7.3
   ubuntu_24_04/git-man: 1:2.43.0-1ubuntu7.3
-  ubuntu_24_04/gnupg: 2.4.4-2ubuntu17.3
-  ubuntu_24_04/gnupg-utils: 2.4.4-2ubuntu17.3
-  ubuntu_24_04/gpg: 2.4.4-2ubuntu17.3
-  ubuntu_24_04/gpg-agent: 2.4.4-2ubuntu17.3
-  ubuntu_24_04/gpgconf: 2.4.4-2ubuntu17.3
-  ubuntu_24_04/gpgsm: 2.4.4-2ubuntu17.3
-  ubuntu_24_04/gpgv: 2.4.4-2ubuntu17.3
+  ubuntu_24_04/gnupg: 2.4.4-2ubuntu17.4
+  ubuntu_24_04/gnupg-utils: 2.4.4-2ubuntu17.4
+  ubuntu_24_04/gpg: 2.4.4-2ubuntu17.4
+  ubuntu_24_04/gpg-agent: 2.4.4-2ubuntu17.4
+  ubuntu_24_04/gpgconf: 2.4.4-2ubuntu17.4
+  ubuntu_24_04/gpgsm: 2.4.4-2ubuntu17.4
+  ubuntu_24_04/gpgv: 2.4.4-2ubuntu17.4
   ubuntu_24_04/grep: 3.11-4build1
   ubuntu_24_04/gyp: 0.1+20220404git9ecf45e-2
   ubuntu_24_04/gzip: 1.12-1ubuntu3.1
@@ -4273,7 +4273,7 @@ camptocamp/geomapfish:latest:
   ubuntu_24_04/hostname: 3.23+nmu2ubuntu2
   ubuntu_24_04/init-system-helpers: 1.66ubuntu1
   ubuntu_24_04/iso-codes: 4.16.0-1
-  ubuntu_24_04/keyboxd: 2.4.4-2ubuntu17.3
+  ubuntu_24_04/keyboxd: 2.4.4-2ubuntu17.4
   ubuntu_24_04/libabsl20240116: 20240116.2-2~24.04.sav0
   ubuntu_24_04/libacl1: 2.3.2-1build1.1
   ubuntu_24_04/libapparmor1: 4.0.1really4.0.1-0ubuntu0.24.04.4
@@ -4943,7 +4943,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_24_04/debconf: 1.5.86ubuntu1
   ubuntu_24_04/debianutils: 5.17build1
   ubuntu_24_04/diffutils: 1:3.10-1build1
-  ubuntu_24_04/dirmngr: 2.4.4-2ubuntu17.3
+  ubuntu_24_04/dirmngr: 2.4.4-2ubuntu17.4
   ubuntu_24_04/distro-info-data: 0.60ubuntu0.3
   ubuntu_24_04/dpkg: 1.22.6ubuntu6.5
   ubuntu_24_04/e2fsprogs: 1.47.0-2.4~exp1ubuntu4.1
@@ -4961,13 +4961,13 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_24_04/gir1.2-packagekitglib-1.0: 1.2.8-2ubuntu1.2
   ubuntu_24_04/git: 1:2.43.0-1ubuntu7.3
   ubuntu_24_04/git-man: 1:2.43.0-1ubuntu7.3
-  ubuntu_24_04/gnupg: 2.4.4-2ubuntu17.3
-  ubuntu_24_04/gnupg-utils: 2.4.4-2ubuntu17.3
-  ubuntu_24_04/gpg: 2.4.4-2ubuntu17.3
-  ubuntu_24_04/gpg-agent: 2.4.4-2ubuntu17.3
-  ubuntu_24_04/gpgconf: 2.4.4-2ubuntu17.3
-  ubuntu_24_04/gpgsm: 2.4.4-2ubuntu17.3
-  ubuntu_24_04/gpgv: 2.4.4-2ubuntu17.3
+  ubuntu_24_04/gnupg: 2.4.4-2ubuntu17.4
+  ubuntu_24_04/gnupg-utils: 2.4.4-2ubuntu17.4
+  ubuntu_24_04/gpg: 2.4.4-2ubuntu17.4
+  ubuntu_24_04/gpg-agent: 2.4.4-2ubuntu17.4
+  ubuntu_24_04/gpgconf: 2.4.4-2ubuntu17.4
+  ubuntu_24_04/gpgsm: 2.4.4-2ubuntu17.4
+  ubuntu_24_04/gpgv: 2.4.4-2ubuntu17.4
   ubuntu_24_04/grep: 3.11-4build1
   ubuntu_24_04/gyp: 0.1+20220404git9ecf45e-2
   ubuntu_24_04/gzip: 1.12-1ubuntu3.1
@@ -4975,7 +4975,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_24_04/hostname: 3.23+nmu2ubuntu2
   ubuntu_24_04/init-system-helpers: 1.66ubuntu1
   ubuntu_24_04/iso-codes: 4.16.0-1
-  ubuntu_24_04/keyboxd: 2.4.4-2ubuntu17.3
+  ubuntu_24_04/keyboxd: 2.4.4-2ubuntu17.4
   ubuntu_24_04/libabsl20240116: 20240116.2-2~24.04.sav0
   ubuntu_24_04/libacl1: 2.3.2-1build1.1
   ubuntu_24_04/libapparmor1: 4.0.1really4.0.1-0ubuntu0.24.04.4
