@@ -1,3 +1,7 @@
+##### 2.9.0.372
+
+- Audit Dpkg 2.9 [c2cgeoportal#12544](https://github.com/camptocamp/c2cgeoportal/pull/12544)
+
 ##### 2.9.0.371
 
 - Update dependency urllib3 to v2.6.3 [SECURITY] (2.9) [c2cgeoportal#12541](https://github.com/camptocamp/c2cgeoportal/pull/12541)
