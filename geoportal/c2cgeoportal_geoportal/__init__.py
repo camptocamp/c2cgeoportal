@@ -791,6 +791,8 @@ def includeme(config: pyramid.config.Configurator) -> None:
     # Full-text search routes
     add_cors_route(config, "/search", "fulltextsearch")
     config.add_route("fulltextsearch", "/search", request_method="GET")
+    add_cors_route(config, "/search/capabilities", "fulltextsearch")
+    config.add_route("fulltextsearch_capabilities", "/search/capabilities", request_method="GET")
 
     # Access to raster data
     add_cors_route(config, "/raster", "raster")

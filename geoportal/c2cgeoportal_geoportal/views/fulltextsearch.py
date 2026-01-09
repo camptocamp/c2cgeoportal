@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2025, Camptocamp SA
+# Copyright (c) 2011-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -130,6 +130,9 @@ class FullTextSearchView:
 
         _filter = and_(_filter, or_(FullTextSearch.lang.is_(None), FullTextSearch.lang == lang))
 
+        if "category" in self.request.params:
+            _filter = and_(_filter, FullTextSearch.layer_name == self.request.params["category"])
+
         rank_system = self.request.params.get("ranksystem")
         if rank_system == "ts_rank_cd":
             # The numbers used in ts_rank_cd() below indicate a normalization method.
@@ -193,3 +196,14 @@ class FullTextSearchView:
                 features.append(feature)
 
         return FeatureCollection(features)
+
+    @view_config(route_name="fulltextsearch_capabilities", renderer="fast_json")  # type: ignore[untyped-decorator]
+    def capabilities(self) -> dict[str, list[tuple[str]]]:
+        """Full text search capabilities."""
+        categories = (
+            DBSession.query(FullTextSearch.layer_name)
+            .distinct(FullTextSearch.layer_name)
+            .order_by(FullTextSearch.layer_name)
+            .all()
+        )
+        return {"categories": categories}
