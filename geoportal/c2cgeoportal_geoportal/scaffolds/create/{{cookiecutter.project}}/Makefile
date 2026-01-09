@@ -32,10 +32,10 @@ prospector: ## Runs the Prospector checks
 
 .PHONY: eslint
 eslint: ## Runs the eslint checks
-	docker compose run --entrypoint= --rm --volume=$(CURDIR)/geoportal:/app geoportal \
-		eslint $(find {{cookiecutter.package}} -type f -name '*.js' -print 2> /dev/null)
-	docker compose run --entrypoint= --rm --volume=$(CURDIR)/geoportal:/app geoportal \
-		eslint $(find {{cookiecutter.package}} -type f -name '*.ts' -print 2> /dev/null)
+	docker compose run --rm tools \
+		eslint `find geoportal/{{cookiecutter.package}}_geoportal -type f -name '*.js' -print 2> /dev/null`
+	docker compose run --rm tools \
+		eslint `find geoportal/{{cookiecutter.package}}_geoportal -type f -name '*.ts' -print 2> /dev/null`
 
 .PHONY: qgis
 qgis: ## Run QGIS desktop
