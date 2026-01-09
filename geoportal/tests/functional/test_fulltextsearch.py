@@ -458,3 +458,50 @@ class TestFulltextsearchView(TestCase):
         self.assertTrue(isinstance(response, FeatureCollection))
         assert len(response.features) == 1
         assert response.features[0].properties["label"] == "Registered"
+
+    def test_category_filter(self) -> None:
+        from geojson.feature import FeatureCollection
+
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
+
+        # Test filtering by category "layer1" - should return results from layer1 only
+        request = self._create_dummy_request(params={"query": "tra sol", "limit": 40, "category": "layer1"})
+        fts = FullTextSearchView(request)
+        response = fts.fulltextsearch()
+        assert isinstance(response, FeatureCollection)
+        assert len(response.features) == 2
+        assert response.features[0].properties["label"] == "label1"
+        assert response.features[0].properties["layer_name"] == "layer1"
+        assert response.features[1].properties["label"] == "label4"
+        assert response.features[1].properties["layer_name"] == "layer1"
+
+        # Test filtering by category "layer2" with authenticated user - should return no results for "tra sol"
+        request = self._create_dummy_request(
+            params={"query": "tra sol", "limit": 40, "category": "layer2"},
+            username="__test_user1",
+        )
+        fts = FullTextSearchView(request)
+        response = fts.fulltextsearch()
+        assert isinstance(response, FeatureCollection)
+        assert len(response.features) == 0
+
+        # Test filtering by category "layer2" with matching search term
+        request = self._create_dummy_request(
+            params={"query": "pluie", "limit": 40, "category": "layer2"},
+            username="__test_user1",
+        )
+        fts = FullTextSearchView(request)
+        response = fts.fulltextsearch()
+        assert isinstance(response, FeatureCollection)
+        assert len(response.features) == 1
+        assert response.features[0].properties["label"] == "label2"
+        assert response.features[0].properties["layer_name"] == "layer2"
+
+    def test_capabilities(self) -> None:
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
+
+        request = self._create_dummy_request()
+        fts = FullTextSearchView(request)
+        response = fts.capabilities()
+        assert set(response.keys()) == {"categories"}
+        assert set(response["categories"]) == {"layer1", "layer2", "layer3"}
