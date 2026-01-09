@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2025, Camptocamp SA
+# Copyright (c) 2013-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -463,3 +463,12 @@ class TestFulltextsearchView(TestCase):
         self.assertTrue(isinstance(response, FeatureCollection))
         assert len(response.features) == 1
         assert response.features[0].properties["label"] == "Registered"
+
+    def test_capabilities(self) -> None:
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
+
+        request = self._create_dummy_request()
+        fts = FullTextSearchView(request)
+        response = fts.capabilities()
+        assert set(response.keys()) == {"categories"}
+        assert set(response["categories"]) == {"layer1", "layer2", "layer3"}
