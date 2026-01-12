@@ -4,10 +4,14 @@ version: v1.25.1
 ignore:
   SNYK-PYTHON-SETUPTOOLS-9964606:
     - '*':
-        reason: Patched version not available tor used Python version
+        reason: Patched version not available for used Python version
         created: 2025-05-05T08:11:48.681Z
   SNYK-PYTHON-FILELOCK-14458335:
     - '*':
         reason: Requires a new Python version
         created: 2026-01-05T08:09:49.981Z
+  SNYK-PYTHON-FILELOCK-14912448:
+    - '*':
+        reason: Requires a new Python version
+        created: 2026-01-12T07:30:31.896Z
 patch: {}

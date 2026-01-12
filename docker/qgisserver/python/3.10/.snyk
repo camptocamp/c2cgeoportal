@@ -8,6 +8,6 @@ ignore:
         created: 2024-08-15T05:44:43.586Z
   SNYK-PYTHON-SETUPTOOLS-9964606:
     - '*':
-        reason: Patched version not available tor used Python version
+        reason: Patched version not available for used Python version
         created: 2025-05-05T08:11:48.681Z
 patch: {}
