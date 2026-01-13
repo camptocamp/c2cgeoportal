@@ -50,4 +50,8 @@ ignore:
     - '*':
         reason: Not compatible with Python 3.6
         created: 2025-03-07T10:43:31.804Z
+  SNYK-PYTHON-SETUPTOOLS-9964606:
+    - '*':
+        reason: Not compatible with used Python version
+        created: 2026-01-13T09:00:40.042Z
 patch: {}
