@@ -1,3 +1,7 @@
+##### 2.9.0.375
+
+- Fix link to ngeo documentation [c2cgeoportal#12557](https://github.com/camptocamp/c2cgeoportal/pull/12557)
+
 ##### 2.9.0.374
 
 - Audit Dpkg 2.9 [c2cgeoportal#12550](https://github.com/camptocamp/c2cgeoportal/pull/12550)
