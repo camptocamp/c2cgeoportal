@@ -14,4 +14,16 @@ ignore:
     - '*':
         reason: Not compatible with used Python version
         created: 2026-01-13T09:03:35.759Z
+  SNYK-PYTHON-URLLIB3-10390194:
+    - '*':
+        reason: Not compatible with used Python version
+        created: 2025-12-15T08:22:00.000Z
+  SNYK-PYTHON-URLLIB3-14192442:
+    - '*':
+        reason: Not compatible with used Python version
+        created: 2026-01-15T08:22:00.000Z
+  SNYK-PYTHON-URLLIB3-14192443:
+    - '*':
+        reason: Not compatible with used Python version
+        created: 2026-01-15T08:22:00.000Z
 patch: {}
