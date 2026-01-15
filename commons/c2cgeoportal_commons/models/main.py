@@ -1712,7 +1712,7 @@ class Metadata(Base):  # type: ignore
                                 "url": (
                                     "https://camptocamp.github.io/ngeo/"
                                     f"{os.environ.get('MAJOR_VERSION', 'master')}"
-                                    "/apidoc/interfaces/contribs_gmf_src_themes.GmfMetaData.html"
+                                    "/apidoc/interfaces/src_themes.GmfMetaData.html"
                                 )
                             },
                         )
