@@ -121,7 +121,7 @@ translationstring = "==1.4"  # admin
 "zope.event" = "==4.4"  # commons, geoportal
 c2cwsgiutils = {version = "==4.1.4", extras = ["broadcast", "profiler", "standard"]}
 oauthlib = "==3.2.2"
-setuptools = "==70.0.0"
+setuptools = "==78.1.1"
 # Lock
 affine = "==2.3.1"
 argparse = "==1.4.0"
@@ -180,7 +180,7 @@ sqlalchemy-utils = "==0.36.8"
 stevedore = "==3.3.3"
 toml = "==0.10.2"
 ujson = "==5.4.0"
-urllib3 = "==2.2.3"
+urllib3 = "==2.6.3"
 venusian = "==3.0.0"
 waitress = "==2.1.2"
 webob = "==1.8.9"
