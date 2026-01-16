@@ -28,9 +28,7 @@ with a low expiry (4 hours for example).
 Meta tiles should be used to reduce the number of requests to PostgreSQL.
 And the tiles should be deleted after the expiry time.
 
-The chosen solution is a combination of two tools:
-
-* `TileCloud-Chain <https://github.com/camptocamp/tilecloud-chain>`_ for the tile generation.
+The solution provided is `TileCloud-Chain <https://github.com/camptocamp/tilecloud-chain>`_.
 
 
 TileCloud-chain
