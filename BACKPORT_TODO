@@ -1,0 +1,20 @@
+Backport of #12568 to 2.6
+
+Error on cherry-picking: ba2bead482bd9d1b8a31718a5c6455e1d45c19d8
+
+To continue do:
+```bash
+git fetch && \
+  git checkout ghci/backport/12568-to-2.6 && \
+  git reset --hard HEAD^ && \
+  git cherry-pick ba2bead482bd9d1b8a31718a5c6455e1d45c19d8
+```
+Resolve the conflict, then:
+```bash
+git add <file> && \
+  git cherry-pick --continue
+```
+When all the conflicts are resolved, push the branch:
+```bash
+git push origin ghci/backport/12568-to-2.6 --force
+```
