@@ -72,7 +72,7 @@ simple_openid_connect = '2.3.2' # geoportal
 pkce = '1.0.3' # geoportal
 basicauth = "1.0.0"
 prospector = { version = "1.17.3", extras = ["with_mypy", "with_bandit", "with_pyroma", "with_ruff"] }
-prospector-profile-duplicated = "1.10.5"
+prospector-profile-duplicated = "1.11.0"
 prospector-profile-utils  = "1.26.5"
 ruff = "0.14.10"
 beautifulsoup4 = "4.14.3"
