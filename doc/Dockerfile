@@ -5,10 +5,9 @@ FROM camptocamp/geomapfish-tools
 # Print commands and their arguments as they are executed.
 SHELL ["/bin/bash", "-o", "pipefail", "-cux"]
 
-RUN . /etc/os-release && \
-    apt-get update && \
+RUN apt-get update && \
     apt-get install --assume-yes --no-install-recommends curl gnupg && \
-    echo "deb https://deb.nodesource.com/node_16.x ${VERSION_CODENAME} main" > /etc/apt/sources.list.d/nodesource.list && \
+    echo "deb https://deb.nodesource.com/node_16.x nodistro main" > /etc/apt/sources.list.d/nodesource.list && \
     curl --silent https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add - && \
     apt-get update && \
     apt-get install --assume-yes --no-install-recommends 'nodejs=16.*'
