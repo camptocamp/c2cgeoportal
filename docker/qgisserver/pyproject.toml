@@ -24,7 +24,7 @@ pytz = "2025.2"
 
 [tool.poetry.dev-dependencies]
 prospector = { version = "1.17.3", extras = ["with_mypy", "with_bandit", "with_ruff"] }
-prospector-profile-duplicated = "1.10.5"
+prospector-profile-duplicated = "1.11.0"
 prospector-profile-utils  = "1.26.5"
 ruff = "0.14.10"
 types-pyyaml = "6.0.12.20250915"
