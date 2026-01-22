@@ -1,3 +1,7 @@
+##### 2.9.0.380
+
+- Fix tile generation documentation [c2cgeoportal#12564](https://github.com/camptocamp/c2cgeoportal/pull/12564)
+
 ##### 2.9.0.379
 
 - Audit Dpkg 2.9 [c2cgeoportal#12577](https://github.com/camptocamp/c2cgeoportal/pull/12577)
