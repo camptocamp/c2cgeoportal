@@ -14,4 +14,8 @@ ignore:
     - '*':
         reason: Requires a new Python version
         created: 2026-01-12T07:30:31.896Z
+  SNYK-PYTHON-WHEEL-15053866:
+    - '*':
+        reason: Requires a new Python version
+        created: 2026-01-23T10:01:17.302Z
 patch: {}
