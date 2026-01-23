@@ -1,3 +1,7 @@
+##### 2.9.0.382
+
+- Audit Dpkg 2.9 [c2cgeoportal#12584](https://github.com/camptocamp/c2cgeoportal/pull/12584)
+
 ##### 2.9.0.381
 
 - Update dependency wheel to v0.46.2 [SECURITY] (2.9) - autoclosed [ngeo#10021](https://github.com/camptocamp/ngeo/pull/10021)
