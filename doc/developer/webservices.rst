@@ -409,17 +409,20 @@ Success JSON result
 Full-text search
 ================
 
-URL: ``.../fulltextsearch``
+URL: ``.../search``
 
 Parameters
 ----------
 
-* ``query``: Text to search.
-* ``limit``: The maximum number of results (optional).
-* ``partitionlimit``: The maximum number of results per layer (optional).
-* ``lang``: The language used (optional).
-* ``interface``: The interface used (optional).
-* ``ranksystem``: Can be set to ``ts_rank_cd`` to use the ``ts_rank_cd`` rank system instead of ``similarity``.
+* ``query``: Text to search (required).
+* ``limit``: Maximum number of results (optional, default is ``fulltextsearch.defaultlimit``, capped by ``fulltextsearch.maxlimit`` which defaults to ``200``).
+* ``partitionlimit``: Maximum number of results per layer (optional, default ``0``, also capped by ``fulltextsearch.maxlimit``).
+* ``lang``: Language for the search (optional). If not provided, the locale negotiated from the request is used.
+* ``interface``: Filter results to a specific interface (optional). If not provided, only entries without interface are returned.
+* ``category``: Limit results to one category (``layer_name`` in the table, optional).
+* ``ranksystem``: Set to ``ts_rank_cd`` to use that ranking; otherwise ``similarity`` is used.
+
+The language used for stemming is the locale negotiated from the request; there is no ``lang`` parameter.
 
 Result
 ------
@@ -431,10 +434,36 @@ A GeoJSON of a feature collection with the properties:
 * ``params``: :ref:`integrator_fulltext_search_params` to set.
 * ``actions``: List of actions.
 
+If ``actions`` is not set but ``layer_name`` is present, a default ``[{"action": "add_layer", "data": <layer_name>}]`` is returned.
+
 The `actions` is a dictionary with:
 
-* ``action``: the type of action (add_theme|add_group|add_layer).
+* ``action``: the type of action (``add_theme|add_group|add_layer``).
 * ``data``: data needed for the action (the item name).
+
+Full-text search capabilities
+-----------------------------
+
+URL: ``.../search/capabilities``
+
+Parameters
+----------
+
+None.
+
+Result
+------
+
+.. code::
+
+    {
+        "categories": [
+            "<category>",
+            ...
+        ]
+    }
+
+The list contains all distinct non-null ``category`` values (``layer_name`` in the table) sorted alphabetically.
 
 
 Layers
