@@ -198,7 +198,7 @@ class FullTextSearchView:
 
         return FeatureCollection(features)
 
-    @view_config(route_name="fulltextsearch_capabilities", renderer="fast_json")  # type: ignore[untyped-decorator]
+    @view_config(route_name="fulltextsearch_capabilities", renderer="fast_json")  # type: ignore[misc]
     def capabilities(self) -> dict[str, Any]:
         """Full text search capabilities."""
         assert DBSession is not None
