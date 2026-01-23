@@ -33,6 +33,7 @@ Result
 
 Base for all possible results:
 
+
 .. code::
 
     {
@@ -492,6 +493,18 @@ The list contains all distinct non-null ``category`` values (``layer_name`` in t
 Layers
 ======
 
+All endpoints
+-------------
+
+* ``GET .../layers/<layer_id>/md.xsd`` – XSD description of the layer.
+* ``GET .../layers/<layer_id>/count`` – returns the number of features the current user can see: ``{"count": <int>}``.
+* ``GET .../layers/<layer_id>`` or ``.../layers/1,2,3`` – read features (MapFish protocol). Supports the same query parameters as MapFish (filters, bbox, limit, etc.).
+* ``GET .../layers/<layer_id>/<feature_id>`` – read a single feature.
+* ``POST .../layers/<layer_id>`` – create features. Body: GeoJSON ``FeatureCollection`` (content-type ``application/json``). Response: created features.
+* ``PUT .../layers/<layer_id>/<feature_id>`` – update a feature. Body: GeoJSON ``Feature`` (content-type ``application/json``). Response: updated feature collection.
+* ``DELETE .../layers/<layer_id>/<feature_id>`` – delete a feature. Response: empty body with HTTP 200.
+* ``GET .../layers/<layer_name>/values/<field_name>`` – enumerate distinct values.
+
 Layer description
 -----------------
 
@@ -616,16 +629,18 @@ Error :
 
 .. code:: json
 
-    {
-        "message": "error description",
-        "error_type": "type of error"
-    }
+     {
+          "message": "error description",
+          "error_type": "type of error"
+     }
 
 
 Raster
 ======
 
 URL: ``.../raster``
+
+Method: ``GET``
 
 Parameters
 ----------
@@ -645,6 +660,16 @@ Result
     }
 
 
+Vector tiles
+============
+
+URL: ``.../vector_tiles/<layer_name>/<z>/<x>/<y>.pbf``
+
+Method: ``GET``
+
+Returns a binary Mapbox vector tile for the given layer and XYZ tile coordinate. The route ``/vector_tiles`` (HEAD) exists only as a helper in templates.
+
+
 Digital Elevation Model
 =======================
 
@@ -655,14 +680,29 @@ Method ``POST``
 Parameters
 ----------
 
-* ``geom``: Geometry field used to get the profile data.
-* ``layers``: On which layers; default is all.
-* ``nbPoints``: Maximum number of points.
+* ``geom``: Geometry to sample (GeoJSON encoded as a string).
+* ``nbPoints``: Maximum number of points along the path (required).
+* ``layers``: Comma-separated raster layer names to use (optional, default all configured raster layers).
 
 Result
 ------
 
-A JSON file, with 'dist', 'value', 'x', 'y'.
+.. code::
+
+    {
+        "profile": [
+            {
+                "dist": <distance>,
+                "values": {
+                    "<layer>": <value>,
+                    ...
+                },
+                "x": <easting>,
+                "y": <northing>
+            },
+            ...
+        ]
+    }
 
 
 Shortener
@@ -694,9 +734,23 @@ Result
 Get
 ---
 
-URL: ``short/<ref>``
+URL: ``.../s/<ref>``
 
-Result: code: 302, redirect to the original URL.
+Result: HTTP 302 redirect to the original URL.
+
+Fetch
+-----
+
+URL: ``.../short/get/<ref>``
+
+Result
+~~~~~~
+
+.. code::
+
+    {
+        "long_url": <the original URL>
+    }
 
 
 Geometry processing
