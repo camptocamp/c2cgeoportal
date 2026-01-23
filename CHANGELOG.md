@@ -1,3 +1,7 @@
+##### 2.7.1.239
+
+- Audit Snyk check/fix 2.7 [c2cgeoportal#12579](https://github.com/camptocamp/c2cgeoportal/pull/12579)
+
 ##### 2.7.1.238
 
 - [Backport 2.7] Fix node installation [c2cgeoportal#12569](https://github.com/camptocamp/c2cgeoportal/pull/12569)
