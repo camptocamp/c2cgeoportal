@@ -765,6 +765,8 @@ def includeme(config: pyramid.config.Configurator) -> None:
     config.add_route("printproxy_report_get", "/printproxy/report/{ref}", request_method="GET")
 
     # Full-text search routes
+    add_cors_route(config, "/search/capabilities", "fulltextsearch")
+    config.add_route("fulltextsearch_capabilities", "/search/capabilities", request_method="GET")
     add_cors_route(config, "/search", "fulltextsearch")
     config.add_route("fulltextsearch", "/search", request_method="GET")
 

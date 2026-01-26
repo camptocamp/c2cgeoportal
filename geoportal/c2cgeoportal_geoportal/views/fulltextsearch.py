@@ -27,6 +27,7 @@
 
 
 import re
+from typing import Any
 
 import pyramid.request
 from geoalchemy2.shape import to_shape
@@ -130,6 +131,9 @@ class FullTextSearchView:
 
         _filter = and_(_filter, or_(FullTextSearch.lang.is_(None), FullTextSearch.lang == lang))
 
+        if "category" in self.request.params:
+            _filter = and_(_filter, FullTextSearch.layer_name == self.request.params["category"])
+
         rank_system = self.request.params.get("ranksystem")
         if rank_system == "ts_rank_cd":
             # The numbers used in ts_rank_cd() below indicate a normalization method.
@@ -193,3 +197,19 @@ class FullTextSearchView:
                 features.append(feature)
 
         return FeatureCollection(features)
+
+    @view_config(route_name="fulltextsearch_capabilities", renderer="fast_json")  # type: ignore[misc]
+    def capabilities(self) -> dict[str, Any]:
+        """Full text search capabilities."""
+        assert DBSession is not None
+        categories = [
+            category[0]
+            for category in (
+                DBSession.query(FullTextSearch.layer_name)
+                .distinct(FullTextSearch.layer_name)
+                .order_by(FullTextSearch.layer_name)
+                .all()
+            )
+            if category[0] is not None
+        ]
+        return {"categories": categories}
