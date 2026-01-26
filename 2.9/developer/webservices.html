@@ -396,17 +396,19 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 </section>
 <section id="full-text-search">
 <span id="developer-webservices-fts"></span><h2>Full-text search<a class="headerlink" href="#full-text-search" title="Link to this heading">¶</a></h2>
-<p>URL: <code class="docutils literal notranslate"><span class="pre">.../fulltextsearch</span></code></p>
+<p>URL: <code class="docutils literal notranslate"><span class="pre">.../search</span></code></p>
 <section id="id1">
 <h3>Parameters<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h3>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">query</span></code>: Text to search.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">limit</span></code>: The maximum number of results (optional).</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">partitionlimit</span></code>: The maximum number of results per layer (optional).</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">lang</span></code>: The language used (optional).</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">interface</span></code>: The interface used (optional).</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ranksystem</span></code>: Can be set to <code class="docutils literal notranslate"><span class="pre">ts_rank_cd</span></code> to use the <code class="docutils literal notranslate"><span class="pre">ts_rank_cd</span></code> rank system instead of <code class="docutils literal notranslate"><span class="pre">similarity</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">query</span></code>: Text to search (required).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">limit</span></code>: Maximum number of results (optional, default is <code class="docutils literal notranslate"><span class="pre">fulltextsearch.defaultlimit</span></code>, capped by <code class="docutils literal notranslate"><span class="pre">fulltextsearch.maxlimit</span></code> which defaults to <code class="docutils literal notranslate"><span class="pre">200</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">partitionlimit</span></code>: Maximum number of results per layer (optional, default <code class="docutils literal notranslate"><span class="pre">0</span></code>, also capped by <code class="docutils literal notranslate"><span class="pre">fulltextsearch.maxlimit</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lang</span></code>: Language for the search (optional). If not provided, the locale negotiated from the request is used.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">interface</span></code>: Filter results to a specific interface (optional). If not provided, only entries without interface are returned.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">category</span></code>: Limit results to one category (<code class="docutils literal notranslate"><span class="pre">layer_name</span></code> in the table, optional).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ranksystem</span></code>: Set to <code class="docutils literal notranslate"><span class="pre">ts_rank_cd</span></code> to use that ranking; otherwise <code class="docutils literal notranslate"><span class="pre">similarity</span></code> is used.</p></li>
 </ul>
+<p>The language used for stemming is the locale negotiated from the request; there is no <code class="docutils literal notranslate"><span class="pre">lang</span></code> parameter.</p>
 </section>
 <section id="id2">
 <h3>Result<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h3>
@@ -417,20 +419,54 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <li><p><code class="docutils literal notranslate"><span class="pre">params</span></code>: <a class="reference internal" href="../integrator/fulltext_search.html#integrator-fulltext-search-params"><span class="std std-ref">Params</span></a> to set.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">actions</span></code>: List of actions.</p></li>
 </ul>
+<p>If <code class="docutils literal notranslate"><span class="pre">actions</span></code> is not set but <code class="docutils literal notranslate"><span class="pre">layer_name</span></code> is present, a default <code class="docutils literal notranslate"><span class="pre">[{&quot;action&quot;:</span> <span class="pre">&quot;add_layer&quot;,</span> <span class="pre">&quot;data&quot;:</span> <span class="pre">&lt;layer_name&gt;}]</span></code> is returned.</p>
 <p>The <cite>actions</cite> is a dictionary with:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">action</span></code>: the type of action (add_theme|add_group|add_layer).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">action</span></code>: the type of action (<code class="docutils literal notranslate"><span class="pre">add_theme|add_group|add_layer</span></code>).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: data needed for the action (the item name).</p></li>
 </ul>
+</section>
+<section id="full-text-search-capabilities">
+<h3>Full-text search capabilities<a class="headerlink" href="#full-text-search-capabilities" title="Link to this heading">¶</a></h3>
+<p>URL: <code class="docutils literal notranslate"><span class="pre">.../search/capabilities</span></code></p>
+</section>
+<section id="id3">
+<h3>Parameters<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h3>
+<p>None.</p>
+</section>
+<section id="id4">
+<h3>Result<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;categories&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">&quot;&lt;category&gt;&quot;</span><span class="p">,</span>
+        <span class="o">...</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The list contains all distinct non-null <code class="docutils literal notranslate"><span class="pre">category</span></code> values (<code class="docutils literal notranslate"><span class="pre">layer_name</span></code> in the table) sorted alphabetically.</p>
 </section>
 </section>
 <section id="layers">
 <h2>Layers<a class="headerlink" href="#layers" title="Link to this heading">¶</a></h2>
+<section id="all-endpoints">
+<h3>All endpoints<a class="headerlink" href="#all-endpoints" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">.../layers/&lt;layer_id&gt;/md.xsd</span></code> – XSD description of the layer.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">.../layers/&lt;layer_id&gt;/count</span></code> – returns the number of features the current user can see: <code class="docutils literal notranslate"><span class="pre">{&quot;count&quot;:</span> <span class="pre">&lt;int&gt;}</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">.../layers/&lt;layer_id&gt;</span></code> or <code class="docutils literal notranslate"><span class="pre">.../layers/1,2,3</span></code> – read features (MapFish protocol). Supports the same query parameters as MapFish (filters, bbox, limit, etc.).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">.../layers/&lt;layer_id&gt;/&lt;feature_id&gt;</span></code> – read a single feature.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">.../layers/&lt;layer_id&gt;</span></code> – create features. Body: GeoJSON <code class="docutils literal notranslate"><span class="pre">FeatureCollection</span></code> (content-type <code class="docutils literal notranslate"><span class="pre">application/json</span></code>). Response: created features.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">PUT</span> <span class="pre">.../layers/&lt;layer_id&gt;/&lt;feature_id&gt;</span></code> – update a feature. Body: GeoJSON <code class="docutils literal notranslate"><span class="pre">Feature</span></code> (content-type <code class="docutils literal notranslate"><span class="pre">application/json</span></code>). Response: updated feature collection.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DELETE</span> <span class="pre">.../layers/&lt;layer_id&gt;/&lt;feature_id&gt;</span></code> – delete a feature. Response: empty body with HTTP 200.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">.../layers/&lt;layer_name&gt;/values/&lt;field_name&gt;</span></code> – enumerate distinct values.</p></li>
+</ul>
+</section>
 <section id="layer-description">
 <h3>Layer description<a class="headerlink" href="#layer-description" title="Link to this heading">¶</a></h3>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../layers/&lt;layer_id&gt;/md.xsd</span></code></p>
-<section id="id3">
-<h4>Result<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h4>
+<section id="id5">
+<h4>Result<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h4>
 <p>A standard xsd document that describes the layer.</p>
 </section>
 </section>
@@ -442,8 +478,8 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <section id="enumerate-attributes">
 <h3>Enumerate attributes<a class="headerlink" href="#enumerate-attributes" title="Link to this heading">¶</a></h3>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../layers/&lt;layer_name&gt;/values/&lt;field_name&gt;</span></code></p>
-<section id="id4">
-<h4>Result<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h4>
+<section id="id6">
+<h4>Result<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;items&quot;</span><span class="p">:</span> <span class="p">[{</span>
       <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;value&gt;&quot;</span>
@@ -495,8 +531,8 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 </pre></div>
 </div>
 </section>
-<section id="id5">
-<h3>Update feature<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h3>
+<section id="id7">
+<h3>Update feature<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h3>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../layers/&lt;layer_name&gt;/&lt;layer_id&gt;</span></code></p>
 <p>Success:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -531,8 +567,8 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 </div>
 <p>Error :</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;error description&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;error_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;type of error&quot;</span>
+<span class="w">     </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;error description&quot;</span><span class="p">,</span>
+<span class="w">     </span><span class="nt">&quot;error_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;type of error&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -541,16 +577,17 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <section id="raster">
 <h2>Raster<a class="headerlink" href="#raster" title="Link to this heading">¶</a></h2>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../raster</span></code></p>
-<section id="id6">
-<h3>Parameters<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h3>
+<p>Method: <code class="docutils literal notranslate"><span class="pre">GET</span></code></p>
+<section id="id8">
+<h3>Parameters<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">lon</span></code>: The longitude.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">lat</span></code>: The latitude.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">layers</span></code>: The raster layers we want to query.</p></li>
 </ul>
 </section>
-<section id="id7">
-<h3>Result<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h3>
+<section id="id9">
+<h3>Result<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;&lt;layer&gt;&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span><span class="p">,</span>
     <span class="o">...</span>
@@ -559,21 +596,42 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 </div>
 </section>
 </section>
+<section id="vector-tiles">
+<h2>Vector tiles<a class="headerlink" href="#vector-tiles" title="Link to this heading">¶</a></h2>
+<p>URL: <code class="docutils literal notranslate"><span class="pre">.../vector_tiles/&lt;layer_name&gt;/&lt;z&gt;/&lt;x&gt;/&lt;y&gt;.pbf</span></code></p>
+<p>Method: <code class="docutils literal notranslate"><span class="pre">GET</span></code></p>
+<p>Returns a binary Mapbox vector tile for the given layer and XYZ tile coordinate. The route <code class="docutils literal notranslate"><span class="pre">/vector_tiles</span></code> (HEAD) exists only as a helper in templates.</p>
+</section>
 <section id="digital-elevation-model">
 <h2>Digital Elevation Model<a class="headerlink" href="#digital-elevation-model" title="Link to this heading">¶</a></h2>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../profile.json</span></code></p>
 <p>Method <code class="docutils literal notranslate"><span class="pre">POST</span></code></p>
-<section id="id8">
-<h3>Parameters<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h3>
+<section id="id10">
+<h3>Parameters<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h3>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">geom</span></code>: Geometry field used to get the profile data.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">layers</span></code>: On which layers; default is all.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">nbPoints</span></code>: Maximum number of points.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">geom</span></code>: Geometry to sample (GeoJSON encoded as a string).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nbPoints</span></code>: Maximum number of points along the path (required).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">layers</span></code>: Comma-separated raster layer names to use (optional, default all configured raster layers).</p></li>
 </ul>
 </section>
-<section id="id9">
-<h3>Result<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h3>
-<p>A JSON file, with ‘dist’, ‘value’, ‘x’, ‘y’.</p>
+<section id="id11">
+<h3>Result<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;profile&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;dist&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">distance</span><span class="o">&gt;</span><span class="p">,</span>
+            <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;&lt;layer&gt;&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span><span class="p">,</span>
+                <span class="o">...</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">easting</span><span class="o">&gt;</span><span class="p">,</span>
+            <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">northing</span><span class="o">&gt;</span>
+        <span class="p">},</span>
+        <span class="o">...</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </section>
 </section>
 <section id="shortener">
@@ -582,16 +640,16 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <h3>Create<a class="headerlink" href="#create" title="Link to this heading">¶</a></h3>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../short/create</span></code></p>
 <p>Method <code class="docutils literal notranslate"><span class="pre">POST</span></code></p>
-<section id="id10">
-<h4>Parameters<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h4>
+<section id="id12">
+<h4>Parameters<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">url</span></code>: URL to shorten.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">email</span></code>: Email address to send a message to (optional).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">message</span></code>: The user message to add in the email (optional).</p></li>
 </ul>
 </section>
-<section id="id11">
-<h4>Result<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h4>
+<section id="id13">
+<h4>Result<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;short_url&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">the</span> <span class="n">short</span> <span class="n">URL</span><span class="o">&gt;</span>
 <span class="p">}</span>
@@ -601,8 +659,20 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 </section>
 <section id="get">
 <h3>Get<a class="headerlink" href="#get" title="Link to this heading">¶</a></h3>
-<p>URL: <code class="docutils literal notranslate"><span class="pre">short/&lt;ref&gt;</span></code></p>
-<p>Result: code: 302, redirect to the original URL.</p>
+<p>URL: <code class="docutils literal notranslate"><span class="pre">.../s/&lt;ref&gt;</span></code></p>
+<p>Result: HTTP 302 redirect to the original URL.</p>
+</section>
+<section id="fetch">
+<h3>Fetch<a class="headerlink" href="#fetch" title="Link to this heading">¶</a></h3>
+<p>URL: <code class="docutils literal notranslate"><span class="pre">.../short/get/&lt;ref&gt;</span></code></p>
+<section id="id14">
+<h4>Result<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;long_url&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">the</span> <span class="n">original</span> <span class="n">URL</span><span class="o">&gt;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
 </section>
 </section>
 <section id="geometry-processing">
@@ -628,8 +698,8 @@ and the <code class="docutils literal notranslate"><span class="pre">&lt;geomB&g
 <p>This service create and returns the list of strings to translate for the localization in gettext POT format.</p>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../locale.pot</span></code></p>
 <p>Method: <code class="docutils literal notranslate"><span class="pre">GET</span></code></p>
-<section id="id12">
-<h3>Parameters<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h3>
+<section id="id15">
+<h3>Parameters<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h3>
 <blockquote>
 <div><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">interfaces</span></code>: List of interfaces we want to use.</p></li>
