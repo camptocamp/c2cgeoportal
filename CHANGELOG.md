@@ -1,3 +1,7 @@
+##### 2.9.0.383
+
+- [Backport 2.9] Add full-text search filter on category, and capabilities with catego… [c2cgeoportal#12585](https://github.com/camptocamp/c2cgeoportal/pull/12585)
+
 ##### 2.9.0.382
 
 - Audit Dpkg 2.9 [c2cgeoportal#12584](https://github.com/camptocamp/c2cgeoportal/pull/12584)
