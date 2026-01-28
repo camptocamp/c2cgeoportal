@@ -1,3 +1,7 @@
+##### 2.9.0.384
+
+- Update dependency cryptography to v46.0.4 (2.9) [c2cgeoportal#12590](https://github.com/camptocamp/c2cgeoportal/pull/12590)
+
 ##### 2.9.0.383
 
 - [Backport 2.9] Add full-text search filter on category, and capabilities with catego… [c2cgeoportal#12585](https://github.com/camptocamp/c2cgeoportal/pull/12585)
