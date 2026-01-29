@@ -443,7 +443,7 @@ Parameters
 * ``partitionlimit``: Maximum number of results per layer (optional, default ``0``, also capped by ``fulltextsearch.maxlimit``).
 * ``lang``: Language for the search (optional). If not provided, the locale negotiated from the request is used.
 * ``interface``: Filter results to a specific interface (optional). If not provided, only entries without interface are returned.
-* ``category``: Limit results to one category (``layer_name`` in the table, optional).
+* ``categories``: Limit results to categories. Comma-separated list of category (``layer_name`` in the table, optional).
 * ``ranksystem``: Set to ``ts_rank_cd`` to use that ranking; otherwise ``similarity`` is used.
 
 The language used for stemming is the locale negotiated from the request; there is no ``lang`` parameter.
