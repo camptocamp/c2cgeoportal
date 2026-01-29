@@ -132,7 +132,7 @@ class FullTextSearchView:
         _filter = and_(_filter, or_(FullTextSearch.lang.is_(None), FullTextSearch.lang == lang))
 
         if "category" in self.request.params:
-            categories = [c.strip() for c in self.request.params["category"].split(",")]
+            categories = [c.strip() for c in self.request.params["category"].split(",") if c.strip()]
             _filter = and_(_filter, FullTextSearch.layer_name.in_(categories))
 
         rank_system = self.request.params.get("ranksystem")
