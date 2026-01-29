@@ -497,6 +497,53 @@ class TestFulltextsearchView(TestCase):
         assert response.features[0].properties["label"] == "label2"
         assert response.features[0].properties["layer_name"] == "layer2"
 
+    def test_category_filter_comma_separated(self) -> None:
+        from geojson.feature import FeatureCollection
+
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
+
+        # Test filtering by multiple comma-separated categories "layer1,layer3"
+        # with authenticated user2 who has access to layer3
+        # Query "sol" should match layer1 entries, "vent" should match layer3
+        # We'll use a broad search to get results from multiple layers
+        request = self._create_dummy_request(
+            params={"query": "sol ven", "limit": 40, "category": "layer1,layer3"},
+            username="__test_user2",
+        )
+        fts = FullTextSearchView(request)
+        response = fts.fulltextsearch()
+        assert isinstance(response, FeatureCollection)
+        # Should get results from both layer1 (matching "sol") and layer3 (matching "ven")
+        assert len(response.features) == 3
+        layer_names = {f.properties["layer_name"] for f in response.features}
+        # Verify we get results from both layers
+        assert layer_names == {"layer1", "layer3"}
+
+        # Test with comma-separated categories including whitespace around commas
+        request = self._create_dummy_request(
+            params={"query": "tra sol", "limit": 40, "category": "layer1, layer2"},
+            username="__test_user1",
+        )
+        fts = FullTextSearchView(request)
+        response = fts.fulltextsearch()
+        assert isinstance(response, FeatureCollection)
+        # Should return 2 results from layer1 (whitespace should be trimmed)
+        assert len(response.features) == 2
+        assert response.features[0].properties["layer_name"] == "layer1"
+        assert response.features[1].properties["layer_name"] == "layer1"
+
+        # Test filtering with three comma-separated categories
+        request = self._create_dummy_request(
+            params={"query": "tra sol", "limit": 40, "category": "layer1,layer2,layer3"},
+            username="__test_user2",
+        )
+        fts = FullTextSearchView(request)
+        response = fts.fulltextsearch()
+        assert isinstance(response, FeatureCollection)
+        # Should return 2 results from layer1 only (query doesn't match layer2 or layer3)
+        assert len(response.features) == 2
+        assert all(f.properties["layer_name"] == "layer1" for f in response.features)
+
     def test_capabilities(self) -> None:
         from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
 
