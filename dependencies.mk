@@ -34,14 +34,6 @@ $(HOME)/.transifexrc:
 	echo "hostname = https://www.transifex.com" >> $@
 	echo "token = 1/dc02578696187cc29e4e6486f8611fdbfe60b235" >> $@
 
-.PHONY: transifex-private-credentials
-transifex-private-credentials:
-	echo "[https://www.transifex.com]" > $(HOME)/.transifexrc
-	echo "api_hostname  = https://api.transifex.com" >> $(HOME)/.transifexrc
-	echo "rest_hostname = https://rest.api.transifex.com" >> $(HOME)/.transifexrc
-	echo "hostname = https://www.transifex.com" >> $(HOME)/.transifexrc
-	echo "token = $$TRANSIFEX_TOKEN" >> $(HOME)/.transifexrc
-
 .PHONY: transifex-send
 transifex-send: .tx/config \
 		geoportal/c2cgeoportal_geoportal/locale/c2cgeoportal_geoportal.pot \
