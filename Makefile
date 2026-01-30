@@ -193,3 +193,11 @@ dev: $(ADMIN_PO_FILES) ## Generate a development environment that can be mount i
 	echo {} > geoportal/c2cgeoportal_geoportal/locale/fr.json
 	echo {} > geoportal/c2cgeoportal_geoportal/locale/de.json
 	echo {} > geoportal/c2cgeoportal_geoportal/locale/it.json
+
+.PHONY: transifex-private-credentials
+transifex-private-credentials:
+	echo "[https://www.transifex.com]" > $(HOME)/.transifexrc
+	echo "api_hostname  = https://api.transifex.com" >> $(HOME)/.transifexrc
+	echo "rest_hostname = https://rest.api.transifex.com" >> $(HOME)/.transifexrc
+	echo "hostname = https://www.transifex.com" >> $(HOME)/.transifexrc
+	echo "token = $$TRANSIFEX_TOKEN" >> $(HOME)/.transifexrc
