@@ -14,7 +14,7 @@
     'github>camptocamp/gs-renovate-config-preset:own.json5#1.7.0',
     'github>camptocamp/gs-renovate-config-preset:security.json5#1.7.0',
   ],
-  baseBranchPatterns: ['master', '2.6', '2.7', '2.8', '2.9'],
+  baseBranchPatterns: ['master', '2.7', '2.8', '2.9'],
   customManagers: [
     {
       matchStrings: ['(?<depName>[^\\s]+): (?<currentValue>[^\\s]+) # (?<datasource>[^\\s]+)'],
@@ -94,15 +94,6 @@
       enabled: false,
       matchFileNames: ['ci/requirements-project\\.txt'],
     },
-    /**
-     * No upgrade for packages sphinxcontrib-*, they requires a new major version of Sphinx
-     * For 2.6
-     */
-    {
-      enabled: false,
-      matchPackageNames: ['/^sphinxcontrib-.*/'],
-      matchFileNames: ['doc/Pipfile'],
-    },
     /** Disable upgrading the supported Python version */
     {
       matchFileNames: [
@@ -151,18 +142,12 @@
       enabled: false,
       matchDepNames: ['pyproj'],
     },
-    /** Don't update alabaster on branch 2.6 */
-    {
-      matchBaseBranches: ['2.6'],
-      enabled: false,
-      matchDepNames: ['alabaster'],
-    },
     /** Don't update the old workflow files */
     {
       matchFileNames: [
-        '.github/workflows/*-2-6.yaml',
         '.github/workflows/*-2-7.yaml',
         '.github/workflows/*-2-8.yaml',
+        '.github/workflows/*-2-9.yaml',
       ],
       enabled: false,
     },
