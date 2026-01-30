@@ -1,3 +1,7 @@
+##### 2.9.0.385
+
+- Update the mainly used Python version [c2cgeoportal#12596](https://github.com/camptocamp/c2cgeoportal/pull/12596)
+
 ##### 2.9.0.384
 
 - Update dependency cryptography to v46.0.4 (2.9) [c2cgeoportal#12590](https://github.com/camptocamp/c2cgeoportal/pull/12590)
