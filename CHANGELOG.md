@@ -1,3 +1,7 @@
+##### 2.9.0.386
+
+- Audit Dpkg 2.9 [c2cgeoportal#12602](https://github.com/camptocamp/c2cgeoportal/pull/12602)
+
 ##### 2.9.0.385
 
 - Update the mainly used Python version [c2cgeoportal#12596](https://github.com/camptocamp/c2cgeoportal/pull/12596)
