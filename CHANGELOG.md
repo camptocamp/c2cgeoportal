@@ -1,3 +1,7 @@
+##### 2.7.1.241
+
+- Update the mainly used Python version [c2cgeoportal#12594](https://github.com/camptocamp/c2cgeoportal/pull/12594)
+
 ##### 2.7.1.240
 
 - Audit Snyk check/fix 2.7 [c2cgeoportal#12583](https://github.com/camptocamp/c2cgeoportal/pull/12583)
