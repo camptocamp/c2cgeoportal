@@ -73,7 +73,7 @@ camptocamp/geomapfish-config:latest:
   ubuntu_24_04/libsmartcols1: 2.39.3-9ubuntu6.3
   ubuntu_24_04/libsqlite3-0: 3.45.1-1ubuntu2.5
   ubuntu_24_04/libss2: 1.47.0-2.4~exp1ubuntu4.1
-  ubuntu_24_04/libssl3t64: 3.0.13-0ubuntu3.6
+  ubuntu_24_04/libssl3t64: 3.0.13-0ubuntu3.7
   ubuntu_24_04/libstdc++6: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/libsystemd0: 255.4-1ubuntu8.10
   ubuntu_24_04/libtasn1-6: 4.19.0-3ubuntu0.24.04.2
@@ -91,7 +91,7 @@ camptocamp/geomapfish-config:latest:
   ubuntu_24_04/ncurses-base: 6.4+20240113-1ubuntu2
   ubuntu_24_04/ncurses-bin: 6.4+20240113-1ubuntu2
   ubuntu_24_04/netbase: '6.4'
-  ubuntu_24_04/openssl: 3.0.13-0ubuntu3.6
+  ubuntu_24_04/openssl: 3.0.13-0ubuntu3.7
   ubuntu_24_04/passwd: 1:4.13+dfsg1-4ubuntu3.2
   ubuntu_24_04/perl-base: 5.38.2-3.2ubuntu0.2
   ubuntu_24_04/procps: 2:4.0.4-4ubuntu3.2
@@ -414,8 +414,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libsqlite3-0: 3.37.2-2ubuntu0.5
   ubuntu_22_04/libss2: 1.46.5-2ubuntu1.2
   ubuntu_22_04/libssh-4: 0.9.6-2ubuntu0.22.04.5
-  ubuntu_22_04/libssl-dev: 3.0.2-0ubuntu1.20
-  ubuntu_22_04/libssl3: 3.0.2-0ubuntu1.20
+  ubuntu_22_04/libssl-dev: 3.0.2-0ubuntu1.21
+  ubuntu_22_04/libssl3: 3.0.2-0ubuntu1.21
   ubuntu_22_04/libstdc++6: 12.3.0-1ubuntu1~22.04.2
   ubuntu_22_04/libsuperlu5: 5.3.0+dfsg1-2
   ubuntu_22_04/libsystemd0: 249.11-0ubuntu3.16
@@ -501,7 +501,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/ncurses-base: 6.3-2ubuntu0.1
   ubuntu_22_04/ncurses-bin: 6.3-2ubuntu0.1
   ubuntu_22_04/ocl-icd-libopencl1: 2.2.14-3
-  ubuntu_22_04/openssl: 3.0.2-0ubuntu1.20
+  ubuntu_22_04/openssl: 3.0.2-0ubuntu1.21
   ubuntu_22_04/passwd: 1:4.8.1-2ubuntu2.2
   ubuntu_22_04/pdal: 2.3.0+ds-2ubuntu4
   ubuntu_22_04/perl: 5.34.0-3ubuntu1.5
@@ -861,8 +861,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libsqlite3-0: 3.37.2-2ubuntu0.5
   ubuntu_22_04/libss2: 1.46.5-2ubuntu1.2
   ubuntu_22_04/libssh-4: 0.9.6-2ubuntu0.22.04.5
-  ubuntu_22_04/libssl-dev: 3.0.2-0ubuntu1.20
-  ubuntu_22_04/libssl3: 3.0.2-0ubuntu1.20
+  ubuntu_22_04/libssl-dev: 3.0.2-0ubuntu1.21
+  ubuntu_22_04/libssl3: 3.0.2-0ubuntu1.21
   ubuntu_22_04/libstdc++6: 12.3.0-1ubuntu1~22.04.2
   ubuntu_22_04/libsuperlu5: 5.3.0+dfsg1-2
   ubuntu_22_04/libsystemd0: 249.11-0ubuntu3.16
@@ -948,7 +948,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/ncurses-base: 6.3-2ubuntu0.1
   ubuntu_22_04/ncurses-bin: 6.3-2ubuntu0.1
   ubuntu_22_04/ocl-icd-libopencl1: 2.2.14-3
-  ubuntu_22_04/openssl: 3.0.2-0ubuntu1.20
+  ubuntu_22_04/openssl: 3.0.2-0ubuntu1.21
   ubuntu_22_04/passwd: 1:4.8.1-2ubuntu2.2
   ubuntu_22_04/pdal: 2.3.0+ds-2ubuntu4
   ubuntu_22_04/perl: 5.34.0-3ubuntu1.5
@@ -1278,8 +1278,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40:
   ubuntu_24_04/libsqlite3-0: 3.45.1-1ubuntu2.5
   ubuntu_24_04/libss2: 1.47.0-2.4~exp1ubuntu4.1
   ubuntu_24_04/libssh-4: 0.10.6-2ubuntu0.2
-  ubuntu_24_04/libssl-dev: 3.0.13-0ubuntu3.6
-  ubuntu_24_04/libssl3t64: 3.0.13-0ubuntu3.6
+  ubuntu_24_04/libssl-dev: 3.0.13-0ubuntu3.7
+  ubuntu_24_04/libssl3t64: 3.0.13-0ubuntu3.7
   ubuntu_24_04/libstdc++6: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/libsystemd0: 255.4-1ubuntu8.10
   ubuntu_24_04/libtasn1-6: 4.19.0-3ubuntu0.24.04.2
@@ -1357,7 +1357,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40:
   ubuntu_24_04/ncurses-bin: 6.4+20240113-1ubuntu2
   ubuntu_24_04/netbase: '6.4'
   ubuntu_24_04/ocl-icd-libopencl1: 2.3.2-1build1
-  ubuntu_24_04/openssl: 3.0.13-0ubuntu3.6
+  ubuntu_24_04/openssl: 3.0.13-0ubuntu3.7
   ubuntu_24_04/passwd: 1:4.13+dfsg1-4ubuntu3.2
   ubuntu_24_04/perl: 5.38.2-3.2ubuntu0.2
   ubuntu_24_04/perl-base: 5.38.2-3.2ubuntu0.2
@@ -1684,8 +1684,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40-gdal3.10:
   ubuntu_24_04/libsqlite3-0: 3.45.1-1ubuntu2.5
   ubuntu_24_04/libss2: 1.47.0-2.4~exp1ubuntu4.1
   ubuntu_24_04/libssh-4: 0.10.6-2ubuntu0.2
-  ubuntu_24_04/libssl-dev: 3.0.13-0ubuntu3.6
-  ubuntu_24_04/libssl3t64: 3.0.13-0ubuntu3.6
+  ubuntu_24_04/libssl-dev: 3.0.13-0ubuntu3.7
+  ubuntu_24_04/libssl3t64: 3.0.13-0ubuntu3.7
   ubuntu_24_04/libstdc++6: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/libsystemd0: 255.4-1ubuntu8.10
   ubuntu_24_04/libtasn1-6: 4.19.0-3ubuntu0.24.04.2
@@ -1763,7 +1763,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40-gdal3.10:
   ubuntu_24_04/ncurses-bin: 6.4+20240113-1ubuntu2
   ubuntu_24_04/netbase: '6.4'
   ubuntu_24_04/ocl-icd-libopencl1: 2.3.2-1build1
-  ubuntu_24_04/openssl: 3.0.13-0ubuntu3.6
+  ubuntu_24_04/openssl: 3.0.13-0ubuntu3.7
   ubuntu_24_04/passwd: 1:4.13+dfsg1-4ubuntu3.2
   ubuntu_24_04/perl: 5.38.2-3.2ubuntu0.2
   ubuntu_24_04/perl-base: 5.38.2-3.2ubuntu0.2
@@ -2087,8 +2087,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_24_04/libsqlite3-0: 3.45.1-1ubuntu2.5
   ubuntu_24_04/libss2: 1.47.0-2.4~exp1ubuntu4.1
   ubuntu_24_04/libssh-4: 0.10.6-2ubuntu0.2
-  ubuntu_24_04/libssl-dev: 3.0.13-0ubuntu3.6
-  ubuntu_24_04/libssl3t64: 3.0.13-0ubuntu3.6
+  ubuntu_24_04/libssl-dev: 3.0.13-0ubuntu3.7
+  ubuntu_24_04/libssl3t64: 3.0.13-0ubuntu3.7
   ubuntu_24_04/libstdc++6: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/libsystemd0: 255.4-1ubuntu8.10
   ubuntu_24_04/libtasn1-6: 4.19.0-3ubuntu0.24.04.2
@@ -2164,7 +2164,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_24_04/ncurses-bin: 6.4+20240113-1ubuntu2
   ubuntu_24_04/netbase: '6.4'
   ubuntu_24_04/ocl-icd-libopencl1: 2.3.2-1build1
-  ubuntu_24_04/openssl: 3.0.13-0ubuntu3.6
+  ubuntu_24_04/openssl: 3.0.13-0ubuntu3.7
   ubuntu_24_04/passwd: 1:4.13+dfsg1-4ubuntu3.2
   ubuntu_24_04/perl: 5.38.2-3.2ubuntu0.2
   ubuntu_24_04/perl-base: 5.38.2-3.2ubuntu0.2
@@ -2494,8 +2494,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_24_04/libsqlite3-0: 3.45.1-1ubuntu2.5
   ubuntu_24_04/libss2: 1.47.0-2.4~exp1ubuntu4.1
   ubuntu_24_04/libssh-4: 0.10.6-2ubuntu0.2
-  ubuntu_24_04/libssl-dev: 3.0.13-0ubuntu3.6
-  ubuntu_24_04/libssl3t64: 3.0.13-0ubuntu3.6
+  ubuntu_24_04/libssl-dev: 3.0.13-0ubuntu3.7
+  ubuntu_24_04/libssl3t64: 3.0.13-0ubuntu3.7
   ubuntu_24_04/libstdc++6: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/libsystemd0: 255.4-1ubuntu8.10
   ubuntu_24_04/libtasn1-6: 4.19.0-3ubuntu0.24.04.2
@@ -2571,7 +2571,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_24_04/ncurses-bin: 6.4+20240113-1ubuntu2
   ubuntu_24_04/netbase: '6.4'
   ubuntu_24_04/ocl-icd-libopencl1: 2.3.2-1build1
-  ubuntu_24_04/openssl: 3.0.13-0ubuntu3.6
+  ubuntu_24_04/openssl: 3.0.13-0ubuntu3.7
   ubuntu_24_04/passwd: 1:4.13+dfsg1-4ubuntu3.2
   ubuntu_24_04/perl: 5.38.2-3.2ubuntu0.2
   ubuntu_24_04/perl-base: 5.38.2-3.2ubuntu0.2
@@ -2898,8 +2898,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/libsqlite3-0: 3.45.1-1ubuntu2.5
   ubuntu_24_04/libss2: 1.47.0-2.4~exp1ubuntu4.1
   ubuntu_24_04/libssh-4: 0.10.6-2ubuntu0.2
-  ubuntu_24_04/libssl-dev: 3.0.13-0ubuntu3.6
-  ubuntu_24_04/libssl3t64: 3.0.13-0ubuntu3.6
+  ubuntu_24_04/libssl-dev: 3.0.13-0ubuntu3.7
+  ubuntu_24_04/libssl3t64: 3.0.13-0ubuntu3.7
   ubuntu_24_04/libstdc++6: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/libsystemd0: 255.4-1ubuntu8.10
   ubuntu_24_04/libtasn1-6: 4.19.0-3ubuntu0.24.04.2
@@ -2977,7 +2977,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/ncurses-bin: 6.4+20240113-1ubuntu2
   ubuntu_24_04/netbase: '6.4'
   ubuntu_24_04/ocl-icd-libopencl1: 2.3.2-1build1
-  ubuntu_24_04/openssl: 3.0.13-0ubuntu3.6
+  ubuntu_24_04/openssl: 3.0.13-0ubuntu3.7
   ubuntu_24_04/passwd: 1:4.13+dfsg1-4ubuntu3.2
   ubuntu_24_04/perl: 5.38.2-3.2ubuntu0.2
   ubuntu_24_04/perl-base: 5.38.2-3.2ubuntu0.2
@@ -3301,8 +3301,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_24_04/libsqlite3-0: 3.45.1-1ubuntu2.5
   ubuntu_24_04/libss2: 1.47.0-2.4~exp1ubuntu4.1
   ubuntu_24_04/libssh-4: 0.10.6-2ubuntu0.2
-  ubuntu_24_04/libssl-dev: 3.0.13-0ubuntu3.6
-  ubuntu_24_04/libssl3t64: 3.0.13-0ubuntu3.6
+  ubuntu_24_04/libssl-dev: 3.0.13-0ubuntu3.7
+  ubuntu_24_04/libssl3t64: 3.0.13-0ubuntu3.7
   ubuntu_24_04/libstdc++6: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/libsystemd0: 255.4-1ubuntu8.10
   ubuntu_24_04/libtasn1-6: 4.19.0-3ubuntu0.24.04.2
@@ -3378,7 +3378,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_24_04/ncurses-bin: 6.4+20240113-1ubuntu2
   ubuntu_24_04/netbase: '6.4'
   ubuntu_24_04/ocl-icd-libopencl1: 2.3.2-1build1
-  ubuntu_24_04/openssl: 3.0.13-0ubuntu3.6
+  ubuntu_24_04/openssl: 3.0.13-0ubuntu3.7
   ubuntu_24_04/passwd: 1:4.13+dfsg1-4ubuntu3.2
   ubuntu_24_04/perl: 5.38.2-3.2ubuntu0.2
   ubuntu_24_04/perl-base: 5.38.2-3.2ubuntu0.2
@@ -3727,8 +3727,8 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/libsratom-0-0: 0.6.16-1build1
   ubuntu_24_04/libss2: 1.47.0-2.4~exp1ubuntu4.1
   ubuntu_24_04/libssh-4: 0.10.6-2ubuntu0.2
-  ubuntu_24_04/libssl-dev: 3.0.13-0ubuntu3.6
-  ubuntu_24_04/libssl3t64: 3.0.13-0ubuntu3.6
+  ubuntu_24_04/libssl-dev: 3.0.13-0ubuntu3.7
+  ubuntu_24_04/libssl3t64: 3.0.13-0ubuntu3.7
   ubuntu_24_04/libstdc++-13-dev: 13.3.0-6ubuntu2~24.04
   ubuntu_24_04/libstdc++6: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/libstemmer0d: 2.2.0-4build1
@@ -4139,7 +4139,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/node-yargs-parser: 21.1.1+~21.0.0-4
   ubuntu_24_04/nodejs: 18.19.1+dfsg-6ubuntu5
   ubuntu_24_04/npm: 9.2.0~ds1-2
-  ubuntu_24_04/openssl: 3.0.13-0ubuntu3.6
+  ubuntu_24_04/openssl: 3.0.13-0ubuntu3.7
   ubuntu_24_04/packagekit: 1.2.8-2ubuntu1.2
   ubuntu_24_04/passwd: 1:4.13+dfsg1-4ubuntu3.2
   ubuntu_24_04/perl: 5.38.2-3.2ubuntu0.2
@@ -4455,8 +4455,8 @@ camptocamp/geomapfish:latest:
   ubuntu_24_04/libsratom-0-0: 0.6.16-1build1
   ubuntu_24_04/libss2: 1.47.0-2.4~exp1ubuntu4.1
   ubuntu_24_04/libssh-4: 0.10.6-2ubuntu0.2
-  ubuntu_24_04/libssl-dev: 3.0.13-0ubuntu3.6
-  ubuntu_24_04/libssl3t64: 3.0.13-0ubuntu3.6
+  ubuntu_24_04/libssl-dev: 3.0.13-0ubuntu3.7
+  ubuntu_24_04/libssl3t64: 3.0.13-0ubuntu3.7
   ubuntu_24_04/libstdc++6: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/libstemmer0d: 2.2.0-4build1
   ubuntu_24_04/libsystemd-shared: 255.4-1ubuntu8.10
@@ -4858,7 +4858,7 @@ camptocamp/geomapfish:latest:
   ubuntu_24_04/node-yargs-parser: 21.1.1+~21.0.0-4
   ubuntu_24_04/nodejs: 18.19.1+dfsg-6ubuntu5
   ubuntu_24_04/npm: 9.2.0~ds1-2
-  ubuntu_24_04/openssl: 3.0.13-0ubuntu3.6
+  ubuntu_24_04/openssl: 3.0.13-0ubuntu3.7
   ubuntu_24_04/packagekit: 1.2.8-2ubuntu1.2
   ubuntu_24_04/passwd: 1:4.13+dfsg1-4ubuntu3.2
   ubuntu_24_04/perl: 5.38.2-3.2ubuntu0.2
@@ -5157,8 +5157,8 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_24_04/libsratom-0-0: 0.6.16-1build1
   ubuntu_24_04/libss2: 1.47.0-2.4~exp1ubuntu4.1
   ubuntu_24_04/libssh-4: 0.10.6-2ubuntu0.2
-  ubuntu_24_04/libssl-dev: 3.0.13-0ubuntu3.6
-  ubuntu_24_04/libssl3t64: 3.0.13-0ubuntu3.6
+  ubuntu_24_04/libssl-dev: 3.0.13-0ubuntu3.7
+  ubuntu_24_04/libssl3t64: 3.0.13-0ubuntu3.7
   ubuntu_24_04/libstdc++6: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/libstemmer0d: 2.2.0-4build1
   ubuntu_24_04/libsystemd-shared: 255.4-1ubuntu8.10
@@ -5560,7 +5560,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_24_04/node-yargs-parser: 21.1.1+~21.0.0-4
   ubuntu_24_04/nodejs: 18.19.1+dfsg-6ubuntu5
   ubuntu_24_04/npm: 9.2.0~ds1-2
-  ubuntu_24_04/openssl: 3.0.13-0ubuntu3.6
+  ubuntu_24_04/openssl: 3.0.13-0ubuntu3.7
   ubuntu_24_04/packagekit: 1.2.8-2ubuntu1.2
   ubuntu_24_04/passwd: 1:4.13+dfsg1-4ubuntu3.2
   ubuntu_24_04/perl: 5.38.2-3.2ubuntu0.2
