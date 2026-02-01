@@ -1,3 +1,7 @@
+##### 2.9.0.388
+
+- Update CI dependencies (2.9) [c2cgeoportal#12614](https://github.com/camptocamp/c2cgeoportal/pull/12614)
+
 ##### 2.9.0.387
 
 - Update dependency SQLAlchemy to v2.0.46 (2.9) [c2cgeoportal#12615](https://github.com/camptocamp/c2cgeoportal/pull/12615)
