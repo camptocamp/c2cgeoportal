@@ -34,7 +34,7 @@
     "expose-loader": "5.0.1",
     "extract-loader": "5.1.0",
     "file-loader": "6.2.0",
-    "html-webpack-plugin": "5.6.5",
+    "html-webpack-plugin": "5.6.6",
     "loader-utils": "3.3.1",
     "magic-comments-loader": "2.1.6",
     "mini-css-extract-plugin": "2.9.4",
@@ -51,7 +51,7 @@
     "url-parse": "1.5.10",
     "webpack": "5.96.1",
     "webpack-cli": "5.1.4",
-    "webpack-dev-server": "5.2.2",
+    "webpack-dev-server": "5.2.3",
     "webpack-merge": "6.0.1"
   }
 }
