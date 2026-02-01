@@ -1,3 +1,7 @@
+##### 2.9.0.387
+
+- Update dependency SQLAlchemy to v2.0.46 (2.9) [c2cgeoportal#12615](https://github.com/camptocamp/c2cgeoportal/pull/12615)
+
 ##### 2.9.0.386
 
 - Audit Dpkg 2.9 [c2cgeoportal#12602](https://github.com/camptocamp/c2cgeoportal/pull/12602)
