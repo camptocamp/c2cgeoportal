@@ -1,3 +1,8 @@
+##### 2.9.0.389
+
+- Update CI dependencies (2.9) [ngeo#10030](https://github.com/camptocamp/ngeo/pull/10030)
+- Update webpack (2.9) [ngeo#10031](https://github.com/camptocamp/ngeo/pull/10031)
+
 ##### 2.9.0.388
 
 - Update CI dependencies (2.9) [c2cgeoportal#12614](https://github.com/camptocamp/c2cgeoportal/pull/12614)
