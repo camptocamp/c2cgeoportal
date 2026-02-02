@@ -1,3 +1,10 @@
+##### 2.8.1.284
+
+- Update dependency gitpython to v3.1.46 (2.8) [c2cgeoportal#12613](https://github.com/camptocamp/c2cgeoportal/pull/12613)
+- Update dependency wheel to v0.46.2 [SECURITY] (2.8) [ngeo#10020](https://github.com/camptocamp/ngeo/pull/10020)
+- Update dependency webpack-dev-server to v5.2.3 (2.8) [ngeo#10028](https://github.com/camptocamp/ngeo/pull/10028)
+- Update dependency wheel to v0.46.3 (2.8) [ngeo#10029](https://github.com/camptocamp/ngeo/pull/10029)
+
 ##### 2.8.1.283
 
 - Update the mainly used Python version [c2cgeoportal#12595](https://github.com/camptocamp/c2cgeoportal/pull/12595)
