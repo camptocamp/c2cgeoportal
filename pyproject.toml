@@ -1,5 +1,5 @@
 [tool.ruff]
-target-version = "py311"
+target-version = "py312"
 line-length = 110
 fix = true
 
@@ -25,7 +25,7 @@ known-first-party = ["c2cgeoportal_commons", "c2cgeoportal_geoportal", "c2cgeopo
 version = "0.0.0"
 
 [tool.poetry.dependencies]
-python = ">=3.11,<4"
+python = ">=3.12,<4"
 alembic = "1.18.3" # geoportal
 "c2c.template" = "2.4.2" # geoportal
 c2cgeoform = "2.5.0" # commons
@@ -111,11 +111,10 @@ c2cciutils = { version = "1.5.14", extras = ["checks"] }
 classifiers = [
     'Programming Language :: Python',
     'Programming Language :: Python :: 3',
-    'Programming Language :: Python :: 3.11',
     'Programming Language :: Python :: 3.12',
     'Programming Language :: Python :: 3.13',
 ]
 dynamic = ["dependencies", "version"]
 name = "c2cgeoportal"
 description = "Not used"
-requires-python = ">=3.11"
+requires-python = ">=3.12"
