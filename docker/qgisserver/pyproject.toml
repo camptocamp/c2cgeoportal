@@ -1,14 +1,8 @@
 [tool.ruff]
 target-version = 'py310'
 
-[tool.poetry]
-name = 'c2cgeoportal'
-version = '0.0.0'
-description = 'Not used'
-authors = []
-
 [tool.poetry.dependencies]
-python = ">=3.10,<3.13"
+python = ">=3.10,<4"
 c2cwsgiutils = { extras = ["broadcast"], version = "6.1.9" }
 papyrus = "2.6.2" # commons
 transaction = "5.0" # commons
@@ -29,3 +23,9 @@ prospector-profile-utils  = "1.26.5"
 ruff = "0.14.10"
 types-pyyaml = "6.0.12.20250915"
 pytest = "9.0.2"
+
+[project]
+name = 'c2cgeoportal'
+version = '0.0.0'
+description = 'Not used'
+authors = []

@@ -26,7 +26,7 @@ version = "0.0.0"
 
 [tool.poetry.dependencies]
 python = ">=3.12,<4"
-alembic = "1.18.3" # geoportal
+alembic = "1.17.2" # geoportal
 "c2c.template" = "2.4.2" # geoportal
 c2cgeoform = "2.5.0" # commons
 colander = "2.0" # commons, admin
