@@ -130,6 +130,18 @@
       enabled: false,
       matchDepNames: ['alabaster'],
     },
+    /** Don't update requests on branch 2.7 */
+    {
+      matchBaseBranches: ['2.7'],
+      enabled: false,
+      matchDepNames: ['requests'],
+    },
+    /** Don't update gitpython on branch 2.7 */
+    {
+      matchBaseBranches: ['2.7'],
+      enabled: false,
+      matchDepNames: ['gitpython'],
+    },
     /** Don't update types-pyyaml on branch 2.8 */
     {
       matchBaseBranches: ['2.8'],
