@@ -1,4 +1,4 @@
-# Copyright (c) 2014-2025, Camptocamp SA
+# Copyright (c) 2014-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -32,7 +32,7 @@ import xml.sax.handler  # nosec
 import xml.sax.xmlreader  # nosec
 from collections.abc import Callable
 from io import StringIO
-from typing import Any, TypeAlias
+from typing import Any
 from xml.sax.saxutils import XMLFilterBase, XMLGenerator  # nosec
 
 import defusedxml.expatreader
@@ -59,7 +59,7 @@ from c2cgeoportal_geoportal.lib.layers import (
 _CACHE_REGION = caching.get_region("std")
 _LOG = logging.getLogger(__name__)
 
-ContentMetadata: TypeAlias = ContentMetadata111 | ContentMetadata130
+type ContentMetadata = ContentMetadata111 | ContentMetadata130
 
 
 @_CACHE_REGION.cache_on_arguments()

@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2025, Camptocamp SA
+# Copyright (c) 2017-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,7 +27,7 @@
 
 
 from functools import partial
-from typing import Generic, TypeVar, cast
+from typing import cast
 
 import sqlalchemy
 import sqlalchemy.orm.query
@@ -39,10 +39,8 @@ from c2cgeoportal_commons.models.main import Interface, Layer
 
 _list_field = partial(ListField, Layer)
 
-_T = TypeVar("_T", bound=Layer)
 
-
-class LayerViews(TreeItemViews[_T], Generic[_T]):
+class LayerViews[T: Layer](TreeItemViews[T]):
     """The layer administration view."""
 
     _list_fields = [  # noqa: RUF012

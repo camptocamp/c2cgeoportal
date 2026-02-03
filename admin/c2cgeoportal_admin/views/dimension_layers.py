@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2025, Camptocamp SA
+# Copyright (c) 2017-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -28,7 +28,7 @@
 
 from functools import partial
 from itertools import groupby
-from typing import Generic, TypeVar, cast
+from typing import cast
 
 import sqlalchemy.orm.query
 from c2cgeoform.views.abstract_views import ListField
@@ -39,10 +39,8 @@ from c2cgeoportal_commons.models.main import DimensionLayer
 
 _list_field = partial(ListField, DimensionLayer)
 
-_T = TypeVar("_T", bound=DimensionLayer)
 
-
-class DimensionLayerViews(LayerViews[_T], Generic[_T]):
+class DimensionLayerViews[T: DimensionLayer](LayerViews[T]):
     """The layer with dimensions administration view."""
 
     _extra_list_fields = [  # noqa: RUF005
