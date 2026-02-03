@@ -1,3 +1,7 @@
+##### 2.8.1.285
+
+- Update dependency pip to v26 [SECURITY] (2.8) [c2cgeoportal#12623](https://github.com/camptocamp/c2cgeoportal/pull/12623)
+
 ##### 2.8.1.284
 
 - Update dependency gitpython to v3.1.46 (2.8) [c2cgeoportal#12613](https://github.com/camptocamp/c2cgeoportal/pull/12613)
