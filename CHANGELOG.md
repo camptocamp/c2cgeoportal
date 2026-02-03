@@ -1,3 +1,8 @@
+##### 2.9.0.391
+
+- Support comma separated list of categories in FullText-search [c2cgeoportal#12591](https://github.com/camptocamp/c2cgeoportal/pull/12591)
+- Update dependency pip to v26 [SECURITY] (2.9) [c2cgeoportal#12624](https://github.com/camptocamp/c2cgeoportal/pull/12624)
+
 ##### 2.9.0.390
 
 - Update dependency eslint to v9 [SECURITY] (2.9) [c2cgeoportal#12619](https://github.com/camptocamp/c2cgeoportal/pull/12619)
