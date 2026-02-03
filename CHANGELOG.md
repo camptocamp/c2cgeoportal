@@ -1,3 +1,7 @@
+##### 2.9.0.392
+
+- Audit Dpkg 2.9 [c2cgeoportal#12626](https://github.com/camptocamp/c2cgeoportal/pull/12626)
+
 ##### 2.9.0.391
 
 - Support comma separated list of categories in FullText-search [c2cgeoportal#12591](https://github.com/camptocamp/c2cgeoportal/pull/12591)
