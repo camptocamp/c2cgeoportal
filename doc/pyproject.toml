@@ -1,4 +1,4 @@
-[tool.poetry]
+[project]
 name = 'c2cgeoportal'
 version = '0.0.0'
 description = 'Not used'

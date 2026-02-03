@@ -21,9 +21,6 @@ convention = "numpy"
 known-third-party = ["c2cwsgiutils", "c2cgeoform"]
 known-first-party = ["c2cgeoportal_commons", "c2cgeoportal_geoportal", "c2cgeoportal_admin", "geomapfish_qgisserver"]
 
-[tool.poetry]
-version = "0.0.0"
-
 [tool.poetry.dependencies]
 python = ">=3.12,<4"
 alembic = "1.17.2" # geoportal
@@ -108,6 +105,9 @@ prek = "0.3.1"
 c2cciutils = { version = "1.5.14", extras = ["checks"] }
 
 [project]
+name = "c2cgeoportal"
+version = "0.0.0"
+description = "Not used"
 classifiers = [
     'Programming Language :: Python',
     'Programming Language :: Python :: 3',
@@ -115,6 +115,4 @@ classifiers = [
     'Programming Language :: Python :: 3.13',
 ]
 dynamic = ["dependencies", "version"]
-name = "c2cgeoportal"
-description = "Not used"
 requires-python = ">=3.12"
