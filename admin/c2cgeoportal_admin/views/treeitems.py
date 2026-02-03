@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2025, Camptocamp SA
+# Copyright (c) 2017-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,7 +27,6 @@
 
 
 from functools import partial
-from typing import Generic, TypeVar
 
 import sqlalchemy
 from c2cgeoform.views.abstract_views import ListField, SaveResponse
@@ -46,10 +45,7 @@ from c2cgeoportal_commons.models.main import (
 _list_field = partial(ListField, TreeItem)
 
 
-_T = TypeVar("_T", bound=TreeItem)
-
-
-class TreeItemViews(LoggedViews[_T], Generic[_T]):
+class TreeItemViews[T: TreeItem](LoggedViews[T]):
     """The admin tree item view."""
 
     _list_fields = [  # noqa: RUF012
