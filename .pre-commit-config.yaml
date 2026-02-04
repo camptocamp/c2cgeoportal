@@ -124,7 +124,7 @@ repos:
         exclude: |-
           ^geoportal/c2cgeoportal_geoportal/scaffolds/advance_create/{{cookiecutter.project}}/geoportal/{{cookiecutter.package}}_geoportal/__init__\.py$
   - repo: https://github.com/PyCQA/prospector
-    rev: v1.17.3
+    rev: v1.18.0
     hooks:
       - id: prospector
         args:
