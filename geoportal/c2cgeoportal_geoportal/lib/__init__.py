@@ -148,7 +148,7 @@ def get_setting(settings: Any, path: Iterable[str], default: Any = None) -> Any:
             value = value[p]
         else:
             return default
-    return value if value else default
+    return value or default
 
 
 @_CACHE_REGION_OBJ.cache_on_arguments()
