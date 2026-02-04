@@ -152,7 +152,7 @@ def treeitem_edit_url(request: pyramid.request.Request, treeitem: TreeGroup) -> 
     """Get the tree item editing URL."""
     if treeitem.item_type is None:
         return None
-    table = ITEM_TYPE_ROUTE_MAP.get(treeitem.item_type, None)
+    table = ITEM_TYPE_ROUTE_MAP.get(treeitem.item_type)
     if table is None:
         _LOG.warning("%s not found in ITEM_TYPE_ROUTE_MAP", treeitem.item_type)
         return None

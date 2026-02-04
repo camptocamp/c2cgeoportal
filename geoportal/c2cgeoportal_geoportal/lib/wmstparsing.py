@@ -98,7 +98,7 @@ class TimeInformation:
                 self.mode = mode
 
     def merge_widget(self, widget: str | None) -> None:
-        widget = widget if widget else "slider"
+        widget = widget or "slider"
         assert widget is not None
 
         if self.widget is not None:
