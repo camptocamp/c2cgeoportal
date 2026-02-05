@@ -1,3 +1,7 @@
+##### 2.8.1.286
+
+- Audit Snyk check/fix 2.8 [c2cgeoportal#12621](https://github.com/camptocamp/c2cgeoportal/pull/12621)
+
 ##### 2.8.1.285
 
 - Update dependency pip to v26 [SECURITY] (2.8) [c2cgeoportal#12623](https://github.com/camptocamp/c2cgeoportal/pull/12623)
