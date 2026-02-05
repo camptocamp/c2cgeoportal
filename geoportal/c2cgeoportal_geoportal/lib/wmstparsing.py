@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2025, Camptocamp SA
+# Copyright (c) 2013-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -98,7 +98,7 @@ class TimeInformation:
                 self.mode = mode
 
     def merge_widget(self, widget: str | None) -> None:
-        widget = widget if widget else "slider"
+        widget = widget or "slider"
         assert widget is not None
 
         if self.widget is not None:

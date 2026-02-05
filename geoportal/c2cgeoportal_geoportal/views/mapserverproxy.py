@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2025, Camptocamp SA
+# Copyright (c) 2011-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -93,7 +93,7 @@ class MapservProxy(OGCProxy):
             if "request" not in self.lower_params:
                 self.params = {}
             elif self.ogc_server.type != main.OGCSERVER_TYPE_QGISSERVER or "user_id" not in self.params:
-                use_cache = self.lower_params["request"] in ("getlegendgraphic",)
+                use_cache = self.lower_params["request"] == "getlegendgraphic"
 
                 # no user_id and role_id or cached queries
                 if use_cache and "user_id" in self.params:
