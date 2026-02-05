@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2025, Camptocamp SA
+# Copyright (c) 2011-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -161,7 +161,7 @@ class Login:
                             json.dumps(
                                 {
                                     "username": user.username,
-                                    "is_password_changed": False,
+                                    "is_password_changed": False,  # nosec
                                     "two_factor_enable": self.two_factor_auth,
                                     "two_factor_totp_secret": user.tech_data["2fa_totp_secret"],
                                     "otp_uri": pyotp.TOTP(user.tech_data["2fa_totp_secret"]).provisioning_uri(
@@ -193,7 +193,7 @@ class Login:
                         json.dumps(
                             {
                                 "username": user.username,
-                                "is_password_changed": False,
+                                "is_password_changed": False,  # nosec
                                 "two_factor_enable": self.two_factor_auth,
                             },
                         ),
