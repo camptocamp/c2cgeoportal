@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2025, Camptocamp SA
+# Copyright (c) 2011-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -73,14 +73,14 @@ def create_dummy_request(additional_settings=None, *args, **kargs):
     request.is_valid_referer = True
     request.scheme = "https"
     request.static_url = lambda url: "http://example.com/dummy/static/url"
-    request.route_url = (
-        lambda name, **kwargs: "http://example.com/"
-        + name
-        + "/view?"
-        + urllib.parse.urlencode(kwargs.get("_query", {}))
+    request.route_url = lambda name, **kwargs: (
+        "http://example.com/" + name + "/view?" + urllib.parse.urlencode(kwargs.get("_query", {}))
     )
-    request.current_route_url = lambda **kwargs: "http://example.com/current/view?" + urllib.parse.urlencode(
-        kwargs.get("_query", {}),
+    request.current_route_url = lambda **kwargs: (
+        "http://example.com/current/view?"
+        + urllib.parse.urlencode(
+            kwargs.get("_query", {}),
+        )
     )
     request.get_organization_role = lambda role_type: role_type
     request.get_organization_interface = lambda interface: interface
