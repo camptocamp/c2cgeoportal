@@ -1,3 +1,7 @@
+##### 2.8.1.287
+
+- Audit Cleanup Renovate configuration for version 2.8 [ngeo#10044](https://github.com/camptocamp/ngeo/pull/10044)
+
 ##### 2.8.1.286
 
 - Audit Snyk check/fix 2.8 [c2cgeoportal#12621](https://github.com/camptocamp/c2cgeoportal/pull/12621)
