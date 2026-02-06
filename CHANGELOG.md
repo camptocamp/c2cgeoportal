@@ -1,3 +1,7 @@
+##### 2.7.1.243
+
+- Audit Cleanup Renovate configuration for version 2.7 [c2cgeoportal#12633](https://github.com/camptocamp/c2cgeoportal/pull/12633)
+
 ##### 2.7.1.242
 
 - Update dependency cryptography to v46.0.4 (2.7) [c2cgeoportal#12121](https://github.com/camptocamp/c2cgeoportal/pull/12121)
