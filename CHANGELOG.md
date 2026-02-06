@@ -1,3 +1,7 @@
+##### 2.9.0.394
+
+- Update dependency webpack to v5.104.1 [SECURITY] (2.9) [c2cgeoportal#12631](https://github.com/camptocamp/c2cgeoportal/pull/12631)
+
 ##### 2.9.0.393
 
 - Audit Dpkg 2.9 [c2cgeoportal#12628](https://github.com/camptocamp/c2cgeoportal/pull/12628)
