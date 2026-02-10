@@ -1,3 +1,7 @@
+##### 2.7.1.244
+
+- Use the binary version of rasterio to fix build [c2cgeoportal#12638](https://github.com/camptocamp/c2cgeoportal/pull/12638)
+
 ##### 2.7.1.243
 
 - Audit Cleanup Renovate configuration for version 2.7 [c2cgeoportal#12633](https://github.com/camptocamp/c2cgeoportal/pull/12633)
