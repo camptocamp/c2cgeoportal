@@ -40,7 +40,7 @@ RUN python3 -m pip install --disable-pip-version-check --no-cache-dir --requirem
 
 COPY Pipfile Pipfile.lock /tmp/
 # hadolint disable=DL3003
-RUN cd /tmp && PIP_NO_BINARY=fiona,rasterio,shapely PROJ_DIR=/usr/local/ pipenv sync --system --clear && \
+RUN cd /tmp && PIP_NO_BINARY=fiona,shapely PROJ_DIR=/usr/local/ pipenv sync --system --clear && \
     rm --recursive --force /usr/local/lib/python3.*/dist-packages/tests/ /tmp/* /root/.cache/* && \
     strip /usr/local/lib/python3.*/dist-packages/*/*.so && \
     apt-get auto-remove --assume-yes binutils gcc g++
