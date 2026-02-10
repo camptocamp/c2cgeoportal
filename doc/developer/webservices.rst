@@ -443,10 +443,24 @@ Parameters
 * ``partitionlimit``: Maximum number of results per layer (optional, default ``0``, also capped by ``fulltextsearch.maxlimit``).
 * ``lang``: Language for the search (optional). If not provided, the locale negotiated from the request is used.
 * ``interface``: Filter results to a specific interface (optional). If not provided, only entries without interface are returned.
-* ``categories``: Limit results to categories. Comma-separated list of category (``layer_name`` in the table, optional).
+* ``categories``: Limit results to categories (optional). Comma-separated list of category (``layer_name`` in the table). In order to retrieve matches where ``layer_name`` is ``NULL`` by the same request you will also have to specify parameter ``null_category``.
+* ``null_category``: Optional, default ``false``, used to get the items with ``NULL`` category (``layer_name`` in the table).
 * ``ranksystem``: Set to ``ts_rank_cd`` to use that ranking; otherwise ``similarity`` is used.
 
 The language used for stemming is the locale negotiated from the request; there is no ``lang`` parameter.
+
+``categories`` and ``null_category`` parameters combinations table:
++-----------------+----------------------+-------------------------------------------------------------------+
+| ``categories``  | ``null_category``    | Result                                                            |
++=================+======================+===================================================================+
+| not set         | ``false`` or not set | all matches, regardless of ``layer_name``.                        |
++-----------------+----------------------+-------------------------------------------------------------------+
+| not set         | ``true``             | only matches where ``layer_name`` is ``NULL``.                    |
++-----------------+----------------------+-------------------------------------------------------------------+
+| set             | ``false`` or not set | matches where ``layer_name`` is in ``categories``.                |
++-----------------+----------------------+-------------------------------------------------------------------+
+| set             | ``true``             | matches where ``layer_name`` is in ``categories`` or is ``NULL``. |
++-----------------+----------------------+-------------------------------------------------------------------+
 
 Result
 ------
