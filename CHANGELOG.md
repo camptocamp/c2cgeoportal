@@ -1,3 +1,9 @@
+##### 2.9.0.396
+
+- Add capability to don't group the numbers [ngeo#10036](https://github.com/camptocamp/ngeo/pull/10036)
+- Update dependency webpack to v5.104.1 [SECURITY] (2.9) [ngeo#10042](https://github.com/camptocamp/ngeo/pull/10042)
+- Audit Cleanup Renovate configuration for version 2.9 [ngeo#10045](https://github.com/camptocamp/ngeo/pull/10045)
+
 ##### 2.9.0.395
 
 - Audit Dpkg 2.9 [c2cgeoportal#12634](https://github.com/camptocamp/c2cgeoportal/pull/12634)
