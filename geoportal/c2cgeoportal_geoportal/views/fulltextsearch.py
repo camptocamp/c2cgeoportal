@@ -131,9 +131,21 @@ class FullTextSearchView:
 
         _filter = and_(_filter, or_(FullTextSearch.lang.is_(None), FullTextSearch.lang == lang))
 
+        null_category = self.request.params.get("null_category", "false").lower() in ("true", "1", "yes")
         if "categories" in self.request.params:
             categories = [c.strip() for c in self.request.params["categories"].split(",") if c.strip() != ""]
-            _filter = and_(_filter, FullTextSearch.layer_name.in_(categories))
+            if null_category:
+                _filter = and_(
+                    _filter,
+                    or_(
+                        FullTextSearch.layer_name.in_(categories),
+                        FullTextSearch.layer_name.is_(None),
+                    ),
+                )
+            else:
+                _filter = and_(_filter, FullTextSearch.layer_name.in_(categories))
+        elif null_category:
+            _filter = and_(_filter, FullTextSearch.layer_name.is_(None))
 
         rank_system = self.request.params.get("ranksystem")
         if rank_system == "ts_rank_cd":
