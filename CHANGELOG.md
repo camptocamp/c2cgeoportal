@@ -1,3 +1,7 @@
+##### 2.9.0.397
+
+- Audit Dpkg 2.9 [c2cgeoportal#12641](https://github.com/camptocamp/c2cgeoportal/pull/12641)
+
 ##### 2.9.0.396
 
 - Add capability to don't group the numbers [ngeo#10036](https://github.com/camptocamp/ngeo/pull/10036)
