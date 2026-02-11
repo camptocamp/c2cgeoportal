@@ -1,3 +1,7 @@
+##### 2.8.1.289
+
+- Update dependency cryptography to v46.0.5 [SECURITY] (2.8) [c2cgeoportal#12648](https://github.com/camptocamp/c2cgeoportal/pull/12648)
+
 ##### 2.8.1.288
 
 - Audit Cleanup Renovate configuration for version 2.8 [c2cgeoportal#12636](https://github.com/camptocamp/c2cgeoportal/pull/12636)
