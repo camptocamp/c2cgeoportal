@@ -421,6 +421,7 @@ Parameters
 * ``lang``: Language for the search (optional). If not provided, the locale negotiated from the request is used.
 * ``interface``: Filter results to a specific interface (optional). If not provided, only entries without interface are returned.
 * ``categories``: Limit results to categories. Comma-separated list of category (``layer_name`` in the table, optional).
+* ``null_category``: Set to ``true`` to include entries with ``null`` category (``layer_name`` in the table), if not used with ``categories`` parameter, it will filter on ``null`` category.
 * ``ranksystem``: Set to ``ts_rank_cd`` to use that ranking; otherwise ``similarity`` is used.
 
 The language used for stemming is the locale negotiated from the request; there is no ``lang`` parameter.
