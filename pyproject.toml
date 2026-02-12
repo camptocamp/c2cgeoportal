@@ -70,6 +70,7 @@ zipp = { version = "3.19.3", optional = true }
 webob = { version = "1.8.9", optional = true }
 waitress = { version = "3.0.2", optional = true }
 azure-core = "1.38.0"
+packaging = { version = "23.2", optional = true }
 
 [tool.poetry.dev-dependencies]
 Babel = "2.11.0" # i18n
