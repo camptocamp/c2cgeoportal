@@ -1,3 +1,7 @@
+##### 2.8.1.292
+
+- Audit Snyk check/fix 2.8 [c2cgeoportal#12661](https://github.com/camptocamp/c2cgeoportal/pull/12661)
+
 ##### 2.8.1.291
 
 - Use last version of c2cciutils 1.4 in the projects [c2cgeoportal#12653](https://github.com/camptocamp/c2cgeoportal/pull/12653)
