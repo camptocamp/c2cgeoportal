@@ -1,3 +1,9 @@
+##### 2.9.0.400
+
+- Audit Dpkg 2.9 [c2cgeoportal#12657](https://github.com/camptocamp/c2cgeoportal/pull/12657)
+- Add support of typographic apostrophe in search for coordinate [ngeo#10039](https://github.com/camptocamp/ngeo/pull/10039)
+- [Backport 2.9] Add button to zoom to current feature in query window component [ngeo#10047](https://github.com/camptocamp/ngeo/pull/10047)
+
 ##### 2.9.0.399
 
 - Audit Snyk check/fix 2.9 [c2cgeoportal#12654](https://github.com/camptocamp/c2cgeoportal/pull/12654)
