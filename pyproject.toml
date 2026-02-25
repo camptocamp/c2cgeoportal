@@ -64,7 +64,7 @@ urllib3 = { version = "2.6.3", optional = true }
 bandit = { version = "1.7.10", optional = true }
 idna = { version = "3.7", optional = true }
 gunicorn = "23.0.0"
-certifi = { version = "2026.1.4", optional = true }
+certifi = { version = "2026.2.25", optional = true }
 sentry-sdk = { version = "2.8.0", optional = true }
 zipp = { version = "3.19.3", optional = true }
 webob = { version = "1.8.9", optional = true }
