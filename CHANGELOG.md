@@ -1,3 +1,7 @@
+##### 2.7.1.248
+
+- Update dependency certifi to v2026.2.25 (2.7) [c2cgeoportal#12669](https://github.com/camptocamp/c2cgeoportal/pull/12669)
+
 ##### 2.7.1.247
 
 - Audit Snyk check/fix 2.7 [c2cgeoportal#12663](https://github.com/camptocamp/c2cgeoportal/pull/12663)
