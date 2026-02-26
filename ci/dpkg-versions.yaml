@@ -130,7 +130,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/coreutils: 8.32-4.1ubuntu1.2
   ubuntu_22_04/cpp: 4:11.2.0-1ubuntu1
   ubuntu_22_04/cpp-11: 11.4.0-1ubuntu1~22.04.2
-  ubuntu_22_04/curl: 7.81.0-1ubuntu1.21
+  ubuntu_22_04/curl: 7.81.0-1ubuntu1.22
   ubuntu_22_04/dash: 0.5.11+git20210903+057cd650a4ed-3build1
   ubuntu_22_04/debconf: 1.5.79ubuntu1
   ubuntu_22_04/debianutils: 5.5-1ubuntu2
@@ -143,7 +143,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/fonts-dejavu-core: 2.37-2build1
   ubuntu_22_04/gcc-11: 11.4.0-1ubuntu1~22.04.2
   ubuntu_22_04/gcc-11-base: 11.4.0-1ubuntu1~22.04.2
-  ubuntu_22_04/gcc-12-base: 12.3.0-1ubuntu1~22.04.2
+  ubuntu_22_04/gcc-12-base: 12.3.0-1ubuntu1~22.04.3
   ubuntu_22_04/gdal-data: 3.4.1+dfsg-1build4
   ubuntu_22_04/glibc-tools: 0.0~git3.23fd2b9-0ubuntu1
   ubuntu_22_04/gpgv: 2.2.27-3ubuntu2.5
@@ -166,7 +166,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libarpack2: 3.8.0-1
   ubuntu_22_04/libasan6: 11.4.0-1ubuntu1~22.04.2
   ubuntu_22_04/libasyncns0: 0.8-6build2
-  ubuntu_22_04/libatomic1: 12.3.0-1ubuntu1~22.04.2
+  ubuntu_22_04/libatomic1: 12.3.0-1ubuntu1~22.04.3
   ubuntu_22_04/libattr1: 1:2.5.1-1build1
   ubuntu_22_04/libaudit-common: 1:3.0.7-1build1
   ubuntu_22_04/libaudit1: 1:3.0.7-1build1
@@ -187,7 +187,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libcap-ng0: 0.7.9-2.2build3
   ubuntu_22_04/libcap2: 1:2.44-1ubuntu0.22.04.2
   ubuntu_22_04/libcap2-bin: 1:2.44-1ubuntu0.22.04.2
-  ubuntu_22_04/libcc1-0: 12.3.0-1ubuntu1~22.04.2
+  ubuntu_22_04/libcc1-0: 12.3.0-1ubuntu1~22.04.3
   ubuntu_22_04/libcfitsio9: 4.0.0-1
   ubuntu_22_04/libcharls2: 2.3.4-1
   ubuntu_22_04/libcom-err2: 1.46.5-2ubuntu1.2
@@ -196,8 +196,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libctf-nobfd0: 2.38-4ubuntu2.12
   ubuntu_22_04/libctf0: 2.38-4ubuntu2.12
   ubuntu_22_04/libcups2: 2.4.1op1-1ubuntu4.16
-  ubuntu_22_04/libcurl3-gnutls: 7.81.0-1ubuntu1.21
-  ubuntu_22_04/libcurl4: 7.81.0-1ubuntu1.21
+  ubuntu_22_04/libcurl3-gnutls: 7.81.0-1ubuntu1.22
+  ubuntu_22_04/libcurl4: 7.81.0-1ubuntu1.22
   ubuntu_22_04/libdav1d5: 0.9.2-1
   ubuntu_22_04/libdb5.3: 5.3.28+dfsg1-0.8ubuntu3
   ubuntu_22_04/libdbus-1-3: 1.12.20-2ubuntu4.1
@@ -233,7 +233,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libfyba0: 4.1.1-7
   ubuntu_22_04/libgbm1: 23.2.1-1ubuntu3.1~22.04.3
   ubuntu_22_04/libgcc-11-dev: 11.4.0-1ubuntu1~22.04.2
-  ubuntu_22_04/libgcc-s1: 12.3.0-1ubuntu1~22.04.2
+  ubuntu_22_04/libgcc-s1: 12.3.0-1ubuntu1~22.04.3
   ubuntu_22_04/libgcrypt20: 1.9.4-3ubuntu3
   ubuntu_22_04/libgdal30: 3.4.1+dfsg-1build4
   ubuntu_22_04/libgdbm-compat4: 1.23-1
@@ -241,7 +241,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libgeos-c1v5: 3.10.2-1
   ubuntu_22_04/libgeos3.10.2: 3.10.2-1
   ubuntu_22_04/libgeotiff5: 1.7.0-2build1
-  ubuntu_22_04/libgfortran5: 12.3.0-1ubuntu1~22.04.2
+  ubuntu_22_04/libgfortran5: 12.3.0-1ubuntu1~22.04.3
   ubuntu_22_04/libgif7: 5.1.9-2ubuntu0.1
   ubuntu_22_04/libgl1: 1.4.0-1
   ubuntu_22_04/libgl1-mesa-dri: 23.2.1-1ubuntu3.1~22.04.3
@@ -252,7 +252,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libglx0: 1.4.0-1
   ubuntu_22_04/libgmp10: 2:6.2.1+dfsg-3ubuntu1
   ubuntu_22_04/libgnutls30: 3.7.3-4ubuntu1.8
-  ubuntu_22_04/libgomp1: 12.3.0-1ubuntu1~22.04.2
+  ubuntu_22_04/libgomp1: 12.3.0-1ubuntu1~22.04.3
   ubuntu_22_04/libgpg-error0: 1.43-3
   ubuntu_22_04/libgraphite2-3: 1.3.14-1build2
   ubuntu_22_04/libgsl27: 2.7.1+dfsg-3
@@ -275,7 +275,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libinput-bin: 1.20.0-1ubuntu0.3
   ubuntu_22_04/libinput10: 1.20.0-1ubuntu0.3
   ubuntu_22_04/libisl23: 0.24-2build1
-  ubuntu_22_04/libitm1: 12.3.0-1ubuntu1~22.04.2
+  ubuntu_22_04/libitm1: 12.3.0-1ubuntu1~22.04.3
   ubuntu_22_04/libjansson4: 2.13.1-1.1build3
   ubuntu_22_04/libjbig0: 2.1-3.1ubuntu0.22.04.1
   ubuntu_22_04/libjpeg-turbo8: 2.1.2-0ubuntu1
@@ -296,7 +296,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/liblcms2-2: 2.12~rc1-2build2
   ubuntu_22_04/libldap-2.5-0: 2.5.19+dfsg-0ubuntu0.22.04.1
   ubuntu_22_04/libllvm15: 1:15.0.7-0ubuntu0.22.04.3
-  ubuntu_22_04/liblsan0: 12.3.0-1ubuntu1~22.04.2
+  ubuntu_22_04/liblsan0: 12.3.0-1ubuntu1~22.04.3
   ubuntu_22_04/libltdl7: 2.4.6-15build2
   ubuntu_22_04/liblua5.3-0: 5.3.6-1build1
   ubuntu_22_04/liblz4-1: 1.9.3-2build2
@@ -345,8 +345,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libpq5: 14.20-0ubuntu0.22.04.1
   ubuntu_22_04/libprocps8: 2:3.3.17-6ubuntu2.1
   ubuntu_22_04/libproj22: 8.2.1-1
-  ubuntu_22_04/libprotobuf-lite23: 3.12.4-1ubuntu7.22.04.4
-  ubuntu_22_04/libprotobuf23: 3.12.4-1ubuntu7.22.04.4
+  ubuntu_22_04/libprotobuf-lite23: 3.12.4-1ubuntu7.22.04.6
+  ubuntu_22_04/libprotobuf23: 3.12.4-1ubuntu7.22.04.6
   ubuntu_22_04/libpsl5: 0.21.0-1.2build2
   ubuntu_22_04/libpulse0: 1:15.99.1+dfsg1-1ubuntu2.2
   ubuntu_22_04/libpython3-dev: 3.10.6-1~22.04.1
@@ -390,7 +390,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libqt5webkit5: 5.212.0~alpha4-15ubuntu1
   ubuntu_22_04/libqt5widgets5: 5.15.3+dfsg-2ubuntu0.2
   ubuntu_22_04/libqt5xml5: 5.15.3+dfsg-2ubuntu0.2
-  ubuntu_22_04/libquadmath0: 12.3.0-1ubuntu1~22.04.2
+  ubuntu_22_04/libquadmath0: 12.3.0-1ubuntu1~22.04.3
   ubuntu_22_04/libqwt-qt5-6: 6.1.4-2
   ubuntu_22_04/libraqm0: 0.7.0-4ubuntu1
   ubuntu_22_04/libreadline8: 8.1.2-1
@@ -416,7 +416,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libssh-4: 0.9.6-2ubuntu0.22.04.6
   ubuntu_22_04/libssl-dev: 3.0.2-0ubuntu1.21
   ubuntu_22_04/libssl3: 3.0.2-0ubuntu1.21
-  ubuntu_22_04/libstdc++6: 12.3.0-1ubuntu1~22.04.2
+  ubuntu_22_04/libstdc++6: 12.3.0-1ubuntu1~22.04.3
   ubuntu_22_04/libsuperlu5: 5.3.0+dfsg1-2
   ubuntu_22_04/libsystemd0: 249.11-0ubuntu3.16
   ubuntu_22_04/libsz2: 1.0.6-1
@@ -427,7 +427,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libtirpc-dev: 1.3.2-2ubuntu0.1
   ubuntu_22_04/libtirpc3: 1.3.2-2ubuntu0.1
   ubuntu_22_04/libtsan0: 11.4.0-1ubuntu1~22.04.2
-  ubuntu_22_04/libubsan1: 12.3.0-1ubuntu1~22.04.2
+  ubuntu_22_04/libubsan1: 12.3.0-1ubuntu1~22.04.3
   ubuntu_22_04/libudev1: 249.11-0ubuntu3.16
   ubuntu_22_04/libunistring2: 1.0-1
   ubuntu_22_04/libunwind8: 1.3.2-2build2.1
@@ -577,7 +577,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/coreutils: 8.32-4.1ubuntu1.2
   ubuntu_22_04/cpp: 4:11.2.0-1ubuntu1
   ubuntu_22_04/cpp-11: 11.4.0-1ubuntu1~22.04.2
-  ubuntu_22_04/curl: 7.81.0-1ubuntu1.21
+  ubuntu_22_04/curl: 7.81.0-1ubuntu1.22
   ubuntu_22_04/dash: 0.5.11+git20210903+057cd650a4ed-3build1
   ubuntu_22_04/debconf: 1.5.79ubuntu1
   ubuntu_22_04/debianutils: 5.5-1ubuntu2
@@ -590,7 +590,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/fonts-dejavu-core: 2.37-2build1
   ubuntu_22_04/gcc-11: 11.4.0-1ubuntu1~22.04.2
   ubuntu_22_04/gcc-11-base: 11.4.0-1ubuntu1~22.04.2
-  ubuntu_22_04/gcc-12-base: 12.3.0-1ubuntu1~22.04.2
+  ubuntu_22_04/gcc-12-base: 12.3.0-1ubuntu1~22.04.3
   ubuntu_22_04/gdal-data: 3.4.1+dfsg-1build4
   ubuntu_22_04/glibc-tools: 0.0~git3.23fd2b9-0ubuntu1
   ubuntu_22_04/gpgv: 2.2.27-3ubuntu2.5
@@ -613,7 +613,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libarpack2: 3.8.0-1
   ubuntu_22_04/libasan6: 11.4.0-1ubuntu1~22.04.2
   ubuntu_22_04/libasyncns0: 0.8-6build2
-  ubuntu_22_04/libatomic1: 12.3.0-1ubuntu1~22.04.2
+  ubuntu_22_04/libatomic1: 12.3.0-1ubuntu1~22.04.3
   ubuntu_22_04/libattr1: 1:2.5.1-1build1
   ubuntu_22_04/libaudit-common: 1:3.0.7-1build1
   ubuntu_22_04/libaudit1: 1:3.0.7-1build1
@@ -634,7 +634,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libcap-ng0: 0.7.9-2.2build3
   ubuntu_22_04/libcap2: 1:2.44-1ubuntu0.22.04.2
   ubuntu_22_04/libcap2-bin: 1:2.44-1ubuntu0.22.04.2
-  ubuntu_22_04/libcc1-0: 12.3.0-1ubuntu1~22.04.2
+  ubuntu_22_04/libcc1-0: 12.3.0-1ubuntu1~22.04.3
   ubuntu_22_04/libcfitsio9: 4.0.0-1
   ubuntu_22_04/libcharls2: 2.3.4-1
   ubuntu_22_04/libcom-err2: 1.46.5-2ubuntu1.2
@@ -643,8 +643,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libctf-nobfd0: 2.38-4ubuntu2.12
   ubuntu_22_04/libctf0: 2.38-4ubuntu2.12
   ubuntu_22_04/libcups2: 2.4.1op1-1ubuntu4.16
-  ubuntu_22_04/libcurl3-gnutls: 7.81.0-1ubuntu1.21
-  ubuntu_22_04/libcurl4: 7.81.0-1ubuntu1.21
+  ubuntu_22_04/libcurl3-gnutls: 7.81.0-1ubuntu1.22
+  ubuntu_22_04/libcurl4: 7.81.0-1ubuntu1.22
   ubuntu_22_04/libdav1d5: 0.9.2-1
   ubuntu_22_04/libdb5.3: 5.3.28+dfsg1-0.8ubuntu3
   ubuntu_22_04/libdbus-1-3: 1.12.20-2ubuntu4.1
@@ -680,7 +680,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libfyba0: 4.1.1-7
   ubuntu_22_04/libgbm1: 23.2.1-1ubuntu3.1~22.04.3
   ubuntu_22_04/libgcc-11-dev: 11.4.0-1ubuntu1~22.04.2
-  ubuntu_22_04/libgcc-s1: 12.3.0-1ubuntu1~22.04.2
+  ubuntu_22_04/libgcc-s1: 12.3.0-1ubuntu1~22.04.3
   ubuntu_22_04/libgcrypt20: 1.9.4-3ubuntu3
   ubuntu_22_04/libgdal30: 3.4.1+dfsg-1build4
   ubuntu_22_04/libgdbm-compat4: 1.23-1
@@ -688,7 +688,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libgeos-c1v5: 3.10.2-1
   ubuntu_22_04/libgeos3.10.2: 3.10.2-1
   ubuntu_22_04/libgeotiff5: 1.7.0-2build1
-  ubuntu_22_04/libgfortran5: 12.3.0-1ubuntu1~22.04.2
+  ubuntu_22_04/libgfortran5: 12.3.0-1ubuntu1~22.04.3
   ubuntu_22_04/libgif7: 5.1.9-2ubuntu0.1
   ubuntu_22_04/libgl1: 1.4.0-1
   ubuntu_22_04/libgl1-mesa-dri: 23.2.1-1ubuntu3.1~22.04.3
@@ -699,7 +699,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libglx0: 1.4.0-1
   ubuntu_22_04/libgmp10: 2:6.2.1+dfsg-3ubuntu1
   ubuntu_22_04/libgnutls30: 3.7.3-4ubuntu1.8
-  ubuntu_22_04/libgomp1: 12.3.0-1ubuntu1~22.04.2
+  ubuntu_22_04/libgomp1: 12.3.0-1ubuntu1~22.04.3
   ubuntu_22_04/libgpg-error0: 1.43-3
   ubuntu_22_04/libgraphite2-3: 1.3.14-1build2
   ubuntu_22_04/libgsl27: 2.7.1+dfsg-3
@@ -722,7 +722,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libinput-bin: 1.20.0-1ubuntu0.3
   ubuntu_22_04/libinput10: 1.20.0-1ubuntu0.3
   ubuntu_22_04/libisl23: 0.24-2build1
-  ubuntu_22_04/libitm1: 12.3.0-1ubuntu1~22.04.2
+  ubuntu_22_04/libitm1: 12.3.0-1ubuntu1~22.04.3
   ubuntu_22_04/libjansson4: 2.13.1-1.1build3
   ubuntu_22_04/libjbig0: 2.1-3.1ubuntu0.22.04.1
   ubuntu_22_04/libjpeg-turbo8: 2.1.2-0ubuntu1
@@ -743,7 +743,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/liblcms2-2: 2.12~rc1-2build2
   ubuntu_22_04/libldap-2.5-0: 2.5.19+dfsg-0ubuntu0.22.04.1
   ubuntu_22_04/libllvm15: 1:15.0.7-0ubuntu0.22.04.3
-  ubuntu_22_04/liblsan0: 12.3.0-1ubuntu1~22.04.2
+  ubuntu_22_04/liblsan0: 12.3.0-1ubuntu1~22.04.3
   ubuntu_22_04/libltdl7: 2.4.6-15build2
   ubuntu_22_04/liblua5.3-0: 5.3.6-1build1
   ubuntu_22_04/liblz4-1: 1.9.3-2build2
@@ -792,8 +792,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libpq5: 14.20-0ubuntu0.22.04.1
   ubuntu_22_04/libprocps8: 2:3.3.17-6ubuntu2.1
   ubuntu_22_04/libproj22: 8.2.1-1
-  ubuntu_22_04/libprotobuf-lite23: 3.12.4-1ubuntu7.22.04.4
-  ubuntu_22_04/libprotobuf23: 3.12.4-1ubuntu7.22.04.4
+  ubuntu_22_04/libprotobuf-lite23: 3.12.4-1ubuntu7.22.04.6
+  ubuntu_22_04/libprotobuf23: 3.12.4-1ubuntu7.22.04.6
   ubuntu_22_04/libpsl5: 0.21.0-1.2build2
   ubuntu_22_04/libpulse0: 1:15.99.1+dfsg1-1ubuntu2.2
   ubuntu_22_04/libpython3-dev: 3.10.6-1~22.04.1
@@ -837,7 +837,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libqt5webkit5: 5.212.0~alpha4-15ubuntu1
   ubuntu_22_04/libqt5widgets5: 5.15.3+dfsg-2ubuntu0.2
   ubuntu_22_04/libqt5xml5: 5.15.3+dfsg-2ubuntu0.2
-  ubuntu_22_04/libquadmath0: 12.3.0-1ubuntu1~22.04.2
+  ubuntu_22_04/libquadmath0: 12.3.0-1ubuntu1~22.04.3
   ubuntu_22_04/libqwt-qt5-6: 6.1.4-2
   ubuntu_22_04/libraqm0: 0.7.0-4ubuntu1
   ubuntu_22_04/libreadline8: 8.1.2-1
@@ -863,7 +863,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libssh-4: 0.9.6-2ubuntu0.22.04.6
   ubuntu_22_04/libssl-dev: 3.0.2-0ubuntu1.21
   ubuntu_22_04/libssl3: 3.0.2-0ubuntu1.21
-  ubuntu_22_04/libstdc++6: 12.3.0-1ubuntu1~22.04.2
+  ubuntu_22_04/libstdc++6: 12.3.0-1ubuntu1~22.04.3
   ubuntu_22_04/libsuperlu5: 5.3.0+dfsg1-2
   ubuntu_22_04/libsystemd0: 249.11-0ubuntu3.16
   ubuntu_22_04/libsz2: 1.0.6-1
@@ -874,7 +874,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libtirpc-dev: 1.3.2-2ubuntu0.1
   ubuntu_22_04/libtirpc3: 1.3.2-2ubuntu0.1
   ubuntu_22_04/libtsan0: 11.4.0-1ubuntu1~22.04.2
-  ubuntu_22_04/libubsan1: 12.3.0-1ubuntu1~22.04.2
+  ubuntu_22_04/libubsan1: 12.3.0-1ubuntu1~22.04.3
   ubuntu_22_04/libudev1: 249.11-0ubuntu3.16
   ubuntu_22_04/libunistring2: 1.0-1
   ubuntu_22_04/libunwind8: 1.3.2-2build2.1
@@ -1027,7 +1027,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40:
   ubuntu_24_04/cpp-13: 13.3.0-6ubuntu2~24.04
   ubuntu_24_04/cpp-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04
   ubuntu_24_04/cpp-x86-64-linux-gnu: 4:13.2.0-7ubuntu1
-  ubuntu_24_04/curl: 8.5.0-2ubuntu10.6
+  ubuntu_24_04/curl: 8.5.0-2ubuntu10.7
   ubuntu_24_04/dash: 0.5.12-6ubuntu5
   ubuntu_24_04/debconf: 1.5.86ubuntu1
   ubuntu_24_04/debianutils: 5.17build1
@@ -1089,8 +1089,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40:
   ubuntu_24_04/libctf-nobfd0: 2.42-4ubuntu2.8
   ubuntu_24_04/libctf0: 2.42-4ubuntu2.8
   ubuntu_24_04/libcups2t64: 2.4.7-1.2ubuntu7.9
-  ubuntu_24_04/libcurl3t64-gnutls: 8.5.0-2ubuntu10.6
-  ubuntu_24_04/libcurl4t64: 8.5.0-2ubuntu10.6
+  ubuntu_24_04/libcurl3t64-gnutls: 8.5.0-2ubuntu10.7
+  ubuntu_24_04/libcurl4t64: 8.5.0-2ubuntu10.7
   ubuntu_24_04/libdb5.3t64: 5.3.28+dfsg2-7
   ubuntu_24_04/libdbus-1-3: 1.14.10-4ubuntu4.1
   ubuntu_24_04/libdebconfclient0: 0.271ubuntu3
@@ -1209,8 +1209,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40:
   ubuntu_24_04/libpq5: 16.11-0ubuntu0.24.04.1
   ubuntu_24_04/libproc2-0: 2:4.0.4-4ubuntu3.2
   ubuntu_24_04/libproj25: 9.4.0-1build2
-  ubuntu_24_04/libprotobuf-lite32t64: 3.21.12-8.2ubuntu0.2
-  ubuntu_24_04/libprotobuf32t64: 3.21.12-8.2ubuntu0.2
+  ubuntu_24_04/libprotobuf-lite32t64: 3.21.12-8.2ubuntu0.3
+  ubuntu_24_04/libprotobuf32t64: 3.21.12-8.2ubuntu0.3
   ubuntu_24_04/libpsl5t64: 0.21.2-1.1build1
   ubuntu_24_04/libpulse0: 1:16.1+dfsg1-2ubuntu10.1
   ubuntu_24_04/libpython3-dev: 3.12.3-0ubuntu2.1
@@ -1433,7 +1433,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40-gdal3.10:
   ubuntu_24_04/cpp-13: 13.3.0-6ubuntu2~24.04
   ubuntu_24_04/cpp-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04
   ubuntu_24_04/cpp-x86-64-linux-gnu: 4:13.2.0-7ubuntu1
-  ubuntu_24_04/curl: 8.5.0-2ubuntu10.6
+  ubuntu_24_04/curl: 8.5.0-2ubuntu10.7
   ubuntu_24_04/dash: 0.5.12-6ubuntu5
   ubuntu_24_04/debconf: 1.5.86ubuntu1
   ubuntu_24_04/debianutils: 5.17build1
@@ -1495,8 +1495,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40-gdal3.10:
   ubuntu_24_04/libctf-nobfd0: 2.42-4ubuntu2.8
   ubuntu_24_04/libctf0: 2.42-4ubuntu2.8
   ubuntu_24_04/libcups2t64: 2.4.7-1.2ubuntu7.9
-  ubuntu_24_04/libcurl3t64-gnutls: 8.5.0-2ubuntu10.6
-  ubuntu_24_04/libcurl4t64: 8.5.0-2ubuntu10.6
+  ubuntu_24_04/libcurl3t64-gnutls: 8.5.0-2ubuntu10.7
+  ubuntu_24_04/libcurl4t64: 8.5.0-2ubuntu10.7
   ubuntu_24_04/libdb5.3t64: 5.3.28+dfsg2-7
   ubuntu_24_04/libdbus-1-3: 1.14.10-4ubuntu4.1
   ubuntu_24_04/libdebconfclient0: 0.271ubuntu3
@@ -1615,8 +1615,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40-gdal3.10:
   ubuntu_24_04/libpq5: 16.11-0ubuntu0.24.04.1
   ubuntu_24_04/libproc2-0: 2:4.0.4-4ubuntu3.2
   ubuntu_24_04/libproj25: 9.4.0-1build2
-  ubuntu_24_04/libprotobuf-lite32t64: 3.21.12-8.2ubuntu0.2
-  ubuntu_24_04/libprotobuf32t64: 3.21.12-8.2ubuntu0.2
+  ubuntu_24_04/libprotobuf-lite32t64: 3.21.12-8.2ubuntu0.3
+  ubuntu_24_04/libprotobuf32t64: 3.21.12-8.2ubuntu0.3
   ubuntu_24_04/libpsl5t64: 0.21.2-1.1build1
   ubuntu_24_04/libpulse0: 1:16.1+dfsg1-2ubuntu10.1
   ubuntu_24_04/libpython3-dev: 3.12.3-0ubuntu2.1
@@ -1839,7 +1839,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_24_04/cpp-13: 13.3.0-6ubuntu2~24.04
   ubuntu_24_04/cpp-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04
   ubuntu_24_04/cpp-x86-64-linux-gnu: 4:13.2.0-7ubuntu1
-  ubuntu_24_04/curl: 8.5.0-2ubuntu10.6
+  ubuntu_24_04/curl: 8.5.0-2ubuntu10.7
   ubuntu_24_04/dash: 0.5.12-6ubuntu5
   ubuntu_24_04/debconf: 1.5.86ubuntu1
   ubuntu_24_04/debianutils: 5.17build1
@@ -1901,8 +1901,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_24_04/libctf-nobfd0: 2.42-4ubuntu2.8
   ubuntu_24_04/libctf0: 2.42-4ubuntu2.8
   ubuntu_24_04/libcups2t64: 2.4.7-1.2ubuntu7.9
-  ubuntu_24_04/libcurl3t64-gnutls: 8.5.0-2ubuntu10.6
-  ubuntu_24_04/libcurl4t64: 8.5.0-2ubuntu10.6
+  ubuntu_24_04/libcurl3t64-gnutls: 8.5.0-2ubuntu10.7
+  ubuntu_24_04/libcurl4t64: 8.5.0-2ubuntu10.7
   ubuntu_24_04/libdb5.3t64: 5.3.28+dfsg2-7
   ubuntu_24_04/libdbus-1-3: 1.14.10-4ubuntu4.1
   ubuntu_24_04/libdebconfclient0: 0.271ubuntu3
@@ -2019,8 +2019,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_24_04/libpq5: 16.11-0ubuntu0.24.04.1
   ubuntu_24_04/libproc2-0: 2:4.0.4-4ubuntu3.2
   ubuntu_24_04/libproj25: 9.4.0-1build2
-  ubuntu_24_04/libprotobuf-lite32t64: 3.21.12-8.2ubuntu0.2
-  ubuntu_24_04/libprotobuf32t64: 3.21.12-8.2ubuntu0.2
+  ubuntu_24_04/libprotobuf-lite32t64: 3.21.12-8.2ubuntu0.3
+  ubuntu_24_04/libprotobuf32t64: 3.21.12-8.2ubuntu0.3
   ubuntu_24_04/libpsl5t64: 0.21.2-1.1build1
   ubuntu_24_04/libpulse0: 1:16.1+dfsg1-2ubuntu10.1
   ubuntu_24_04/libpython3-dev: 3.12.3-0ubuntu2.1
@@ -2239,7 +2239,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_24_04/cpp-13: 13.3.0-6ubuntu2~24.04
   ubuntu_24_04/cpp-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04
   ubuntu_24_04/cpp-x86-64-linux-gnu: 4:13.2.0-7ubuntu1
-  ubuntu_24_04/curl: 8.5.0-2ubuntu10.6
+  ubuntu_24_04/curl: 8.5.0-2ubuntu10.7
   ubuntu_24_04/dash: 0.5.12-6ubuntu5
   ubuntu_24_04/debconf: 1.5.86ubuntu1
   ubuntu_24_04/debianutils: 5.17build1
@@ -2303,8 +2303,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_24_04/libctf-nobfd0: 2.42-4ubuntu2.8
   ubuntu_24_04/libctf0: 2.42-4ubuntu2.8
   ubuntu_24_04/libcups2t64: 2.4.7-1.2ubuntu7.9
-  ubuntu_24_04/libcurl3t64-gnutls: 8.5.0-2ubuntu10.6
-  ubuntu_24_04/libcurl4t64: 8.5.0-2ubuntu10.6
+  ubuntu_24_04/libcurl3t64-gnutls: 8.5.0-2ubuntu10.7
+  ubuntu_24_04/libcurl4t64: 8.5.0-2ubuntu10.7
   ubuntu_24_04/libdb5.3t64: 5.3.28+dfsg2-7
   ubuntu_24_04/libdbus-1-3: 1.14.10-4ubuntu4.1
   ubuntu_24_04/libdebconfclient0: 0.271ubuntu3
@@ -2424,8 +2424,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_24_04/libpq5: 16.11-0ubuntu0.24.04.1
   ubuntu_24_04/libproc2-0: 2:4.0.4-4ubuntu3.2
   ubuntu_24_04/libproj25: 9.4.0-1build2
-  ubuntu_24_04/libprotobuf-lite32t64: 3.21.12-8.2ubuntu0.2
-  ubuntu_24_04/libprotobuf32t64: 3.21.12-8.2ubuntu0.2
+  ubuntu_24_04/libprotobuf-lite32t64: 3.21.12-8.2ubuntu0.3
+  ubuntu_24_04/libprotobuf32t64: 3.21.12-8.2ubuntu0.3
   ubuntu_24_04/libpsl5t64: 0.21.2-1.1build1
   ubuntu_24_04/libpulse0: 1:16.1+dfsg1-2ubuntu10.1
   ubuntu_24_04/libpython3-dev: 3.12.3-0ubuntu2.1
@@ -2647,7 +2647,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/cpp-13: 13.3.0-6ubuntu2~24.04
   ubuntu_24_04/cpp-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04
   ubuntu_24_04/cpp-x86-64-linux-gnu: 4:13.2.0-7ubuntu1
-  ubuntu_24_04/curl: 8.5.0-2ubuntu10.6
+  ubuntu_24_04/curl: 8.5.0-2ubuntu10.7
   ubuntu_24_04/dash: 0.5.12-6ubuntu5
   ubuntu_24_04/debconf: 1.5.86ubuntu1
   ubuntu_24_04/debianutils: 5.17build1
@@ -2709,8 +2709,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/libctf-nobfd0: 2.42-4ubuntu2.8
   ubuntu_24_04/libctf0: 2.42-4ubuntu2.8
   ubuntu_24_04/libcups2t64: 2.4.7-1.2ubuntu7.9
-  ubuntu_24_04/libcurl3t64-gnutls: 8.5.0-2ubuntu10.6
-  ubuntu_24_04/libcurl4t64: 8.5.0-2ubuntu10.6
+  ubuntu_24_04/libcurl3t64-gnutls: 8.5.0-2ubuntu10.7
+  ubuntu_24_04/libcurl4t64: 8.5.0-2ubuntu10.7
   ubuntu_24_04/libdb5.3t64: 5.3.28+dfsg2-7
   ubuntu_24_04/libdbus-1-3: 1.14.10-4ubuntu4.1
   ubuntu_24_04/libdebconfclient0: 0.271ubuntu3
@@ -2829,8 +2829,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/libpq5: 16.11-0ubuntu0.24.04.1
   ubuntu_24_04/libproc2-0: 2:4.0.4-4ubuntu3.2
   ubuntu_24_04/libproj25: 9.4.0-1build2
-  ubuntu_24_04/libprotobuf-lite32t64: 3.21.12-8.2ubuntu0.2
-  ubuntu_24_04/libprotobuf32t64: 3.21.12-8.2ubuntu0.2
+  ubuntu_24_04/libprotobuf-lite32t64: 3.21.12-8.2ubuntu0.3
+  ubuntu_24_04/libprotobuf32t64: 3.21.12-8.2ubuntu0.3
   ubuntu_24_04/libpsl5t64: 0.21.2-1.1build1
   ubuntu_24_04/libpulse0: 1:16.1+dfsg1-2ubuntu10.1
   ubuntu_24_04/libpython3-dev: 3.12.3-0ubuntu2.1
@@ -3053,7 +3053,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_24_04/cpp-13: 13.3.0-6ubuntu2~24.04
   ubuntu_24_04/cpp-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04
   ubuntu_24_04/cpp-x86-64-linux-gnu: 4:13.2.0-7ubuntu1
-  ubuntu_24_04/curl: 8.5.0-2ubuntu10.6
+  ubuntu_24_04/curl: 8.5.0-2ubuntu10.7
   ubuntu_24_04/dash: 0.5.12-6ubuntu5
   ubuntu_24_04/debconf: 1.5.86ubuntu1
   ubuntu_24_04/debianutils: 5.17build1
@@ -3115,8 +3115,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_24_04/libctf-nobfd0: 2.42-4ubuntu2.8
   ubuntu_24_04/libctf0: 2.42-4ubuntu2.8
   ubuntu_24_04/libcups2t64: 2.4.7-1.2ubuntu7.9
-  ubuntu_24_04/libcurl3t64-gnutls: 8.5.0-2ubuntu10.6
-  ubuntu_24_04/libcurl4t64: 8.5.0-2ubuntu10.6
+  ubuntu_24_04/libcurl3t64-gnutls: 8.5.0-2ubuntu10.7
+  ubuntu_24_04/libcurl4t64: 8.5.0-2ubuntu10.7
   ubuntu_24_04/libdb5.3t64: 5.3.28+dfsg2-7
   ubuntu_24_04/libdbus-1-3: 1.14.10-4ubuntu4.1
   ubuntu_24_04/libdebconfclient0: 0.271ubuntu3
@@ -3233,8 +3233,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_24_04/libpq5: 16.11-0ubuntu0.24.04.1
   ubuntu_24_04/libproc2-0: 2:4.0.4-4ubuntu3.2
   ubuntu_24_04/libproj25: 9.4.0-1build2
-  ubuntu_24_04/libprotobuf-lite32t64: 3.21.12-8.2ubuntu0.2
-  ubuntu_24_04/libprotobuf32t64: 3.21.12-8.2ubuntu0.2
+  ubuntu_24_04/libprotobuf-lite32t64: 3.21.12-8.2ubuntu0.3
+  ubuntu_24_04/libprotobuf32t64: 3.21.12-8.2ubuntu0.3
   ubuntu_24_04/libpsl5t64: 0.21.2-1.1build1
   ubuntu_24_04/libpulse0: 1:16.1+dfsg1-2ubuntu10.1
   ubuntu_24_04/libpython3-dev: 3.12.3-0ubuntu2.1
@@ -3455,7 +3455,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/cpp-13: 13.3.0-6ubuntu2~24.04
   ubuntu_24_04/cpp-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04
   ubuntu_24_04/cpp-x86-64-linux-gnu: 4:13.2.0-7ubuntu1
-  ubuntu_24_04/curl: 8.5.0-2ubuntu10.6
+  ubuntu_24_04/curl: 8.5.0-2ubuntu10.7
   ubuntu_24_04/dash: 0.5.12-6ubuntu5
   ubuntu_24_04/dbus: 1.14.10-4ubuntu4.1
   ubuntu_24_04/dbus-bin: 1.14.10-4ubuntu4.1
@@ -3555,8 +3555,8 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/libctf-nobfd0: 2.42-4ubuntu2.8
   ubuntu_24_04/libctf0: 2.42-4ubuntu2.8
   ubuntu_24_04/libcups2t64: 2.4.7-1.2ubuntu7.9
-  ubuntu_24_04/libcurl3t64-gnutls: 8.5.0-2ubuntu10.6
-  ubuntu_24_04/libcurl4t64: 8.5.0-2ubuntu10.6
+  ubuntu_24_04/libcurl3t64-gnutls: 8.5.0-2ubuntu10.7
+  ubuntu_24_04/libcurl4t64: 8.5.0-2ubuntu10.7
   ubuntu_24_04/libdatrie1: 0.2.13-3build1
   ubuntu_24_04/libdb5.3t64: 5.3.28+dfsg2-7
   ubuntu_24_04/libdbus-1-3: 1.14.10-4ubuntu4.1
@@ -4231,7 +4231,7 @@ camptocamp/geomapfish:latest:
   ubuntu_24_04/chromium-codecs-ffmpeg-extra: 3:128.0.6613.137-0ubuntu0.24.04.1sav0.1
   ubuntu_24_04/coreutils: 9.4-3ubuntu6
   ubuntu_24_04/cpp: 4:13.2.0-7ubuntu1
-  ubuntu_24_04/curl: 8.5.0-2ubuntu10.6
+  ubuntu_24_04/curl: 8.5.0-2ubuntu10.7
   ubuntu_24_04/dash: 0.5.12-6ubuntu5
   ubuntu_24_04/dbus: 1.14.10-4ubuntu4.1
   ubuntu_24_04/dbus-bin: 1.14.10-4ubuntu4.1
@@ -4309,8 +4309,8 @@ camptocamp/geomapfish:latest:
   ubuntu_24_04/libcrypt1: 1:4.4.36-4build1
   ubuntu_24_04/libcryptsetup12: 2:2.7.0-1ubuntu4.2
   ubuntu_24_04/libcups2t64: 2.4.7-1.2ubuntu7.9
-  ubuntu_24_04/libcurl3t64-gnutls: 8.5.0-2ubuntu10.6
-  ubuntu_24_04/libcurl4t64: 8.5.0-2ubuntu10.6
+  ubuntu_24_04/libcurl3t64-gnutls: 8.5.0-2ubuntu10.7
+  ubuntu_24_04/libcurl4t64: 8.5.0-2ubuntu10.7
   ubuntu_24_04/libdatrie1: 0.2.13-3build1
   ubuntu_24_04/libdb5.3t64: 5.3.28+dfsg2-7
   ubuntu_24_04/libdbus-1-3: 1.14.10-4ubuntu4.1
@@ -4933,7 +4933,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_24_04/chromium-codecs-ffmpeg-extra: 3:128.0.6613.137-0ubuntu0.24.04.1sav0.1
   ubuntu_24_04/coreutils: 9.4-3ubuntu6
   ubuntu_24_04/cpp: 4:13.2.0-7ubuntu1
-  ubuntu_24_04/curl: 8.5.0-2ubuntu10.6
+  ubuntu_24_04/curl: 8.5.0-2ubuntu10.7
   ubuntu_24_04/dash: 0.5.12-6ubuntu5
   ubuntu_24_04/dbus: 1.14.10-4ubuntu4.1
   ubuntu_24_04/dbus-bin: 1.14.10-4ubuntu4.1
@@ -5011,8 +5011,8 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_24_04/libcrypt1: 1:4.4.36-4build1
   ubuntu_24_04/libcryptsetup12: 2:2.7.0-1ubuntu4.2
   ubuntu_24_04/libcups2t64: 2.4.7-1.2ubuntu7.9
-  ubuntu_24_04/libcurl3t64-gnutls: 8.5.0-2ubuntu10.6
-  ubuntu_24_04/libcurl4t64: 8.5.0-2ubuntu10.6
+  ubuntu_24_04/libcurl3t64-gnutls: 8.5.0-2ubuntu10.7
+  ubuntu_24_04/libcurl4t64: 8.5.0-2ubuntu10.7
   ubuntu_24_04/libdatrie1: 0.2.13-3build1
   ubuntu_24_04/libdb5.3t64: 5.3.28+dfsg2-7
   ubuntu_24_04/libdbus-1-3: 1.14.10-4ubuntu4.1
