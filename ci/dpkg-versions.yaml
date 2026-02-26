@@ -1024,8 +1024,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40:
   ubuntu_24_04/ca-certificates: '20240203'
   ubuntu_24_04/coreutils: 9.4-3ubuntu6
   ubuntu_24_04/cpp: 4:13.2.0-7ubuntu1
-  ubuntu_24_04/cpp-13: 13.3.0-6ubuntu2~24.04
-  ubuntu_24_04/cpp-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04
+  ubuntu_24_04/cpp-13: 13.3.0-6ubuntu2~24.04.1
+  ubuntu_24_04/cpp-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04.1
   ubuntu_24_04/cpp-x86-64-linux-gnu: 4:13.2.0-7ubuntu1
   ubuntu_24_04/curl: 8.5.0-2ubuntu10.7
   ubuntu_24_04/dash: 0.5.12-6ubuntu5
@@ -1039,9 +1039,9 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40:
   ubuntu_24_04/fontconfig-config: 2.15.0-1.1ubuntu2
   ubuntu_24_04/fonts-dejavu-core: 2.37-8
   ubuntu_24_04/fonts-dejavu-mono: 2.37-8
-  ubuntu_24_04/gcc-13: 13.3.0-6ubuntu2~24.04
-  ubuntu_24_04/gcc-13-base: 13.3.0-6ubuntu2~24.04
-  ubuntu_24_04/gcc-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04
+  ubuntu_24_04/gcc-13: 13.3.0-6ubuntu2~24.04.1
+  ubuntu_24_04/gcc-13-base: 13.3.0-6ubuntu2~24.04.1
+  ubuntu_24_04/gcc-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04.1
   ubuntu_24_04/gcc-14-base: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/gcc-x86-64-linux-gnu: 4:13.2.0-7ubuntu1
   ubuntu_24_04/glibc-tools: 0.0~git3.23fd2b9-0ubuntu1
@@ -1120,7 +1120,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40:
   ubuntu_24_04/libfreexl1: 2.0.0-1build2
   ubuntu_24_04/libfribidi0: 1.0.13-3build1
   ubuntu_24_04/libgbm1: 25.0.7-0ubuntu0.24.04.1
-  ubuntu_24_04/libgcc-13-dev: 13.3.0-6ubuntu2~24.04
+  ubuntu_24_04/libgcc-13-dev: 13.3.0-6ubuntu2~24.04.1
   ubuntu_24_04/libgcc-s1: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/libgcrypt20: 1.10.3-2build1
   ubuntu_24_04/libgdbm-compat4t64: 1.23-5.1build1
@@ -1430,8 +1430,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40-gdal3.10:
   ubuntu_24_04/ca-certificates: '20240203'
   ubuntu_24_04/coreutils: 9.4-3ubuntu6
   ubuntu_24_04/cpp: 4:13.2.0-7ubuntu1
-  ubuntu_24_04/cpp-13: 13.3.0-6ubuntu2~24.04
-  ubuntu_24_04/cpp-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04
+  ubuntu_24_04/cpp-13: 13.3.0-6ubuntu2~24.04.1
+  ubuntu_24_04/cpp-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04.1
   ubuntu_24_04/cpp-x86-64-linux-gnu: 4:13.2.0-7ubuntu1
   ubuntu_24_04/curl: 8.5.0-2ubuntu10.7
   ubuntu_24_04/dash: 0.5.12-6ubuntu5
@@ -1445,9 +1445,9 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40-gdal3.10:
   ubuntu_24_04/fontconfig-config: 2.15.0-1.1ubuntu2
   ubuntu_24_04/fonts-dejavu-core: 2.37-8
   ubuntu_24_04/fonts-dejavu-mono: 2.37-8
-  ubuntu_24_04/gcc-13: 13.3.0-6ubuntu2~24.04
-  ubuntu_24_04/gcc-13-base: 13.3.0-6ubuntu2~24.04
-  ubuntu_24_04/gcc-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04
+  ubuntu_24_04/gcc-13: 13.3.0-6ubuntu2~24.04.1
+  ubuntu_24_04/gcc-13-base: 13.3.0-6ubuntu2~24.04.1
+  ubuntu_24_04/gcc-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04.1
   ubuntu_24_04/gcc-14-base: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/gcc-x86-64-linux-gnu: 4:13.2.0-7ubuntu1
   ubuntu_24_04/glibc-tools: 0.0~git3.23fd2b9-0ubuntu1
@@ -1526,7 +1526,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40-gdal3.10:
   ubuntu_24_04/libfreexl1: 2.0.0-1build2
   ubuntu_24_04/libfribidi0: 1.0.13-3build1
   ubuntu_24_04/libgbm1: 25.0.7-0ubuntu0.24.04.1
-  ubuntu_24_04/libgcc-13-dev: 13.3.0-6ubuntu2~24.04
+  ubuntu_24_04/libgcc-13-dev: 13.3.0-6ubuntu2~24.04.1
   ubuntu_24_04/libgcc-s1: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/libgcrypt20: 1.10.3-2build1
   ubuntu_24_04/libgdbm-compat4t64: 1.23-5.1build1
@@ -1836,8 +1836,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_24_04/ca-certificates: '20240203'
   ubuntu_24_04/coreutils: 9.4-3ubuntu6
   ubuntu_24_04/cpp: 4:13.2.0-7ubuntu1
-  ubuntu_24_04/cpp-13: 13.3.0-6ubuntu2~24.04
-  ubuntu_24_04/cpp-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04
+  ubuntu_24_04/cpp-13: 13.3.0-6ubuntu2~24.04.1
+  ubuntu_24_04/cpp-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04.1
   ubuntu_24_04/cpp-x86-64-linux-gnu: 4:13.2.0-7ubuntu1
   ubuntu_24_04/curl: 8.5.0-2ubuntu10.7
   ubuntu_24_04/dash: 0.5.12-6ubuntu5
@@ -1851,9 +1851,9 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_24_04/fontconfig-config: 2.15.0-1.1ubuntu2
   ubuntu_24_04/fonts-dejavu-core: 2.37-8
   ubuntu_24_04/fonts-dejavu-mono: 2.37-8
-  ubuntu_24_04/gcc-13: 13.3.0-6ubuntu2~24.04
-  ubuntu_24_04/gcc-13-base: 13.3.0-6ubuntu2~24.04
-  ubuntu_24_04/gcc-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04
+  ubuntu_24_04/gcc-13: 13.3.0-6ubuntu2~24.04.1
+  ubuntu_24_04/gcc-13-base: 13.3.0-6ubuntu2~24.04.1
+  ubuntu_24_04/gcc-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04.1
   ubuntu_24_04/gcc-14-base: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/gcc-x86-64-linux-gnu: 4:13.2.0-7ubuntu1
   ubuntu_24_04/glibc-tools: 0.0~git3.23fd2b9-0ubuntu1
@@ -1931,7 +1931,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_24_04/libfreetype6: 2.13.2+dfsg-1build3
   ubuntu_24_04/libfreexl1: 2.0.0-1build2
   ubuntu_24_04/libgbm1: 25.0.7-0ubuntu0.24.04.1
-  ubuntu_24_04/libgcc-13-dev: 13.3.0-6ubuntu2~24.04
+  ubuntu_24_04/libgcc-13-dev: 13.3.0-6ubuntu2~24.04.1
   ubuntu_24_04/libgcc-s1: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/libgcrypt20: 1.10.3-2build1
   ubuntu_24_04/libgdbm-compat4t64: 1.23-5.1build1
@@ -2236,8 +2236,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_24_04/ca-certificates: '20240203'
   ubuntu_24_04/coreutils: 9.4-3ubuntu6
   ubuntu_24_04/cpp: 4:13.2.0-7ubuntu1
-  ubuntu_24_04/cpp-13: 13.3.0-6ubuntu2~24.04
-  ubuntu_24_04/cpp-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04
+  ubuntu_24_04/cpp-13: 13.3.0-6ubuntu2~24.04.1
+  ubuntu_24_04/cpp-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04.1
   ubuntu_24_04/cpp-x86-64-linux-gnu: 4:13.2.0-7ubuntu1
   ubuntu_24_04/curl: 8.5.0-2ubuntu10.7
   ubuntu_24_04/dash: 0.5.12-6ubuntu5
@@ -2251,9 +2251,9 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_24_04/fontconfig-config: 2.15.0-1.1ubuntu2
   ubuntu_24_04/fonts-dejavu-core: 2.37-8
   ubuntu_24_04/fonts-dejavu-mono: 2.37-8
-  ubuntu_24_04/gcc-13: 13.3.0-6ubuntu2~24.04
-  ubuntu_24_04/gcc-13-base: 13.3.0-6ubuntu2~24.04
-  ubuntu_24_04/gcc-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04
+  ubuntu_24_04/gcc-13: 13.3.0-6ubuntu2~24.04.1
+  ubuntu_24_04/gcc-13-base: 13.3.0-6ubuntu2~24.04.1
+  ubuntu_24_04/gcc-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04.1
   ubuntu_24_04/gcc-14-base: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/gcc-x86-64-linux-gnu: 4:13.2.0-7ubuntu1
   ubuntu_24_04/gdb: 15.0.50.20240403-0ubuntu1
@@ -2335,7 +2335,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_24_04/libfreetype6: 2.13.2+dfsg-1build3
   ubuntu_24_04/libfreexl1: 2.0.0-1build2
   ubuntu_24_04/libgbm1: 25.0.7-0ubuntu0.24.04.1
-  ubuntu_24_04/libgcc-13-dev: 13.3.0-6ubuntu2~24.04
+  ubuntu_24_04/libgcc-13-dev: 13.3.0-6ubuntu2~24.04.1
   ubuntu_24_04/libgcc-s1: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/libgcrypt20: 1.10.3-2build1
   ubuntu_24_04/libgdbm-compat4t64: 1.23-5.1build1
@@ -2644,8 +2644,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/ca-certificates: '20240203'
   ubuntu_24_04/coreutils: 9.4-3ubuntu6
   ubuntu_24_04/cpp: 4:13.2.0-7ubuntu1
-  ubuntu_24_04/cpp-13: 13.3.0-6ubuntu2~24.04
-  ubuntu_24_04/cpp-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04
+  ubuntu_24_04/cpp-13: 13.3.0-6ubuntu2~24.04.1
+  ubuntu_24_04/cpp-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04.1
   ubuntu_24_04/cpp-x86-64-linux-gnu: 4:13.2.0-7ubuntu1
   ubuntu_24_04/curl: 8.5.0-2ubuntu10.7
   ubuntu_24_04/dash: 0.5.12-6ubuntu5
@@ -2659,9 +2659,9 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/fontconfig-config: 2.15.0-1.1ubuntu2
   ubuntu_24_04/fonts-dejavu-core: 2.37-8
   ubuntu_24_04/fonts-dejavu-mono: 2.37-8
-  ubuntu_24_04/gcc-13: 13.3.0-6ubuntu2~24.04
-  ubuntu_24_04/gcc-13-base: 13.3.0-6ubuntu2~24.04
-  ubuntu_24_04/gcc-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04
+  ubuntu_24_04/gcc-13: 13.3.0-6ubuntu2~24.04.1
+  ubuntu_24_04/gcc-13-base: 13.3.0-6ubuntu2~24.04.1
+  ubuntu_24_04/gcc-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04.1
   ubuntu_24_04/gcc-14-base: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/gcc-x86-64-linux-gnu: 4:13.2.0-7ubuntu1
   ubuntu_24_04/glibc-tools: 0.0~git3.23fd2b9-0ubuntu1
@@ -2740,7 +2740,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/libfreexl1: 2.0.0-1build2
   ubuntu_24_04/libfribidi0: 1.0.13-3build1
   ubuntu_24_04/libgbm1: 25.0.7-0ubuntu0.24.04.1
-  ubuntu_24_04/libgcc-13-dev: 13.3.0-6ubuntu2~24.04
+  ubuntu_24_04/libgcc-13-dev: 13.3.0-6ubuntu2~24.04.1
   ubuntu_24_04/libgcc-s1: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/libgcrypt20: 1.10.3-2build1
   ubuntu_24_04/libgdbm-compat4t64: 1.23-5.1build1
@@ -3050,8 +3050,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_24_04/ca-certificates: '20240203'
   ubuntu_24_04/coreutils: 9.4-3ubuntu6
   ubuntu_24_04/cpp: 4:13.2.0-7ubuntu1
-  ubuntu_24_04/cpp-13: 13.3.0-6ubuntu2~24.04
-  ubuntu_24_04/cpp-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04
+  ubuntu_24_04/cpp-13: 13.3.0-6ubuntu2~24.04.1
+  ubuntu_24_04/cpp-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04.1
   ubuntu_24_04/cpp-x86-64-linux-gnu: 4:13.2.0-7ubuntu1
   ubuntu_24_04/curl: 8.5.0-2ubuntu10.7
   ubuntu_24_04/dash: 0.5.12-6ubuntu5
@@ -3065,9 +3065,9 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_24_04/fontconfig-config: 2.15.0-1.1ubuntu2
   ubuntu_24_04/fonts-dejavu-core: 2.37-8
   ubuntu_24_04/fonts-dejavu-mono: 2.37-8
-  ubuntu_24_04/gcc-13: 13.3.0-6ubuntu2~24.04
-  ubuntu_24_04/gcc-13-base: 13.3.0-6ubuntu2~24.04
-  ubuntu_24_04/gcc-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04
+  ubuntu_24_04/gcc-13: 13.3.0-6ubuntu2~24.04.1
+  ubuntu_24_04/gcc-13-base: 13.3.0-6ubuntu2~24.04.1
+  ubuntu_24_04/gcc-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04.1
   ubuntu_24_04/gcc-14-base: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/gcc-x86-64-linux-gnu: 4:13.2.0-7ubuntu1
   ubuntu_24_04/glibc-tools: 0.0~git3.23fd2b9-0ubuntu1
@@ -3145,7 +3145,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_24_04/libfreetype6: 2.13.2+dfsg-1build3
   ubuntu_24_04/libfreexl1: 2.0.0-1build2
   ubuntu_24_04/libgbm1: 25.0.7-0ubuntu0.24.04.1
-  ubuntu_24_04/libgcc-13-dev: 13.3.0-6ubuntu2~24.04
+  ubuntu_24_04/libgcc-13-dev: 13.3.0-6ubuntu2~24.04.1
   ubuntu_24_04/libgcc-s1: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/libgcrypt20: 1.10.3-2build1
   ubuntu_24_04/libgdbm-compat4t64: 1.23-5.1build1
@@ -3452,8 +3452,8 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/chromium-codecs-ffmpeg-extra: 3:128.0.6613.137-0ubuntu0.24.04.1sav0.1
   ubuntu_24_04/coreutils: 9.4-3ubuntu6
   ubuntu_24_04/cpp: 4:13.2.0-7ubuntu1
-  ubuntu_24_04/cpp-13: 13.3.0-6ubuntu2~24.04
-  ubuntu_24_04/cpp-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04
+  ubuntu_24_04/cpp-13: 13.3.0-6ubuntu2~24.04.1
+  ubuntu_24_04/cpp-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04.1
   ubuntu_24_04/cpp-x86-64-linux-gnu: 4:13.2.0-7ubuntu1
   ubuntu_24_04/curl: 8.5.0-2ubuntu10.7
   ubuntu_24_04/dash: 0.5.12-6ubuntu5
@@ -3477,13 +3477,13 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/fonts-dejavu-core: 2.37-8
   ubuntu_24_04/fonts-dejavu-mono: 2.37-8
   ubuntu_24_04/g++: 4:13.2.0-7ubuntu1
-  ubuntu_24_04/g++-13: 13.3.0-6ubuntu2~24.04
-  ubuntu_24_04/g++-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04
+  ubuntu_24_04/g++-13: 13.3.0-6ubuntu2~24.04.1
+  ubuntu_24_04/g++-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04.1
   ubuntu_24_04/g++-x86-64-linux-gnu: 4:13.2.0-7ubuntu1
   ubuntu_24_04/gcc: 4:13.2.0-7ubuntu1
-  ubuntu_24_04/gcc-13: 13.3.0-6ubuntu2~24.04
-  ubuntu_24_04/gcc-13-base: 13.3.0-6ubuntu2~24.04
-  ubuntu_24_04/gcc-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04
+  ubuntu_24_04/gcc-13: 13.3.0-6ubuntu2~24.04.1
+  ubuntu_24_04/gcc-13-base: 13.3.0-6ubuntu2~24.04.1
+  ubuntu_24_04/gcc-13-x86-64-linux-gnu: 13.3.0-6ubuntu2~24.04.1
   ubuntu_24_04/gcc-14-base: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/gcc-x86-64-linux-gnu: 4:13.2.0-7ubuntu1
   ubuntu_24_04/gettext: 0.21-14ubuntu2
@@ -3585,7 +3585,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/libfreexl1: 2.0.0-1build2
   ubuntu_24_04/libfribidi0: 1.0.13-3build1
   ubuntu_24_04/libgbm1: 25.0.7-0ubuntu0.24.04.1
-  ubuntu_24_04/libgcc-13-dev: 13.3.0-6ubuntu2~24.04
+  ubuntu_24_04/libgcc-13-dev: 13.3.0-6ubuntu2~24.04.1
   ubuntu_24_04/libgcc-s1: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/libgcrypt20: 1.10.3-2build1
   ubuntu_24_04/libgdbm-compat4t64: 1.23-5.1build1
@@ -3729,7 +3729,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/libssh-4: 0.10.6-2ubuntu0.3
   ubuntu_24_04/libssl-dev: 3.0.13-0ubuntu3.7
   ubuntu_24_04/libssl3t64: 3.0.13-0ubuntu3.7
-  ubuntu_24_04/libstdc++-13-dev: 13.3.0-6ubuntu2~24.04
+  ubuntu_24_04/libstdc++-13-dev: 13.3.0-6ubuntu2~24.04.1
   ubuntu_24_04/libstdc++6: 14.2.0-4ubuntu2~24.04
   ubuntu_24_04/libstemmer0d: 2.2.0-4build1
   ubuntu_24_04/libsystemd-shared: 255.4-1ubuntu8.10
