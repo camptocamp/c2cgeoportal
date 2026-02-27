@@ -565,6 +565,52 @@ class TestFulltextsearchView(TestCase):
         assert len(response.features) == 1
         assert response.features[0].properties["layer_name"] == "layer2"
 
+    def test_null_category(self) -> None:
+        from geojson.feature import FeatureCollection
+
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
+
+        # Scenario 1: categories not set, null_category not set → no category filter, returns all public matches
+        request = self._create_dummy_request(params={"query": "tra sol", "limit": 40})
+        fts = FullTextSearchView(request)
+        response = fts.fulltextsearch()
+        assert isinstance(response, FeatureCollection)
+        assert len(response.features) == 2
+        assert all(f.properties["layer_name"] == "layer1" for f in response.features)
+
+        # Scenario 2: categories not set, null_category true → only entries with NULL layer_name
+        # "lausanne" matches entry5 (layer_name=None, no interface) and entry6 (layer_name=None, interface=main)
+        # Without interface param, only entries with interface_id IS NULL are returned, so only entry5
+        request = self._create_dummy_request(params={"query": "lausanne", "limit": 40, "null_category": "true"})
+        fts = FullTextSearchView(request)
+        response = fts.fulltextsearch()
+        assert isinstance(response, FeatureCollection)
+        assert len(response.features) == 1
+        assert response.features[0].properties["label"] == "label5"
+        assert response.features[0].properties.get("layer_name") is None
+
+        # Scenario 3: categories set, null_category not set → only entries in specified categories
+        # "lausanne" matches entry5 (layer_name=None) but categories=layer1 filters it out
+        request = self._create_dummy_request(
+            params={"query": "lausanne", "limit": 40, "categories": "layer1"}
+        )
+        fts = FullTextSearchView(request)
+        response = fts.fulltextsearch()
+        assert isinstance(response, FeatureCollection)
+        assert len(response.features) == 0
+
+        # Scenario 4: categories set, null_category true → entries in specified categories OR NULL layer_name
+        # "lausanne" matches entry5 (layer_name=None) which is included because null_category=true
+        request = self._create_dummy_request(
+            params={"query": "lausanne", "limit": 40, "categories": "layer1", "null_category": "true"}
+        )
+        fts = FullTextSearchView(request)
+        response = fts.fulltextsearch()
+        assert isinstance(response, FeatureCollection)
+        assert len(response.features) == 1
+        assert response.features[0].properties["label"] == "label5"
+        assert response.features[0].properties.get("layer_name") is None
+
     def test_capabilities(self) -> None:
         from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
 
