@@ -1,3 +1,7 @@
+##### 2.9.0.405
+
+- Audit Dpkg 2.9 [c2cgeoportal#12678](https://github.com/camptocamp/c2cgeoportal/pull/12678)
+
 ##### 2.9.0.404
 
 - Be able to filter on Null category [c2cgeoportal#12639](https://github.com/camptocamp/c2cgeoportal/pull/12639)
