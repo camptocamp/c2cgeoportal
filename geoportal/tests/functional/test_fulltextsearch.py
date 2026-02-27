@@ -581,7 +581,9 @@ class TestFulltextsearchView(TestCase):
         # Scenario 2: categories not set, null_category true → only entries with NULL layer_name
         # "lausanne" matches entry5 (layer_name=None, no interface) and entry6 (layer_name=None, interface=main)
         # Without interface param, only entries with interface_id IS NULL are returned, so only entry5
-        request = self._create_dummy_request(params={"query": "lausanne", "limit": 40, "null_category": "true"})
+        request = self._create_dummy_request(
+            params={"query": "lausanne", "limit": 40, "null_category": "true"}
+        )
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         assert isinstance(response, FeatureCollection)
