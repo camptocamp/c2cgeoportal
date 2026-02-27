@@ -405,10 +405,23 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <li><p><code class="docutils literal notranslate"><span class="pre">partitionlimit</span></code>: Maximum number of results per layer (optional, default <code class="docutils literal notranslate"><span class="pre">0</span></code>, also capped by <code class="docutils literal notranslate"><span class="pre">fulltextsearch.maxlimit</span></code>).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">lang</span></code>: Language for the search (optional). If not provided, the locale negotiated from the request is used.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">interface</span></code>: Filter results to a specific interface (optional). If not provided, only entries without interface are returned.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">categories</span></code>: Limit results to categories. Comma-separated list of category (<code class="docutils literal notranslate"><span class="pre">layer_name</span></code> in the table, optional).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">categories</span></code>: Limit results to categories (optional). Comma-separated list of category (<code class="docutils literal notranslate"><span class="pre">layer_name</span></code> in the table). In order to retrieve matches where <code class="docutils literal notranslate"><span class="pre">layer_name</span></code> is <code class="docutils literal notranslate"><span class="pre">NULL</span></code> by the same request you will also have to specify parameter <code class="docutils literal notranslate"><span class="pre">null_category</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">null_category</span></code>: Optional, default <code class="docutils literal notranslate"><span class="pre">false</span></code>, used to get the items with <code class="docutils literal notranslate"><span class="pre">NULL</span></code> category (<code class="docutils literal notranslate"><span class="pre">layer_name</span></code> in the table).</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">ranksystem</span></code>: Set to <code class="docutils literal notranslate"><span class="pre">ts_rank_cd</span></code> to use that ranking; otherwise <code class="docutils literal notranslate"><span class="pre">similarity</span></code> is used.</p></li>
 </ul>
 <p>The language used for stemming is the locale negotiated from the request; there is no <code class="docutils literal notranslate"><span class="pre">lang</span></code> parameter.</p>
+<p><code class="docutils literal notranslate"><span class="pre">categories</span></code> and <code class="docutils literal notranslate"><span class="pre">null_category</span></code> parameters combinations table:
++—————–+———————-+——————————————————————-+
+| <code class="docutils literal notranslate"><span class="pre">categories</span></code>  | <code class="docutils literal notranslate"><span class="pre">null_category</span></code>    | Result                                                            |
++=================+======================+===================================================================+
+| not set         | <code class="docutils literal notranslate"><span class="pre">false</span></code> or not set | all matches, regardless of <code class="docutils literal notranslate"><span class="pre">layer_name</span></code>.                        |
++—————–+———————-+——————————————————————-+
+| not set         | <code class="docutils literal notranslate"><span class="pre">true</span></code>             | only matches where <code class="docutils literal notranslate"><span class="pre">layer_name</span></code> is <code class="docutils literal notranslate"><span class="pre">NULL</span></code>.                    |
++—————–+———————-+——————————————————————-+
+| set             | <code class="docutils literal notranslate"><span class="pre">false</span></code> or not set | matches where <code class="docutils literal notranslate"><span class="pre">layer_name</span></code> is in <code class="docutils literal notranslate"><span class="pre">categories</span></code>.                |
++—————–+———————-+——————————————————————-+
+| set             | <code class="docutils literal notranslate"><span class="pre">true</span></code>             | matches where <code class="docutils literal notranslate"><span class="pre">layer_name</span></code> is in <code class="docutils literal notranslate"><span class="pre">categories</span></code> or is <code class="docutils literal notranslate"><span class="pre">NULL</span></code>. |
++—————–+———————-+——————————————————————-+</p>
 </section>
 <section id="id2">
 <h3>Result<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h3>
