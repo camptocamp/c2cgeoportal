@@ -1413,6 +1413,62 @@
 </tbody>
 </table>
 </section>
+<section id="layer-legend">
+<span id="layer-legend"></span><h3>Layer legend<a class="headerlink" href="#layer-legend" title="Permalink to this headline">¶</a></h3>
+<p>Legend configuration for the layer</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>object</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td colspan="2"></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>properties</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
+<li><p>enabled</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Layer legend enabled</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>Set to false if the layer has no legend</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>boolean</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td><p>True</p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>mime_type</p></li>
+</ul>
+</td>
+<td colspan="2"><p><a class="reference internal" href="#layer-legend-mime-type">Layer legend MIME type</a></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
+<li><p>extension</p></li>
+</ul>
+</td>
+<td colspan="2"><p><a class="reference internal" href="#layer-legend-extension">Layer legend extension</a></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
+<li><p>items</p></li>
+</ul>
+</td>
+<td colspan="2"><p><a class="reference internal" href="#layer-legends">Layer legends</a></p></td>
+</tr>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td colspan="2"><p>False</p></td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="layer-legends">
 <span id="layer-legends"></span><h3>Layer legends<a class="headerlink" href="#layer-legends" title="Permalink to this headline">¶</a></h3>
 <p>The provided legend</p>
@@ -1427,111 +1483,113 @@
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="3"><p><em>array</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="28"><p>items</p></td>
-<td><p>type</p></td>
+<tr class="row-even"><td rowspan="29"><p>items</p></td>
+<td colspan="3"><p><em>Layer legend item</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>object</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="3"><p>properties</p></td>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
 </tr>
-<tr class="row-even"><td rowspan="4"><ul class="simple">
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
 <li><p><strong>mime_type</strong></p></li>
 </ul>
 </td>
 <td colspan="2"><p><em>MIME type</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="2"><p>The mime type used in the WMS request</p></td>
+<tr class="row-even"><td colspan="2"><p>The mime type used in the WMS request</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td><p><em>string</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>pattern</p></td>
+<tr class="row-even"><td><p>pattern</p></td>
 <td><p>^[a-zA-Z0-9!#$%^&amp;\*_\-\+{}\|’.`~]+/[a-zA-Z0-9!#$%^&amp;\*_\-\+{}\|’.`~]+$</p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p><strong>href</strong></p></li>
 </ul>
 </td>
 <td colspan="2"><p><em>Href</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="2"><p>The URL of the legend image</p></td>
+<tr class="row-even"><td colspan="2"><p>The URL of the legend image</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td><p><em>string</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p>width</p></li>
 </ul>
 </td>
 <td colspan="2"><p><em>Width</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="2"><p>The width of the legend image</p></td>
+<tr class="row-odd"><td colspan="2"><p>The width of the legend image</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td><p><em>string</em></p></td>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>integer</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p>height</p></li>
 </ul>
 </td>
 <td colspan="2"><p><em>Height</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="2"><p>The height of the legend image</p></td>
+<tr class="row-even"><td colspan="2"><p>The height of the legend image</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
-<td><p><em>string</em></p></td>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>integer</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p>min_scale</p></li>
 </ul>
 </td>
 <td colspan="2"><p><em>Min scale</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="2"><p>The max scale of the legend image</p></td>
+<tr class="row-odd"><td colspan="2"><p>The min scale of the legend image</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td><p><em>string</em></p></td>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p>max_scale</p></li>
 </ul>
 </td>
 <td colspan="2"><p><em>Max scale</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="2"><p>The max scale of the legend image</p></td>
+<tr class="row-even"><td colspan="2"><p>The max scale of the legend image</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
-<td><p><em>string</em></p></td>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p>min_resolution</p></li>
 </ul>
 </td>
 <td colspan="2"><p><em>Min resolution</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="2"><p>The max resolution of the legend image</p></td>
+<tr class="row-odd"><td colspan="2"><p>The min resolution of the legend image</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td><p><em>string</em></p></td>
+<tr class="row-even"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p>max_resolution</p></li>
 </ul>
 </td>
 <td colspan="2"><p><em>Max resolution</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="2"><p>The max resolution of the legend image</p></td>
+<tr class="row-even"><td colspan="2"><p>The max resolution of the legend image</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
-<td><p><em>string</em></p></td>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>number</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>additionalProperties</p></td>
+<tr class="row-even"><td><p>additionalProperties</p></td>
 <td colspan="2"><p>False</p></td>
 </tr>
 </tbody>
 </table>
 </section>
-<section id="layer-legend-mime">
-<span id="layer-legend-mime"></span><h3>Layer legend MIME<a class="headerlink" href="#layer-legend-mime" title="Permalink to this headline">¶</a></h3>
+<section id="layer-legend-mime-type">
+<span id="layer-legend-mime-type"></span><h3>Layer legend MIME type<a class="headerlink" href="#layer-legend-mime-type" title="Permalink to this headline">¶</a></h3>
 <p>The mime type used to store the generated legend</p>
 <table class="docutils align-default">
 <colgroup>
@@ -1966,148 +2024,154 @@
 <td colspan="3"><p><a class="reference internal" href="#layer-dimensions">layer dimensions</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
+<li><p>legend</p></li>
+</ul>
+</td>
+<td colspan="3"><p><a class="reference internal" href="#layer-legend">Layer legend</a></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
 <li><p>legends</p></li>
 </ul>
 </td>
 <td colspan="3"><p><a class="reference internal" href="#layer-legends">Layer legends</a></p></td>
 </tr>
-<tr class="row-even"><td><ul class="simple">
+<tr class="row-odd"><td><ul class="simple">
 <li><p>legend_mime</p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#layer-legend-mime">Layer legend MIME</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#layer-legend-mime-type">Layer legend MIME type</a></p></td>
 </tr>
-<tr class="row-odd"><td><ul class="simple">
+<tr class="row-even"><td><ul class="simple">
 <li><p>legend_extension</p></li>
 </ul>
 </td>
 <td colspan="3"><p><a class="reference internal" href="#layer-legend-extension">Layer legend extension</a></p></td>
 </tr>
-<tr class="row-even"><td><ul class="simple">
+<tr class="row-odd"><td><ul class="simple">
 <li><p>pre_hash_post_process</p></li>
 </ul>
 </td>
 <td colspan="3"><p><a class="reference internal" href="#layer-pre-hash-post-process">Layer pre hash post process</a></p></td>
 </tr>
-<tr class="row-odd"><td><ul class="simple">
+<tr class="row-even"><td><ul class="simple">
 <li><p>post_process</p></li>
 </ul>
 </td>
 <td colspan="3"><p><a class="reference internal" href="#layer-post-process">Layer post process</a></p></td>
 </tr>
-<tr class="row-even"><td><ul class="simple">
+<tr class="row-odd"><td><ul class="simple">
 <li><p>geoms</p></li>
 </ul>
 </td>
 <td colspan="3"><p><a class="reference internal" href="#layer-geometries">Layer geometries</a></p></td>
 </tr>
-<tr class="row-odd"><td><ul class="simple">
+<tr class="row-even"><td><ul class="simple">
 <li><p>empty_tile_detection</p></li>
 </ul>
 </td>
 <td colspan="3"><p><a class="reference internal" href="#layer-empty-tile-detection">Layer empty tile detection</a></p></td>
 </tr>
-<tr class="row-even"><td><ul class="simple">
+<tr class="row-odd"><td><ul class="simple">
 <li><p>empty_metatile_detection</p></li>
 </ul>
 </td>
 <td colspan="3"><p><a class="reference internal" href="#layer-empty-meta-tile-detection">Layer empty meta-tile detection</a></p></td>
 </tr>
-<tr class="row-odd"><td><ul class="simple">
+<tr class="row-even"><td><ul class="simple">
 <li><p>cost</p></li>
 </ul>
 </td>
 <td colspan="3"><p><a class="reference internal" href="#layer-cost">Layer cost</a></p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p><strong>url</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p><em>URL</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="3"><p>The WMS service URL</p></td>
+<tr class="row-even"><td colspan="3"><p>The WMS service URL</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<tr class="row-even"><td rowspan="4"><ul class="simple">
 <li><p>generate_salt</p></li>
 </ul>
 </td>
 <td colspan="3"><p><em>Generate salt</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p>Should generate a salt to drop the cache</p></td>
+<tr class="row-odd"><td colspan="3"><p>Should generate a salt to drop the cache</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>boolean</em></p></td>
 </tr>
-<tr class="row-even"><td><p>default</p></td>
+<tr class="row-odd"><td><p>default</p></td>
 <td colspan="2"><p>False</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p>query_layers</p></li>
 </ul>
 </td>
 <td colspan="3"><p><em>Query layers</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p>The layers use for query (To be used with the server)</p></td>
+<tr class="row-odd"><td colspan="3"><p>The layers use for query (To be used with the server)</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="4"><ul class="simple">
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
 <li><p>info_formats</p></li>
 </ul>
 </td>
 <td colspan="3"><p><em>Info formats</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="3"><p>The query info format</p></td>
+<tr class="row-even"><td colspan="3"><p>The query info format</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>array</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>items</p></td>
+<tr class="row-even"><td><p>items</p></td>
 <td><p>type</p></td>
 <td><p><em>string</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="5"><ul class="simple">
+<tr class="row-odd"><td rowspan="5"><ul class="simple">
 <li><p>params</p></li>
 </ul>
 </td>
 <td colspan="3"><p><em>Parameters</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="3"><p>Additional parameters to the WMS query (like dimension)</p></td>
+<tr class="row-even"><td colspan="3"><p>Additional parameters to the WMS query (like dimension)</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>object</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="2"><p>additionalProperties</p></td>
+<tr class="row-even"><td rowspan="2"><p>additionalProperties</p></td>
 <td colspan="2"><p>The parameter value</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td><p><em>string</em></p></td>
 </tr>
-<tr class="row-odd"><td><ul class="simple">
+<tr class="row-even"><td><ul class="simple">
 <li><p>headers</p></li>
 </ul>
 </td>
 <td colspan="3"><p><a class="reference internal" href="#headers">Headers</a></p></td>
 </tr>
-<tr class="row-even"><td rowspan="4"><ul class="simple">
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
 <li><p>version</p></li>
 </ul>
 </td>
 <td colspan="3"><p><em>Version</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="3"><p>The used WMS version</p></td>
+<tr class="row-even"><td colspan="3"><p>The used WMS version</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>default</p></td>
+<tr class="row-even"><td><p>default</p></td>
 <td colspan="2"><p>1.1.1</p></td>
 </tr>
-<tr class="row-even"><td><p>additionalProperties</p></td>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
 <td colspan="3"><p>False</p></td>
 </tr>
 </tbody>
@@ -2242,162 +2306,168 @@
 <td colspan="4"><p><a class="reference internal" href="#layer-dimensions">layer dimensions</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
+<li><p>legend</p></li>
+</ul>
+</td>
+<td colspan="4"><p><a class="reference internal" href="#layer-legend">Layer legend</a></p></td>
+</tr>
+<tr class="row-even"><td><ul class="simple">
 <li><p>legends</p></li>
 </ul>
 </td>
 <td colspan="4"><p><a class="reference internal" href="#layer-legends">Layer legends</a></p></td>
 </tr>
-<tr class="row-even"><td><ul class="simple">
+<tr class="row-odd"><td><ul class="simple">
 <li><p>legend_mime</p></li>
 </ul>
 </td>
-<td colspan="4"><p><a class="reference internal" href="#layer-legend-mime">Layer legend MIME</a></p></td>
+<td colspan="4"><p><a class="reference internal" href="#layer-legend-mime-type">Layer legend MIME type</a></p></td>
 </tr>
-<tr class="row-odd"><td><ul class="simple">
+<tr class="row-even"><td><ul class="simple">
 <li><p>legend_extension</p></li>
 </ul>
 </td>
 <td colspan="4"><p><a class="reference internal" href="#layer-legend-extension">Layer legend extension</a></p></td>
 </tr>
-<tr class="row-even"><td><ul class="simple">
+<tr class="row-odd"><td><ul class="simple">
 <li><p>pre_hash_post_process</p></li>
 </ul>
 </td>
 <td colspan="4"><p><a class="reference internal" href="#layer-pre-hash-post-process">Layer pre hash post process</a></p></td>
 </tr>
-<tr class="row-odd"><td><ul class="simple">
+<tr class="row-even"><td><ul class="simple">
 <li><p>post_process</p></li>
 </ul>
 </td>
 <td colspan="4"><p><a class="reference internal" href="#layer-post-process">Layer post process</a></p></td>
 </tr>
-<tr class="row-even"><td><ul class="simple">
+<tr class="row-odd"><td><ul class="simple">
 <li><p>geoms</p></li>
 </ul>
 </td>
 <td colspan="4"><p><a class="reference internal" href="#layer-geometries">Layer geometries</a></p></td>
 </tr>
-<tr class="row-odd"><td><ul class="simple">
+<tr class="row-even"><td><ul class="simple">
 <li><p>empty_tile_detection</p></li>
 </ul>
 </td>
 <td colspan="4"><p><a class="reference internal" href="#layer-empty-tile-detection">Layer empty tile detection</a></p></td>
 </tr>
-<tr class="row-even"><td><ul class="simple">
+<tr class="row-odd"><td><ul class="simple">
 <li><p>empty_metatile_detection</p></li>
 </ul>
 </td>
 <td colspan="4"><p><a class="reference internal" href="#layer-empty-meta-tile-detection">Layer empty meta-tile detection</a></p></td>
 </tr>
-<tr class="row-odd"><td><ul class="simple">
+<tr class="row-even"><td><ul class="simple">
 <li><p>cost</p></li>
 </ul>
 </td>
 <td colspan="4"><p><a class="reference internal" href="#layer-cost">Layer cost</a></p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p>mapfile</p></li>
 </ul>
 </td>
 <td colspan="4"><p><em>MapFile</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="4"><p>The Mapnik map file</p></td>
+<tr class="row-even"><td colspan="4"><p>The Mapnik map file</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="3"><p><em>string</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<tr class="row-even"><td rowspan="4"><ul class="simple">
 <li><p>data_buffer</p></li>
 </ul>
 </td>
 <td colspan="4"><p><em>Data buffer</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="4"><p>The data buffer</p></td>
+<tr class="row-odd"><td colspan="4"><p>The data buffer</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="3"><p><em>integer</em></p></td>
 </tr>
-<tr class="row-even"><td><p>default</p></td>
+<tr class="row-odd"><td><p>default</p></td>
 <td colspan="3"><p>128</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="5"><ul class="simple">
+<tr class="row-even"><td rowspan="5"><ul class="simple">
 <li><p>output_format</p></li>
 </ul>
 </td>
 <td colspan="4"><p><em>Output format</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="4"><p>The Mapnik output format</p></td>
+<tr class="row-odd"><td colspan="4"><p>The Mapnik output format</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="3"><p><em>string</em></p></td>
 </tr>
-<tr class="row-even"><td><p>enum</p></td>
+<tr class="row-odd"><td><p>enum</p></td>
 <td colspan="3"><p>png, png256, jpeg, grid</p></td>
 </tr>
-<tr class="row-odd"><td><p>default</p></td>
+<tr class="row-even"><td><p>default</p></td>
 <td colspan="3"><p>png</p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p>wms_url</p></li>
 </ul>
 </td>
 <td colspan="4"><p><em>WMS URL</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="4"><p>A WMS fallback URL (deprecated)</p></td>
+<tr class="row-even"><td colspan="4"><p>A WMS fallback URL (deprecated)</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="3"><p><em>string</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<tr class="row-even"><td rowspan="4"><ul class="simple">
 <li><p>resolution</p></li>
 </ul>
 </td>
 <td colspan="4"><p><em>Resolution</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="4"><p>The resolution</p></td>
+<tr class="row-odd"><td colspan="4"><p>The resolution</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="3"><p><em>integer</em></p></td>
 </tr>
-<tr class="row-even"><td><p>default</p></td>
+<tr class="row-odd"><td><p>default</p></td>
 <td colspan="3"><p>4</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="6"><ul class="simple">
+<tr class="row-even"><td rowspan="6"><ul class="simple">
 <li><p>layers_fields</p></li>
 </ul>
 </td>
 <td colspan="4"><p><em>Layers fields</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="4"><p>The Mapnik layers fields</p></td>
+<tr class="row-odd"><td colspan="4"><p>The Mapnik layers fields</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="3"><p><em>object</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><p>additionalProperties</p></td>
+<tr class="row-odd"><td rowspan="3"><p>additionalProperties</p></td>
 <td colspan="3"><p>The Mapnik layer fields</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>array</em></p></td>
 </tr>
-<tr class="row-even"><td><p>items</p></td>
+<tr class="row-odd"><td><p>items</p></td>
 <td><p>type</p></td>
 <td><p><em>string</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<tr class="row-even"><td rowspan="4"><ul class="simple">
 <li><p>drop_empty_utfgrid</p></li>
 </ul>
 </td>
 <td colspan="4"><p><em>Drop empty UTFGrid</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="4"><p>Drop if the tile is empty</p></td>
+<tr class="row-odd"><td colspan="4"><p>Drop if the tile is empty</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="3"><p><em>boolean</em></p></td>
 </tr>
-<tr class="row-even"><td><p>default</p></td>
+<tr class="row-odd"><td><p>default</p></td>
 <td colspan="3"><p>False</p></td>
 </tr>
-<tr class="row-odd"><td><p>additionalProperties</p></td>
+<tr class="row-even"><td><p>additionalProperties</p></td>
 <td colspan="4"><p>False</p></td>
 </tr>
 </tbody>
