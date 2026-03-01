@@ -1,3 +1,9 @@
+##### 2.9.0.407
+
+- Update dependency storybook to v8.6.17 [SECURITY] (2.9) [ngeo#10053](https://github.com/camptocamp/ngeo/pull/10053)
+- Update dependency jquery-ui to v1.14.2 (2.9) [ngeo#10054](https://github.com/camptocamp/ngeo/pull/10054)
+- Update pre-commit hook PyCQA/autoflake to v2.3.3 (2.9) [ngeo#10055](https://github.com/camptocamp/ngeo/pull/10055)
+
 ##### 2.9.0.406
 
 - Update all patch/minor versions (2.9) [c2cgeoportal#12693](https://github.com/camptocamp/c2cgeoportal/pull/12693)
