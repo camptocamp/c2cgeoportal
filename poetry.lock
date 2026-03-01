@@ -4945,14 +4945,14 @@ types-urllib3 = "*"
 
 [[package]]
 name = "types-setuptools"
-version = "80.10.0.20260124"
+version = "82.0.0.20260210"
 description = "Typing stubs for setuptools"
 optional = false
-python-versions = ">=3.9"
+python-versions = ">=3.10"
 groups = ["dev"]
 files = [
-    {file = "types_setuptools-80.10.0.20260124-py3-none-any.whl", hash = "sha256:efed7e044f01adb9c2806c7a8e1b6aa3656b8e382379b53d5f26ee3db24d4c01"},
-    {file = "types_setuptools-80.10.0.20260124.tar.gz", hash = "sha256:1b86d9f0368858663276a0cbe5fe5a9722caf94b5acde8aba0399a6e90680f20"},
+    {file = "types_setuptools-82.0.0.20260210-py3-none-any.whl", hash = "sha256:5124a7daf67f195c6054e0f00f1d97c69caad12fdcf9113eba33eff0bce8cd2b"},
+    {file = "types_setuptools-82.0.0.20260210.tar.gz", hash = "sha256:d9719fbbeb185254480ade1f25327c4654f8c00efda3fec36823379cebcdee58"},
 ]
 
 [[package]]
@@ -5335,4 +5335,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<4"
-content-hash = "f230db44e217d9006bc55252c45f04d26e076749dd37240afd61d3565c5eb80f"
+content-hash = "83e2634452d8c2058255456b09cea4e58d62f8eb4daa5410bca492047b222898"
