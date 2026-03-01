@@ -94,13 +94,13 @@ tests-no-zope = ["cloudpickle", "cloudpickle", "hypothesis", "hypothesis", "mypy
 
 [[package]]
 name = "azure-core"
-version = "1.38.0"
+version = "1.38.2"
 description = "Microsoft Azure Core Library for Python"
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "azure_core-1.38.0-py3-none-any.whl", hash = "sha256:ab0c9b2cd71fecb1842d52c965c95285d3cfb38902f6766e4a471f1cd8905335"},
-    {file = "azure_core-1.38.0.tar.gz", hash = "sha256:8194d2682245a3e4e3151a667c686464c3786fed7918b394d035bdcd61bb5993"},
+    {file = "azure_core-1.38.2-py3-none-any.whl", hash = "sha256:074806c75cf239ea284a33a66827695ef7aeddac0b4e19dda266a93e4665ead9"},
+    {file = "azure_core-1.38.2.tar.gz", hash = "sha256:67562857cb979217e48dc60980243b61ea115b77326fa93d83b729e7ff0482e7"},
 ]
 
 [package.dependencies]
@@ -4445,4 +4445,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9.2,<3.11"
-content-hash = "b99b209deb40f871a170052feee7feb0da469797e8323b3e31a3a42fac027935"
+content-hash = "20a0987221d4e38abc3d9e20cb78f24be4bf9efcea1de569c49b9c9e7d1a5ce6"
