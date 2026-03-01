@@ -23,7 +23,7 @@ known-first-party = ["c2cgeoportal_commons", "c2cgeoportal_geoportal", "c2cgeopo
 
 [tool.poetry.dependencies]
 python = ">=3.12,<4"
-alembic = "1.17.2" # geoportal
+alembic = "1.18.4" # geoportal
 "c2c.template" = "2.4.2" # geoportal
 c2cgeoform = "2.5.0" # commons
 colander = "2.0" # commons, admin
@@ -33,7 +33,7 @@ deform = "2.0.15" # commons, admin
 defusedxml = "0.7.1" # geoportal
 "dogpile.cache" = "1.5.0" # geoportal
 Fiona = "1.10.1" # geoportal raster
-GeoAlchemy2 = "0.18.1" # commons, geoportal
+GeoAlchemy2 = "0.18.3" # commons, geoportal
 geojson = "3.2.0" # geoportal
 getitfixed = "1.0.29" # geoportal
 isodate = "0.7.2" # geoportal
@@ -55,9 +55,9 @@ python-dateutil = "2.9.0.post0" # geoportal
 PyYAML = "6.0.1" # geoportal
 rasterio = "1.5.0" # geoportal raster
 requests = "2.32.5" # geoportal
-redis = "7.1.0" # geoportal cache
+redis = "7.2.1" # geoportal cache
 Shapely = "2.1.2" # geoportal
-SQLAlchemy = "2.0.46"
+SQLAlchemy = "2.0.47"
 transaction = "5.0" # commons, geoportal
 translationstring = "1.4" # admin
 "zope.event" = "6.1" # commons, geoportal
@@ -69,8 +69,8 @@ simple_openid_connect = '2.3.2' # geoportal
 pkce = '1.0.3' # geoportal
 basicauth = "1.0.0"
 prospector = { version = "1.18.0", extras = ["with_mypy", "with_bandit", "with_pyroma", "with_ruff"] }
-prospector-profile-duplicated = "1.11.0"
-prospector-profile-utils  = "1.26.5"
+prospector-profile-duplicated = "1.12.0"
+prospector-profile-utils  = "1.27.0"
 ruff = "0.15.4"
 beautifulsoup4 = "4.14.3"
 certifi = "2026.2.25"
@@ -95,12 +95,12 @@ types-requests = "2.*"
 types-setuptools = "80.10.0.20260124"
 mappyfile = "1.1.1"
 mapbox-vector-tile = "2.2.0"
-responses = "0.25.8"
+responses = "0.26.0"
 waitress = "3.0.2"
-boto3 = "1.42.40"
+boto3 = "1.42.59"
 # Used on upgrade
 pre-commit = "4.5.1"
-prek = "0.3.1"
+prek = "0.3.4"
 # To be able to upgrade project from version <= 2.8
 c2cciutils = { version = "1.5.14", extras = ["checks"] }
 
