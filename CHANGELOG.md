@@ -1,3 +1,8 @@
+##### 2.9.0.406
+
+- Update all patch/minor versions (2.9) [c2cgeoportal#12693](https://github.com/camptocamp/c2cgeoportal/pull/12693)
+- Update CI dependencies (2.9) [c2cgeoportal#12694](https://github.com/camptocamp/c2cgeoportal/pull/12694)
+
 ##### 2.9.0.405
 
 - Audit Dpkg 2.9 [c2cgeoportal#12678](https://github.com/camptocamp/c2cgeoportal/pull/12678)
