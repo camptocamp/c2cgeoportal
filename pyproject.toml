@@ -82,7 +82,7 @@ certifi = "2026.2.25"
 cryptography = "46.0.5"
 setuptools = "78.1.1"
 urllib3 = "2.6.3"
-azure-core = "1.38.0"
+azure-core = "1.38.2"
 pillow = "12.1.1"
 
 [tool.poetry.group.dev.dependencies]

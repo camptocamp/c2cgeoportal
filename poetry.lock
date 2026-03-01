@@ -110,13 +110,13 @@ tests-mypy = ["mypy (>=1.11.1)", "pytest-mypy-plugins"]
 
 [[package]]
 name = "azure-core"
-version = "1.38.0"
+version = "1.38.2"
 description = "Microsoft Azure Core Library for Python"
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "azure_core-1.38.0-py3-none-any.whl", hash = "sha256:ab0c9b2cd71fecb1842d52c965c95285d3cfb38902f6766e4a471f1cd8905335"},
-    {file = "azure_core-1.38.0.tar.gz", hash = "sha256:8194d2682245a3e4e3151a667c686464c3786fed7918b394d035bdcd61bb5993"},
+    {file = "azure_core-1.38.2-py3-none-any.whl", hash = "sha256:074806c75cf239ea284a33a66827695ef7aeddac0b4e19dda266a93e4665ead9"},
+    {file = "azure_core-1.38.2.tar.gz", hash = "sha256:67562857cb979217e48dc60980243b61ea115b77326fa93d83b729e7ff0482e7"},
 ]
 
 [package.dependencies]
@@ -4995,4 +4995,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "7ec86c6c458efc1df46a00d33d647b460b4002afed05811501fd08f7b335aab4"
+content-hash = "9cffc832aaa5e66dbc07d476e907c461ae28f1a2d38fe6229958ecdc180c39f6"
