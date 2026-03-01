@@ -1,3 +1,7 @@
+##### 2.7.1.250
+
+- Update dependency azure-core to v1.38.2 (2.7) [c2cgeoportal#12691](https://github.com/camptocamp/c2cgeoportal/pull/12691)
+
 ##### 2.7.1.249
 
 - Audit Snyk check/fix 2.7 [c2cgeoportal#12677](https://github.com/camptocamp/c2cgeoportal/pull/12677)
