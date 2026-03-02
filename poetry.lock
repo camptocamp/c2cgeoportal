@@ -1083,29 +1083,30 @@ files = [
 
 [[package]]
 name = "deform"
-version = "2.0.15"
+version = "3.0.1"
 description = "Form library with advanced features like nested forms"
 optional = false
 python-versions = "*"
 groups = ["main"]
 files = [
-    {file = "deform-2.0.15-py3-none-any.whl", hash = "sha256:2320de140a0003e53138cea394f0196bcc72cf18607a6a6a1bcef7c38b39ff35"},
-    {file = "deform-2.0.15.tar.gz", hash = "sha256:1e912937650c1dbb830079dd9c039950762a230223a567740fbf1b23f1090367"},
+    {file = "deform-3.0.1-py3-none-any.whl", hash = "sha256:46639268bc246b05158bf45428c80419cf0c4c6df258c4ff52089e1c69596412"},
+    {file = "deform-3.0.1.tar.gz", hash = "sha256:e35c015252725e52e194900f8a50314bd764b66e3d2a986b46f4676f0dafe6e9"},
 ]
 
 [package.dependencies]
 Chameleon = ">=2.5.1"
-colander = ">=1.0a1"
+colander = ">=1.0"
 iso8601 = "*"
 peppercorn = ">=0.3"
+setuptools = "<81.0.0"
 translationstring = ">=1.0"
 "zope.deprecation" = "*"
 
 [package.extras]
-dev = ["Sphinx (>=1.7.4)", "beautifulsoup4", "black", "check-manifest", "coverage", "flake8", "flake8-bugbear", "flake8-builtins", "flaky", "isort", "lingua", "pygments", "pylons-sphinx-latesturl", "pylons-sphinx-themes", "pyramid", "pytest", "pytest-cov", "readme-renderer", "repoze.sphinx.autointerface", "selenium (>=4.0a)", "waitress"]
-docs = ["Sphinx (>=1.7.4)", "pylons-sphinx-latesturl", "pylons-sphinx-themes", "repoze.sphinx.autointerface"]
-functional = ["lingua", "pygments", "selenium (>=4.0a)", "waitress"]
-lint = ["black", "check-manifest", "flake8", "flake8-bugbear", "flake8-builtins", "isort", "readme-renderer"]
+dev = ["Sphinx (>=1.7.4)", "beautifulsoup4", "black", "check-manifest", "coverage", "flake8", "flake8-bugbear", "flake8-builtins", "flaky", "isort", "lingua", "pygments", "pylons-sphinx-themes", "pylons_sphinx_latesturl", "pyramid", "pytest", "pytest-cov", "readme_renderer", "repoze.sphinx.autointerface", "rstcheck", "selenium (>=4.0.0.b4,<4.10.0)", "waitress"]
+docs = ["Sphinx (>=1.7.4)", "pylons-sphinx-themes", "pylons_sphinx_latesturl", "repoze.sphinx.autointerface"]
+functional = ["lingua", "pygments", "selenium (>=4.0.0.b4,<4.10.0)", "waitress"]
+lint = ["black", "check-manifest", "flake8", "flake8-bugbear", "flake8-builtins", "isort", "readme_renderer", "rstcheck"]
 testing = ["beautifulsoup4", "coverage", "flaky", "pyramid", "pytest", "pytest-cov"]
 
 [[package]]
@@ -5335,4 +5336,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<4"
-content-hash = "83e2634452d8c2058255456b09cea4e58d62f8eb4daa5410bca492047b222898"
+content-hash = "a490b7d55a6abc0c1e37241b25d4bd29c8c210b79a607e9ea6dfbfaca7e97938"
