@@ -1,3 +1,7 @@
+##### 2.9.0.408
+
+- Audit Dpkg 2.9 [c2cgeoportal#12698](https://github.com/camptocamp/c2cgeoportal/pull/12698)
+
 ##### 2.9.0.407
 
 - Update dependency storybook to v8.6.17 [SECURITY] (2.9) [ngeo#10053](https://github.com/camptocamp/ngeo/pull/10053)
