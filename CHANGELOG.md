@@ -1,3 +1,7 @@
+##### 2.7.1.251
+
+- Update dependency pytz to v2026 (2.7) [c2cgeoportal#12700](https://github.com/camptocamp/c2cgeoportal/pull/12700)
+
 ##### 2.7.1.250
 
 - Update dependency azure-core to v1.38.2 (2.7) [c2cgeoportal#12691](https://github.com/camptocamp/c2cgeoportal/pull/12691)
