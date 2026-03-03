@@ -61,8 +61,9 @@ To create the application (simple or advance), first apply the ``c2cgeoportal_cr
 .. prompt:: bash
 
     docker run --rm -ti --volume=$(pwd):/src \
+        --user=$(id -u):$(id -g) \
         camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION} \
-        run $(id -u) $(id -g) /src \
+        run /src \
         pcreate --scaffold=create \
         ${GEOMAPFISH_PROJECT}
 
@@ -84,8 +85,9 @@ it later.
         docker run --rm -ti --volume=$(pwd):/src \
             --env=SRID=2056 \
             --env=EXTENT="2420000,1030000,2900000,1350000" \
+            --user=$(id -u):$(id -g) \
             camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION} \
-            run $(id -u) $(id -g) /src \
+            run /src \
             pcreate --scaffold=create \
             ${GEOMAPFISH_PROJECT}
 
@@ -97,8 +99,9 @@ For an advance application, apply the ``c2cgeoportal_advance_create`` scaffold:
 .. prompt:: bash
 
     docker run --rm -ti --volume=$(pwd):/src \
+        --user=$(id -u):$(id -g) \
         camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION} \
-        run $(id -u) $(id -g) /src \
+        run /src \
         pcreate --scaffold=advance_create \
         ${GEOMAPFISH_PROJECT} --overwrite
 
@@ -108,8 +111,9 @@ Now apply the ``c2cgeoportal_update`` scaffold (for simple and advance applicati
 .. prompt:: bash
 
     docker run --rm -ti --volume=$(pwd):/src \
+        --user=$(id -u):$(id -g) \
         camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION} \
-        run $(id -u) $(id -g) /src \
+        run /src \
         pcreate --scaffold=update \
         ${GEOMAPFISH_PROJECT} --overwrite
 
@@ -128,8 +132,9 @@ For an advance application apply the ``c2cgeoportal_advance_update`` scaffold:
 .. prompt:: bash
 
     docker run --rm -ti --volume=$(pwd):/src \
+        --user=$(id -u):$(id -g) \
         camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION} \
-        run $(id -u) $(id -g) /src \
+        run /src \
         pcreate -s advance_update ${GEOMAPFISH_PROJECT} --overwrite
 
 

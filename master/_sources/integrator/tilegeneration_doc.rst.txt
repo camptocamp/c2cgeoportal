@@ -28,9 +28,7 @@ with a low expiry (4 hours for example).
 Meta tiles should be used to reduce the number of requests to PostgreSQL.
 And the tiles should be deleted after the expiry time.
 
-The chosen solution is a combination of two tools:
-
-* `TileCloud-Chain <https://github.com/camptocamp/tilecloud-chain>`_ for the tile generation.
+The solution provided is `TileCloud-Chain <https://github.com/camptocamp/tilecloud-chain>`_.
 
 
 TileCloud-chain
@@ -42,6 +40,8 @@ WMTS layout.
 
 It supports the following AWS services for generating tiles:
 EC2, SQS, SNS.
+
+And the Azure Container Storage for storing the tiles.
 
 See the `readme <https://pypi.python.org/pypi/tilecloud-chain>`_.
 
@@ -60,7 +60,7 @@ The main thing to do is to:
 * Configure the ``caches`` and set the ``generation``/``default_cache``.
   Sub-level of ``caches`` is the cache name.
 
-* Configure the ``layer_default``, the ``layers``, and the ``generation``/``default_layers``.
+* Configure the ``defaults``/``layer``, the ``layers``.
   Sub-level of ``layers`` is the layer name.
 
 * We can drop the empty tiles with a hash comparison, tilecloud-chain has a tool to help us:
@@ -94,7 +94,7 @@ This package offers two tools, one to generate the tiles locally, see help:
 
     docker compose exec tilecloudchain generate-tiles --help
 
-one to generate the tiles using AWS, see help:
+one to generate the tiles using AWS or Azure, see help:
 
 .. prompt:: bash
 

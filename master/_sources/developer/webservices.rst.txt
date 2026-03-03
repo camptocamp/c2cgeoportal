@@ -33,6 +33,7 @@ Result
 
 Base for all possible results:
 
+
 .. code::
 
     {
@@ -69,8 +70,31 @@ OGC Server
                     "maxOccurs": "<the optional maximum occurs>"
                 }
             }
-        }
+        },
+        "uses": {
+            "map": {
+                "protocol": "<OGC protocol to be used to get the map>",
+                "url": "<URL to be used to get the map>",
+            },
+            "query": {
+                "protocol": "<OGC protocol to be used to do the queries>",
+                "url": "<URL to be used to do the queries>",
+            },
+            "edit": {
+                "protocol": "<OGC protocol to be used to do the edits>",
+                "url": "<URL to be used to do the edits>",
+            },
+        },
     }
+
+The ``protocol`` can be ``WMS``, ``WMS/GetFeatureInfo``, ``WFS/GetFeature``,
+``OGC API - Maps``, ``OGC API - Features``.
+
+The ``uses`` is used by ``GeoGirafe``, not by ``ngeo``.
+
+The ``urlWfs`` and ``wfsSupport`` are used by ``ngeo``, not by ``GeoGirafe`` (=> deprecated, will be removed in future version).
+
+The ``isSingleTile`` isn't used by any clients (=> deprecated, will be removed in future version).
 
 
 Theme
@@ -409,17 +433,35 @@ Success JSON result
 Full-text search
 ================
 
-URL: ``.../fulltextsearch``
+URL: ``.../search``
 
 Parameters
 ----------
 
-* ``query``: Text to search.
-* ``limit``: The maximum number of results (optional).
-* ``partitionlimit``: The maximum number of results per layer (optional).
-* ``lang``: The language used (optional).
-* ``interface``: The interface used (optional).
-* ``ranksystem``: Can be set to ``ts_rank_cd`` to use the ``ts_rank_cd`` rank system instead of ``similarity``.
+* ``query``: Text to search (required).
+* ``limit``: Maximum number of results (optional, default is ``fulltextsearch.defaultlimit``, capped by ``fulltextsearch.maxlimit`` which defaults to ``200``).
+* ``partitionlimit``: Maximum number of results per layer (optional, default ``0``, also capped by ``fulltextsearch.maxlimit``).
+* ``lang``: Language for the search (optional). If not provided, the locale negotiated from the request is used.
+* ``interface``: Filter results to a specific interface (optional). If not provided, only entries without interface are returned.
+* ``categories``: Limit results to categories (optional). Comma-separated list of category (``layer_name`` in the table). In order to retrieve matches where ``layer_name`` is ``NULL`` by the same request you will also have to specify parameter ``null_category``.
+* ``null_category``: Optional, default ``false``, used to get the items with ``NULL`` category (``layer_name`` in the table).
+* ``ranksystem``: Set to ``ts_rank_cd`` to use that ranking; otherwise ``similarity`` is used.
+
+The language used for stemming is the locale negotiated from the request; there is no ``lang`` parameter.
+
+``categories`` and ``null_category`` parameters combinations table:
+
++-----------------+----------------------+-------------------------------------------------------------------+
+| ``categories``  | ``null_category``    | Result                                                            |
++=================+======================+===================================================================+
+| not set         | ``false`` or not set | all matches, regardless of ``layer_name``.                        |
++-----------------+----------------------+-------------------------------------------------------------------+
+| not set         | ``true``             | only matches where ``layer_name`` is ``NULL``.                    |
++-----------------+----------------------+-------------------------------------------------------------------+
+| set             | ``false`` or not set | matches where ``layer_name`` is in ``categories``.                |
++-----------------+----------------------+-------------------------------------------------------------------+
+| set             | ``true``             | matches where ``layer_name`` is in ``categories`` or is ``NULL``. |
++-----------------+----------------------+-------------------------------------------------------------------+
 
 Result
 ------
@@ -431,14 +473,52 @@ A GeoJSON of a feature collection with the properties:
 * ``params``: :ref:`integrator_fulltext_search_params` to set.
 * ``actions``: List of actions.
 
+If ``actions`` is not set but ``layer_name`` is present, a default ``[{"action": "add_layer", "data": <layer_name>}]`` is returned.
+
 The `actions` is a dictionary with:
 
-* ``action``: the type of action (add_theme|add_group|add_layer).
+* ``action``: the type of action (``add_theme|add_group|add_layer``).
 * ``data``: data needed for the action (the item name).
+
+Full-text search capabilities
+-----------------------------
+
+URL: ``.../search/capabilities``
+
+Parameters
+----------
+
+None.
+
+Result
+------
+
+.. code::
+
+    {
+        "categories": [
+            "<category>",
+            ...
+        ]
+    }
+
+The list contains all distinct non-null ``category`` values (``layer_name`` in the table) sorted alphabetically.
 
 
 Layers
 ======
+
+All endpoints
+-------------
+
+* ``GET .../layers/<layer_id>/md.xsd`` – XSD description of the layer.
+* ``GET .../layers/<layer_id>/count`` – returns the number of features the current user can see: ``{"count": <int>}``.
+* ``GET .../layers/<layer_id>`` or ``.../layers/1,2,3`` – read features (MapFish protocol). Supports the same query parameters as MapFish (filters, bbox, limit, etc.).
+* ``GET .../layers/<layer_id>/<feature_id>`` – read a single feature.
+* ``POST .../layers/<layer_id>`` – create features. Body: GeoJSON ``FeatureCollection`` (content-type ``application/json``). Response: created features.
+* ``PUT .../layers/<layer_id>/<feature_id>`` – update a feature. Body: GeoJSON ``Feature`` (content-type ``application/json``). Response: updated feature collection.
+* ``DELETE .../layers/<layer_id>/<feature_id>`` – delete a feature. Response: empty body with HTTP 200.
+* ``GET .../layers/<layer_name>/values/<field_name>`` – enumerate distinct values.
 
 Layer description
 -----------------
@@ -564,16 +644,18 @@ Error :
 
 .. code:: json
 
-    {
-        "message": "error description",
-        "error_type": "type of error"
-    }
+     {
+          "message": "error description",
+          "error_type": "type of error"
+     }
 
 
 Raster
 ======
 
 URL: ``.../raster``
+
+Method: ``GET``
 
 Parameters
 ----------
@@ -593,6 +675,16 @@ Result
     }
 
 
+Vector tiles
+============
+
+URL: ``.../vector_tiles/<layer_name>/<z>/<x>/<y>.pbf``
+
+Method: ``GET``
+
+Returns a binary Mapbox vector tile for the given layer and XYZ tile coordinate. The route ``/vector_tiles`` (HEAD) exists only as a helper in templates.
+
+
 Digital Elevation Model
 =======================
 
@@ -603,14 +695,29 @@ Method ``POST``
 Parameters
 ----------
 
-* ``geom``: Geometry field used to get the profile data.
-* ``layers``: On which layers; default is all.
-* ``nbPoints``: Maximum number of points.
+* ``geom``: Geometry to sample (GeoJSON encoded as a string).
+* ``nbPoints``: Maximum number of points along the path (required).
+* ``layers``: Comma-separated raster layer names to use (optional, default all configured raster layers).
 
 Result
 ------
 
-A JSON file, with 'dist', 'value', 'x', 'y'.
+.. code::
+
+    {
+        "profile": [
+            {
+                "dist": <distance>,
+                "values": {
+                    "<layer>": <value>,
+                    ...
+                },
+                "x": <easting>,
+                "y": <northing>
+            },
+            ...
+        ]
+    }
 
 
 Shortener
@@ -642,9 +749,23 @@ Result
 Get
 ---
 
-URL: ``short/<ref>``
+URL: ``.../s/<ref>``
 
-Result: code: 302, redirect to the original URL.
+Result: HTTP 302 redirect to the original URL.
+
+Fetch
+-----
+
+URL: ``.../short/get/<ref>``
+
+Result
+~~~~~~
+
+.. code::
+
+    {
+        "long_url": <the original URL>
+    }
 
 
 Geometry processing
@@ -691,3 +812,17 @@ Parameters
  - ``wmslayer_regex``: Regular expression used to filter the WMS layers.
  - ``wmtslayer_regex``: Regular expression used to filter the WMTS layers.
  - ``ignore_i18n_errors``: ``TRUE`` to ignore most of the error expected during the extraction.
+
+
+Map server proxy
+================
+
+This is a proxy to access OGC servers.
+
+URL: ``.../mapserv_proxy`` or ``.../mapserv_proxy/<ogcserver>/...``
+
+Parameters
+----------
+
+ - ``ogcserver``: The OGC server name to use.
+ - ``ogcserver_type``: The type of request we want to do, can be ``map``, ``query`` or ``edit``, used to get the correct URL (and authentication type) in the OGC server configuration, it not provided we use the ``url_wfs`` if we detect a WFS request, else we use ``url``.

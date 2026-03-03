@@ -11,8 +11,8 @@
     <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
     <link rel="stylesheet" type="text/css" href="../_static/css/c2c.css?v=939896e0" />
     <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <link rel="icon" href="../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -81,8 +81,9 @@ c2cgeoportal application you want to create the new application from:</p>
 <h2>Create the new application<a class="headerlink" href="#create-the-new-application" title="Link to this heading">¶</a></h2>
 <p>To create the application (simple or advance), first apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_create</span></code> scaffold:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-ti<span class="w"> </span>--volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--user<span class="o">=</span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span>:<span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>run<span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="w"> </span>/src<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>run<span class="w"> </span>/src<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>pcreate<span class="w"> </span>--scaffold<span class="o">=</span>create<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span><span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span></span>
 </pre></div></div><div class="admonition note">
@@ -100,8 +101,9 @@ parameters:</p>
 <div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-ti<span class="w"> </span>--volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--env<span class="o">=</span><span class="nv">SRID</span><span class="o">=</span><span class="m">2056</span><span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--env<span class="o">=</span><span class="nv">EXTENT</span><span class="o">=</span><span class="s2">&quot;2420000,1030000,2900000,1350000&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--user<span class="o">=</span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span>:<span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>run<span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="w"> </span>/src<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>run<span class="w"> </span>/src<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>pcreate<span class="w"> </span>--scaffold<span class="o">=</span>create<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span><span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span></span>
 </pre></div></div></div></blockquote>
@@ -109,14 +111,16 @@ parameters:</p>
 <p>This will create a directory named <code class="docutils literal notranslate"><span class="pre">&lt;project&gt;</span></code> in you current directory.</p>
 <p>For an advance application, apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_advance_create</span></code> scaffold:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-ti<span class="w"> </span>--volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--user<span class="o">=</span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span>:<span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>run<span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="w"> </span>/src<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>run<span class="w"> </span>/src<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>pcreate<span class="w"> </span>--scaffold<span class="o">=</span>advance_create<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span><span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span><span class="w"> </span>--overwrite</span>
 </pre></div></div><p>Now apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_update</span></code> scaffold (for simple and advance applications):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-ti<span class="w"> </span>--volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--user<span class="o">=</span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span>:<span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>run<span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="w"> </span>/src<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>run<span class="w"> </span>/src<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>pcreate<span class="w"> </span>--scaffold<span class="o">=</span>update<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span><span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span><span class="w"> </span>--overwrite</span>
 </pre></div></div><div class="admonition note">
@@ -129,8 +133,9 @@ application. The files generated by this scaffold are prefixed with
 Following this rule is important for easier updates.</p>
 <p>For an advance application apply the <code class="docutils literal notranslate"><span class="pre">c2cgeoportal_advance_update</span></code> scaffold:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-ti<span class="w"> </span>--volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--user<span class="o">=</span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span>:<span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>run<span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="w"> </span><span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="w"> </span>/src<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>run<span class="w"> </span>/src<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>pcreate<span class="w"> </span>-s<span class="w"> </span>advance_update<span class="w"> </span><span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span><span class="w"> </span>--overwrite</span>
 </pre></div></div><p>Go to your new project:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nb">cd</span><span class="w"> </span><span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span></span>
@@ -359,10 +364,10 @@ see in the file <cite>tests/test_app.py</cite>.</p>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &#169;2011-2025, Camptocamp.
+      &#169;2011-2026, Camptocamp.
       
       |
-      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
       &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
       
       |
