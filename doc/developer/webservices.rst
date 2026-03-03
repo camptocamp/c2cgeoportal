@@ -427,6 +427,7 @@ Parameters
 The language used for stemming is the locale negotiated from the request; there is no ``lang`` parameter.
 
 ``categories`` and ``null_category`` parameters combinations table:
+
 +-----------------+----------------------+-------------------------------------------------------------------+
 | ``categories``  | ``null_category``    | Result                                                            |
 +=================+======================+===================================================================+
