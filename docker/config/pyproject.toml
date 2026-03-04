@@ -4,6 +4,9 @@ version = '0.0.0'
 description = 'Not used'
 authors = []
 
+[tool.poetry]
+package-mode = false
+
 [tool.poetry.dependencies]
 python = ">=3.10,<3.13"
 "c2c.template" = "2.4.2"

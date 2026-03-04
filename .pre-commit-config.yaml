@@ -1,5 +1,8 @@
 # https://pre-commit.com/hooks.html
 
+default_language_version:
+  python: '3.12'
+
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
@@ -42,7 +45,6 @@ repos:
         exclude: ^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/{{cookiecutter\.project}}/
         additional_dependencies:
           - poetry==2.3.2 # pypi
-        language_version: '3.14'
       - id: npm-lock
       - id: canonicalize
       - id: prospector-to-ruff

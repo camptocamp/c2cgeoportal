@@ -188,5 +188,11 @@
       matchUpdateTypes: ['major'],
       groupName: 'commander',
     },
+    /** Don't upgrade setuptools to version 81.0.0 or higher */
+    {
+      enabled: false,
+      matchDepNames: ['setuptools'],
+      allowedVersions: '<81.0.0',
+    },
   ],
 }
