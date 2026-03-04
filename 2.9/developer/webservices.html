@@ -410,18 +410,33 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <li><p><code class="docutils literal notranslate"><span class="pre">ranksystem</span></code>: Set to <code class="docutils literal notranslate"><span class="pre">ts_rank_cd</span></code> to use that ranking; otherwise <code class="docutils literal notranslate"><span class="pre">similarity</span></code> is used.</p></li>
 </ul>
 <p>The language used for stemming is the locale negotiated from the request; there is no <code class="docutils literal notranslate"><span class="pre">lang</span></code> parameter.</p>
-<p><code class="docutils literal notranslate"><span class="pre">categories</span></code> and <code class="docutils literal notranslate"><span class="pre">null_category</span></code> parameters combinations table:
-+—————–+———————-+——————————————————————-+
-| <code class="docutils literal notranslate"><span class="pre">categories</span></code>  | <code class="docutils literal notranslate"><span class="pre">null_category</span></code>    | Result                                                            |
-+=================+======================+===================================================================+
-| not set         | <code class="docutils literal notranslate"><span class="pre">false</span></code> or not set | all matches, regardless of <code class="docutils literal notranslate"><span class="pre">layer_name</span></code>.                        |
-+—————–+———————-+——————————————————————-+
-| not set         | <code class="docutils literal notranslate"><span class="pre">true</span></code>             | only matches where <code class="docutils literal notranslate"><span class="pre">layer_name</span></code> is <code class="docutils literal notranslate"><span class="pre">NULL</span></code>.                    |
-+—————–+———————-+——————————————————————-+
-| set             | <code class="docutils literal notranslate"><span class="pre">false</span></code> or not set | matches where <code class="docutils literal notranslate"><span class="pre">layer_name</span></code> is in <code class="docutils literal notranslate"><span class="pre">categories</span></code>.                |
-+—————–+———————-+——————————————————————-+
-| set             | <code class="docutils literal notranslate"><span class="pre">true</span></code>             | matches where <code class="docutils literal notranslate"><span class="pre">layer_name</span></code> is in <code class="docutils literal notranslate"><span class="pre">categories</span></code> or is <code class="docutils literal notranslate"><span class="pre">NULL</span></code>. |
-+—————–+———————-+——————————————————————-+</p>
+<p><code class="docutils literal notranslate"><span class="pre">categories</span></code> and <code class="docutils literal notranslate"><span class="pre">null_category</span></code> parameters combinations table:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p><code class="docutils literal notranslate"><span class="pre">categories</span></code></p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">null_category</span></code></p></th>
+<th class="head"><p>Result</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>not set</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code> or not set</p></td>
+<td><p>all matches, regardless of <code class="docutils literal notranslate"><span class="pre">layer_name</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>not set</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
+<td><p>only matches where <code class="docutils literal notranslate"><span class="pre">layer_name</span></code> is <code class="docutils literal notranslate"><span class="pre">NULL</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p>set</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code> or not set</p></td>
+<td><p>matches where <code class="docutils literal notranslate"><span class="pre">layer_name</span></code> is in <code class="docutils literal notranslate"><span class="pre">categories</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>set</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
+<td><p>matches where <code class="docutils literal notranslate"><span class="pre">layer_name</span></code> is in <code class="docutils literal notranslate"><span class="pre">categories</span></code> or is <code class="docutils literal notranslate"><span class="pre">NULL</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="id2">
 <h3>Result<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h3>
