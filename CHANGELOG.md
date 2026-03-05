@@ -1,3 +1,7 @@
+##### 2.8.1.298
+
+- Update dependency svgo to v3.3.3 [SECURITY] (2.8) [ngeo#10060](https://github.com/camptocamp/ngeo/pull/10060)
+
 ##### 2.8.1.297
 
 - Update dependency pytz to v2026 (2.8) [c2cgeoportal#12701](https://github.com/camptocamp/c2cgeoportal/pull/12701)
