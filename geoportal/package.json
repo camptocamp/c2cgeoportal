@@ -44,7 +44,7 @@
     "sass": "1.97.3",
     "sass-loader": "16.0.7",
     "simple-html-tokenizer": "0.5.11",
-    "svgo": "4.0.0",
+    "svgo": "4.0.1",
     "svgo-loader": "4.0.0",
     "terser": "5.46.0",
     "terser-webpack-plugin": "5.3.16",
