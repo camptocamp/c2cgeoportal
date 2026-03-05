@@ -1,3 +1,7 @@
+##### 2.9.0.412
+
+- Audit Dpkg 2.9 [c2cgeoportal#12708](https://github.com/camptocamp/c2cgeoportal/pull/12708)
+
 ##### 2.9.0.411
 
 - Update dependency svgo to v3.3.3 [SECURITY] (2.9) [c2cgeoportal#12710](https://github.com/camptocamp/c2cgeoportal/pull/12710)
