@@ -1,3 +1,8 @@
+##### 2.9.0.414
+
+- Revert "Update used ngeo version" [c2cgeoportal#12712](https://github.com/camptocamp/c2cgeoportal/pull/12712)
+- Revert "Revert "Update used ngeo version"" [c2cgeoportal#12713](https://github.com/camptocamp/c2cgeoportal/pull/12713)
+
 ##### 2.9.0.413
 
 - Update webpack (2.9) [ngeo#10056](https://github.com/camptocamp/ngeo/pull/10056)
