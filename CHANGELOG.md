@@ -1,3 +1,7 @@
+##### 2.8.1.299
+
+- Revert "Update dependency svgo to v3.3.3 [SECURITY] (2.8)" [ngeo#10068](https://github.com/camptocamp/ngeo/pull/10068)
+
 ##### 2.8.1.298
 
 - Update dependency svgo to v3.3.3 [SECURITY] (2.8) [ngeo#10060](https://github.com/camptocamp/ngeo/pull/10060)
