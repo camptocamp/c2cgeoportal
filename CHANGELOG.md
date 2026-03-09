@@ -1,3 +1,7 @@
+##### 2.9.0.415
+
+- Audit Dpkg 2.9 [c2cgeoportal#12714](https://github.com/camptocamp/c2cgeoportal/pull/12714)
+
 ##### 2.9.0.414
 
 - Revert "Update used ngeo version" [c2cgeoportal#12712](https://github.com/camptocamp/c2cgeoportal/pull/12712)
