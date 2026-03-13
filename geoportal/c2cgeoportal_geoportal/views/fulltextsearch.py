@@ -27,9 +27,10 @@
 
 
 import re
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import pyramid.request
+import sqlalchemy.orm.query
 from geoalchemy2.shape import to_shape
 from geojson import Feature, FeatureCollection
 from pyramid.httpexceptions import HTTPBadRequest, HTTPInternalServerError
@@ -47,6 +48,11 @@ from c2cgeoportal_geoportal.lib.fulltextsearch import Normalize
 CACHE_REGION = get_region("std")
 IGNORED_CHARS_RE = re.compile(r"[()&|!:<>\t]")
 IGNORED_STARTUP_CHARS_RE = re.compile(r"^[']*")
+
+if TYPE_CHECKING:
+    _Result = sqlalchemy.orm.query.RowReturningQuery[tuple[Any, Any, Any, Any, Any, Any]]
+else:
+    _Result = sqlalchemy.orm.query.RowReturningQuery
 
 
 class FullTextSearchView:
@@ -163,15 +169,29 @@ class FullTextSearchView:
             # Use similarity ranking system from module pg_trgm.
             rank = func.similarity(FullTextSearch.label, terms)
 
+        query: sqlalchemy.orm.query.Query[FullTextSearch] | _Result
         if partitionlimit:
             # Here we want to partition the search results based on
             # layer_name and limit each partition.
             row_number = (
                 func.row_number()
-                .over(partition_by=FullTextSearch.layer_name, order_by=(desc(rank), FullTextSearch.label))
+                .over(
+                    partition_by=FullTextSearch.layer_name,
+                    order_by=(
+                        desc(rank),
+                        FullTextSearch.label,
+                        FullTextSearch.layer_name,
+                    ),
+                )
                 .label("row_number")
             )
-            sub_query = DBSession.query(FullTextSearch).add_columns(row_number).filter(_filter).subquery()
+            sub_query = (
+                DBSession.query(FullTextSearch)
+                .add_columns(row_number)
+                .filter(_filter)
+                .distinct(FullTextSearch.label, FullTextSearch.layer_name, rank)
+                .subquery()
+            )
             query = DBSession.query(
                 sub_query.c.id,
                 sub_query.c.label,
@@ -183,8 +203,8 @@ class FullTextSearchView:
             query = query.filter(sub_query.c.row_number <= partitionlimit)
         else:
             query = DBSession.query(FullTextSearch).filter(_filter)
-            query = query.order_by(desc(rank))
-            query = query.order_by(FullTextSearch.label)
+            query = query.distinct(FullTextSearch.label, FullTextSearch.layer_name, rank)
+            query = query.order_by(FullTextSearch.label, FullTextSearch.layer_name, desc(rank))
 
         query = query.limit(limit)
         objects = query.all()
