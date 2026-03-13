@@ -1,3 +1,7 @@
+##### 2.8.1.300
+
+- Add distinct on `label` and `layer_name` in `fulltextsearch`. [c2cgeoportal#12718](https://github.com/camptocamp/c2cgeoportal/pull/12718)
+
 ##### 2.8.1.299
 
 - Revert "Update dependency svgo to v3.3.3 [SECURITY] (2.8)" [ngeo#10068](https://github.com/camptocamp/ngeo/pull/10068)
