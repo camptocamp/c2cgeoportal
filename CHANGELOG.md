@@ -1,3 +1,7 @@
+##### 2.9.0.418
+
+- Audit Dpkg 2.9 [c2cgeoportal#12725](https://github.com/camptocamp/c2cgeoportal/pull/12725)
+
 ##### 2.9.0.417
 
 - [Backport 2.9] Add distinct on `label` and `layer_name` in `fulltextsearch`. [c2cgeoportal#12722](https://github.com/camptocamp/c2cgeoportal/pull/12722)
