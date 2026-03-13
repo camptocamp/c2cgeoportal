@@ -621,3 +621,51 @@ class TestFulltextsearchView(TestCase):
         response = fts.capabilities()
         assert set(response.keys()) == {"categories"}
         assert set(response["categories"]) == {"layer1", "layer2", "layer3"}
+
+    def test_duplicate_entries(self):
+        import transaction
+        from geoalchemy2 import WKTElement
+        from geojson.feature import FeatureCollection
+        from sqlalchemy import func
+
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.main import FullTextSearch
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
+
+        # Add duplicate entries
+        entry_dup1 = FullTextSearch()
+        entry_dup1.label = "duplicate_label"
+        entry_dup1.layer_name = "duplicate_layer"
+        entry_dup1.ts = func.to_tsvector("french", "duplicate_test")
+        entry_dup1.the_geom = WKTElement("POINT(0 0)", 21781)
+        entry_dup1.public = True
+
+        entry_dup2 = FullTextSearch()
+        entry_dup2.label = "duplicate_label"
+        entry_dup2.layer_name = "duplicate_layer"
+        entry_dup2.ts = func.to_tsvector("french", "duplicate_test")
+        entry_dup2.the_geom = WKTElement("POINT(1 1)", 21781)
+        entry_dup2.public = True
+
+        DBSession.add_all([entry_dup1, entry_dup2])
+        transaction.commit()
+
+        # Test with partitionlimit=0
+        request = self._create_dummy_request(params={"query": "duplicate_test", "limit": 40})
+        fts = FullTextSearchView(request)
+        response = fts.fulltextsearch()
+        self.assertTrue(isinstance(response, FeatureCollection))
+        assert len(response.features) == 1
+        assert response.features[0].properties["label"] == "duplicate_label"
+        assert response.features[0].properties["layer_name"] == "duplicate_layer"
+
+        # Test with partitionlimit>0
+        request = self._create_dummy_request(
+            params={"query": "duplicate_test", "limit": 40, "partitionlimit": 1}
+        )
+        fts = FullTextSearchView(request)
+        response = fts.fulltextsearch()
+        self.assertTrue(isinstance(response, FeatureCollection))
+        assert len(response.features) == 1
+        assert response.features[0].properties["label"] == "duplicate_label"
+        assert response.features[0].properties["layer_name"] == "duplicate_layer"
