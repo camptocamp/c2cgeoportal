@@ -168,10 +168,19 @@ class FullTextSearchView:
             # layer_name and limit each partition.
             row_number = (
                 func.row_number()
-                .over(partition_by=FullTextSearch.layer_name, order_by=(desc(rank), FullTextSearch.label))
+                .over(
+                    partition_by=FullTextSearch.layer_name,
+                    order_by=(
+                        desc(rank),
+                        FullTextSearch.label,
+                        FullTextSearch.layer_name,
+                    ),
+                )
                 .label("row_number")
             )
-            sub_query = DBSession.query(FullTextSearch).add_columns(row_number).filter(_filter).subquery()
+            sub_query = DBSession.query(FullTextSearch).add_columns(row_number).filter(_filter)
+            sub_query = sub_query.distinct(FullTextSearch.label, FullTextSearch.layer_name, rank)
+            sub_query = sub_query.subquery()
             query = DBSession.query(
                 sub_query.c.id,
                 sub_query.c.label,
@@ -183,8 +192,8 @@ class FullTextSearchView:
             query = query.filter(sub_query.c.row_number <= partitionlimit)
         else:
             query = DBSession.query(FullTextSearch).filter(_filter)
-            query = query.order_by(desc(rank))
-            query = query.order_by(FullTextSearch.label)
+            query = query.distinct(FullTextSearch.label, FullTextSearch.layer_name, rank)
+            query = query.order_by(FullTextSearch.label, FullTextSearch.layer_name, desc(rank))
 
         query = query.limit(limit)
         objects = query.all()
