@@ -1345,43 +1345,27 @@
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="4"><p><em>array</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="18"><p>items</p></td>
-<td><p>type</p></td>
+<tr class="row-even"><td rowspan="19"><p>items</p></td>
+<td colspan="4"><p><em>layer dimensions item</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="3"><p><em>object</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="4"><p>properties</p></td>
+<tr class="row-even"><td colspan="4"><p>properties</p></td>
 </tr>
-<tr class="row-even"><td><ul class="simple">
+<tr class="row-odd"><td><ul class="simple">
 <li><p><strong>name</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p><a class="reference internal" href="#layer-dimension-name">Layer dimension name</a></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="5"><ul class="simple">
+<tr class="row-even"><td rowspan="5"><ul class="simple">
 <li><p><strong>generate</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p><em>Generate</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p>The values that should be generate</p></td>
-</tr>
-<tr class="row-odd"><td><p>type</p></td>
-<td colspan="2"><p><em>array</em></p></td>
-</tr>
-<tr class="row-even"><td rowspan="2"><p>items</p></td>
-<td><p>type</p></td>
-<td><p><em>string</em></p></td>
-</tr>
-<tr class="row-odd"><td><p>pattern</p></td>
-<td><p>^[a-zA-Z0-9_\-\+~\.]+$</p></td>
-</tr>
-<tr class="row-even"><td rowspan="5"><ul class="simple">
-<li><p><strong>values</strong></p></li>
-</ul>
-</td>
-<td colspan="3"><p><em>Values</em></p></td>
-</tr>
-<tr class="row-odd"><td colspan="3"><p>The values present in the capabilities</p></td>
+<tr class="row-odd"><td colspan="3"><p>The values that should be generate</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>array</em></p></td>
@@ -1393,21 +1377,39 @@
 <tr class="row-even"><td><p>pattern</p></td>
 <td><p>^[a-zA-Z0-9_\-\+~\.]+$</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<tr class="row-odd"><td rowspan="5"><ul class="simple">
+<li><p><strong>values</strong></p></li>
+</ul>
+</td>
+<td colspan="3"><p><em>Values</em></p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>The values present in the capabilities</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td colspan="2"><p><em>array</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="2"><p>items</p></td>
+<td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>pattern</p></td>
+<td><p>^[a-zA-Z0-9_\-\+~\.]+$</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
 <li><p><strong>default</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p><em>Default</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p>The default value present in the capabilities</p></td>
+<tr class="row-odd"><td colspan="3"><p>The default value present in the capabilities</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
 </tr>
-<tr class="row-even"><td><p>pattern</p></td>
+<tr class="row-odd"><td><p>pattern</p></td>
 <td colspan="2"><p>^[a-zA-Z0-9_\-\+~\.]+$</p></td>
 </tr>
-<tr class="row-odd"><td><p>additionalProperties</p></td>
+<tr class="row-even"><td><p>additionalProperties</p></td>
 <td colspan="3"><p>False</p></td>
 </tr>
 </tbody>
@@ -3135,163 +3137,160 @@
 <td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="4"><ul class="simple">
+<tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p>wmts_path</p></li>
 </ul>
 </td>
 <td colspan="4"><p><em>WMTS path</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="4"><p>The sub-path for the WMTS (main configuration)</p></td>
+<tr class="row-odd"><td colspan="4"><p>No more used, replaced by <cite>TILECLOUD_CHAIN__WMTS_PATH</cite> environment variable</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="3"><p><em>string</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>default</p></td>
-<td colspan="3"></td>
-</tr>
-<tr class="row-even"><td rowspan="4"><ul class="simple">
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
 <li><p>expires</p></li>
 </ul>
 </td>
 <td colspan="4"><p><em>Expires</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="4"><p>The browser cache expiration in hours</p></td>
+<tr class="row-even"><td colspan="4"><p>The browser cache expiration in hours</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="3"><p><em>integer</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>default</p></td>
+<tr class="row-even"><td><p>default</p></td>
 <td colspan="3"><p>8</p></td>
 </tr>
-<tr class="row-even"><td rowspan="12"><ul class="simple">
+<tr class="row-odd"><td rowspan="12"><ul class="simple">
 <li><p>predefined_commands</p></li>
 </ul>
 </td>
 <td colspan="4"><p><em>Predefined commands</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="4"><p>The predefined commands used to generate the tiles</p></td>
+<tr class="row-even"><td colspan="4"><p>The predefined commands used to generate the tiles</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="3"><p><em>array</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="9"><p>items</p></td>
+<tr class="row-even"><td rowspan="9"><p>items</p></td>
 <td><p>type</p></td>
 <td colspan="2"><p><em>object</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p>properties</p></td>
+<tr class="row-odd"><td colspan="3"><p>properties</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p>command</p></li>
 </ul>
 </td>
 <td colspan="2"><p><em>Command</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="2"><p>The command to run</p></td>
+<tr class="row-odd"><td colspan="2"><p>The command to run</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td><p><em>string</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p>name</p></li>
 </ul>
 </td>
 <td colspan="2"><p><em>Name</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="2"><p>The name used in the admin interface</p></td>
+<tr class="row-even"><td colspan="2"><p>The name used in the admin interface</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td><p><em>string</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>additionalProperties</p></td>
+<tr class="row-even"><td><p>additionalProperties</p></td>
 <td colspan="2"><p>False</p></td>
 </tr>
-<tr class="row-even"><td rowspan="7"><ul class="simple">
+<tr class="row-odd"><td rowspan="7"><ul class="simple">
 <li><p>allowed_commands</p></li>
 </ul>
 </td>
 <td colspan="4"><p><em>Allowed commands</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="4"><p>The allowed commands (main configuration)</p></td>
-</tr>
-<tr class="row-even"><td><p>type</p></td>
-<td colspan="3"><p><em>array</em></p></td>
-</tr>
-<tr class="row-odd"><td rowspan="3"><p>default</p></td>
-<td colspan="3"><p>generate-tiles</p></td>
-</tr>
-<tr class="row-even"><td colspan="3"><p>generate-controller</p></td>
-</tr>
-<tr class="row-odd"><td colspan="3"><p>generate-cost</p></td>
-</tr>
-<tr class="row-even"><td><p>items</p></td>
-<td><p>type</p></td>
-<td colspan="2"><p><em>string</em></p></td>
-</tr>
-<tr class="row-odd"><td rowspan="17"><ul class="simple">
-<li><p>allowed_arguments</p></li>
-</ul>
-</td>
-<td colspan="4"><p><em>Allowed arguments</em></p></td>
-</tr>
-<tr class="row-even"><td colspan="4"><p>The allowed arguments (main configuration)</p></td>
+<tr class="row-even"><td colspan="4"><p>The allowed commands (main configuration)</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="3"><p><em>array</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="13"><p>default</p></td>
-<td colspan="3"><p>–layer</p></td>
+<tr class="row-even"><td rowspan="3"><p>default</p></td>
+<td colspan="3"><p>generate-tiles</p></td>
 </tr>
-<tr class="row-odd"><td colspan="3"><p>–get-hash</p></td>
+<tr class="row-odd"><td colspan="3"><p>generate-controller</p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p>–generate-legend-images</p></td>
-</tr>
-<tr class="row-odd"><td colspan="3"><p>–get-bbox</p></td>
-</tr>
-<tr class="row-even"><td colspan="3"><p>–ignore-error</p></td>
-</tr>
-<tr class="row-odd"><td colspan="3"><p>–bbox</p></td>
-</tr>
-<tr class="row-even"><td colspan="3"><p>–zoom</p></td>
-</tr>
-<tr class="row-odd"><td colspan="3"><p>–test</p></td>
-</tr>
-<tr class="row-even"><td colspan="3"><p>–near</p></td>
-</tr>
-<tr class="row-odd"><td colspan="3"><p>–time</p></td>
-</tr>
-<tr class="row-even"><td colspan="3"><p>–measure-generation-time</p></td>
-</tr>
-<tr class="row-odd"><td colspan="3"><p>–no-geom</p></td>
-</tr>
-<tr class="row-even"><td colspan="3"><p>–dimensions</p></td>
+<tr class="row-even"><td colspan="3"><p>generate-cost</p></td>
 </tr>
 <tr class="row-odd"><td><p>items</p></td>
 <td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="17"><ul class="simple">
+<li><p>allowed_arguments</p></li>
+</ul>
+</td>
+<td colspan="4"><p><em>Allowed arguments</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="4"><p>The allowed arguments (main configuration)</p></td>
+</tr>
+<tr class="row-even"><td><p>type</p></td>
+<td colspan="3"><p><em>array</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="13"><p>default</p></td>
+<td colspan="3"><p>–layer</p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>–get-hash</p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>–generate-legend-images</p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>–get-bbox</p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>–ignore-error</p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>–bbox</p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>–zoom</p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>–test</p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>–near</p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>–time</p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>–measure-generation-time</p></td>
+</tr>
+<tr class="row-even"><td colspan="3"><p>–no-geom</p></td>
+</tr>
+<tr class="row-odd"><td colspan="3"><p>–dimensions</p></td>
+</tr>
+<tr class="row-even"><td><p>items</p></td>
+<td><p>type</p></td>
+<td colspan="2"><p><em>string</em></p></td>
+</tr>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p>admin_footer</p></li>
 </ul>
 </td>
 <td colspan="4"><p><em>admin footer</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="4"><p>The footer of the admin interface</p></td>
+<tr class="row-even"><td colspan="4"><p>The footer of the admin interface</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="3"><p><em>string</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p>admin_footer_classes</p></li>
 </ul>
 </td>
 <td colspan="4"><p><em>admin footer classes</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="4"><p>The CSS classes used on the footer of the admin interface</p></td>
+<tr class="row-odd"><td colspan="4"><p>The CSS classes used on the footer of the admin interface</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="3"><p><em>string</em></p></td>
 </tr>
-<tr class="row-even"><td><p>additionalProperties</p></td>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
 <td colspan="4"><p>False</p></td>
 </tr>
 </tbody>

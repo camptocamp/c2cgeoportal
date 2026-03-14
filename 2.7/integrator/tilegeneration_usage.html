@@ -450,8 +450,8 @@ enable the daemon mode and must not specify the layer:</p>
 </div>
 <p>The container should already exists.</p>
 <p>For the authentication you should set those environment variables:
-<code class="docutils literal notranslate"><span class="pre">AZURE_STORAGE_CONNECTION_STRING</span></code> on your local environment,
-or <code class="docutils literal notranslate"><span class="pre">AZURE_STORAGE_ACCOUNT_URL</span></code> if you run your container on Azure.</p>
+<code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__AZURE__STORAGE_CONNECTION_STRING</span></code> on your local environment,
+or <code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__AZURE__STORAGE_ACCOUNT_URL</span></code> if you run your container on Azure.</p>
 </section>
 </section>
 <section id="other-related-configuration">
@@ -570,51 +570,77 @@ change them we should regenerate all the tiles).</p>
 <h2>Environment variables<a class="headerlink" href="#environment-variables" title="Permalink to this headline">¶</a></h2>
 <section id="environment-variables-reference">
 <h3>Environment Variables Reference<a class="headerlink" href="#environment-variables-reference" title="Permalink to this headline">¶</a></h3>
-<p>Configuration can be customized through the following environment variables:</p>
+<p>Configuration uses nested environment variables with the <code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__</span></code>
+prefix and <code class="docutils literal notranslate"><span class="pre">__</span></code> delimiter, for example:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">TILEGENERATION_CONFIGFILE</span></code>: Path to the main configuration file
-(default: <code class="docutils literal notranslate"><span class="pre">/etc/tilegeneration/config.yaml</span></code>)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">TILEGENERATION_MAIN_CONFIGFILE</span></code>: Path to the main configuration file when using multi-tenant mode
-(default: <code class="docutils literal notranslate"><span class="pre">/etc/tilegeneration/config.yaml</span></code>)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">TILEGENERATION_HOSTSFILE</span></code>: Path to hosts mapping configuration
-(default: <code class="docutils literal notranslate"><span class="pre">/etc/tilegeneration/hosts.yaml</span></code>)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">TILEGENERATION_MAX_GENERATION_TIME</span></code>: Maximum tile generation time in seconds before timeout
-(default: <code class="docutils literal notranslate"><span class="pre">60</span></code>)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN_MAX_OUTPUT_LENGTH</span></code>: Maximum output length shown in admin interface
-(default: <code class="docutils literal notranslate"><span class="pre">1000</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__CONFIG_FILE</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__LOGGING__LOG_TYPE</span></code></p></li>
 </ul>
-<p>Logging Configuration:</p>
+<p>Tile generation:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">LOG_TYPE</span></code>: Logging output format, either <code class="docutils literal notranslate"><span class="pre">console</span></code> or <code class="docutils literal notranslate"><span class="pre">json</span></code> for Logstash
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__CONFIG_FILE</span></code>: Path to the main configuration file
+(default: <code class="docutils literal notranslate"><span class="pre">/etc/tilegeneration/config.yaml</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__MAIN_CONFIG_FILE</span></code>: Path to the main configuration file when using multi-tenant mode
+(default: <code class="docutils literal notranslate"><span class="pre">/etc/tilegeneration/config.yaml</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__HOSTS_FILE</span></code>: Path to hosts mapping configuration
+(default: <code class="docutils literal notranslate"><span class="pre">/etc/tilegeneration/hosts.yaml</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__HOSTS_LIMIT</span></code>: File that contains the maximum request per host
+(default: <code class="docutils literal notranslate"><span class="pre">/etc/tilegeneration/hosts_limit.yaml</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__IGNORE_CONFIG_ERROR</span></code>: Ignore configuration errors if set to <code class="docutils literal notranslate"><span class="pre">true</span></code>
+(default: <code class="docutils literal notranslate"><span class="pre">false</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__MAX_GENERATION_TIME</span></code>: Maximum tile generation time in seconds before timeout
+(default: <code class="docutils literal notranslate"><span class="pre">60</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__ALLOWED_PROCESS_COMMANDS</span></code>: Comma-separated list of allowed process commands
+(default: <code class="docutils literal notranslate"><span class="pre">optipng,jpegoptim,pngquant</span></code>)</p></li>
+</ul>
+<p>Logging:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__LOGGING__LOG_TYPE</span></code>: Logging output format, either <code class="docutils literal notranslate"><span class="pre">console</span></code> or <code class="docutils literal notranslate"><span class="pre">json</span></code>
 (default: <code class="docutils literal notranslate"><span class="pre">console</span></code>)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN_LOG_LEVEL</span></code>: Log level for TileCloud Chain
-(default: <code class="docutils literal notranslate"><span class="pre">INFO</span></code>)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_LOG_LEVEL</span></code>: Log level for TileCloud core
-(default: <code class="docutils literal notranslate"><span class="pre">INFO</span></code>)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">C2CWSGI_LOG_LEVEL</span></code>: Log level for C2C WSGI
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__LOGGING__OTHER_LOG_LEVEL</span></code>: Log level for other components
 (default: <code class="docutils literal notranslate"><span class="pre">WARN</span></code>)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">OTHER_LOG_LEVEL</span></code>: Log level for other components
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__LOGGING__SQL_LOG_LEVEL</span></code>: Log level for SQLAlchemy
 (default: <code class="docutils literal notranslate"><span class="pre">WARN</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__LOGGING__C2CASGIUTILS_LOG_LEVEL</span></code>: Log level for C2C ASGI utils
+(default: <code class="docutils literal notranslate"><span class="pre">WARN</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__LOGGING__TILECLOUD_LOG_LEVEL</span></code>: Log level for TileCloud core
+(default: <code class="docutils literal notranslate"><span class="pre">INFO</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__LOGGING__TILECLOUD_CHAIN_LOG_LEVEL</span></code>: Log level for TileCloud Chain
+(default: <code class="docutils literal notranslate"><span class="pre">INFO</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__LOGGING__SERVER_LOG_LEVEL</span></code>: Server component log verbosity
+(default: <code class="docutils literal notranslate"><span class="pre">quiet</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__LOGGING__MAPCACHE_LOG_LEVEL</span></code>: Internal MapCache log verbosity
+(default: <code class="docutils literal notranslate"><span class="pre">verbose</span></code>)</p></li>
 </ul>
 <p>Valid log levels: <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code>, <code class="docutils literal notranslate"><span class="pre">INFO</span></code>, <code class="docutils literal notranslate"><span class="pre">WARN</span></code>, <code class="docutils literal notranslate"><span class="pre">ERROR</span></code>, <code class="docutils literal notranslate"><span class="pre">CRITICAL</span></code></p>
-<p>Server Configuration:</p>
+<p>Server:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">TILE_SERVER_LOG_LEVEL</span></code>: Server component log verbosity
-(default: <code class="docutils literal notranslate"><span class="pre">quiet</span></code>)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">TILE_MAPCACHE_LOG_LEVEL</span></code>: Internal MapCache log verbosity
-(default: <code class="docutils literal notranslate"><span class="pre">verbose</span></code>)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">DEVELOPMENT</span></code>: Enable Pyramid development features if set to <code class="docutils literal notranslate"><span class="pre">1</span></code>
-(default: <code class="docutils literal notranslate"><span class="pre">0</span></code>)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">VISIBLE_ENTRY_POINT</span></code>: Base URL path for tile access
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__SENTRY_DSN</span></code>: Sentry DSN used for error reporting</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__FRONTEND</span></code>: Frontend mode (e.g. <code class="docutils literal notranslate"><span class="pre">noninteractive</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__DEVELOPMENT</span></code>: Enable development features if set to <code class="docutils literal notranslate"><span class="pre">true</span></code>
+(default: <code class="docutils literal notranslate"><span class="pre">false</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__ROUTE_PREFIX</span></code>: Base URL path for tile access
 (default: <code class="docutils literal notranslate"><span class="pre">/tiles/</span></code>)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">TILEGENERATION_HOSTS_LIMIT</span></code>: File that contains the maximum request per host
-(default: <code class="docutils literal notranslate"><span class="pre">/etc/tilegeneration/hosts_limit.yaml</span></code>)</p></li>
 </ul>
-<p>Worker Configuration:</p>
+<p>Worker:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN_NB_TASKS</span></code>: Number of concurrent tasks to run in parallel
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__NB_TASKS</span></code>: Number of concurrent tasks to run in parallel
 (default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__MAX_OUTPUT_LENGTH</span></code>: Maximum output length shown in admin interface
+(default: <code class="docutils literal notranslate"><span class="pre">1000</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__SLAVE</span></code>: Run in slave mode if set to <code class="docutils literal notranslate"><span class="pre">true</span></code>
+(default: <code class="docutils literal notranslate"><span class="pre">false</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__OBJGRAPH_LIMIT</span></code>: Number of entries to include in objgraph reports
+(default: <code class="docutils literal notranslate"><span class="pre">10</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__OBJGRAPH_GENE</span></code>: Enable objgraph collection during generation if set to <code class="docutils literal notranslate"><span class="pre">true</span></code>
+(default: <code class="docutils literal notranslate"><span class="pre">false</span></code>)</p></li>
 </ul>
+<p>Tests:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__TESTS</span></code>: Enable test mode if set to <code class="docutils literal notranslate"><span class="pre">true</span></code>
+(default: <code class="docutils literal notranslate"><span class="pre">false</span></code>)</p></li>
+</ul>
+<p>See also: <a href="#id1"><span class="problematic" id="id2">``</span></a>settings.py` &lt;<a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/settings.py">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/settings.py</a>&gt;`_.</p>
 </section>
 </section>
 <section id="admin-and-test-pages">
