@@ -1,3 +1,7 @@
+##### 2.7.1.252
+
+- Update dependency pyjwt to v2.12.0 [SECURITY] (2.7) [c2cgeoportal#12728](https://github.com/camptocamp/c2cgeoportal/pull/12728)
+
 ##### 2.7.1.251
 
 - Update dependency pytz to v2026 (2.7) [c2cgeoportal#12700](https://github.com/camptocamp/c2cgeoportal/pull/12700)
