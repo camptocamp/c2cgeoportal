@@ -1,3 +1,7 @@
+##### 2.9.0.422
+
+- Replace pre-commit hook PyCQA/prospector with prospector-dev/prospector (2.9) [c2cgeoportal#12740](https://github.com/camptocamp/c2cgeoportal/pull/12740)
+
 ##### 2.9.0.421
 
 - Audit Dpkg 2.9 [c2cgeoportal#12733](https://github.com/camptocamp/c2cgeoportal/pull/12733)
