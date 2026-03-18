@@ -397,70 +397,50 @@ SQLAlchemy = ">=1.1.13"
 
 [[package]]
 name = "c2cwsgiutils"
-version = "5.1.9"
+version = "5.2.4"
 description = "Common utilities for Camptocamp WSGI applications"
 optional = false
-python-versions = "*"
+python-versions = "<3.12,>=3.8"
 files = [
-    {file = "c2cwsgiutils-5.1.9-py3-none-any.whl", hash = "sha256:bd2cd24e3375b13cd0772286a07c5b2f4dba3f1b8b33ba8e66a00087f8fa5b68"},
+    {file = "c2cwsgiutils-5.2.4-py3-none-any.whl", hash = "sha256:5f69dd7bea8f325d7e5123d933da6c72a43819905a63c0e28bee11742f2108dd"},
+    {file = "c2cwsgiutils-5.2.4.tar.gz", hash = "sha256:ab2e49d71253cc264c5c3b709908fa9360fd202dc3bcaddec5ad8eea25511014"},
 ]
 
 [package.dependencies]
-alembic = {version = "*", optional = true, markers = "extra == \"standard\""}
-async-timeout = {version = "*", optional = true, markers = "extra == \"standard\""}
-boltons = {version = "*", optional = true, markers = "extra == \"standard\""}
-cee-syslog-handler = {version = "*", optional = true, markers = "extra == \"standard\""}
-certifi = {version = "*", optional = true, markers = "extra == \"standard\""}
-charset-normalizer = {version = "*", optional = true, markers = "extra == \"standard\""}
-cornice = {version = "*", optional = true, markers = "extra == \"standard\""}
-deprecated = {version = "*", optional = true, markers = "extra == \"standard\""}
-graphviz = {version = "*", optional = true, markers = "extra == \"standard\""}
-greenlet = {version = "*", optional = true, markers = "extra == \"standard\""}
-gunicorn = {version = "*", optional = true, markers = "extra == \"standard\""}
-hupper = {version = "*", optional = true, markers = "extra == \"standard\""}
-idna = {version = "*", optional = true, markers = "extra == \"standard\""}
-importlib-metadata = {version = "*", optional = true, markers = "extra == \"standard\""}
-importlib-resources = {version = "*", optional = true, markers = "extra == \"standard\""}
-lxml = {version = "*", optional = true, markers = "extra == \"standard\""}
-mako = {version = "*", optional = true, markers = "extra == \"standard\""}
-markupsafe = {version = "*", optional = true, markers = "extra == \"standard\""}
-netifaces = {version = "*", optional = true, markers = "extra == \"standard\""}
-oauthlib = {version = "*", optional = true, markers = "extra == \"standard\""}
-objgraph = {version = "*", optional = true, markers = "extra == \"standard\""}
-packaging = {version = "*", optional = true, markers = "extra == \"standard\""}
-pastedeploy = {version = "*", optional = true, markers = "extra == \"standard\""}
-pipfile = {version = "*", optional = true, markers = "extra == \"standard\""}
-plaster = {version = "*", optional = true, markers = "extra == \"standard\""}
-plaster-pastedeploy = {version = "*", optional = true, markers = "extra == \"standard\""}
-psycopg2 = {version = "*", optional = true, markers = "extra == \"standard\""}
-pyjwt = {version = "*", optional = true, markers = "extra == \"standard\""}
-pyparsing = {version = "*", optional = true, markers = "extra == \"standard\""}
-pyramid = {version = "*", optional = true, markers = "extra == \"standard\""}
-pyramid-tm = {version = "*", optional = true, markers = "extra == \"standard\""}
-pyyaml = {version = "*", optional = true, markers = "extra == \"standard\""}
-redis = {version = "*", optional = true, markers = "extra == \"broadcast\""}
-requests = {version = "*", optional = true, markers = "extra == \"standard\""}
-requests-oauthlib = {version = "*", optional = true, markers = "extra == \"standard\""}
-sentry-sdk = {version = "*", optional = true, markers = "extra == \"standard\""}
-sqlalchemy = {version = "*", optional = true, markers = "extra == \"standard\""}
-sqlalchemy-utils = {version = "*", optional = true, markers = "extra == \"standard\""}
-toml = {version = "*", optional = true, markers = "extra == \"standard\""}
-transaction = {version = "*", optional = true, markers = "extra == \"standard\""}
-translationstring = {version = "*", optional = true, markers = "extra == \"standard\""}
-ujson = {version = "*", optional = true, markers = "extra == \"standard\""}
-urllib3 = {version = "*", optional = true, markers = "extra == \"standard\""}
-venusian = {version = "*", optional = true, markers = "extra == \"standard\""}
-waitress = {version = "*", optional = true, markers = "extra == \"standard\""}
-webob = {version = "*", optional = true, markers = "extra == \"standard\""}
-wrapt = {version = "*", optional = true, markers = "extra == \"standard\""}
-zipp = {version = "*", optional = true, markers = "extra == \"standard\""}
-"zope.deprecation" = {version = "*", optional = true, markers = "extra == \"standard\""}
-"zope.interface" = {version = "*", optional = true, markers = "extra == \"standard\""}
-"zope.sqlalchemy" = {version = "*", optional = true, markers = "extra == \"standard\""}
+alembic = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"all\""}
+boltons = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"all\""}
+cee_syslog_handler = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"all\""}
+certifi = "*"
+cornice = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"all\""}
+gunicorn = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"all\""}
+idna = "*"
+lxml = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"all\""}
+netifaces = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"all\""}
+objgraph = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"all\""}
+pillow = "*"
+psycopg2 = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"all\""}
+pyramid = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"all\""}
+pyramid-tm = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"all\""}
+pyyaml = "*"
+redis = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"broadcast\" or extra == \"all\""}
+requests = "*"
+scipy = "*"
+sentry-sdk = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"all\""}
+SQLAlchemy = {version = ">=1.4.0,<3.0.0", optional = true, markers = "extra == \"standard\" or extra == \"all\""}
+SQLAlchemy-Utils = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"all\""}
+ujson = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"all\""}
+urllib3 = "*"
+webob = "*"
+zipp = "*"
+"zope.interface" = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"all\""}
+"zope.sqlalchemy" = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"all\""}
 
 [package.extras]
+all = ["SQLAlchemy (>=1.4.0,<3.0.0)", "SQLAlchemy-Utils", "alembic", "boltons", "cee_syslog_handler", "cornice", "gunicorn", "lxml", "netifaces", "objgraph", "psycopg2", "pyjwt", "pyramid", "pyramid-tm", "redis", "requests-oauthlib", "sentry-sdk", "ujson", "waitress", "zope.interface", "zope.sqlalchemy"]
 broadcast = ["redis"]
-standard = ["alembic", "async-timeout", "boltons", "cee-syslog-handler", "certifi", "charset-normalizer", "cornice", "deprecated", "graphviz", "greenlet", "gunicorn", "hupper", "idna", "importlib-metadata", "importlib-resources", "lxml", "mako", "markupsafe", "netifaces", "oauthlib", "objgraph", "packaging", "pastedeploy", "pipfile", "plaster", "plaster-pastedeploy", "psycopg2", "pyjwt", "pyparsing", "pyramid", "pyramid-tm", "pyyaml", "requests", "requests-oauthlib", "sentry-sdk", "sqlalchemy", "sqlalchemy-utils", "toml", "transaction", "translationstring", "ujson", "urllib3", "venusian", "waitress", "webob", "wrapt", "zipp", "zope.deprecation", "zope.interface", "zope.sqlalchemy"]
+dev = ["waitress"]
+oauth2 = ["pyjwt", "requests-oauthlib"]
+standard = ["SQLAlchemy (>=1.4.0,<3.0.0)", "SQLAlchemy-Utils", "alembic", "boltons", "cee_syslog_handler", "cornice", "gunicorn", "lxml", "netifaces", "objgraph", "psycopg2", "pyramid", "pyramid-tm", "redis", "sentry-sdk", "ujson", "zope.interface", "zope.sqlalchemy"]
 test-images = ["scikit-image"]
 
 [[package]]
@@ -984,23 +964,6 @@ files = [
 ]
 
 [[package]]
-name = "deprecated"
-version = "1.2.14"
-description = "Python @deprecated decorator to deprecate old python classes, functions or methods."
-optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-files = [
-    {file = "Deprecated-1.2.14-py2.py3-none-any.whl", hash = "sha256:6fac8b097794a90302bdbb17b9b815e732d3c4720583ff1b198499d78470466c"},
-    {file = "Deprecated-1.2.14.tar.gz", hash = "sha256:e5323eb936458dccc2582dc6f9c322c852a775a27065ff2b0c4970b9d53d01b3"},
-]
-
-[package.dependencies]
-wrapt = ">=1.10,<2"
-
-[package.extras]
-dev = ["PyTest", "PyTest-Cov", "bump2version (<1)", "sphinx (<2)", "tox"]
-
-[[package]]
 name = "dill"
 version = "0.3.6"
 description = "serialize all of python"
@@ -1394,24 +1357,6 @@ zipp = ">=0.5"
 docs = ["furo", "jaraco.packaging (>=9)", "jaraco.tidelift (>=1.4)", "rst.linker (>=1.9)", "sphinx (>=3.5)", "sphinx-lint"]
 perf = ["ipython"]
 testing = ["flake8 (<5)", "flufl.flake8", "importlib-resources (>=1.3)", "packaging", "pyfakefs", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=1.3)", "pytest-flake8", "pytest-mypy (>=0.9.1)", "pytest-perf (>=0.9.2)"]
-
-[[package]]
-name = "importlib-resources"
-version = "5.10.2"
-description = "Read resources from Python packages"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "importlib_resources-5.10.2-py3-none-any.whl", hash = "sha256:7d543798b0beca10b6a01ac7cafda9f822c54db9e8376a6bf57e0cbd74d486b6"},
-    {file = "importlib_resources-5.10.2.tar.gz", hash = "sha256:e4a96c8cc0339647ff9a5e0550d9f276fc5a01ffa276012b58ec108cfd7b8484"},
-]
-
-[package.dependencies]
-zipp = {version = ">=3.1.0", markers = "python_version < \"3.10\""}
-
-[package.extras]
-docs = ["furo", "jaraco.packaging (>=9)", "jaraco.tidelift (>=1.4)", "rst.linker (>=1.9)", "sphinx (>=3.5)", "sphinx-lint"]
-testing = ["flake8 (<5)", "pytest (>=6)", "pytest-black (>=0.3.7)", "pytest-checkdocs (>=2.4)", "pytest-cov", "pytest-enabler (>=1.3)", "pytest-flake8", "pytest-mypy (>=0.9.1)"]
 
 [[package]]
 name = "iniconfig"
@@ -2372,19 +2317,6 @@ typing = ["typing-extensions"]
 xmp = ["defusedxml"]
 
 [[package]]
-name = "pipfile"
-version = "0.0.2"
-description = ""
-optional = false
-python-versions = "*"
-files = [
-    {file = "pipfile-0.0.2.tar.gz", hash = "sha256:f7d9f15de8b660986557eb3cc5391aa1a16207ac41bc378d03f414762d36c984"},
-]
-
-[package.dependencies]
-toml = "*"
-
-[[package]]
 name = "plaster"
 version = "1.1.2"
 description = "A loader interface around multiple config file formats."
@@ -2768,23 +2700,6 @@ files = [
 
 [package.extras]
 plugins = ["importlib-metadata"]
-
-[[package]]
-name = "pyjwt"
-version = "2.6.0"
-description = "JSON Web Token implementation in Python"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "PyJWT-2.6.0-py3-none-any.whl", hash = "sha256:d83c3d892a77bbb74d3e1a2cfa90afaadb60945205d1095d9221f04466f64c14"},
-    {file = "PyJWT-2.6.0.tar.gz", hash = "sha256:69285c7e31fc44f68a1feb309e948e0df53259d579295e6cfe2b1792329f05fd"},
-]
-
-[package.extras]
-crypto = ["cryptography (>=3.4.0)"]
-dev = ["coverage[toml] (==5.0.4)", "cryptography (>=3.4.0)", "pre-commit", "pytest (>=6.0.0,<7.0.0)", "sphinx (>=4.5.0,<5.0.0)", "sphinx-rtd-theme", "zope.interface"]
-docs = ["sphinx (>=4.5.0,<5.0.0)", "sphinx-rtd-theme", "zope.interface"]
-tests = ["coverage[toml] (==5.0.4)", "pytest (>=6.0.0,<7.0.0)"]
 
 [[package]]
 name = "pykwalify"
@@ -3538,6 +3453,48 @@ files = [
     {file = "ruamel.yaml.clib-0.2.7-cp39-cp39-win_amd64.whl", hash = "sha256:184faeaec61dbaa3cace407cffc5819f7b977e75360e8d5ca19461cd851a5fc5"},
     {file = "ruamel.yaml.clib-0.2.7.tar.gz", hash = "sha256:1f08fd5a2bea9c4180db71678e850b995d2a5f4537be0e94557668cf0f5f9497"},
 ]
+
+[[package]]
+name = "scipy"
+version = "1.13.1"
+description = "Fundamental algorithms for scientific computing in Python"
+optional = false
+python-versions = ">=3.9"
+files = [
+    {file = "scipy-1.13.1-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:20335853b85e9a49ff7572ab453794298bcf0354d8068c5f6775a0eabf350aca"},
+    {file = "scipy-1.13.1-cp310-cp310-macosx_12_0_arm64.whl", hash = "sha256:d605e9c23906d1994f55ace80e0125c587f96c020037ea6aa98d01b4bd2e222f"},
+    {file = "scipy-1.13.1-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:cfa31f1def5c819b19ecc3a8b52d28ffdcc7ed52bb20c9a7589669dd3c250989"},
+    {file = "scipy-1.13.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:f26264b282b9da0952a024ae34710c2aff7d27480ee91a2e82b7b7073c24722f"},
+    {file = "scipy-1.13.1-cp310-cp310-musllinux_1_1_x86_64.whl", hash = "sha256:eccfa1906eacc02de42d70ef4aecea45415f5be17e72b61bafcfd329bdc52e94"},
+    {file = "scipy-1.13.1-cp310-cp310-win_amd64.whl", hash = "sha256:2831f0dc9c5ea9edd6e51e6e769b655f08ec6db6e2e10f86ef39bd32eb11da54"},
+    {file = "scipy-1.13.1-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:27e52b09c0d3a1d5b63e1105f24177e544a222b43611aaf5bc44d4a0979e32f9"},
+    {file = "scipy-1.13.1-cp311-cp311-macosx_12_0_arm64.whl", hash = "sha256:54f430b00f0133e2224c3ba42b805bfd0086fe488835effa33fa291561932326"},
+    {file = "scipy-1.13.1-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:e89369d27f9e7b0884ae559a3a956e77c02114cc60a6058b4e5011572eea9299"},
+    {file = "scipy-1.13.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:a78b4b3345f1b6f68a763c6e25c0c9a23a9fd0f39f5f3d200efe8feda560a5fa"},
+    {file = "scipy-1.13.1-cp311-cp311-musllinux_1_1_x86_64.whl", hash = "sha256:45484bee6d65633752c490404513b9ef02475b4284c4cfab0ef946def50b3f59"},
+    {file = "scipy-1.13.1-cp311-cp311-win_amd64.whl", hash = "sha256:5713f62f781eebd8d597eb3f88b8bf9274e79eeabf63afb4a737abc6c84ad37b"},
+    {file = "scipy-1.13.1-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:5d72782f39716b2b3509cd7c33cdc08c96f2f4d2b06d51e52fb45a19ca0c86a1"},
+    {file = "scipy-1.13.1-cp312-cp312-macosx_12_0_arm64.whl", hash = "sha256:017367484ce5498445aade74b1d5ab377acdc65e27095155e448c88497755a5d"},
+    {file = "scipy-1.13.1-cp312-cp312-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:949ae67db5fa78a86e8fa644b9a6b07252f449dcf74247108c50e1d20d2b4627"},
+    {file = "scipy-1.13.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:de3ade0e53bc1f21358aa74ff4830235d716211d7d077e340c7349bc3542e884"},
+    {file = "scipy-1.13.1-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:2ac65fb503dad64218c228e2dc2d0a0193f7904747db43014645ae139c8fad16"},
+    {file = "scipy-1.13.1-cp312-cp312-win_amd64.whl", hash = "sha256:cdd7dacfb95fea358916410ec61bbc20440f7860333aee6d882bb8046264e949"},
+    {file = "scipy-1.13.1-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:436bbb42a94a8aeef855d755ce5a465479c721e9d684de76bf61a62e7c2b81d5"},
+    {file = "scipy-1.13.1-cp39-cp39-macosx_12_0_arm64.whl", hash = "sha256:8335549ebbca860c52bf3d02f80784e91a004b71b059e3eea9678ba994796a24"},
+    {file = "scipy-1.13.1-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:d533654b7d221a6a97304ab63c41c96473ff04459e404b83275b60aa8f4b7004"},
+    {file = "scipy-1.13.1-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:637e98dcf185ba7f8e663e122ebf908c4702420477ae52a04f9908707456ba4d"},
+    {file = "scipy-1.13.1-cp39-cp39-musllinux_1_1_x86_64.whl", hash = "sha256:a014c2b3697bde71724244f63de2476925596c24285c7a637364761f8710891c"},
+    {file = "scipy-1.13.1-cp39-cp39-win_amd64.whl", hash = "sha256:392e4ec766654852c25ebad4f64e4e584cf19820b980bc04960bca0b0cd6eaa2"},
+    {file = "scipy-1.13.1.tar.gz", hash = "sha256:095a87a0312b08dfd6a6155cbbd310a8c51800fc931b8c0b84003014b874ed3c"},
+]
+
+[package.dependencies]
+numpy = ">=1.22.4,<2.3"
+
+[package.extras]
+dev = ["cython-lint (>=0.12.2)", "doit (>=0.36.0)", "mypy", "pycodestyle", "pydevtool", "rich-click", "ruff", "types-psutil", "typing_extensions"]
+doc = ["jupyterlite-pyodide-kernel", "jupyterlite-sphinx (>=0.12.0)", "jupytext", "matplotlib (>=3.5)", "myst-nb", "numpydoc", "pooch", "pydata-sphinx-theme (>=0.15.2)", "sphinx (>=5.0.0)", "sphinx-design (>=0.4.0)"]
+test = ["array-api-strict", "asv", "gmpy2", "hypothesis (>=6.30)", "mpmath", "pooch", "pytest", "pytest-cov", "pytest-timeout", "pytest-xdist", "scikit-umfpack", "threadpoolctl"]
 
 [[package]]
 name = "semver"
@@ -4445,4 +4402,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9.2,<3.11"
-content-hash = "20a0987221d4e38abc3d9e20cb78f24be4bf9efcea1de569c49b9c9e7d1a5ce6"
+content-hash = "881285120d43d12335872d01cf066a79148044f880e5b2453fe3f03f144bb016"
