@@ -194,5 +194,11 @@
       matchDepNames: ['setuptools'],
       allowedVersions: '<81.0.0',
     },
+    /** Requires dashboard approval for major updates */
+    {
+      matchUpdateTypes: ['major'],
+      dependencyDashboardApproval: true,
+      matchFileNames: ['geoportal/package.json'],
+    },
   ],
 }
