@@ -152,7 +152,7 @@ repos:
             |.*\.rst\.tmpl
             |geoportal/c2cgeoportal_geoportal/scaffolds/advance_create/{{cookiecutter.project}}/geoportal/{{cookiecutter.package}}_geoportal/__init__\.py
           )$
-  - repo: https://github.com/PyCQA/prospector
+  - repo: https://github.com/prospector-dev/prospector
     rev: v1.12.1
     hooks:
       - id: prospector
