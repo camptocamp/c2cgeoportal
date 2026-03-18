@@ -1,3 +1,7 @@
+##### 2.7.1.253
+
+- Update dependency c2cwsgiutils to v5.2.4 (2.7) [c2cgeoportal#12735](https://github.com/camptocamp/c2cgeoportal/pull/12735)
+
 ##### 2.7.1.252
 
 - Update dependency pyjwt to v2.12.0 [SECURITY] (2.7) [c2cgeoportal#12728](https://github.com/camptocamp/c2cgeoportal/pull/12728)
