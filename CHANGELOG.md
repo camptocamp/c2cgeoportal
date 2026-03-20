@@ -1,3 +1,7 @@
+##### 2.8.1.301
+
+- Audit Snyk check/fix 2.8 [c2cgeoportal#12747](https://github.com/camptocamp/c2cgeoportal/pull/12747)
+
 ##### 2.8.1.300
 
 - Add distinct on `label` and `layer_name` in `fulltextsearch`. [c2cgeoportal#12718](https://github.com/camptocamp/c2cgeoportal/pull/12718)
