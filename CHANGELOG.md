@@ -1,3 +1,8 @@
+##### 2.7.1.254
+
+- Update dependency c2cciutils to v1.1.66 [SECURITY] (2.7) [c2cgeoportal#12761](https://github.com/camptocamp/c2cgeoportal/pull/12761)
+- Update dependency cryptography to v46.0.6 (2.7) [c2cgeoportal#12762](https://github.com/camptocamp/c2cgeoportal/pull/12762)
+
 ##### 2.7.1.253
 
 - Update dependency c2cwsgiutils to v5.2.4 (2.7) [c2cgeoportal#12735](https://github.com/camptocamp/c2cgeoportal/pull/12735)
