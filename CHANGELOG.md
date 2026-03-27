@@ -1,3 +1,8 @@
+##### 2.8.1.303
+
+- Update dependency svgo to v3.3.3 [SECURITY] (2.8) [ngeo#10071](https://github.com/camptocamp/ngeo/pull/10071)
+- Update dependency requests to v2.33.0 [SECURITY] (2.8) [ngeo#10080](https://github.com/camptocamp/ngeo/pull/10080)
+
 ##### 2.8.1.302
 
 - Update dependency cryptography to v46.0.6 (2.8) [c2cgeoportal#12763](https://github.com/camptocamp/c2cgeoportal/pull/12763)
