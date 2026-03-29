@@ -167,14 +167,14 @@ taken into account.</p>
 <p>The data model can be extended in the file <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/models.py</span></code>.</p>
 <p>For example, to add some user details, including a link to a new class named “Title”,
 add to <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/models.py</span></code>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">deform.widget</span> <span class="kn">import</span> <span class="n">HiddenWidget</span>
-<span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">,</span> <span class="n">types</span>
-<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">backref</span><span class="p">,</span> <span class="n">relationship</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">deform.widget</span><span class="w"> </span><span class="kn">import</span> <span class="n">HiddenWidget</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy</span><span class="w"> </span><span class="kn">import</span> <span class="n">Column</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">,</span> <span class="n">types</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy.orm</span><span class="w"> </span><span class="kn">import</span> <span class="n">backref</span><span class="p">,</span> <span class="n">relationship</span>
 
-<span class="kn">from</span> <span class="nn">c2cgeoportal_commons.models.static</span> <span class="kn">import</span> <span class="n">User</span><span class="p">,</span> <span class="n">_schema</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">c2cgeoportal_commons.models.static</span><span class="w"> </span><span class="kn">import</span> <span class="n">User</span><span class="p">,</span> <span class="n">_schema</span>
 
 
-<span class="k">class</span> <span class="nc">UserDetail</span><span class="p">(</span><span class="n">User</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">UserDetail</span><span class="p">(</span><span class="n">User</span><span class="p">):</span>
     <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;userdetail&#39;</span>
     <span class="n">__table_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;schema&#39;</span><span class="p">:</span> <span class="n">_schema</span><span class="p">}</span>
     <span class="n">__mapper_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;polymorphic_identity&#39;</span><span class="p">:</span> <span class="s1">&#39;detailed&#39;</span><span class="p">}</span>
@@ -212,7 +212,7 @@ add to <code class="docutils literal notranslate"><span class="pre">geoportal/&l
     <span class="p">})</span>
 
 
-<span class="k">class</span> <span class="nc">Title</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Title</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
     <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;title&#39;</span>
     <span class="n">__table_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;schema&#39;</span><span class="p">:</span> <span class="n">_schema</span><span class="p">}</span>
     <span class="n">__colanderalchemy_config__</span> <span class="o">=</span> <span class="p">{</span>
@@ -234,19 +234,19 @@ For this, first ensure that the following files exist (if needed, create them as
 <li><p><code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/admin/views/__init__.py</span></code>:</p></li>
 </ul>
 <p>Now, create a file <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/admin/views/userdetail.py</span></code> as follows:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
 
-<span class="kn">from</span> <span class="o">&lt;</span><span class="n">package</span><span class="o">&gt;</span><span class="n">_geoportal</span><span class="o">.</span><span class="n">models</span> <span class="kn">import</span> <span class="nn">UserDetail</span>
-<span class="kn">from</span> <span class="nn">c2cgeoform.schema</span> <span class="kn">import</span> <span class="n">GeoFormSchemaNode</span>
-<span class="kn">from</span> <span class="nn">c2cgeoform.views.abstract_views</span> <span class="kn">import</span> <span class="n">ListField</span>
-<span class="kn">from</span> <span class="nn">deform.widget</span> <span class="kn">import</span> <span class="n">FormWidget</span>
-<span class="kn">from</span> <span class="nn">pyramid.view</span> <span class="kn">import</span> <span class="n">view_config</span><span class="p">,</span> <span class="n">view_defaults</span>
-<span class="kn">from</span> <span class="nn">sqlalchemy.orm</span> <span class="kn">import</span> <span class="n">aliased</span><span class="p">,</span> <span class="n">subqueryload</span>
+<span class="kn">from</span><span class="w"> </span><span class="o">&lt;</span><span class="n">package</span><span class="o">&gt;</span><span class="n">_geoportal</span><span class="o">.</span><span class="n">models</span> <span class="kn">import</span><span class="w"> </span><span class="nn">UserDetail</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">c2cgeoform.schema</span><span class="w"> </span><span class="kn">import</span> <span class="n">GeoFormSchemaNode</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">c2cgeoform.views.abstract_views</span><span class="w"> </span><span class="kn">import</span> <span class="n">ListField</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">deform.widget</span><span class="w"> </span><span class="kn">import</span> <span class="n">FormWidget</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyramid.view</span><span class="w"> </span><span class="kn">import</span> <span class="n">view_config</span><span class="p">,</span> <span class="n">view_defaults</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy.orm</span><span class="w"> </span><span class="kn">import</span> <span class="n">aliased</span><span class="p">,</span> <span class="n">subqueryload</span>
 
-<span class="kn">from</span> <span class="nn">c2cgeoportal_admin.schemas.roles</span> <span class="kn">import</span> <span class="n">roles_schema_node</span>
-<span class="kn">from</span> <span class="nn">c2cgeoportal_admin.views.users</span> <span class="kn">import</span> <span class="n">UserViews</span>
-<span class="kn">from</span> <span class="nn">c2cgeoportal_commons.models.main</span> <span class="kn">import</span> <span class="n">Role</span>
-<span class="kn">from</span> <span class="nn">c2cgeoportal_commons.models.static</span> <span class="kn">import</span> <span class="n">User</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">c2cgeoportal_admin.schemas.roles</span><span class="w"> </span><span class="kn">import</span> <span class="n">roles_schema_node</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">c2cgeoportal_admin.views.users</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserViews</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">c2cgeoportal_commons.models.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">Role</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">c2cgeoportal_commons.models.static</span><span class="w"> </span><span class="kn">import</span> <span class="n">User</span>
 
 
 <span class="n">_list_field</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">ListField</span><span class="p">,</span> <span class="n">UserDetail</span><span class="p">)</span>
@@ -259,7 +259,7 @@ For this, first ensure that the following files exist (if needed, create them as
 
 
 <span class="nd">@view_defaults</span><span class="p">(</span><span class="n">match_param</span><span class="o">=</span><span class="s1">&#39;table=userdetails&#39;</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">UserDetailViews</span><span class="p">(</span><span class="n">UserViews</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">UserDetailViews</span><span class="p">(</span><span class="n">UserViews</span><span class="p">):</span>
     <span class="n">_list_fields</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">_list_field</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">),</span>
         <span class="n">_list_field</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">),</span>
@@ -285,7 +285,7 @@ For this, first ensure that the following files exist (if needed, create them as
     <span class="n">_model</span> <span class="o">=</span> <span class="n">UserDetail</span>
     <span class="n">_base_schema</span> <span class="o">=</span> <span class="n">base_schema</span>
 
-    <span class="k">def</span> <span class="nf">_base_query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_base_query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_request</span><span class="o">.</span><span class="n">dbsession</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">UserDetail</span><span class="p">)</span>
             <span class="o">.</span><span class="n">distinct</span><span class="p">()</span>
@@ -299,14 +299,14 @@ For this, first ensure that the following files exist (if needed, create them as
         <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;c2cgeoform_index&#39;</span><span class="p">,</span>
         <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;./templates/index.jinja2&#39;</span>
     <span class="p">)</span>
-    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">()</span>
 
     <span class="nd">@view_config</span><span class="p">(</span>
         <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;c2cgeoform_grid&#39;</span><span class="p">,</span>
         <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;fast_json&#39;</span>
     <span class="p">)</span>
-    <span class="k">def</span> <span class="nf">grid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">grid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
 
     <span class="nd">@view_config</span><span class="p">(</span>
@@ -314,7 +314,7 @@ For this, first ensure that the following files exist (if needed, create them as
         <span class="n">request_method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span>
         <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;./templates/edit.jinja2&#39;</span>
     <span class="p">)</span>
-    <span class="k">def</span> <span class="nf">view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">edit</span><span class="p">()</span>
 
     <span class="nd">@view_config</span><span class="p">(</span>
@@ -322,7 +322,7 @@ For this, first ensure that the following files exist (if needed, create them as
         <span class="n">request_method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span>
         <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;./templates/edit.jinja2&#39;</span>
     <span class="p">)</span>
-    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 
     <span class="nd">@view_config</span><span class="p">(</span>
@@ -330,7 +330,7 @@ For this, first ensure that the following files exist (if needed, create them as
         <span class="n">request_method</span><span class="o">=</span><span class="s1">&#39;DELETE&#39;</span><span class="p">,</span>
         <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;fast_json&#39;</span>
     <span class="p">)</span>
-    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
 
     <span class="nd">@view_config</span><span class="p">(</span>
@@ -338,17 +338,17 @@ For this, first ensure that the following files exist (if needed, create them as
         <span class="n">request_method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span>
         <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;./templates/edit.jinja2&#39;</span>
     <span class="p">)</span>
-    <span class="k">def</span> <span class="nf">duplicate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">duplicate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">duplicate</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>And now the file <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/admin/views/title.py</span></code>:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">partial</span>
 
-<span class="kn">from</span> <span class="o">&lt;</span><span class="n">package</span><span class="o">&gt;</span><span class="n">_geoportal</span><span class="o">.</span><span class="n">models</span> <span class="kn">import</span> <span class="nn">Title</span>
-<span class="kn">from</span> <span class="nn">c2cgeoform.schema</span> <span class="kn">import</span> <span class="n">GeoFormSchemaNode</span>
-<span class="kn">from</span> <span class="nn">c2cgeoform.views.abstract_views</span> <span class="kn">import</span> <span class="n">AbstractViews</span><span class="p">,</span> <span class="n">ListField</span>
-<span class="kn">from</span> <span class="nn">pyramid.view</span> <span class="kn">import</span> <span class="n">view_config</span><span class="p">,</span> <span class="n">view_defaults</span>
+<span class="kn">from</span><span class="w"> </span><span class="o">&lt;</span><span class="n">package</span><span class="o">&gt;</span><span class="n">_geoportal</span><span class="o">.</span><span class="n">models</span> <span class="kn">import</span><span class="w"> </span><span class="nn">Title</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">c2cgeoform.schema</span><span class="w"> </span><span class="kn">import</span> <span class="n">GeoFormSchemaNode</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">c2cgeoform.views.abstract_views</span><span class="w"> </span><span class="kn">import</span> <span class="n">AbstractViews</span><span class="p">,</span> <span class="n">ListField</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pyramid.view</span><span class="w"> </span><span class="kn">import</span> <span class="n">view_config</span><span class="p">,</span> <span class="n">view_defaults</span>
 
 
 <span class="n">base_schema</span> <span class="o">=</span> <span class="n">GeoFormSchemaNode</span><span class="p">(</span><span class="n">Title</span><span class="p">)</span>
@@ -356,7 +356,7 @@ For this, first ensure that the following files exist (if needed, create them as
 
 
 <span class="nd">@view_defaults</span><span class="p">(</span><span class="n">match_param</span><span class="o">=</span><span class="s1">&#39;table=titles&#39;</span><span class="p">)</span>
-<span class="k">class</span> <span class="nc">TitleViews</span><span class="p">(</span><span class="n">AbstractViews</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">TitleViews</span><span class="p">(</span><span class="n">AbstractViews</span><span class="p">):</span>
     <span class="n">_list_fields</span> <span class="o">=</span> <span class="p">[</span>
         <span class="n">_list_field</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">),</span>
         <span class="n">_list_field</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">),</span>
@@ -369,14 +369,14 @@ For this, first ensure that the following files exist (if needed, create them as
         <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;c2cgeoform_index&#39;</span><span class="p">,</span>
         <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;./templates/index.jinja2&#39;</span>
     <span class="p">)</span>
-    <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">()</span>
 
     <span class="nd">@view_config</span><span class="p">(</span>
         <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;c2cgeoform_grid&#39;</span><span class="p">,</span>
         <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;fast_json&#39;</span>
     <span class="p">)</span>
-    <span class="k">def</span> <span class="nf">grid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">grid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
 
     <span class="nd">@view_config</span><span class="p">(</span>
@@ -384,7 +384,7 @@ For this, first ensure that the following files exist (if needed, create them as
         <span class="n">request_method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span>
         <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;./templates/edit.jinja2&#39;</span>
     <span class="p">)</span>
-    <span class="k">def</span> <span class="nf">view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">edit</span><span class="p">()</span>
 
     <span class="nd">@view_config</span><span class="p">(</span>
@@ -392,7 +392,7 @@ For this, first ensure that the following files exist (if needed, create them as
         <span class="n">request_method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span>
         <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;./templates/edit.jinja2&#39;</span>
     <span class="p">)</span>
-    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 
     <span class="nd">@view_config</span><span class="p">(</span>
@@ -400,7 +400,7 @@ For this, first ensure that the following files exist (if needed, create them as
         <span class="n">request_method</span><span class="o">=</span><span class="s1">&#39;DELETE&#39;</span><span class="p">,</span>
         <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;fast_json&#39;</span>
     <span class="p">)</span>
-    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
 
     <span class="nd">@view_config</span><span class="p">(</span>
@@ -408,7 +408,7 @@ For this, first ensure that the following files exist (if needed, create them as
         <span class="n">request_method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span>
         <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;./templates/edit.jinja2&#39;</span>
     <span class="p">)</span>
-    <span class="k">def</span> <span class="nf">duplicate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">duplicate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">duplicate</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -436,7 +436,7 @@ For this, first ensure that the following files exist (if needed, create them as
 </pre></div>
 </div>
 <p>And finally in <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/__init__.py</span></code> replace <code class="docutils literal notranslate"><span class="pre">config.scan()</span></code> by:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">c2cgeoportal_admin</span> <span class="kn">import</span> <span class="n">PermissionSetter</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">c2cgeoportal_admin</span><span class="w"> </span><span class="kn">import</span> <span class="n">PermissionSetter</span>
 
 <span class="k">with</span> <span class="n">PermissionSetter</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
     <span class="c1"># Scan view decorator for adding routes</span>
@@ -455,17 +455,17 @@ span.prompt1:before {
 <p>Run Python console:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker-compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>python3</span>
 </pre></div></div><p>Execute the following code:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sqlalchemy</span>
-<span class="kn">from</span> <span class="nn">c2c.template.config</span> <span class="kn">import</span> <span class="n">config</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sqlalchemy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">c2c.template.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">config</span>
 
-<span class="kn">import</span> <span class="nn">c2cgeoportal_commons.models</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">c2cgeoportal_commons.models</span>
 
 <span class="n">config</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="s1">&#39;/etc/geomapfish/config.yaml&#39;</span><span class="p">)</span>
 <span class="n">engine</span> <span class="o">=</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">engine_from_config</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">get_config</span><span class="p">(),</span> <span class="s1">&#39;sqlalchemy.&#39;</span><span class="p">)</span>
 <span class="n">c2cgeoportal_commons</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">bind</span> <span class="o">=</span> <span class="n">engine</span>
 
-<span class="kn">from</span> <span class="o">&lt;</span><span class="n">package</span><span class="o">&gt;</span><span class="n">_geoportal</span><span class="o">.</span><span class="n">models</span> <span class="kn">import</span> <span class="nn">Title</span><span class="o">,</span> <span class="nn">UserDetail</span>
-<span class="kn">from</span> <span class="nn">sqlalchemy.schema</span> <span class="kn">import</span> <span class="n">CreateTable</span>
+<span class="kn">from</span><span class="w"> </span><span class="o">&lt;</span><span class="n">package</span><span class="o">&gt;</span><span class="n">_geoportal</span><span class="o">.</span><span class="n">models</span> <span class="kn">import</span><span class="w"> </span><span class="nn">Title</span><span class="o">,</span><span class="w"> </span><span class="nn">UserDetail</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sqlalchemy.schema</span><span class="w"> </span><span class="kn">import</span> <span class="n">CreateTable</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">CreateTable</span><span class="p">(</span><span class="n">Title</span><span class="o">.</span><span class="n">__table__</span><span class="p">))</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">CreateTable</span><span class="p">(</span><span class="n">UserDetail</span><span class="o">.</span><span class="n">__table__</span><span class="p">))</span>
