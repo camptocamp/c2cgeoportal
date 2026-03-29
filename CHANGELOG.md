@@ -1,3 +1,7 @@
+##### 2.8.1.305
+
+- Audit Snyk check/fix 2.8 [c2cgeoportal#12771](https://github.com/camptocamp/c2cgeoportal/pull/12771)
+
 ##### 2.8.1.304
 
 - Update dependency Pygments to v2.20.0 [SECURITY] (2.8) [c2cgeoportal#12769](https://github.com/camptocamp/c2cgeoportal/pull/12769)
