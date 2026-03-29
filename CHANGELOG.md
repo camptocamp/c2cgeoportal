@@ -1,3 +1,7 @@
+##### 2.9.0.431
+
+- Update dependency Pygments to v2.20.0 [SECURITY] (2.9) [c2cgeoportal#12770](https://github.com/camptocamp/c2cgeoportal/pull/12770)
+
 ##### 2.9.0.430
 
 - Update dependency cryptography to v46.0.6 (2.9) [c2cgeoportal#12764](https://github.com/camptocamp/c2cgeoportal/pull/12764)
