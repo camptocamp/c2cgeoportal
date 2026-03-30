@@ -1,3 +1,8 @@
+##### 2.9.0.432
+
+- Update dependency requests to v2.33.0 [SECURITY] (2.9) [ngeo#10081](https://github.com/camptocamp/ngeo/pull/10081)
+- [Backport 2.9] Keep tool panel resizable when data panel closed [ngeo#10085](https://github.com/camptocamp/ngeo/pull/10085)
+
 ##### 2.9.0.431
 
 - Update dependency Pygments to v2.20.0 [SECURITY] (2.9) [c2cgeoportal#12770](https://github.com/camptocamp/c2cgeoportal/pull/12770)
