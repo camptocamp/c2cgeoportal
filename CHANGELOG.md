@@ -1,3 +1,7 @@
+##### 2.8.1.306
+
+- Update dependency pygments to >=2.20.0 [SECURITY] (2.8) [ngeo#10084](https://github.com/camptocamp/ngeo/pull/10084)
+
 ##### 2.8.1.305
 
 - Audit Snyk check/fix 2.8 [c2cgeoportal#12771](https://github.com/camptocamp/c2cgeoportal/pull/12771)
