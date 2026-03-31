@@ -4168,7 +4168,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/python3-distro: 1.9.0-1
   ubuntu_24_04/python3-gi: 3.48.2-1
   ubuntu_24_04/python3-httplib2: 0.20.4-3
-  ubuntu_24_04/python3-jwt: 2.7.0-1
+  ubuntu_24_04/python3-jwt: 2.7.0-1ubuntu0.1
   ubuntu_24_04/python3-launchpadlib: 1.11.0-6
   ubuntu_24_04/python3-lazr.restfulclient: 0.14.6-1
   ubuntu_24_04/python3-lazr.uri: 1.0.6-3
@@ -4879,7 +4879,7 @@ camptocamp/geomapfish:latest:
   ubuntu_24_04/python3-distro: 1.9.0-1
   ubuntu_24_04/python3-gi: 3.48.2-1
   ubuntu_24_04/python3-httplib2: 0.20.4-3
-  ubuntu_24_04/python3-jwt: 2.7.0-1
+  ubuntu_24_04/python3-jwt: 2.7.0-1ubuntu0.1
   ubuntu_24_04/python3-launchpadlib: 1.11.0-6
   ubuntu_24_04/python3-lazr.restfulclient: 0.14.6-1
   ubuntu_24_04/python3-lazr.uri: 1.0.6-3
@@ -5581,7 +5581,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_24_04/python3-distro: 1.9.0-1
   ubuntu_24_04/python3-gi: 3.48.2-1
   ubuntu_24_04/python3-httplib2: 0.20.4-3
-  ubuntu_24_04/python3-jwt: 2.7.0-1
+  ubuntu_24_04/python3-jwt: 2.7.0-1ubuntu0.1
   ubuntu_24_04/python3-launchpadlib: 1.11.0-6
   ubuntu_24_04/python3-lazr.restfulclient: 0.14.6-1
   ubuntu_24_04/python3-lazr.uri: 1.0.6-3
