@@ -5,10 +5,10 @@ target-version = 'py310'
 python = ">=3.10,<4"
 c2cwsgiutils = { extras = ["broadcast"], version = "6.1.9" }
 papyrus = "2.6.2" # commons
-transaction = "5.0" # commons
+transaction = "5.1" # commons
 "c2c.template" = "2.4.2"
-GeoAlchemy2 = "0.18.3"
-SQLAlchemy = "2.0.47" # commons
+GeoAlchemy2 = "0.18.4"
+SQLAlchemy = "2.0.48" # commons
 "zope.event" = "6.1" # commons
 "zope.sqlalchemy" = "4.1" # commons
 shapely = "2.1.2"
