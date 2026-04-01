@@ -59,7 +59,7 @@ repos:
             |docker/qgisserver/.prospector.yaml
           )$
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.4.1
+    rev: v2.4.2
     hooks:
       - id: codespell
         language_version: '3.14'
@@ -118,7 +118,7 @@ repos:
             |geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter\.project}}/mapserver/data/TM_EUROPE_BORDERS-0.3\.sql
           )$
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.4
+    rev: v0.15.7
     hooks:
       - id: ruff-format
         args:
@@ -138,7 +138,7 @@ repos:
         additional_dependencies:
           - prospector-profile-duplicated==1.12.0 # pypi
           - prospector-profile-utils==1.27.0 # pypi
-          - ruff==0.15.4 # pypi
+          - ruff==0.15.7 # pypi
           - pylint[spelling]==4.0.5 # pypi
         exclude: |-
           (?x)(
@@ -176,7 +176,7 @@ repos:
             |\.github/publish\.yaml
           )$
   - repo: https://github.com/renovatebot/pre-commit-hooks
-    rev: 43.46.5
+    rev: 43.89.8
     hooks:
       - id: renovate-config-validator
   - repo: https://github.com/sbrunner/python-versions-hook
