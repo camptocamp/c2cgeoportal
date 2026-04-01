@@ -869,7 +869,7 @@ vars:
       - name: preset_layer_filter
         single: true
         description: >
-          Name of layer to pre-select in filter tool when loading application.
+          Name of layer to preselect in filter tool when loading application.
         relevant_for:
           - role
       - name: open_panel
