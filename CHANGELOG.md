@@ -1,3 +1,7 @@
+##### 2.8.1.307
+
+- Update dependency @types/jquery to v3.5.34 (2.8) [ngeo#10093](https://github.com/camptocamp/ngeo/pull/10093)
+
 ##### 2.8.1.306
 
 - Update dependency pygments to >=2.20.0 [SECURITY] (2.8) [ngeo#10084](https://github.com/camptocamp/ngeo/pull/10084)
