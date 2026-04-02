@@ -1,3 +1,8 @@
+##### 2.7.1.257
+
+- Update all patch/minor versions (2.7) [c2cgeoportal#12780](https://github.com/camptocamp/c2cgeoportal/pull/12780)
+- Update dependency c2cciutils to v1.1.67 [SECURITY] (2.7) [c2cgeoportal#12789](https://github.com/camptocamp/c2cgeoportal/pull/12789)
+
 ##### 2.7.1.256
 
 - Audit Snyk check/fix 2.7 [c2cgeoportal#12766](https://github.com/camptocamp/c2cgeoportal/pull/12766)
