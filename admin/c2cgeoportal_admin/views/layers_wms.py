@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2025, Camptocamp SA
+# Copyright (c) 2017-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -170,7 +170,7 @@ class LayerWmsViews(DimensionLayerViews[LayerWMS]):
         src = self._get_object()
         dbsession = self._request.dbsession
         default_wmts = LayerWMTS.get_default(dbsession)
-        values = (
+        values: dict[str, str | int | None] = (
             {"url": default_wmts.url, "matrix_set": default_wmts.matrix_set}
             if default_wmts
             else {"url": "", "matrix_set": ""}
