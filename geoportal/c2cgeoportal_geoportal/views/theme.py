@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2025, Camptocamp SA
+# Copyright (c) 2011-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -1387,7 +1387,7 @@ class Theme:
 
         layers = self._layers(interface)
         try:
-            group_db = models.DBSession.query(main.LayerGroup).filter(main.LayerGroup.name == group).one()  # type: ignore[arg-type]
+            group_db = models.DBSession.query(main.LayerGroup).filter(main.LayerGroup.name == group).one()
             assert isinstance(group_db, main.LayerGroup)
             return await self._group(group_db.name, group_db, layers, depth=2, dim=DimensionInformation())
         except NoResultFound:
