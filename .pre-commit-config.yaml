@@ -44,7 +44,7 @@ repos:
       - id: poetry2-lock
         exclude: ^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/{{cookiecutter\.project}}/
         additional_dependencies:
-          - poetry==2.3.2 # pypi
+          - poetry==2.3.3 # pypi
       - id: npm-lock
       - id: canonicalize
       - id: prospector-to-ruff
