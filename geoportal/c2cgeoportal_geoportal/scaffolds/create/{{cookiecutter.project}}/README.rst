@@ -26,4 +26,14 @@ Run
 
    docker compose up -d
 
+Contributing
+------------
+
+Install the pre-commit hooks:
+
+.. code-block:: bash
+
+   pip install pre-commit
+   pre-commit install --allow-missing-config --config=.pre-commit-config.yaml
+
 .. Feel free to add project-specific things.
