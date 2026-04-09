@@ -1,3 +1,7 @@
+##### 2.8.1.308
+
+- Update dependency cryptography to v46.0.7 [SECURITY] (2.8) [c2cgeoportal#12808](https://github.com/camptocamp/c2cgeoportal/pull/12808)
+
 ##### 2.8.1.307
 
 - Update dependency @types/jquery to v3.5.34 (2.8) [ngeo#10093](https://github.com/camptocamp/ngeo/pull/10093)
