@@ -1,4 +1,4 @@
-poetry==1.6.1
+poetry==2.3.3
 pip==26.0.1
 requests>=2.32.0 # not directly required, pinned by Snyk to avoid a vulnerability
 urllib3>=2.6.3 # not directly required, pinned by Snyk to avoid a vulnerability
