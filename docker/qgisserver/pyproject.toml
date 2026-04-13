@@ -22,7 +22,7 @@ prospector-profile-duplicated = "1.12.0"
 prospector-profile-utils  = "1.27.0"
 ruff = "0.15.7"
 types-pyyaml = "6.0.12.20250915"
-pytest = "9.0.2"
+pytest = "9.0.3"
 
 [project]
 name = 'c2cgeoportal'
