@@ -3688,8 +3688,8 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/libpixman-1-0: 0.42.2-1build1
   ubuntu_24_04/libpkgconf3: 1.8.1-2build1
   ubuntu_24_04/libpng16-16t64: 1.6.43-5ubuntu0.5
-  ubuntu_24_04/libpolkit-agent-1-0: 124-2ubuntu1.24.04.2
-  ubuntu_24_04/libpolkit-gobject-1-0: 124-2ubuntu1.24.04.2
+  ubuntu_24_04/libpolkit-agent-1-0: 124-2ubuntu1.24.04.3
+  ubuntu_24_04/libpolkit-gobject-1-0: 124-2ubuntu1.24.04.3
   ubuntu_24_04/libpq5: 17.0-1.pgdg24.04+1
   ubuntu_24_04/libproc2-0: 2:4.0.4-4ubuntu3.2
   ubuntu_24_04/libproj25: 9.4.0-1build2
@@ -4149,7 +4149,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/pkg-config: 1.8.1-2build1
   ubuntu_24_04/pkgconf: 1.8.1-2build1
   ubuntu_24_04/pkgconf-bin: 1.8.1-2build1
-  ubuntu_24_04/polkitd: 124-2ubuntu1.24.04.2
+  ubuntu_24_04/polkitd: 124-2ubuntu1.24.04.3
   ubuntu_24_04/postgresql-client: 17+264.pgdg24.04+1
   ubuntu_24_04/postgresql-client-18: 18.0-1.pgdg24.04+3
   ubuntu_24_04/postgresql-client-common: 264.pgdg24.04+1
@@ -4421,8 +4421,8 @@ camptocamp/geomapfish:latest:
   ubuntu_24_04/libpipewire-0.3-0t64: 1.2.3-1~24.04.sav0
   ubuntu_24_04/libpixman-1-0: 0.42.2-1build1
   ubuntu_24_04/libpng16-16t64: 1.6.43-5ubuntu0.5
-  ubuntu_24_04/libpolkit-agent-1-0: 124-2ubuntu1.24.04.2
-  ubuntu_24_04/libpolkit-gobject-1-0: 124-2ubuntu1.24.04.2
+  ubuntu_24_04/libpolkit-agent-1-0: 124-2ubuntu1.24.04.3
+  ubuntu_24_04/libpolkit-gobject-1-0: 124-2ubuntu1.24.04.3
   ubuntu_24_04/libpq5: 16.13-0ubuntu0.24.04.1
   ubuntu_24_04/libproc2-0: 2:4.0.4-4ubuntu3.2
   ubuntu_24_04/libproj25: 9.4.0-1build2
@@ -4865,7 +4865,7 @@ camptocamp/geomapfish:latest:
   ubuntu_24_04/perl-base: 5.38.2-3.2ubuntu0.2
   ubuntu_24_04/perl-modules-5.38: 5.38.2-3.2ubuntu0.2
   ubuntu_24_04/pinentry-curses: 1.2.1-3ubuntu5
-  ubuntu_24_04/polkitd: 124-2ubuntu1.24.04.2
+  ubuntu_24_04/polkitd: 124-2ubuntu1.24.04.3
   ubuntu_24_04/procps: 2:4.0.4-4ubuntu3.2
   ubuntu_24_04/proj-data: 9.4.0-1build2
   ubuntu_24_04/python-apt-common: 2.7.7ubuntu5.1
@@ -5123,8 +5123,8 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_24_04/libpipewire-0.3-0t64: 1.2.3-1~24.04.sav0
   ubuntu_24_04/libpixman-1-0: 0.42.2-1build1
   ubuntu_24_04/libpng16-16t64: 1.6.43-5ubuntu0.5
-  ubuntu_24_04/libpolkit-agent-1-0: 124-2ubuntu1.24.04.2
-  ubuntu_24_04/libpolkit-gobject-1-0: 124-2ubuntu1.24.04.2
+  ubuntu_24_04/libpolkit-agent-1-0: 124-2ubuntu1.24.04.3
+  ubuntu_24_04/libpolkit-gobject-1-0: 124-2ubuntu1.24.04.3
   ubuntu_24_04/libpq5: 16.13-0ubuntu0.24.04.1
   ubuntu_24_04/libproc2-0: 2:4.0.4-4ubuntu3.2
   ubuntu_24_04/libproj25: 9.4.0-1build2
@@ -5567,7 +5567,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_24_04/perl-base: 5.38.2-3.2ubuntu0.2
   ubuntu_24_04/perl-modules-5.38: 5.38.2-3.2ubuntu0.2
   ubuntu_24_04/pinentry-curses: 1.2.1-3ubuntu5
-  ubuntu_24_04/polkitd: 124-2ubuntu1.24.04.2
+  ubuntu_24_04/polkitd: 124-2ubuntu1.24.04.3
   ubuntu_24_04/procps: 2:4.0.4-4ubuntu3.2
   ubuntu_24_04/proj-data: 9.4.0-1build2
   ubuntu_24_04/python-apt-common: 2.7.7ubuntu5.1
