@@ -1,0 +1,9 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.25.1
+# ignores vulnerabilities until expiry date; change duration by modifying expiry date
+ignore:
+  SNYK-PYTHON-POETRY-15873752:
+    - '*':
+        reason: Plugin not compatible with new Poetry version
+        created: 2026-04-14T09:36:14.017Z
+patch: {}
