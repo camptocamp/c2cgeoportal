@@ -1,3 +1,7 @@
+##### 2.9.0.444
+
+- Audit Dpkg 2.9 [c2cgeoportal#12823](https://github.com/camptocamp/c2cgeoportal/pull/12823)
+
 ##### 2.9.0.443
 
 - Update dependency pillow to v12.2.0 [SECURITY] (2.9) [c2cgeoportal#12821](https://github.com/camptocamp/c2cgeoportal/pull/12821)
