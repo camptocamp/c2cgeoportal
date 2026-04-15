@@ -8,7 +8,6 @@ from . import AbstractViewsTests
 
 
 @pytest.fixture(scope="function")
-@pytest.mark.usefixtures("dbsession", "transact")
 def functionality_test_data(dbsession, transact, settings):
     del transact
 

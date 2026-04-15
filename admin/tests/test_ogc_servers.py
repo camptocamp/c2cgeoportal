@@ -9,7 +9,6 @@ from . import AbstractViewsTests
 
 
 @pytest.fixture(scope="function")
-@pytest.mark.usefixtures("dbsession", "transact")
 def ogc_server_test_data(dbsession, transact):
     del transact
 

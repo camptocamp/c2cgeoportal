@@ -6,7 +6,6 @@ from . import AbstractViewsTests
 
 
 @pytest.fixture(scope="function")
-@pytest.mark.usefixtures("dbsession", "transact")
 def left_menu_test_data(dbsession, transact):
     del transact
 
