@@ -11,7 +11,6 @@ from .test_treegroup import TestTreeGroup
 
 
 @pytest.fixture(scope="function")
-@pytest.mark.usefixtures("dbsession", "transact")
 def oauth2_clients_test_data(dbsession, transact):
     del transact
 

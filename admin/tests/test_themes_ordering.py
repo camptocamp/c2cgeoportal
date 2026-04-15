@@ -6,7 +6,6 @@ from .test_treegroup import TestTreeGroup
 
 
 @pytest.fixture(scope="function")
-@pytest.mark.usefixtures("dbsession", "transact")
 def theme_test_data(dbsession, transact):
     del transact
 
