@@ -1,3 +1,7 @@
+##### 2.7.1.262
+
+- Fix server l10n compilation [c2cgeoportal#12829](https://github.com/camptocamp/c2cgeoportal/pull/12829)
+
 ##### 2.7.1.261
 
 - Update dependency wheel to v0.45.1 [SECURITY] (2.7) [c2cgeoportal#12815](https://github.com/camptocamp/c2cgeoportal/pull/12815)
