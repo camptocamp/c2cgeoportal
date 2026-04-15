@@ -40,7 +40,7 @@ def _main() -> None:
                         check=True,
                     )
 
-            if os.path.exists(f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-server{suffix}.mo"):
+            if os.path.exists(f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-server{suffix}.po"):
                 if args.dry_run:
                     print(
                         f"{base_path}/{lang}/LC_MESSAGES/{args.package}_geoportal-server{suffix}.po => "
