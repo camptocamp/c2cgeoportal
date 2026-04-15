@@ -1,3 +1,7 @@
+##### 2.9.0.447
+
+- Update dependency pytest to v9 [SECURITY] (2.9) - abandoned [c2cgeoportal#12822](https://github.com/camptocamp/c2cgeoportal/pull/12822)
+
 ##### 2.9.0.446
 
 - Audit Dpkg 2.9 [c2cgeoportal#12827](https://github.com/camptocamp/c2cgeoportal/pull/12827)
