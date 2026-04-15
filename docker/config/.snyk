@@ -2,8 +2,8 @@
 version: v1.25.1
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
-  SNYK-PYTHON-BEAKER-575115:
+  SNYK-PYTHON-POETRY-15873752:
     - '*':
-        reason: Will probably never be fixed
-        created: 2024-08-15T05:50:47.531Z
+        reason: Plugin not compatible with new Poetry version
+        created: 2026-04-15T07:02:44.653Z
 patch: {}
