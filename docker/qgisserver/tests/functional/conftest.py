@@ -19,19 +19,20 @@ def settings():
 
 
 @pytest.fixture(scope="module")
-@pytest.mark.usefixtures("settings")
 def DBSession(settings):  # noqa: ignore=N802
     generate_mappers()
     engine = create_engine(config["sqlalchemy_slave.url"], pool_timeout=10)
     session_factory = sessionmaker()
     session_factory.configure(bind=engine)
 
-    with patch("geomapfish_qgisserver.accesscontrol.create_session_factory", return_value=session_factory):
+    with patch(
+        "geomapfish_qgisserver.accesscontrol.create_session_factory",
+        return_value=session_factory,
+    ):
         yield session_factory
 
 
 @pytest.fixture(scope="module")
-@pytest.mark.usefixtures("DBSession")
 def clean_dbsession(DBSession):  # noqa: ignore=N803
     from c2cgeoportal_commons.models.main import OGCServer, RestrictionArea, Role, TreeItem, layer_ra, role_ra
     from c2cgeoportal_commons.models.static import User, user_role
