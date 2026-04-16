@@ -27,15 +27,15 @@ checks: prospector eslint ## Runs the checks
 
 .PHONY: prospector
 prospector: ## Runs the Prospector checks
-	docker compose run --entrypoint= --rm --volume=$(CURDIR)/geoportal:/app geoportal \
+	docker compose run --workdir=/app --rm --volume=$(CURDIR)/geoportal:/app/geoportal tools \
 		prospector --output-format=pylint --die-on-tool-error
 
 .PHONY: eslint
 eslint: ## Runs the eslint checks
-	docker compose run --entrypoint= --rm --volume=$(CURDIR)/geoportal:/app geoportal \
-		eslint $(find {{cookiecutter.package}} -type f -name '*.js' -print 2> /dev/null)
-	docker compose run --entrypoint= --rm --volume=$(CURDIR)/geoportal:/app geoportal \
-		eslint $(find {{cookiecutter.package}} -type f -name '*.ts' -print 2> /dev/null)
+	docker compose run --workdir=/app --rm --volume=$(CURDIR)/geoportal:/app/geoportal tools \
+		eslint $(shell find geoportal/{{cookiecutter.package}}_geoportal -type f -name '*.js' -print 2> /dev/null)
+	docker compose run --workdir=/app --rm --volume=$(CURDIR)/geoportal:/app/geoportal tools \
+		eslint $(shell find geoportal/{{cookiecutter.package}}_geoportal -type f -name '*.ts' -print 2> /dev/null)
 
 .PHONY: qgis
 qgis: ## Run QGIS desktop
