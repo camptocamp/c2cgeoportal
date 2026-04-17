@@ -1,3 +1,7 @@
+##### 2.8.1.312
+
+- Update dependency Mako to v1.3.11 [SECURITY] (2.8) [c2cgeoportal#12837](https://github.com/camptocamp/c2cgeoportal/pull/12837)
+
 ##### 2.8.1.311
 
 - [Backport 2.8] Fix server l10n compilation [c2cgeoportal#12830](https://github.com/camptocamp/c2cgeoportal/pull/12830)
