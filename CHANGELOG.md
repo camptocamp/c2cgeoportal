@@ -1,3 +1,7 @@
+##### 2.7.1.264
+
+- Update dependency Mako to v1.3.11 [SECURITY] (2.7) [c2cgeoportal#12836](https://github.com/camptocamp/c2cgeoportal/pull/12836)
+
 ##### 2.7.1.263
 
 - Audit Snyk check/fix 2.7 [c2cgeoportal#12839](https://github.com/camptocamp/c2cgeoportal/pull/12839)
