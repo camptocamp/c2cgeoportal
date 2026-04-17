@@ -1,3 +1,8 @@
+##### 2.8.1.311
+
+- [Backport 2.8] Fix server l10n compilation [c2cgeoportal#12830](https://github.com/camptocamp/c2cgeoportal/pull/12830)
+- Update dependency Mako to v1.3.11 [SECURITY] (2.8) [ngeo#10101](https://github.com/camptocamp/ngeo/pull/10101)
+
 ##### 2.8.1.310
 
 - Audit Snyk check/fix 2.8 [c2cgeoportal#12826](https://github.com/camptocamp/c2cgeoportal/pull/12826)
