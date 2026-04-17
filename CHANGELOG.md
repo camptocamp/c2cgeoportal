@@ -1,3 +1,7 @@
+##### 2.7.1.263
+
+- Audit Snyk check/fix 2.7 [c2cgeoportal#12839](https://github.com/camptocamp/c2cgeoportal/pull/12839)
+
 ##### 2.7.1.262
 
 - Fix server l10n compilation [c2cgeoportal#12829](https://github.com/camptocamp/c2cgeoportal/pull/12829)
