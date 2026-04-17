@@ -1,3 +1,7 @@
+##### 2.9.0.448
+
+- Update dependency Mako to v1.3.11 [SECURITY] (2.9) [c2cgeoportal#12838](https://github.com/camptocamp/c2cgeoportal/pull/12838)
+
 ##### 2.9.0.447
 
 - Update dependency pytest to v9 [SECURITY] (2.9) - abandoned [c2cgeoportal#12822](https://github.com/camptocamp/c2cgeoportal/pull/12822)
