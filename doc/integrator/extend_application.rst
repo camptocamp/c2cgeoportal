@@ -260,7 +260,7 @@ Add the following lines at the end of ``Dockerfile``:
 
    ###############################################################################
 
-   FROM node:16-slim AS custom-build
+   FROM node:24-slim AS custom-build
 
    WORKDIR /app
    COPY package.json ./
