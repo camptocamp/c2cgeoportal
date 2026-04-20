@@ -90,8 +90,19 @@ c2cgeoportal = "c2cgeoportal_geoportal.lib.loader:Loader"
 
 [tool.poetry]
 packages = [{ include = "c2cgeoportal_geoportal" }]
-include = ["c2cgeoportal_geoportal/py.typed"]
-exclude = ["tests.*"]
+include = [
+    { path = "c2cgeoportal_geoportal/py.typed", format = ["sdist", "wheel"] },
+    { path = "c2cgeoportal_geoportal/locale/**/*.po", format = ["sdist", "wheel"] },
+    { path = "c2cgeoportal_geoportal/locale/**/*.mo", format = ["sdist", "wheel"] },
+    { path = "c2cgeoportal_geoportal/static/**/*", format = ["sdist", "wheel"] },
+    { path = "c2cgeoportal_geoportal/scaffolds/**/*", format = ["sdist", "wheel"] },
+    { path = "c2cgeoportal_geoportal/templates/**/*", format = ["sdist", "wheel"] },
+]
+exclude = [
+    "tests.*",
+    "**/.ruff_cache/**",
+    "**/.ruff_cache/**/*",
+]
 
 [tool.entry-points."pyramid.scaffold"]
 c2cgeoportal_create = "c2cgeoportal_geoportal.scaffolds:TemplateCreate"

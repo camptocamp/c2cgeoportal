@@ -38,7 +38,12 @@ broadcast = ["c2cwsgiutils"]
 
 [tool.poetry]
 packages = [{ include = "c2cgeoportal_commons" }]
-include = ["c2cgeoportal_commons/py.typed"]
+include = [
+    { path = "c2cgeoportal_commons/py.typed", format = ["sdist", "wheel"] },
+    { path = "c2cgeoportal_commons/alembic/**/*.mako", format = ["sdist", "wheel"] },
+    { path = "c2cgeoportal_commons/locale/**/*.po", format = ["sdist", "wheel"] },
+    { path = "c2cgeoportal_commons/locale/**/*.mo", format = ["sdist", "wheel"] },
+]
 
 [tool.poetry-dynamic-versioning]
 enable = true
