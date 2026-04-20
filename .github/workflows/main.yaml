@@ -255,6 +255,13 @@ jobs:
           && env.HAS_SECRETS == 'HAS_SECRETS'
 
       - run: git reset --hard
+      - name: Prepare i18n catalogs for PyPI packages
+        run: |
+          make --makefile=dependencies.mk dependencies
+          make --makefile=build.mk python-mo
+        if: >
+          env.HAS_SECRETS == 'HAS_SECRETS'
+          && steps.version.outputs.versions != ''
       - name: Publish
         run: >
           c2cciutils-publish
