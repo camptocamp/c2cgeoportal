@@ -1,3 +1,7 @@
+##### 2.8.1.313
+
+- Update dependency lxml to v6 [SECURITY] (2.8) [c2cgeoportal#12848](https://github.com/camptocamp/c2cgeoportal/pull/12848)
+
 ##### 2.8.1.312
 
 - Update dependency Mako to v1.3.11 [SECURITY] (2.8) [c2cgeoportal#12837](https://github.com/camptocamp/c2cgeoportal/pull/12837)
