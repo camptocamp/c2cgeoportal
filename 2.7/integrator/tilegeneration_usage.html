@@ -648,6 +648,13 @@ prefix and <code class="docutils literal notranslate"><span class="pre">__</span
 <p>On the URL <cite>&lt;base URL&gt;/admin/</cite> you can see the status of the generation, a tool to generate the tiles, and a link
 to a test page.</p>
 <p>Beware, the test page assumes we have configured only one grid.</p>
+<p>The test page stores its current state in the URL query string, so you can share or reload the same view:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">x</span></code>: center X coordinate</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">y</span></code>: center Y coordinate</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">z</span></code>: zoom level</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">layer</span></code>: selected WMTS layer identifier</p></li>
+</ul>
 </section>
 </section>
 
