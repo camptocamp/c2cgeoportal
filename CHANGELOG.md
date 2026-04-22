@@ -1,3 +1,8 @@
+##### 2.9.0.452
+
+- Fix eslint folders [c2cgeoportal#12833](https://github.com/camptocamp/c2cgeoportal/pull/12833)
+- Update dependency lxml to v6 [SECURITY] (2.9) [c2cgeoportal#12849](https://github.com/camptocamp/c2cgeoportal/pull/12849)
+
 ##### 2.9.0.451
 
 - Audit Dpkg 2.9 [c2cgeoportal#12845](https://github.com/camptocamp/c2cgeoportal/pull/12845)
