@@ -64,7 +64,13 @@ setup(
     url="https://github.com/camptocamp/c2cgeoportal/",
     keywords="web gis geoportail c2cgeoportal geocommune pyramid",
     packages=find_packages(exclude=["tests.*"]),
-    package_data={"c2cgeoportal_commons": ["py.typed"]},
+    package_data={
+        "c2cgeoportal_commons": [
+            "py.typed",
+            "locale/*/LC_MESSAGES/*.mo",
+            "locale/*/LC_MESSAGES/*.po",
+        ]
+    },
     include_package_data=True,
     zip_safe=False,
     install_requires=install_requires,
