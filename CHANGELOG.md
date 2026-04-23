@@ -1,3 +1,7 @@
+##### 2.8.1.314
+
+- Update dependency certifi to v2026.4.22 (2.8) [c2cgeoportal#12858](https://github.com/camptocamp/c2cgeoportal/pull/12858)
+
 ##### 2.8.1.313
 
 - Update dependency lxml to v6 [SECURITY] (2.8) [c2cgeoportal#12848](https://github.com/camptocamp/c2cgeoportal/pull/12848)
