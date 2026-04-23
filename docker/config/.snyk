@@ -6,4 +6,8 @@ ignore:
     - '*':
         reason: Plugin not compatible with new Poetry version
         created: 2026-04-15T07:02:44.653Z
+  SNYK-PYTHON-POETRY-16122096:
+    - '*':
+        reason: Plugin not compatible with new Poetry version
+        created: 2026-04-23T07:35:20.423Z
 patch: {}
