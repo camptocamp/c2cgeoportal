@@ -1,3 +1,8 @@
+##### 2.9.0.455
+
+- Update dependency Mako to v1.3.11 [SECURITY] (2.9) [ngeo#10102](https://github.com/camptocamp/ngeo/pull/10102)
+- Update dependency i18next-http-backend to v3 [SECURITY] (2.9) [ngeo#10105](https://github.com/camptocamp/ngeo/pull/10105)
+
 ##### 2.9.0.454
 
 - Update dependency certifi to v2026.4.22 (2.9) [c2cgeoportal#12859](https://github.com/camptocamp/c2cgeoportal/pull/12859)
