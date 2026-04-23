@@ -1,3 +1,7 @@
+##### 2.8.1.316
+
+- Audit Snyk check/fix 2.8 [c2cgeoportal#12844](https://github.com/camptocamp/c2cgeoportal/pull/12844)
+
 ##### 2.8.1.315
 
 - Update dependency i18next-http-backend to v3 [SECURITY] (2.8) [ngeo#10104](https://github.com/camptocamp/ngeo/pull/10104)
