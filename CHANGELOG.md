@@ -1,3 +1,7 @@
+##### 2.9.0.454
+
+- Update dependency certifi to v2026.4.22 (2.9) [c2cgeoportal#12859](https://github.com/camptocamp/c2cgeoportal/pull/12859)
+
 ##### 2.9.0.453
 
 - Prepare i18n catalogs for Python package publishing [c2cgeoportal#12843](https://github.com/camptocamp/c2cgeoportal/pull/12843)
