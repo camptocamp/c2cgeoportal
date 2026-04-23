@@ -1,3 +1,8 @@
+##### 2.9.0.457
+
+- Audit Dpkg 2.9 [c2cgeoportal#12861](https://github.com/camptocamp/c2cgeoportal/pull/12861)
+- Audit Snyk check/fix 2.9 [c2cgeoportal#12862](https://github.com/camptocamp/c2cgeoportal/pull/12862)
+
 ##### 2.9.0.456
 
 - Audit Snyk check/fix 2.9 [c2cgeoportal#12855](https://github.com/camptocamp/c2cgeoportal/pull/12855)
