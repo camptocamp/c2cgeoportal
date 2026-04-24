@@ -262,6 +262,12 @@ jobs:
           && env.HAS_SECRETS == 'HAS_SECRETS'
 
       - run: git reset --hard
+      - name: Prepare i18n catalogs for PyPI packages
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes gettext
+          make --makefile=dependencies.mk dependencies
+          make --makefile=build.mk build-translations
       - name: Publish
         run: tag-publish --docker-versions=${{ steps.version.outputs.versions }},${{ env.MAIN_BRANCH }}
         if: >

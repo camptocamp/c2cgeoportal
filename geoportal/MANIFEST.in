@@ -1,4 +1,3 @@
-include requirements.txt
 recursive-include c2cgeoportal_geoportal/locale *.po
 recursive-include c2cgeoportal_geoportal/locale *.mo
 recursive-include c2cgeoportal_geoportal/static *

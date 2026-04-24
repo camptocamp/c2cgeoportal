@@ -1,2 +1,3 @@
-include requirements.txt requirements-dev.txt README.md package.json
+include README.md package.json
 recursive-include c2cgeoportal_admin *.css *.jinja2 *.mo *.pt
+recursive-include c2cgeoportal_admin/locale *.po

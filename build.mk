@@ -1,4 +1,5 @@
-MO_FILES = $(addsuffix .mo,$(basename $(PYTHON_PO_FILES)))
+COMMONS_PO_FILES = $(wildcard commons/c2cgeoportal_commons/locale/*/LC_MESSAGES/c2cgeoportal_commons.po)
+MO_FILES = $(addsuffix .mo,$(basename $(PYTHON_PO_FILES) $(COMMONS_PO_FILES)))
 SRC_FILES = $(shell ls -1 geoportal/c2cgeoportal_geoportal/*.py 2> /dev/null) \
 	$(shell find geoportal/c2cgeoportal_geoportal/lib -name "*.py" -print 2> /dev/null) \
 	$(shell find geoportal/c2cgeoportal_geoportal/views -name "*.py" -print 2> /dev/null) \
@@ -40,6 +41,9 @@ build: \
 	geoportal/c2cgeoportal_geoportal/scaffolds/advance_update/{{cookiecutter.project}}/CONST_create_template/ \
 	$(APPS_FILES_ALT) \
 	$(MO_FILES)
+
+.PHONY: build-translations
+build-translations: $(MO_FILES)
 
 # Import ngeo templates
 

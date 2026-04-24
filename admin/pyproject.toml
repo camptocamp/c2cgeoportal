@@ -50,7 +50,14 @@ geomapfish-admin-config = "c2cgeoportal_admin.lib.lingva_extractor:GeomapfishCon
 
 [tool.poetry]
 packages = [{ include = "c2cgeoportal_admin" }]
-include = ["c2cgeoportal_admin/py.typed"]
+include = [
+    { path = "c2cgeoportal_admin/py.typed", format = ["sdist", "wheel"] },
+    { path = "c2cgeoportal_admin/**/*.css", format = ["sdist", "wheel"] },
+    { path = "c2cgeoportal_admin/**/*.jinja2", format = ["sdist", "wheel"] },
+    { path = "c2cgeoportal_admin/**/*.pt", format = ["sdist", "wheel"] },
+    { path = "c2cgeoportal_admin/locale/**/*.po", format = ["sdist", "wheel"] },
+    { path = "c2cgeoportal_admin/locale/**/*.mo", format = ["sdist", "wheel"] },
+]
 
 [tool.poetry-dynamic-versioning]
 enable = true
