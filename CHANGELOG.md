@@ -1,3 +1,7 @@
+##### 2.9.0.460
+
+- Update dependency cryptography to v47 (2.9) [c2cgeoportal#12866](https://github.com/camptocamp/c2cgeoportal/pull/12866)
+
 ##### 2.9.0.459
 
 - Update dependency pip to v26.1 [SECURITY] (2.9) [c2cgeoportal#12871](https://github.com/camptocamp/c2cgeoportal/pull/12871)
