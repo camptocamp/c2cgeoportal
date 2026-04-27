@@ -293,7 +293,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libkrb5support0: 1.19.2-2ubuntu0.7
   ubuntu_22_04/liblapack3: 3.10.0-2ubuntu1
   ubuntu_22_04/liblaszip8: 3.4.3-2
-  ubuntu_22_04/liblcms2-2: 2.12~rc1-2build2
+  ubuntu_22_04/liblcms2-2: 2.12~rc1-2ubuntu0.1
   ubuntu_22_04/libldap-2.5-0: 2.5.19+dfsg-0ubuntu0.22.04.1
   ubuntu_22_04/libllvm15: 1:15.0.7-0ubuntu0.22.04.3
   ubuntu_22_04/liblsan0: 12.3.0-1ubuntu1~22.04.3
@@ -740,7 +740,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libkrb5support0: 1.19.2-2ubuntu0.7
   ubuntu_22_04/liblapack3: 3.10.0-2ubuntu1
   ubuntu_22_04/liblaszip8: 3.4.3-2
-  ubuntu_22_04/liblcms2-2: 2.12~rc1-2build2
+  ubuntu_22_04/liblcms2-2: 2.12~rc1-2ubuntu0.1
   ubuntu_22_04/libldap-2.5-0: 2.5.19+dfsg-0ubuntu0.22.04.1
   ubuntu_22_04/libllvm15: 1:15.0.7-0ubuntu0.22.04.3
   ubuntu_22_04/liblsan0: 12.3.0-1ubuntu1~22.04.3
@@ -1170,7 +1170,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40:
   ubuntu_24_04/libkrb5-3: 1.20.1-6ubuntu2.6
   ubuntu_24_04/libkrb5support0: 1.20.1-6ubuntu2.6
   ubuntu_24_04/liblapack3: 3.12.0-3build1.1
-  ubuntu_24_04/liblcms2-2: 2.14-2build1
+  ubuntu_24_04/liblcms2-2: 2.14-2ubuntu0.1
   ubuntu_24_04/libldap2: 2.6.7+dfsg-1~exp1ubuntu8.2
   ubuntu_24_04/liblerc4: 4.0.0+ds-4ubuntu2
   ubuntu_24_04/libllvm20: 1:20.1.2-0ubuntu1~24.04.2
@@ -1576,7 +1576,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40-gdal3.10:
   ubuntu_24_04/libkrb5-3: 1.20.1-6ubuntu2.6
   ubuntu_24_04/libkrb5support0: 1.20.1-6ubuntu2.6
   ubuntu_24_04/liblapack3: 3.12.0-3build1.1
-  ubuntu_24_04/liblcms2-2: 2.14-2build1
+  ubuntu_24_04/liblcms2-2: 2.14-2ubuntu0.1
   ubuntu_24_04/libldap2: 2.6.7+dfsg-1~exp1ubuntu8.2
   ubuntu_24_04/liblerc4: 4.0.0+ds-4ubuntu2
   ubuntu_24_04/libllvm20: 1:20.1.2-0ubuntu1~24.04.2
@@ -2790,7 +2790,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/libkrb5-3: 1.20.1-6ubuntu2.6
   ubuntu_24_04/libkrb5support0: 1.20.1-6ubuntu2.6
   ubuntu_24_04/liblapack3: 3.12.0-3build1.1
-  ubuntu_24_04/liblcms2-2: 2.14-2build1
+  ubuntu_24_04/liblcms2-2: 2.14-2ubuntu0.1
   ubuntu_24_04/libldap2: 2.6.7+dfsg-1~exp1ubuntu8.2
   ubuntu_24_04/liblerc4: 4.0.0+ds-4ubuntu2
   ubuntu_24_04/libllvm20: 1:20.1.2-0ubuntu1~24.04.2
@@ -3640,7 +3640,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/libkrb5support0: 1.20.1-6ubuntu2.6
   ubuntu_24_04/libksba8: 1.6.6-1build1
   ubuntu_24_04/liblapack3: 3.12.0-3build1.1
-  ubuntu_24_04/liblcms2-2: 2.14-2build1
+  ubuntu_24_04/liblcms2-2: 2.14-2ubuntu0.1
   ubuntu_24_04/libldap2: 2.6.7+dfsg-1~exp1ubuntu8.2
   ubuntu_24_04/liblerc4: 4.0.0+ds-4ubuntu2
   ubuntu_24_04/liblilv-0-0: 0.24.22-1build1
@@ -4383,7 +4383,7 @@ camptocamp/geomapfish:latest:
   ubuntu_24_04/libkrb5support0: 1.20.1-6ubuntu2.6
   ubuntu_24_04/libksba8: 1.6.6-1build1
   ubuntu_24_04/liblapack3: 3.12.0-3build1.1
-  ubuntu_24_04/liblcms2-2: 2.14-2build1
+  ubuntu_24_04/liblcms2-2: 2.14-2ubuntu0.1
   ubuntu_24_04/libldap2: 2.6.7+dfsg-1~exp1ubuntu8.2
   ubuntu_24_04/liblerc4: 4.0.0+ds-4ubuntu2
   ubuntu_24_04/liblilv-0-0: 0.24.22-1build1
@@ -5085,7 +5085,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_24_04/libkrb5support0: 1.20.1-6ubuntu2.6
   ubuntu_24_04/libksba8: 1.6.6-1build1
   ubuntu_24_04/liblapack3: 3.12.0-3build1.1
-  ubuntu_24_04/liblcms2-2: 2.14-2build1
+  ubuntu_24_04/liblcms2-2: 2.14-2ubuntu0.1
   ubuntu_24_04/libldap2: 2.6.7+dfsg-1~exp1ubuntu8.2
   ubuntu_24_04/liblerc4: 4.0.0+ds-4ubuntu2
   ubuntu_24_04/liblilv-0-0: 0.24.22-1build1
