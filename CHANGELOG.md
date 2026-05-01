@@ -1,3 +1,7 @@
+##### 2.8.1.321
+
+- Update dependency pre-commit to v4.6.0 (2.8) [c2cgeoportal#12883](https://github.com/camptocamp/c2cgeoportal/pull/12883)
+
 ##### 2.8.1.320
 
 - Update all patch/minor versions (2.8) [c2cgeoportal#12882](https://github.com/camptocamp/c2cgeoportal/pull/12882)
