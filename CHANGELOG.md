@@ -1,3 +1,7 @@
+##### 2.8.1.320
+
+- Update all patch/minor versions (2.8) [c2cgeoportal#12882](https://github.com/camptocamp/c2cgeoportal/pull/12882)
+
 ##### 2.8.1.319
 
 - Update dependency pip to v26.1 [SECURITY] (2.8) [c2cgeoportal#12870](https://github.com/camptocamp/c2cgeoportal/pull/12870)
