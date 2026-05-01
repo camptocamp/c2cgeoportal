@@ -97,7 +97,7 @@ mappyfile = "1.1.1"
 mapbox-vector-tile = "2.2.0"
 responses = "0.26.0"
 waitress = "3.0.2"
-boto3 = "1.42.95"
+boto3 = "1.42.96"
 # Used on upgrade
 pre-commit = "4.6.0"
 prek = "0.3.10"
