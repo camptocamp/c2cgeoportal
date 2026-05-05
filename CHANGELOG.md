@@ -1,3 +1,8 @@
+##### 2.8.1.322
+
+- Update dependency pytz to v2026.2 (2.8) [c2cgeoportal#12890](https://github.com/camptocamp/c2cgeoportal/pull/12890)
+- Update dependency cryptography to v48 (2.8) [c2cgeoportal#12891](https://github.com/camptocamp/c2cgeoportal/pull/12891)
+
 ##### 2.8.1.321
 
 - Update dependency pre-commit to v4.6.0 (2.8) [c2cgeoportal#12883](https://github.com/camptocamp/c2cgeoportal/pull/12883)
