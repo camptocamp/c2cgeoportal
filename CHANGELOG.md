@@ -1,3 +1,7 @@
+##### 2.8.1.324
+
+- Update dependency gitpython to v3.1.48 [SECURITY] (2.8) [c2cgeoportal#12899](https://github.com/camptocamp/c2cgeoportal/pull/12899)
+
 ##### 2.8.1.323
 
 - Audit Snyk check/fix 2.8 [c2cgeoportal#12896](https://github.com/camptocamp/c2cgeoportal/pull/12896)
