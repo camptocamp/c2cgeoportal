@@ -1,3 +1,7 @@
+##### 2.7.1.273
+
+- Update dependency gitpython to v3.1.48 [SECURITY] (2.7) [c2cgeoportal#12898](https://github.com/camptocamp/c2cgeoportal/pull/12898)
+
 ##### 2.7.1.272
 
 - Update dependency gitpython to v3.1.47 [SECURITY] (2.7) [c2cgeoportal#12895](https://github.com/camptocamp/c2cgeoportal/pull/12895)
