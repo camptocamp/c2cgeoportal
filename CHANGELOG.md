@@ -1,3 +1,8 @@
+##### 2.9.0.464
+
+- Update dependency pytz to v2026.2 (2.9) [c2cgeoportal#12892](https://github.com/camptocamp/c2cgeoportal/pull/12892)
+- Audit Dpkg 2.9 [c2cgeoportal#12897](https://github.com/camptocamp/c2cgeoportal/pull/12897)
+
 ##### 2.9.0.463
 
 - Update all patch/minor versions (2.9) [c2cgeoportal#12884](https://github.com/camptocamp/c2cgeoportal/pull/12884)
