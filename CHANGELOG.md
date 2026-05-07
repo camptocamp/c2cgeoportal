@@ -1,3 +1,8 @@
+##### 2.7.1.274
+
+- Update dependency gitpython to v3.1.49 [SECURITY] (2.7) [c2cgeoportal#12902](https://github.com/camptocamp/c2cgeoportal/pull/12902)
+- Update dependency Mako to v1.3.12 [SECURITY] (2.7) [c2cgeoportal#12903](https://github.com/camptocamp/c2cgeoportal/pull/12903)
+
 ##### 2.7.1.273
 
 - Update dependency gitpython to v3.1.48 [SECURITY] (2.7) [c2cgeoportal#12898](https://github.com/camptocamp/c2cgeoportal/pull/12898)
