@@ -1,3 +1,7 @@
+##### 2.9.0.468
+
+- Update dependency gitpython to v3.1.49 [SECURITY] (2.9) [c2cgeoportal#12906](https://github.com/camptocamp/c2cgeoportal/pull/12906)
+
 ##### 2.9.0.467
 
 - Update all patch/minor versions (2.9) [ngeo#10112](https://github.com/camptocamp/ngeo/pull/10112)
