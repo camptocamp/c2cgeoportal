@@ -1,3 +1,7 @@
+##### 2.9.0.469
+
+- Update dependency cryptography to v48 (2.9) [c2cgeoportal#12893](https://github.com/camptocamp/c2cgeoportal/pull/12893)
+
 ##### 2.9.0.468
 
 - Update dependency gitpython to v3.1.49 [SECURITY] (2.9) [c2cgeoportal#12906](https://github.com/camptocamp/c2cgeoportal/pull/12906)
