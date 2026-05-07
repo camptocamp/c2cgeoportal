@@ -1,3 +1,10 @@
+##### 2.9.0.467
+
+- Update all patch/minor versions (2.9) [ngeo#10112](https://github.com/camptocamp/ngeo/pull/10112)
+- Update webpack (2.9) [ngeo#10113](https://github.com/camptocamp/ngeo/pull/10113)
+- Update dependency pre-commit to v4.6.0 (2.9) [ngeo#10114](https://github.com/camptocamp/ngeo/pull/10114)
+- Update dependency Mako to v1.3.12 [SECURITY] (2.9) [ngeo#10124](https://github.com/camptocamp/ngeo/pull/10124)
+
 ##### 2.9.0.466
 
 - Update dependency pre-commit to v4.6.0 (2.9) [c2cgeoportal#12885](https://github.com/camptocamp/c2cgeoportal/pull/12885)
