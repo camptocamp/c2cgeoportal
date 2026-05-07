@@ -1,3 +1,7 @@
+##### 2.8.1.327
+
+- Update dependency Mako to v1.3.12 [SECURITY] (2.8) [c2cgeoportal#12905](https://github.com/camptocamp/c2cgeoportal/pull/12905)
+
 ##### 2.8.1.326
 
 - Update all patch/minor versions (2.8) [ngeo#10111](https://github.com/camptocamp/ngeo/pull/10111)
