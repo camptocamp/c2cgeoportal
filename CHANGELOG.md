@@ -1,3 +1,8 @@
+##### 2.9.0.466
+
+- Update dependency pre-commit to v4.6.0 (2.9) [c2cgeoportal#12885](https://github.com/camptocamp/c2cgeoportal/pull/12885)
+- Update dependency Mako to v1.3.12 [SECURITY] (2.9) [c2cgeoportal#12907](https://github.com/camptocamp/c2cgeoportal/pull/12907)
+
 ##### 2.9.0.465
 
 - Update dependency gitpython to v3.1.48 [SECURITY] (2.9) [c2cgeoportal#12900](https://github.com/camptocamp/c2cgeoportal/pull/12900)
