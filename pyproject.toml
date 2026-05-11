@@ -60,7 +60,7 @@ pygments = "2.20.0"
 cryptography = { version = "48.0.0", optional = true }
 gitpython = "3.1.50"
 pillow = "10.3.0"
-urllib3 = { version = "2.6.3", optional = true }
+urllib3 = { version = "2.7.0", optional = true }
 bandit = { version = "1.7.10", optional = true }
 idna = { version = "3.7", optional = true }
 gunicorn = "23.0.0"
