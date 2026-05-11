@@ -1,3 +1,7 @@
+##### 2.9.0.473
+
+- Update dependency urllib3 to v2.7.0 [SECURITY] (2.9) [c2cgeoportal#12918](https://github.com/camptocamp/c2cgeoportal/pull/12918)
+
 ##### 2.9.0.472
 
 - Update dependency gitpython to v3.1.50 [SECURITY] (2.9) [c2cgeoportal#12915](https://github.com/camptocamp/c2cgeoportal/pull/12915)
