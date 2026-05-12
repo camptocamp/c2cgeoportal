@@ -1,3 +1,7 @@
+##### 2.8.1.329
+
+- Update dependency urllib3 to v2.7.0 [SECURITY] (2.8) [ngeo#10126](https://github.com/camptocamp/ngeo/pull/10126)
+
 ##### 2.8.1.328
 
 - Update dependency gitpython to v3.1.50 [SECURITY] (2.8) [c2cgeoportal#12914](https://github.com/camptocamp/c2cgeoportal/pull/12914)
