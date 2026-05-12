@@ -276,6 +276,24 @@ generation it we set the property <code class="docutils literal notranslate"><sp
 <li><p><code class="docutils literal notranslate"><span class="pre">in</span></code>, <code class="docutils literal notranslate"><span class="pre">out</span></code> the input and output files.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">x</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code>, <code class="docutils literal notranslate"><span class="pre">z</span></code> the tile coordinates.</p></li>
 </ul>
+<p>To optimize output images, configure both:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">post_process</span></code> on each layer to run external tools (for example <code class="docutils literal notranslate"><span class="pre">optipng</span></code> or <code class="docutils literal notranslate"><span class="pre">jpegoptim</span></code>), and</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">meta_save_options</span></code> on each layer to pass Pillow save options when splitting meta-tiles.</p></li>
+</ul>
+<p>Example:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">layers</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">plan</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">post_process</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">optipng</span>
+<span class="w">    </span><span class="nt">meta_save_options</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">optimize</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">ortho</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">post_process</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">jpegoptim</span>
+<span class="w">    </span><span class="nt">meta_save_options</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">optimize</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="nt">quality</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">90</span>
+</pre></div>
+</div>
 </section>
 <section id="logging">
 <h3>Logging<a class="headerlink" href="#logging" title="Permalink to this headline">¶</a></h3>
@@ -343,8 +361,11 @@ default it’s on Redis.</p>
 <section id="postgresql">
 <h2>PostgreSQL<a class="headerlink" href="#postgresql" title="Permalink to this headline">¶</a></h2>
 <p>Is it possible to store the queue in a PostgreSQL database, for that you should at least set the
-<code class="docutils literal notranslate"><span class="pre">queue_store</span></code> to <code class="docutils literal notranslate"><span class="pre">postgresql</span></code> in your (main) configuration file, and set the SqlAlchemy URL in the
-configuration file or in the <code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN_SQLALCHEMY_URL</span></code> environment variable.</p>
+<code class="docutils literal notranslate"><span class="pre">queue_store</span></code> to <code class="docutils literal notranslate"><span class="pre">postgresql</span></code> in your (main) configuration file, and set the SQLAlchemy URL in the
+configuration file or in the <code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__POSTGRESQL__SQLALCHEMY_URL</span></code> environment variable.</p>
+<p>Queue inserts are batched to improve performance when generating very large pyramids. The default
+batch size is <code class="docutils literal notranslate"><span class="pre">10000</span></code> rows and can be changed with
+<code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__POSTGRESQL__QUEUE_INSERT_BATCH_SIZE</span></code>.</p>
 <p>See the [configuration reference](<a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/CONFIG.md#definitions/postgresql">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/CONFIG.md#definitions/postgresql</a>) for the other configuration possibilities.</p>
 <p>With that the admin page is enhance with a job concept with enhanced status and they can be
 canceled, and restarted.</p>
@@ -640,6 +661,18 @@ prefix and <code class="docutils literal notranslate"><span class="pre">__</span
 <li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__TESTS</span></code>: Enable test mode if set to <code class="docutils literal notranslate"><span class="pre">true</span></code>
 (default: <code class="docutils literal notranslate"><span class="pre">false</span></code>)</p></li>
 </ul>
+<p>PostgreSQL:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__POSTGRESQL__SCHEMA_NAME</span></code>: PostgreSQL schema used by TileCloud Chain
+(default: <code class="docutils literal notranslate"><span class="pre">tilecloud_chain</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__POSTGRESQL__SQLALCHEMY_URL</span></code>: SQLAlchemy connection URL for the PostgreSQL queue</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__POSTGRESQL__QUEUE_INSERT_BATCH_SIZE</span></code>: Number of queue rows inserted in one batch
+(default: <code class="docutils literal notranslate"><span class="pre">10000</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__POSTGRESQL__OBJGRAPH_POSTGRESQL</span></code>: Enable objgraph collection in PostgreSQL queue code
+(default: <code class="docutils literal notranslate"><span class="pre">false</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__POSTGRESQL__OBJGRAPH_LIMIT</span></code>: Number of entries to include in PostgreSQL objgraph reports
+(default: <code class="docutils literal notranslate"><span class="pre">10</span></code>)</p></li>
+</ul>
 <p>See also: <a href="#id1"><span class="problematic" id="id2">``</span></a>settings.py` &lt;<a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/settings.py">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/settings.py</a>&gt;`_.</p>
 </section>
 </section>
@@ -655,6 +688,8 @@ to a test page.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">z</span></code>: zoom level</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">layer</span></code>: selected WMTS layer identifier</p></li>
 </ul>
+<p>In the test page, clicking on the map sends a WMTS GetFeatureInfo request on the active layer (if queryable)
+and displays the response in a “Feature info” panel.</p>
 </section>
 </section>
 
