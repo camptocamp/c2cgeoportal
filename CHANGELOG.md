@@ -1,3 +1,7 @@
+##### 2.7.1.277
+
+- Update dependency ujson to v5.12.1 [SECURITY] (2.7) [c2cgeoportal#12921](https://github.com/camptocamp/c2cgeoportal/pull/12921)
+
 ##### 2.7.1.276
 
 - Update dependency gitpython to v3.1.50 [SECURITY] (2.7) [c2cgeoportal#12919](https://github.com/camptocamp/c2cgeoportal/pull/12919)
