@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2025, Camptocamp SA
+# Copyright (c) 2018-2026, Camptocamp SA
 # All rights reserved.
 
 # This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -78,7 +78,7 @@ def test_data(clean_dbsession):
     ogc_server1 = OGCServer(
         name="qgisserver1",
         type_=OGCSERVER_TYPE_QGISSERVER,
-        url="http://qgis?MAP=qgisserver1",
+        url="http://qgis/test/toto?MAP=qgisserver1",
         image_type="image/png",
         auth=OGCSERVER_AUTH_STANDARD,
     )
@@ -588,6 +588,23 @@ class TestGeoMapFishAccessControlMultipleOGCServer:
     "test_data",
 )
 class TestGeoMapFishAccessControlAutoMultiOGCServer:
+    def test_init(self, server_iface, test_data) -> None:
+        plugin = GeoMapFishAccessControl(server_iface)
+        assert plugin.single is False
+
+        assert plugin.serverInterface() is server_iface
+
+        set_request_parameters(server_iface, {"MAP": "qgisserver1"})
+        assert plugin.serverInterface().requestHandler().parameterMap()["MAP"] == "qgisserver1"
+        assert plugin.get_ogcserver_accesscontrol().ogcserver.name == "qgisserver1"
+
+
+@pytest.mark.usefixtures(
+    "qgs_access_control_filter",
+    "auto_multi_ogc_server_partial_path_env",
+    "test_data",
+)
+class TestGeoMapFishAccessControlAutoMultiOGCServerPartialPath:
     def test_init(self, server_iface, test_data) -> None:
         plugin = GeoMapFishAccessControl(server_iface)
         assert plugin.single is False

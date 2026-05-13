@@ -123,6 +123,18 @@ def auto_multi_ogc_server_env():
 
 
 @pytest.fixture(scope="class")
+def auto_multi_ogc_server_partial_path_env():
+    with patch.dict(
+        "os.environ",
+        {
+            "GEOMAPFISH_ACCESSCONTROL_BASE_URL": "http://qgis/test",
+            "QGIS_PROJECT_FILE": "",
+        },
+    ):
+        yield
+
+
+@pytest.fixture(scope="class")
 def auto_single_ogc_server_env():
     with patch.dict(
         "os.environ",
