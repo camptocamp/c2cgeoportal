@@ -103,6 +103,8 @@ needed to generate the capabilities. We can specify:</p>
 <p>To start the common attributes are:</p>
 <p><code class="docutils literal notranslate"><span class="pre">min_resolution_seed</span></code> the minimum resolution that is seeded, other resolutions are served by MapCache.</p>
 <p><code class="docutils literal notranslate"><span class="pre">bbox</span></code> used to limit the tiles generation.</p>
+<p>When generating WMTS capabilities, if a layer <code class="docutils literal notranslate"><span class="pre">bbox</span></code> is defined, it is also used to publish
+<code class="docutils literal notranslate"><span class="pre">TileMatrixSetLimits</span></code> in each <code class="docutils literal notranslate"><span class="pre">TileMatrixSetLink</span></code> for that layer.</p>
 <p><code class="docutils literal notranslate"><span class="pre">px_buffer</span></code> a buffer in px around the object area (geoms or extent).</p>
 <section id="wmts-layout">
 <h4>WMTS layout<a class="headerlink" href="#wmts-layout" title="Permalink to this headline">¶</a></h4>
@@ -524,8 +526,14 @@ or <code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN_
 </pre></div></div><p>Generate a specific some zoom levels:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--zoom<span class="w"> </span><span class="m">2</span>,4,7</span>
 </pre></div></div><p>Generate tiles from an (error) tiles file:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--layer<span class="w"> </span>&lt;a_layer&gt;<span class="w"> </span>--tiles<span class="w"> </span>&lt;z/x/y&gt;</span>
-</pre></div></div><p>Generate tiles on a bbox:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--layer<span class="w"> </span>&lt;a_layer&gt;<span class="w"> </span>--tiles<span class="w"> </span>&lt;path/to/error.list&gt;</span>
+</pre></div></div><p>Generate a specific tile:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--layer<span class="w"> </span>&lt;a_layer&gt;<span class="w"> </span>--tile<span class="w"> </span>&lt;z/x/y&gt;</span>
+</pre></div></div><p>Generate a specific metatile:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--layer<span class="w"> </span>&lt;a_layer&gt;<span class="w"> </span>--tile<span class="w"> </span>&lt;z/x/y:+n/+n&gt;</span>
+</pre></div></div><p>In the admin page command form, this option is available as well if <code class="docutils literal notranslate"><span class="pre">--tile</span></code> is in
+<code class="docutils literal notranslate"><span class="pre">server.allowed_arguments</span></code> (it is included by default).</p>
+<p>Generate tiles on a bbox:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--bbox<span class="w"> </span>&lt;MINX&gt;<span class="w"> </span>&lt;MINY&gt;<span class="w"> </span>&lt;MAXX&gt;<span class="w"> </span>&lt;MAXY&gt;</span>
 </pre></div></div><p>Generate a tiles near a tile coordinate (useful for test):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--near<span class="w"> </span>&lt;X&gt;<span class="w"> </span>&lt;Y&gt;</span>
