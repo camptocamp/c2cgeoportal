@@ -213,7 +213,9 @@ Access Restriction on QGIS OGC server
 
 From version 2.7 the config is just made with the ``GEOMAPFISH_ACCESSCONTROL_BASE_URL`` environment
 variable which contains the base URL of the OGC servers, by default it's set to
-``QGISSERVER_URL``. And the plugin will search for the OGC servers that match with this base URL.
+``QGISSERVER_URL``. And the plugin will search for the OGC servers that match with this base URL
+(same scheme and host, and with a path that matches exactly or by prefix, e.g. ``/mapserv_proxy``
+also matches ``/mapserv_proxy/qgis``).
 It also requires that the OGC servers are configured with an URL like that
 ``config://qgisserver?map=<project_file>``.
 

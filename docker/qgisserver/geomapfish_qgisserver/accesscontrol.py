@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2025, Camptocamp SA
+# Copyright (c) 2018-2026, Camptocamp SA
 # All rights reserved.
 
 # This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -44,6 +44,17 @@ if TYPE_CHECKING:
     )
 
 _LOG = logging.getLogger(__name__)
+
+
+def _path_prefix_match(base_path: str, ogc_server_path: str) -> bool:
+    base = base_path.rstrip("/")
+    server = ogc_server_path.rstrip("/")
+
+    if base == "":
+        return True
+    if server == base:
+        return True
+    return server.startswith(f"{base}/")
 
 
 def create_session_factory(
@@ -163,7 +174,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):  # type: ignore[misc]
                         if (
                             base_url.scheme == url.scheme
                             and base_url.netloc == url.netloc
-                            and base_url.path == url.path
+                            and _path_prefix_match(base_url.path, url.path)
                         ):
                             query = url.query_lower
                             if "map" not in query:
