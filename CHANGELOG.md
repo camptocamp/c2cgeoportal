@@ -1,3 +1,7 @@
+##### 2.9.0.477
+
+- Update dependency webpack-dev-server to v5.2.4 [SECURITY] (2.9) [ngeo#10129](https://github.com/camptocamp/ngeo/pull/10129)
+
 ##### 2.9.0.476
 
 - Update dependency webpack-dev-server to v5.2.4 [SECURITY] (2.9) [c2cgeoportal#12929](https://github.com/camptocamp/c2cgeoportal/pull/12929)
