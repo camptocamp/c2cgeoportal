@@ -1,3 +1,7 @@
+##### 2.8.1.331
+
+- Update dependency webpack-dev-server to v5.2.4 [SECURITY] (2.8) [ngeo#10128](https://github.com/camptocamp/ngeo/pull/10128)
+
 ##### 2.8.1.330
 
 - Audit Snyk check/fix 2.8 [c2cgeoportal#12925](https://github.com/camptocamp/c2cgeoportal/pull/12925)
