@@ -1,3 +1,7 @@
+##### 2.9.0.476
+
+- Update dependency webpack-dev-server to v5.2.4 [SECURITY] (2.9) [c2cgeoportal#12929](https://github.com/camptocamp/c2cgeoportal/pull/12929)
+
 ##### 2.9.0.475
 
 - Update dependency ujson to v5.12.1 [SECURITY] (2.9) [c2cgeoportal#12922](https://github.com/camptocamp/c2cgeoportal/pull/12922)
