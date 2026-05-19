@@ -62,7 +62,7 @@ gitpython = "3.1.50"
 pillow = "10.3.0"
 urllib3 = { version = "2.6.3", optional = true }
 bandit = { version = "1.7.10", optional = true }
-idna = { version = "3.7", optional = true }
+idna = { version = "3.15", optional = true }
 gunicorn = "23.0.0"
 certifi = { version = "2026.4.22", optional = true }
 sentry-sdk = { version = "2.8.0", optional = true }
