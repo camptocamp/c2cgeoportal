@@ -1,3 +1,7 @@
+##### 2.8.1.332
+
+- Update dependency idna to v3.15 [SECURITY] (2.8) [c2cgeoportal#12932](https://github.com/camptocamp/c2cgeoportal/pull/12932)
+
 ##### 2.8.1.331
 
 - Update dependency webpack-dev-server to v5.2.4 [SECURITY] (2.8) [ngeo#10128](https://github.com/camptocamp/ngeo/pull/10128)
