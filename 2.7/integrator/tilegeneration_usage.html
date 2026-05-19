@@ -155,7 +155,7 @@ the borders. The <code class="docutils literal notranslate"><span class="pre">me
 </pre></div>
 </div>
 <p>To easily generate this configuration we can use the following command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">generate</span><span class="o">-</span><span class="n">tiles</span> <span class="o">--</span><span class="n">get</span><span class="o">-</span><span class="nb">hash</span> <span class="o">&lt;</span><span class="n">z</span><span class="o">/</span><span class="n">x</span><span class="o">/</span><span class="n">y</span><span class="o">&gt;</span> <span class="o">-</span><span class="n">l</span> <span class="o">&lt;</span><span class="n">layer_name</span><span class="o">&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">generate</span><span class="o">-</span><span class="n">tiles</span> <span class="o">--</span><span class="n">get</span><span class="o">-</span><span class="nb">hash</span><span class="o">=&lt;</span><span class="n">z</span><span class="o">/</span><span class="n">x</span><span class="o">/</span><span class="n">y</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">layer</span><span class="o">=&lt;</span><span class="n">layer_name</span><span class="o">&gt;</span>
 </pre></div>
 </div>
 <p>Where <code class="docutils literal notranslate"><span class="pre">&lt;z/x/y&gt;</span></code> should refer to an empty tile/metatile. Generally it’s a good idea to use z as the maximum
@@ -320,7 +320,7 @@ generation it we set the property <code class="docutils literal notranslate"><sp
 </pre></div>
 </div>
 <p>The tiles that’s in error will be append to the file, ant the tiles can be regenerated with
-<code class="docutils literal notranslate"><span class="pre">generate-tiles</span> <span class="pre">--tiles</span> <span class="pre">&lt;path&gt;</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">generate-tiles</span> <span class="pre">--tiles=&lt;path&gt;</span></code>.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">&lt;path&gt;</span></code> can be <code class="docutils literal notranslate"><span class="pre">/tmp/error_{layer}_{datetime:%Y-%m-%d_%H:%M:%S}</span></code> to have one file per layer and per
 run.</p>
 <p>The tiles file looks like:</p>
@@ -366,7 +366,7 @@ default it’s on Redis.</p>
 <code class="docutils literal notranslate"><span class="pre">queue_store</span></code> to <code class="docutils literal notranslate"><span class="pre">postgresql</span></code> in your (main) configuration file, and set the SQLAlchemy URL in the
 configuration file or in the <code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__POSTGRESQL__SQLALCHEMY_URL</span></code> environment variable.</p>
 <p>Queue inserts are batched to improve performance when generating very large pyramids. The default
-batch size is <code class="docutils literal notranslate"><span class="pre">10000</span></code> rows and can be changed with
+batch size is <code class="docutils literal notranslate"><span class="pre">100</span></code> rows and can be changed with
 <code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__POSTGRESQL__QUEUE_INSERT_BATCH_SIZE</span></code>.</p>
 <p>See the [configuration reference](<a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/CONFIG.md#definitions/postgresql">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/CONFIG.md#definitions/postgresql</a>) for the other configuration possibilities.</p>
 <p>With that the admin page is enhance with a job concept with enhanced status and they can be
@@ -416,12 +416,12 @@ span.prompt1:before {
 </div>
 <p>The queue should be used only by one layer.</p>
 <p>To use the SQS queue we should first fill the queue:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--role<span class="w"> </span>master<span class="w"> </span>--layer<span class="w"> </span>&lt;a_layer&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--role<span class="o">=</span>master<span class="w"> </span>--layer<span class="o">=</span>&lt;a_layer&gt;</span>
 </pre></div></div><p>And then generate the tiles present in the SQS queue:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--role<span class="w"> </span>slave<span class="w"> </span>--layer<span class="w"> </span>&lt;a_layer&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--role<span class="o">=</span>slave<span class="w"> </span>--layer<span class="o">=</span>&lt;a_layer&gt;</span>
 </pre></div></div><p>For the slave to keep listening when the queue is empty and be able to support more than one layer, you must
 enable the daemon mode and must not specify the layer:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--role<span class="w"> </span>slave<span class="w"> </span>--daemon</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--role<span class="o">=</span>slave<span class="w"> </span>--daemon</span>
 </pre></div></div></section>
 <section id="configure-sns">
 <h3>Configure SNS<a class="headerlink" href="#configure-sns" title="Permalink to this headline">¶</a></h3>
@@ -518,19 +518,19 @@ or <code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN_
 <p>Generate all the tiles:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles</span>
 </pre></div></div><p>Generate a specific layer:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--layer<span class="w"> </span>&lt;a_layer&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--layer<span class="o">=</span>&lt;a_layer&gt;</span>
 </pre></div></div><p>Generate a specific zoom:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--zoom<span class="w"> </span><span class="m">5</span></span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--zoom<span class="o">=</span><span class="m">5</span></span>
 </pre></div></div><p>Generate a specific zoom range:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--zoom<span class="w"> </span><span class="m">2</span>-8</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--zoom<span class="o">=</span><span class="m">2</span>-8</span>
 </pre></div></div><p>Generate a specific some zoom levels:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--zoom<span class="w"> </span><span class="m">2</span>,4,7</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--zoom<span class="o">=</span><span class="m">2</span>,4,7</span>
 </pre></div></div><p>Generate tiles from an (error) tiles file:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--layer<span class="w"> </span>&lt;a_layer&gt;<span class="w"> </span>--tiles<span class="w"> </span>&lt;path/to/error.list&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--layer<span class="o">=</span>&lt;a_layer&gt;<span class="w"> </span>--tiles<span class="o">=</span>&lt;path/to/error.list&gt;</span>
 </pre></div></div><p>Generate a specific tile:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--layer<span class="w"> </span>&lt;a_layer&gt;<span class="w"> </span>--tile<span class="w"> </span>&lt;z/x/y&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--layer<span class="o">=</span>&lt;a_layer&gt;<span class="w"> </span>--tile<span class="o">=</span>&lt;z/x/y&gt;</span>
 </pre></div></div><p>Generate a specific metatile:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--layer<span class="w"> </span>&lt;a_layer&gt;<span class="w"> </span>--tile<span class="w"> </span>&lt;z/x/y:+n/+n&gt;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--layer<span class="o">=</span>&lt;a_layer&gt;<span class="w"> </span>--tile<span class="o">=</span>&lt;z/x/y:+n/+n&gt;</span>
 </pre></div></div><p>In the admin page command form, this option is available as well if <code class="docutils literal notranslate"><span class="pre">--tile</span></code> is in
 <code class="docutils literal notranslate"><span class="pre">server.allowed_arguments</span></code> (it is included by default).</p>
 <p>Generate tiles on a bbox:</p>
@@ -538,8 +538,16 @@ or <code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN_
 </pre></div></div><p>Generate a tiles near a tile coordinate (useful for test):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--near<span class="w"> </span>&lt;X&gt;<span class="w"> </span>&lt;Y&gt;</span>
 </pre></div></div><p>Generate a tiles in a different cache than the default one:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--cache<span class="w"> </span>&lt;a_cache&gt;</span>
-</pre></div></div></section>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-tiles<span class="w"> </span>--cache<span class="o">=</span>&lt;a_cache&gt;</span>
+</pre></div></div><p>With the PostgreSQL queue store, running <code class="docutils literal notranslate"><span class="pre">generate-tiles</span> <span class="pre">--role=master</span></code> without
+<code class="docutils literal notranslate"><span class="pre">--job-id</span></code> now auto-creates a job and attaches generated metatiles to it.
+The default auto-created job title is <code class="docutils literal notranslate"><span class="pre">User</span> <span class="pre">call</span></code>, and you can override it
+with <code class="docutils literal notranslate"><span class="pre">--job-title=&lt;title&gt;</span></code>.</p>
+<p>Display queue status:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-controller<span class="w"> </span>--status</span>
+</pre></div></div><p>With Redis/SQS this prints queue counters. With PostgreSQL this prints the job list with
+per-job counters (to generate, pending, in error) and ETA when available.</p>
+</section>
 </section>
 <section id="explain-cost">
 <h2>Explain cost<a class="headerlink" href="#explain-cost" title="Permalink to this headline">¶</a></h2>
@@ -576,7 +584,7 @@ or <code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN_
 <p><code class="docutils literal notranslate"><span class="pre">--verbose</span></code> or <code class="docutils literal notranslate"><span class="pre">-v</span></code>: used to display info messages.</p>
 <p><code class="docutils literal notranslate"><span class="pre">--debug</span></code> or <code class="docutils literal notranslate"><span class="pre">-d</span></code>: used to display debug message, please use this option to report issue. With the debug
 mode we don’t catch exceptions, and we don’t log time messages.</p>
-<p><code class="docutils literal notranslate"><span class="pre">--test</span> <span class="pre">&lt;n&gt;</span></code> or <code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">&lt;n&gt;</span></code>: used to generate only <code class="docutils literal notranslate"><span class="pre">&lt;n&gt;</span></code> tiles, useful for test.</p>
+<p><code class="docutils literal notranslate"><span class="pre">--test=&lt;n&gt;</span></code> or <code class="docutils literal notranslate"><span class="pre">-t</span> <span class="pre">&lt;n&gt;</span></code>: used to generate only <code class="docutils literal notranslate"><span class="pre">&lt;n&gt;</span></code> tiles, useful for test.</p>
 </section>
 </section>
 <section id="mutualized">
