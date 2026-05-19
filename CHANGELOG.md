@@ -1,3 +1,7 @@
+##### 2.7.1.280
+
+- Update dependency idna to v3.15 [SECURITY] (2.7) [c2cgeoportal#12931](https://github.com/camptocamp/c2cgeoportal/pull/12931)
+
 ##### 2.7.1.279
 
 - Audit Snyk check/fix 2.7 [c2cgeoportal#12927](https://github.com/camptocamp/c2cgeoportal/pull/12927)
