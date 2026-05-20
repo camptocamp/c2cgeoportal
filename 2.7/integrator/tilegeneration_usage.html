@@ -163,7 +163,8 @@ zoom, x and y as 0.</p>
 </section>
 <section id="configure-geom-sql">
 <h4>Configure geom/sql<a class="headerlink" href="#configure-geom-sql" title="Permalink to this headline">¶</a></h4>
-<p>We can generate the tiles only on some geometries stored in PostGis.</p>
+<p>We can generate the tiles only on some geometries.</p>
+<p>PostGIS source configuration:</p>
 <p>The configuration is in the layer like this:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">geoms</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">connection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">user=www-data password=www-data dbname=&lt;db&gt; host=localhost</span>
@@ -172,6 +173,16 @@ zoom, x and y as 0.</p>
 <span class="w">    </span><span class="nt">max_resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;resolution&gt;</span><span class="w"> </span><span class="c1"># included, optional, last win</span>
 </pre></div>
 </div>
+<p>GDAL data source configuration (for example a shapefile):</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">geoms</span><span class="p">:</span>
+<span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">datasource</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">geoms/mask</span>
+<span class="w">    </span><span class="nt">sql</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SELECT * FROM mask_layer</span><span class="w"> </span><span class="c1"># optional OGR SQL</span>
+<span class="w">    </span><span class="nt">min_resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;resolution&gt;</span><span class="w"> </span><span class="c1"># included, optional, last win</span>
+<span class="w">    </span><span class="nt">max_resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;resolution&gt;</span><span class="w"> </span><span class="c1"># included, optional, last win</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">datasource</span></code> should be a relative file path from the configuration file
+directory and should stay inside that directory.</p>
 <p>Example:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">geoms</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">connection</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">user=postgresql password=postgresql dbname=tests host=localhost</span>
@@ -543,6 +554,10 @@ or <code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN_
 <code class="docutils literal notranslate"><span class="pre">--job-id</span></code> now auto-creates a job and attaches generated metatiles to it.
 The default auto-created job title is <code class="docutils literal notranslate"><span class="pre">User</span> <span class="pre">call</span></code>, and you can override it
 with <code class="docutils literal notranslate"><span class="pre">--job-title=&lt;title&gt;</span></code>.</p>
+<p>When seeding metatiles with <code class="docutils literal notranslate"><span class="pre">--role=master</span></code>, metatile layers use a scanline
+strategy (per metatile row) instead of scanning full bounding extents. This is
+especially beneficial on sparse datasets, where it reduces queue build time,
+while keeping geometry filtering in the generation pipeline.</p>
 <p>Display queue status:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">generate-controller<span class="w"> </span>--status</span>
 </pre></div></div><p>With Redis/SQS this prints queue counters. With PostgreSQL this prints the job list with

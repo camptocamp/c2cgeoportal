@@ -1676,30 +1676,43 @@
 <tr class="row-odd"><td><p>type</p></td>
 <td colspan="3"><p><em>array</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="15"><p>items</p></td>
-<td><p>type</p></td>
+<tr class="row-even"><td rowspan="19"><p>items</p></td>
+<td colspan="3"><p><em>Layer geometry</em></p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>object</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="3"><p>properties</p></td>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
-<li><p><strong>connection</strong></p></li>
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<li><p>connection</p></li>
 </ul>
 </td>
 <td colspan="2"><p><em>Connection</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="2"><p>The PostgreSQL connection string</p></td>
+<tr class="row-even"><td colspan="2"><p>The PostgreSQL connection string</p></td>
+</tr>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>string</em></p></td>
+</tr>
+<tr class="row-even"><td rowspan="3"><ul class="simple">
+<li><p>datasource</p></li>
+</ul>
+</td>
+<td colspan="2"><p><em>Datasource</em></p></td>
+</tr>
+<tr class="row-odd"><td colspan="2"><p>The GDAL data source relative path (for example geoms_mask.geojson)</p></td>
 </tr>
 <tr class="row-even"><td><p>type</p></td>
 <td><p><em>string</em></p></td>
 </tr>
 <tr class="row-odd"><td rowspan="3"><ul class="simple">
-<li><p><strong>sql</strong></p></li>
+<li><p>sql</p></li>
 </ul>
 </td>
 <td colspan="2"><p><em>SQL</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="2"><p>The SQL query that get the geometry in geom e.g. <cite>the_geom AS geom FROM my_table</cite></p></td>
+<tr class="row-even"><td colspan="2"><p>For PostgreSQL source: SQL query that gets the geometry in <cite>geom</cite> (e.g. <cite>the_geom AS geom FROM my_table</cite>). For file data source: optional OGR SQL query.</p></td>
 </tr>
 <tr class="row-odd"><td><p>type</p></td>
 <td><p><em>string</em></p></td>
