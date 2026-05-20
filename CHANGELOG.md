@@ -1,3 +1,7 @@
+##### 2.8.1.333
+
+- Update dependency certifi to v2026.5.20 (2.8) [c2cgeoportal#12936](https://github.com/camptocamp/c2cgeoportal/pull/12936)
+
 ##### 2.8.1.332
 
 - Update dependency idna to v3.15 [SECURITY] (2.8) [c2cgeoportal#12932](https://github.com/camptocamp/c2cgeoportal/pull/12932)
