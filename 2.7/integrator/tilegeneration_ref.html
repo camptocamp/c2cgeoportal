@@ -1177,6 +1177,24 @@
 </tbody>
 </table>
 </section>
+<section id="layer-geometry-filter">
+<span id="layer-geometry-filter"></span><h3>Layer geometry filter<a class="headerlink" href="#layer-geometry-filter" title="Permalink to this headline">¶</a></h3>
+<p>Enable the geometry intersection filter in the processing pipeline</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>type</p></td>
+<td><p><em>boolean</em></p></td>
+</tr>
+<tr class="row-even"><td><p>default</p></td>
+<td><p>True</p></td>
+</tr>
+</tbody>
+</table>
+</section>
 <section id="layer-meta">
 <span id="layer-meta"></span><h3>Layer meta<a class="headerlink" href="#layer-meta" title="Permalink to this headline">¶</a></h3>
 <p>Use meta-tiles, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#meta-tiles">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#meta-tiles</a></p>
@@ -2081,112 +2099,118 @@
 <td colspan="3"><p><a class="reference internal" href="#layer-geometries">Layer geometries</a></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
+<li><p>geom_filter</p></li>
+</ul>
+</td>
+<td colspan="3"><p><a class="reference internal" href="#layer-geometry-filter">Layer geometry filter</a></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
 <li><p>empty_tile_detection</p></li>
 </ul>
 </td>
 <td colspan="3"><p><a class="reference internal" href="#layer-empty-tile-detection">Layer empty tile detection</a></p></td>
 </tr>
-<tr class="row-odd"><td><ul class="simple">
+<tr class="row-even"><td><ul class="simple">
 <li><p>empty_metatile_detection</p></li>
 </ul>
 </td>
 <td colspan="3"><p><a class="reference internal" href="#layer-empty-meta-tile-detection">Layer empty meta-tile detection</a></p></td>
 </tr>
-<tr class="row-even"><td><ul class="simple">
+<tr class="row-odd"><td><ul class="simple">
 <li><p>cost</p></li>
 </ul>
 </td>
 <td colspan="3"><p><a class="reference internal" href="#layer-cost">Layer cost</a></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p><strong>url</strong></p></li>
 </ul>
 </td>
 <td colspan="3"><p><em>URL</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p>The WMS service URL</p></td>
+<tr class="row-odd"><td colspan="3"><p>The WMS service URL</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="4"><ul class="simple">
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
 <li><p>generate_salt</p></li>
 </ul>
 </td>
 <td colspan="3"><p><em>Generate salt</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="3"><p>Should generate a salt to drop the cache</p></td>
+<tr class="row-even"><td colspan="3"><p>Should generate a salt to drop the cache</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>boolean</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>default</p></td>
+<tr class="row-even"><td><p>default</p></td>
 <td colspan="2"><p>False</p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p>query_layers</p></li>
 </ul>
 </td>
 <td colspan="3"><p><em>Query layers</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="3"><p>The layers use for query (To be used with the server)</p></td>
+<tr class="row-even"><td colspan="3"><p>The layers use for query (To be used with the server)</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<tr class="row-even"><td rowspan="4"><ul class="simple">
 <li><p>info_formats</p></li>
 </ul>
 </td>
 <td colspan="3"><p><em>Info formats</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p>The query info format</p></td>
+<tr class="row-odd"><td colspan="3"><p>The query info format</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>array</em></p></td>
 </tr>
-<tr class="row-even"><td><p>items</p></td>
+<tr class="row-odd"><td><p>items</p></td>
 <td><p>type</p></td>
 <td><p><em>string</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="5"><ul class="simple">
+<tr class="row-even"><td rowspan="5"><ul class="simple">
 <li><p>params</p></li>
 </ul>
 </td>
 <td colspan="3"><p><em>Parameters</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p>Additional parameters to the WMS query (like dimension)</p></td>
+<tr class="row-odd"><td colspan="3"><p>Additional parameters to the WMS query (like dimension)</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>object</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="2"><p>additionalProperties</p></td>
+<tr class="row-odd"><td rowspan="2"><p>additionalProperties</p></td>
 <td colspan="2"><p>The parameter value</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td><p><em>string</em></p></td>
 </tr>
-<tr class="row-even"><td><ul class="simple">
+<tr class="row-odd"><td><ul class="simple">
 <li><p>headers</p></li>
 </ul>
 </td>
 <td colspan="3"><p><a class="reference internal" href="#headers">Headers</a></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<tr class="row-even"><td rowspan="4"><ul class="simple">
 <li><p>version</p></li>
 </ul>
 </td>
 <td colspan="3"><p><em>Version</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p>The used WMS version</p></td>
+<tr class="row-odd"><td colspan="3"><p>The used WMS version</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
 </tr>
-<tr class="row-even"><td><p>default</p></td>
+<tr class="row-odd"><td><p>default</p></td>
 <td colspan="2"><p>1.1.1</p></td>
 </tr>
-<tr class="row-odd"><td><p>additionalProperties</p></td>
+<tr class="row-even"><td><p>additionalProperties</p></td>
 <td colspan="3"><p>False</p></td>
 </tr>
 </tbody>
@@ -2363,126 +2387,132 @@
 <td colspan="4"><p><a class="reference internal" href="#layer-geometries">Layer geometries</a></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
+<li><p>geom_filter</p></li>
+</ul>
+</td>
+<td colspan="4"><p><a class="reference internal" href="#layer-geometry-filter">Layer geometry filter</a></p></td>
+</tr>
+<tr class="row-odd"><td><ul class="simple">
 <li><p>empty_tile_detection</p></li>
 </ul>
 </td>
 <td colspan="4"><p><a class="reference internal" href="#layer-empty-tile-detection">Layer empty tile detection</a></p></td>
 </tr>
-<tr class="row-odd"><td><ul class="simple">
+<tr class="row-even"><td><ul class="simple">
 <li><p>empty_metatile_detection</p></li>
 </ul>
 </td>
 <td colspan="4"><p><a class="reference internal" href="#layer-empty-meta-tile-detection">Layer empty meta-tile detection</a></p></td>
 </tr>
-<tr class="row-even"><td><ul class="simple">
+<tr class="row-odd"><td><ul class="simple">
 <li><p>cost</p></li>
 </ul>
 </td>
 <td colspan="4"><p><a class="reference internal" href="#layer-cost">Layer cost</a></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p>mapfile</p></li>
 </ul>
 </td>
 <td colspan="4"><p><em>MapFile</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="4"><p>The Mapnik map file</p></td>
+<tr class="row-odd"><td colspan="4"><p>The Mapnik map file</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="3"><p><em>string</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="4"><ul class="simple">
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
 <li><p>data_buffer</p></li>
 </ul>
 </td>
 <td colspan="4"><p><em>Data buffer</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="4"><p>The data buffer</p></td>
+<tr class="row-even"><td colspan="4"><p>The data buffer</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="3"><p><em>integer</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>default</p></td>
+<tr class="row-even"><td><p>default</p></td>
 <td colspan="3"><p>128</p></td>
 </tr>
-<tr class="row-even"><td rowspan="5"><ul class="simple">
+<tr class="row-odd"><td rowspan="5"><ul class="simple">
 <li><p>output_format</p></li>
 </ul>
 </td>
 <td colspan="4"><p><em>Output format</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="4"><p>The Mapnik output format</p></td>
+<tr class="row-even"><td colspan="4"><p>The Mapnik output format</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="3"><p><em>string</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>enum</p></td>
+<tr class="row-even"><td><p>enum</p></td>
 <td colspan="3"><p>png, png256, jpeg, grid</p></td>
 </tr>
-<tr class="row-even"><td><p>default</p></td>
+<tr class="row-odd"><td><p>default</p></td>
 <td colspan="3"><p>png</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p>wms_url</p></li>
 </ul>
 </td>
 <td colspan="4"><p><em>WMS URL</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="4"><p>A WMS fallback URL (deprecated)</p></td>
+<tr class="row-odd"><td colspan="4"><p>A WMS fallback URL (deprecated)</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="3"><p><em>string</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="4"><ul class="simple">
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
 <li><p>resolution</p></li>
 </ul>
 </td>
 <td colspan="4"><p><em>Resolution</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="4"><p>The resolution</p></td>
+<tr class="row-even"><td colspan="4"><p>The resolution</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="3"><p><em>integer</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>default</p></td>
+<tr class="row-even"><td><p>default</p></td>
 <td colspan="3"><p>4</p></td>
 </tr>
-<tr class="row-even"><td rowspan="6"><ul class="simple">
+<tr class="row-odd"><td rowspan="6"><ul class="simple">
 <li><p>layers_fields</p></li>
 </ul>
 </td>
 <td colspan="4"><p><em>Layers fields</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="4"><p>The Mapnik layers fields</p></td>
+<tr class="row-even"><td colspan="4"><p>The Mapnik layers fields</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="3"><p><em>object</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><p>additionalProperties</p></td>
+<tr class="row-even"><td rowspan="3"><p>additionalProperties</p></td>
 <td colspan="3"><p>The Mapnik layer fields</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>array</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>items</p></td>
+<tr class="row-even"><td><p>items</p></td>
 <td><p>type</p></td>
 <td><p><em>string</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="4"><ul class="simple">
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
 <li><p>drop_empty_utfgrid</p></li>
 </ul>
 </td>
 <td colspan="4"><p><em>Drop empty UTFGrid</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="4"><p>Drop if the tile is empty</p></td>
+<tr class="row-even"><td colspan="4"><p>Drop if the tile is empty</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="3"><p><em>boolean</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>default</p></td>
+<tr class="row-even"><td><p>default</p></td>
 <td colspan="3"><p>False</p></td>
 </tr>
-<tr class="row-even"><td><p>additionalProperties</p></td>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
 <td colspan="4"><p>False</p></td>
 </tr>
 </tbody>

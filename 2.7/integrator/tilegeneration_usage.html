@@ -106,6 +106,8 @@ needed to generate the capabilities. We can specify:</p>
 <p>When generating WMTS capabilities, if a layer <code class="docutils literal notranslate"><span class="pre">bbox</span></code> is defined, it is also used to publish
 <code class="docutils literal notranslate"><span class="pre">TileMatrixSetLimits</span></code> in each <code class="docutils literal notranslate"><span class="pre">TileMatrixSetLink</span></code> for that layer.</p>
 <p><code class="docutils literal notranslate"><span class="pre">px_buffer</span></code> a buffer in px around the object area (geoms or extent).</p>
+<p><code class="docutils literal notranslate"><span class="pre">geom_filter</span></code> enable (default) or disable the geometry intersection filter in the
+generation pipeline.</p>
 <section id="wmts-layout">
 <h4>WMTS layout<a class="headerlink" href="#wmts-layout" title="Permalink to this headline">¶</a></h4>
 <p>To generate the file paths and the WMTS capabilities we need additional information:</p>
@@ -194,6 +196,14 @@ directory and should stay inside that directory.</p>
 </pre></div>
 </div>
 <p>It’s preferable to use simple geometries, too complex geometries can slow down the generation.</p>
+<p>If the SQL geometry column carries an SRID, tilecloud-chain uses that SRID for reprojection to the grid CRS.
+If no SRID is set (or it is invalid), it falls back to the layer projection. In all cases, bbox and geometry
+bounds are normalized to <code class="docutils literal notranslate"><span class="pre">[minx,</span> <span class="pre">miny,</span> <span class="pre">maxx,</span> <span class="pre">maxy]</span></code> before computing intersections and WMTS limits.</p>
+<p>For <code class="docutils literal notranslate"><span class="pre">geoms.datasource</span></code>, geometries are interpreted in the layer projection and are reprojected to the grid
+projection when needed.</p>
+<p>When the seed step already limits metatiles with geometries (for example with
+<code class="docutils literal notranslate"><span class="pre">generate-tiles</span> <span class="pre">--role=master</span></code>), you can disable the second geometry intersection
+filter by setting <code class="docutils literal notranslate"><span class="pre">geom_filter:</span> <span class="pre">false</span></code> in the layer configuration.</p>
 </section>
 <section id="legends">
 <h4>Legends<a class="headerlink" href="#legends" title="Permalink to this headline">¶</a></h4>
