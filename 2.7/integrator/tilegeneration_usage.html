@@ -392,6 +392,8 @@ batch size is <code class="docutils literal notranslate"><span class="pre">100</
 <p>See the [configuration reference](<a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/CONFIG.md#definitions/postgresql">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/CONFIG.md#definitions/postgresql</a>) for the other configuration possibilities.</p>
 <p>With that the admin page is enhance with a job concept with enhanced status and they can be
 canceled, and restarted.</p>
+<p>When retrying a job in error from the admin page, only the meta tiles currently in error are
+requeued. Successfully generated meta tiles are kept as-is and are not regenerated.</p>
 <p>Note that you should have an external process to clean the old jobs in the database.</p>
 </section>
 <section id="amazon-services">
