@@ -202,6 +202,7 @@ class Import:
         all_themes = (
             self.session.query(Theme)
             .options(
+                sqlalchemy.orm.subqueryload(Theme.restricted_roles),
                 sqlalchemy.orm.subqueryload(Theme.children_relation),
                 sqlalchemy.orm.subqueryload(LayerWMS.metadatas),
             )
