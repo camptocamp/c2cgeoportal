@@ -231,13 +231,13 @@ class Import:
         print("Collecting data")
         start_time = time.time()
 
-        self.public_theme: dict[int, list[int]] = {}
-        self.public_group: dict[int, list[int]] = {}
-        self.public_layer: dict[int, list[int]] = {}
+        self.public_theme: dict[int, set[int]] = {}
+        self.public_group: dict[int, set[int]] = {}
+        self.public_layer: dict[int, set[int]] = {}
         for interface in self.interfaces:
-            self.public_theme[interface.id] = []
-            self.public_group[interface.id] = []
-            self.public_layer[interface.id] = []
+            self.public_theme[interface.id] = set()
+            self.public_group[interface.id] = set()
+            self.public_layer[interface.id] = set()
 
         self.full_text_search: list[dict[str, Any]] = []
 
@@ -329,7 +329,7 @@ class Import:
 
                 if fill and self.options.themes:
                     if role is None:
-                        self.public_theme[interface.id].append(theme.id)
+                        self.public_theme[interface.id].add(theme.id)
 
                     if role is None or theme.id not in self.public_theme[interface.id]:
                         self._add_fts(theme, interface, "add_theme", role)
@@ -368,7 +368,7 @@ class Import:
 
         if fill and export:
             if role is None:
-                self.public_group[interface.id].append(group.id)
+                self.public_group[interface.id].add(group.id)
 
             if role is None or group.id not in self.public_group[interface.id]:
                 self._add_fts(group, interface, "add_group", role)
@@ -399,7 +399,7 @@ class Import:
 
         if fill and self.options.layers:
             if role is None:
-                self.public_layer[interface.id].append(layer.id)
+                self.public_layer[interface.id].add(layer.id)
 
             if role is None or layer.id not in self.public_layer[interface.id]:
                 self._add_fts(layer, interface, "add_layer", role)
