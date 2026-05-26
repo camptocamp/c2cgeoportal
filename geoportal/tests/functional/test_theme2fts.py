@@ -126,12 +126,17 @@ def test_data(dbsession, transact):
     private_layer.interfaces = list(interfaces.values())
     add_parent(dbsession, private_layer, second_level_group)
 
-    layers = {layer.name: layer for layer in [public_layer, private_layer]}
+    private_layer_in_public_theme = main.LayerWMS(name="private_layer_in_public_theme", public=False)
+    private_layer_in_public_theme.ogc_server = ogc_server
+    private_layer_in_public_theme.interfaces = list(interfaces.values())
+    add_parent(dbsession, private_layer_in_public_theme, first_level_group)
+
+    layers = {layer.name: layer for layer in [public_layer, private_layer, private_layer_in_public_theme]}
     dbsession.add_all(layers.values())
 
     ra = main.RestrictionArea(name="ra")
     ra.roles = [role]
-    ra.layers = [private_layer]
+    ra.layers = [private_layer, private_layer_in_public_theme]
     dbsession.add(ra)
 
     dbsession.flush()  # Flush here to detect integrity errors now.
@@ -225,8 +230,8 @@ class TestImport:
         # languages * interfaces * (public_theme + first_level_group + public_layer)
         total = 4 * 2 * (1 + 1 + 1)
 
-        # private: languages * interfaces * (private_theme + second_level_group + private_layer) * (role)
-        total += 4 * 2 * (1 + 1 + 1) * 1
+        # private: languages * interfaces * (private_theme + second_level_group + private_layer, private_layer_in_public_theme) * (role)
+        total += 4 * 2 * (1 + 1 + 1 + 1) * 1
 
         assert dbsession.query(main.FullTextSearch).count() == total, "\n".join(
             [
@@ -323,6 +328,20 @@ class TestImport:
                             "it": "'it':3 'layer':2 'priv':1",
                         },
                         "actions": [{"action": "add_layer", "data": "private_layer"}],
+                    },
+                    {
+                        "label": f"private_layer_in_public_theme_{lang}",
+                        "role": test_data["roles"]["role"],
+                        "interface": interface,
+                        "lang": lang,
+                        "public": False,
+                        "ts": {
+                            "fr": "'fr':6 'in':3 'lai':2 'privat':1 'public':4 'them':5",
+                            "en": "'en':6 'layer':2 'privat':1 'public':4 'theme':5",
+                            "de": "'de':6 'lay':2 'privat':1 'public':4 'them':5",
+                            "it": "'it':6 'layer':2 'priv':1 'public':4 'them':5",
+                        },
+                        "actions": [{"action": "add_layer", "data": "private_layer_in_public_theme"}],
                     },
                 ]
                 for e in expected:
