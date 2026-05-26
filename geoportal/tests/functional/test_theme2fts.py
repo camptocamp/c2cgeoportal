@@ -74,7 +74,9 @@ def test_data(dbsession_old, transact_old):
     dbsession_old.add_all(interfaces.values())
 
     role = main.Role(name="role")
-    dbsession_old.add(role)
+    empty_role = main.Role(name="empty role")
+    roles = {r.name: r for r in [role, empty_role]}
+    dbsession_old.add_all(roles.values())
 
     public_theme = main.Theme(name="public_theme")
     public_theme.interfaces = list(interfaces.values())
@@ -120,7 +122,7 @@ def test_data(dbsession_old, transact_old):
     return {
         "ogc_server": ogc_server,
         "interfaces": interfaces,
-        "role": role,
+        "roles": roles,
         "themes": themes,
         "groups": groups,
         "layers": layers,
@@ -204,10 +206,12 @@ class TestImport:
 
         Import(dbsession_old, settings, options())
 
-        # languages * interfaces * (themes + groups + layers)
+        # languages * interfaces * (public_theme + first_level_group + public_layer)
         total = 4 * 2 * (1 + 1 + 1)
-        # private: languages * interfaces * (themes + layers) * roles
-        total += 4 * 2 * (1 + 1) * 5
+
+        # private: languages * interfaces * (private_theme + second_level_group + private_layer) * (role)
+        total += 4 * 2 * (1 + 1 + 1) * 1
+
         assert dbsession_old.query(main.FullTextSearch).count() == total, "\n".join(
             [
                 ", ".join((fts.label, str(fts.lang), str(fts.interface), str(fts.public), str(fts.role)))
@@ -236,7 +240,7 @@ class TestImport:
                     },
                     {
                         "label": f"private_theme_{lang}",
-                        "role": test_data["role"],
+                        "role": test_data["roles"]["role"],
                         "interface": interface,
                         "lang": lang,
                         "public": False,
@@ -264,7 +268,7 @@ class TestImport:
                     },
                     {
                         "label": f"second_level_group_{lang}",
-                        "role": test_data["role"],
+                        "role": test_data["roles"]["role"],
                         "interface": interface,
                         "lang": lang,
                         "public": False,
@@ -292,7 +296,7 @@ class TestImport:
                     },
                     {
                         "label": f"private_layer_{lang}",
-                        "role": test_data["role"],
+                        "role": test_data["roles"]["role"],
                         "interface": interface,
                         "lang": lang,
                         "public": False,
