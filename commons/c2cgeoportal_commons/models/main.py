@@ -1866,7 +1866,7 @@ class Metadata(Base):  # type: ignore[valid-type,misc]
                             """,
                             mapping={
                                 "url": (
-                                    "https://camptocamp.github.io/ngeo/"
+                                    "https://camptocamp.github.io/ngeo/refs/heads/"
                                     f"{os.environ.get('MAJOR_VERSION', 'master')}"
                                     "/apidoc/interfaces/src_themes.GmfMetaData.html"
                                 ),
