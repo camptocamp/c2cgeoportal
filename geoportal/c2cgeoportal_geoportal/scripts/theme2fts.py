@@ -232,9 +232,11 @@ class Import:
 
         self.public_theme: dict[int, list[int]] = {}
         self.public_group: dict[int, list[int]] = {}
+        self.public_layer: dict[int, list[int]] = {}
         for interface in self.interfaces:
             self.public_theme[interface.id] = []
             self.public_group[interface.id] = []
+            self.public_layer[interface.id] = []
 
         self.full_text_search: list[dict[str, Any]] = []
 
@@ -315,6 +317,9 @@ class Import:
         theme: "c2cgeoportal_commons.models.main.Theme",
         role: Optional["c2cgeoportal_commons.models.main.Role"] = None,
     ) -> None:
+        if role is not None and role not in theme.restricted_roles:
+            return
+
         fill = False
         for interface in self.interfaces:
             if interface in theme.interfaces:
@@ -392,7 +397,11 @@ class Import:
         fill = interface in layer.interfaces and self._layer_visible(layer, role)
 
         if fill and self.options.layers:
-            self._add_fts(layer, interface, "add_layer", role)
+            if role is None:
+                self.public_layer[interface.id].append(layer.id)
+
+            if role is None or layer.id not in self.public_layer[interface.id]:
+                self._add_fts(layer, interface, "add_layer", role)
 
         return fill
 
