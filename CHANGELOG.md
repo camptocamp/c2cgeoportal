@@ -1,3 +1,7 @@
+##### 2.8.1.334
+
+- [Backport 2.8] Update ngeo documentation reference URL [c2cgeoportal#12949](https://github.com/camptocamp/c2cgeoportal/pull/12949)
+
 ##### 2.8.1.333
 
 - Update dependency certifi to v2026.5.20 (2.8) [c2cgeoportal#12936](https://github.com/camptocamp/c2cgeoportal/pull/12936)
