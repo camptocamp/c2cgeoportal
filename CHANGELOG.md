@@ -1,3 +1,7 @@
+##### 2.9.0.485
+
+- [Backport 2.9] Update ngeo documentation reference URL [c2cgeoportal#12950](https://github.com/camptocamp/c2cgeoportal/pull/12950)
+
 ##### 2.9.0.484
 
 - In theme2fts, only index visible themes, groups and layers [c2cgeoportal#12944](https://github.com/camptocamp/c2cgeoportal/pull/12944)
