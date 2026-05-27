@@ -1,3 +1,7 @@
+##### 2.8.1.335
+
+- [Backport 2.8] Allow content-type application/xml for WMS GetCapabilities [c2cgeoportal#12952](https://github.com/camptocamp/c2cgeoportal/pull/12952)
+
 ##### 2.8.1.334
 
 - [Backport 2.8] Update ngeo documentation reference URL [c2cgeoportal#12949](https://github.com/camptocamp/c2cgeoportal/pull/12949)
