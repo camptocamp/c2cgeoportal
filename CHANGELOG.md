@@ -1,3 +1,8 @@
+##### 2.9.0.486
+
+- Allow content-type application/xml for WMS GetCapabilities [c2cgeoportal#12948](https://github.com/camptocamp/c2cgeoportal/pull/12948)
+- Audit Dpkg 2.9 [c2cgeoportal#12955](https://github.com/camptocamp/c2cgeoportal/pull/12955)
+
 ##### 2.9.0.485
 
 - [Backport 2.9] Update ngeo documentation reference URL [c2cgeoportal#12950](https://github.com/camptocamp/c2cgeoportal/pull/12950)
