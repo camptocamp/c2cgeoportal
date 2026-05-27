@@ -1,3 +1,7 @@
+##### 2.9.0.484
+
+- In theme2fts, only index visible themes, groups and layers [c2cgeoportal#12944](https://github.com/camptocamp/c2cgeoportal/pull/12944)
+
 ##### 2.9.0.483
 
 - Audit Dpkg 2.9 [c2cgeoportal#12947](https://github.com/camptocamp/c2cgeoportal/pull/12947)
