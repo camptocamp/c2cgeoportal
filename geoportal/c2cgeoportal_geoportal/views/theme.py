@@ -333,6 +333,7 @@ class Theme:
         # With wms 1.3 it returns text/xml also in case of error :-(
         if content_type.split(";")[0].strip() not in [
             "application/vnd.ogc.wms_xml",
+            "application/xml",
             "text/xml",
         ]:
             error = (
