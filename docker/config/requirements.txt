@@ -1,2 +1,2 @@
-poetry==1.8.5
+poetry==2.3.4
 dulwich>=1.2.5 # not directly required, pinned by Snyk to avoid a vulnerability
