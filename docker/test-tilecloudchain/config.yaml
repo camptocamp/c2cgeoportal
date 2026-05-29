@@ -86,7 +86,7 @@ generation:
   default_cache: s3
 
 redis:
-  url: 'redis://${REDIS_HOST}:${REDIS_PORT}/${REDIS_DB}'
+  url: redis://redis:6379/0
 
 # Not used if the previous redis section is not commented out
 sqs:
