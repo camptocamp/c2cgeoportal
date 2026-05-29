@@ -141,6 +141,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/fontconfig: 2.13.1-4.2ubuntu5
   ubuntu_22_04/fontconfig-config: 2.13.1-4.2ubuntu5
   ubuntu_22_04/fonts-dejavu-core: 2.37-2build1
+  ubuntu_22_04/g++-11: 11.4.0-1ubuntu1~22.04.3
   ubuntu_22_04/gcc-11: 11.4.0-1ubuntu1~22.04.3
   ubuntu_22_04/gcc-11-base: 11.4.0-1ubuntu1~22.04.3
   ubuntu_22_04/gcc-12-base: 12.3.0-1ubuntu1~22.04.3
@@ -416,6 +417,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libssh-4: 0.9.6-2ubuntu0.22.04.7
   ubuntu_22_04/libssl-dev: 3.0.2-0ubuntu1.23
   ubuntu_22_04/libssl3: 3.0.2-0ubuntu1.23
+  ubuntu_22_04/libstdc++-11-dev: 11.4.0-1ubuntu1~22.04.3
   ubuntu_22_04/libstdc++6: 12.3.0-1ubuntu1~22.04.3
   ubuntu_22_04/libsuperlu5: 5.3.0+dfsg1-2
   ubuntu_22_04/libsystemd0: 249.11-0ubuntu3.19
