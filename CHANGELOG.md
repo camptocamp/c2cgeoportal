@@ -1,3 +1,7 @@
+##### 2.9.0.487
+
+- Audit Snyk check/fix 2.9 [c2cgeoportal#12958](https://github.com/camptocamp/c2cgeoportal/pull/12958)
+
 ##### 2.9.0.486
 
 - Allow content-type application/xml for WMS GetCapabilities [c2cgeoportal#12948](https://github.com/camptocamp/c2cgeoportal/pull/12948)
