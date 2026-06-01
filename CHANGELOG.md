@@ -1,3 +1,7 @@
+##### 2.7.1.288
+
+- Update dependency lxml to v6.1.1 (2.7) [c2cgeoportal#12963](https://github.com/camptocamp/c2cgeoportal/pull/12963)
+
 ##### 2.7.1.287
 
 - Audit Snyk check/fix 2.7 [c2cgeoportal#12959](https://github.com/camptocamp/c2cgeoportal/pull/12959)
