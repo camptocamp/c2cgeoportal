@@ -56,7 +56,6 @@ jobs:
           - ltr
           - lr
           - lr-debug
-          - master
 
     # == QGIS version ==
     outputs:
@@ -67,7 +66,6 @@ jobs:
       success-ltr: ${{ steps.success.outputs.success-ltr }}
       success-lr: ${{ steps.success.outputs.success-lr }}
       success-lr-debug: ${{ steps.success.outputs.success-lr-debug }}
-      success-master: ${{ steps.success.outputs.success-master }}
 
     steps:
       - uses: actions/checkout@v4
@@ -168,4 +166,3 @@ jobs:
       - run: '[[ "${{ needs.main.outputs.success-ltr }}" == "true" ]]'
       - run: '[[ "${{ needs.main.outputs.success-lr }}" == "true" ]]'
       - run: '[[ "${{ needs.main.outputs.success-lr-debug }}" == "true" ]]'
-      - run: '[[ "${{ needs.main.outputs.success-master }}" == "true" ]]'
