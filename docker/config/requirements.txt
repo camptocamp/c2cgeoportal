@@ -1,3 +1,2 @@
 poetry==2.3.4
 poetry-plugin-export==1.10.0
-dulwich>=1.2.5 # not directly required, pinned by Snyk to avoid a vulnerability

@@ -2,6 +2,14 @@
 version: v1.25.1
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
+  SNYK-PYTHON-DULWICH-17054926:
+    - '*':
+        reason: not compatible with used Python version
+        created: 2026-06-01T08:45:00.000Z
+  SNYK-PYTHON-DULWICH-17054927:
+    - '*':
+        reason: not compatible with used Python version
+        created: 2026-06-01T08:45:00.000Z
   SNYK-PYTHON-POETRY-15873752:
     - '*':
         reason: Plugin not compatible with new Poetry version
