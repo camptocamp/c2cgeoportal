@@ -41,10 +41,6 @@ publish:
         group: qgis-old
         tags:
           - gmf{version}-qgislatest
-      - name: camptocamp/geomapfish-qgisserver
-        group: qgis-master
-        tags:
-          - gmf{version}-qgismaster
         # The group qgis-old is required for the clean workflow
         # 2.4, 2.5
       - name: camptocamp/geomapfish-qgisserver
@@ -132,10 +128,6 @@ publish:
         group: qgis-lr-debug
         tags:
           - gmf{version}-qgislr-debug
-      - name: camptocamp/geomapfish-qgisserver
-        group: qgis-mater
-        tags:
-          - gmf{version}-qgismaster
   pypi:
     packages:
       - path: commons
