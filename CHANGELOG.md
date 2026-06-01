@@ -1,3 +1,7 @@
+##### 2.8.1.336
+
+- Update all patch/minor versions (2.8) [c2cgeoportal#12964](https://github.com/camptocamp/c2cgeoportal/pull/12964)
+
 ##### 2.8.1.335
 
 - [Backport 2.8] Allow content-type application/xml for WMS GetCapabilities [c2cgeoportal#12952](https://github.com/camptocamp/c2cgeoportal/pull/12952)
