@@ -1,3 +1,7 @@
+##### 2.7.1.291
+
+- Audit Snyk check/fix 2.7 [c2cgeoportal#12971](https://github.com/camptocamp/c2cgeoportal/pull/12971)
+
 ##### 2.7.1.290
 
 - Update dependency pyjwt to v2.13.0 [SECURITY] (2.7) [c2cgeoportal#12970](https://github.com/camptocamp/c2cgeoportal/pull/12970)
