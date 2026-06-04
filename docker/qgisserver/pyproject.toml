@@ -24,7 +24,7 @@ psycopg2 = "2.9.12"
 pytz = "2026.2"
 redis = "4.4.4"
 pyramid = "2.0.2"
-webob = "1.8.9"
+webob = "1.8.10"
 
 [tool.poetry.dev-dependencies]
 prospector = { extras = ["with_mypy", "with_bandit"], version = "1.8.4" }
