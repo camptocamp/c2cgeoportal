@@ -1,3 +1,7 @@
+##### 2.8.1.339
+
+- Update dependency webob to v1.8.10 [SECURITY] (2.8) [c2cgeoportal#12977](https://github.com/camptocamp/c2cgeoportal/pull/12977)
+
 ##### 2.8.1.338
 
 - Audit Snyk check/fix 2.8 [c2cgeoportal#12972](https://github.com/camptocamp/c2cgeoportal/pull/12972)
