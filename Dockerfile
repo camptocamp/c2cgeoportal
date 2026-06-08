@@ -43,7 +43,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     --mount=type=cache,target=/root/.cache \
     apt-get update \
     && apt-get upgrade --assume-yes \
-    && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends chromium-browser gettext gnupg libpq5 nodejs npm \
+    && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends chromium-browser curl gettext gnupg libpq5 nodejs npm \
     && ln -s /usr/local/lib/libproj.so.25 /usr/local/lib/libproj.so
 
 # shellcheck disable=SC2086
