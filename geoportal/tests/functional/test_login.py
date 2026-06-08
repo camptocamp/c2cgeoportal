@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2025, Camptocamp SA
+# Copyright (c) 2013-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -253,7 +253,12 @@ class TestLoginView(TestCase):
             login.change_password()
 
     def test_change_password_good_is_password_changed(self) -> None:
-        import crypt
+        import sys
+
+        if sys.version_info >= (3, 13):
+            import crypt_r as crypt
+        else:
+            import crypt
 
         from c2cgeoportal_geoportal.views.login import Login
 

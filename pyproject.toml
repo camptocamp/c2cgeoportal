@@ -75,6 +75,7 @@ ruff = "0.15.14"
 beautifulsoup4 = "4.14.3"
 certifi = "2026.5.20"
 cryptography = "48.0.0"
+crypt-r = {version = "3.13.1", python = ">=3.13"}
 setuptools = "80.10.2"
 
 [tool.poetry.group.dev.dependencies]

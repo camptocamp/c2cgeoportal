@@ -52,7 +52,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     --mount=type=cache,target=/root/.cache \
     --mount=type=bind,from=poetry,source=/tmp,target=/poetry \
     apt-get update \
-    && export DEV_PACKAGES="binutils gcc g++ libpq-dev python3-dev" \
+    && export DEV_PACKAGES="binutils gcc g++ libcrypt-dev libpq-dev python3-dev" \
     && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends \
         ${DEV_PACKAGES} \
     && PIP_NO_BINARY=fiona,rasterio GDAL_CONFIG=/usr/bin/gdal-config PROJ_DIR=/usr/local/ python3 -m pip install \
