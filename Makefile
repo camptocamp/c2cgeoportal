@@ -38,9 +38,9 @@ prospector: build-checks ## Run the prospector checker
 	@docker run --rm camptocamp/geomapfish-checks:$(DOCKER_TAG) pylint --version --rcfile=/dev/null
 	@docker run --rm camptocamp/geomapfish-checks:$(DOCKER_TAG) pyflakes --version
 	docker run --rm --volume=$(shell pwd):/opt/c2cgeoportal camptocamp/geomapfish-checks:$(DOCKER_TAG) \
-		prospector --without=mypy --output-format=pylint --die-on-tool-error
+		prospector --without=mypy --output-format=pylint --die-on-tool-error --direct-tool-stdout
 	docker run --rm --volume=$(shell pwd):/opt/c2cgeoportal camptocamp/geomapfish-checks:$(DOCKER_TAG) \
-		prospector --tool=mypy --output-format=pylint --die-on-tool-error -I 'bin/.*' -I 'ci/.*' -I 'scripts/.*'
+		prospector --tool=mypy --output-format=pylint --die-on-tool-error --direct-tool-stdout -I 'bin/.*' -I 'ci/.*' -I 'scripts/.*'
 
 .PHONY: poetry-dev
 poetry-dev:
@@ -48,11 +48,11 @@ poetry-dev:
 
 .PHONY: prospector-poetry-nomypy
 prospector-poetry-nomypy: poetry-dev
-	poetry run prospector --without=mypy --output-format=pylint --die-on-tool-error
+	poetry run prospector --without=mypy --output-format=pylint --die-on-tool-error --direct-tool-stdout
 
 .PHONY: prospector-poetry-mypy
 prospector-poetry-mypy: poetry-dev
-	poetry run prospector --tool=mypy --output-format=pylint --die-on-tool-error -I 'bin/.*' -I 'ci/.*' -I 'scripts/.*'
+	poetry run prospector --tool=mypy --output-format=pylint --die-on-tool-error --direct-tool-stdout -I 'bin/.*' -I 'ci/.*' -I 'scripts/.*'
 
 .PHONY: prospector-poetry
 prospector-poetry: prospector-poetry-nomypy prospector-poetry-mypy
@@ -116,9 +116,9 @@ build-qgisserver-tests:
 .PHONY: prospector-qgisserver
 prospector-qgisserver: build-qgisserver-tests
 	docker run --rm --volume=$(shell pwd)/docker/qgisserver:/src camptocamp/geomapfish-qgisserver-tests \
-		prospector --without=mypy --without=pylint --output-format=pylint --die-on-tool-error
+		prospector --without=mypy --without=pylint --output-format=pylint --die-on-tool-error --direct-tool-stdout
 	docker run --rm --volume=$(shell pwd)/docker/qgisserver:/src camptocamp/geomapfish-qgisserver-tests \
-		prospector --tool=mypy --output-format=pylint --die-on-tool-error -I 'acceptance-tests/.*'
+		prospector --tool=mypy --output-format=pylint --die-on-tool-error --direct-tool-stdout -I 'acceptance-tests/.*'
 
 .PHONY: build-test-db
 build-test-db:
