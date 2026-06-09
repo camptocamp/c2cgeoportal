@@ -95,14 +95,27 @@ jobs:
           path: /tmp/pre-commit.patch
           retention-days: 1
         if: failure()
+      - run: git reset --hard
+        if: failure()
 
       - run: python3 -m pip install --requirement=requirements.txt
 
         # Build images
       - run: make build-runner
       - run: make build-tools
+
       - run: make checks
-        if: always()
+      - run: git diff --exit-code --patch > /tmp/checks.patch; git diff --color; git reset --hard || true
+        if: failure()
+      - uses: actions/upload-artifact@v7
+        with:
+          name: Update checks.patch
+          path: /tmp/checks.patch
+          retention-days: 1
+        if: failure()
+      - run: git reset --hard
+        if: failure()
+
       - run: make build-config
 
       # Build and lint QGIS images
@@ -139,6 +152,8 @@ jobs:
           name: Add Alembic upgrade script.patch
           path: /tmp/alembic.patch
           retention-days: 1
+        if: failure()
+      - run: git reset --hard
         if: failure()
 
       # Tests
@@ -291,6 +306,8 @@ jobs:
           name: Update dpkg versions list.patch
           path: /tmp/dpkg-versions.patch
           retention-days: 1
+        if: failure()
+      - run: git reset --hard
         if: failure()
 
       - name: Notify demo
