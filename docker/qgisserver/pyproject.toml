@@ -1,3 +1,10 @@
+
+[project]
+name = 'c2cgeoportal'
+version = '0.0.0'
+description = 'Not used'
+authors = []
+
 [tool.ruff]
 target-version = 'py310'
 
@@ -24,9 +31,3 @@ prospector-profile-utils  = "1.27.0"
 ruff = "0.15.14"
 types-pyyaml = "6.0.12.20260518"
 pytest = "9.0.3"
-
-[project]
-name = 'c2cgeoportal'
-version = '0.0.0'
-description = 'Not used'
-authors = []
