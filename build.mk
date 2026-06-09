@@ -39,6 +39,7 @@ include dependencies.mk
 build: \
 	geoportal/c2cgeoportal_geoportal/scaffolds/update/{{cookiecutter.project}}/CONST_create_template/ \
 	geoportal/c2cgeoportal_geoportal/scaffolds/advance_update/{{cookiecutter.project}}/CONST_create_template/ \
+	$(APPS_FILES) \
 	$(APPS_FILES_ALT) \
 	$(MO_FILES)
 
