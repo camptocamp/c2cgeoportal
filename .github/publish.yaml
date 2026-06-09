@@ -5,62 +5,8 @@ docker:
     - name: camptocamp/geomapfish
     - name: camptocamp/geomapfish-config
     - name: camptocamp/geomapfish-tools
-    - name:
-        camptocamp/geomapfishapp-geoportal
-        # 2.4
-    - name: camptocamp/geomapfish-qgisserver
-      group: qgis-old
-      tags:
-        - gmf{version}-qgis3.10
-    - name: camptocamp/geomapfish-qgisserver
-      group: qgis-old
-      tags:
-        - gmf{version}-qgis3.16
-    - name: camptocamp/geomapfish-qgisserver
-      group: qgis-old
-      tags:
-        - gmf{version}-qgis3.20
-    - name: camptocamp/geomapfish-qgisserver
-      group: qgis-old
-      tags:
-        - gmf{version}-qgis3.22
-    - name: camptocamp/geomapfish-qgisserver
-      group: qgis-old
-      tags:
-        - gmf{version}-qgis3.28-gdal3.6
-    - name: camptocamp/geomapfish-qgisserver
-      group: qgis-old
-      tags:
-        - gmf{version}-qgis3.28-gdal3.7
-    - name: camptocamp/geomapfish-qgisserver
-      group: qgis-old
-      tags:
-        - gmf{version}-qgis3.28
-    - name: camptocamp/geomapfish-qgisserver
-      group: qgis-old
-      tags:
-        - gmf{version}-qgislatest
-    - name: camptocamp/geomapfish-qgisserver
-      group: qgis-master
-      tags:
-        - gmf{version}-qgismaster
-        # The group qgis-old is required for the clean workflow
-        # 2.4, 2.5
-    - name: camptocamp/geomapfish-qgisserver
-      group: qgis-old
-      tags:
-        - gmf{version}-qgis3.4
-        # 2.5
-    - name: camptocamp/geomapfish-qgisserver
-      group: qgis-old
-      tags:
-        - gmf{version}-qgis3.12
-        # 2.5
-    - name: camptocamp/geomapfish-qgisserver
-      group: qgis-old
-      tags:
-        - gmf{version}-qgis3.14
-      # 2.7
+    - name: camptocamp/geomapfishapp-geoportal
+    # 2.7
     - name: camptocamp/geomapfish-qgisserver
       group: qgis-old
       tags:
@@ -81,7 +27,7 @@ docker:
       group: qgis-old
       tags:
         - gmf{version}-qgisltr
-      # 2.8
+    # 2.8
     - name: camptocamp/geomapfish-qgisserver
       group: qgis-old
       tags:
@@ -102,7 +48,7 @@ docker:
       group: qgis-latest
       tags:
         - gmf{version}-qgislatest
-      # master
+    # 2.9
     - name: camptocamp/geomapfish-qgisserver
       group: qgis-3.44-gdal3.10
       tags:
@@ -111,6 +57,16 @@ docker:
       group: qgis-3.44
       tags:
         - gmf{version}-qgis3.44
+    # master
+    - name: camptocamp/geomapfish-qgisserver
+      group: qgis-4.0-gdal3.13
+      tags:
+        - gmf{version}-qgis4.0-gdal3.13
+    - name: camptocamp/geomapfish-qgisserver
+      group: qgis-4.0
+      tags:
+        - gmf{version}-qgis4.0
+    # all versions
     - name: camptocamp/geomapfish-qgisserver
       group: qgis-ltr
       tags:

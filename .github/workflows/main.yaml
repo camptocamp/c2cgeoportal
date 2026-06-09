@@ -119,8 +119,8 @@ jobs:
       - run: make build-config
 
       # Build and lint QGIS images
-      - run: QGIS_VERSION=3.44-gdal3.10 make build-qgisserver
-      - run: QGIS_VERSION=3.44-gdal3.10 make prospector-qgisserver
+      - run: QGIS_VERSION=4.0-gdal3.13 make build-qgisserver
+      - run: QGIS_VERSION=4.0-gdal3.13 make prospector-qgisserver
 
       - run: make preparetest
 
