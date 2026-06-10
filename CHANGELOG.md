@@ -1,3 +1,7 @@
+##### 2.8.1.340
+
+- Update security packages to v48.0.1 (2.8) [c2cgeoportal#12990](https://github.com/camptocamp/c2cgeoportal/pull/12990)
+
 ##### 2.8.1.339
 
 - Update dependency webob to v1.8.10 [SECURITY] (2.8) [c2cgeoportal#12977](https://github.com/camptocamp/c2cgeoportal/pull/12977)
