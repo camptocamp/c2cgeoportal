@@ -54,8 +54,9 @@ jobs:
           - '3.40'
           - 3.40-gdal3.10
           - ltr
-          - lr
-          - lr-debug
+          # Uses a new incompatible Python version
+          # - lr
+          # - lr-debug
 
     # == QGIS version ==
     outputs:
@@ -64,8 +65,8 @@ jobs:
       success-3-40: ${{ steps.success.outputs.success-3-40 }}
       success-3-40-gdal3-10: ${{ steps.success.outputs.success-3-40-gdal3-10 }}
       success-ltr: ${{ steps.success.outputs.success-ltr }}
-      success-lr: ${{ steps.success.outputs.success-lr }}
-      success-lr-debug: ${{ steps.success.outputs.success-lr-debug }}
+      # success-lr: ${{ steps.success.outputs.success-lr }}
+      # success-lr-debug: ${{ steps.success.outputs.success-lr-debug }}
 
     steps:
       - uses: actions/checkout@v4
@@ -164,5 +165,5 @@ jobs:
       - run: '[[ "${{ needs.main.outputs.success-3-40 }}" == "true" ]]'
       - run: '[[ "${{ needs.main.outputs.success-3-40-gdal3-10 }}" == "true" ]]'
       - run: '[[ "${{ needs.main.outputs.success-ltr }}" == "true" ]]'
-      - run: '[[ "${{ needs.main.outputs.success-lr }}" == "true" ]]'
-      - run: '[[ "${{ needs.main.outputs.success-lr-debug }}" == "true" ]]'
+      # - run: '[[ "${{ needs.main.outputs.success-lr }}" == "true" ]]'
+      # - run: '[[ "${{ needs.main.outputs.success-lr-debug }}" == "true" ]]'
