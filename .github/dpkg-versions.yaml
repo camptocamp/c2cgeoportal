@@ -3153,6 +3153,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_26_04/libcjson1: 1.7.19-2
   ubuntu_26_04/libcodec2-1.2: 1.2.0-4
   ubuntu_26_04/libcom-err2: 1.47.2-3ubuntu4
+  ubuntu_26_04/libcrypt-dev: 1:4.5.1-1
   ubuntu_26_04/libcrypt1: 1:4.5.1-1
   ubuntu_26_04/libctf-nobfd0: 2.46-3ubuntu2
   ubuntu_26_04/libctf0: 2.46-3ubuntu2
