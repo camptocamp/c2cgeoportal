@@ -43,8 +43,36 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     --mount=type=cache,target=/root/.cache \
     apt-get update \
     && apt-get upgrade --assume-yes \
-    && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends chromium-browser curl gettext gnupg libpq5 nodejs npm \
+    && DEBIAN_FRONTEND=noninteractive apt-get install --assume-yes --no-install-recommends \
+        curl gettext gnupg libpq5 nodejs npm \
+        libasound2t64 \
+        libatk-bridge2.0-0 \
+        libatk1.0-0 \
+        libcairo2 \
+        libcups2 \
+        libdrm2 \
+        libgbm1 \
+        libglib2.0-0 \
+        libnspr4 \
+        libnss3 \
+        libpango-1.0-0 \
+        libx11-6 \
+        libx11-xcb1 \
+        libxcb1 \
+        libxcomposite1 \
+        libxdamage1 \
+        libxext6 \
+        libxfixes3 \
+        libxkbcommon0 \
+        libxrandr2 \
+        libxrender1 \
+        libxss1 \
+        libxtst6 \
     && ln -s /usr/local/lib/libproj.so.25 /usr/local/lib/libproj.so
+
+# Puppeteer downloaded Chrome crashes with the GDAL image LD_PRELOAD tcmalloc.
+# Disable it in stages where Node/Puppeteer is executed.
+ENV LD_PRELOAD=
 
 # shellcheck disable=SC2086
 RUN --mount=type=cache,target=/var/lib/apt/lists \
@@ -201,14 +229,19 @@ ENV VERSION=$VERSION
 WORKDIR /opt/c2cgeoportal/geoportal
 COPY geoportal/package.json geoportal/package-lock.json geoportal/.snyk ./
 
+# For chrome_crashpad_handler
 ENV XDG_CONFIG_HOME=/etc/xdg
-RUN chmod ugo+rw /etc/xdg
+RUN mkdir --parents /etc/xdg \
+    && chmod ugo+rw /etc/xdg
 
 # hadolint ignore=DL3016,SC2046
 RUN --mount=type=cache,target=/var/cache,sharing=locked \
     --mount=type=cache,target=/root/.cache \
-    npm install --omit=dev --omit=optional --ignore-scripts
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+    npm install --omit=dev --omit=optional --ignore-scripts \
+    && npm rebuild puppeteer \
+    && cp -r /root/.cache/puppeteer/chrome/linux-*/chrome-linux64 /opt/chrome
+
+ENV PUPPETEER_EXECUTABLE_PATH=/opt/chrome/chrome
 
 COPY bin/eval-templates bin/wait-db bin/list4vrt bin/azure /usr/bin/
 COPY --from=tools-cleaned /opt/c2cgeoportal /opt/c2cgeoportal
