@@ -36,8 +36,8 @@ from typing import Any
 
 import sqlalchemy.schema
 from c2c.template.config import config
-from sqlalchemy import Column, ForeignKey, Table
-from sqlalchemy.dialects.postgresql import HSTORE
+from sqlalchemy import Column, ForeignKey, Table, text
+from sqlalchemy.dialects.postgresql import HSTORE, JSONB
 from sqlalchemy.ext.mutable import MutableDict
 from sqlalchemy.orm import Mapped, backref, mapped_column, relationship
 from sqlalchemy.types import Boolean, DateTime, Integer, String, Unicode
@@ -179,6 +179,13 @@ class User(Base):  # type: ignore[valid-type,misc]
         info={"colanderalchemy": {"exclude": True}},
     )
     tech_data = mapped_column(MutableDict.as_mutable(HSTORE), info={"colanderalchemy": {"exclude": True}})
+    settings: Mapped[dict[str, Any]] = mapped_column(
+        MutableDict.as_mutable(JSONB),
+        default=dict,
+        nullable=False,
+        server_default=text("'{}'::jsonb"),
+        info={"colanderalchemy": {"exclude": True}},
+    )
     email: Mapped[str] = mapped_column(
         Unicode,
         nullable=False,
@@ -319,6 +326,7 @@ class User(Base):  # type: ignore[valid-type,misc]
         self.display_name = display_name or username
         self.password = password
         self.tech_data = {}
+        self.settings = {}
         self.email = email
         self.is_password_changed = is_password_changed
         if settings_role:

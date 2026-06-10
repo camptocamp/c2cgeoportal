@@ -11,6 +11,10 @@ vars:
   # Sqlalchemy static schema
   schema_static: '{PGSCHEMA_STATIC}'
 
+  settings:
+    # Maximum size in bytes accepted on POST /user/settings payload
+    max_payload_size: 65536
+
   dbsessions: {}
 
   enable_admin_interface: True
@@ -1201,6 +1205,7 @@ vars:
       <<: *auth_header
       cache_control_max_age_nocache: 0 # to refresh issue in editing
     shortener: *auth_header
+    settings: *auth_header
     login:
       <<: *auth_header
       access_control_allow_origin:
