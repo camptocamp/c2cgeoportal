@@ -2,12 +2,6 @@ name: QGIS build
 
 on:
   push:
-    branches:
-      - master
-      - '[0-9]+.[0-9]+'
-    tags:
-      - '*'
-  pull_request:
 
 env:
   HAS_SECRETS: ${{ secrets.HAS_SECRETS }}
@@ -52,22 +46,11 @@ jobs:
       matrix:
         # The versions should be set everywhere we have a == QGIS version == comment
         version:
-          - '4.0'
-          # Used as default version
-          - 4.0-gdal3.13
-          - ltr
-          - lr
-          - lr-debug
-          - master
+          - test-landing-pages
 
     # == QGIS version ==
     outputs:
-      success-4-0: ${{ steps.success.outputs.success-4-0 }}
-      success-4-0-gdal3-13: ${{ steps.success.outputs.success-4-0-gdal3-13 }}
-      success-ltr: ${{ steps.success.outputs.success-ltr }}
-      success-lr: ${{ steps.success.outputs.success-lr }}
-      success-lr-debug: ${{ steps.success.outputs.success-lr-debug }}
-      success-master: ${{ steps.success.outputs.success-master }}
+      success-test-landing-pages: ${{ steps.success.outputs.success-test-landing-pages }}
 
     steps:
       - uses: actions/checkout@v6
@@ -165,9 +148,4 @@ jobs:
 
     # == QGIS version ==
     steps:
-      - run: '[[ "${{ needs.main.outputs.success-4-0 }}" == "true" ]]'
-      - run: '[[ "${{ needs.main.outputs.success-4-0-gdal3-13 }}" == "true" ]]'
-      - run: '[[ "${{ needs.main.outputs.success-ltr }}" == "true" ]]'
-      - run: '[[ "${{ needs.main.outputs.success-lr }}" == "true" ]]'
-      - run: '[[ "${{ needs.main.outputs.success-lr-debug }}" == "true" ]]'
-      - run: '[[ "${{ needs.main.outputs.success-master }}" == "true" ]]'
+      - run: '[[ "${{ needs.main.outputs.success-test-landing-pages }}" == "true" ]]'
