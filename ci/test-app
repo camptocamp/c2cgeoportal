@@ -39,7 +39,7 @@ docker compose up -d
 docker compose exec -T geoportal bash -c 'PGHOST=externaldb PGDATABASE=test wait-db;'
 docker compose exec -T geoportal wait-db
 echo ::endgroup::
-c2cciutils-docker-logs
+c2cciutils-docker-logs || true
 
 # Run alembic
 echo ::group::Run alembic
@@ -47,13 +47,13 @@ docker compose exec -T geoportal alembic --config=alembic.ini --name=main upgrad
 docker compose exec -T geoportal alembic --config=alembic.ini --name=static upgrade head
 docker compose start alembic
 echo ::endgroup::
-c2cciutils-docker-logs
+c2cciutils-docker-logs || true
 
 # Create the Theme
 echo ::group::Create the Theme
 docker compose exec -T geoportal create-demo-theme
 echo ::endgroup::
-c2cciutils-docker-logs
+c2cciutils-docker-logs || true
 
 # Test `theme2fts`
 echo ::group::Test theme2fts
@@ -115,7 +115,7 @@ echo ::group::Test the mappyfile validate command
 docker compose exec -T tools rm /etc/mapserver/demo.map
 docker compose exec -T tools mappyfile validate --version=7.6 /etc/mapserver/*.map
 echo ::endgroup::
-c2cciutils-docker-logs
+c2cciutils-docker-logs || true
 
 # Run the acceptances tests
 echo ::group::Stop
@@ -136,12 +136,12 @@ docker compose \
     --file=docker-compose-db.yaml \
     --file=docker-compose.test.yaml up -d
 echo ::endgroup::
-c2cciutils-docker-logs
+c2cciutils-docker-logs || true
 
 echo ::group::Run acceptance tests
 make acceptance
 echo ::endgroup::
-c2cciutils-docker-logs
+c2cciutils-docker-logs || true
 
 echo ::group::Run acceptance tests in dev mode
 docker compose \
@@ -152,7 +152,7 @@ docker compose \
 sleep 1
 make acceptance
 echo ::endgroup::
-c2cciutils-docker-logs
+c2cciutils-docker-logs || true
 
 # Remove the test project
 echo ::group::Remove the test project

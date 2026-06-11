@@ -39,6 +39,7 @@ include dependencies.mk
 build: \
 	geoportal/c2cgeoportal_geoportal/scaffolds/update/{{cookiecutter.project}}/CONST_create_template/ \
 	geoportal/c2cgeoportal_geoportal/scaffolds/advance_update/{{cookiecutter.project}}/CONST_create_template/ \
+	$(APPS_FILES) \
 	$(APPS_FILES_ALT) \
 	$(MO_FILES)
 
@@ -129,18 +130,18 @@ $(STATIC_PATH)/apihelp: geoportal/node_modules/ngeo/api/dist/apihelp
 	sed -i -e 's#img/#../static/$${CACHE_VERSION}/apihelp/img/#g' $@/index.html.tmpl
 	sed -i -e "s#https://geomapfish-demo-2-[0-9].camptocamp.com/static/0/img/markers/#../static/0/images/markers/#g" $@/data.txt
 
-.PRECIOUS: geoportal/c2cgeoportal_geoportal/scaffolds%update/{{cookiecutter.project}}/CONST_create_template/
-geoportal/c2cgeoportal_geoportal/scaffolds%update/{{cookiecutter.project}}/CONST_create_template/: \
-		geoportal/c2cgeoportal_geoportal/scaffolds%create/{{cookiecutter.project}}/ \
+.PRECIOUS: geoportal/c2cgeoportal_geoportal/scaffolds/update/{{cookiecutter.project}}/CONST_create_template/
+geoportal/c2cgeoportal_geoportal/scaffolds/update/{{cookiecutter.project}}/CONST_create_template/: \
+		geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}/ \
 		$(addprefix geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}/geoportal/{{cookiecutter.package}}_geoportal/locale/,$(addsuffix /LC_MESSAGES/{{cookiecutter.package}}_geoportal-client.po, $(ALL_LANGUAGES))) \
 		$(STATIC_PATH)/header.html \
 		$(STATIC_PATH)/apihelp
 	rm -rf $@ || true
 	cp -r $< $@
 
-.PRECIOUS: geoportal/c2cgeoportal_geoportal/scaffolds%advance_update/{{cookiecutter.project}}/CONST_create_template/
-geoportal/c2cgeoportal_geoportal/scaffolds%advance_update/{{cookiecutter.project}}/CONST_create_template/: \
-		geoportal/c2cgeoportal_geoportal/scaffolds%advance_create/{{cookiecutter.project}}/ \
+.PRECIOUS: geoportal/c2cgeoportal_geoportal/scaffolds/advance_update/{{cookiecutter.project}}/CONST_create_template/
+geoportal/c2cgeoportal_geoportal/scaffolds/advance_update/{{cookiecutter.project}}/CONST_create_template/: \
+		geoportal/c2cgeoportal_geoportal/scaffolds/advance_create/{{cookiecutter.project}}/ \
 		$(APPS_FILES) \
 		$(APPS_PACKAGE_PATH)/static-ngeo/api/api.css
 	rm -rf $@ || true

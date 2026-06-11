@@ -1,3 +1,16 @@
+
+[project]
+name = "c2cgeoportal"
+version = "0.0.0"
+description = "Not used"
+classifiers = [
+    'Programming Language :: Python',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.14',
+]
+dynamic = ["dependencies", "version"]
+requires-python = ">=3.14"
+
 [tool.ruff]
 target-version = "py312"
 line-length = 110
@@ -22,7 +35,7 @@ known-third-party = ["c2cwsgiutils", "c2cgeoform"]
 known-first-party = ["c2cgeoportal_commons", "c2cgeoportal_geoportal", "c2cgeoportal_admin", "geomapfish_qgisserver"]
 
 [tool.poetry.dependencies]
-python = ">=3.12,<4"
+python = ">=3.14,<4"
 alembic = "1.18.4" # geoportal
 "c2c.template" = "2.4.2" # geoportal
 c2cgeoform = "2.5.1" # commons
@@ -75,6 +88,7 @@ ruff = "0.15.14"
 beautifulsoup4 = "4.14.3"
 certifi = "2026.5.20"
 cryptography = "48.0.0"
+crypt-r = {version = "3.13.1", python = ">=3.13"}
 setuptools = "80.10.2"
 
 [tool.poetry.group.dev.dependencies]
@@ -103,16 +117,3 @@ pre-commit = "4.6.0"
 prek = "0.4.1"
 # To be able to upgrade project from version <= 2.8
 c2cciutils = { version = "1.5.14", extras = ["checks"] }
-
-[project]
-name = "c2cgeoportal"
-version = "0.0.0"
-description = "Not used"
-classifiers = [
-    'Programming Language :: Python',
-    'Programming Language :: Python :: 3',
-    'Programming Language :: Python :: 3.12',
-    'Programming Language :: Python :: 3.13',
-]
-dynamic = ["dependencies", "version"]
-requires-python = ">=3.12"

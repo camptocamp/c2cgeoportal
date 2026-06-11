@@ -41,9 +41,9 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     --mount=type=bind,from=poetry,source=/tmp,target=/poetry \
     apt-get update \
     && apt-get upgrade --assume-yes \
-    && apt-get install --assume-yes --no-install-recommends python3-dev libpq-dev gcc \
+    && apt-get install --assume-yes --no-install-recommends libcrypt-dev python3-dev libpq-dev gcc \
     && pip install --disable-pip-version-check --no-deps --requirement=/poetry/requirements.txt \
-    && apt-get remove --assume-yes python3-dev libpq-dev gcc
+    && apt-get remove --assume-yes libcrypt-dev python3-dev libpq-dev gcc
 
 #############################################################################################################
 
