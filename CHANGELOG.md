@@ -1,3 +1,7 @@
+##### 2.9.0.497
+
+- Audit Snyk check/fix 2.9 [c2cgeoportal#12988](https://github.com/camptocamp/c2cgeoportal/pull/12988)
+
 ##### 2.9.0.496
 
 - [Backport 2.9] Fix server l10n compilation [c2cgeoportal#12831](https://github.com/camptocamp/c2cgeoportal/pull/12831)
