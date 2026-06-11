@@ -1,3 +1,7 @@
+##### 2.9.0.495
+
+- Audit Dpkg 2.9 [c2cgeoportal#12987](https://github.com/camptocamp/c2cgeoportal/pull/12987)
+
 ##### 2.9.0.494
 
 - Update security packages to v48.0.1 (2.9) [c2cgeoportal#12991](https://github.com/camptocamp/c2cgeoportal/pull/12991)
