@@ -1,3 +1,7 @@
+##### 2.9.0.496
+
+- [Backport 2.9] Fix server l10n compilation [c2cgeoportal#12831](https://github.com/camptocamp/c2cgeoportal/pull/12831)
+
 ##### 2.9.0.495
 
 - Audit Dpkg 2.9 [c2cgeoportal#12987](https://github.com/camptocamp/c2cgeoportal/pull/12987)
