@@ -46,19 +46,21 @@ from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
 _LOG = logging.getLogger(__name__)
 
 
-class Settings:
+class UserSettings:
     """User settings endpoint."""
 
-    _SERVICE_NAME = "settings"
+    _SERVICE_NAME = "user_settings"
     _DEFAULT_MAX_PAYLOAD_SIZE = 65536
     _MAX_PAYLOAD_SIZE_CONFIG_NAME = "max_payload_size"
 
     def __init__(self, request: pyramid.request.Request) -> None:
         self.request = request
-        self.config = self.request.registry.settings.get("settings", {})
+        self.config = self.request.registry.settings.get("user_settings", {})
         if not isinstance(self.config, dict):
-            _LOG.error("The 'settings' configuration should be a map, got %s", type(self.config).__name__)
-            raise HTTPInternalServerError("Invalid 'settings' configuration.")
+            _LOG.error(
+                "The 'user_settings' configuration should be a map, got %s", type(self.config).__name__
+            )
+            raise HTTPInternalServerError("Invalid 'user_settings' configuration.")
 
     def _get_user(self) -> static.User:
         user = cast("static.User | None", self.request.user)
@@ -69,15 +71,15 @@ class Settings:
     @staticmethod
     def _parse_max_payload_size(raw_value: Any) -> int:
         if raw_value is None:
-            return Settings._DEFAULT_MAX_PAYLOAD_SIZE
+            return UserSettings._DEFAULT_MAX_PAYLOAD_SIZE
         try:
             value = int(raw_value)
         except (TypeError, ValueError) as exc:
-            _LOG.exception("Invalid settings.max_payload_size value: %r", raw_value)
-            raise HTTPInternalServerError("Invalid 'settings.max_payload_size' configuration.") from exc
+            _LOG.exception("Invalid user_settings.max_payload_size value: %r", raw_value)
+            raise HTTPInternalServerError("Invalid 'user_settings.max_payload_size' configuration.") from exc
         if value < 1:
-            _LOG.error("settings.max_payload_size should be greater than 0, got %s", value)
-            raise HTTPInternalServerError("Invalid 'settings.max_payload_size' configuration.")
+            _LOG.error("user_settings.max_payload_size should be greater than 0, got %s", value)
+            raise HTTPInternalServerError("Invalid 'user_settings.max_payload_size' configuration.")
         return value
 
     def _read_body_with_limit(self) -> bytes:
@@ -90,13 +92,13 @@ class Settings:
             raise HTTPRequestEntityTooLarge("The payload is too large.")
         return body
 
-    @view_config(route_name="settings_get", renderer="json")  # type: ignore[untyped-decorator]
+    @view_config(route_name="user_settings_get", renderer="json")  # type: ignore[untyped-decorator]
     def get(self) -> dict[str, Any]:
         user = self._get_user()
         set_common_headers(self.request, self._SERVICE_NAME, Cache.PRIVATE_NO)
         return user.settings or {}
 
-    @view_config(route_name="settings_update", renderer="json")  # type: ignore[untyped-decorator]
+    @view_config(route_name="user_settings_update", renderer="json")  # type: ignore[untyped-decorator]
     def update(self) -> dict[str, Any]:
         assert models.DBSession is not None
 
