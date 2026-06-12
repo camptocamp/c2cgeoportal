@@ -348,6 +348,7 @@ vars:
     tinyows: *auth_header
     layers: *auth_header
     shortener: *auth_header
+    settings: *auth_header
     login: {}
 
 update_paths:
@@ -390,6 +391,7 @@ update_paths:
   - headers.tinyows.headers
   - headers.layers.headers
   - headers.shortener.headers
+  - headers.settings.headers
   - headers.login.headers
   - interfaces_config.default.constants.ngeoWfsPermalinkOptions
   - interfaces_config.default.constants.gmfOptions.view

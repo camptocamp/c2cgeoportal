@@ -87,6 +87,11 @@ mapping:
       schema:
         type: str
         required: True
+      settings:
+        type: map
+        mapping:
+          max_payload_size:
+            type: int
 
       dbsessions:
         type: map
@@ -360,6 +365,7 @@ mapping:
           raster: *header
           vector_tiles: *header
           shortener: *header
+          settings: *header
           error: *header
 
       urllogin:
