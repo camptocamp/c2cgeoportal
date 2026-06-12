@@ -68,3 +68,6 @@ upgrade_files:
   - action: remove
     paths:
       - geoportal/.CONST_vars.yaml.swp
+  - action: remove
+    paths:
+      - geoportal/.eslintrc.yaml
