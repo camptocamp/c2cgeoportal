@@ -95,12 +95,17 @@ def get_argparser() -> ArgumentParser:
         dest="layers",
         help="do not import the layers (tree leaf)",
     )
-    parser.add_argument("--package", help="the application package")
     parser.add_argument(
         "--stats",
         action="store_true",
         help="Print out statistics information",
     )
+    parser.add_argument(
+        "--debug",
+        action="store_true",
+        help="Print out debug statements",
+    )
+    parser.add_argument("--package", help="the application package")
     fill_arguments(parser)
     return parser
 
@@ -109,6 +114,9 @@ def main() -> None:
     """Run the command."""
     options = get_argparser().parse_args()
     settings = get_appsettings(options)
+
+    if options.debug:
+        print("Script running, debug is activated")
 
     with transaction.manager:
         session = get_session(settings, transaction.manager)
@@ -124,6 +132,9 @@ class Import:
     """
 
     def __init__(self, session: Session, settings: pyramid.config.Configurator, options: Namespace) -> None:
+        if options.debug:
+            print("Import init")
+
         self.options = options
         self.imported: set[Any] = set()
         package = settings["package"]
@@ -223,6 +234,10 @@ class Import:
         print("Loading interfaces")
         start_time = time.time()
         query = self.session.query(Interface)
+
+        if options.debug:
+            print("Import got query interface")
+
         if options.interfaces is not None:
             query = query.filter(Interface.name.in_(options.interfaces))
         else:
@@ -232,7 +247,7 @@ class Import:
             print(f"Loaded {len(self.interfaces)} interfaces in {time.time() - start_time:.2f} seconds")
 
         print("Collecting data")
-        start_time = time.time()
+        collect_start_time = time.time()
 
         self.public_theme: dict[int, set[int]] = {}
         self.public_group: dict[int, set[int]] = {}
@@ -244,15 +259,48 @@ class Import:
 
         self.full_text_search: list[dict[str, Any]] = []
 
+        if options.debug:
+            print("Import adding public themes")
+
+        public_start_time = time.time()
+        nb_themes = 0
         for theme in self.session.query(Theme).filter_by(public=True).all():
             self._add_theme(theme)
+            nb_themes += 1
+        if nb_themes > 0 and options.stats:
+            print(
+                f"Done adding {nb_themes} public themes, average time: {(time.time() - public_start_time) / nb_themes}"
+            )
 
+        if options.debug:
+            print("Import adding private themes")
+
+        private_start_time = time.time()
+        nb_themes = 0
         for role in self.session.query(Role).all():
             for theme in all_themes:
+                block_time = time.time()
                 self._add_theme(theme, role)
+                nb_themes += 1
+                if options.stats:
+                    print(
+                        f"... processed themes '{theme.name}' within role-theme combinations: "
+                        f"{time.time() - block_time}"
+                    )
+        if nb_themes > 0 and options.stats:
+            print(
+                f"Done adding {nb_themes} role-theme combinations, average time: "
+                f"{(time.time() - private_start_time) / nb_themes}"
+            )
+
+        if options.debug:
+            print("Import done successfully")
 
         if self.options.stats:
-            print(f"Collected {len(self.full_text_search)} entries in {time.time() - start_time:.2f} seconds")
+            print(
+                f"Collected {len(self.full_text_search)} entries in "
+                f"{time.time() - collect_start_time:.2f} seconds",
+            )
 
         print(f"Starting to fill the full-text search table with {len(self.full_text_search)} entries")
         start_time = time.time()
@@ -321,7 +369,9 @@ class Import:
         if role is not None and role not in theme.restricted_roles:
             return
 
+        start_time = time.time()
         fill = False
+        nb_fts_entries = 0
         for interface in self.interfaces:
             if interface in theme.interfaces:
                 for child in theme.children:
@@ -333,6 +383,13 @@ class Import:
 
                     if role is None or theme.id not in self.public_theme[interface.id]:
                         self._add_fts(theme, interface, "add_theme", role)
+                        nb_fts_entries += 1
+
+        if self.options.debug:
+            print(
+                f"_add_theme added {nb_fts_entries} FTS entries for theme {theme}, "
+                f"role {role}, time: {time.time() - start_time}"
+            )
 
     def _add_block(
         self,
@@ -362,11 +419,21 @@ class Import:
         )
 
         fill = False
+
+        time_block1 = time.time()
+        nb_children = 0
         for child in group.children:
+            nb_children += 1
             if isinstance(child, LayerGroup):
                 fill = self._add_folder(child, interface, role) or fill
             else:
                 fill = self._add_layer(child, interface, role) or fill
+        time_needed = time.time() - time_block1
+        if self.options.debug and time_needed > 0.1:
+            print(
+                f"Debug hint: code block in add_group took long: {time_needed} for group {group}, "
+                f"interface {interface}, role {role} nb_children: {nb_children}"
+            )
 
         if fill and export:
             if role is None:
