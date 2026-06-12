@@ -250,7 +250,7 @@ build artifacts to the config image.</p>
 <p>Add the following lines at the end of <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">###############################################################################</span>
 
-<span class="n">FROM</span> <span class="n">node</span><span class="p">:</span><span class="mi">16</span><span class="o">-</span><span class="n">slim</span> <span class="n">AS</span> <span class="n">custom</span><span class="o">-</span><span class="n">build</span>
+<span class="n">FROM</span> <span class="n">node</span><span class="p">:</span><span class="mi">24</span><span class="o">-</span><span class="n">slim</span> <span class="n">AS</span> <span class="n">custom</span><span class="o">-</span><span class="n">build</span>
 
 <span class="n">WORKDIR</span> <span class="o">/</span><span class="n">app</span>
 <span class="n">COPY</span> <span class="n">package</span><span class="o">.</span><span class="n">json</span> <span class="o">./</span>
