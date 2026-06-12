@@ -221,9 +221,9 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):  # type: ignore[misc]
                             )
                             self.ogcserver_accesscontrols = {}
                         else:
-                            _LOG.error(
+                            _LOG.info(
                                 "We have OGC servers with and without parameter MAP but no value in "
-                                "QGIS_PROJECT_FILE, fallback to multiple OGC server mode.",
+                                "QGIS_PROJECT_FILE, using multiple OGC server mode.",
                             )
                             single_ogc_server = None
                     if single_ogc_server is not None:
@@ -272,6 +272,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):  # type: ignore[misc]
             return self.ogcserver_accesscontrol
 
         config_file = self.serverInterface().configFilePath()
+        _LOG.debug("Get OGCServerAccessControl for map: %s", config_file)
 
         if config_file not in self.ogcserver_accesscontrols:
             message = (
@@ -279,6 +280,10 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):  # type: ignore[misc]
                 f"{', '.join(self.ogcserver_accesscontrols.keys())}"
             )
             raise GMFError(message)
+
+        ogcserver = self.ogcserver_accesscontrols[config_file].get("ogcserver")
+        if ogcserver is not None:
+            _LOG.debug("OGCServerAccessControl for OGC server: %s", ogcserver)
         return cast("OGCServerAccessControl", self.ogcserver_accesscontrols[config_file]["access_control"])
 
     def layerFilterSubsetString(self, layer: QgsVectorLayer) -> str | None:  # noqa: N802 # pylint: disable=invalid-name
@@ -431,7 +436,9 @@ class OGCServerAccessControl(QgsAccessControlFilter):  # type: ignore[misc]
         use_layer_id, _ = self.project().readBoolEntry("WMSUseLayerIDs", "/", False)  # noqa: FBT003
         if use_layer_id:
             return layer.id()  # type: ignore[no-any-return]
-        return layer.shortName() or layer.name()  # type: ignore[no-any-return]
+
+        short_name = layer.serverProperties().shortName()
+        return short_name or layer.name()  # type: ignore[no-any-return]
 
     def get_layers(self, session: Session) -> dict[str, list["main.Layer"]]:
         """
@@ -760,8 +767,12 @@ class OGCServerAccessControl(QgsAccessControlFilter):  # type: ignore[misc]
                 layers = self.get_layers(session)
                 ogc_layer_name = self.ogc_layer_name(layer)
                 if ogc_layer_name not in layers:
+                    _LOG.debug("layerPermissions no layer")
                     return rights
                 gmf_layers = layers[ogc_layer_name]
+                _LOG.debug(
+                    "layerPermissions gmf_layers: %s", ",".join([gmf_layer.name for gmf_layer in gmf_layers])
+                )
             finally:
                 session.close()
             access, _ = self.get_restriction_areas(gmf_layers, roles=roles)

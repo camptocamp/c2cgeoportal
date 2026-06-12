@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2025, Camptocamp SA
+# Copyright (c) 2013-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -59,6 +59,7 @@
 
 import hashlib
 from unittest import TestCase
+from unittest.mock import patch
 
 import transaction
 from geoalchemy2 import WKTElement
@@ -1008,3 +1009,23 @@ class TestMapserverproxyView(TestCase):
             },
         )
         self.assertRaises(HTTPForbidden, MapservProxy(request).proxy)
+
+    def test_proxy_ogcapi(self) -> None:
+        from pyramid.response import Response
+
+        from c2cgeoportal_commons.lib.url import Url
+        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
+
+        request = self._create_dummy_request()
+        request.matchdict = {"path": ("wfs3", "collections", "points")}
+        with (
+            patch.object(MapservProxy, "_setup_auth") as setup_auth,
+            patch.object(MapservProxy, "_get_wfs_url", return_value=Url("http://example.com/mapserv_proxy")),
+            patch.object(
+                MapservProxy, "_proxy_callback", return_value=Response(status=200)
+            ) as proxy_callback,
+        ):
+            response = MapservProxy(request).proxy_ogcapi()
+        assert response.status_code == 200
+        setup_auth.assert_called_once()
+        assert proxy_callback.call_args.kwargs["url"].path.endswith("/wfs3/collections/points")
