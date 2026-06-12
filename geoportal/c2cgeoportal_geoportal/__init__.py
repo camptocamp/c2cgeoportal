@@ -801,10 +801,10 @@ def includeme(config: pyramid.config.Configurator) -> None:
     add_cors_route(config, "/profile.json", "profile")
     config.add_route("profile.json", "/profile.json", request_method="POST")
 
-    add_cors_route(config, "/user/settings", "settings")
-    config.add_route("settings_get", "/user/settings", request_method="GET")
+    add_cors_route(config, "/user/settings", "user_settings")
+    config.add_route("user_settings_get", "/user/settings", request_method="GET")
     config.add_route(
-        "settings_update",
+        "user_settings_update",
         "/user/settings",
         request_method="POST",
         header=_JSON_CONTENT_TYPE,

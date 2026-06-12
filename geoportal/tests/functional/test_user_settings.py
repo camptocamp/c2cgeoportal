@@ -51,7 +51,7 @@ def settings_setup(dbsession, transact):
     return user
 
 
-class TestSettingsView:
+class TestUserSettingsView:
     @staticmethod
     def _create_request_obj(username=None, body=None, additional_settings=None):
         from c2cgeoportal_commons.models import DBSession
@@ -69,87 +69,87 @@ class TestSettingsView:
 
     def test_get_initial_settings_returns_empty_object(self, settings_setup) -> None:
         del settings_setup
-        from c2cgeoportal_geoportal.views.settings import Settings
+        from c2cgeoportal_geoportal.views.user_settings import UserSettings
 
         request = self._create_request_obj(username="__test_user")
-        response = Settings(request).get()
+        response = UserSettings(request).get()
         assert response == {}
 
     def test_get_requires_authentication(self, settings_setup) -> None:
         del settings_setup
         from pyramid.httpexceptions import HTTPUnauthorized
 
-        from c2cgeoportal_geoportal.views.settings import Settings
+        from c2cgeoportal_geoportal.views.user_settings import UserSettings
 
         request = self._create_request_obj()
         with pytest.raises(HTTPUnauthorized):
-            Settings(request).get()
+            UserSettings(request).get()
 
     def test_post_round_trip_and_overwrite(self, settings_setup) -> None:
         del settings_setup
-        from c2cgeoportal_geoportal.views.settings import Settings
+        from c2cgeoportal_geoportal.views.user_settings import UserSettings
 
         request = self._create_request_obj(username="__test_user", body=b'{"a": 1, "b": {"c": true}}')
-        response = Settings(request).update()
+        response = UserSettings(request).update()
         assert response == {"a": 1, "b": {"c": True}}
 
         request = self._create_request_obj(username="__test_user")
-        assert Settings(request).get() == {"a": 1, "b": {"c": True}}
+        assert UserSettings(request).get() == {"a": 1, "b": {"c": True}}
 
         request = self._create_request_obj(username="__test_user", body=b'{"theme": "night"}')
-        response = Settings(request).update()
+        response = UserSettings(request).update()
         assert response == {"theme": "night"}
 
         request = self._create_request_obj(username="__test_user")
-        assert Settings(request).get() == {"theme": "night"}
+        assert UserSettings(request).get() == {"theme": "night"}
 
     def test_post_requires_json_object(self, settings_setup) -> None:
         del settings_setup
         from pyramid.httpexceptions import HTTPBadRequest
 
-        from c2cgeoportal_geoportal.views.settings import Settings
+        from c2cgeoportal_geoportal.views.user_settings import UserSettings
 
         request = self._create_request_obj(username="__test_user", body=b'["not", "an", "object"]')
         with pytest.raises(HTTPBadRequest):
-            Settings(request).update()
+            UserSettings(request).update()
 
     def test_post_invalid_json(self, settings_setup) -> None:
         del settings_setup
         from pyramid.httpexceptions import HTTPBadRequest
 
-        from c2cgeoportal_geoportal.views.settings import Settings
+        from c2cgeoportal_geoportal.views.user_settings import UserSettings
 
         request = self._create_request_obj(username="__test_user", body=b"not-json")
         with pytest.raises(HTTPBadRequest):
-            Settings(request).update()
+            UserSettings(request).update()
 
     def test_post_too_large(self, settings_setup) -> None:
         del settings_setup
         from pyramid.httpexceptions import HTTPRequestEntityTooLarge
 
-        from c2cgeoportal_geoportal.views.settings import Settings
+        from c2cgeoportal_geoportal.views.user_settings import UserSettings
 
         body = json.dumps({"data": "x" * 200}).encode()
         request = self._create_request_obj(
             username="__test_user",
             body=body,
-            additional_settings={"settings": {"max_payload_size": 100}},
+            additional_settings={"user_settings": {"max_payload_size": 100}},
         )
 
         with pytest.raises(HTTPRequestEntityTooLarge):
-            Settings(request).update()
+            UserSettings(request).update()
 
     def test_post_invalid_settings_configuration(self, settings_setup) -> None:
         del settings_setup
         from pyramid.httpexceptions import HTTPInternalServerError
 
-        from c2cgeoportal_geoportal.views.settings import Settings
+        from c2cgeoportal_geoportal.views.user_settings import UserSettings
 
         request = self._create_request_obj(
             username="__test_user",
             body=b"{}",
-            additional_settings={"settings": {"max_payload_size": "wrong"}},
+            additional_settings={"user_settings": {"max_payload_size": "wrong"}},
         )
 
         with pytest.raises(HTTPInternalServerError):
-            Settings(request).update()
+            UserSettings(request).update()

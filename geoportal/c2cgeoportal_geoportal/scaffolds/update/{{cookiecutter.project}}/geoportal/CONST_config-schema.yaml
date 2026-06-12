@@ -87,7 +87,7 @@ mapping:
       schema:
         type: str
         required: True
-      settings:
+      user_settings:
         type: map
         mapping:
           max_payload_size:
@@ -365,7 +365,7 @@ mapping:
           raster: *header
           vector_tiles: *header
           shortener: *header
-          settings: *header
+          user_settings: *header
           error: *header
 
       urllogin:

@@ -35,7 +35,7 @@ This keeps generated projects consistent and allows CORS/cache header configurat
 
 When adding backend runtime settings:
 
-- Prefer nested settings maps (example: `settings.max_payload_size` should be configured as `settings: { max_payload_size: ... }`).
+- Prefer nested settings maps (example: `user_settings.max_payload_size` should be configured as `user_settings: { max_payload_size: ... }`).
 - Define defaults in `geoportal/c2cgeoportal_geoportal/scaffolds/update/{{cookiecutter.project}}/geoportal/CONST_vars.yaml` close to related settings.
 - Update `geoportal/c2cgeoportal_geoportal/scaffolds/update/{{cookiecutter.project}}/geoportal/CONST_config-schema.yaml` accordingly.
 - Validate settings type/shape in code and return an internal server error for invalid server configuration.
