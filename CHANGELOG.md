@@ -1,3 +1,7 @@
+##### 2.8.1.341
+
+- Update security packages to v49 (2.8) [c2cgeoportal#12999](https://github.com/camptocamp/c2cgeoportal/pull/12999)
+
 ##### 2.8.1.340
 
 - Update security packages to v48.0.1 (2.8) [c2cgeoportal#12990](https://github.com/camptocamp/c2cgeoportal/pull/12990)
