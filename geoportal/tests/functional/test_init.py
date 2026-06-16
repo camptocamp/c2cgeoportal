@@ -31,10 +31,10 @@ import types
 from unittest.mock import PropertyMock, patch
 
 import pytest
+from tests import create_dummy_request
 
 from c2cgeoportal_geoportal import create_get_user_from_request
 from c2cgeoportal_geoportal.lib import oidc
-from tests import create_dummy_request
 
 
 class TestGetUser:
