@@ -1,3 +1,7 @@
+##### 2.9.0.501
+
+- [Backport 2.9] Enable usage of basic auth and OIDC at the same time [c2cgeoportal#13005](https://github.com/camptocamp/c2cgeoportal/pull/13005)
+
 ##### 2.9.0.500
 
 - Audit Dpkg 2.9 [c2cgeoportal#13002](https://github.com/camptocamp/c2cgeoportal/pull/13002)
