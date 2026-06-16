@@ -410,12 +410,16 @@ def create_get_user_from_request(
             elif username is None:
                 username = request.unauthenticated_userid
             if username is not None or user_info_remember is not None:
-                if openid_connect_enabled:
-                    if user_info_remember is None:
-                        assert username is not None
+                if user_info_remember is None:
+                    assert username is not None
+                    try:
                         user_info_remember = json.loads(username)
-                    del username
+                    except json.JSONDecodeError:
+                        user_info_remember = None
+                        _LOG.info("Failed to decode username %s as JSON", username)
+                if isinstance(user_info_remember, dict) and openid_connect_enabled:
                     if "access_token_expires" in user_info_remember:
+                        del username
                         access_token_expires = dateutil.parser.isoparse(
                             user_info_remember["access_token_expires"],
                         )
@@ -454,7 +458,6 @@ def create_get_user_from_request(
                                 token_response,
                                 request.host,
                             )
-
                     request.user_ = request.get_user_from_remember(user_info_remember)
                 else:
                     # We know we will need the role object of the
