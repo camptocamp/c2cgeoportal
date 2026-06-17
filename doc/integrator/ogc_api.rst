@@ -37,6 +37,7 @@ QGIS Server and MapServer are already configured to support the OGC API and dete
 Landing pages for both MapServer and QGIS Server are not supported yet.
 
 OGC API features are accessible through ``mapserv_proxy``, with the following URLs:
+
 * ``/mapserv_proxy/<ogc-server>/ogcapi/*``: The MapServer path.
 * ``/mapserv_proxy/<ogc-server>/wfs3/*``: The QGIS Server path.
 

@@ -307,6 +307,7 @@ With the application we have some predefined workflows.
 .............................
 
 The workflow that will run on all your commits, it will:
+
 - Run some code style checks on your code.
 - Build you application.
 - Run the acceptance tests (if configured).
