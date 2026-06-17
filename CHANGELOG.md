@@ -1,3 +1,7 @@
+##### 2.9.0.503
+
+- [Backport 2.9] Fix double slash in print Url for Print v4 [c2cgeoportal#13010](https://github.com/camptocamp/c2cgeoportal/pull/13010)
+
 ##### 2.9.0.502
 
 - Audit Dpkg 2.9 [c2cgeoportal#13008](https://github.com/camptocamp/c2cgeoportal/pull/13008)
