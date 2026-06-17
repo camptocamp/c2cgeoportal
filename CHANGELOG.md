@@ -1,3 +1,7 @@
+##### 2.9.0.505
+
+- Audit Dpkg 2.9 [c2cgeoportal#13014](https://github.com/camptocamp/c2cgeoportal/pull/13014)
+
 ##### 2.9.0.504
 
 - Fix list rendering in documentation [c2cgeoportal#13012](https://github.com/camptocamp/c2cgeoportal/pull/13012)
