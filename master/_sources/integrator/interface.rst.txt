@@ -52,6 +52,7 @@ If you need cache bustering you should put your files in the ``geoportal/geomapf
 directory (``/etc/geomapfish/static`` in the container).
 
 The interface HTML file is considered as mako template and he can use the following variables:
+
 - ``request``: the Pyramid request object.
 - ``dynamicUrl``: the URL to get the interface configuration.
 - ``interface``: the interface name.

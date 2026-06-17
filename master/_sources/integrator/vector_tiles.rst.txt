@@ -33,6 +33,7 @@ name
 
 style
    URL to a Mapbox Style file (version 8 or higher), examples:
+
    - https://example.com/mystyle.json
    - static:///mb_styles/osm_landuse.json
 

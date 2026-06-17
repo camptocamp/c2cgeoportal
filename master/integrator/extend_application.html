@@ -291,10 +291,12 @@ build artifacts to the config image.</p>
 <p><code class="docutils literal notranslate"><span class="pre">`html</span>
 <span class="pre">&lt;proj-feedback</span> <span class="pre">slot=&quot;tool-panel-feedback&quot;&gt;&lt;/proj-feedback&gt;</span>
 <span class="pre">`</span></code></p>
-<p>The modifications in the <code class="docutils literal notranslate"><span class="pre">vars</span></code> file are:
-- Add the JavaScript file as <code class="docutils literal notranslate"><span class="pre">gmfCustomJavascriptUrl</span></code>.
-- Be sure that we have the CSS file as <code class="docutils literal notranslate"><span class="pre">gmfCustomStylesheetUrl</span></code>.
-- Add in comment all the needed configuration to be able to debug.</p>
+<p>The modifications in the <code class="docutils literal notranslate"><span class="pre">vars</span></code> file are:</p>
+<ul class="simple">
+<li><p>Add the JavaScript file as <code class="docutils literal notranslate"><span class="pre">gmfCustomJavascriptUrl</span></code>.</p></li>
+<li><p>Be sure that we have the CSS file as <code class="docutils literal notranslate"><span class="pre">gmfCustomStylesheetUrl</span></code>.</p></li>
+<li><p>Add in comment all the needed configuration to be able to debug.</p></li>
+</ul>
 <p>Apply the following diff in the <code class="docutils literal notranslate"><span class="pre">geoportal/vars.yaml</span></code>:</p>
 <div class="highlight-diff notranslate"><div class="highlight"><pre><span></span><span class="w"> </span> vars:
 <span class="w"> </span>   interfaces_config:
