@@ -603,7 +603,7 @@ def includeme(config: pyramid.config.Configurator) -> None:
     config.add_request_method(lambda request, role_type: role_type, name="get_organization_role")
     # - Organization print URL
     config.add_request_method(
-        lambda request: request.registry.settings["print_url"],
+        lambda request: request.registry.settings.get("print_url", "").rstrip("/"),
         name="get_organization_print_url",
     )
     # - Organization interface name (in the config and in the admin interface)
