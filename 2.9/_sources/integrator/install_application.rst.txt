@@ -8,6 +8,7 @@ On this page, we explain the procedure to build an application from only the cur
 If you want to use an existing database, you should ignore all the commands concerning the database.
 
 This guide assumes that:
+
  - all dependencies described in the :ref:`requirements <integrator_requirements>` are installed,
  - Git is used as revision control.
 

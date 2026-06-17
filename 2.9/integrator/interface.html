@@ -75,12 +75,14 @@ the <code class="docutils literal notranslate"><span class="pre">/etc/static-fro
 any cash bustering, then files (other than interfaces HTML files) should contains an hash.</p>
 <p>If you need cache bustering you should put your files in the <code class="docutils literal notranslate"><span class="pre">geoportal/geomapfish_geoportal/static/</span></code>
 directory (<code class="docutils literal notranslate"><span class="pre">/etc/geomapfish/static</span></code> in the container).</p>
-<p>The interface HTML file is considered as mako template and he can use the following variables:
-- <code class="docutils literal notranslate"><span class="pre">request</span></code>: the Pyramid request object.
-- <code class="docutils literal notranslate"><span class="pre">dynamicUrl</span></code>: the URL to get the interface configuration.
-- <code class="docutils literal notranslate"><span class="pre">interface</span></code>: the interface name.
-- <code class="docutils literal notranslate"><span class="pre">staticFrontend</span></code>: the URL to the static frontend directory.
-- <code class="docutils literal notranslate"><span class="pre">staticCashBuster</span></code>: the URL to the static cash buster directory.</p>
+<p>The interface HTML file is considered as mako template and he can use the following variables:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">request</span></code>: the Pyramid request object.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dynamicUrl</span></code>: the URL to get the interface configuration.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">interface</span></code>: the interface name.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">staticFrontend</span></code>: the URL to the static frontend directory.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">staticCashBuster</span></code>: the URL to the static cash buster directory.</p></li>
+</ul>
 <p>For that you should create a Docker image that provide a <code class="docutils literal notranslate"><span class="pre">/etc/static-frontend/</span></code> volume (<code class="docutils literal notranslate"><span class="pre">VOLUME</span> <span class="pre">/etc/static-frontend</span></code>).</p>
 <p>And include it in the <code class="docutils literal notranslate"><span class="pre">docker-compose.yaml</span></code> file with something like:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">services</span><span class="p">:</span>

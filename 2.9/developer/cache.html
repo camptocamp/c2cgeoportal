@@ -38,14 +38,14 @@
   <section id="cache-management">
 <span id="developer-cache"></span><h1>Cache management<a class="headerlink" href="#cache-management" title="Link to this heading">¶</a></h1>
 <p>Here we describe the strategy we use to manage the cache.</p>
-<dl class="simple">
-<dt>We have three kinds of services:</dt><dd><ul class="simple">
+<p>We have three kinds of services:</p>
+<blockquote>
+<div><ul class="simple">
 <li><p>Without any cache (<strong>no_cache</strong>).</p></li>
 <li><p>Cache related to the application version (<strong>public_cache</strong>).</p></li>
 <li><p>Cache related to the application version and the current role (<strong>private_cache</strong>).</p></li>
 </ul>
-</dd>
-</dl>
+</div></blockquote>
 <p>For some services, we also set the header <code class="docutils literal notranslate"><span class="pre">Vary</span></code> to <code class="docutils literal notranslate"><span class="pre">Accept-Language</span></code>
 to have one cache per language.</p>
 <section id="server-side">

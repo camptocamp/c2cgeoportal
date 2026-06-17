@@ -125,6 +125,7 @@ Then, customize the migration to suit your needs, test it:
     docker compose exec geoportal upgrade head
 
 More information at:
+
  * https://alembic.readthedocs.org/en/latest/index.html
  * https://alembic.readthedocs.org/en/latest/tutorial.html#create-a-migration-script
  * https://alembic.readthedocs.org/en/latest/ops.html
