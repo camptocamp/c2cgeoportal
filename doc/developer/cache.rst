@@ -6,6 +6,7 @@ Cache management
 Here we describe the strategy we use to manage the cache.
 
 We have three kinds of services:
+
  * Without any cache (**no_cache**).
  * Cache related to the application version (**public_cache**).
  * Cache related to the application version and the current role (**private_cache**).
