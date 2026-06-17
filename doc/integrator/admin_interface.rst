@@ -24,6 +24,7 @@ Default tabs/modules
 ~~~~~~~~~~~~~~~~~~~~
 
 The active default tabs (route urls) are:
+
 - layertree
 - themes
 - layer_groups
