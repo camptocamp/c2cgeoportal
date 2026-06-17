@@ -310,6 +310,7 @@ The panel will be included with the following HTML:
 ```
 
 The modifications in the ``vars`` file are:
+
 - Add the JavaScript file as ``gmfCustomJavascriptUrl``.
 - Be sure that we have the CSS file as ``gmfCustomStylesheetUrl``.
 - Add in comment all the needed configuration to be able to debug.
