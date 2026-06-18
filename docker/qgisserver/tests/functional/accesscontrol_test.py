@@ -40,7 +40,7 @@ def add_node_in_qgis_project(project, parent_node, node_def) -> None:
     if node_def["type"] == "layer":
         vlayer = QgsVectorLayer("Point", node_def["name"], "memory")
         if "shortName" in node_def:
-            vlayer.setShortName(node_def["shortName"])
+            vlayer.serverProperties().setShortName(node_def["shortName"])
         project.addMapLayer(vlayer)
         node = project.layerTreeRoot().findLayer(vlayer)
         clone = node.clone()
