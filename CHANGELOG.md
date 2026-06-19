@@ -1,3 +1,7 @@
+##### 2.8.1.344
+
+- Update security packages to v2026.6.17 (2.8) [c2cgeoportal#13020](https://github.com/camptocamp/c2cgeoportal/pull/13020)
+
 ##### 2.8.1.343
 
 - [Backport 2.8] Fix double slash in print Url for Print v4 [c2cgeoportal#13011](https://github.com/camptocamp/c2cgeoportal/pull/13011)
