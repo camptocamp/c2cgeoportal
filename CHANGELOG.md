@@ -1,3 +1,7 @@
+##### 2.9.0.509
+
+- Update dependency ujson to v5.13.0 [SECURITY] (2.9) [c2cgeoportal#13022](https://github.com/camptocamp/c2cgeoportal/pull/13022)
+
 ##### 2.9.0.508
 
 - Update security packages to v2026.6.17 (2.9) [c2cgeoportal#13021](https://github.com/camptocamp/c2cgeoportal/pull/13021)
