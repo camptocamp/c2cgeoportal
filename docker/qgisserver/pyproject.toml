@@ -38,7 +38,7 @@ psycopg2 = "2.9.12"
 pytz = "2026.2"
 requests = "2.33.1"
 urllib3 = "2.7.0"
-ujson = "5.12.1"
+ujson = "5.13.0"
 idna = "3.15"
 
 [tool.poetry.dev-dependencies]
