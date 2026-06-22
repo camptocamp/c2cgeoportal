@@ -180,8 +180,8 @@ On QGIS:
 * Set ``Grant flow`` to ``PKCE authentication code``.
 * Set ``Request URL`` to ``<zitadel_base_url>/oauth/v2/authorize``.
 * Set ``Token URL`` to ``<zitadel_base_url>/oauth/v2/token``.
-* Set ``Client ID`` to ``<client_id>``.
-* Set ``Scope`` to the ``openid profile email``.
+* Set ``Client ID`` to ``<client_id>``. This is the application ID of the PKCE application.
+* Set ``Scope`` to the following string ``openid profile email``.
 
 Implementation
 ~~~~~~~~~~~~~~
