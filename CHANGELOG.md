@@ -1,3 +1,7 @@
+##### 2.9.0.510
+
+- Audit Dpkg 2.9 [c2cgeoportal#13024](https://github.com/camptocamp/c2cgeoportal/pull/13024)
+
 ##### 2.9.0.509
 
 - Update dependency ujson to v5.13.0 [SECURITY] (2.9) [c2cgeoportal#13022](https://github.com/camptocamp/c2cgeoportal/pull/13022)
