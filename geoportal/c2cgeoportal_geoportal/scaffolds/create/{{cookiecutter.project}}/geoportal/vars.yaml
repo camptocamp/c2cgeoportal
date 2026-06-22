@@ -395,6 +395,7 @@ update_paths:
   - headers.login.headers
   - interfaces_config.default.constants.ngeoWfsPermalinkOptions
   - interfaces_config.default.constants.gmfOptions.view
+  - interfaces_config.default.constants.gmfOptions.map
   - interfaces_config.default.constants.gmfSearchOptions
   - interfaces_config.default.constants.gmfPermalinkOptions
   - interfaces_config.default.constants.gmfVectorTilesOptions
@@ -402,11 +403,14 @@ update_paths:
   - interfaces_config.default.static
   - interfaces_config.default.routes.fulltextsearchUrl
   - interfaces_config.desktop.constants.gmfOptions.view
+  - interfaces_config.desktop.constants.gmfOptions.map
   - interfaces_config.desktop.constants.gmfPrintOptions
   - interfaces_config.desktop.routes
   - interfaces_config.mobile.constants.gmfOptions.view
+  - interfaces_config.mobile.constants.gmfOptions.map
   - interfaces_config.mobile.constants.gmfMobileMeasurePointOptions
   - interfaces_config.iframe_api.constants.gmfOptions.view
+  - interfaces_config.iframe_api.constants.gmfOptions.map
   - interfaces_config.api.constants
   - interfaces_config.api.routes.searchUrl
   - interfaces_theme

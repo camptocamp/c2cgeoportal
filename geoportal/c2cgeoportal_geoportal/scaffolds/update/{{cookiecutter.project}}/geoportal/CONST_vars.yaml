@@ -365,7 +365,9 @@ vars:
       redirect_interface: mobile
       do_redirect: True
       constants:
-        gmfOptions: *gmfOptions
+        gmfOptions:
+          <<: *gmfOptions
+          map: {}
         ngeoProfileOptions: {}
         ngeoStreetviewOptions:
           viewer: 'mapillary'
@@ -430,7 +432,9 @@ vars:
       extends: default
       redirect_interface: desktop
       constants:
-        gmfOptions: *gmfOptions
+        gmfOptions:
+          <<: *gmfOptions
+          map: {}
         gmfMobileMeasureAreaOptions:
           precision: 2
           sketchStyle: &mobileMeasureStyle
@@ -477,7 +481,9 @@ vars:
     iframe_api:
       extends: default
       constants:
-        gmfOptions: *gmfOptions
+        gmfOptions:
+          <<: *gmfOptions
+          map: {}
         gmfSearchGroups: []
         gmfFitOptions:
           # Padding (in pixels) to be correctly fitted inside the view. Values in the array are top, right, bottom and left padding.
