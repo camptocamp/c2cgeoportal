@@ -40,6 +40,7 @@ requests = "2.33.1"
 urllib3 = "2.7.0"
 ujson = "5.13.0"
 idna = "3.15"
+webob = "1.8.10"
 
 [tool.poetry.dev-dependencies]
 prospector = { extras = ["with_mypy", "with_bandit"], version = "1.12.1" }
