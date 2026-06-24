@@ -93,7 +93,7 @@ camptocamp/geomapfish-config:latest:
   ubuntu_24_04/netbase: '6.4'
   ubuntu_24_04/openssl: 3.0.13-0ubuntu3.11
   ubuntu_24_04/passwd: 1:4.13+dfsg1-4ubuntu3.2
-  ubuntu_24_04/perl-base: 5.38.2-3.2ubuntu0.2
+  ubuntu_24_04/perl-base: 5.38.2-3.2ubuntu0.3
   ubuntu_24_04/procps: 2:4.0.4-4ubuntu3.2
   ubuntu_24_04/python-is-python3: 3.11.4-1
   ubuntu_24_04/python3: 3.12.3-0ubuntu2.1
@@ -338,7 +338,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libpcre3: 2:8.39-13ubuntu0.22.04.1
   ubuntu_22_04/libpdal-base13: 2.3.0+ds-2ubuntu4
   ubuntu_22_04/libpdal-util13: 2.3.0+ds-2ubuntu4
-  ubuntu_22_04/libperl5.34: 5.34.0-3ubuntu1.5
+  ubuntu_22_04/libperl5.34: 5.34.0-3ubuntu1.7
   ubuntu_22_04/libpixman-1-0: 0.40.0-1ubuntu0.22.04.1
   ubuntu_22_04/libpng16-16: 1.6.37-3ubuntu0.5
   ubuntu_22_04/libpoppler118: 22.02.0-2ubuntu0.13
@@ -504,9 +504,9 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/openssl: 3.0.2-0ubuntu1.25
   ubuntu_22_04/passwd: 1:4.8.1-2ubuntu2.2
   ubuntu_22_04/pdal: 2.3.0+ds-2ubuntu4
-  ubuntu_22_04/perl: 5.34.0-3ubuntu1.5
-  ubuntu_22_04/perl-base: 5.34.0-3ubuntu1.5
-  ubuntu_22_04/perl-modules-5.34: 5.34.0-3ubuntu1.5
+  ubuntu_22_04/perl: 5.34.0-3ubuntu1.7
+  ubuntu_22_04/perl-base: 5.34.0-3ubuntu1.7
+  ubuntu_22_04/perl-modules-5.34: 5.34.0-3ubuntu1.7
   ubuntu_22_04/procps: 2:3.3.17-6ubuntu2.1
   ubuntu_22_04/proj-data: 8.2.1-1
   ubuntu_22_04/python-is-python3: 3.9.2-2
@@ -785,7 +785,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libpcre3: 2:8.39-13ubuntu0.22.04.1
   ubuntu_22_04/libpdal-base13: 2.3.0+ds-2ubuntu4
   ubuntu_22_04/libpdal-util13: 2.3.0+ds-2ubuntu4
-  ubuntu_22_04/libperl5.34: 5.34.0-3ubuntu1.5
+  ubuntu_22_04/libperl5.34: 5.34.0-3ubuntu1.7
   ubuntu_22_04/libpixman-1-0: 0.40.0-1ubuntu0.22.04.1
   ubuntu_22_04/libpng16-16: 1.6.37-3ubuntu0.5
   ubuntu_22_04/libpoppler118: 22.02.0-2ubuntu0.13
@@ -951,9 +951,9 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/openssl: 3.0.2-0ubuntu1.25
   ubuntu_22_04/passwd: 1:4.8.1-2ubuntu2.2
   ubuntu_22_04/pdal: 2.3.0+ds-2ubuntu4
-  ubuntu_22_04/perl: 5.34.0-3ubuntu1.5
-  ubuntu_22_04/perl-base: 5.34.0-3ubuntu1.5
-  ubuntu_22_04/perl-modules-5.34: 5.34.0-3ubuntu1.5
+  ubuntu_22_04/perl: 5.34.0-3ubuntu1.7
+  ubuntu_22_04/perl-base: 5.34.0-3ubuntu1.7
+  ubuntu_22_04/perl-modules-5.34: 5.34.0-3ubuntu1.7
   ubuntu_22_04/procps: 2:3.3.17-6ubuntu2.1
   ubuntu_22_04/proj-data: 8.2.1-1
   ubuntu_22_04/python-is-python3: 3.9.2-2
@@ -1203,7 +1203,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40:
   ubuntu_24_04/libpciaccess0: 0.17-3ubuntu0.24.04.2
   ubuntu_24_04/libpcre2-16-0: 10.42-4ubuntu2.1
   ubuntu_24_04/libpcre2-8-0: 10.42-4ubuntu2.1
-  ubuntu_24_04/libperl5.38t64: 5.38.2-3.2ubuntu0.2
+  ubuntu_24_04/libperl5.38t64: 5.38.2-3.2ubuntu0.3
   ubuntu_24_04/libpixman-1-0: 0.42.2-1build1
   ubuntu_24_04/libpng16-16t64: 1.6.43-5ubuntu0.6
   ubuntu_24_04/libpq5: 16.14-0ubuntu0.24.04.1
@@ -1359,9 +1359,9 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40:
   ubuntu_24_04/ocl-icd-libopencl1: 2.3.2-1build1
   ubuntu_24_04/openssl: 3.0.13-0ubuntu3.11
   ubuntu_24_04/passwd: 1:4.13+dfsg1-4ubuntu3.2
-  ubuntu_24_04/perl: 5.38.2-3.2ubuntu0.2
-  ubuntu_24_04/perl-base: 5.38.2-3.2ubuntu0.2
-  ubuntu_24_04/perl-modules-5.38: 5.38.2-3.2ubuntu0.2
+  ubuntu_24_04/perl: 5.38.2-3.2ubuntu0.3
+  ubuntu_24_04/perl-base: 5.38.2-3.2ubuntu0.3
+  ubuntu_24_04/perl-modules-5.38: 5.38.2-3.2ubuntu0.3
   ubuntu_24_04/procps: 2:4.0.4-4ubuntu3.2
   ubuntu_24_04/proj-data: 9.4.0-1build2
   ubuntu_24_04/python-is-python3: 3.11.4-1
@@ -1609,7 +1609,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40-gdal3.10:
   ubuntu_24_04/libpciaccess0: 0.17-3ubuntu0.24.04.2
   ubuntu_24_04/libpcre2-16-0: 10.42-4ubuntu2.1
   ubuntu_24_04/libpcre2-8-0: 10.42-4ubuntu2.1
-  ubuntu_24_04/libperl5.38t64: 5.38.2-3.2ubuntu0.2
+  ubuntu_24_04/libperl5.38t64: 5.38.2-3.2ubuntu0.3
   ubuntu_24_04/libpixman-1-0: 0.42.2-1build1
   ubuntu_24_04/libpng16-16t64: 1.6.43-5ubuntu0.6
   ubuntu_24_04/libpq5: 16.14-0ubuntu0.24.04.1
@@ -1765,9 +1765,9 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40-gdal3.10:
   ubuntu_24_04/ocl-icd-libopencl1: 2.3.2-1build1
   ubuntu_24_04/openssl: 3.0.13-0ubuntu3.11
   ubuntu_24_04/passwd: 1:4.13+dfsg1-4ubuntu3.2
-  ubuntu_24_04/perl: 5.38.2-3.2ubuntu0.2
-  ubuntu_24_04/perl-base: 5.38.2-3.2ubuntu0.2
-  ubuntu_24_04/perl-modules-5.38: 5.38.2-3.2ubuntu0.2
+  ubuntu_24_04/perl: 5.38.2-3.2ubuntu0.3
+  ubuntu_24_04/perl-base: 5.38.2-3.2ubuntu0.3
+  ubuntu_24_04/perl-modules-5.38: 5.38.2-3.2ubuntu0.3
   ubuntu_24_04/procps: 2:4.0.4-4ubuntu3.2
   ubuntu_24_04/proj-data: 9.4.0-1build2
   ubuntu_24_04/python-is-python3: 3.11.4-1
@@ -2013,7 +2013,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_24_04/libpciaccess0: 0.17-3ubuntu0.24.04.2
   ubuntu_24_04/libpcre2-16-0: 10.42-4ubuntu2.1
   ubuntu_24_04/libpcre2-8-0: 10.42-4ubuntu2.1
-  ubuntu_24_04/libperl5.38t64: 5.38.2-3.2ubuntu0.2
+  ubuntu_24_04/libperl5.38t64: 5.38.2-3.2ubuntu0.3
   ubuntu_24_04/libpixman-1-0: 0.42.2-1build1
   ubuntu_24_04/libpng16-16t64: 1.6.43-5ubuntu0.6
   ubuntu_24_04/libpq5: 16.14-0ubuntu0.24.04.1
@@ -2166,9 +2166,9 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_24_04/ocl-icd-libopencl1: 2.3.2-1build1
   ubuntu_24_04/openssl: 3.0.13-0ubuntu3.11
   ubuntu_24_04/passwd: 1:4.13+dfsg1-4ubuntu3.2
-  ubuntu_24_04/perl: 5.38.2-3.2ubuntu0.2
-  ubuntu_24_04/perl-base: 5.38.2-3.2ubuntu0.2
-  ubuntu_24_04/perl-modules-5.38: 5.38.2-3.2ubuntu0.2
+  ubuntu_24_04/perl: 5.38.2-3.2ubuntu0.3
+  ubuntu_24_04/perl-base: 5.38.2-3.2ubuntu0.3
+  ubuntu_24_04/perl-modules-5.38: 5.38.2-3.2ubuntu0.3
   ubuntu_24_04/procps: 2:4.0.4-4ubuntu3.2
   ubuntu_24_04/proj-data: 9.4.0-1build2
   ubuntu_24_04/python-is-python3: 3.11.4-1
@@ -2418,7 +2418,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_24_04/libpciaccess0: 0.17-3ubuntu0.24.04.2
   ubuntu_24_04/libpcre2-16-0: 10.42-4ubuntu2.1
   ubuntu_24_04/libpcre2-8-0: 10.42-4ubuntu2.1
-  ubuntu_24_04/libperl5.38t64: 5.38.2-3.2ubuntu0.2
+  ubuntu_24_04/libperl5.38t64: 5.38.2-3.2ubuntu0.3
   ubuntu_24_04/libpixman-1-0: 0.42.2-1build1
   ubuntu_24_04/libpng16-16t64: 1.6.43-5ubuntu0.6
   ubuntu_24_04/libpq5: 16.14-0ubuntu0.24.04.1
@@ -2573,9 +2573,9 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_24_04/ocl-icd-libopencl1: 2.3.2-1build1
   ubuntu_24_04/openssl: 3.0.13-0ubuntu3.11
   ubuntu_24_04/passwd: 1:4.13+dfsg1-4ubuntu3.2
-  ubuntu_24_04/perl: 5.38.2-3.2ubuntu0.2
-  ubuntu_24_04/perl-base: 5.38.2-3.2ubuntu0.2
-  ubuntu_24_04/perl-modules-5.38: 5.38.2-3.2ubuntu0.2
+  ubuntu_24_04/perl: 5.38.2-3.2ubuntu0.3
+  ubuntu_24_04/perl-base: 5.38.2-3.2ubuntu0.3
+  ubuntu_24_04/perl-modules-5.38: 5.38.2-3.2ubuntu0.3
   ubuntu_24_04/procps: 2:4.0.4-4ubuntu3.2
   ubuntu_24_04/proj-data: 9.4.0-1build2
   ubuntu_24_04/python-is-python3: 3.11.4-1
@@ -2823,7 +2823,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/libpciaccess0: 0.17-3ubuntu0.24.04.2
   ubuntu_24_04/libpcre2-16-0: 10.42-4ubuntu2.1
   ubuntu_24_04/libpcre2-8-0: 10.42-4ubuntu2.1
-  ubuntu_24_04/libperl5.38t64: 5.38.2-3.2ubuntu0.2
+  ubuntu_24_04/libperl5.38t64: 5.38.2-3.2ubuntu0.3
   ubuntu_24_04/libpixman-1-0: 0.42.2-1build1
   ubuntu_24_04/libpng16-16t64: 1.6.43-5ubuntu0.6
   ubuntu_24_04/libpq5: 16.14-0ubuntu0.24.04.1
@@ -2979,9 +2979,9 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/ocl-icd-libopencl1: 2.3.2-1build1
   ubuntu_24_04/openssl: 3.0.13-0ubuntu3.11
   ubuntu_24_04/passwd: 1:4.13+dfsg1-4ubuntu3.2
-  ubuntu_24_04/perl: 5.38.2-3.2ubuntu0.2
-  ubuntu_24_04/perl-base: 5.38.2-3.2ubuntu0.2
-  ubuntu_24_04/perl-modules-5.38: 5.38.2-3.2ubuntu0.2
+  ubuntu_24_04/perl: 5.38.2-3.2ubuntu0.3
+  ubuntu_24_04/perl-base: 5.38.2-3.2ubuntu0.3
+  ubuntu_24_04/perl-modules-5.38: 5.38.2-3.2ubuntu0.3
   ubuntu_24_04/procps: 2:4.0.4-4ubuntu3.2
   ubuntu_24_04/proj-data: 9.4.0-1build2
   ubuntu_24_04/python-is-python3: 3.11.4-1
@@ -3283,7 +3283,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/libpango-1.0-0: 1.52.1+ds-1build1
   ubuntu_24_04/libpciaccess0: 0.17-3ubuntu0.24.04.2
   ubuntu_24_04/libpcre2-8-0: 10.42-4ubuntu2.1
-  ubuntu_24_04/libperl5.38t64: 5.38.2-3.2ubuntu0.2
+  ubuntu_24_04/libperl5.38t64: 5.38.2-3.2ubuntu0.3
   ubuntu_24_04/libpipewire-0.3-0t64: 1.2.3-1~24.04.sav0
   ubuntu_24_04/libpixman-1-0: 0.42.2-1build1
   ubuntu_24_04/libpkgconf3: 1.8.1-2build1
@@ -3742,9 +3742,9 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/openssl: 3.0.13-0ubuntu3.11
   ubuntu_24_04/packagekit: 1.2.8-2ubuntu1.5
   ubuntu_24_04/passwd: 1:4.13+dfsg1-4ubuntu3.2
-  ubuntu_24_04/perl: 5.38.2-3.2ubuntu0.2
-  ubuntu_24_04/perl-base: 5.38.2-3.2ubuntu0.2
-  ubuntu_24_04/perl-modules-5.38: 5.38.2-3.2ubuntu0.2
+  ubuntu_24_04/perl: 5.38.2-3.2ubuntu0.3
+  ubuntu_24_04/perl-base: 5.38.2-3.2ubuntu0.3
+  ubuntu_24_04/perl-modules-5.38: 5.38.2-3.2ubuntu0.3
   ubuntu_24_04/pinentry-curses: 1.2.1-3ubuntu5
   ubuntu_24_04/pkg-config: 1.8.1-2build1
   ubuntu_24_04/pkgconf: 1.8.1-2build1
@@ -4017,7 +4017,7 @@ camptocamp/geomapfish:latest:
   ubuntu_24_04/libpango-1.0-0: 1.52.1+ds-1build1
   ubuntu_24_04/libpciaccess0: 0.17-3ubuntu0.24.04.2
   ubuntu_24_04/libpcre2-8-0: 10.42-4ubuntu2.1
-  ubuntu_24_04/libperl5.38t64: 5.38.2-3.2ubuntu0.2
+  ubuntu_24_04/libperl5.38t64: 5.38.2-3.2ubuntu0.3
   ubuntu_24_04/libpipewire-0.3-0t64: 1.2.3-1~24.04.sav0
   ubuntu_24_04/libpixman-1-0: 0.42.2-1build1
   ubuntu_24_04/libpng16-16t64: 1.6.43-5ubuntu0.6
@@ -4461,9 +4461,9 @@ camptocamp/geomapfish:latest:
   ubuntu_24_04/openssl: 3.0.13-0ubuntu3.11
   ubuntu_24_04/packagekit: 1.2.8-2ubuntu1.5
   ubuntu_24_04/passwd: 1:4.13+dfsg1-4ubuntu3.2
-  ubuntu_24_04/perl: 5.38.2-3.2ubuntu0.2
-  ubuntu_24_04/perl-base: 5.38.2-3.2ubuntu0.2
-  ubuntu_24_04/perl-modules-5.38: 5.38.2-3.2ubuntu0.2
+  ubuntu_24_04/perl: 5.38.2-3.2ubuntu0.3
+  ubuntu_24_04/perl-base: 5.38.2-3.2ubuntu0.3
+  ubuntu_24_04/perl-modules-5.38: 5.38.2-3.2ubuntu0.3
   ubuntu_24_04/pinentry-curses: 1.2.1-3ubuntu5
   ubuntu_24_04/polkitd: 124-2ubuntu1.24.04.3
   ubuntu_24_04/procps: 2:4.0.4-4ubuntu3.2
@@ -4719,7 +4719,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_24_04/libpango-1.0-0: 1.52.1+ds-1build1
   ubuntu_24_04/libpciaccess0: 0.17-3ubuntu0.24.04.2
   ubuntu_24_04/libpcre2-8-0: 10.42-4ubuntu2.1
-  ubuntu_24_04/libperl5.38t64: 5.38.2-3.2ubuntu0.2
+  ubuntu_24_04/libperl5.38t64: 5.38.2-3.2ubuntu0.3
   ubuntu_24_04/libpipewire-0.3-0t64: 1.2.3-1~24.04.sav0
   ubuntu_24_04/libpixman-1-0: 0.42.2-1build1
   ubuntu_24_04/libpng16-16t64: 1.6.43-5ubuntu0.6
@@ -5163,9 +5163,9 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_24_04/openssl: 3.0.13-0ubuntu3.11
   ubuntu_24_04/packagekit: 1.2.8-2ubuntu1.5
   ubuntu_24_04/passwd: 1:4.13+dfsg1-4ubuntu3.2
-  ubuntu_24_04/perl: 5.38.2-3.2ubuntu0.2
-  ubuntu_24_04/perl-base: 5.38.2-3.2ubuntu0.2
-  ubuntu_24_04/perl-modules-5.38: 5.38.2-3.2ubuntu0.2
+  ubuntu_24_04/perl: 5.38.2-3.2ubuntu0.3
+  ubuntu_24_04/perl-base: 5.38.2-3.2ubuntu0.3
+  ubuntu_24_04/perl-modules-5.38: 5.38.2-3.2ubuntu0.3
   ubuntu_24_04/pinentry-curses: 1.2.1-3ubuntu5
   ubuntu_24_04/polkitd: 124-2ubuntu1.24.04.3
   ubuntu_24_04/procps: 2:4.0.4-4ubuntu3.2
