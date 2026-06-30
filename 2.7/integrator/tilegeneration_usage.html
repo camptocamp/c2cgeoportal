@@ -511,7 +511,7 @@ or <code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN_
 <span class="w">    </span><span class="nt">cache</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mbtiles</span><span class="w"> </span><span class="c1"># The used cache [default use generation/default_cache]</span>
 <span class="w">    </span><span class="c1"># the URL without location to MapCache, [default is http://localhost/]</span>
 <span class="w">    </span><span class="nt">geoms_redirect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"> </span><span class="c1"># use the geoms to redirect to MapCache [default is false]</span>
-<span class="w">    </span><span class="c1"># allowed extension in the static path (default value), not used for s3.</span>
+<span class="w">    </span><span class="c1"># allowed extensions in the static path (default value).</span>
 <span class="w">    </span><span class="nt">static_allow_extension</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">jpeg</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">png</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">xml</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">js</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">html</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">css</span><span class="p p-Indicator">]</span>
 </pre></div>
 </div>
@@ -685,6 +685,8 @@ prefix and <code class="docutils literal notranslate"><span class="pre">__</span
 (default: <code class="docutils literal notranslate"><span class="pre">false</span></code>)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__ROUTE_PREFIX</span></code>: Base URL path for tile access
 (default: <code class="docutils literal notranslate"><span class="pre">/tiles/</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__WMTS_PATH</span></code>: Path used in WMTS capabilities URLs, overrides the route prefix
+(default: the value of <code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__ROUTE_PREFIX</span></code> without a leading <code class="docutils literal notranslate"><span class="pre">/</span></code>)</p></li>
 </ul>
 <p>Worker:</p>
 <ul class="simple">
