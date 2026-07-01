@@ -1,3 +1,9 @@
+##### 2.9.0.515
+
+- Audit Dpkg 2.9 [c2cgeoportal#13033](https://github.com/camptocamp/c2cgeoportal/pull/13033)
+- Update all patch/minor versions (2.9) [c2cgeoportal#13046](https://github.com/camptocamp/c2cgeoportal/pull/13046)
+- Update camptocamp/initialise-gopass-summon-action action to v2.0.1 (2.9) [c2cgeoportal#13047](https://github.com/camptocamp/c2cgeoportal/pull/13047)
+
 ##### 2.9.0.514
 
 - Audit Dpkg 2.9 [c2cgeoportal#13030](https://github.com/camptocamp/c2cgeoportal/pull/13030)
