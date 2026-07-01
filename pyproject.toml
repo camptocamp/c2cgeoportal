@@ -81,10 +81,10 @@ azure-storage-blob = "12.29.0"
 simple_openid_connect = '2.4.0' # geoportal
 pkce = '1.0.3' # geoportal
 basicauth = "1.0.0"
-prospector = { version = "1.18.0", extras = ["with_mypy", "with_bandit", "with_pyroma", "with_ruff"] }
+prospector = { version = "1.19.0", extras = ["with_mypy", "with_bandit", "with_pyroma", "with_ruff"] }
 prospector-profile-duplicated = "1.12.0"
 prospector-profile-utils  = "1.27.0"
-ruff = "0.15.14"
+ruff = "0.15.19"
 beautifulsoup4 = "4.14.3"
 certifi = "2026.6.17"
 cryptography = "49.0.0"

@@ -60,14 +60,14 @@ jobs:
           fetch-depth: 0
         if: env.HAS_SECRETS != 'HAS_SECRETS'
 
-      - uses: camptocamp/initialise-gopass-summon-action@v2
+      - uses: camptocamp/initialise-gopass-summon-action@17703c87720ba3766abc90da60b437783b530d93 # v2.0.1
         with:
           ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
           github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
           patterns: pypi docker transifex
         if: env.HAS_SECRETS == 'HAS_SECRETS'
 
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: '3.14'
       - run: python3 -m pip install --requirement=ci/requirements.txt
@@ -89,7 +89,7 @@ jobs:
       - run: pre-commit run --all-files --color=always
       - run: git diff --exit-code --patch > /tmp/pre-commit.patch; git diff --color; git reset --hard || true
         if: failure()
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: Apply pre-commit fix.patch
           path: /tmp/pre-commit.patch
@@ -107,7 +107,7 @@ jobs:
       - run: make checks
       - run: git diff --exit-code --patch > /tmp/checks.patch; git diff --color; git reset --hard || true
         if: failure()
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: Update checks.patch
           path: /tmp/checks.patch
@@ -147,7 +147,7 @@ jobs:
           git diff --staged --patch > /tmp/alembic.patch
           git diff --staged --exit-code
           git reset --hard
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: Add Alembic upgrade script.patch
           path: /tmp/alembic.patch
@@ -187,7 +187,7 @@ jobs:
         run: ci/extract-documentation artifacts/documentations/ || true
         if: always()
 
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: Documentation
           path: artifacts/documentations/
@@ -206,7 +206,7 @@ jobs:
         if: failure()
 
       # Use minimal version from the documentation
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: '${{ env.MIN_PYTHON_VERSION }}'
       - run: pip install --requirement=ci/requirements-project.txt
@@ -241,7 +241,7 @@ jobs:
       - run: ci/test-upgrade 270 ${HOME}/workspace
       - run: ci/test-upgrade cleanup ${HOME}/workspace
 
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: '3.14'
       - run: pip install --requirement=ci/requirements-back.txt
@@ -301,7 +301,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: git diff --exit-code --patch > /tmp/dpkg-versions.patch; git diff --color; git reset --hard || true
         if: failure()
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: Update dpkg versions list.patch
           path: /tmp/dpkg-versions.patch
