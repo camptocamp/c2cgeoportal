@@ -1,3 +1,8 @@
+##### 2.7.1.302
+
+- Update camptocamp/initialise-gopass-summon-action action to v2.0.1 (2.7) [c2cgeoportal#13042](https://github.com/camptocamp/c2cgeoportal/pull/13042)
+- Update camptocamp/initialise-gopass-summon-action action to v2.0.1 (2.7) [c2cgeoportal#13043](https://github.com/camptocamp/c2cgeoportal/pull/13043)
+
 ##### 2.7.1.301
 
 - Audit Snyk check/fix 2.7 [c2cgeoportal#13032](https://github.com/camptocamp/c2cgeoportal/pull/13032)
