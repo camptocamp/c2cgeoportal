@@ -1,3 +1,7 @@
+##### 2.8.1.345
+
+- Update camptocamp/initialise-gopass-summon-action action to v2.0.1 (2.8) [c2cgeoportal#13045](https://github.com/camptocamp/c2cgeoportal/pull/13045)
+
 ##### 2.8.1.344
 
 - Update security packages to v2026.6.17 (2.8) [c2cgeoportal#13020](https://github.com/camptocamp/c2cgeoportal/pull/13020)
