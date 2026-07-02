@@ -24,7 +24,7 @@ known-first-party = ["c2cgeoportal_commons", "c2cgeoportal_geoportal", "c2cgeopo
 [tool.poetry.dependencies]
 python = ">=3.14,<4"
 alembic = "1.18.4" # geoportal
-"c2c.template" = "2.4.2" # geoportal
+"c2c.template" = "2.5.0" # geoportal
 c2cgeoform = "2.5.1" # commons
 colander = "2.0" # commons, admin
 ColanderAlchemy = "0.3.4" # commons
@@ -34,22 +34,22 @@ defusedxml = "0.7.1" # geoportal
 "dogpile.cache" = "1.5.0" # geoportal
 Fiona = "1.10.1" # geoportal raster
 GeoAlchemy2 = "0.20.0" # commons, geoportal
-geojson = "3.2.0" # geoportal
+geojson = "3.3.0" # geoportal
 getitfixed = "1.1.1" # geoportal
 isodate = "0.7.2" # geoportal
 Mako = "1.3.12" # geoportal
-OWSLib = "0.35.0" # geoportal
+OWSLib = "0.36.0" # geoportal
 papyrus = "2.6.2" # commons, geoportal
 passwordgenerator = "1.5.1" # geoportal
 psycopg2 = "2.9.12" # geoportal
 pycryptodome = "3.23.0" # geoportal
 pyproj = "3.7.2" # admin, other?
-pyotp = "2.9.0" # geoportal
+pyotp = "2.10.0" # geoportal
 pyramid = "2.1" # geoportal
 pyramid_debugtoolbar = "4.12.1" # geoportal
 pyramid-jinja2 = "2.10.1" # admin
 pyramid_mako = "1.1.0" # geoportal
-pyramid_multiauth = "1.0.2" # geoportal
+pyramid_multiauth = "1.1.0" # geoportal
 pyramid_tm = "2.6" # geoportal
 python-dateutil = "2.9.0.post0" # geoportal
 PyYAML = "6.0.1" # geoportal
@@ -57,14 +57,14 @@ rasterio = "1.5.0" # geoportal raster
 requests = "2.34.2" # geoportal
 redis = "8.0.1" # geoportal cache
 Shapely = "2.1.2" # geoportal
-SQLAlchemy = "2.0.50"
+SQLAlchemy = "2.0.51"
 transaction = "5.1" # commons, geoportal
 translationstring = "1.4" # admin
 "zope.event" = "6.2" # commons, geoportal
 c2cwsgiutils = { version = "6.1.9", extras = ["broadcast", "standard", "oauth2", "debug"] }
 oauthlib = "3.3.1"
 tilecloud = "1.13.5" # geoportal
-azure-storage-blob = "12.29.0"
+azure-storage-blob = "12.30.0"
 simple_openid_connect = '2.4.0' # geoportal
 pkce = '1.0.3' # geoportal
 basicauth = "1.0.0"
@@ -72,7 +72,7 @@ prospector = { version = "1.19.0", extras = ["with_mypy", "with_bandit", "with_p
 prospector-profile-duplicated = "1.12.0"
 prospector-profile-utils  = "1.27.0"
 ruff = "0.15.19"
-beautifulsoup4 = "4.14.3"
+beautifulsoup4 = "4.15.0"
 certifi = "2026.6.17"
 cryptography = "49.0.0"
 crypt-r = {version = "3.13.1", python = ">=3.13"}
@@ -80,28 +80,28 @@ setuptools = "80.10.2"
 
 [tool.poetry.group.dev.dependencies]
 Babel = "2.18.0" # i18n
-beautifulsoup4 = "4.14.3" # admin tests
+beautifulsoup4 = "4.15.0" # admin tests
 Jinja2 = "3.1.6" # c2c.template
 lingva = "5.0.6" # i18n
 PasteScript = "3.7.0" # geoportal pcreate
 polib = "1.2.0" # i18n
 pykwalify = "1.8.0" # Validate config
-pytest = "9.0.3" # tests
-pytest-asyncio = "1.3.0" # tests
+pytest = "9.1.1" # tests
+pytest-asyncio = "1.4.0" # tests
 WebTest = "3.0.7" # admin tests
 types-pytz = "2026.2.0.20260518"
 types-pyyaml = "6.0.12.20260518"
 types-python-dateutil = "2.9.0.20260518"
 types-requests = "2.*"
 types-setuptools = "82.0.0.20260518"
-mappyfile = "1.1.1"
+mappyfile = "1.2.0"
 mapbox-vector-tile = "2.2.0"
 responses = "0.26.1"
 waitress = "3.0.2"
-boto3 = "1.43.14"
+boto3 = "1.43.36"
 # Used on upgrade
 pre-commit = "4.6.0"
-prek = "0.4.1"
+prek = "0.4.5"
 # To be able to upgrade project from version <= 2.8
 c2cciutils = { version = "1.5.14", extras = ["checks"] }
 
