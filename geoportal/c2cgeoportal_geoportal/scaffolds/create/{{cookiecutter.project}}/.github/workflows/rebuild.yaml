@@ -19,18 +19,18 @@ jobs:
           - prod-{{cookiecutter.geomapfish_main_version_dash}}
 
     steps:
-      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
         with:
           ref: ${{'{{'}} matrix.branch }}
 
       # Requires CI_GPG_PRIVATE_KEY and GOPASS_CI_GITHUB_TOKEN secrets.
-      - uses: camptocamp/initialise-gopass-summon-action@v2
+      - uses: camptocamp/initialise-gopass-summon-action@17703c87720ba3766abc90da60b437783b530d93 # v2.0.1
         with:
           ci-gpg-private-key: ${{'{{'}} secrets.CI_GPG_PRIVATE_KEY }}
           github-gopass-ci-token: ${{'{{'}} secrets.GOPASS_CI_GITHUB_TOKEN }}
           patterns: docker
 
-      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
         with:
           python-version: '3.14'
       - run: python3 -m pip install --requirement=ci/requirements.txt

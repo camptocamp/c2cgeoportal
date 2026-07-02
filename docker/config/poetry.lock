@@ -26,14 +26,14 @@ files = [
 
 [[package]]
 name = "c2c-template"
-version = "2.4.2"
+version = "2.5.0"
 description = "Vars collector and template runner."
 optional = false
-python-versions = ">=3.9"
+python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "c2c_template-2.4.2-py3-none-any.whl", hash = "sha256:c074485d0c4020810dc6870545f5602704da95c8c8422f75faa73fc997c741fa"},
-    {file = "c2c_template-2.4.2.tar.gz", hash = "sha256:5582ee975eed7573f558b9318874033098864efff3911f98efd2fd8c41f59602"},
+    {file = "c2c_template-2.5.0-py3-none-any.whl", hash = "sha256:fea0d04a04937829ec95e864917809c8af392c3676efee4e6e50f30526caf32e"},
+    {file = "c2c_template-2.5.0.tar.gz", hash = "sha256:9729ef8cdb111a131511687cacaffac019f52f17a29d5c0bf7e033cccc1205f7"},
 ]
 
 [package.dependencies]
@@ -608,4 +608,4 @@ PyYAML = ">=6.0,<7.0"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<3.15"
-content-hash = "c82a8550dff04284f35312015b300cde062273dc7465df728a6e21e13391ef23"
+content-hash = "6e642ee3aa6f4554ef28f7f1f4c0091bed246ce4d7535a890b12e63b93bbb938"
