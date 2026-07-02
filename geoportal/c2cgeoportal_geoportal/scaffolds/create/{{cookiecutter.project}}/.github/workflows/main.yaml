@@ -15,7 +15,7 @@ jobs:
     timeout-minutes: 10
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
 
       # To publish the images to be used on Kubernetes
       # Requires CI_GPG_PRIVATE_KEY and GOPASS_CI_GITHUB_TOKEN secrets.
@@ -26,14 +26,14 @@ jobs:
       #     patterns: docker
       #   if: env.HAS_SECRETS == 'HAS_SECRETS'
 
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: '3.14'
       - run: python3 -m pip install --requirement=ci/requirements.txt
       - name: Environment information
         run: c2cciutils-env
 
-      - uses: actions/cache@v5
+      - uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
         with:
           path: ~/.cache/pre-commit
           key: pre-commit-${{'{{'}} hashFiles('.pre-commit-config.yaml') }}
@@ -41,7 +41,7 @@ jobs:
       - run: pre-commit run --all-files --config=.pre-commit-config.yaml
       - run: git diff --exit-code --patch > /tmp/pre-commit.patch || true
         if: failure()
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: Apply pre-commit fix.patch
           path: /tmp/pre-commit.patch

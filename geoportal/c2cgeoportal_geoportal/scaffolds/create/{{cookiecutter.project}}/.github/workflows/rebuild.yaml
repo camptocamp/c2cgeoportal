@@ -19,7 +19,7 @@ jobs:
           - prod-{{cookiecutter.geomapfish_main_version_dash}}
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
         with:
           ref: ${{'{{'}} matrix.branch }}
 
@@ -30,7 +30,7 @@ jobs:
           github-gopass-ci-token: ${{'{{'}} secrets.GOPASS_CI_GITHUB_TOKEN }}
           patterns: docker
 
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: '3.14'
       - run: python3 -m pip install --requirement=ci/requirements.txt
