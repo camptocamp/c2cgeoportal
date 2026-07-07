@@ -1,3 +1,9 @@
+##### 2.8.1.347
+
+- Update dependency webpack-dev-server to v5.2.5 [SECURITY] (2.8) [ngeo#10139](https://github.com/camptocamp/ngeo/pull/10139)
+- Update camptocamp/initialise-gopass-summon-action action to v2.0.1 (2.8) [ngeo#10145](https://github.com/camptocamp/ngeo/pull/10145)
+- Update dependency @types/bootstrap to v5.2.11 (2.8) [ngeo#10146](https://github.com/camptocamp/ngeo/pull/10146)
+
 ##### 2.8.1.346
 
 - Update camptocamp/initialise-gopass-summon-action action to v2.0.1 (2.8) [c2cgeoportal#13044](https://github.com/camptocamp/c2cgeoportal/pull/13044)
