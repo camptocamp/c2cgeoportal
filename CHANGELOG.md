@@ -1,3 +1,7 @@
+##### 2.7.1.304
+
+- Update dependency soupsieve to v2.8.4 [SECURITY] (2.7) [c2cgeoportal#13058](https://github.com/camptocamp/c2cgeoportal/pull/13058)
+
 ##### 2.7.1.303
 
 - Audit Snyk check/fix 2.7 [c2cgeoportal#13048](https://github.com/camptocamp/c2cgeoportal/pull/13048)
