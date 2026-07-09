@@ -183,7 +183,7 @@ setoptconf-tmp = "==0.3.1"
 shapely = "==1.8.5.post1"
 smmap = "==5.0.3"
 snowballstemmer = "==2.2.0"
-soupsieve = "==2.3.2.post1"
+soupsieve = "==2.8.4"
 types-urllib3 = "==1.26.25.14"
 
 [requires]
