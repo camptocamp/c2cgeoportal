@@ -14,4 +14,8 @@ ignore:
     - '*':
         reason: We are not able to update Bootstrap
         created: 2024-08-15T05:50:31.927Z
+  SNYK-PYTHON-SETUPTOOLS-17895075:
+    - '*':
+        reason: Upgrading setuptools>=83 removes pkg_resources, breaking lingua and prospector
+        created: 2026-07-11T20:00:00.000Z
 patch: {}
