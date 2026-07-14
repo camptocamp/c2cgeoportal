@@ -1,3 +1,7 @@
+##### 2.9.0.523
+
+- Add debounceDelay option to gmfWMSSourceOptions [c2cgeoportal#13067](https://github.com/camptocamp/c2cgeoportal/pull/13067)
+
 ##### 2.9.0.522
 
 - Audit Dpkg 2.9 [c2cgeoportal#13061](https://github.com/camptocamp/c2cgeoportal/pull/13061)
