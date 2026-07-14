@@ -201,4 +201,10 @@
       matchFileNames: ['geoportal/package.json'],
     },
   ],
+  /** Lock file maintenance for geoportal/package-lock.json on all branches */
+  lockFileMaintenance: {
+    enabled: true,
+    managerFilePatterns: ['/geoportal/package-lock.json/'],
+    schedule: 'before 5am on monday',
+  },
 }
