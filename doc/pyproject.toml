@@ -11,7 +11,7 @@ sphinxcontrib-mermaid = "2.0.2"
 c2cwsgiutils = ">=6.0.0.dev148"
 tilecloud-chain = "1.23.1"
 boto3 = { version = "1.43.36", optional = true }
-setuptools = "80.10.2"
+setuptools = "83.0.0"
 
 [project]
 name = 'c2cgeoportal'

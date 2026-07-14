@@ -76,7 +76,7 @@ beautifulsoup4 = "4.15.0"
 certifi = "2026.6.17"
 cryptography = "49.0.0"
 crypt-r = {version = "3.13.1", python = ">=3.13"}
-setuptools = "80.10.2"
+setuptools = "83.0.0"
 
 [tool.poetry.group.dev.dependencies]
 Babel = "2.18.0" # i18n
