@@ -1,3 +1,11 @@
+##### 2.9.0.525
+
+- Lock file maintenance (2.9) [c2cgeoportal#13078](https://github.com/camptocamp/c2cgeoportal/pull/13078)
+- Update dependency sass-loader to v16.0.8 (2.9) [ngeo#10133](https://github.com/camptocamp/ngeo/pull/10133)
+- Update dependency webpack-dev-server to v5.2.5 [SECURITY] (2.9) [ngeo#10140](https://github.com/camptocamp/ngeo/pull/10140)
+- Update camptocamp/initialise-gopass-summon-action action to v2.0.1 (2.9) [ngeo#10147](https://github.com/camptocamp/ngeo/pull/10147)
+- Update dependency @types/bootstrap to v5.2.11 (2.9) [ngeo#10148](https://github.com/camptocamp/ngeo/pull/10148)
+
 ##### 2.9.0.524
 
 - Audit Dpkg 2.9 [c2cgeoportal#13073](https://github.com/camptocamp/c2cgeoportal/pull/13073)
