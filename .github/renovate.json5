@@ -50,6 +50,7 @@
       matchFileNames: ['geoportal/package-lock.json'],
       enabled: true,
       schedule: 'before 5am on monday',
+      minimumReleaseAge: '1 day',
     },
     /** Docker images versioning */
     {
