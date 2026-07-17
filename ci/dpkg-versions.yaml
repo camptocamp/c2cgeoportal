@@ -108,7 +108,7 @@ camptocamp/geomapfish-config:latest:
   ubuntu_24_04/sed: 4.9-2ubuntu0.24.04.1
   ubuntu_24_04/sensible-utils: 0.0.22
   ubuntu_24_04/sysvinit-utils: 3.08-6ubuntu3
-  ubuntu_24_04/tar: 1.35+dfsg-3ubuntu0.2
+  ubuntu_24_04/tar: 1.35+dfsg-3ubuntu0.3
   ubuntu_24_04/tzdata: 2026b-0ubuntu0.24.04.1
   ubuntu_24_04/ubuntu-keyring: 2023.11.28.1
   ubuntu_24_04/unminimize: 0.2.1
@@ -540,7 +540,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/shared-mime-info: 2.1-2
   ubuntu_22_04/spawn-fcgi: 1.6.4-2
   ubuntu_22_04/sysvinit-utils: 3.01-1ubuntu1
-  ubuntu_22_04/tar: 1.34+dfsg-1ubuntu0.1.22.04.4
+  ubuntu_22_04/tar: 1.34+dfsg-1ubuntu0.1.22.04.5
   ubuntu_22_04/ubuntu-keyring: 2021.03.26
   ubuntu_22_04/ucf: '3.0043'
   ubuntu_22_04/unixodbc-common: 2.3.9-5ubuntu0.1
@@ -987,7 +987,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/shared-mime-info: 2.1-2
   ubuntu_22_04/spawn-fcgi: 1.6.4-2
   ubuntu_22_04/sysvinit-utils: 3.01-1ubuntu1
-  ubuntu_22_04/tar: 1.34+dfsg-1ubuntu0.1.22.04.4
+  ubuntu_22_04/tar: 1.34+dfsg-1ubuntu0.1.22.04.5
   ubuntu_22_04/ubuntu-keyring: 2021.03.26
   ubuntu_22_04/ucf: '3.0043'
   ubuntu_22_04/unixodbc-common: 2.3.9-5ubuntu0.1
@@ -1346,7 +1346,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40:
   ubuntu_24_04/libzip4t64: 1.7.3-1.1ubuntu2
   ubuntu_24_04/libzstd1: 1.5.5+dfsg2-2build1.1
   ubuntu_24_04/lighttpd: 1.4.74-1ubuntu3
-  ubuntu_24_04/linux-libc-dev: 6.8.0-134.134
+  ubuntu_24_04/linux-libc-dev: 6.8.0-136.136
   ubuntu_24_04/login: 1:4.13+dfsg1-4ubuntu3.2
   ubuntu_24_04/logsave: 1.47.0-2.4~exp1ubuntu4.1
   ubuntu_24_04/mawk: 1.3.4.20240123-1build1
@@ -1394,7 +1394,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40:
   ubuntu_24_04/shared-mime-info: 2.4-4
   ubuntu_24_04/spawn-fcgi: 1.6.4-2
   ubuntu_24_04/sysvinit-utils: 3.08-6ubuntu3
-  ubuntu_24_04/tar: 1.35+dfsg-3ubuntu0.2
+  ubuntu_24_04/tar: 1.35+dfsg-3ubuntu0.3
   ubuntu_24_04/tzdata: 2026b-0ubuntu0.24.04.1
   ubuntu_24_04/ubuntu-keyring: 2023.11.28.1
   ubuntu_24_04/unminimize: 0.2.1
@@ -1752,7 +1752,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40-gdal3.10:
   ubuntu_24_04/libzip4t64: 1.7.3-1.1ubuntu2
   ubuntu_24_04/libzstd1: 1.5.5+dfsg2-2build1.1
   ubuntu_24_04/lighttpd: 1.4.74-1ubuntu3
-  ubuntu_24_04/linux-libc-dev: 6.8.0-134.134
+  ubuntu_24_04/linux-libc-dev: 6.8.0-136.136
   ubuntu_24_04/login: 1:4.13+dfsg1-4ubuntu3.2
   ubuntu_24_04/logsave: 1.47.0-2.4~exp1ubuntu4.1
   ubuntu_24_04/mawk: 1.3.4.20240123-1build1
@@ -1800,7 +1800,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40-gdal3.10:
   ubuntu_24_04/shared-mime-info: 2.4-4
   ubuntu_24_04/spawn-fcgi: 1.6.4-2
   ubuntu_24_04/sysvinit-utils: 3.08-6ubuntu3
-  ubuntu_24_04/tar: 1.35+dfsg-3ubuntu0.2
+  ubuntu_24_04/tar: 1.35+dfsg-3ubuntu0.3
   ubuntu_24_04/tzdata: 2026b-0ubuntu0.24.04.1
   ubuntu_24_04/ubuntu-keyring: 2023.11.28.1
   ubuntu_24_04/unminimize: 0.2.1
@@ -2153,7 +2153,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_24_04/libzip4t64: 1.7.3-1.1ubuntu2
   ubuntu_24_04/libzstd1: 1.5.5+dfsg2-2build1.1
   ubuntu_24_04/lighttpd: 1.4.74-1ubuntu3
-  ubuntu_24_04/linux-libc-dev: 6.8.0-134.134
+  ubuntu_24_04/linux-libc-dev: 6.8.0-136.136
   ubuntu_24_04/login: 1:4.13+dfsg1-4ubuntu3.2
   ubuntu_24_04/logsave: 1.47.0-2.4~exp1ubuntu4.1
   ubuntu_24_04/mawk: 1.3.4.20240123-1build1
@@ -2200,7 +2200,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_24_04/shared-mime-info: 2.4-4
   ubuntu_24_04/spawn-fcgi: 1.6.4-2
   ubuntu_24_04/sysvinit-utils: 3.08-6ubuntu3
-  ubuntu_24_04/tar: 1.35+dfsg-3ubuntu0.2
+  ubuntu_24_04/tar: 1.35+dfsg-3ubuntu0.3
   ubuntu_24_04/tzdata: 2026b-0ubuntu0.24.04.1
   ubuntu_24_04/ubuntu-keyring: 2023.11.28.1
   ubuntu_24_04/unminimize: 0.2.1
@@ -2560,7 +2560,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_24_04/libzip4t64: 1.7.3-1.1ubuntu2
   ubuntu_24_04/libzstd1: 1.5.5+dfsg2-2build1.1
   ubuntu_24_04/lighttpd: 1.4.74-1ubuntu3
-  ubuntu_24_04/linux-libc-dev: 6.8.0-134.134
+  ubuntu_24_04/linux-libc-dev: 6.8.0-136.136
   ubuntu_24_04/login: 1:4.13+dfsg1-4ubuntu3.2
   ubuntu_24_04/logsave: 1.47.0-2.4~exp1ubuntu4.1
   ubuntu_24_04/mawk: 1.3.4.20240123-1build1
@@ -2607,7 +2607,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_24_04/shared-mime-info: 2.4-4
   ubuntu_24_04/spawn-fcgi: 1.6.4-2
   ubuntu_24_04/sysvinit-utils: 3.08-6ubuntu3
-  ubuntu_24_04/tar: 1.35+dfsg-3ubuntu0.2
+  ubuntu_24_04/tar: 1.35+dfsg-3ubuntu0.3
   ubuntu_24_04/tzdata: 2026b-0ubuntu0.24.04.1
   ubuntu_24_04/ubuntu-keyring: 2023.11.28.1
   ubuntu_24_04/ucf: 3.0043+nmu1
@@ -2966,7 +2966,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/libzip4t64: 1.7.3-1.1ubuntu2
   ubuntu_24_04/libzstd1: 1.5.5+dfsg2-2build1.1
   ubuntu_24_04/lighttpd: 1.4.74-1ubuntu3
-  ubuntu_24_04/linux-libc-dev: 6.8.0-134.134
+  ubuntu_24_04/linux-libc-dev: 6.8.0-136.136
   ubuntu_24_04/login: 1:4.13+dfsg1-4ubuntu3.2
   ubuntu_24_04/logsave: 1.47.0-2.4~exp1ubuntu4.1
   ubuntu_24_04/mawk: 1.3.4.20240123-1build1
@@ -3014,7 +3014,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/shared-mime-info: 2.4-4
   ubuntu_24_04/spawn-fcgi: 1.6.4-2
   ubuntu_24_04/sysvinit-utils: 3.08-6ubuntu3
-  ubuntu_24_04/tar: 1.35+dfsg-3ubuntu0.2
+  ubuntu_24_04/tar: 1.35+dfsg-3ubuntu0.3
   ubuntu_24_04/tzdata: 2026b-0ubuntu0.24.04.1
   ubuntu_24_04/ubuntu-keyring: 2023.11.28.1
   ubuntu_24_04/unminimize: 0.2.1
@@ -3386,7 +3386,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/libyaml-0-2: 0.2.5-1build1
   ubuntu_24_04/libzix-0-0: 0.4.2-2build1
   ubuntu_24_04/libzstd1: 1.5.5+dfsg2-2build1.1
-  ubuntu_24_04/linux-libc-dev: 6.8.0-134.134
+  ubuntu_24_04/linux-libc-dev: 6.8.0-136.136
   ubuntu_24_04/login: 1:4.13+dfsg1-4ubuntu3.2
   ubuntu_24_04/logsave: 1.47.0-2.4~exp1ubuntu4.1
   ubuntu_24_04/lsb-release: 12.0-2
@@ -3802,7 +3802,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/systemd-dev: 255.4-1ubuntu8.16
   ubuntu_24_04/systemd-sysv: 255.4-1ubuntu8.16
   ubuntu_24_04/sysvinit-utils: 3.08-6ubuntu3
-  ubuntu_24_04/tar: 1.35+dfsg-3ubuntu0.2
+  ubuntu_24_04/tar: 1.35+dfsg-3ubuntu0.3
   ubuntu_24_04/terser: 5.19.2-1
   ubuntu_24_04/traceroute: 1:2.1.5-1
   ubuntu_24_04/tree: 2.1.1-2ubuntu3
@@ -4510,7 +4510,7 @@ camptocamp/geomapfish:latest:
   ubuntu_24_04/systemd-dev: 255.4-1ubuntu8.16
   ubuntu_24_04/systemd-sysv: 255.4-1ubuntu8.16
   ubuntu_24_04/sysvinit-utils: 3.08-6ubuntu3
-  ubuntu_24_04/tar: 1.35+dfsg-3ubuntu0.2
+  ubuntu_24_04/tar: 1.35+dfsg-3ubuntu0.3
   ubuntu_24_04/terser: 5.19.2-1
   ubuntu_24_04/tzdata: 2026b-0ubuntu0.24.04.1
   ubuntu_24_04/ubuntu-keyring: 2023.11.28.1
@@ -5212,7 +5212,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_24_04/systemd-dev: 255.4-1ubuntu8.16
   ubuntu_24_04/systemd-sysv: 255.4-1ubuntu8.16
   ubuntu_24_04/sysvinit-utils: 3.08-6ubuntu3
-  ubuntu_24_04/tar: 1.35+dfsg-3ubuntu0.2
+  ubuntu_24_04/tar: 1.35+dfsg-3ubuntu0.3
   ubuntu_24_04/terser: 5.19.2-1
   ubuntu_24_04/tzdata: 2026b-0ubuntu0.24.04.1
   ubuntu_24_04/ubuntu-keyring: 2023.11.28.1
