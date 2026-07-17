@@ -555,3 +555,16 @@ class Log(AbstractLog):
         "polymorphic_identity": "static",
         "concrete": True,
     }
+
+
+class Feedback(Base):  # type: ignore[valid-type,misc]
+    """The feedback table representation."""
+
+    __tablename__ = "feedback"
+    __table_args__ = {"schema": _schema}  # noqa: RUF012
+    id_feedback: Mapped[int] = mapped_column(Integer, primary_key=True)
+    user_agent: Mapped[str | None] = mapped_column(String)
+    application: Mapped[str | None] = mapped_column(String)
+    permalink: Mapped[str | None] = mapped_column(String)
+    text: Mapped[str | None] = mapped_column(String)
+    email: Mapped[str | None] = mapped_column(String)
