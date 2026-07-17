@@ -1,3 +1,8 @@
+##### 2.9.0.526
+
+- Lock file maintenance (2.9) [c2cgeoportal#13080](https://github.com/camptocamp/c2cgeoportal/pull/13080)
+- Add DebouncedImageWMS source to prevent duplicate GetMap requests on zoom [ngeo#10149](https://github.com/camptocamp/ngeo/pull/10149)
+
 ##### 2.9.0.525
 
 - Lock file maintenance (2.9) [c2cgeoportal#13078](https://github.com/camptocamp/c2cgeoportal/pull/13078)
