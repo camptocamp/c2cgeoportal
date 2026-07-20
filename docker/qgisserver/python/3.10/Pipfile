@@ -14,7 +14,7 @@ SQLAlchemy = "==1.4.54"  # commons
 "zope.sqlalchemy" = "==1.2"  # commons
 shapely = "==1.8.5.post1"
 cee-syslog-handler = "==0.6.0"
-psycopg2 = "==2.9.12"
+psycopg2 = "==2.9.10"
 pytz = "==2026.2"
 # Lock dependencies
 bottle = "==0.12.25"
@@ -30,7 +30,7 @@ plaster = "==1.0"
 plaster-pastedeploy = "==0.7"
 pyparsing = "==3.0.9"
 pyramid = "==2.0.2"
-pyyaml = "==5.4"
+pyyaml = "==5.3.1"
 pyyaml-include = "==1.2.post2"
 redis = "==4.4.4"
 six = "==1.16.0"
@@ -41,7 +41,7 @@ wrapt = "==1.13.3"
 "zope.deprecation" = "==4.4.0"
 "zope.interface" = "==5.4.0"
 mako = "==1.3.12"
-setuptools = "==83.0.0"
+setuptools = "==70.0.0"
 
 [dev-packages]
 prospector = {extras = ["with_mypy", "with_bandit"], version = "==1.7.7"}
