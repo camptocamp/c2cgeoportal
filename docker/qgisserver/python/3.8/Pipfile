@@ -4,7 +4,7 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [packages]
-c2cwsgiutils = {extras = ["broadcast"], version = "==5.2.4"}
+c2cwsgiutils = {extras = ["broadcast"], version = "==5.0.4"}
 papyrus = "==2.4"  # commons
 transaction = "==3.0.1"  # commons
 "c2c.template" = "==2.3.0"
@@ -15,7 +15,7 @@ SQLAlchemy = "==1.4.54"  # commons
 shapely = "==1.8.5.post1"
 cee-syslog-handler = "==0.6.0"
 setuptools = "==70.0.0"
-psycopg2 = "==2.9.12"
+psycopg2 = "==2.9.10"
 pytz = "==2026.2"
 # Lock dependencies
 bottle = "==0.12.25"
