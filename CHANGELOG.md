@@ -1,3 +1,7 @@
+##### 2.8.1.353
+
+- Update dependency gitpython to v3.1.51 [SECURITY] (2.8) [c2cgeoportal#13098](https://github.com/camptocamp/c2cgeoportal/pull/13098)
+
 ##### 2.8.1.352
 
 - Update dependency webpack-dev-server to v5.2.6 [SECURITY] (2.8) [ngeo#10156](https://github.com/camptocamp/ngeo/pull/10156)
