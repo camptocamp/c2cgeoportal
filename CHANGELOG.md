@@ -1,3 +1,8 @@
+##### 2.9.0.531
+
+- Update dependency gitpython to v3.1.51 [SECURITY] (2.9) [c2cgeoportal#13099](https://github.com/camptocamp/c2cgeoportal/pull/13099)
+- Update dependency svgo to v3.3.4 [SECURITY] (2.9) [c2cgeoportal#13100](https://github.com/camptocamp/c2cgeoportal/pull/13100)
+
 ##### 2.9.0.530
 
 - Update dependency webpack-dev-server to v5.2.6 [SECURITY] (2.9) [c2cgeoportal#13096](https://github.com/camptocamp/c2cgeoportal/pull/13096)
