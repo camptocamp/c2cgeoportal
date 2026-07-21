@@ -1,3 +1,7 @@
+##### 2.9.0.530
+
+- Update dependency webpack-dev-server to v5.2.6 [SECURITY] (2.9) [c2cgeoportal#13096](https://github.com/camptocamp/c2cgeoportal/pull/13096)
+
 ##### 2.9.0.529
 
 - Audit Dpkg 2.9 [c2cgeoportal#13094](https://github.com/camptocamp/c2cgeoportal/pull/13094)
