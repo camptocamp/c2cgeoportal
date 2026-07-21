@@ -1,3 +1,7 @@
+##### 2.8.1.352
+
+- Update dependency webpack-dev-server to v5.2.6 [SECURITY] (2.8) [ngeo#10156](https://github.com/camptocamp/ngeo/pull/10156)
+
 ##### 2.8.1.351
 
 - Lock file maintenance (2.8) [c2cgeoportal#13089](https://github.com/camptocamp/c2cgeoportal/pull/13089)
