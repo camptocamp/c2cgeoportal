@@ -1,3 +1,7 @@
+##### 2.8.1.354
+
+- Update dependency svgo to v3.3.4 [SECURITY] (2.8) [ngeo#10160](https://github.com/camptocamp/ngeo/pull/10160)
+
 ##### 2.8.1.353
 
 - Update dependency gitpython to v3.1.51 [SECURITY] (2.8) [c2cgeoportal#13098](https://github.com/camptocamp/c2cgeoportal/pull/13098)
