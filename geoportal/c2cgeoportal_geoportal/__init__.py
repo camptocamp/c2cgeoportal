@@ -44,6 +44,7 @@ import dateutil.parser
 import pyramid.config
 import pyramid.request
 import pyramid.response
+import simple_openid_connect.data
 import sqlalchemy
 import sqlalchemy.orm
 import zope.event.classhandler
@@ -391,7 +392,19 @@ def create_get_user_from_request(
             ):
                 token = request.headers["Authorization"][7:]
                 client = oidc.get_oidc_client(request, request.host)
-                user_info = client.fetch_userinfo(token)
+
+                if openid_connect_configuration.get("query_user_info", False):
+                    user_info = client.fetch_userinfo(token)
+                else:
+                    access_token = simple_openid_connect.data.JwtAccessToken.parse_jwt(
+                        token, client.provider_keys
+                    )
+                    access_token.validate_extern(
+                        issuer=client.provider_config.issuer,
+                        client_id=client.client_auth.client_id,
+                    )
+                    user_info = access_token
+
                 user_info_remember = {}
                 request.get_remember_from_user_info(user_info.dict(), user_info_remember)
             elif username is None:
