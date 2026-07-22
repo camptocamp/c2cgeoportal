@@ -108,8 +108,10 @@ Other options
   .. code:: yaml
 
      username: sub
-     display_name: "{{ first_name }} {{ last_name }}"
+     display_name: "{first_name} {last_name}"
      email: email
+
+  Note: This requires that `authentication.openid_connect.user_info_fields.display_name` is in the `no_interpreted` list.
 
   The default mapping is:
 
