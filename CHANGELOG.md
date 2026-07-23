@@ -1,3 +1,7 @@
+##### 2.7.1.313
+
+- Audit Snyk check/fix 2.7 [c2cgeoportal#13106](https://github.com/camptocamp/c2cgeoportal/pull/13106)
+
 ##### 2.7.1.312
 
 - Update dependency gitpython to v3.1.52 [SECURITY] (2.7) [c2cgeoportal#13104](https://github.com/camptocamp/c2cgeoportal/pull/13104)
