@@ -106,6 +106,11 @@ needed to generate the capabilities. We can specify:</p>
 <p>When generating WMTS capabilities, if a layer <code class="docutils literal notranslate"><span class="pre">bbox</span></code> is defined, it is also used to publish
 <code class="docutils literal notranslate"><span class="pre">TileMatrixSetLimits</span></code> in each <code class="docutils literal notranslate"><span class="pre">TileMatrixSetLink</span></code> for that layer.</p>
 <p><code class="docutils literal notranslate"><span class="pre">px_buffer</span></code> a buffer in px around the object area (geoms or extent).</p>
+<p>When <code class="docutils literal notranslate"><span class="pre">px_buffer</span></code> is set to a non-zero value, the <code class="docutils literal notranslate"><span class="pre">TileMatrixSetLimits</span></code> are not
+included in the WMTS capabilities by default, because the expanded tile range
+can cause issues with OpenLayers tile grid extent calculation.</p>
+<p>To force the inclusion of <code class="docutils literal notranslate"><span class="pre">TileMatrixSetLimits</span></code> even when <code class="docutils literal notranslate"><span class="pre">px_buffer</span></code> is set,
+use <code class="docutils literal notranslate"><span class="pre">force_tile_matrix_set_limits:</span> <span class="pre">true</span></code> on the layer.</p>
 <p><code class="docutils literal notranslate"><span class="pre">geom_filter</span></code> enable (default) or disable the geometry intersection filter in the
 generation pipeline.</p>
 <section id="wmts-layout">
