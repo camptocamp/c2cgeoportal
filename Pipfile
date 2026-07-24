@@ -139,7 +139,7 @@ urllib3 = "==2.7.0"
 protobuf = "==5.29.6"
 
 [dev-packages]
-awscli = "==0.7.0"  # Work with Object storage
+awscli = "==1.44.78"  # Work with Object storage
 Babel = "==2.9.1"  # i18n
 beautifulsoup4 = "==4.10.0"  # admin tests
 coverage = "==6.3.3"  # Build coverage XML for Codacy
