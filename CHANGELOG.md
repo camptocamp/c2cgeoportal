@@ -1,3 +1,7 @@
+##### 2.8.1.357
+
+- Update dependency gitpython to v3.1.55 [SECURITY] (2.8) [c2cgeoportal#13116](https://github.com/camptocamp/c2cgeoportal/pull/13116)
+
 ##### 2.8.1.356
 
 - Update dependency certifi to v2026.7.22 (2.8) [c2cgeoportal#13111](https://github.com/camptocamp/c2cgeoportal/pull/13111)
