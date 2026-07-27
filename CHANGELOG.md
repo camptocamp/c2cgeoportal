@@ -1,3 +1,7 @@
+##### 2.7.1.315
+
+- Update dependency pytz to v2026.3.post1 (2.7) [c2cgeoportal#13119](https://github.com/camptocamp/c2cgeoportal/pull/13119)
+
 ##### 2.7.1.314
 
 - Update dependency certifi to v2026.7.22 (2.7) [c2cgeoportal#13110](https://github.com/camptocamp/c2cgeoportal/pull/13110)
