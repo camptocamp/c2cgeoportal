@@ -1,3 +1,7 @@
+##### 2.8.1.359
+
+- Lock file maintenance (2.8) [c2cgeoportal#13121](https://github.com/camptocamp/c2cgeoportal/pull/13121)
+
 ##### 2.8.1.358
 
 - Update dependency pytz to v2026.3.post1 (2.8) [c2cgeoportal#13120](https://github.com/camptocamp/c2cgeoportal/pull/13120)
