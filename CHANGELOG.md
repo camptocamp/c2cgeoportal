@@ -1,3 +1,7 @@
+##### 2.9.0.538
+
+- Update dependency pytz to v2026.3.post1 (2.9) [c2cgeoportal#13122](https://github.com/camptocamp/c2cgeoportal/pull/13122)
+
 ##### 2.9.0.537
 
 - Update dependency gitpython to v3.1.55 [SECURITY] (2.9) [c2cgeoportal#13117](https://github.com/camptocamp/c2cgeoportal/pull/13117)
