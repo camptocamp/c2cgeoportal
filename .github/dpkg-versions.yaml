@@ -4229,12 +4229,12 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/xserver-common: 2:21.1.12-1ubuntu1.2
   ubuntu_24_04/xvfb: 2:21.1.12-1ubuntu1.2
   ubuntu_24_04/zlib1g: 1:1.3.dfsg-3.1ubuntu2.1
-camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
+camptocamp/geomapfish-qgisserver:gmflatest-qgistest-landing-pages:
   ubuntu_26_04/adduser: 3.153ubuntu1
-  ubuntu_26_04/apache2: 2.4.66-2ubuntu2.1
-  ubuntu_26_04/apache2-bin: 2.4.66-2ubuntu2.1
-  ubuntu_26_04/apache2-data: 2.4.66-2ubuntu2.1
-  ubuntu_26_04/apache2-utils: 2.4.66-2ubuntu2.1
+  ubuntu_26_04/apache2: 2.4.66-2ubuntu2.2
+  ubuntu_26_04/apache2-bin: 2.4.66-2ubuntu2.2
+  ubuntu_26_04/apache2-data: 2.4.66-2ubuntu2.2
+  ubuntu_26_04/apache2-utils: 2.4.66-2ubuntu2.2
   ubuntu_26_04/apt: 3.2.0
   ubuntu_26_04/base-passwd: 3.6.8
   ubuntu_26_04/bash: 5.3-2ubuntu1
@@ -4327,7 +4327,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_26_04/libcrypt1: 1:4.5.1-1
   ubuntu_26_04/libctf-nobfd0: 2.46-3ubuntu2
   ubuntu_26_04/libctf0: 2.46-3ubuntu2
-  ubuntu_26_04/libcups2t64: 2.4.16-1ubuntu1
+  ubuntu_26_04/libcups2t64: 2.4.16-1ubuntu1.2
   ubuntu_26_04/libcurl3t64-gnutls: 8.18.0-1ubuntu2.1
   ubuntu_26_04/libcurl4t64: 8.18.0-1ubuntu2.1
   ubuntu_26_04/libdatrie1: 0.2.14-1
@@ -4415,7 +4415,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_26_04/libjpeg-turbo8: 2.1.5-4ubuntu4
   ubuntu_26_04/libjpeg8: 8c-2ubuntu12
   ubuntu_26_04/libjs-sphinxdoc: 8.2.3-12
-  ubuntu_26_04/libjxl0.11: 0.11.1-6ubuntu4
+  ubuntu_26_04/libjxl0.11: 0.11.1-6ubuntu4.2
   ubuntu_26_04/libk5crypto3: 1.22.1-2ubuntu4
   ubuntu_26_04/libkeyutils1: 1.6.3-6ubuntu3
   ubuntu_26_04/libkrb5-3: 1.22.1-2ubuntu4
@@ -4579,8 +4579,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_26_04/libss2: 1.47.2-3ubuntu4
   ubuntu_26_04/libssh-4: 0.11.3-1ubuntu1
   ubuntu_26_04/libssh2-1t64: 1.11.1-1ubuntu0.26.04.1
-  ubuntu_26_04/libssl-dev: 3.5.5-1ubuntu3
-  ubuntu_26_04/libssl3t64: 3.5.5-1ubuntu3
+  ubuntu_26_04/libssl-dev: 3.5.5-1ubuntu3.2
+  ubuntu_26_04/libssl3t64: 3.5.5-1ubuntu3.2
   ubuntu_26_04/libstdc++6: 16-20260322-1ubuntu1
   ubuntu_26_04/libsvtav1enc2: 2.3.0+dfsg-1build1
   ubuntu_26_04/libswresample6: 7:8.0.1-3ubuntu2
@@ -4687,8 +4687,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_26_04/ncurses-bin: 6.6+20251231-1
   ubuntu_26_04/netbase: 6.5build1
   ubuntu_26_04/ocl-icd-libopencl1: 2.3.4-1
-  ubuntu_26_04/openssl: 3.5.5-1ubuntu3
-  ubuntu_26_04/openssl-provider-legacy: 3.5.5-1ubuntu3
+  ubuntu_26_04/openssl: 3.5.5-1ubuntu3.2
+  ubuntu_26_04/openssl-provider-legacy: 3.5.5-1ubuntu3.2
   ubuntu_26_04/passwd: 1:4.17.4-2ubuntu3
   ubuntu_26_04/perl: 5.40.1-7build1
   ubuntu_26_04/perl-base: 5.40.1-7build1
