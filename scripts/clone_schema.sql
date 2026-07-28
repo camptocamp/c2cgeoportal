@@ -79,9 +79,9 @@ BEGIN
 
     IF seq.cycle_option = 'YES'
     THEN
-      sq_cycled := 'CYCLE';
+      sq_cycled := ' CYCLE';
     ELSE
-      sq_cycled := 'NO CYCLE';
+      sq_cycled := ' NO CYCLE';
     END IF;
 
     EXECUTE 'ALTER SEQUENCE ' || quote_ident(dest_schema) || '.' || quote_ident(seq.sequence_name)
