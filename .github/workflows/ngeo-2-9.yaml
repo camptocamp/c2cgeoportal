@@ -49,6 +49,9 @@ jobs:
 
       - run: c2cciutils-download-applications --applications-file=ci/applications.yaml --versions-file=ci/applications-versions.yaml
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
       - run: cd geoportal && npm update
       - id: version
         run: scripts/get-version --auto-increment --github
