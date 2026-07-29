@@ -1,3 +1,7 @@
+##### 2.9.0.540
+
+- [Backport 2.9] Fix display_name documentation [c2cgeoportal#13129](https://github.com/camptocamp/c2cgeoportal/pull/13129)
+
 ##### 2.9.0.539
 
 - Audit Dpkg 2.9 [c2cgeoportal#13125](https://github.com/camptocamp/c2cgeoportal/pull/13125)
