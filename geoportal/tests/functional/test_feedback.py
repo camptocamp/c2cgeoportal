@@ -33,16 +33,23 @@ from unittest.mock import patch
 
 from pyramid import testing
 
-from tests.functional import cleanup_db, create_dummy_request, setup_db
+from tests.functional import create_dummy_request
+from tests.functional import setup_common as setup_module  # noqa
+from tests.functional import teardown_common as teardown_module  # noqa
 
 
 class TestFeedbackView(TestCase):
-    def setup_method(self, _) -> None:
-        setup_db()
-
     def teardown_method(self, _) -> None:
         testing.tearDown()
-        cleanup_db()
+
+        import transaction
+
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.static import Feedback
+
+        assert DBSession is not None
+        DBSession.query(Feedback).delete()
+        transaction.commit()
 
     @staticmethod
     def _create_request(params=None):
