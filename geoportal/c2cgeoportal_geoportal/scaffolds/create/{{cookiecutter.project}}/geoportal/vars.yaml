@@ -418,6 +418,7 @@ no_interpreted:
   - reset_password.email_body
   - shortener.email_body
   - welcome_email.email_body
+  - authentication.openid_connect.user_info_fields.display_name
 
 # Only for Standalone version (should be commented for Kubernetes version)
 runtime_postprocess:
