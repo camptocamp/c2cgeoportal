@@ -772,10 +772,11 @@ Default is <code class="docutils literal notranslate"><span class="pre">{}</span
 <dt><code class="docutils literal notranslate"><span class="pre">user_info_fields:</span></code> The mapping between the user info fields and the user fields in the GeoMapFish database,</dt><dd><p>the key is the GeoMapFish user field and the value is the field of the user info provided by the
 OpenID Connect provider, can be a Python template, for example:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sub</span>
-<span class="nt">display_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">first_name</span><span class="nv"> </span><span class="s">}}</span><span class="nv"> </span><span class="s">{{</span><span class="nv"> </span><span class="s">last_name</span><span class="nv"> </span><span class="s">}}&quot;</span>
+<span class="nt">display_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{first_name}</span><span class="nv"> </span><span class="s">{last_name}&quot;</span>
 <span class="nt">email</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">email</span>
 </pre></div>
 </div>
+<p>Note: This requires that <cite>authentication.openid_connect.user_info_fields.display_name</cite> is in the <cite>no_interpreted</cite> list.</p>
 <p>The default mapping is:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sub</span>
 <span class="nt">display_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">name</span>
