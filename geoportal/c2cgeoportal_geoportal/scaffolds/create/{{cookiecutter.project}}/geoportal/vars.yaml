@@ -267,6 +267,35 @@ vars:
       Sincerely yours
       The GeoMapFish team
 
+  feedback:
+    # Used to send a feedback notification email
+    email_from: info@camptocamp.com
+    email_subject: Feedback - Map viewer
+    # Email template, can contain:
+    # - {instance}
+    # - {id_feedback}
+    # - {user_agent}
+    # - {application}
+    # - {permalink}
+    # - {user_email}
+    # - {text}
+    email_body: |
+      This is an automated email. A new feedback has been inserted in the database.
+
+      Instance: {instance}
+
+      Feedback ID: {id_feedback}
+
+      User agent: {user_agent}
+
+      Application: {application}
+
+      Permalink: {permalink}
+
+      User email: {user_email}
+
+      User text: {text}
+
   allowed_hosts:
     # TODO: Add the allowed hosts for the application (themes and dynamic.json)
     - localhost:8484
@@ -340,6 +369,7 @@ vars:
     raster: *header
     vector_tiles: *header
     error: *header
+    feedback: *header
     themes: &auth_header {}
     config: *auth_header
     print: *auth_header
@@ -383,6 +413,7 @@ update_paths:
   - headers.raster.headers
   - headers.vector_tiles.headers
   - headers.error.headers
+  - headers.feedback.headers
   - headers.themes.headers
   - headers.config.headers
   - headers.print.headers
@@ -401,6 +432,7 @@ update_paths:
   - interfaces_config.default.dynamic_constants
   - interfaces_config.default.static
   - interfaces_config.default.routes.fulltextsearchUrl
+  - interfaces_config.default.routes.feedbackUrl
   - interfaces_config.desktop.constants.gmfOptions.view
   - interfaces_config.desktop.constants.gmfPrintOptions
   - interfaces_config.desktop.routes
@@ -422,6 +454,7 @@ no_interpreted:
   - reset_password.email_body
   - shortener.email_body
   - welcome_email.email_body
+  - feedback.email_body
   - authentication.openid_connect.user_info_fields.display_name
 
 # Only for Standalone version (should be commented for Kubernetes version)

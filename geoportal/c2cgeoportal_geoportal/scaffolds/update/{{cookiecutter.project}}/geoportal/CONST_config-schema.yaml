@@ -367,6 +367,7 @@ mapping:
           shortener: *header
           user_settings: *header
           error: *header
+          feedback: *header
 
       urllogin:
         type: map
@@ -622,6 +623,10 @@ mapping:
             required: True
             type: str
       welcome_email:
+        type: map
+        required: True
+        mapping: *send_email
+      feedback:
         type: map
         required: True
         mapping: *send_email

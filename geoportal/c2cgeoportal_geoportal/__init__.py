@@ -744,6 +744,10 @@ def includeme(config: pyramid.config.Configurator) -> None:
     config.add_route("oidc_login", "/oidc/login", request_method="GET")
     config.add_route("oidc_callback", "/oidc/callback", request_method="GET")
 
+    # Feedback
+    add_cors_route(config, "/feedback", "feedback")
+    config.add_route("feedback", "/feedback", request_method="POST")
+
     config.add_renderer(".map", AssetRendererFactory)
     config.add_renderer(".css", AssetRendererFactory)
     config.add_renderer(".ico", AssetRendererFactory)

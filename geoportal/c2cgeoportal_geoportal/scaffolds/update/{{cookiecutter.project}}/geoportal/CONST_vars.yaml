@@ -363,6 +363,8 @@ vars:
             interface: interface
         gmfVectorTilesUrl:
           name: vector_tiles_root
+        feedbackUrl:
+          name: feedback
     desktop:
       extends: default
       redirect_interface: mobile
@@ -984,6 +986,9 @@ vars:
   # Used to send an email on password reset
   reset_password: {}
 
+  # Used to send an email on feedback
+  feedback: {}
+
   # The shortener base configuration
   shortener:
     length: 4
@@ -1188,6 +1193,7 @@ vars:
     raster: *header
     vector_tiles: *header
     error: *header
+    feedback: *header
     themes: &auth_header
       cache_control_max_age: 600 # 10 minutes
       cache_control_max_age_nocache: 10 # 10 seconds, to avoid too many call
