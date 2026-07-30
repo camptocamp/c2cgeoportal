@@ -44,6 +44,7 @@ import dateutil.parser
 import pyramid.config
 import pyramid.request
 import pyramid.response
+import simple_openid_connect.data
 import sqlalchemy
 import sqlalchemy.orm
 import zope.event.classhandler
@@ -371,6 +372,14 @@ def create_get_user_from_request(
         """
         Return the User object for the request.
 
+        Resolution order:
+        1. ``Authorization: Bearer`` header (OIDC JWT access token) — used by
+           QGIS Desktop and other clients. Either query the userinfo endpoint
+           or parse the JWT locally, depending on ``query_user_info``.
+        2. ``unauthenticated_userid`` (auth cookie or header) — may contain a JSON
+           blob with OIDC remember info (including ``access_token_expires``).
+        3. Fallback to ``None`` (anonymous).
+
         Return ``None`` if:
         * user is anonymous
         * it does not exist in the database
@@ -397,6 +406,8 @@ def create_get_user_from_request(
             user_info_remember: dict[str, Any] | None = None
             openid_connect_configuration = settings.get("authentication", {}).get("openid_connect", {})
             openid_connect_enabled = openid_connect_configuration.get("enabled", False)
+
+            # Bearer token (OIDC JWT access token)
             if (
                 openid_connect_enabled
                 and "Authorization" in request.headers
@@ -404,12 +415,30 @@ def create_get_user_from_request(
             ):
                 token = request.headers["Authorization"][7:]
                 client = oidc.get_oidc_client(request, request.host)
-                user_info = client.fetch_userinfo(token)
+
+                # Fetch userinfo from the provider (HTTP call)
+                if openid_connect_configuration.get("query_user_info", False):
+                    user_info = client.fetch_userinfo(token)
+                # Parse and validate the JWT locally (no HTTP call)
+                else:
+                    access_token = simple_openid_connect.data.JwtAccessToken.parse_jwt(
+                        token, client.provider_keys
+                    )
+                    access_token.validate_extern(
+                        issuer=client.provider_config.issuer,
+                        client_id=client.client_auth.client_id,
+                    )
+                    user_info = access_token
+
                 user_info_remember = {}
                 request.get_remember_from_user_info(user_info.dict(), user_info_remember)
+            # Auth cookie / header (unauthenticated_userid)
             elif username is None:
                 username = request.unauthenticated_userid
+
+            # Resolve the user from user_info_remember or username
             if username is not None or user_info_remember is not None:
+                # Username came from cookie — try to decode as JSON (OIDC remember blob)
                 if user_info_remember is None:
                     assert username is not None
                     try:
@@ -418,6 +447,8 @@ def create_get_user_from_request(
                         user_info_remember = None
                         _LOG.info("Failed to decode username %s as JSON", username)
                 if isinstance(user_info_remember, dict) and openid_connect_enabled:
+                    # user_info_remember from an OIDC cookie (contains access_token_expires)
+                    # → check expiry, possibly refresh the token
                     if "access_token_expires" in user_info_remember:
                         del username
                         access_token_expires = dateutil.parser.isoparse(
@@ -459,6 +490,7 @@ def create_get_user_from_request(
                                 request.host,
                             )
                     request.user_ = request.get_user_from_remember(user_info_remember)
+                # Non-OIDC user (DB lookup by username)
                 else:
                     # We know we will need the role object of the
                     # user so we use joined loading
