@@ -768,6 +768,36 @@ Result
     }
 
 
+Feedback
+========
+
+Create
+------
+
+URL: ``.../feedback``
+
+Method ``POST``
+
+Parameters
+~~~~~~~~~~
+
+* ``user_agent``: User agent string.
+* ``application``: Application identifier.
+* ``permalink``: The current map permalink URL.
+* ``email``: User email address.
+* ``email_optional``: Email address to send a notification to (optional).
+* ``feedback``: The feedback text.
+
+Result
+~~~~~~
+
+.. code::
+
+    {
+        "success": true
+    }
+
+
 Geometry processing
 ===================
 

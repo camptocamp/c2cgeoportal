@@ -20,4 +20,5 @@ Features that require additional steps (most of the time):
    routing
    multi_tenant
    vector_tiles
+   feedback
    extend_application

@@ -722,6 +722,33 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 </section>
 </section>
 </section>
+<section id="feedback">
+<h2>Feedback<a class="headerlink" href="#feedback" title="Link to this heading">¶</a></h2>
+<section id="id15">
+<h3>Create<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h3>
+<p>URL: <code class="docutils literal notranslate"><span class="pre">.../feedback</span></code></p>
+<p>Method <code class="docutils literal notranslate"><span class="pre">POST</span></code></p>
+<section id="id16">
+<h4>Parameters<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">user_agent</span></code>: User agent string.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">application</span></code>: Application identifier.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">permalink</span></code>: The current map permalink URL.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">email</span></code>: User email address.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">email_optional</span></code>: Email address to send a notification to (optional).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">feedback</span></code>: The feedback text.</p></li>
+</ul>
+</section>
+<section id="id17">
+<h4>Result<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">true</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
 <section id="geometry-processing">
 <h2>Geometry processing<a class="headerlink" href="#geometry-processing" title="Link to this heading">¶</a></h2>
 <p>This service provides geometry processing (currently only one)</p>
@@ -745,8 +772,8 @@ and the <code class="docutils literal notranslate"><span class="pre">&lt;geomB&g
 <p>This service create and returns the list of strings to translate for the localization in gettext POT format.</p>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../locale.pot</span></code></p>
 <p>Method: <code class="docutils literal notranslate"><span class="pre">GET</span></code></p>
-<section id="id15">
-<h3>Parameters<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h3>
+<section id="id18">
+<h3>Parameters<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h3>
 <blockquote>
 <div><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">interfaces</span></code>: List of interfaces we want to use.</p></li>
@@ -763,8 +790,8 @@ and the <code class="docutils literal notranslate"><span class="pre">&lt;geomB&g
 <h2>Map server proxy<a class="headerlink" href="#map-server-proxy" title="Link to this heading">¶</a></h2>
 <p>This is a proxy to access OGC servers.</p>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../mapserv_proxy</span></code> or <code class="docutils literal notranslate"><span class="pre">.../mapserv_proxy/&lt;ogcserver&gt;/...</span></code></p>
-<section id="id16">
-<h3>Parameters<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h3>
+<section id="id19">
+<h3>Parameters<a class="headerlink" href="#id19" title="Link to this heading">¶</a></h3>
 <blockquote>
 <div><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">ogcserver</span></code>: The OGC server name to use.</p></li>
