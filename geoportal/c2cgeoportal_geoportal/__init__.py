@@ -413,7 +413,6 @@ def create_get_user_from_request(
                     )
                     access_token.validate_extern(
                         issuer=client.provider_config.issuer,
-                        client_id=client.client_auth.client_id,
                     )
                     user_info = access_token
 
