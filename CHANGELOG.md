@@ -1,3 +1,7 @@
+##### 2.9.0.545
+
+- Update dependency html-webpack-plugin to v5.6.8 (2.9) [c2cgeoportal#13153](https://github.com/camptocamp/c2cgeoportal/pull/13153)
+
 ##### 2.9.0.544
 
 - Update dependency gitpython to v3.1.56 (2.9) [c2cgeoportal#13150](https://github.com/camptocamp/c2cgeoportal/pull/13150)
