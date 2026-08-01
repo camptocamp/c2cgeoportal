@@ -30,10 +30,13 @@ ruff:
   disable:
     - PTH # Path
     - ARG005 # Unused lambda argument: `request`
+    - CPY001 # Missing copyright notice at top of file
     - D102 # Missing docstring in public method
     - D107 # Missing docstring in `__init__`
     - BLE001 # Do not catch blind exception: `Exception`
     - FIX001 # Line contains FIXME, consider resolving the issue
+    - ISC004 # Unparenthesized implicit string concatenation in collection
+    - SIM222 # Use `f"{...}"` instead of `f"{...}" or ...`
     - TD001 # Invalid TODO tag: `FIXME`
     - TD003 # Missing issue link for this TODO
     - TRY003 # Avoid specifying long messages outside the exception class
