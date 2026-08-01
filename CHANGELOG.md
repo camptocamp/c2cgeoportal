@@ -1,3 +1,7 @@
+##### 2.8.1.362
+
+- Update dependency pre-commit to v4.6.1 (2.8) [c2cgeoportal#13144](https://github.com/camptocamp/c2cgeoportal/pull/13144)
+
 ##### 2.8.1.361
 
 - Use a working version of webpack-dev-server [ngeo#10164](https://github.com/camptocamp/ngeo/pull/10164)
