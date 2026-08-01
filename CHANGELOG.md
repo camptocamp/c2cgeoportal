@@ -1,3 +1,7 @@
+##### 2.9.0.544
+
+- Update dependency gitpython to v3.1.56 (2.9) [c2cgeoportal#13150](https://github.com/camptocamp/c2cgeoportal/pull/13150)
+
 ##### 2.9.0.543
 
 - Update CI dependencies (2.9) [c2cgeoportal#13146](https://github.com/camptocamp/c2cgeoportal/pull/13146)
