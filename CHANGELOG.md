@@ -1,3 +1,7 @@
+##### 2.8.1.364
+
+- Update dependency cryptography to v50 (2.8) [c2cgeoportal#13158](https://github.com/camptocamp/c2cgeoportal/pull/13158)
+
 ##### 2.8.1.363
 
 - Update dependency gitpython to v3.1.56 (2.8) [c2cgeoportal#13149](https://github.com/camptocamp/c2cgeoportal/pull/13149)
