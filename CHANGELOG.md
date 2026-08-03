@@ -1,3 +1,8 @@
+##### 2.8.1.365
+
+- Lock file maintenance (2.8) [c2cgeoportal#13160](https://github.com/camptocamp/c2cgeoportal/pull/13160)
+- Update dependency @babel/core to v7.29.7 (2.8) [ngeo#10171](https://github.com/camptocamp/ngeo/pull/10171)
+
 ##### 2.8.1.364
 
 - Update dependency cryptography to v50 (2.8) [c2cgeoportal#13158](https://github.com/camptocamp/c2cgeoportal/pull/13158)
