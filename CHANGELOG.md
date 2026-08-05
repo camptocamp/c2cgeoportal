@@ -1,3 +1,8 @@
+##### 2.7.1.319
+
+- Update dependency cryptography to v50 (2.7) [c2cgeoportal#13157](https://github.com/camptocamp/c2cgeoportal/pull/13157)
+- Audit Snyk check/fix 2.7 [c2cgeoportal#13165](https://github.com/camptocamp/c2cgeoportal/pull/13165)
+
 ##### 2.7.1.318
 
 - Update all patch/minor versions (2.7) [c2cgeoportal#13143](https://github.com/camptocamp/c2cgeoportal/pull/13143)
