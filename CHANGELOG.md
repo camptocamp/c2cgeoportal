@@ -1,3 +1,7 @@
+##### 2.9.0.551
+
+- Update dependency gitpython to v3.1.58 [SECURITY] (2.9) [c2cgeoportal#13171](https://github.com/camptocamp/c2cgeoportal/pull/13171)
+
 ##### 2.9.0.550
 
 - Audit Dpkg 2.9 [c2cgeoportal#13168](https://github.com/camptocamp/c2cgeoportal/pull/13168)
