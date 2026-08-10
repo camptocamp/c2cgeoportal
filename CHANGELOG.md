@@ -1,3 +1,7 @@
+##### 2.8.1.368
+
+- Lock file maintenance (2.8) [c2cgeoportal#13172](https://github.com/camptocamp/c2cgeoportal/pull/13172)
+
 ##### 2.8.1.367
 
 - Update dependency gitpython to v3.1.58 [SECURITY] (2.8) [c2cgeoportal#13170](https://github.com/camptocamp/c2cgeoportal/pull/13170)
