@@ -11,5 +11,6 @@ publish:
   pypi: false
   docker:
     dispatch: {}
+    latest: false
     images:
       - name: camptocamp/{{cookiecutter.package}}-config
