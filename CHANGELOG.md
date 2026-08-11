@@ -1,3 +1,7 @@
+##### 2.9.0.554
+
+- [Backport 2.9] Respect query_user_info option in Bearer token authorization path [c2cgeoportal#13132](https://github.com/camptocamp/c2cgeoportal/pull/13132)
+
 ##### 2.9.0.553
 
 - Lock file maintenance (2.9) [c2cgeoportal#13161](https://github.com/camptocamp/c2cgeoportal/pull/13161)
