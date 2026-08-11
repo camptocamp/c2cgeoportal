@@ -1,3 +1,7 @@
+##### 2.9.0.555
+
+- Audit Dpkg 2.9 [c2cgeoportal#13175](https://github.com/camptocamp/c2cgeoportal/pull/13175)
+
 ##### 2.9.0.554
 
 - [Backport 2.9] Respect query_user_info option in Bearer token authorization path [c2cgeoportal#13132](https://github.com/camptocamp/c2cgeoportal/pull/13132)
