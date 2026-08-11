@@ -1,3 +1,11 @@
+##### 2.9.0.553
+
+- Lock file maintenance (2.9) [c2cgeoportal#13161](https://github.com/camptocamp/c2cgeoportal/pull/13161)
+- Update dependency webpack-dev-server to v5.2.6 [SECURITY] (2.9) [ngeo#10157](https://github.com/camptocamp/ngeo/pull/10157)
+- Update dependency svgo to v3.3.4 [SECURITY] (2.9) [ngeo#10161](https://github.com/camptocamp/ngeo/pull/10161)
+- Update CI dependencies (2.9) [ngeo#10172](https://github.com/camptocamp/ngeo/pull/10172)
+- Update dependency html-webpack-plugin to v5.6.8 (2.9) [ngeo#10176](https://github.com/camptocamp/ngeo/pull/10176)
+
 ##### 2.9.0.552
 
 - Don't publish the tag latest [c2cgeoportal#13173](https://github.com/camptocamp/c2cgeoportal/pull/13173)
