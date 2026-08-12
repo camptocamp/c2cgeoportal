@@ -200,13 +200,13 @@ files = [
 
 [[package]]
 name = "c2cwsgiutils"
-version = "6.1.9"
+version = "6.1.10"
 description = "Common utilities for Camptocamp WSGI applications"
 optional = false
 python-versions = ">=3.10"
 files = [
-    {file = "c2cwsgiutils-6.1.9-py3-none-any.whl", hash = "sha256:a9b82c76a9fe0729915f13c433bdb59df9b7861946ae5c01e593a2e7e18ff7ee"},
-    {file = "c2cwsgiutils-6.1.9.tar.gz", hash = "sha256:8322a1390f91c2dfb3502ae9f72ae128925c712054807fa1773b5c5ff293531d"},
+    {file = "c2cwsgiutils-6.1.10-py3-none-any.whl", hash = "sha256:638e5b7c076c5652b1ac96ef70a3189d5ace5a2cfdb7cfe874de9542002ee6b9"},
+    {file = "c2cwsgiutils-6.1.10.tar.gz", hash = "sha256:0de56a9cc26931ea08f9494a4c03810b28f7799aa6771b99c54c4f5e0ebe61a7"},
 ]
 
 [package.dependencies]
@@ -215,6 +215,7 @@ cee_syslog_handler = "*"
 cornice = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"webserver\" or extra == \"all\""}
 gunicorn = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"webserver\" or extra == \"all\""}
 objgraph = {version = "*", optional = true, markers = "extra == \"debug\" or extra == \"all\""}
+pillow = "*"
 prometheus-client = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"webserver\" or extra == \"all\""}
 psycopg2 = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"webserver\" or extra == \"all\""}
 pyjwt = {version = "*", optional = true, markers = "extra == \"standard\" or extra == \"oauth2\" or extra == \"all\""}
