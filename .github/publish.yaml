@@ -1,6 +1,11 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/camptocamp/tag-publish/1.1.1/tag_publish/schema.json
 
 docker:
+  repository:
+    github:
+      host: ghcr.io
+      versions_type:
+        - feature_branch
   images:
     - name: camptocamp/geomapfish
     - name: camptocamp/geomapfish-config
@@ -83,6 +88,10 @@ docker:
       group: qgis-master
       tags:
         - gmf{version}-qgismaster
+    - name: camptocamp/geomapfish-qgisserver
+      group: qgis-test-landing-pages
+      tags:
+        - gmf{version}-qgistest-landing-pages
 pypi:
   packages:
     - folder: commons
