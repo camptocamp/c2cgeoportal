@@ -1,3 +1,7 @@
+##### 2.9.0.557
+
+- Make the raster cache thread safe [c2cgeoportal#13176](https://github.com/camptocamp/c2cgeoportal/pull/13176)
+
 ##### 2.9.0.556
 
 - Update dependency c2cwsgiutils to v6.1.10 (2.9) [c2cgeoportal#13179](https://github.com/camptocamp/c2cgeoportal/pull/13179)
