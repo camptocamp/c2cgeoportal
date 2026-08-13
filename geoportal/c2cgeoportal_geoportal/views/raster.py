@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2025, Camptocamp SA
+# Copyright (c) 2012-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -31,6 +31,7 @@ import json
 import logging
 import math
 import os
+import threading
 import traceback
 import urllib.parse
 from json.decoder import JSONDecodeError
@@ -56,7 +57,8 @@ _LOG = logging.getLogger(__name__)
 class Raster:
     """All the view concerned the raster (point, not the profile profile)."""
 
-    data: dict[str, "fiona.collection.Collection"] = {}  # noqa: RUF012
+    data: dict[str, "fiona.collection.Collection | DatasetReader"] = {}  # noqa: RUF012
+    _data_lock = threading.RLock()
 
     def __init__(self, request: pyramid.request.Request) -> None:
         self.request = request
@@ -65,9 +67,10 @@ class Raster:
         @zope.event.classhandler.handler(InvalidateCacheEvent)  # type: ignore[untyped-decorator]
         def handle(event: InvalidateCacheEvent) -> None:
             del event
-            for v in Raster.data.values():
-                v.close()
-            Raster.data = {}
+            with Raster._data_lock:
+                for v in Raster.data.values():
+                    v.close()
+                Raster.data = {}
 
     def _get_required_finite_float_param(self, name: str) -> float:
         if name not in self.request.params:
@@ -118,23 +121,24 @@ class Raster:
         set_common_headers(self.request, "raster", Cache.PUBLIC_NO)
         return result
 
-    def _get_data(self, layer: dict[str, Any], name: str) -> "fiona.collection.Collection":
-        if name not in self.data:
-            path = layer["file"]
-            if layer.get("type", "shp_index") == "shp_index":
-                # Avoid loading if not needed
-                from fiona.collection import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
-                    Collection,
-                )
+    def _get_data(self, layer: dict[str, Any], name: str) -> "fiona.collection.Collection | DatasetReader":
+        with self._data_lock:
+            if name not in self.data:
+                path = layer["file"]
+                if layer.get("type", "shp_index") == "shp_index":
+                    # Avoid loading if not needed
+                    from fiona.collection import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
+                        Collection,
+                    )
 
-                self.data[name] = Collection(path)
-            elif layer.get("type") == "gdal":
-                # Avoid loading if not needed
-                import rasterio  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
+                    self.data[name] = Collection(path)
+                elif layer.get("type") == "gdal":
+                    # Avoid loading if not needed
+                    import rasterio  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
 
-                self.data[name] = rasterio.open(path)
+                    self.data[name] = rasterio.open(path)
 
-        return self.data[name]
+            return self.data[name]
 
     def _get_raster_value(
         self,
@@ -143,10 +147,11 @@ class Raster:
         lon: float,
         lat: float,
     ) -> decimal.Decimal | None:
-        data = self._get_data(layer, name)
         type_ = layer.get("type", "shp_index")
         if type_ == "shp_index":
-            tiles = list(data.filter(mask={"type": "Point", "coordinates": [lon, lat]}))
+            with self._data_lock:
+                data = self._get_data(layer, name)
+                tiles = list(data.filter(mask={"type": "Point", "coordinates": [lon, lat]}))
 
             if not tiles:
                 return None
@@ -159,7 +164,9 @@ class Raster:
             with rasterio.open(path) as dataset:
                 result = self._get_value(layer, name, dataset, lon, lat)
         elif type_ == "gdal":
-            result = self._get_value(layer, name, data, lon, lat)
+            with self._data_lock:
+                data = self._get_data(layer, name)
+                result = self._get_value(layer, name, data, lon, lat)
         else:
             raise ValueError("Unsupported type " + type_)
 
