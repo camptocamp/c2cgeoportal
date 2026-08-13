@@ -12,7 +12,7 @@ ENV CONFIG_VARS sqlalchemy.url sqlalchemy.pool_recycle sqlalchemy.pool_size sqla
     checker check_collector default_max_age package srid \
     reset_password fulltextsearch global_headers headers authorized_referers hooks stats db_chooser \
     dbsessions urllogin host_forward_host headers_whitelist headers_blacklist \
-    smtp c2c.base_path welcome_email feedback \
+    smtp c2c.base_path welcome_email feedback altcha \
     lingva_extractor interfaces_config interfaces devserver_url api authentication intranet metrics pdfreport \
     vector_tiles i18next main_ogc_server static_files http_options
 

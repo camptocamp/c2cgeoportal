@@ -9,6 +9,7 @@ from c2cgeoportal_commons.lib.email_ import send_email_config
 from c2cgeoportal_commons.models import DBSession
 from c2cgeoportal_commons.models.static import Feedback
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
+from c2cgeoportal_geoportal.views.altcha import verify_altcha_payload
 
 _LOG = logging.getLogger(__name__)
 
@@ -16,6 +17,9 @@ _LOG = logging.getLogger(__name__)
 @view_config(route_name="feedback", renderer="json")  # type: ignore[untyped-decorator]
 def feedback_post(request: pyramid.request.Request) -> dict[str, Any]:
     """Handle feedback form submission."""
+    feedback_settings = request.registry.settings.get("feedback", {})
+    if feedback_settings.get("altcha", False):
+        verify_altcha_payload(request)
     if (
         "permalink" not in request.params
         or "user_agent" not in request.params

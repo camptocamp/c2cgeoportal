@@ -24,6 +24,7 @@ known-first-party = ["c2cgeoportal_commons", "c2cgeoportal_geoportal", "c2cgeopo
 [tool.poetry.dependencies]
 python = ">=3.14,<4"
 alembic = "1.18.5" # geoportal
+altcha = "2.1.0" # geoportal
 "c2c.template" = "2.5.0" # geoportal
 c2cgeoform = "2.5.1" # commons
 colander = "2.0" # commons, admin
