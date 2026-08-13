@@ -1,3 +1,7 @@
+##### 2.9.0.558
+
+- [Backport 2.9] Add queryFeatureTypes metadata for WMS GetFeatureInfo parsing [ngeo#10179](https://github.com/camptocamp/ngeo/pull/10179)
+
 ##### 2.9.0.557
 
 - Make the raster cache thread safe [c2cgeoportal#13176](https://github.com/camptocamp/c2cgeoportal/pull/13176)
