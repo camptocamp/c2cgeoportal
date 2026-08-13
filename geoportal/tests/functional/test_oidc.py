@@ -221,6 +221,6 @@ class TestLogin(TestCase):
 
         set_cookies = dict([v.split("=", 1) for v in response.headers.getall("Set-Cookie")])
         assert "refresh_token" in set_cookies, "refresh_token cookie should be set"
-        assert set_cookies["refresh_token"].startswith("refresh_123;"), (
-            "refresh_token cookie should contain the refresh token value"
-        )
+        assert set_cookies["refresh_token"].startswith(
+            "refresh_123;"
+        ), "refresh_token cookie should contain the refresh token value"
