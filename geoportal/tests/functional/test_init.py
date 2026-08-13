@@ -28,6 +28,8 @@
 # pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access,no-value-for-parameter
 
 import base64
+import datetime
+import json
 import time
 import types
 from unittest.mock import Mock, PropertyMock, patch
@@ -35,6 +37,7 @@ from uuid import uuid4
 
 import jwt
 import pytest
+import simple_openid_connect.data
 from cryptography.hazmat.primitives.asymmetric import rsa
 
 from c2cgeoportal_geoportal import create_get_user_from_request
@@ -201,3 +204,132 @@ class TestGetUser:
             assert user is not None
             assert user.username == "fetch_test_user"
             assert user.deactivated is False
+
+    @pytest.mark.usefixtures("dbsession", "transact")
+    def test_get_user_oidc_refresh_when_no_refresh_expires(self, dbsession) -> None:
+        from c2cgeoportal_commons.models.static import User
+
+        settings = {
+            "authentication": {
+                "openid_connect": {
+                    "enabled": True,
+                    "url": "https://sso.example.com",
+                    "client_id": "test_client_id",
+                },
+            },
+            "authorized_referers": ["example.com"],
+        }
+
+        request = create_dummy_request(settings, cookies={"refresh_token": "refresh_123"})
+        request.referrer = "https://example.com"
+        request.host = "example.com"
+
+        request.get_remember_from_user_info = types.MethodType(oidc.get_remember_from_user_info, request)
+        request.get_user_from_remember = types.MethodType(oidc.get_user_from_remember, request)
+
+        test_user = User(username="refresh_test_user", password="refresh_test_user")
+        dbsession.add(test_user)
+        dbsession.flush()
+
+        now = datetime.datetime.now(tz=datetime.UTC)
+        remember_object = json.dumps(
+            {
+                "access_token_expires": (now - datetime.timedelta(hours=1)).isoformat(),
+                "refresh_token_expires": None,
+                "username": "refresh_test_user",
+                "display_name": None,
+                "email": None,
+                "settings_role": None,
+                "roles": [],
+            }
+        )
+        refreshed_object = {
+            "access_token_expires": (now + datetime.timedelta(hours=1)).isoformat(),
+            "refresh_token_expires": None,
+            "username": "refresh_test_user",
+            "display_name": "Refresh Test User",
+            "email": "refresh_test_user@example.com",
+            "settings_role": None,
+            "roles": [],
+        }
+
+        with (
+            patch.object(type(request), "unauthenticated_userid", new_callable=PropertyMock) as mock_userid,
+            patch("c2cgeoportal_geoportal.lib.oidc.get_oidc_client") as mock_get_client,
+            patch("c2cgeoportal_geoportal.lib.oidc.OidcRemember.remember") as mock_remember,
+        ):
+            mock_userid.return_value = remember_object
+            mock_remember.return_value = refreshed_object
+
+            mock_client = Mock()
+            mock_client.exchange_refresh_token = Mock(
+                return_value=simple_openid_connect.data.TokenSuccessResponse(
+                    access_token="new_access",
+                    expires_in=3600,
+                    refresh_token="new_refresh",
+                    token_type="Bearer",
+                    id_token="",
+                ),
+            )
+            mock_get_client.return_value = mock_client
+
+            get_user = create_get_user_from_request(settings)
+            user = get_user(request)
+
+            mock_client.exchange_refresh_token.assert_called_once_with("refresh_123")
+            assert user is not None
+            assert user.username == "refresh_test_user"
+
+    @pytest.mark.usefixtures("dbsession", "transact")
+    def test_get_user_oidc_refresh_token_expired(self, dbsession) -> None:
+        settings = {
+            "authentication": {
+                "openid_connect": {
+                    "enabled": True,
+                    "url": "https://sso.example.com",
+                    "client_id": "test_client_id",
+                },
+            },
+            "authorized_referers": ["example.com"],
+        }
+
+        request = create_dummy_request(settings, cookies={"refresh_token": "refresh_123"})
+        request.referrer = "https://example.com"
+        request.host = "example.com"
+
+        request.get_remember_from_user_info = types.MethodType(oidc.get_remember_from_user_info, request)
+        request.get_user_from_remember = types.MethodType(oidc.get_user_from_remember, request)
+
+        now = datetime.datetime.now(tz=datetime.UTC)
+        remember_object = json.dumps(
+            {
+                "access_token_expires": (now - datetime.timedelta(hours=1)).isoformat(),
+                "refresh_token_expires": None,
+                "username": "expired_test_user",
+                "display_name": None,
+                "email": None,
+                "settings_role": None,
+                "roles": [],
+            }
+        )
+
+        with (
+            patch.object(type(request), "unauthenticated_userid", new_callable=PropertyMock) as mock_userid,
+            patch("c2cgeoportal_geoportal.lib.oidc.get_oidc_client") as mock_get_client,
+        ):
+            mock_userid.return_value = remember_object
+
+            mock_client = Mock()
+            mock_client.exchange_refresh_token = Mock(
+                return_value=simple_openid_connect.data.TokenErrorResponse(
+                    error="invalid_grant",
+                    error_description="The refresh token is expired",
+                ),
+            )
+            mock_get_client.return_value = mock_client
+
+            get_user = create_get_user_from_request(settings)
+            user = get_user(request)
+
+            mock_client.exchange_refresh_token.assert_called_once_with("refresh_123")
+            assert user is None

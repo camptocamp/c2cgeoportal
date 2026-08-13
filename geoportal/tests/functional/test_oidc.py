@@ -167,3 +167,60 @@ class TestLogin(TestCase):
         assert set_cookies["code_challenge"].startswith("; Max-Age=0; Path=/; expires="), set_cookies[
             "code_challenge"
         ]
+
+    @responses.activate
+    def test_callback_refresh_token_set(self) -> None:
+        from c2cgeoportal_geoportal.views.login import Login
+
+        request = create_dummy_request(
+            {
+                "authentication": {
+                    "openid_connect": {
+                        "enabled": True,
+                        "provide_roles": True,
+                        "url": "https://sso.example.com",
+                        "client_id": "client_id_123",
+                    },
+                },
+            },
+            params={"code": "code_123"},
+            cookies={
+                "came_from": "/came_from",
+                "code_verifier": "code_verifier",
+                "code_challenge": "code_challenge",
+            },
+        )
+        includeme(request)
+        responses.get("https://sso.example.com/.well-known/openid-configuration", json=_OIDC_CONFIGURATION)
+        responses.get("https://sso.example.com/jwks", json=_OIDC_KEYS)
+        responses.post(
+            "https://sso.example.com/token",
+            json={
+                "access_token": "access",
+                "expires_in": 3600,
+                "refresh_token": "refresh_123",
+                "token_type": "Bearer",
+                "id_token": jwt.encode(
+                    {
+                        "sub": "1234",
+                        "name": "Test User",
+                        "email": "user@example.com",
+                        "iss": "https://sso.example.com",
+                        "aud": "client_id_123",
+                        "exp": 2000000000,
+                        "iat": 1000000000,
+                    },
+                    _PRIVATE_KEY,
+                    algorithm="RS256",
+                ),
+            },
+        )
+        response = Login(request).oidc_callback()
+        assert response.status_int == 302
+        assert response.headers["Location"] == "/came_from"
+
+        set_cookies = dict([v.split("=", 1) for v in response.headers.getall("Set-Cookie")])
+        assert "refresh_token" in set_cookies, "refresh_token cookie should be set"
+        assert set_cookies["refresh_token"].startswith("refresh_123;"), (
+            "refresh_token cookie should contain the refresh token value"
+        )
