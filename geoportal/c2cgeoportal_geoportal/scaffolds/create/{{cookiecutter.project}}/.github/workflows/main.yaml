@@ -20,15 +20,6 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      # To publish the images to be used on Kubernetes
-      # Requires CI_GPG_PRIVATE_KEY and GOPASS_CI_GITHUB_TOKEN secrets.
-      # - uses: camptocamp/initialise-gopass-summon-action@v2
-      #   with:
-      #     ci-gpg-private-key: ${{'{{'}} secrets.CI_GPG_PRIVATE_KEY }}
-      #     github-gopass-ci-token: ${{'{{'}} secrets.GOPASS_CI_GITHUB_TOKEN }}
-      #     patterns: docker
-      #   if: env.HAS_SECRETS == 'HAS_SECRETS'
-
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: '3.14'
