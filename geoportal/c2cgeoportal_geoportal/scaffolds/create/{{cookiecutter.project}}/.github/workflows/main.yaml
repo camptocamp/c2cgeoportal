@@ -60,4 +60,4 @@ jobs:
 
       # To publish the images to be used on Kubernetes
       # - name: Publish
-      #   run: c2cciutils-publish
+      #   run: tag-publish
