@@ -4,10 +4,6 @@ name: Continuous integration
 on:
   push:
 
-# To publish the images to be used on Kubernetes
-# env:
-#   HAS_SECRETS: ${{'{{'}} secrets.HAS_SECRETS }}
-
 permissions:
   contents: read
 
