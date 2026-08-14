@@ -38,7 +38,7 @@ jobs:
         with:
           ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
           github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
-          patterns: docker transifex
+          patterns: pypi docker transifex
 
       - uses: actions/setup-python@v5
         with:
