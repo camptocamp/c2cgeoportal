@@ -6,6 +6,9 @@ on:
       - ngeo_2.9_updated
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   main:
     name: Update ngeo 2.9
