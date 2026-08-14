@@ -1,3 +1,7 @@
+##### 2.9.0.559
+
+- [Backport 2.9] Fix OIDC refresh for providers without refresh_expires_in [c2cgeoportal#13186](https://github.com/camptocamp/c2cgeoportal/pull/13186)
+
 ##### 2.9.0.558
 
 - [Backport 2.9] Add queryFeatureTypes metadata for WMS GetFeatureInfo parsing [ngeo#10179](https://github.com/camptocamp/ngeo/pull/10179)
