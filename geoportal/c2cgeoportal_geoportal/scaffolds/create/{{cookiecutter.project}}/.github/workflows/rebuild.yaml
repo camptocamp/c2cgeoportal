@@ -5,6 +5,11 @@ on:
   schedule:
     - cron: '30 2 * * *'
 
+permissions:
+  contents: write
+  packages: write
+  id-token: write
+
 jobs:
   rebuild:
     runs-on: ubuntu-24.04
