@@ -4,6 +4,10 @@ on:
   schedule:
     - cron: '30 3 * * *'
 
+permissions:
+  contents: read
+  security-events: write
+
 jobs:
   main:
     runs-on: ubuntu-22.04

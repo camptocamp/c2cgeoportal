@@ -7,6 +7,9 @@ on:
 env:
   HAS_SECRETS: ${{ secrets.HAS_SECRETS }}
 
+permissions:
+  contents: read
+
 jobs:
   main:
     runs-on: ubuntu-22.04

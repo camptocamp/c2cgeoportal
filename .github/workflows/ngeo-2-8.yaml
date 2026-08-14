@@ -6,6 +6,10 @@ on:
       - ngeo_2.8_updated
   workflow_dispatch:
 
+permissions:
+  contents: write
+  security-events: write
+
 jobs:
   main:
     runs-on: ubuntu-22.04
