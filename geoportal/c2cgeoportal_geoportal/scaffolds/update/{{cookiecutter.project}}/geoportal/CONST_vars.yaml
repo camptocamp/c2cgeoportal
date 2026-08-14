@@ -1021,6 +1021,10 @@ vars:
   pdfreport:
     print_url: '{PRINT_URL}'
 
+  # The GitHub repository (<organization>/<repository>) allowed to get the /locale.pot view
+  # with a GitHub Actions OIDC token, an empty value (the default) refuses all the OIDC tokens.
+  github_oidc_allowed_repository: ''
+
   lingva_extractor: {}
 
   content_security_policy_main_default_src_extra: ''
