@@ -276,7 +276,7 @@ class OidcRemember:
             samesite="Lax",
             domain=self.request.domain,
         )
-        if token_response.refresh_expires_in is not None:
+        if token_response.refresh_token is not None:
             self.request.response.set_cookie(
                 "refresh_token",
                 token_response.refresh_token,
