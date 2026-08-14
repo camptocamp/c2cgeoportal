@@ -49,7 +49,7 @@ def _create_test_token(
     expired=False,
 ):
     """Create a test JWT token."""
-    now = datetime.datetime.now(tz=datetime.timezone.utc)
+    now = datetime.datetime.now(tz=datetime.UTC)
     payload = {
         "iss": issuer,
         "aud": audience,
@@ -103,8 +103,9 @@ class TestVerifyGithubOidcToken(TestCase):
     @patch("c2cgeoportal_geoportal.views.i18n._get_jwks_client")
     def test_wrong_repository(self, mock_get_client):
         """A token with wrong repository should be rejected."""
-        from c2cgeoportal_geoportal.views.i18n import _verify_github_oidc_token
         from pyramid.httpexceptions import HTTPForbidden
+
+        from c2cgeoportal_geoportal.views.i18n import _verify_github_oidc_token
 
         token = _create_test_token(self.private_key, repository="org/repo")
         mock_get_client.return_value = self._mock_jwks_client(self.public_key)
@@ -116,8 +117,9 @@ class TestVerifyGithubOidcToken(TestCase):
     @patch("c2cgeoportal_geoportal.views.i18n._get_jwks_client")
     def test_expired_token(self, mock_get_client):
         """An expired token should be rejected."""
-        from c2cgeoportal_geoportal.views.i18n import _verify_github_oidc_token
         from pyramid.httpexceptions import HTTPForbidden
+
+        from c2cgeoportal_geoportal.views.i18n import _verify_github_oidc_token
 
         token = _create_test_token(self.private_key, expired=True)
         mock_get_client.return_value = self._mock_jwks_client(self.public_key)
@@ -129,8 +131,9 @@ class TestVerifyGithubOidcToken(TestCase):
     @patch("c2cgeoportal_geoportal.views.i18n._get_jwks_client")
     def test_wrong_audience(self, mock_get_client):
         """A token with wrong audience should be rejected."""
-        from c2cgeoportal_geoportal.views.i18n import _verify_github_oidc_token
         from pyramid.httpexceptions import HTTPForbidden
+
+        from c2cgeoportal_geoportal.views.i18n import _verify_github_oidc_token
 
         token = _create_test_token(self.private_key, audience="wrong-audience")
         mock_get_client.return_value = self._mock_jwks_client(self.public_key)
@@ -142,12 +145,11 @@ class TestVerifyGithubOidcToken(TestCase):
     @patch("c2cgeoportal_geoportal.views.i18n._get_jwks_client")
     def test_wrong_issuer(self, mock_get_client):
         """A token with wrong issuer should be rejected."""
-        from c2cgeoportal_geoportal.views.i18n import _verify_github_oidc_token
         from pyramid.httpexceptions import HTTPForbidden
 
-        token = _create_test_token(
-            self.private_key, issuer="https://evil.example.com"
-        )
+        from c2cgeoportal_geoportal.views.i18n import _verify_github_oidc_token
+
+        token = _create_test_token(self.private_key, issuer="https://evil.example.com")
         mock_get_client.return_value = self._mock_jwks_client(self.public_key)
 
         with self.assertRaises(HTTPForbidden) as ctx:
