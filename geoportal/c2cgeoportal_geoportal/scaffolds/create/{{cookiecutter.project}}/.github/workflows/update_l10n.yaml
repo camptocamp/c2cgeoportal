@@ -5,6 +5,11 @@ on:
   schedule:
     - cron: '0 3 * * *'
 
+permissions:
+  id-token: write
+  contents: write
+  pull-requests: write
+
 jobs:
   l10n:
     runs-on: ubuntu-24.04
@@ -27,7 +32,16 @@ jobs:
           token: ${{'{{'}} secrets.GOPASS_CI_GITHUB_TOKEN {{'}}'}}
 
       - run: ./build --env
-      - run: PROJECT_PUBLIC_URL=${{'{{'}} matrix.base_url {{'}}'}} make -e update-po-from-url
+
+      - name: Get GitHub OIDC token
+        id: oidc
+        run: |
+          TOKEN=$(curl -sS -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=geomapfish-l10n" | jq -r .value)
+          echo "::add-mask::$TOKEN"
+          echo "token=$TOKEN" >> "$GITHUB_OUTPUT"
+
+      - run: PROJECT_PUBLIC_URL=${{'{{'}} matrix.base_url {{'}}'}} OIDC_TOKEN=${{'{{'}} steps.oidc.outputs.token {{'}}'}} make -e update-po-from-url
 
       - name: Init Git
         run: |

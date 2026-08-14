@@ -28,9 +28,13 @@
 
 import glob
 import logging
+from typing import Any
 
+import jwt
 import pyramid.request
 import pyramid.response
+from c2cwsgiutils.auth import auth_view
+from jwt import PyJWKClient
 from lingva.extract import (  # strip_linenumbers,
     ExtractorOptions,
     POEntry,
@@ -42,7 +46,7 @@ from lingva.extract import (  # strip_linenumbers,
 )
 from lingva.extractors import get_extractor, register_extractors
 from lingva.extractors.babel import register_babel_plugins
-from pyramid.httpexceptions import HTTPFound, HTTPInternalServerError
+from pyramid.httpexceptions import HTTPForbidden, HTTPFound, HTTPInternalServerError
 from pyramid.view import view_config
 
 from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
@@ -50,6 +54,72 @@ from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
 
 _LOG = logging.getLogger(__name__)
 _INITIALIZED = False
+
+_GITHUB_OIDC_ISSUER = "https://token.actions.githubusercontent.com"
+_GITHUB_OIDC_JWKS_URL = "https://token.actions.githubusercontent.com/.well-known/jwks.json"
+_OIDC_AUDIENCE = "geomapfish-l10n"
+_jwks_client: PyJWKClient | None = None
+
+
+def _get_jwks_client() -> PyJWKClient:
+    """Get or create the JWKS client for GitHub OIDC."""
+    global _jwks_client  # pylint: disable=global-statement
+    if _jwks_client is None:
+        _jwks_client = PyJWKClient(_GITHUB_OIDC_JWKS_URL, cache_keys=True)
+    return _jwks_client
+
+
+def _verify_github_oidc_token(token: str, allowed_repository: str | None) -> dict[str, Any]:
+    """
+    Validate a GitHub Actions OIDC token.
+
+    Returns the decoded payload if valid, raises HTTPForbidden otherwise.
+    """
+    try:
+        jwks_client = _get_jwks_client()
+        signing_key = jwks_client.get_signing_key_from_jwt(token)
+        payload = jwt.decode(
+            token,
+            signing_key.key,
+            algorithms=["RS256"],
+            audience=_OIDC_AUDIENCE,
+            issuer=_GITHUB_OIDC_ISSUER,
+            options={"verify_exp": True},
+        )
+    except jwt.ExpiredSignatureError:
+        raise HTTPForbidden("Token expired") from None
+    except jwt.InvalidAudienceError:
+        raise HTTPForbidden("Invalid token audience") from None
+    except jwt.InvalidIssuerError:
+        raise HTTPForbidden("Invalid token issuer") from None
+    except jwt.InvalidTokenError as exc:
+        raise HTTPForbidden(f"Invalid token: {exc}") from None
+
+    if allowed_repository is not None and payload.get("repository") != allowed_repository:
+        raise HTTPForbidden(
+            f"Unauthorized repository: {payload.get('repository')}, expected: {allowed_repository}"
+        )
+
+    return payload
+
+
+def _authenticate_localepot(request: pyramid.request.Request) -> None:
+    """
+    Authenticate the request for the /locale.pot endpoint.
+
+    Accepts either:
+    - A GitHub Actions OIDC token in the Authorization header (Bearer token)
+    - An admin authentication (via c2cwsgiutils.auth_view) as fallback
+    """
+    auth_header = request.headers.get("Authorization", "")
+    if auth_header.startswith("Bearer "):
+        token = auth_header[7:]
+        settings = request.registry.settings or {}
+        allowed_repository = settings.get("github_oidc_allowed_repository")
+        _verify_github_oidc_token(token, allowed_repository)
+        return
+
+    auth_view(request)
 
 
 @view_config(route_name="localejson")  # type: ignore[untyped-decorator]
@@ -68,6 +138,8 @@ def locale(request: pyramid.request.Request) -> pyramid.response.Response:
 @view_config(route_name="localepot")  # type: ignore[untyped-decorator]
 def localepot(request: pyramid.request.Request) -> pyramid.response.Response:
     """Get the pot from an HTTP request."""
+    _authenticate_localepot(request)
+
     # Build the list of files to be processed
     sources = []
     sources += glob.glob(f"/app/{request.registry.package_name}/static-ngeo/js/apps/*.html.ejs")
