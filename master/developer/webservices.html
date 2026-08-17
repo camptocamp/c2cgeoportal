@@ -749,6 +749,33 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 </section>
 </section>
 </section>
+<section id="altcha">
+<h2>ALTCHA<a class="headerlink" href="#altcha" title="Link to this heading">¶</a></h2>
+<p>The ALTCHA service provides proof-of-work challenges used to protect forms
+against spam.</p>
+<section id="challenge">
+<h3>Challenge<a class="headerlink" href="#challenge" title="Link to this heading">¶</a></h3>
+<p>URL: <code class="docutils literal notranslate"><span class="pre">.../altcha/challenge</span></code></p>
+<p>Method <code class="docutils literal notranslate"><span class="pre">GET</span></code></p>
+<section id="id18">
+<h4>Result<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;algorithm&quot;</span><span class="p">:</span> <span class="s2">&quot;PBKDF2/SHA-256&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;cost&quot;</span><span class="p">:</span> <span class="mi">5000</span><span class="p">,</span>
+        <span class="s2">&quot;keyLength&quot;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span>
+        <span class="s2">&quot;keyPrefix&quot;</span><span class="p">:</span> <span class="s2">&quot;00&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;nonce&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;salt&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;expiresAt&quot;</span><span class="p">:</span> <span class="mi">1786625958</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;signature&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
 <section id="geometry-processing">
 <h2>Geometry processing<a class="headerlink" href="#geometry-processing" title="Link to this heading">¶</a></h2>
 <p>This service provides geometry processing (currently only one)</p>
@@ -772,8 +799,8 @@ and the <code class="docutils literal notranslate"><span class="pre">&lt;geomB&g
 <p>This service create and returns the list of strings to translate for the localization in gettext POT format.</p>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../locale.pot</span></code></p>
 <p>Method: <code class="docutils literal notranslate"><span class="pre">GET</span></code></p>
-<section id="id18">
-<h3>Parameters<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h3>
+<section id="id19">
+<h3>Parameters<a class="headerlink" href="#id19" title="Link to this heading">¶</a></h3>
 <blockquote>
 <div><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">interfaces</span></code>: List of interfaces we want to use.</p></li>
@@ -790,8 +817,8 @@ and the <code class="docutils literal notranslate"><span class="pre">&lt;geomB&g
 <h2>Map server proxy<a class="headerlink" href="#map-server-proxy" title="Link to this heading">¶</a></h2>
 <p>This is a proxy to access OGC servers.</p>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../mapserv_proxy</span></code> or <code class="docutils literal notranslate"><span class="pre">.../mapserv_proxy/&lt;ogcserver&gt;/...</span></code></p>
-<section id="id19">
-<h3>Parameters<a class="headerlink" href="#id19" title="Link to this heading">¶</a></h3>
+<section id="id20">
+<h3>Parameters<a class="headerlink" href="#id20" title="Link to this heading">¶</a></h3>
 <blockquote>
 <div><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">ogcserver</span></code>: The OGC server name to use.</p></li>

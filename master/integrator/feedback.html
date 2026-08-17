@@ -82,6 +82,28 @@ number interpreted as the port number to use.</p>
 <p>Replace the <code class="docutils literal notranslate"><span class="pre">smtp.example.com</span></code> value by a working SMTP server name.
 If your SMTP server does not require user login, then remove the configuration
 for user and password.</p>
+<section id="altcha-anti-spam-protection">
+<h2>Altcha anti-spam protection<a class="headerlink" href="#altcha-anti-spam-protection" title="Link to this heading">¶</a></h2>
+<p>The feedback form can be protected against spam using <a class="reference external" href="https://altcha.org">ALTCHA</a>,
+an open-source proof-of-work challenge. When enabled, the frontend must solve a
+cryptographic puzzle before submitting the form.</p>
+<p>The default configuration is already in <code class="docutils literal notranslate"><span class="pre">CONST_vars.yaml</span></code>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">altcha</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">hmac_secret</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{ALTCHA_HMAC_SECRET}&#39;</span>
+<span class="w">  </span><span class="nt">algorithm</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;PBKDF2/SHA-256&#39;</span>
+<span class="w">  </span><span class="nt">cost</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5000</span>
+<span class="w">  </span><span class="nt">expires_in</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">300</span>
+</pre></div>
+</div>
+<p>To enable ALTCHA, set <code class="docutils literal notranslate"><span class="pre">feedback.altcha:</span> <span class="pre">true</span></code> in your <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> and
+configure the <code class="docutils literal notranslate"><span class="pre">ALTCHA_HMAC_SECRET</span></code> environment variable with a strong secret
+value (at least 32 characters, alphanumeric).</p>
+<p>When <code class="docutils literal notranslate"><span class="pre">feedback.altcha</span></code> is <code class="docutils literal notranslate"><span class="pre">true</span></code>, the <code class="docutils literal notranslate"><span class="pre">POST</span> <span class="pre">/feedback</span></code> endpoint requires
+a valid ALTCHA payload in the <code class="docutils literal notranslate"><span class="pre">altcha</span></code> form field. The frontend can fetch a
+new challenge from the <code class="docutils literal notranslate"><span class="pre">GET</span> <span class="pre">/altcha/challenge</span></code> endpoint.</p>
+<p>By default <code class="docutils literal notranslate"><span class="pre">hmac_secret</span></code> is empty, which disables the ALTCHA challenge
+generation and verification.</p>
+</section>
 </section>
 
 
