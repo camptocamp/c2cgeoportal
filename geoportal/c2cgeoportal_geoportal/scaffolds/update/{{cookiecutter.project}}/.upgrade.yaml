@@ -71,3 +71,6 @@ upgrade_files:
   - action: remove
     paths:
       - geoportal/.eslintrc.yaml
+  - action: move
+    from: ci/config.yaml
+    to: .github/publish.yaml

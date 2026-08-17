@@ -1,0 +1,7 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/camptocamp/tag-publish/0.13.3/tag_publish/schema.json
+
+docker:
+  latest: false
+  images:
+    - name: camptocamp/{{cookiecutter.package}}-config
+    - name: camptocamp/{{cookiecutter.package}}-geoportal
