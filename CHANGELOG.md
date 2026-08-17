@@ -1,3 +1,7 @@
+##### 2.9.0.560
+
+- Add legendDebounceDelay configuration for GetLegendGraphic optimization [c2cgeoportal#13187](https://github.com/camptocamp/c2cgeoportal/pull/13187)
+
 ##### 2.9.0.559
 
 - [Backport 2.9] Fix OIDC refresh for providers without refresh_expires_in [c2cgeoportal#13186](https://github.com/camptocamp/c2cgeoportal/pull/13186)
