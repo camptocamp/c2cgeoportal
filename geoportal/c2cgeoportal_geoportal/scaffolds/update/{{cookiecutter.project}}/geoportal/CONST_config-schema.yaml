@@ -368,6 +368,7 @@ mapping:
           user_settings: *header
           error: *header
           feedback: *header
+          altcha: *header
 
       urllogin:
         type: map
@@ -629,7 +630,23 @@ mapping:
       feedback:
         type: map
         required: True
-        mapping: *send_email
+        mapping:
+          <<: *send_email
+          altcha:
+            type: bool
+            default: false
+      altcha:
+        type: map
+        required: True
+        mapping:
+          algorithm:
+            type: str
+          cost:
+            type: int
+          expires_in:
+            type: int
+          hmac_secret:
+            type: str
       smtp:
         type: map
         mapping:

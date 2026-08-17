@@ -798,6 +798,38 @@ Result
     }
 
 
+ALTCHA
+======
+
+The ALTCHA service provides proof-of-work challenges used to protect forms
+against spam.
+
+Challenge
+---------
+
+URL: ``.../altcha/challenge``
+
+Method ``GET``
+
+Result
+~~~~~~
+
+.. code::
+
+    {
+        "parameters": {
+            "algorithm": "PBKDF2/SHA-256",
+            "cost": 5000,
+            "keyLength": 32,
+            "keyPrefix": "00",
+            "nonce": "...",
+            "salt": "...",
+            "expiresAt": 1786625958
+        },
+        "signature": "..."
+    }
+
+
 Geometry processing
 ===================
 

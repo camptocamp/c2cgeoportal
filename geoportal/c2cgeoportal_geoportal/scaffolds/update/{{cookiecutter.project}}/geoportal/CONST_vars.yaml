@@ -987,7 +987,17 @@ vars:
   reset_password: {}
 
   # Used to send an email on feedback
-  feedback: {}
+  feedback:
+    # Require a valid ALTCHA proof-of-work payload on feedback submission
+    altcha: false
+
+  # ALTCHA proof-of-work challenge configuration
+  # See https://altcha.org
+  altcha:
+    algorithm: 'PBKDF2/SHA-256'
+    cost: 5000
+    expires_in: 300 # seconds
+    hmac_secret: '{ALTCHA_HMAC_SECRET}'
 
   # The shortener base configuration
   shortener:
@@ -1194,6 +1204,7 @@ vars:
     vector_tiles: *header
     error: *header
     feedback: *header
+    altcha: *header
     themes: &auth_header
       cache_control_max_age: 600 # 10 minutes
       cache_control_max_age_nocache: 10 # 10 seconds, to avoid too many call
@@ -1408,6 +1419,8 @@ runtime_environment:
     default: ''
   - name: OPENID_CONNECT_ENABLED
     default: 'false'
+  - name: ALTCHA_HMAC_SECRET
+    default: ''
 
 runtime_postprocess:
   - expression: int({})
@@ -1487,6 +1500,8 @@ runtime_postprocess:
       - headers.error.cache_control_max_age
       - headers.error.cache_control_max_age_nocache
       - shortener.length
+      - altcha.cost
+      - altcha.expires_in
       - checker.fulltextsearch.level
       - checker.lang.level
       - checker.print.level
@@ -1499,6 +1514,7 @@ runtime_postprocess:
       - authentication.two_factor
       - authentication.openid_connect.enabled
       - getitfixed.enabled
+      - feedback.altcha
       - layers.geometry_validation
       - smtp.ssl
       - smtp.starttls

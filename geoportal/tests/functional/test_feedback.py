@@ -132,3 +132,71 @@ class TestFeedbackView(TestCase):
             assert kwargs["permalink"] == "https://example.com/view?theme=Demo"
             assert kwargs["user_email"] == "user@example.com"
             assert kwargs["text"] == "Great app!"
+
+    def test_altcha_missing(self) -> None:
+        from pyramid.httpexceptions import HTTPBadRequest
+
+        from c2cgeoportal_geoportal.views.feedback import feedback_post
+
+        request = self._create_request(
+            {
+                "permalink": "https://example.com/view?theme=Demo",
+                "user_agent": "Mozilla/5.0",
+                "application": "viewer",
+                "email": "user@example.com",
+                "email_optional": "",
+                "feedback": "Great app!",
+            }
+        )
+        request.registry.settings["feedback"] = {"altcha": True}
+        request.registry.settings["altcha"] = {"hmac_secret": "test-secret"}
+        with self.assertRaises(HTTPBadRequest):
+            feedback_post(request)
+
+    def test_altcha_invalid(self) -> None:
+        from pyramid.httpexceptions import HTTPBadRequest
+
+        from c2cgeoportal_geoportal.views.feedback import feedback_post
+
+        request = self._create_request(
+            {
+                "permalink": "https://example.com/view?theme=Demo",
+                "user_agent": "Mozilla/5.0",
+                "application": "viewer",
+                "email": "user@example.com",
+                "email_optional": "",
+                "feedback": "Great app!",
+                "altcha": "invalid-payload",
+            }
+        )
+        request.registry.settings["feedback"] = {"altcha": True}
+        request.registry.settings["altcha"] = {"hmac_secret": "test-secret"}
+        with self.assertRaises(HTTPBadRequest):
+            feedback_post(request)
+
+    def test_altcha_valid(self) -> None:
+        from altcha import Payload, create_challenge, solve_challenge
+
+        from c2cgeoportal_geoportal.views.feedback import feedback_post
+
+        hmac_secret = "test-secret"
+        challenge = create_challenge(algorithm="PBKDF2/SHA-256", cost=500, hmac_secret=hmac_secret)
+        solution = solve_challenge(challenge)
+        assert solution is not None
+        payload = Payload(challenge, solution).to_base64()
+
+        request = self._create_request(
+            {
+                "permalink": "https://example.com/view?theme=Demo",
+                "user_agent": "Mozilla/5.0",
+                "application": "viewer",
+                "email": "user@example.com",
+                "email_optional": "",
+                "feedback": "Great app!",
+                "altcha": payload,
+            }
+        )
+        request.registry.settings["feedback"] = {"altcha": True}
+        request.registry.settings["altcha"] = {"hmac_secret": hmac_secret}
+        result = feedback_post(request)
+        assert result == {"success": True}

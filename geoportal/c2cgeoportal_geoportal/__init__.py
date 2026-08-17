@@ -783,6 +783,10 @@ def includeme(config: pyramid.config.Configurator) -> None:
     add_cors_route(config, "/feedback", "feedback")
     config.add_route("feedback", "/feedback", request_method="POST")
 
+    # ALTCHA proof-of-work challenge
+    add_cors_route(config, "/altcha/challenge", "altcha")
+    config.add_route("altcha_challenge", "/altcha/challenge", request_method="GET")
+
     config.add_renderer(".map", AssetRendererFactory)
     config.add_renderer(".css", AssetRendererFactory)
     config.add_renderer(".ico", AssetRendererFactory)
