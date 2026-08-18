@@ -1,4 +1,28 @@
 #!/usr/bin/env python3
+
+# Copyright (c) 2025-2026, Camptocamp SA
+# All rights reserved.
+
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+
+# 1. Redistributions of source code must retain the above copyright notice, this
+#    list of conditions and the following disclaimer.
+# 2. Redistributions in binary form must reproduce the above copyright notice,
+#    this list of conditions and the following disclaimer in the documentation
+#    and/or other materials provided with the distribution.
+
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+# ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 # pylint: disable=invalid-name
 
 import argparse
@@ -85,28 +109,42 @@ def _main() -> None:
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="\n".join(  # noqa: FLY002
             [
-                "This command is used to evaluate the templates files `<filename>.tmpl` to `<filename>` "
-                "using the `envsubst` command witch will replace the variable in bash syntax `$NAME` "
-                "with the corresponding environment variable.",
+                (
+                    "This command is used to evaluate the templates files `<filename>.tmpl` to `<filename>` "
+                    "using the `envsubst` command witch will replace the variable in bash syntax `$NAME` "
+                    "with the corresponding environment variable."
+                ),
                 "The following environment variables are created:",
                 " - `CACHE_VERSION`: with a random value,",
                 " - `DOLLAR`: with the value `$`,",
-                " - `VISIBLE_WEB_HOST_RE_ESCAPED`: with the value of `VISIBLE_WEB_HOST` escaped for use in a regular "
-                "expression,",
-                " - `VISIBLE_ENTRY_POINT_RE_ESCAPED`: with the value of `VISIBLE_ENTRY_POINT` escaped for use in a "
-                "regular expression,",
-                " - `MAPSERVER_DATA_SUBSELECT`, `MAPSERVER_DATA_NOAREA_SUBSELECT`, `MAPSERVER_JOIN_TABLES` and "
-                "`MAPSERVER_JOIN_WHERE`: will be built for the current `PGSCHEMA` and `ST_JOIN` environment "
-                "variables,",
-                " - `GEOPORTAL_INTERNAL_HOST`, `GEOPORTAL_INTERNAL_PORT`, `TILECLOUDCHAIN_INTERNAL_HOST` and "
-                "`TILECLOUDCHAIN_INTERNAL_PORT`: will be built from `GEOPORTAL_INTERNAL_URL` and "
-                "`TILECLOUDCHAIN_INTERNAL_URL`,",
-                " - `VISIBLE_WEB_HOSTNAME` and `VISIBLE_WEB_PORT`: will be built from `VISIBLE_WEB_HOST` and "
-                "`VISIBLE_WEB_PROTOCOL`.",
+                (
+                    " - `VISIBLE_WEB_HOST_RE_ESCAPED`: with the value of `VISIBLE_WEB_HOST` escaped for use in a regular "
+                    "expression,"
+                ),
+                (
+                    " - `VISIBLE_ENTRY_POINT_RE_ESCAPED`: with the value of `VISIBLE_ENTRY_POINT` escaped for use in a "
+                    "regular expression,"
+                ),
+                (
+                    " - `MAPSERVER_DATA_SUBSELECT`, `MAPSERVER_DATA_NOAREA_SUBSELECT`, `MAPSERVER_JOIN_TABLES` and "
+                    "`MAPSERVER_JOIN_WHERE`: will be built for the current `PGSCHEMA` and `ST_JOIN` environment "
+                    "variables,"
+                ),
+                (
+                    " - `GEOPORTAL_INTERNAL_HOST`, `GEOPORTAL_INTERNAL_PORT`, `TILECLOUDCHAIN_INTERNAL_HOST` and "
+                    "`TILECLOUDCHAIN_INTERNAL_PORT`: will be built from `GEOPORTAL_INTERNAL_URL` and "
+                    "`TILECLOUDCHAIN_INTERNAL_URL`,"
+                ),
+                (
+                    " - `VISIBLE_WEB_HOSTNAME` and `VISIBLE_WEB_PORT`: will be built from `VISIBLE_WEB_HOST` and "
+                    "`VISIBLE_WEB_PROTOCOL`."
+                ),
                 "",
-                "If the `RASTER_BASE_PATH` environment variable is set, the raster layers in the QGIS project and "
-                "Mapserver tile index will be converted to use the raster base path, if an empty file "
-                "`*.qgs.raster`, `*.qgz.raster` (for QGIS server) or `*.raster` (for MapServer tile index) is found.",
+                (
+                    "If the `RASTER_BASE_PATH` environment variable is set, the raster layers in the QGIS project and "
+                    "Mapserver tile index will be converted to use the raster base path, if an empty file "
+                    "`*.qgs.raster`, `*.qgz.raster` (for QGIS server) or `*.raster` (for MapServer tile index) is found."
+                ),
             ],
         ),
     )

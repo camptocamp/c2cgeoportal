@@ -5,6 +5,7 @@
 # GNU General Public License as published by the Free Software Foundation; either version 2 of
 # the License, or (at your option) any later version.
 
+
 import logging
 import os
 import random
@@ -39,7 +40,7 @@ from sqlalchemy.orm import configure_mappers, joinedload, sessionmaker, subquery
 from sqlalchemy.orm.session import Session
 
 if TYPE_CHECKING:
-    from c2cgeoportal_commons.models import (
+    from c2cgeoportal_commons.models import (  # noqa: PLC0415, RUF100
         main,  # pylint: disable=ungrouped-imports,useless-suppression
     )
 
@@ -105,7 +106,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):  # type: ignore[misc]
             configuration = config.get_config()
             assert configuration is not None
 
-            DBSession = create_session_factory(  # noqa: N806 # pylint: disable=invalid-name
+            DBSession = create_session_factory(  # noqa: N806, RUF100
                 config.get("sqlalchemy_slave.url"),
                 configuration.get("sqlalchemy", {}),
             )
@@ -147,7 +148,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):  # type: ignore[misc]
                 base_url = Url(os.environ["GEOMAPFISH_ACCESSCONTROL_BASE_URL"])
                 session = DBSession()
                 try:
-                    from c2cgeoportal_commons.models.main import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
+                    from c2cgeoportal_commons.models.main import (  # noqa: PLC0415, RUF100
                         OGCServer,
                     )
 
@@ -281,7 +282,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):  # type: ignore[misc]
             raise GMFError(message)
         return cast("OGCServerAccessControl", self.ogcserver_accesscontrols[config_file]["access_control"])
 
-    def layerFilterSubsetString(self, layer: QgsVectorLayer) -> str | None:  # noqa: N802 # pylint: disable=invalid-name
+    def layerFilterSubsetString(self, layer: QgsVectorLayer) -> str | None:  # noqa: N802, RUF100
         """Return an additional subset string (typically SQL) filter."""
         try:
             if not self.initialized:
@@ -292,7 +293,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):  # type: ignore[misc]
             _LOG.exception("Unhandled error")
             raise
 
-    def layerFilterExpression(self, layer: QgsVectorLayer) -> str | None:  # noqa: N802 # pylint: disable=invalid-name
+    def layerFilterExpression(self, layer: QgsVectorLayer) -> str | None:  # noqa: N802, RUF100
         """Return an additional expression filter."""
         try:
             if not self.initialized:
@@ -303,7 +304,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):  # type: ignore[misc]
             _LOG.exception("Unhandled error")
             raise
 
-    def layerPermissions(  # noqa: N802 # pylint: disable=invalid-name
+    def layerPermissions(  # noqa: N802, RUF100
         self,
         layer: QgsVectorLayer,
     ) -> qgis.server.QgsAccessControlFilter.LayerPermissions:
@@ -319,7 +320,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):  # type: ignore[misc]
             _LOG.exception("Unhandled error")
             raise
 
-    def authorizedLayerAttributes(  # noqa: N802 # pylint: disable=invalid-name
+    def authorizedLayerAttributes(  # noqa: N802, RUF100
         self,
         layer: QgsVectorLayer,
         attributes: list[str],
@@ -334,7 +335,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):  # type: ignore[misc]
             _LOG.exception("Unhandled error")
             raise
 
-    def allowToEdit(self, layer: QgsVectorLayer, feature: QgsFeature) -> bool:  # noqa: N802 # pylint: disable=invalid-name
+    def allowToEdit(self, layer: QgsVectorLayer, feature: QgsFeature) -> bool:  # noqa: N802, RUF100
         """Are we authorize to modify the following geometry."""
         try:
             if not self.initialized:
@@ -345,12 +346,12 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):  # type: ignore[misc]
             _LOG.exception("Unhandled error")
             raise
 
-    def cacheKey(self) -> str:  # noqa: N802 # pylint: disable=invalid-name
+    def cacheKey(self) -> str:  # noqa: N802, RUF100
         """Get the cache key."""
         try:
             if not self.initialized:
                 _LOG.error("Call on uninitialized plugin")
-                return str(random.randrange(1000000))  # noqa: S311 # nosec
+                return str(random.randrange(1000000))  # noqa: S311, RUF100  # nosec B311
             return self.get_ogcserver_accesscontrol().cacheKey()
         except Exception:
             _LOG.exception("Unhandled error")
@@ -368,7 +369,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):  # type: ignore[misc]
         ogcserver_name: str,
         map_file: str,
         srid: int,
-        DBSession: sessionmaker[sqlalchemy.orm.session.Session],  # noqa: N803 # pylint: disable=invalid-name,unsubscriptable-object
+        DBSession: sessionmaker[sqlalchemy.orm.session.Session],  # noqa: N803, RUF100
         ogcserver: Optional["main.OGCServer"] = None,
     ) -> None:
         """Initialize the plugin."""
@@ -377,7 +378,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):  # type: ignore[misc]
         self.server_iface = server_iface
         self.map_file = map_file
         self.srid = srid
-        self.DBSession = DBSession  # pylint: disable=invalid-name
+        self.DBSession = DBSession
 
         self.area_cache: dict[Any, tuple[Access, BaseGeometry]] = {}
         self.layers: dict[str, list[main.LayerWMS]] | None = None
@@ -385,7 +386,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):  # type: ignore[misc]
         self.srid = srid
         self.ogcserver = ogcserver
 
-        from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models import (  # noqa: PLC0415, RUF100
             InvalidateCacheEvent,
         )
 
@@ -405,7 +406,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):  # type: ignore[misc]
             try:
                 self.layers = None
 
-                from c2cgeoportal_commons.models.main import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
+                from c2cgeoportal_commons.models.main import (  # noqa: PLC0415, RUF100
                     OGCServer,
                 )
 
@@ -428,7 +429,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):  # type: ignore[misc]
 
     def ogc_layer_name(self, layer: QgsVectorLayer) -> str:
         """Get the OGC layer name."""
-        use_layer_id, _ = self.project().readBoolEntry("WMSUseLayerIDs", "/", False)  # noqa: FBT003
+        use_layer_id, _ = self.project().readBoolEntry("WMSUseLayerIDs", "/", False)  # noqa: FBT003, RUF100
         if use_layer_id:
             return layer.id()  # type: ignore[no-any-return]
         return layer.shortName() or layer.name()  # type: ignore[no-any-return]
@@ -451,7 +452,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):  # type: ignore[misc]
             return self.layers
 
         with self.lock:
-            from c2cgeoportal_commons.models.main import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
+            from c2cgeoportal_commons.models.main import (  # noqa: PLC0415, RUF100
                 LayerWMS,
                 RestrictionArea,
             )
@@ -519,7 +520,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):  # type: ignore[misc]
         - List of c2cgeoportal_commons.models.main.Role instances.
 
         """
-        from c2cgeoportal_commons.models.main import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models.main import (  # noqa: PLC0415, RUF100
             Role,
         )
 
@@ -573,7 +574,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):  # type: ignore[misc]
         if not roles:
             return Access.NO, None
 
-        from c2cgeoportal_commons.models.main import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
+        from c2cgeoportal_commons.models.main import (  # noqa: PLC0415, RUF100
             Role,
         )
 
@@ -638,7 +639,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):  # type: ignore[misc]
         self.area_cache[key] = (Access.AREA, area)
         return (Access.AREA, area)
 
-    def layerFilterSubsetString(self, layer: QgsVectorLayer) -> str | None:  # noqa: N802 # pylint: disable=invalid-name
+    def layerFilterSubsetString(self, layer: QgsVectorLayer) -> str | None:  # noqa: N802, RUF100
         """Get an additional subset string (typically SQL) filter."""
         _LOG.debug("layerFilterSubsetString %s %s", layer.name(), layer.dataProvider().storageType())
 
@@ -690,7 +691,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):  # type: ignore[misc]
         else:
             return result
 
-    def layerFilterExpression(self, layer: QgsVectorLayer) -> str | None:  # noqa: N802 # pylint: disable=invalid-name
+    def layerFilterExpression(self, layer: QgsVectorLayer) -> str | None:  # noqa: N802, RUF100
         """Get an additional expression filter."""
         _LOG.debug("layerFilterExpression %s %s", layer.name(), layer.dataProvider().storageType())
 
@@ -731,7 +732,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):  # type: ignore[misc]
         else:
             return result
 
-    def layerPermissions(  # noqa: N802 # pylint: disable=invalid-name
+    def layerPermissions(  # noqa: N802, RUF100
         self,
         layer: QgsVectorLayer,
     ) -> qgis.server.QgsAccessControlFilter.LayerPermissions:
@@ -776,7 +777,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):  # type: ignore[misc]
         else:
             return rights
 
-    def authorizedLayerAttributes(  # noqa: N802 # pylint: disable=invalid-name
+    def authorizedLayerAttributes(  # noqa: N802, RUF100
         self,
         layer: QgsVectorLayer,
         attributes: list[str],
@@ -827,7 +828,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):  # type: ignore[misc]
         finally:
             session.close()
 
-    def allowToEdit(self, layer: QgsVectorLayer, feature: QgsFeature) -> bool:  # noqa: N802 # pylint: disable=invalid-name
+    def allowToEdit(self, layer: QgsVectorLayer, feature: QgsFeature) -> bool:  # noqa: N802, RUF100
         """Are we authorize to modify the following geometry."""
         _LOG.debug("allowToEdit")
 
@@ -857,7 +858,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):  # type: ignore[misc]
             _LOG.exception("Cannot run allowToEdit")
             raise
 
-    def cacheKey(self) -> str:  # noqa: N802 # pylint: disable=invalid-name
+    def cacheKey(self) -> str:  # noqa: N802, RUF100
         """Get the cache key."""
         # Root...
         session = self.DBSession()
