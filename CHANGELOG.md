@@ -1,3 +1,7 @@
+##### 2.9.0.561
+
+- Lock file maintenance (2.9) [c2cgeoportal#13192](https://github.com/camptocamp/c2cgeoportal/pull/13192)
+
 ##### 2.9.0.560
 
 - Add legendDebounceDelay configuration for GetLegendGraphic optimization [c2cgeoportal#13187](https://github.com/camptocamp/c2cgeoportal/pull/13187)
