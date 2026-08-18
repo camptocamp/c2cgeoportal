@@ -6,6 +6,9 @@ on:
 
 permissions:
   contents: read
+  # To publish the images to be used on Kubernetes
+  # packages: write
+  # id-token: write
 
 jobs:
   main:
@@ -61,3 +64,5 @@ jobs:
       # To publish the images to be used on Kubernetes
       # - name: Publish
       #   run: tag-publish
+      #  env:
+      #    GITHUB_TOKEN: ${{'{{'}} secrets.GITHUB_TOKEN }}

@@ -6,7 +6,7 @@ on:
     - cron: '30 2 * * *'
 
 permissions:
-  contents: write
+  contents: read
   packages: write
   id-token: write
 
@@ -40,3 +40,5 @@ jobs:
 
       - name: Publish
         run: tag-publish --branch=${{'{{'}} matrix.branch }} --type=rebuild
+        env:
+          GITHUB_TOKEN: ${{'{{'}} secrets.GITHUB_TOKEN }}
