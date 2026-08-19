@@ -734,6 +734,13 @@ prefix and <code class="docutils literal notranslate"><span class="pre">__</span
 <h2>Admin and test pages<a class="headerlink" href="#admin-and-test-pages" title="Permalink to this headline">¶</a></h2>
 <p>On the URL <cite>&lt;base URL&gt;/admin/</cite> you can see the status of the generation, a tool to generate the tiles, and a link
 to a test page.</p>
+<p>The access to the admin page is controlled by the <code class="docutils literal notranslate"><span class="pre">authentication</span></code> configuration section:</p>
+<ul class="simple">
+<li><p>The users with a <code class="docutils literal notranslate"><span class="pre">github_access_type</span></code> access on the configured <code class="docutils literal notranslate"><span class="pre">github_repository</span></code> have the read-write
+access: they can also launch a generation, and cancel or retry a job.</p></li>
+<li><p>The users with only a <code class="docutils literal notranslate"><span class="pre">pull</span></code> access on the repository have a read-only access: they can see the status and
+the jobs, but cannot launch a generation, nor cancel or retry a job.</p></li>
+</ul>
 <p>Beware, the test page assumes we have configured only one grid.</p>
 <p>The test page stores its current state in the URL query string, so you can share or reload the same view:</p>
 <ul class="simple">
