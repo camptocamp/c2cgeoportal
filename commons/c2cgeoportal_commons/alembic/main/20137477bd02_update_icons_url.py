@@ -1,4 +1,4 @@
-# Copyright (c) 2014-2024, Camptocamp SA
+# Copyright (c) 2014-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -48,13 +48,17 @@ def upgrade() -> None:
     schema = config["schema"]
 
     updates = [
-        "UPDATE %(schema)s.%(table)s SET %(column)s = 'static:///' || %(column)s "
-        "WHERE (%(column)s IS NOT NULL) AND (NOT %(column)s = '') "
-        "AND NOT (%(column)s LIKE 'http%%') "
-        "AND NOT (%(column)s LIKE '/%%')",
-        "UPDATE %(schema)s.%(table)s SET %(column)s = 'static://' || %(column)s "
-        "WHERE (%(column)s IS NOT NULL) AND (NOT %(column)s = '') "
-        "AND NOT (%(column)s LIKE 'http%%') AND NOT (%(column)s LIKE 'static://%%')",
+        (
+            "UPDATE %(schema)s.%(table)s SET %(column)s = 'static:///' || %(column)s "
+            "WHERE (%(column)s IS NOT NULL) AND (NOT %(column)s = '') "
+            "AND NOT (%(column)s LIKE 'http%%') "
+            "AND NOT (%(column)s LIKE '/%%')"
+        ),
+        (
+            "UPDATE %(schema)s.%(table)s SET %(column)s = 'static://' || %(column)s "
+            "WHERE (%(column)s IS NOT NULL) AND (NOT %(column)s = '') "
+            "AND NOT (%(column)s LIKE 'http%%') AND NOT (%(column)s LIKE 'static://%%')"
+        ),
     ]
     for update in updates:
         op.execute(update % {"schema": schema, "table": "theme", "column": "icon"})
@@ -68,10 +72,14 @@ def downgrade() -> None:
     schema = config["schema"]
 
     updates = [
-        "UPDATE %(schema)s.%(table)s SET %(column)s = substring(%(column)s from 11) "
-        "WHERE %(column)s LIKE 'static:///%%'",
-        "UPDATE %(schema)s.%(table)s SET %(column)s = substring(%(column)s from 10) "
-        "WHERE %(column)s LIKE 'static://%%'",
+        (
+            "UPDATE %(schema)s.%(table)s SET %(column)s = substring(%(column)s from 11) "
+            "WHERE %(column)s LIKE 'static:///%%'"
+        ),
+        (
+            "UPDATE %(schema)s.%(table)s SET %(column)s = substring(%(column)s from 10) "
+            "WHERE %(column)s LIKE 'static://%%'"
+        ),
     ]
     for update in updates:
         op.execute(update % {"schema": schema, "table": "theme", "column": "icon"})

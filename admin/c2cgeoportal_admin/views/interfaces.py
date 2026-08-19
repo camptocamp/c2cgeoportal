@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2025, Camptocamp SA
+# Copyright (c) 2017-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -61,7 +61,7 @@ class InterfacesViews(LoggedViews[Interface]):
         ),
         _list_field(
             "theme",
-            renderer=lambda interface: ", ".join([f"{t.name}-{t.name}" or "" for t in interface.theme]),
+            renderer=lambda interface: ", ".join([f"{t.name}-{t.name}" for t in interface.theme]),
         ),
     ]
     _id_field = "id"

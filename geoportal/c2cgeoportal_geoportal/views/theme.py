@@ -186,7 +186,7 @@ class Theme:
         item: main.TreeItem,
         metadata: str,
         errors: set[str],
-    ) -> None | str | int | float | bool | list[Any] | dict[str, Any]:
+    ) -> str | int | float | bool | list[Any] | dict[str, Any] | None:
         metadatas = item.get_metadata(metadata)
         return (
             None
@@ -1395,8 +1395,10 @@ class Theme:
             return (
                 None,
                 {
-                    f"Unable to find the Group named: {group}, Available Groups: "
-                    f"{', '.join([i[0] for i in models.DBSession.query(main.LayerGroup.name).all()])}",
+                    (
+                        f"Unable to find the Group named: {group}, Available Groups: "
+                        f"{', '.join([i[0] for i in models.DBSession.query(main.LayerGroup.name).all()])}"
+                    )
                 },
             )
 

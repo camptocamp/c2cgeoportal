@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2025, Camptocamp SA
+# Copyright (c) 2017-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -113,7 +113,7 @@ class RestrictionAreaViews(LoggedViews[RestrictionArea]):
         _list_field(
             "layers",
             renderer=lambda restriction_area: ", ".join(
-                f"{layer.item_type}-{layer.name}" or "" for layer in restriction_area.layers
+                f"{layer.item_type}-{layer.name}" for layer in restriction_area.layers
             ),
         ),
     ]

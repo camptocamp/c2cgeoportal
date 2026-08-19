@@ -62,7 +62,7 @@ def get_typed(
     request: pyramid.request.Request,
     errors: set[str],
     layer_name: str | None = None,
-) -> str | int | float | bool | None | list[Any] | dict[str, Any]:
+) -> str | int | float | bool | list[Any] | dict[str, Any] | None:
     """Get the typed (parsed) value of a metadata or a functionality."""
     prefix = f"Layer '{layer_name}': " if layer_name is not None else ""
     type_ = {"type": "not init"}

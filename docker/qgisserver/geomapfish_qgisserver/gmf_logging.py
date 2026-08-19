@@ -1,9 +1,10 @@
-# Copyright (c) 2019-2025, Camptocamp SA
+# Copyright (c) 2019-2026, Camptocamp SA
 # All rights reserved.
 
 # This program is free software; you can redistribute it and/or modify it under the terms of the
 # GNU General Public License as published by the Free Software Foundation; either version 2 of
 # the License, or (at your option) any later version.
+
 
 import logging.config
 import os
@@ -18,7 +19,7 @@ SERVER_IFACE: qgis.server.QgsServerInterface = None
 
 def init(server_iface: qgis.server.QgsServerInterface) -> None:
     """Initialize the plugin."""
-    global SERVER_IFACE  # noqa: PLW0603 # pylint: disable=global-statement
+    global SERVER_IFACE  # noqa: PLW0603, RUF100
     SERVER_IFACE = server_iface
     logging.config.fileConfig(
         os.environ.get("LOGGING_CONFIG_FILE", "/var/www/logging.ini"),

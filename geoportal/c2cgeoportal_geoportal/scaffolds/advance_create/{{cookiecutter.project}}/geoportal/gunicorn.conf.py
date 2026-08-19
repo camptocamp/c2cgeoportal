@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2025, Camptocamp SA
+# Copyright (c) 2019-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -40,15 +40,15 @@ from prometheus_client import multiprocess
 bind = ":8080"
 
 worker_class = "gthread"
-workers = int(os.environ.get("GUNICORN_WORKERS", 2))
-threads = int(os.environ.get("GUNICORN_THREADS", 10))
+workers = int(os.environ.get("GUNICORN_WORKERS", "2"))
+threads = int(os.environ.get("GUNICORN_THREADS", "10"))
 
-timeout = int(os.environ.get("GUNICORN_TIMEOUT", 120))
+timeout = int(os.environ.get("GUNICORN_TIMEOUT", "120"))
 
-max_requests = int(os.environ.get("GUNICORN_MAX_REQUESTS", 1000))
-max_requests_jitter = int(os.environ.get("GUNICORN_MAX_REQUESTS_JITTER", 100))
+max_requests = int(os.environ.get("GUNICORN_MAX_REQUESTS", "1000"))
+max_requests_jitter = int(os.environ.get("GUNICORN_MAX_REQUESTS_JITTER", "100"))
 worker_tmp_dir = "/dev/shm"  # noqa: S108
-limit_request_line = int(os.environ.get("GUNICORN_LIMIT_REQUEST_LINE", 8190))
+limit_request_line = int(os.environ.get("GUNICORN_LIMIT_REQUEST_LINE", "8190"))
 
 accesslog = "-"
 access_log_format = os.environ.get(
