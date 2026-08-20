@@ -1,4 +1,4 @@
-FROM ghcr.io/camptocamp/postgres:17-postgis-3
+FROM ghcr.io/camptocamp/postgres:18-postgis-3
 
 LABEL org.opencontainers.image.authors="Camptocamp <info@camptocamp.com>"
 
