@@ -10,7 +10,7 @@ Sphinx-Substitution-Extensions = { extras = ["prompt"], version = "2026.8.13.1" 
 sphinxcontrib-mermaid = "2.1.0"
 c2cwsgiutils = ">=6.0.0.dev148"
 tilecloud-chain = "2.0.0"
-boto3 = { version = "1.43.70", optional = true }
+boto3 = { version = "1.43.56", optional = true }
 setuptools = "80.10.2"
 
 [project]
