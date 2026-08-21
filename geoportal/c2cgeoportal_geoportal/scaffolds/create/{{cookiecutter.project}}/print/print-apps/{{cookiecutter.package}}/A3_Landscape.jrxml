@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="gmf16_A3_landscape" pageWidth="1191" pageHeight="842" orientation="Landscape" columnWidth="1151" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2646b6ef-0cc4-4852-b6e9-8c4dc54c2e84">
+<jasperReport name="gmf16_A3_landscape" language="java" pageWidth="1191" pageHeight="842" orientation="Landscape" columnWidth="1151" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="2646b6ef-0cc4-4852-b6e9-8c4dc54c2e84">
 	<parameter name="title" class="java.lang.String"/>
 	<parameter name="username" class="java.lang.String"/>
 	<parameter name="comments" class="java.lang.String"/>
@@ -14,194 +12,119 @@
 	<parameter name="timezone" class="java.lang.String"/>
 	<parameter name="jrDataSource" class="net.sf.jasperreports.engine.JRDataSource"/>
 	<parameter name="mapContext" class="org.mapfish.print.attribute.map.MapfishMapContext"/>
-	<pageHeader>
-		<band height="28">
+	<pageHeader height="28">
+		<element kind="staticText" uuid="a3415515-0882-489b-960d-1e65f08f42eb" x="1053" y="3" width="92" height="20" fontSize="6.0" hTextAlign="Right">
 			<property name="local_mesure_unitheight" value="pixel"/>
 			<property name="com.jaspersoft.studio.unit.height" value="px"/>
-			<staticText>
-				<reportElement x="1053" y="3" width="92" height="20" uuid="a3415515-0882-489b-960d-1e65f08f42eb">
-					<property name="local_mesure_unitheight" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-					<printWhenExpression><![CDATA[$P{debug}]]></printWhenExpression>
-				</reportElement>
-				<textElement textAlignment="Right">
-					<font size="6"/>
-				</textElement>
-				<text><![CDATA[En-tête, sur chaque page]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="798" y="1" width="255" height="20" uuid="7a78a1f1-5b99-465d-80ea-b34e36efcda5">
-					<property name="local_mesure_unitheight" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textElement textAlignment="Right">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[
-					$R{date_pre} + " " + java.time.ZonedDateTime.now().format(
+			<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+			<printWhenExpression><![CDATA[$P{debug}]]></printWhenExpression>
+			<text><![CDATA[En-tête, sur chaque page]]></text>
+		</element>
+		<element kind="textField" uuid="7a78a1f1-5b99-465d-80ea-b34e36efcda5" x="798" y="1" width="255" height="20" fontSize="8.0" hTextAlign="Right">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<expression><![CDATA[$R{date_pre} + " " + java.time.ZonedDateTime.now().format(
 						java.time.format.DateTimeFormatter.
 						ofPattern("EEEE dd MMMM yyyy HH:mm").
 						withLocale($P{REPORT_LOCALE}).
 						withZone(java.time.ZoneId.of($P{timezone}))
-					)
-				]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="180" y="2" width="365" height="20" uuid="953c0d72-060f-4ed9-9b6b-9e26da551dbe">
-					<property name="local_mesure_unitheight" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.height" value="px"/>
-				</reportElement>
-				<textElement>
-					<font size="16" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{title}]]></textFieldExpression>
-			</textField>
-			<image>
-				<reportElement x="0" y="1" width="180" height="24" uuid="0237d3bd-9a8a-4d87-8ad9-aec15a7c0380"/>
-				<imageExpression><![CDATA["logo.png"]]></imageExpression>
-			</image>
-		</band>
+					)]]></expression>
+		</element>
+		<element kind="textField" uuid="953c0d72-060f-4ed9-9b6b-9e26da551dbe" x="180" y="2" width="365" height="20" fontSize="16.0" bold="true">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<expression><![CDATA[$P{title}]]></expression>
+		</element>
+		<element kind="image" uuid="0237d3bd-9a8a-4d87-8ad9-aec15a7c0380" x="0" y="1" width="180" height="24">
+			<expression><![CDATA["logo.png"]]></expression>
+		</element>
+		<property name="local_mesure_unitheight" value="pixel"/>
+		<property name="com.jaspersoft.studio.unit.height" value="px"/>
 	</pageHeader>
 	<detail>
 		<band height="718" splitType="Stretch">
+			<element kind="subreport" uuid="ecd0f7f7-a685-4a3b-a4cd-8ffd736753d8" x="0" y="7" width="1150" height="673" mode="Transparent">
+				<expression><![CDATA[$P{mapSubReport}]]></expression>
+			</element>
+			<element kind="staticText" uuid="0600fc24-db21-4948-8939-7de7e1559581" x="1053" y="7" width="95" height="20" fontSize="6.0" hTextAlign="Right">
+				<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+				<printWhenExpression><![CDATA[$P{debug}]]></printWhenExpression>
+				<text><![CDATA[Detail band 1]]></text>
+			</element>
+			<element kind="subreport" uuid="47ebc178-31d8-41b4-a74b-eb58994be7bc" x="1048" y="611" width="40" height="40">
+				<expression><![CDATA[$P{northArrowSubReport}]]></expression>
+			</element>
+			<element kind="staticText" uuid="5ea8ae5b-2d1d-4228-abca-8a9c3cd869f9" x="1140" y="611" width="10" height="66" fontSize="4.0" rotation="Left" hTextAlign="Right">
+				<text><![CDATA[Développé par Camptocamp SA]]></text>
+			</element>
+			<element kind="subreport" uuid="55329eae-d818-4fab-bbef-93ce03accf9b" x="17" y="638" width="155" height="20">
+				<expression><![CDATA[$P{scalebarSubReport}]]></expression>
+			</element>
+			<element kind="textField" uuid="c8003898-f32c-4366-b7f0-2e9c989b5a46" x="1027" y="685" width="122" height="20" printRepeatedValues="false" hTextAlign="Center" vTextAlign="Middle">
+				<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
+				<expression><![CDATA[String.format("1: %,.0f",
+$P{mapContext}.getScale().getDenominator()).replace(",","\'")]]></expression>
+			</element>
+			<element kind="textField" uuid="b14dbd4b-e887-454e-9dcd-293e29fb4b04" x="0" y="684" width="950" height="23" textAdjust="StretchHeight">
+				<expression><![CDATA[$P{comments}]]></expression>
+			</element>
+			<element kind="line" uuid="e6944e80-6190-430e-8406-de1abc115672" x="0" y="4" width="1150" height="1" forecolor="#FA7500">
+				<property name="local_mesure_unitwidth" value="pixel"/>
+			</element>
+			<element kind="line" uuid="944708f5-e77c-42a2-9f9d-81f9db15938c" x="0" y="2" width="1150" height="1" forecolor="#FA7500">
+				<property name="local_mesure_unitwidth" value="pixel"/>
+				<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
+			</element>
 			<property name="local_mesure_unitheight" value="pixel"/>
 			<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
-			<subreport>
-				<reportElement mode="Transparent" x="0" y="7" width="1150" height="673" uuid="ecd0f7f7-a685-4a3b-a4cd-8ffd736753d8"/>
-				<subreportExpression><![CDATA[$P{mapSubReport}]]></subreportExpression>
-			</subreport>
-			<staticText>
-				<reportElement x="1053" y="7" width="95" height="20" uuid="0600fc24-db21-4948-8939-7de7e1559581">
-					<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
-					<printWhenExpression><![CDATA[$P{debug}]]></printWhenExpression>
-				</reportElement>
-				<textElement textAlignment="Right">
-					<font size="6"/>
-				</textElement>
-				<text><![CDATA[Detail band 1]]></text>
-			</staticText>
-			<subreport>
-				<reportElement x="1048" y="611" width="40" height="40" uuid="47ebc178-31d8-41b4-a74b-eb58994be7bc"/>
-				<subreportExpression><![CDATA[$P{northArrowSubReport}]]></subreportExpression>
-			</subreport>
-			<staticText>
-				<reportElement x="1140" y="611" width="10" height="66" uuid="5ea8ae5b-2d1d-4228-abca-8a9c3cd869f9"/>
-				<textElement textAlignment="Right" rotation="Left">
-					<font size="4"/>
-				</textElement>
-				<text><![CDATA[Développé par Camptocamp SA]]></text>
-			</staticText>
-			<subreport>
-				<reportElement x="17" y="638" width="155" height="20" uuid="55329eae-d818-4fab-bbef-93ce03accf9b"/>
-				<subreportExpression><![CDATA[$P{scalebarSubReport}]]></subreportExpression>
-			</subreport>
-			<textField>
-				<reportElement isPrintRepeatedValues="false" x="1027" y="685" width="122" height="20" uuid="c8003898-f32c-4366-b7f0-2e9c989b5a46">
-					<printWhenExpression><![CDATA[$V{PAGE_NUMBER}==1]]></printWhenExpression>
-				</reportElement>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[String.format("1: %,.0f",
-$P{mapContext}.getScale().getDenominator()).replace(",","\'")]]></textFieldExpression>
-			</textField>
-			<textField textAdjust="StretchHeight">
-				<reportElement x="0" y="684" width="950" height="23" uuid="b14dbd4b-e887-454e-9dcd-293e29fb4b04"/>
-				<textFieldExpression><![CDATA[$P{comments}]]></textFieldExpression>
-			</textField>
-			<line>
-				<reportElement x="0" y="4" width="1150" height="1" forecolor="#FA7500" uuid="e6944e80-6190-430e-8406-de1abc115672">
-					<property name="local_mesure_unitwidth" value="pixel"/>
-				</reportElement>
-			</line>
-			<line>
-				<reportElement x="0" y="2" width="1150" height="1" forecolor="#FA7500" uuid="944708f5-e77c-42a2-9f9d-81f9db15938c">
-					<property name="local_mesure_unitwidth" value="pixel"/>
-					<property name="com.jaspersoft.studio.unit.width" value="pixel"/>
-				</reportElement>
-			</line>
 		</band>
 		<band height="65">
 			<printWhenExpression><![CDATA[!($P{jrDataSource} instanceof net.sf.jasperreports.engine.JREmptyDataSource)]]></printWhenExpression>
-			<subreport>
-				<reportElement stretchType="RelativeToTallestObject" x="0" y="0" width="1150" height="60" uuid="f3e640af-cdac-4a90-9ec1-6a9a7eefc8f4"/>
+			<element kind="subreport" uuid="f3e640af-cdac-4a90-9ec1-6a9a7eefc8f4" x="0" y="0" width="1150" height="60" stretchType="ElementGroupHeight">
 				<dataSourceExpression><![CDATA[$P{jrDataSource}]]></dataSourceExpression>
-				<subreportExpression><![CDATA["results.jasper"]]></subreportExpression>
-			</subreport>
-			<staticText>
-				<reportElement x="1053" y="0" width="95" height="20" uuid="88631b30-d237-4e29-b531-20483a50d1f1">
-					<printWhenExpression><![CDATA[$P{debug}]]></printWhenExpression>
-				</reportElement>
-				<textElement textAlignment="Right">
-					<font size="6"/>
-				</textElement>
+				<expression><![CDATA["results.jasper"]]></expression>
+			</element>
+			<element kind="staticText" uuid="88631b30-d237-4e29-b531-20483a50d1f1" x="1053" y="0" width="95" height="20" fontSize="6.0" hTextAlign="Right">
+				<printWhenExpression><![CDATA[$P{debug}]]></printWhenExpression>
 				<text><![CDATA[Detail band 2]]></text>
-			</staticText>
-			<break>
-				<reportElement x="0" y="0" width="99" height="1" uuid="43a86d19-fd1a-4401-b858-986099bb30d9"/>
-			</break>
+			</element>
+			<element kind="break" uuid="43a86d19-fd1a-4401-b858-986099bb30d9" x="0" y="0" width="99" height="1"/>
 		</band>
 		<band height="82" splitType="Stretch">
 			<printWhenExpression><![CDATA[$P{numberOfLegendRows} != 0]]></printWhenExpression>
-			<line>
-				<reportElement x="0" y="0" width="1" height="1" forecolor="#FFFFFF" uuid="0fb0a59f-b15a-40ff-8c77-50fd77a3abc3"/>
-			</line>
-			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="1053" y="0" width="95" height="20" uuid="12ee394e-d031-4f14-8314-8de274d9a042">
-					<printWhenExpression><![CDATA[$P{debug}]]></printWhenExpression>
-				</reportElement>
-				<textElement textAlignment="Right">
-					<font size="6"/>
-				</textElement>
+			<element kind="line" uuid="0fb0a59f-b15a-40ff-8c77-50fd77a3abc3" x="0" y="0" width="1" height="1" forecolor="#FFFFFF"/>
+			<element kind="staticText" uuid="12ee394e-d031-4f14-8314-8de274d9a042" x="1053" y="0" width="95" height="20" positionType="FixRelativeToBottom" fontSize="6.0" hTextAlign="Right">
+				<printWhenExpression><![CDATA[$P{debug}]]></printWhenExpression>
 				<text><![CDATA[Detail band 3]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="0" y="1" width="460" height="20" forecolor="#424242" uuid="385742e7-a286-4456-b687-395a1a540023"/>
-				<textElement>
-					<font size="16" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$R{legend}]]></textFieldExpression>
-			</textField>
-			<subreport>
-				<reportElement stretchType="RelativeToTallestObject" x="0" y="26" width="1150" height="56" uuid="6a01e0f0-7ebb-40f6-97eb-2979e6fff149"/>
+			</element>
+			<element kind="textField" uuid="385742e7-a286-4456-b687-395a1a540023" x="0" y="1" width="460" height="20" forecolor="#424242" fontSize="16.0" bold="true">
+				<expression><![CDATA[$R{legend}]]></expression>
+			</element>
+			<element kind="subreport" uuid="6a01e0f0-7ebb-40f6-97eb-2979e6fff149" x="0" y="26" width="1150" height="56" stretchType="ElementGroupHeight">
 				<dataSourceExpression><![CDATA[$P{legendDataSource}]]></dataSourceExpression>
-				<subreportExpression><![CDATA[$P{legendSubReport}]]></subreportExpression>
-			</subreport>
+				<expression><![CDATA[$P{legendSubReport}]]></expression>
+			</element>
 		</band>
 	</detail>
-	<pageFooter>
-		<band height="56">
-			<line>
-				<reportElement x="0" y="0" width="1153" height="1" forecolor="#FA7500" uuid="5385dd1f-75f8-45c9-afa0-9bad2cffbc9e">
-					<property name="local_mesure_unitwidth" value="pixel"/>
-				</reportElement>
-			</line>
-			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="1054" y="0" width="95" height="20" uuid="d86021da-c1ea-41ed-9613-3ebcce7e11be">
-					<printWhenExpression><![CDATA[$P{debug}]]></printWhenExpression>
-				</reportElement>
-				<textElement textAlignment="Right">
-					<font size="6"/>
-				</textElement>
-				<text><![CDATA[Pied de page, sur chaque page]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="0" y="1" width="300" height="14" uuid="54e7e518-a3ee-41f1-b000-9550cad968e1"/>
-				<textFieldExpression><![CDATA[$R{info}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="1087" y="21" width="38" height="30" uuid="7db93d89-f1a1-4135-8143-661152955717"/>
-				<textElement textAlignment="Right" verticalAlignment="Bottom"/>
-				<textFieldExpression><![CDATA[$R{page} + " " + $V{PAGE_NUMBER}]]></textFieldExpression>
-			</textField>
-			<textField evaluationTime="Report">
-				<reportElement x="1125" y="21" width="22" height="30" uuid="c3450c45-a812-40a4-9a5e-c62dd7cef852"/>
-				<textElement verticalAlignment="Bottom"/>
-				<textFieldExpression><![CDATA[" / " + $V{PAGE_NUMBER}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="0" y="15" width="300" height="15" uuid="f2fb034e-297f-4107-a5f5-da84722deb70"/>
-				<textFieldExpression><![CDATA[$P{username}]]></textFieldExpression>
-			</textField>
-		</band>
+	<pageFooter height="56">
+		<element kind="line" uuid="5385dd1f-75f8-45c9-afa0-9bad2cffbc9e" x="0" y="0" width="1153" height="1" forecolor="#FA7500">
+			<property name="local_mesure_unitwidth" value="pixel"/>
+		</element>
+		<element kind="staticText" uuid="d86021da-c1ea-41ed-9613-3ebcce7e11be" x="1054" y="0" width="95" height="20" positionType="FixRelativeToBottom" fontSize="6.0" hTextAlign="Right">
+			<printWhenExpression><![CDATA[$P{debug}]]></printWhenExpression>
+			<text><![CDATA[Pied de page, sur chaque page]]></text>
+		</element>
+		<element kind="textField" uuid="54e7e518-a3ee-41f1-b000-9550cad968e1" x="0" y="1" width="300" height="14">
+			<expression><![CDATA[$R{info}]]></expression>
+		</element>
+		<element kind="textField" uuid="7db93d89-f1a1-4135-8143-661152955717" x="1087" y="21" width="38" height="30" hTextAlign="Right" vTextAlign="Bottom">
+			<expression><![CDATA[$R{page} + " " + $V{PAGE_NUMBER}]]></expression>
+		</element>
+		<element kind="textField" uuid="c3450c45-a812-40a4-9a5e-c62dd7cef852" x="1125" y="21" width="22" height="30" evaluationTime="Report" vTextAlign="Bottom">
+			<expression><![CDATA[" / " + $V{PAGE_NUMBER}]]></expression>
+		</element>
+		<element kind="textField" uuid="f2fb034e-297f-4107-a5f5-da84722deb70" x="0" y="15" width="300" height="15">
+			<expression><![CDATA[$P{username}]]></expression>
+		</element>
 	</pageFooter>
 </jasperReport>
