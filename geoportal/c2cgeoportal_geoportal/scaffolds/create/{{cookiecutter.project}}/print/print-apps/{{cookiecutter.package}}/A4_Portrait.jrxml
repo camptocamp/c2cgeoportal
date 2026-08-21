@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="gmf16_A4_portrait" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+<jasperReport name="gmf16_A4_portrait" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="7d90128f-203c-4ff9-9134-dee089825a1f">
 	<parameter name="title" class="java.lang.String"/>
 	<parameter name="username" class="java.lang.String"/>
 	<parameter name="comments" class="java.lang.String"/>
@@ -12,159 +11,92 @@
 	<parameter name="northArrowSubReport" class="java.lang.String"/>
 	<parameter name="timezone" class="java.lang.String"/>
 	<parameter name="jrDataSource" class="net.sf.jasperreports.engine.JRDataSource"/>
-	<pageHeader>
-		<band height="28">
-			<staticText>
-				<reportElement x="460" y="0" width="92" height="24">
-					<printWhenExpression><![CDATA[$P{debug}]]></printWhenExpression>
-				</reportElement>
-				<textElement textAlignment="Right">
-					<font size="6"/>
-				</textElement>
-				<text><![CDATA[En-tête, sur chaque page]]></text>
-			</staticText>
-			<image>
-				<reportElement x="0" y="0" width="180" height="24"/>
-				<imageExpression><![CDATA["logo.png"]]></imageExpression>
-			</image>
-			<textField>
-				<reportElement x="185" y="0" width="250" height="23"/>
-				<textElement>
-					<font size="16" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{title}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="300" y="0" width="255" height="20"/>
-				<textElement textAlignment="Right">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[
-					$R{date_pre} + " " + java.time.ZonedDateTime.now().format(
+	<pageHeader height="28">
+		<element kind="staticText" uuid="0705d12e-fee2-47da-bfde-48713626a235" x="460" y="0" width="92" height="24" fontSize="6.0" hTextAlign="Right">
+			<printWhenExpression><![CDATA[$P{debug}]]></printWhenExpression>
+			<text><![CDATA[En-tête, sur chaque page]]></text>
+		</element>
+		<element kind="image" uuid="7fccedfa-b1d7-4c68-b73d-c52a70f1bbfd" x="0" y="0" width="180" height="24">
+			<expression><![CDATA["logo.png"]]></expression>
+		</element>
+		<element kind="textField" uuid="eb216bc6-7915-4bb9-a686-5c9ccf653ea0" x="185" y="0" width="250" height="23" fontSize="16.0" bold="true">
+			<expression><![CDATA[$P{title}]]></expression>
+		</element>
+		<element kind="textField" uuid="bef6d5ad-4ece-4c40-b9de-4279f9a627cc" x="300" y="0" width="255" height="20" fontSize="8.0" hTextAlign="Right">
+			<expression><![CDATA[$R{date_pre} + " " + java.time.ZonedDateTime.now().format(
 						java.time.format.DateTimeFormatter.
 						ofPattern("EEEE dd MMMM yyyy HH:mm").
 						withLocale($P{REPORT_LOCALE}).
 						withZone(java.time.ZoneId.of($P{timezone}))
-					)
-				]]></textFieldExpression>
-			</textField>
-			<line>
-				<reportElement x="0" y="25" width="555" height="1" forecolor="#FA7500"/>
-			</line>
-			<line>
-				<reportElement x="0" y="27" width="555" height="1" forecolor="#FA7500"/>
-			</line>
-		</band>
+					)]]></expression>
+		</element>
+		<element kind="line" uuid="c4c75bbf-8f67-4533-924d-339dd7962f75" x="0" y="25" width="555" height="1" forecolor="#FA7500"/>
+		<element kind="line" uuid="5cb27ba3-b101-4b8c-9446-cab1b2d00797" x="0" y="27" width="555" height="1" forecolor="#FA7500"/>
 	</pageHeader>
 	<detail>
 		<band height="717" splitType="Stretch">
-			<staticText>
-				<reportElement x="460" y="0" width="95" height="20">
-					<printWhenExpression><![CDATA[$P{debug}]]></printWhenExpression>
-				</reportElement>
-				<textElement textAlignment="Right">
-					<font size="6"/>
-				</textElement>
+			<element kind="staticText" uuid="4e55af69-278c-47cd-b5b5-d3ba8b891e9d" x="460" y="0" width="95" height="20" fontSize="6.0" hTextAlign="Right">
+				<printWhenExpression><![CDATA[$P{debug}]]></printWhenExpression>
 				<text><![CDATA[Detail band 1]]></text>
-			</staticText>
-			<subreport>
-				<reportElement mode="Transparent" x="0" y="1" width="555" height="675"/>
-				<subreportExpression><![CDATA[$P{mapSubReport}]]></subreportExpression>
-			</subreport>
-			<subreport>
-				<reportElement x="505" y="630" width="40" height="40"/>
-				<subreportExpression><![CDATA[$P{northArrowSubReport}]]></subreportExpression>
-			</subreport>
-			<subreport>
-				<reportElement x="5" y="650" width="150" height="20"/>
-				<subreportExpression><![CDATA[$P{scalebarSubReport}]]></subreportExpression>
-			</subreport>
-			<textField textAdjust="StretchHeight">
-				<reportElement x="0" y="680" width="555" height="37"/>
-				<textFieldExpression><![CDATA[$P{comments}]]></textFieldExpression>
-			</textField>
-			<break>
-				<reportElement x="0" y="716" width="100" height="1"/>
-			</break>
+			</element>
+			<element kind="subreport" uuid="9d0e941b-d334-4d5f-83da-22d0d2d71470" x="0" y="1" width="555" height="675" mode="Transparent">
+				<expression><![CDATA[$P{mapSubReport}]]></expression>
+			</element>
+			<element kind="subreport" uuid="c4249230-78ba-4fe7-9855-f3dd36d952e5" x="505" y="630" width="40" height="40">
+				<expression><![CDATA[$P{northArrowSubReport}]]></expression>
+			</element>
+			<element kind="subreport" uuid="b48daf97-5b5e-4860-92e3-a74b5db6f552" x="5" y="650" width="150" height="20">
+				<expression><![CDATA[$P{scalebarSubReport}]]></expression>
+			</element>
+			<element kind="textField" uuid="fe2be8c4-8dca-4c0e-a5d3-88a78f10e009" x="0" y="680" width="555" height="37" textAdjust="StretchHeight">
+				<expression><![CDATA[$P{comments}]]></expression>
+			</element>
+			<element kind="break" uuid="1cd5fde1-1ea1-4ec2-b46d-732b62a6c537" x="0" y="716" width="100" height="1"/>
 		</band>
 		<band height="65">
 			<printWhenExpression><![CDATA[!($P{jrDataSource} instanceof net.sf.jasperreports.engine.JREmptyDataSource)]]></printWhenExpression>
-			<staticText>
-				<reportElement x="460" y="0" width="95" height="20">
-					<printWhenExpression><![CDATA[$P{debug}]]></printWhenExpression>
-				</reportElement>
-				<textElement textAlignment="Right">
-					<font size="6"/>
-				</textElement>
+			<element kind="staticText" uuid="12ca7a3f-b909-47f1-9f40-baffeb0a2c80" x="460" y="0" width="95" height="20" fontSize="6.0" hTextAlign="Right">
+				<printWhenExpression><![CDATA[$P{debug}]]></printWhenExpression>
 				<text><![CDATA[Detail band 2]]></text>
-			</staticText>
-			<subreport>
-				<reportElement x="0" y="0" width="888" height="42" stretchType="RelativeToTallestObject"/>
+			</element>
+			<element kind="subreport" uuid="0b541bbb-002f-49cc-afb9-3a1cb47ba204" x="0" y="0" width="888" height="42" stretchType="ElementGroupHeight">
 				<dataSourceExpression><![CDATA[$P{jrDataSource}]]></dataSourceExpression>
-				<subreportExpression><![CDATA["results.jasper"]]></subreportExpression>
-			</subreport>
+				<expression><![CDATA["results.jasper"]]></expression>
+			</element>
 		</band>
 		<band height="82" splitType="Stretch">
 			<printWhenExpression><![CDATA[$P{numberOfLegendRows} != 0]]></printWhenExpression>
-			<!-- do not stretch on top -->
-			<line>
-				<reportElement x="0" y="0" width="1" height="1" forecolor="#FFFFFF" uuid="0fb0a59f-b15a-40ff-8c77-50fd77a3abc3"/>
-			</line>
-			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="460" y="0" width="95" height="20">
-					<printWhenExpression><![CDATA[$P{debug}]]></printWhenExpression>
-				</reportElement>
-				<textElement textAlignment="Right">
-					<font size="6"/>
-				</textElement>
+			<element kind="line" uuid="0fb0a59f-b15a-40ff-8c77-50fd77a3abc3" x="0" y="0" width="1" height="1" forecolor="#FFFFFF"/>
+			<element kind="staticText" uuid="135182d5-8a51-49a7-8e8b-b1f3d2d27e75" x="460" y="0" width="95" height="20" positionType="FixRelativeToBottom" fontSize="6.0" hTextAlign="Right">
+				<printWhenExpression><![CDATA[$P{debug}]]></printWhenExpression>
 				<text><![CDATA[Detail band 3]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="0" y="2" width="460" height="20" forecolor="#424242"/>
-				<textElement>
-					<font size="16" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$R{legend}]]></textFieldExpression>
-			</textField>
-			<subreport>
-				<reportElement stretchType="RelativeToTallestObject" x="0" y="26" width="255" height="56"/>
+			</element>
+			<element kind="textField" uuid="241e4306-832c-4804-a838-7dabae044a60" x="0" y="2" width="460" height="20" forecolor="#424242" fontSize="16.0" bold="true">
+				<expression><![CDATA[$R{legend}]]></expression>
+			</element>
+			<element kind="subreport" uuid="789229ce-f615-4b43-98b0-571e48bbda48" x="0" y="26" width="255" height="56" stretchType="ElementGroupHeight">
 				<dataSourceExpression><![CDATA[$P{legendDataSource}]]></dataSourceExpression>
-				<subreportExpression><![CDATA[$P{legendSubReport}]]></subreportExpression>
-			</subreport>
+				<expression><![CDATA[$P{legendSubReport}]]></expression>
+			</element>
 		</band>
 	</detail>
-	<pageFooter>
-		<band height="55">
-			<line>
-				<reportElement x="0" y="0" width="555" height="1" forecolor="#FA7500"/>
-			</line>
-			<staticText>
-				<reportElement positionType="FixRelativeToBottom" x="460" y="0" width="95" height="20">
-					<printWhenExpression><![CDATA[$P{debug}]]></printWhenExpression>
-				</reportElement>
-				<textElement textAlignment="Right">
-					<font size="6"/>
-				</textElement>
-				<text><![CDATA[Pied de page, sur chaque page]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="0" y="1" width="300" height="14"/>
-				<textFieldExpression><![CDATA[$R{info}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="496" y="21" width="38" height="30"/>
-				<textElement textAlignment="Right" verticalAlignment="Bottom"/>
-				<textFieldExpression><![CDATA[$R{page} + " " + $V{PAGE_NUMBER}]]></textFieldExpression>
-			</textField>
-			<textField evaluationTime="Report">
-				<reportElement x="534" y="21" width="22" height="30"/>
-				<textElement verticalAlignment="Bottom"/>
-				<textFieldExpression><![CDATA[" / " + $V{PAGE_NUMBER}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="0" y="15" width="300" height="15"/>
-				<textFieldExpression><![CDATA[$P{username}]]></textFieldExpression>
-			</textField>
-		</band>
+	<pageFooter height="55">
+		<element kind="line" uuid="849cdaad-f371-4dfb-9fb5-7ba6020fe590" x="0" y="0" width="555" height="1" forecolor="#FA7500"/>
+		<element kind="staticText" uuid="713c1cb0-7896-42a9-a4d8-1b72a1792aaf" x="460" y="0" width="95" height="20" positionType="FixRelativeToBottom" fontSize="6.0" hTextAlign="Right">
+			<printWhenExpression><![CDATA[$P{debug}]]></printWhenExpression>
+			<text><![CDATA[Pied de page, sur chaque page]]></text>
+		</element>
+		<element kind="textField" uuid="68e2af2e-831f-44db-97ef-8f1d61b90561" x="0" y="1" width="300" height="14">
+			<expression><![CDATA[$R{info}]]></expression>
+		</element>
+		<element kind="textField" uuid="9c8489e6-65b2-4b8a-a194-f47fb80f7f17" x="496" y="21" width="38" height="30" hTextAlign="Right" vTextAlign="Bottom">
+			<expression><![CDATA[$R{page} + " " + $V{PAGE_NUMBER}]]></expression>
+		</element>
+		<element kind="textField" uuid="d6fa21da-097a-43a1-bc12-4aad37bdd29a" x="534" y="21" width="22" height="30" evaluationTime="Report" vTextAlign="Bottom">
+			<expression><![CDATA[" / " + $V{PAGE_NUMBER}]]></expression>
+		</element>
+		<element kind="textField" uuid="5dd7e6b2-675e-4a98-bf21-07bbaf9456b2" x="0" y="15" width="300" height="15">
+			<expression><![CDATA[$P{username}]]></expression>
+		</element>
 	</pageFooter>
 </jasperReport>

@@ -23,6 +23,8 @@ Information
 Changes to apply
 ================
 
+1. Update your jasper report project files by following those instructions:
+   https://github.com/mapfish/mapfish-print/releases/tag/4.0.0
 
 =============
 Version 2.9.0
