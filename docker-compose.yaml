@@ -51,10 +51,6 @@ services:
     image: ghcr.io/camptocamp/tilecloud-chain:2.0
     user: www-data
     restart: unless-stopped
-    environment:
-      - TILEGENERATION_CONFIGFILE=/etc/tilegeneration/config.yaml
-      - TILECLOUD_CHAIN_SESSION_SECRET=secret
-      - TILECLOUD_CHAIN_SESSION_SALT=salt
     volumes:
       - ./docker/test-tilecloudchain:/etc/tilegeneration
 
