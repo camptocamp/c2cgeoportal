@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/camptocamp/tilecloud-chain/master/tilecloud_chain/schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/camptocamp/tilecloud-chain/2.0/tilecloud_chain/schema.json
 
 grids:
   # grid name, I just recommends to add the min resolution because it's common to not generate all the layers at the same resolution.
@@ -38,7 +38,8 @@ ${DISABLE_LOCAL}    host: ${AWS_S3_ENDPOINT}
 defaults:
   layer: &layer
     type: wms
-    grid: swissgrid_05
+    grids:
+    - swissgrid_05
     # the minimum resolution to seed, useful to use with mapcache, optional.
     # min_resolution_seed: 1
     # the URL of the WMS server to used
