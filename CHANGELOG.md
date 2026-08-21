@@ -1,3 +1,7 @@
+##### 2.8.1.370
+
+- Update dependency pre-commit to v4 (2.8) [ngeo#10187](https://github.com/camptocamp/ngeo/pull/10187)
+
 ##### 2.8.1.369
 
 - Lock file maintenance (2.8) [c2cgeoportal#13191](https://github.com/camptocamp/c2cgeoportal/pull/13191)
