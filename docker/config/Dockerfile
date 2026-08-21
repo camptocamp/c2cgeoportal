@@ -6,7 +6,7 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     --mount=type=cache,target=/var/cache,sharing=locked \
     apt-get update \
     && apt-get upgrade --assume-yes \
-    && apt-get install --assume-yes --no-install-recommends gettext-base python3-pip python-is-python3 adduser \
+    && apt-get install --assume-yes --no-install-recommends gettext-base python3-pip python-is-python3 adduser libgdal-dev build-essential python3-dev \
     && rm /usr/lib/python*/EXTERNALLY-MANAGED
 
 # Used to convert the locked packages by poetry to pip requirements format
