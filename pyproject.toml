@@ -74,7 +74,7 @@ basicauth = "1.0.0"
 prospector = { version = "1.19.1", extras = ["with_mypy", "with_bandit", "with_pyroma", "with_ruff"] }
 prospector-profile-duplicated = "1.12.0"
 prospector-profile-utils  = "1.27.0"
-ruff = "0.16.2"
+ruff = "0.16.3"
 beautifulsoup4 = "4.15.0"
 certifi = "2026.7.22"
 cryptography = "50.0.0"

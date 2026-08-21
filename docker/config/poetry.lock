@@ -608,4 +608,4 @@ PyYAML = ">=6.0,<7.0"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12,<3.15"
-content-hash = "6e642ee3aa6f4554ef28f7f1f4c0091bed246ce4d7535a890b12e63b93bbb938"
+content-hash = "91fd048d7420af129f176660ad29ce090e03f0ece257060f3eb8b22e31b2c195"

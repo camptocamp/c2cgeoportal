@@ -13,3 +13,4 @@ name = 'qgis'
 version = '0.0.0'
 description = 'Not used'
 authors = []
+requires-python = ">=3.12"
