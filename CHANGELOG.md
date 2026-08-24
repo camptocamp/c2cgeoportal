@@ -1,3 +1,7 @@
+##### 2.8.1.371
+
+- Fix used tilelcoud-chain schema [c2cgeoportal#13226](https://github.com/camptocamp/c2cgeoportal/pull/13226)
+
 ##### 2.8.1.370
 
 - Update dependency pre-commit to v4 (2.8) [ngeo#10187](https://github.com/camptocamp/ngeo/pull/10187)
