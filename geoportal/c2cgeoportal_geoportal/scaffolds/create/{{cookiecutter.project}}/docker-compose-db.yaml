@@ -21,4 +21,4 @@ services:
       file: docker-compose-lib.yaml
       service: db
     volumes:
-      - postgresql_data:/var/lib/postgresql/data
+      - postgresql_data:/var/lib/postgresql

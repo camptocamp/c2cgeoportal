@@ -36,7 +36,7 @@ services:
     ports:
       - 54321:5432
     volumes:
-      - postgresql_data:/var/lib/postgresql/data
+      - postgresql_data:/var/lib/postgresql
       - ./ci/test-app-db:/docker-entrypoint-initdb.d
 
   externaldb:
