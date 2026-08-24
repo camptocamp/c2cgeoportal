@@ -1,3 +1,7 @@
+##### 2.9.0.567
+
+- Fix used tilelcoud-chain schema [c2cgeoportal#13225](https://github.com/camptocamp/c2cgeoportal/pull/13225)
+
 ##### 2.9.0.566
 
 - Audit Dpkg 2.9 [c2cgeoportal#13223](https://github.com/camptocamp/c2cgeoportal/pull/13223)
