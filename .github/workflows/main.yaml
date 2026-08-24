@@ -77,7 +77,7 @@ jobs:
           # To display the content of the github object
           GITHUB_EVENT: ${{ toJson(github) }}
 
-      - run: c2cciutils-download-applications --applications-file=ci/applications.yaml --versions-file=ci/applications-versions.yaml
+      - run: applications-download --applications=ci/applications.yaml --versions=ci/applications-versions.yaml install --all
       - id: version
         run: scripts/get-version --auto-increment --github
 

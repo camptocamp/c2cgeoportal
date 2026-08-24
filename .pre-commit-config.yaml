@@ -181,6 +181,6 @@ repos:
     hooks:
       - id: renovate-config-validator
   - repo: https://github.com/sbrunner/python-versions-hook
-    rev: 1.4.0
+    rev: 1.4.1
     hooks:
       - id: python-versions
