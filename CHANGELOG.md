@@ -1,3 +1,7 @@
+##### 2.9.0.569
+
+- Audit Dpkg 2.9 [c2cgeoportal#13229](https://github.com/camptocamp/c2cgeoportal/pull/13229)
+
 ##### 2.9.0.568
 
 - Increase default legendDebounceDelay to 1s [c2cgeoportal#13227](https://github.com/camptocamp/c2cgeoportal/pull/13227)
