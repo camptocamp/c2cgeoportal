@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2025, Camptocamp SA
+# Copyright (c) 2021-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -177,8 +177,6 @@ class PCreateCommand:
             "project": project_name,
             "package": pkg_name,
             "authtkt_secret": gen_secret(),
-            "tilecloud_chain_session_secret": "secret" if os.environ.get("CI") == "true" else gen_secret(),
-            "tilecloud_chain_session_salt": "secret" if os.environ.get("CI") == "true" else gen_secret(16),
         }
         context.update(self.read_project_file())
         if os.environ.get("CI") == "true":

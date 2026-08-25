@@ -8,4 +8,5 @@ Tile generation configuration
 
    tilegeneration_doc
    tilegeneration_usage
+   tilegeneration_settings
    tilegeneration_ref

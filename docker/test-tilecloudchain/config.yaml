@@ -17,15 +17,15 @@ caches:
     type: filesystem
     folder: /var/sig/tiles
     # for GetCapabilities
-    http_url: ${VISIBLE_WEB_PROTOCOL}://${VISIBLE_WEB_HOST}${VISIBLE_ENTRY_POINT}
+    http_url: https://localhost/
   s3:
     type: s3
-    bucket: ${TILEGENERATION_S3_BUCKET}
+    bucket: tiles
     folder: ''
     # for GetCapabilities
-    http_url: ${VISIBLE_WEB_PROTOCOL}://${VISIBLE_WEB_HOST}${VISIBLE_ENTRY_POINT}
+    http_url: https://localhost/
     cache_control: 'public, max-age=14400'
-    host: ${AWS_S3_ENDPOINT}
+    host: localhost
 
 # this defines some defaults values for all the layers
 defaults:
@@ -35,10 +35,10 @@ defaults:
     # The minimum resolution to seed, useful to use with mapcache, optional.
     # min_resolution_seed: 1
     # the URL of the WMS server to used
-    url: ${MAPSERVER_URL}
+    url: http://mapserver:8080/
     # Set the headers to get the right virtual host, and don't get any cached result
     headers:
-      Host: '${VISIBLE_WEB_HOST}'
+      Host: 'localhost'
       Cache-Control: no-cache, no-store
       Pragma: no-cache
     # file name extension
@@ -86,14 +86,14 @@ generation:
   default_cache: s3
 
 redis:
-  url: 'redis://${REDIS_HOST}:${REDIS_PORT}/${REDIS_DB}'
+  url: 'redis://redis:6379/0'
 
 # Not used if the previous redis section is not commented out
 sqs:
   # The region where the SQS queue is
   region: eu-west-1
   # The SQS queue name, it should already exists
-  queue: '${TILEGENERATION_SQS_QUEUE}'
+  queue: 'test'
 
 server:
   wmts_path: tiles

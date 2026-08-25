@@ -61,13 +61,14 @@ extensions = [
     "sphinx.ext.extlinks",
     "sphinx_substitution_extensions",
     "sphinxcontrib.mermaid",
+    "myst_parser",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
 
 # The suffix of source filenames.
-source_suffix = ".rst"
+source_suffix = {".rst": "restructuredtext", ".md": "markdown"}
 
 # The encoding of source files.
 # source_encoding = 'utf-8-sig'
@@ -116,7 +117,7 @@ extlinks = {
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ["_build", "env"]
+exclude_patterns = ["_build", "env", "venv", "node_modules"]
 
 # The reST default role (used for this markup: `text`) to use for all documents.
 # default_role = None
