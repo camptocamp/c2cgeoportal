@@ -1,3 +1,7 @@
+##### 2.9.0.568
+
+- Increase default legendDebounceDelay to 1s [c2cgeoportal#13227](https://github.com/camptocamp/c2cgeoportal/pull/13227)
+
 ##### 2.9.0.567
 
 - Fix used tilelcoud-chain schema [c2cgeoportal#13225](https://github.com/camptocamp/c2cgeoportal/pull/13225)
