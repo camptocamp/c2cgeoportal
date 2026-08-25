@@ -221,9 +221,9 @@ vars:
             width: 20
             height: 20
           # Delay in milliseconds before recomputing the map scale for GetLegendGraphic requests.
-          # Set to 200ms to execute after GetMap requests (debounceDelay: 100ms).
+          # Set to 200ms to execute after GetMap requests (debounceDelay: 1s).
           # To optimize repeated zoom operations.
-          legendDebounceDelay: 200
+          legendDebounceDelay: 1000
         gmfDisclaimerOptions: {}
         gmfBackgroundLayerSelectorOptions: {}
         defaultTheme: Demo
