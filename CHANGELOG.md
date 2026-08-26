@@ -1,3 +1,7 @@
+##### 2.8.1.372
+
+- Query the features of the layers nested in groups [ngeo#10193](https://github.com/camptocamp/ngeo/pull/10193)
+
 ##### 2.8.1.371
 
 - Fix used tilelcoud-chain schema [c2cgeoportal#13226](https://github.com/camptocamp/c2cgeoportal/pull/13226)
