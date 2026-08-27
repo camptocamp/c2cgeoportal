@@ -40,7 +40,7 @@ jobs:
 
       - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
       - run: python3 -m pip install --user --requirement=ci/requirements.txt
-      - run: c2cciutils-download-applications --applications-file=ci/applications.yaml --versions-file=ci/applications-versions.yaml
+      - run: applications-download --applications=ci/applications.yaml --versions=ci/applications-versions.yaml install --all
       - run: cd geoportal && npm update
       - run: scripts/get-version --auto-increment --github
         id: version
