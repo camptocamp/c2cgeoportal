@@ -1,5 +1,5 @@
 [tool.ruff]
-target-version = 'py310'
+target-version = "py310"
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4"
@@ -30,3 +30,4 @@ name = 'c2cgeoportal'
 version = '0.0.0'
 description = 'Not used'
 authors = []
+requires-python = ">=3.10"
