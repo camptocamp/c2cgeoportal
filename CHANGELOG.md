@@ -1,3 +1,7 @@
+##### 2.8.1.373
+
+- Update dependency cryptography to v50.0.1 (2.8) [c2cgeoportal#13233](https://github.com/camptocamp/c2cgeoportal/pull/13233)
+
 ##### 2.8.1.372
 
 - Query the features of the layers nested in groups [ngeo#10193](https://github.com/camptocamp/ngeo/pull/10193)
