@@ -1,3 +1,8 @@
+##### 2.9.0.572
+
+- Audit Snyk check/fix 2.9 [c2cgeoportal#13245](https://github.com/camptocamp/c2cgeoportal/pull/13245)
+- Audit Dpkg 2.9 [c2cgeoportal#13246](https://github.com/camptocamp/c2cgeoportal/pull/13246)
+
 ##### 2.9.0.571
 
 - Update dependency webob to v1.8.11 [SECURITY] (2.9) [c2cgeoportal#13240](https://github.com/camptocamp/c2cgeoportal/pull/13240)
