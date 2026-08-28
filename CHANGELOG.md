@@ -1,3 +1,7 @@
+##### 2.9.0.571
+
+- Update dependency webob to v1.8.11 [SECURITY] (2.9) [c2cgeoportal#13240](https://github.com/camptocamp/c2cgeoportal/pull/13240)
+
 ##### 2.9.0.570
 
 - Update dependency cryptography to v50.0.1 (2.9) [c2cgeoportal#13234](https://github.com/camptocamp/c2cgeoportal/pull/13234)
