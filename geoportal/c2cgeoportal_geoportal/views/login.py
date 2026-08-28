@@ -38,10 +38,12 @@ import pkce
 import pyotp
 import pyramid.request
 import pyramid.response
+import simple_openid_connect.client
 from pyramid.httpexceptions import (
     HTTPBadRequest,
     HTTPForbidden,
     HTTPFound,
+    HTTPInternalServerError,
     HTTPUnauthorized,
     exception_response,
 )
@@ -49,6 +51,7 @@ from pyramid.response import Response
 from pyramid.security import forget, remember
 from pyramid.view import forbidden_view_config, view_config
 from sqlalchemy.orm.exc import NoResultFound  # type: ignore[attr-defined]
+from webob.cookies import make_cookie
 
 import c2cgeoportal_commons.lib.url
 from c2cgeoportal_commons import models
@@ -207,19 +210,8 @@ class Login:
 
             headers = remember(self.request, username)
 
-            came_from = self.request.params.get("came_from")
+            came_from = self._resolve_came_from()
             if came_from:
-                if not came_from.startswith("/"):
-                    allowed_hosts = self.request.registry.settings.get("authorized_referers", [])
-                    came_from_hostname, ok = is_allowed_url(self.request, came_from, allowed_hosts)
-                    if not ok:
-                        message = (
-                            f"Invalid hostname '{came_from_hostname}' in 'came_from' parameter, "
-                            f"is not the current host '{self.request.host}' "
-                            f"or part of allowed hosts: {', '.join(allowed_hosts)}"
-                        )
-                        _LOG.debug(message)
-                        return HTTPBadRequest(message)
                 return HTTPFound(location=came_from, headers=headers)
 
             headers.append(("Content-Type", "text/json"))
@@ -291,9 +283,76 @@ class Login:
             response=Response(body, headers=headers.items()),
         )
 
+    def _resolve_came_from(self) -> str | None:
+        """Resolve and validate the ``came_from`` request parameter."""
+        came_from: str | None = self.request.params.get("came_from")
+        if not came_from:
+            return None
+        if not came_from.startswith("/"):
+            allowed_hosts = self.request.registry.settings.get("authorized_referers", [])
+            came_from_hostname, ok = is_allowed_url(self.request, came_from, allowed_hosts)
+            if not ok:
+                message = (
+                    f"Invalid hostname '{came_from_hostname}' in 'came_from' parameter, "
+                    f"is not the current host '{self.request.host}' "
+                    f"or part of allowed hosts: {', '.join(allowed_hosts)}"
+                )
+                _LOG.debug(message)
+                raise HTTPBadRequest(message)
+        return came_from
+
+    def _resolve_logout_url(
+        self,
+        logout_url: str,
+        came_from: str | None,
+        client: simple_openid_connect.client.OpenidClient | None,
+    ) -> str:
+        """Replace the placeholders of the configured ``logout_url``."""
+        formatter = string.Formatter()
+        placeholder_names = {name for _, name, _, _ in formatter.parse(logout_url) if name is not None}
+        if not placeholder_names:
+            return logout_url
+
+        values: dict[str, str] = {}
+        if came_from is None:
+            redirect_url = self.request.route_url("base")
+        elif came_from.startswith("/"):
+            # Some SSO, like Keycloak, require an absolute URL.
+            redirect_url = urllib.parse.urljoin(self.request.host_url, came_from)
+        else:
+            redirect_url = came_from
+        values["came_from"] = urllib.parse.quote(redirect_url, safe="")
+        client_id = self.authentication_settings.get("openid_connect", {}).get("client_id")
+        if client_id is not None:
+            values["client_id"] = urllib.parse.quote(str(client_id), safe="")
+        values["ui_locales"] = self.lang
+        if client is not None:
+            end_session_endpoint = client.provider_config.end_session_endpoint
+            if end_session_endpoint is not None:
+                values["end_session_endpoint"] = end_session_endpoint
+            id_token = self.request.cookies.get("id_token")
+            if id_token is not None:
+                values["id_token_hint"] = urllib.parse.quote(id_token, safe="")
+
+        unavailable = sorted(placeholder_names - values.keys())
+        if unavailable:
+            raise HTTPInternalServerError(
+                "Unknown or unavailable placeholder(s) in the 'logout_url' configuration value: "
+                + ", ".join(unavailable)
+            )
+        try:
+            return formatter.format(logout_url, **values)
+        except ValueError as error:
+            # For example, when a literal '{' is not escaped as '{{'.
+            raise HTTPInternalServerError(
+                f"Invalid template in the 'logout_url' configuration value: {error}"
+            ) from error
+
     @view_config(route_name="logout")  # type: ignore[untyped-decorator]
     def logout(self) -> pyramid.response.Response:
-        if self.authentication_settings.get("openid_connect", {}).get("enabled", False):
+        openid_connect = self.authentication_settings.get("openid_connect", {})
+        client: simple_openid_connect.client.OpenidClient | None = None
+        if openid_connect.get("enabled", False):
             client = oidc.get_oidc_client(self.request, self.request.host)
             if hasattr(client, "revoke_token"):
                 access_token = self.request.cookies.get("access_token")
@@ -309,6 +368,24 @@ class Login:
             raise HTTPUnauthorized("See server logs for details")
 
         _LOG.info("User '%s' (%s) logging out.", self.request.user.username, self.request.user.id)
+
+        if openid_connect.get("enabled", False):
+            # forget(...) only clears the authentication cookie, also clear the OpenID Connect
+            # access, refresh and ID token cookies.
+            for cookie_name in ("access_token", "refresh_token", "id_token"):
+                if cookie_name in self.request.cookies:
+                    cookie = make_cookie(cookie_name, None, domain=self.request.domain)
+                    headers.append(("Set-Cookie", cookie))
+
+        logout_url = openid_connect.get("logout_url")
+        came_from = self._resolve_came_from()
+        if logout_url:
+            return HTTPFound(
+                location=self._resolve_logout_url(logout_url, came_from, client),
+                headers=headers,
+            )
+        if came_from:
+            return HTTPFound(location=came_from, headers=headers)
 
         headers.append(("Content-Type", "text/json"))
         return set_common_headers(

@@ -256,7 +256,10 @@ mapping:
                 type: bool
                 default: false
               refresh_max_age:
-                type: scalar
+                type: int
+                required: false
+              logout_url:
+                type: str
                 required: false
               login_extra_params:
                 type: map

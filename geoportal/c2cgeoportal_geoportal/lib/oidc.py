@@ -41,7 +41,6 @@ from pyramid.httpexceptions import (
 )
 from pyramid.security import remember
 
-from c2cgeoportal_commons.lib.duration import parse_duration
 from c2cgeoportal_geoportal.lib.caching import get_region
 
 if TYPE_CHECKING:
@@ -282,15 +281,8 @@ class OidcRemember:
             if token_response.refresh_expires_in is None:
                 # Not all identity providers return `refresh_expires_in`, fall back to the configured
                 # `refresh_max_age`, else the refresh token cookie would be browser-session-only.
-                refresh_max_age = openid_connect.get("refresh_max_age", "7d")
-                try:
-                    refresh_token_expires_in = int(parse_duration(refresh_max_age).total_seconds())
-                except ValueError:
-                    # The value comes from the server configuration, an invalid value is a server error.
-                    raise HTTPInternalServerError(
-                        f"Invalid 'refresh_max_age' configuration value: '{refresh_max_age}', "
-                        "should be a valid duration."
-                    )
+                refresh_max_age = openid_connect.get("refresh_max_age", 7 * 24 * 3600)
+                refresh_token_expires_in = refresh_max_age
             else:
                 refresh_token_expires_in = token_response.refresh_expires_in
             self.request.response.set_cookie(
@@ -302,6 +294,19 @@ class OidcRemember:
                 samesite="Lax",
                 domain=self.request.domain,
             )
+        id_token_max_age = refresh_token_expires_in
+        if id_token_max_age is None:
+            id_token_max_age = token_response.expires_in
+        # The ID token is stored to be usable as `id_token_hint` in the identity provider logout request.
+        self.request.response.set_cookie(
+            "id_token",
+            token_response.id_token,
+            max_age=id_token_max_age,
+            secure=True,
+            httponly=True,
+            samesite="Lax",
+            domain=self.request.domain,
+        )
         remember_object: OidcRememberObject = {
             "access_token_expires": (
                 datetime.datetime.now(tz=datetime.UTC) + datetime.timedelta(seconds=token_response.expires_in)

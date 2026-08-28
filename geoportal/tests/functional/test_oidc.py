@@ -56,6 +56,10 @@ _OIDC_CONFIGURATION = {
     "id_token_signing_alg_values_supported": ["RS256"],
     "code_challenge_methods_supported": ["S256"],
 }
+_OIDC_CONFIGURATION_WITH_END_SESSION = {
+    **_OIDC_CONFIGURATION,
+    "end_session_endpoint": "https://sso.example.com/end-session",
+}
 _PRIVATE_KEY = rsa.generate_private_key(public_exponent=65537, key_size=2048)
 _OIDC_KEYS = {
     "keys": [
@@ -159,25 +163,26 @@ class TestLogin(TestCase):
         includeme(request)
         responses.get("https://sso.example.com/.well-known/openid-configuration", json=_OIDC_CONFIGURATION)
         responses.get("https://sso.example.com/jwks", json=_OIDC_KEYS)
+        id_token = jwt.encode(
+            {
+                "sub": "1234",
+                "name": "Test User",
+                "email": "user@example.com",
+                "iss": "https://sso.example.com",
+                "aud": "client_id_123",
+                "exp": 2000000000,
+                "iat": 1000000000,
+            },
+            _PRIVATE_KEY,
+            algorithm="RS256",
+        )
         responses.post(
             "https://sso.example.com/token",
             json={
                 "access_token": "access",
                 "expires_in": 3600,
                 "token_type": "Bearer",
-                "id_token": jwt.encode(
-                    {
-                        "sub": "1234",
-                        "name": "Test User",
-                        "email": "user@example.com",
-                        "iss": "https://sso.example.com",
-                        "aud": "client_id_123",
-                        "exp": 2000000000,
-                        "iat": 1000000000,
-                    },
-                    _PRIVATE_KEY,
-                    algorithm="RS256",
-                ),
+                "id_token": id_token,
             },
         )
         response = Login(request).oidc_callback()
@@ -192,6 +197,12 @@ class TestLogin(TestCase):
         assert set_cookies["code_challenge"].startswith("; Max-Age=0; Path=/; expires="), set_cookies[
             "code_challenge"
         ]
+        assert set_cookies["id_token"].startswith(f"{id_token};"), (
+            "id_token cookie should contain the ID token"
+        )
+        assert "Max-Age=3600" in set_cookies["id_token"], (
+            "id_token cookie should use the access token expiration when there is no refresh token"
+        )
 
     @responses.activate
     def test_callback_refresh_token_set(self) -> None:
@@ -262,7 +273,7 @@ class TestLogin(TestCase):
                         "provide_roles": True,
                         "url": "https://sso.example.com",
                         "client_id": "client_id_123",
-                        "refresh_max_age": "1d",
+                        "refresh_max_age": 86400,
                     },
                 },
             },
@@ -306,6 +317,9 @@ class TestLogin(TestCase):
             "refresh_token cookie should use the configured refresh_max_age "
             "when the provider does not provide refresh_expires_in"
         )
+        assert "Max-Age=86400" in set_cookies["id_token"], (
+            "id_token cookie should have the same maximum age as the refresh token"
+        )
 
     @responses.activate
     def test_callback_refresh_token_provider_expires_in(self) -> None:
@@ -319,7 +333,7 @@ class TestLogin(TestCase):
                         "provide_roles": True,
                         "url": "https://sso.example.com",
                         "client_id": "client_id_123",
-                        "refresh_max_age": "1d",
+                        "refresh_max_age": 86400,
                     },
                 },
             },
@@ -365,9 +379,7 @@ class TestLogin(TestCase):
         )
 
     @responses.activate
-    def test_callback_refresh_token_invalid_max_age(self) -> None:
-        from pyramid.httpexceptions import HTTPInternalServerError
-
+    def test_callback_refresh_token_unset_max_age(self) -> None:
         from c2cgeoportal_geoportal.views.login import Login
 
         request = create_dummy_request(
@@ -378,7 +390,6 @@ class TestLogin(TestCase):
                         "provide_roles": True,
                         "url": "https://sso.example.com",
                         "client_id": "client_id_123",
-                        "refresh_max_age": "not-a-duration",
                     },
                 },
             },
@@ -414,5 +425,452 @@ class TestLogin(TestCase):
                 ),
             },
         )
+        response = Login(request).oidc_callback()
+        assert response.status_int == 302
+
+        set_cookies = dict([v.split("=", 1) for v in response.headers.getall("Set-Cookie")])
+        assert "Max-Age=604800" in set_cookies["refresh_token"], (
+            "refresh_token cookie should use the default refresh_max_age when it's not configured"
+        )
+
+
+class TestLogout(TestCase):
+    def setUp(self) -> None:
+        setup_db()
+        self.config = testing.setUp()
+
+    def tearDown(self) -> None:
+        testing.tearDown()
+        cleanup_db()
+
+    @staticmethod
+    def _user():
+        return oidc.DynamicUser(
+            id=1,
+            username="test_user",
+            display_name="Test User",
+            email="user@example.com",
+            settings_role=None,
+            roles=[],
+        )
+
+    @responses.activate
+    def test_logout_redirect(self) -> None:
+        from c2cgeoportal_geoportal.views.login import Login
+
+        request = create_dummy_request(
+            {
+                "authentication": {
+                    "openid_connect": {
+                        "enabled": True,
+                        "url": "https://sso.example.com",
+                        "client_id": "client_id_1",
+                        "logout_url": "https://sso.example.com/logout?post_logout_redirect_uri={came_from}",
+                    },
+                },
+            },
+            params={"came_from": "/came_from"},
+            cookies={
+                "access_token": "access_123",
+                "refresh_token": "refresh_123",
+                "id_token": "id_token_123",
+            },
+        )
+        includeme(request)
+        responses.get("https://sso.example.com/.well-known/openid-configuration", json=_OIDC_CONFIGURATION)
+        request.user = self._user()
+
+        response = Login(request).logout()
+        assert response.status_int == 302
+        assert (
+            response.headers["Location"]
+            == "https://sso.example.com/logout?post_logout_redirect_uri=http%3A%2F%2Fexample.com%2Fcame_from"
+        )
+
+        set_cookies = dict([v.split("=", 1) for v in response.headers.getall("Set-Cookie")])
+        assert "Max-Age=0" in set_cookies["access_token"], "access_token cookie should be deleted on logout"
+        assert "Max-Age=0" in set_cookies["refresh_token"], "refresh_token cookie should be deleted on logout"
+        assert "Max-Age=0" in set_cookies["id_token"], "id_token cookie should be deleted on logout"
+
+    @responses.activate
+    def test_logout_redirect_absolute_came_from(self) -> None:
+        from c2cgeoportal_geoportal.views.login import Login
+
+        request = create_dummy_request(
+            {
+                "authentication": {
+                    "openid_connect": {
+                        "enabled": True,
+                        "url": "https://sso.example.com",
+                        "client_id": "client_id_1",
+                        "logout_url": "https://sso.example.com/logout?post_logout_redirect_uri={came_from}",
+                    },
+                },
+            },
+            params={"came_from": "https://example.com/other"},
+            cookies={"access_token": "access_123", "refresh_token": "refresh_123"},
+        )
+        includeme(request)
+        responses.get("https://sso.example.com/.well-known/openid-configuration", json=_OIDC_CONFIGURATION)
+        request.user = self._user()
+
+        response = Login(request).logout()
+        assert response.status_int == 302
+        assert (
+            response.headers["Location"]
+            == "https://sso.example.com/logout?post_logout_redirect_uri=https%3A%2F%2Fexample.com%2Fother"
+        )
+
+    @responses.activate
+    def test_logout_redirect_end_session_endpoint_placeholder(self) -> None:
+        from c2cgeoportal_geoportal.views.login import Login
+
+        request = create_dummy_request(
+            {
+                "authentication": {
+                    "openid_connect": {
+                        "enabled": True,
+                        "url": "https://sso.example.com",
+                        "client_id": "client_id_1",
+                        "logout_url": "{end_session_endpoint}?post_logout_redirect_uri={came_from}",
+                    },
+                },
+            },
+            params={"came_from": "/came_from"},
+            cookies={
+                "access_token": "access_123",
+                "refresh_token": "refresh_123",
+                "id_token": "id_token_123",
+            },
+        )
+        includeme(request)
+        responses.get(
+            "https://sso.example.com/.well-known/openid-configuration",
+            json=_OIDC_CONFIGURATION_WITH_END_SESSION,
+        )
+        request.user = self._user()
+
+        response = Login(request).logout()
+        assert response.status_int == 302
+        assert (
+            response.headers["Location"]
+            == "https://sso.example.com/end-session?post_logout_redirect_uri=http%3A%2F%2Fexample.com%2Fcame_from"
+        )
+
+    @responses.activate
+    def test_logout_redirect_id_token_hint_placeholder(self) -> None:
+        from c2cgeoportal_geoportal.views.login import Login
+
+        request = create_dummy_request(
+            {
+                "authentication": {
+                    "openid_connect": {
+                        "enabled": True,
+                        "url": "https://sso.example.com",
+                        "client_id": "client_id_1",
+                        "logout_url": (
+                            "https://sso.example.com/logout"
+                            "?post_logout_redirect_uri={came_from}&id_token_hint={id_token_hint}"
+                        ),
+                    },
+                },
+            },
+            params={"came_from": "/came_from"},
+            cookies={
+                "access_token": "access_123",
+                "refresh_token": "refresh_123",
+                "id_token": "id_token.123",
+            },
+        )
+        includeme(request)
+        responses.get(
+            "https://sso.example.com/.well-known/openid-configuration",
+            json=_OIDC_CONFIGURATION_WITH_END_SESSION,
+        )
+        request.user = self._user()
+        response = Login(request).logout()
+        assert response.status_int == 302
+        assert (
+            response.headers["Location"] == "https://sso.example.com/logout"
+            "?post_logout_redirect_uri=http%3A%2F%2Fexample.com%2Fcame_from&id_token_hint=id_token.123"
+        )
+
+    @responses.activate
+    def test_logout_redirect_client_id_placeholder(self) -> None:
+        from c2cgeoportal_geoportal.views.login import Login
+
+        request = create_dummy_request(
+            {
+                "authentication": {
+                    "openid_connect": {
+                        "enabled": True,
+                        "url": "https://sso.example.com",
+                        "client_id": "client_id_1",
+                        "logout_url": "https://sso.example.com/logout?client_id={client_id}",
+                    },
+                },
+            },
+            cookies={"access_token": "access_123", "refresh_token": "refresh_123"},
+        )
+        includeme(request)
+        responses.get("https://sso.example.com/.well-known/openid-configuration", json=_OIDC_CONFIGURATION)
+        request.user = self._user()
+
+        response = Login(request).logout()
+        assert response.status_int == 302
+        assert response.headers["Location"] == "https://sso.example.com/logout?client_id=client_id_1"
+
+    @responses.activate
+    def test_logout_redirect_ui_locales_placeholder(self) -> None:
+        from c2cgeoportal_geoportal.views.login import Login
+
+        request = create_dummy_request(
+            {
+                "authentication": {
+                    "openid_connect": {
+                        "enabled": True,
+                        "url": "https://sso.example.com",
+                        "client_id": "client_id_1",
+                        "logout_url": "https://sso.example.com/logout?ui_locales={ui_locales}",
+                    },
+                },
+            },
+            cookies={"access_token": "access_123", "refresh_token": "refresh_123"},
+        )
+        includeme(request)
+        responses.get("https://sso.example.com/.well-known/openid-configuration", json=_OIDC_CONFIGURATION)
+        request.user = self._user()
+
+        response = Login(request).logout()
+        assert response.status_int == 302
+        assert response.headers["Location"] == "https://sso.example.com/logout?ui_locales=fr"
+
+    @responses.activate
+    def test_logout_redirect_unknown_placeholder(self) -> None:
+        from pyramid.httpexceptions import HTTPInternalServerError
+
+        from c2cgeoportal_geoportal.views.login import Login
+
+        request = create_dummy_request(
+            {
+                "authentication": {
+                    "openid_connect": {
+                        "enabled": True,
+                        "url": "https://sso.example.com",
+                        "client_id": "client_id_1",
+                        "logout_url": "https://sso.example.com/logout?foo={unknown_placeholder}",
+                    },
+                },
+            },
+            cookies={"access_token": "access_123", "refresh_token": "refresh_123"},
+        )
+        includeme(request)
+        responses.get(
+            "https://sso.example.com/.well-known/openid-configuration",
+            json=_OIDC_CONFIGURATION_WITH_END_SESSION,
+        )
+        request.user = self._user()
+
         with pytest.raises(HTTPInternalServerError):
-            Login(request).oidc_callback()
+            Login(request).logout()
+
+    @responses.activate
+    def test_logout_redirect_unavailable_end_session_endpoint(self) -> None:
+        from pyramid.httpexceptions import HTTPInternalServerError
+
+        from c2cgeoportal_geoportal.views.login import Login
+
+        request = create_dummy_request(
+            {
+                "authentication": {
+                    "openid_connect": {
+                        "enabled": True,
+                        "url": "https://sso.example.com",
+                        "client_id": "client_id_1",
+                        "logout_url": "{end_session_endpoint}?post_logout_redirect_uri={came_from}",
+                    },
+                },
+            },
+            params={"came_from": "/came_from"},
+            cookies={"access_token": "access_123", "refresh_token": "refresh_123"},
+        )
+        includeme(request)
+        responses.get("https://sso.example.com/.well-known/openid-configuration", json=_OIDC_CONFIGURATION)
+        request.user = self._user()
+
+        with pytest.raises(HTTPInternalServerError):
+            Login(request).logout()
+
+    @responses.activate
+    def test_logout_redirect_missing_id_token_hint(self) -> None:
+        from pyramid.httpexceptions import HTTPInternalServerError
+
+        from c2cgeoportal_geoportal.views.login import Login
+
+        request = create_dummy_request(
+            {
+                "authentication": {
+                    "openid_connect": {
+                        "enabled": True,
+                        "url": "https://sso.example.com",
+                        "client_id": "client_id_1",
+                        "logout_url": "https://sso.example.com/logout?id_token_hint={id_token_hint}",
+                    },
+                },
+            },
+            cookies={"access_token": "access_123", "refresh_token": "refresh_123"},
+        )
+        includeme(request)
+        responses.get("https://sso.example.com/.well-known/openid-configuration", json=_OIDC_CONFIGURATION)
+        request.user = self._user()
+
+        with pytest.raises(HTTPInternalServerError):
+            Login(request).logout()
+
+    @responses.activate
+    def test_logout_redirect_default_came_from(self) -> None:
+        from c2cgeoportal_geoportal.views.login import Login
+
+        request = create_dummy_request(
+            {
+                "authentication": {
+                    "openid_connect": {
+                        "enabled": True,
+                        "url": "https://sso.example.com",
+                        "client_id": "client_id_1",
+                        "logout_url": "https://sso.example.com/logout?post_logout_redirect_uri={came_from}",
+                    },
+                },
+            },
+            cookies={"access_token": "access_123", "refresh_token": "refresh_123"},
+        )
+        includeme(request)
+        responses.get("https://sso.example.com/.well-known/openid-configuration", json=_OIDC_CONFIGURATION)
+        request.user = self._user()
+
+        response = Login(request).logout()
+        assert response.status_int == 302
+        assert (
+            response.headers["Location"] == "https://sso.example.com/logout?post_logout_redirect_uri="
+            "http%3A%2F%2Fexample.com%2Fbase%2Fview%3F"
+        )
+
+    @responses.activate
+    def test_logout_redirect_invalid_came_from(self) -> None:
+        from pyramid.httpexceptions import HTTPBadRequest
+
+        from c2cgeoportal_geoportal.views.login import Login
+
+        request = create_dummy_request(
+            {
+                "authentication": {
+                    "openid_connect": {
+                        "enabled": True,
+                        "url": "https://sso.example.com",
+                        "client_id": "client_id_1",
+                        "logout_url": "https://sso.example.com/logout?post_logout_redirect_uri={came_from}",
+                    },
+                },
+            },
+            params={"came_from": "https://evil.example.com/"},
+            cookies={"access_token": "access_123", "refresh_token": "refresh_123"},
+        )
+        includeme(request)
+        responses.get("https://sso.example.com/.well-known/openid-configuration", json=_OIDC_CONFIGURATION)
+        request.user = self._user()
+
+        with pytest.raises(HTTPBadRequest):
+            Login(request).logout()
+
+    @responses.activate
+    def test_logout_came_from_without_logout_url(self) -> None:
+        from c2cgeoportal_geoportal.views.login import Login
+
+        request = create_dummy_request(
+            {
+                "authentication": {
+                    "openid_connect": {
+                        "enabled": True,
+                        "url": "https://sso.example.com",
+                        "client_id": "client_id_1",
+                    },
+                },
+            },
+            params={"came_from": "/came_from"},
+            cookies={
+                "access_token": "access_123",
+                "refresh_token": "refresh_123",
+                "id_token": "id_token_123",
+            },
+        )
+        includeme(request)
+        responses.get("https://sso.example.com/.well-known/openid-configuration", json=_OIDC_CONFIGURATION)
+        request.user = self._user()
+
+        response = Login(request).logout()
+        assert response.status_int == 302
+        assert response.headers["Location"] == "/came_from"
+
+        set_cookies = dict([v.split("=", 1) for v in response.headers.getall("Set-Cookie")])
+        assert "Max-Age=0" in set_cookies["access_token"], "access_token cookie should be deleted on logout"
+        assert "Max-Age=0" in set_cookies["refresh_token"], "refresh_token cookie should be deleted on logout"
+        assert "Max-Age=0" in set_cookies["id_token"], "id_token cookie should be deleted on logout"
+
+    @responses.activate
+    def test_logout_invalid_came_from_without_logout_url(self) -> None:
+        from pyramid.httpexceptions import HTTPBadRequest
+
+        from c2cgeoportal_geoportal.views.login import Login
+
+        request = create_dummy_request(
+            {
+                "authentication": {
+                    "openid_connect": {
+                        "enabled": True,
+                        "url": "https://sso.example.com",
+                        "client_id": "client_id_1",
+                    },
+                },
+            },
+            params={"came_from": "https://evil.example.com/"},
+            cookies={"access_token": "access_123", "refresh_token": "refresh_123"},
+        )
+        includeme(request)
+        responses.get("https://sso.example.com/.well-known/openid-configuration", json=_OIDC_CONFIGURATION)
+        request.user = self._user()
+
+        with pytest.raises(HTTPBadRequest):
+            Login(request).logout()
+
+    @responses.activate
+    def test_logout_no_logout_url(self) -> None:
+        from c2cgeoportal_geoportal.views.login import Login
+
+        request = create_dummy_request(
+            {
+                "authentication": {
+                    "openid_connect": {
+                        "enabled": True,
+                        "url": "https://sso.example.com",
+                        "client_id": "client_id_1",
+                    },
+                },
+            },
+            cookies={
+                "access_token": "access_123",
+                "refresh_token": "refresh_123",
+                "id_token": "id_token_123",
+            },
+        )
+        includeme(request)
+        responses.get("https://sso.example.com/.well-known/openid-configuration", json=_OIDC_CONFIGURATION)
+        request.user = self._user()
+
+        response = Login(request).logout()
+        assert response.status_int == 200, response.body
+        assert response.body.decode("utf-8") == "true"
+
+        set_cookies = dict([v.split("=", 1) for v in response.headers.getall("Set-Cookie")])
+        assert "Max-Age=0" in set_cookies["access_token"], "access_token cookie should be deleted on logout"
+        assert "Max-Age=0" in set_cookies["refresh_token"], "refresh_token cookie should be deleted on logout"
+        assert "Max-Age=0" in set_cookies["id_token"], "id_token cookie should be deleted on logout"

@@ -49,10 +49,8 @@ vars:
     max_consecutive_failures: 10
     openid_connect:
       enabled: '{OPENID_CONNECT_ENABLED}'
-      # Maximum age of the refresh token cookie, used when the identity provider
-      # does not provide `refresh_expires_in`. Accepts the ISO 8601 duration format
-      # (e.g. P7D, PT600S), the short format (e.g. 7d, 1w, 2h30) or a number of seconds.
-      refresh_max_age: 7d
+      # Maximum age of the refresh token cookie in second: 604800 => 7 days.
+      refresh_max_age: 604800
 
   intranet:
     networks: []
