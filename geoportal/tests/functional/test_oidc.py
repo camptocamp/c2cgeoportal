@@ -29,6 +29,7 @@ import urllib.parse
 from unittest import TestCase
 
 import jwt
+import pytest
 import responses
 from cryptography.hazmat.primitives.asymmetric import rsa
 from pyramid import testing
@@ -248,3 +249,170 @@ class TestLogin(TestCase):
         assert set_cookies["refresh_token"].startswith("refresh_123;"), (
             "refresh_token cookie should contain the refresh token value"
         )
+
+    @responses.activate
+    def test_callback_refresh_token_default_max_age(self) -> None:
+        from c2cgeoportal_geoportal.views.login import Login
+
+        request = create_dummy_request(
+            {
+                "authentication": {
+                    "openid_connect": {
+                        "enabled": True,
+                        "provide_roles": True,
+                        "url": "https://sso.example.com",
+                        "client_id": "client_id_123",
+                        "refresh_max_age": "1d",
+                    },
+                },
+            },
+            params={"code": "code_123"},
+            cookies={
+                "came_from": "/came_from",
+                "code_verifier": "code_verifier",
+                "code_challenge": "code_challenge",
+            },
+        )
+        includeme(request)
+        responses.get("https://sso.example.com/.well-known/openid-configuration", json=_OIDC_CONFIGURATION)
+        responses.get("https://sso.example.com/jwks", json=_OIDC_KEYS)
+        responses.post(
+            "https://sso.example.com/token",
+            json={
+                "access_token": "access",
+                "expires_in": 3600,
+                "refresh_token": "refresh_123",
+                "token_type": "Bearer",
+                "id_token": jwt.encode(
+                    {
+                        "sub": "1234",
+                        "name": "Test User",
+                        "email": "user@example.com",
+                        "iss": "https://sso.example.com",
+                        "aud": "client_id_123",
+                        "exp": 2000000000,
+                        "iat": 1000000000,
+                    },
+                    _PRIVATE_KEY,
+                    algorithm="RS256",
+                ),
+            },
+        )
+        response = Login(request).oidc_callback()
+        assert response.status_int == 302
+
+        set_cookies = dict([v.split("=", 1) for v in response.headers.getall("Set-Cookie")])
+        assert "Max-Age=86400" in set_cookies["refresh_token"], (
+            "refresh_token cookie should use the configured refresh_max_age "
+            "when the provider does not provide refresh_expires_in"
+        )
+
+    @responses.activate
+    def test_callback_refresh_token_provider_expires_in(self) -> None:
+        from c2cgeoportal_geoportal.views.login import Login
+
+        request = create_dummy_request(
+            {
+                "authentication": {
+                    "openid_connect": {
+                        "enabled": True,
+                        "provide_roles": True,
+                        "url": "https://sso.example.com",
+                        "client_id": "client_id_123",
+                        "refresh_max_age": "1d",
+                    },
+                },
+            },
+            params={"code": "code_123"},
+            cookies={
+                "came_from": "/came_from",
+                "code_verifier": "code_verifier",
+                "code_challenge": "code_challenge",
+            },
+        )
+        includeme(request)
+        responses.get("https://sso.example.com/.well-known/openid-configuration", json=_OIDC_CONFIGURATION)
+        responses.get("https://sso.example.com/jwks", json=_OIDC_KEYS)
+        responses.post(
+            "https://sso.example.com/token",
+            json={
+                "access_token": "access",
+                "expires_in": 3600,
+                "refresh_token": "refresh_123",
+                "refresh_expires_in": 1234,
+                "token_type": "Bearer",
+                "id_token": jwt.encode(
+                    {
+                        "sub": "1234",
+                        "name": "Test User",
+                        "email": "user@example.com",
+                        "iss": "https://sso.example.com",
+                        "aud": "client_id_123",
+                        "exp": 2000000000,
+                        "iat": 1000000000,
+                    },
+                    _PRIVATE_KEY,
+                    algorithm="RS256",
+                ),
+            },
+        )
+        response = Login(request).oidc_callback()
+        assert response.status_int == 302
+
+        set_cookies = dict([v.split("=", 1) for v in response.headers.getall("Set-Cookie")])
+        assert "Max-Age=1234" in set_cookies["refresh_token"], (
+            "refresh_token cookie should keep the refresh_expires_in value provided by the provider"
+        )
+
+    @responses.activate
+    def test_callback_refresh_token_invalid_max_age(self) -> None:
+        from pyramid.httpexceptions import HTTPInternalServerError
+
+        from c2cgeoportal_geoportal.views.login import Login
+
+        request = create_dummy_request(
+            {
+                "authentication": {
+                    "openid_connect": {
+                        "enabled": True,
+                        "provide_roles": True,
+                        "url": "https://sso.example.com",
+                        "client_id": "client_id_123",
+                        "refresh_max_age": "not-a-duration",
+                    },
+                },
+            },
+            params={"code": "code_123"},
+            cookies={
+                "came_from": "/came_from",
+                "code_verifier": "code_verifier",
+                "code_challenge": "code_challenge",
+            },
+        )
+        includeme(request)
+        responses.get("https://sso.example.com/.well-known/openid-configuration", json=_OIDC_CONFIGURATION)
+        responses.get("https://sso.example.com/jwks", json=_OIDC_KEYS)
+        responses.post(
+            "https://sso.example.com/token",
+            json={
+                "access_token": "access",
+                "expires_in": 3600,
+                "refresh_token": "refresh_123",
+                "token_type": "Bearer",
+                "id_token": jwt.encode(
+                    {
+                        "sub": "1234",
+                        "name": "Test User",
+                        "email": "user@example.com",
+                        "iss": "https://sso.example.com",
+                        "aud": "client_id_123",
+                        "exp": 2000000000,
+                        "iat": 1000000000,
+                    },
+                    _PRIVATE_KEY,
+                    algorithm="RS256",
+                ),
+            },
+        )
+        with pytest.raises(HTTPInternalServerError):
+            Login(request).oidc_callback()

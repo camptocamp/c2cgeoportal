@@ -92,6 +92,11 @@ Other options
 ``provide_roles``: If ``true``, the OpenID Connect provider will provide the roles for the user,
   default is ``false``.
 
+``refresh_max_age``: The maximum age of the refresh token cookie, used when the identity provider
+  does not provide ``refresh_expires_in`` in the token response. Accepts the ISO 8601 duration
+  format (e.g. ``P7D``, ``PT600S``), the short format (e.g. ``7d``, ``1w``, ``2h30``) or a number
+  of seconds (e.g. ``604800``). Default is ``7d``.
+
 ``login_extra_params``: Extra parameters to add to the login request.
   See `Zitadel additional parameters <https://zitadel.com/docs/apis/openidoauth/endpoints#additional-parameters>`_.
   Default is ``{}``.

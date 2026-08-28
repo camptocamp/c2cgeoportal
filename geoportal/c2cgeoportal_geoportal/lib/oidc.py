@@ -41,6 +41,7 @@ from pyramid.httpexceptions import (
 )
 from pyramid.security import remember
 
+from c2cgeoportal_commons.lib.duration import parse_duration
 from c2cgeoportal_geoportal.lib.caching import get_region
 
 if TYPE_CHECKING:
@@ -276,11 +277,26 @@ class OidcRemember:
             samesite="Lax",
             domain=self.request.domain,
         )
+        refresh_token_expires_in: int | None = None
         if token_response.refresh_token is not None:
+            if token_response.refresh_expires_in is None:
+                # Not all identity providers return `refresh_expires_in`, fall back to the configured
+                # `refresh_max_age`, else the refresh token cookie would be browser-session-only.
+                refresh_max_age = openid_connect.get("refresh_max_age", "7d")
+                try:
+                    refresh_token_expires_in = int(parse_duration(refresh_max_age).total_seconds())
+                except ValueError:
+                    # The value comes from the server configuration, an invalid value is a server error.
+                    raise HTTPInternalServerError(
+                        f"Invalid 'refresh_max_age' configuration value: '{refresh_max_age}', "
+                        "should be a valid duration."
+                    )
+            else:
+                refresh_token_expires_in = token_response.refresh_expires_in
             self.request.response.set_cookie(
                 "refresh_token",
                 token_response.refresh_token,
-                max_age=token_response.refresh_expires_in,
+                max_age=refresh_token_expires_in,
                 secure=True,
                 httponly=True,
                 samesite="Lax",
@@ -292,10 +308,10 @@ class OidcRemember:
             ).isoformat(),
             "refresh_token_expires": (
                 None
-                if token_response.refresh_expires_in is None
+                if refresh_token_expires_in is None
                 else (
                     datetime.datetime.now(tz=datetime.UTC)
-                    + datetime.timedelta(seconds=token_response.refresh_expires_in)
+                    + datetime.timedelta(seconds=refresh_token_expires_in)
                 ).isoformat()
             ),
             "username": None,

@@ -255,6 +255,9 @@ mapping:
               create_user:
                 type: bool
                 default: false
+              refresh_max_age:
+                type: scalar
+                required: false
               login_extra_params:
                 type: map
                 mapping:
