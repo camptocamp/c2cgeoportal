@@ -240,9 +240,20 @@ To have the landing page you should:
 
 - Don't define the ``QGIS_PROJECT_FILE`` environment variable (the map should be defined in the OGC server,
   in the ``MAP`` attribute of the query string).
-- Define the ``QGIS_SERVER_LANDING_PAGE_PROJECTS_DIRECTORIES`` or the
+- Define the ``QGIS_SERVER_LANDING_PAGE_PROJECTS_DIRECTORIES`` (no ending slash) or the
   ``QGIS_SERVER_LANDING_PAGE_PROJECTS_PG_CONNECTIONS`` environment variable.
-- Create a new OGC server with a name e.g. ``qgis`` and no ``MAP`` in the query string.
-- Define the ``QGIS_SERVER_LANDING_PAGE_PREFIX`` to, in our example, ``/mapserv_proxy/qgis``.
+- Create a new OGC server with a name e.g. ``qgis`` and no ``MAP`` in the query string, and with base URL like ``http://qgisserver:8080/mapserv_proxy/qgis``.
+- Define the ``QGIS_SERVER_LANDING_PAGE_PREFIX`` to, in our example, ``/mapserv_proxy/qgis/landing`` (no ending slash).
 
-Then open the landing page in your browser with ``https://<host>/mapserv_proxy/qgis/``.
+Then open the QGIS server landing page in your browser with ``https://<host>/mapserv_proxy/qgis/landing/``.
+And the OGC API landing page with ``http://localhost:8485/mapserv_proxy/qgis/landing/project/<project_hash>/``.
+
+You can get the project hash on the URL: ``https://<host>/mapserv_proxy/qgis/landing/index.json``.
+
+Or with Python code (the project file should be adapted):
+
+.. code:: python
+
+   import hashlib
+
+   print(hashlib.sha256(b"/etc/qgisserver/project.qgs").hexdigest())
