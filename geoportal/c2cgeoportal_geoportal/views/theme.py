@@ -65,9 +65,8 @@ from c2cgeoportal_geoportal.lib.caching import get_region
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
 from c2cgeoportal_geoportal.lib.functionality import get_mapserver_substitution_params
 from c2cgeoportal_geoportal.lib.layers import (
-    get_private_layers,
-    get_protected_layers,
     get_protected_layers_query,
+    get_unauthorized_layers,
 )
 from c2cgeoportal_geoportal.lib.wmstparsing import TimeInformation, parse_extent
 from c2cgeoportal_geoportal.views.layers import get_layer_metadata
@@ -543,13 +542,16 @@ class Theme:
         layer_theme: dict[str, Any],
         layer_name: str,
         wms: dict[str, dict[str, Any]],
+        unauthorized_layers: set[str],
     ) -> None:
+        if layer_name in unauthorized_layers:
+            return
         wms_layer_obj = wms["layers"][layer_name]
         if not wms_layer_obj["children"]:
             layer_theme["childLayers"].append(wms["layers"][layer_name]["info"])
         else:
             for child_layer in wms_layer_obj["children"]:
-                self._fill_child_layer(layer_theme, child_layer, wms)
+                self._fill_child_layer(layer_theme, child_layer, wms, unauthorized_layers)
 
     async def _fill_wms(
         self,
@@ -567,11 +569,15 @@ class Theme:
         if layer.style:
             layer_theme["style"] = layer.style
 
-        # now look at what is in the WMS capabilities doc
+        wms_children_map: dict[str, list[str]] = {
+            name: layer_data["children"] for name, layer_data in wms["layers"].items()
+        }
+        unauthorized_layers = get_unauthorized_layers(self.request, layer.ogc_server.id, wms_children_map)
+
         layer_theme["childLayers"] = []
         for layer_name in layer.layer.split(","):
             if layer_name in wms["layers"]:
-                self._fill_child_layer(layer_theme, layer_name, wms)
+                self._fill_child_layer(layer_theme, layer_name, wms, unauthorized_layers)
             else:
                 errors.add(
                     f"The layer '{layer_name}' ({layer.name}) is not defined in WMS capabilities "
@@ -1283,25 +1289,25 @@ class Theme:
                         url_internal_wfs,
                         ogc_server,
                     )
-                    # Create a local copy (don't modify the cache)
                     if attributes is not None:
                         attributes = dict(attributes)
                     all_errors |= errors
 
-                    all_private_layers = get_private_layers([ogc_server.id]).values()
-                    protected_layers_name = [
-                        layer.name for layer in get_protected_layers(self.request, [ogc_server.id]).values()
-                    ]
-                    private_layers_name: list[str] = []
-                    for layers in [
-                        v.layer for v in all_private_layers if v.name not in protected_layers_name
-                    ]:
-                        private_layers_name.extend(layers.split(","))
+                    wms, wms_errors = await self._wms_getcap(ogc_server)
+                    all_errors |= wms_errors
+                    wms_children_map: dict[str, list[str]] = {}
+                    if wms is not None:
+                        wms_children_map = {
+                            name: layer_data["children"] for name, layer_data in wms["layers"].items()
+                        }
+
+                    unauthorized_layers = get_unauthorized_layers(
+                        self.request, ogc_server.id, wms_children_map
+                    )
 
                     if attributes is not None:
-                        for name in private_layers_name:
-                            if name in attributes:
-                                del attributes[name]
+                        for name in unauthorized_layers:
+                            attributes.pop(name, None)
 
                 result["ogcServers"][ogc_server.name] = {
                     "url": url.url() if url else None,
