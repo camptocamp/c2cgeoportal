@@ -1,3 +1,7 @@
+##### 2.8.1.376
+
+- Lock file maintenance (2.8) [c2cgeoportal#13247](https://github.com/camptocamp/c2cgeoportal/pull/13247)
+
 ##### 2.8.1.375
 
 - Audit Snyk check/fix 2.8 [c2cgeoportal#13237](https://github.com/camptocamp/c2cgeoportal/pull/13237)
