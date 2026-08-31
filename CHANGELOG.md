@@ -1,3 +1,8 @@
+##### 2.9.0.573
+
+- Lock file maintenance (2.9) [c2cgeoportal#13248](https://github.com/camptocamp/c2cgeoportal/pull/13248)
+- [Backport 2.9] Query the features of the layers nested in groups [ngeo#10194](https://github.com/camptocamp/ngeo/pull/10194)
+
 ##### 2.9.0.572
 
 - Audit Snyk check/fix 2.9 [c2cgeoportal#13245](https://github.com/camptocamp/c2cgeoportal/pull/13245)
