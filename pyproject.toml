@@ -63,7 +63,7 @@ rasterio = "1.4.4" # geoportal raster
 requests = "2.33.1" # geoportal
 redis = "5.2.1" # geoportal cache
 Shapely = "2.0.7" # geoportal
-SQLAlchemy = "2.0.51"
+SQLAlchemy = "2.0.52"
 transaction = "5.0" # commons, geoportal
 translationstring = "1.4" # admin
 "zope.event" = "5.0" # commons, geoportal
@@ -88,7 +88,7 @@ pillow = "12.3.0"
 pyjwt = "2.13.0"
 ujson = "5.13.0"
 pygments = "2.20.0"
-lxml = "6.1.1"
+lxml = "6.1.2"
 gitpython = "3.1.59"
 idna = "3.15"
 webob = "1.8.11"
@@ -114,7 +114,7 @@ mapbox-vector-tile = "2.1.0"
 responses = "0.25.8"
 waitress = "3.0.2"
 # Used on upgrade
-pre-commit = "4.6.1"
-prek = "0.4.11"
+pre-commit = "4.6.2"
+prek = "0.4.14"
 # To be able to upgrade project from version <= 2.8
 c2cciutils = { version = "1.5.16", extras = ["checks"] }
