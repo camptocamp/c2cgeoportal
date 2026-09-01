@@ -1,3 +1,7 @@
+##### 2.8.1.378
+
+- Update dependency gitpython to v3.1.60 (2.8) [c2cgeoportal#13272](https://github.com/camptocamp/c2cgeoportal/pull/13272)
+
 ##### 2.8.1.377
 
 - Update all patch/minor versions (2.8) [c2cgeoportal#13259](https://github.com/camptocamp/c2cgeoportal/pull/13259)
