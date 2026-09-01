@@ -1,3 +1,8 @@
+##### 2.8.1.377
+
+- Update all patch/minor versions (2.8) [c2cgeoportal#13259](https://github.com/camptocamp/c2cgeoportal/pull/13259)
+- Update dependency pre-commit to v4.6.2 (2.8) [c2cgeoportal#13260](https://github.com/camptocamp/c2cgeoportal/pull/13260)
+
 ##### 2.8.1.376
 
 - Lock file maintenance (2.8) [c2cgeoportal#13247](https://github.com/camptocamp/c2cgeoportal/pull/13247)
