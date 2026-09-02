@@ -160,11 +160,11 @@ class HybridRedisBackend(CacheBackend):
 
     def delete(self, key: str) -> None:
         self._memory.delete(key)
-        self._redis.delete(key)
+        self._redis.delete(sha1_mangle_key(key.encode()))
 
     def delete_multi(self, keys: Iterable[str]) -> None:
-        self._memory.delete_multi(keys)
-        self._redis.delete_multi(keys)
+        for key in keys:
+            self.delete(key)
 
 
 class HybridRedisSentinelBackend(HybridRedisBackend):
