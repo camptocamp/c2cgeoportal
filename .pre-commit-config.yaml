@@ -177,7 +177,7 @@ repos:
             |\.github/publish\.yaml
           )$
   - repo: https://github.com/renovatebot/pre-commit-hooks
-    rev: 44.43.1
+    rev: 44.45.3
     hooks:
       - id: renovate-config-validator
   - repo: https://github.com/sbrunner/python-versions-hook
