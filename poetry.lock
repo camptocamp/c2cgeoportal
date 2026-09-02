@@ -382,18 +382,18 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.43.70"
+version = "1.43.80"
 description = "The AWS SDK for Python"
 optional = false
 python-versions = ">=3.10"
 groups = ["dev"]
 files = [
-    {file = "boto3-1.43.70-py3-none-any.whl", hash = "sha256:b9399cce51bec9552e61a6b85015c42dea68752e79c00a7005d84eaf7ee15fef"},
-    {file = "boto3-1.43.70.tar.gz", hash = "sha256:4f1e16b9eebbad3f312bb6fbf7685d40abdd52a691485cb9f09e7df60d912b41"},
+    {file = "boto3-1.43.80-py3-none-any.whl", hash = "sha256:26afe3b950ca1cc722c7fa5544991c222919c98355f82300a55b6315a2c4995e"},
+    {file = "boto3-1.43.80.tar.gz", hash = "sha256:384d522e2ce722266afceea8ab3e618e16695b358ebe32b45e0a2109fcd53a28"},
 ]
 
 [package.dependencies]
-botocore = ">=1.43.70,<1.44.0"
+botocore = ">=1.43.80,<1.44.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.19.0,<0.20.0"
 
@@ -3221,29 +3221,29 @@ virtualenv = ">=20.10.0"
 
 [[package]]
 name = "prek"
-version = "0.4.13"
+version = "0.4.14"
 description = "A fast Git hook manager written in Rust, designed as a drop-in alternative to pre-commit, reimagined."
 optional = false
 python-versions = ">=3.8"
 groups = ["dev"]
 files = [
-    {file = "prek-0.4.13-py3-none-linux_armv6l.whl", hash = "sha256:6a313f5f041b2fcbd33bceb6b6e11ee9b8621c8c6ad8ef13787a6d90541b624d"},
-    {file = "prek-0.4.13-py3-none-macosx_10_12_x86_64.whl", hash = "sha256:40436cd7247d2a2fc036ef07d7efcd828acf1aab9d648a8a3f21475e3ad3f789"},
-    {file = "prek-0.4.13-py3-none-macosx_11_0_arm64.whl", hash = "sha256:019a33b477b7b949fb6dcd6cb33ed494c4a28117e53c370c637ec0aba60211aa"},
-    {file = "prek-0.4.13-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.musllinux_1_1_aarch64.whl", hash = "sha256:5a2851b6e60912e73be1bf2cf61fab5b314add15ba7bcf230f860282bdbaf16b"},
-    {file = "prek-0.4.13-py3-none-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:9ba9b94bd3f47b5f94a4ae504c44f9529cb3258ebaf577a5a6070ea0c6a853d6"},
-    {file = "prek-0.4.13-py3-none-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:33fc9e0d435cb9e650ec108f840febe7a94fd266c77149860091cead212dc82d"},
-    {file = "prek-0.4.13-py3-none-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:91066d8978eab83c111e7c34ee3046a003819d2df15ef7dc2bddeb83dce62bc0"},
-    {file = "prek-0.4.13-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:85646fcc940f30bd946d63b6bbd1000d946994c88e154c5bdde7773a2c358dcf"},
-    {file = "prek-0.4.13-py3-none-manylinux_2_28_aarch64.whl", hash = "sha256:961859c3ddddb8e10367afcf93742da36fa213eda080f168fc1dcbe33e0b004d"},
-    {file = "prek-0.4.13-py3-none-manylinux_2_31_riscv64.whl", hash = "sha256:ccf4fcbfc686ad6b589f2908ed6012a315091c45163e1f4420648b9669651a9e"},
-    {file = "prek-0.4.13-py3-none-musllinux_1_1_armv7l.whl", hash = "sha256:eb4b7edfe00ca73e58d7e26fb871abddc5854e8d21067a202e43418fb7f98ef2"},
-    {file = "prek-0.4.13-py3-none-musllinux_1_1_i686.whl", hash = "sha256:c29449443f89da1647331742984b7046a55084759ad642373a9cc0a973494339"},
-    {file = "prek-0.4.13-py3-none-musllinux_1_1_x86_64.whl", hash = "sha256:7a04d5ac901819b115ecd0bf79cee091f0034323767abcc4a53626eeb96c3be0"},
-    {file = "prek-0.4.13-py3-none-win32.whl", hash = "sha256:6d1bdcc1699ae18270f9bac9c4b4d29c6f1512b7a067e17ce5e220c30636f88c"},
-    {file = "prek-0.4.13-py3-none-win_amd64.whl", hash = "sha256:2d8fd796ed7944154fbee6d5a6d2490b9d4f14ce3626b1a0c9ca698455b25d9b"},
-    {file = "prek-0.4.13-py3-none-win_arm64.whl", hash = "sha256:65d6811b0220444bcdf539e157d7d5cb8edab01a5ed89534c70d73d675266ecb"},
-    {file = "prek-0.4.13.tar.gz", hash = "sha256:9bf3dce400ef38a281836e4fe6429aa5f1690848be77cd97cb53c93769db4681"},
+    {file = "prek-0.4.14-py3-none-linux_armv6l.whl", hash = "sha256:cf7fe2e07c99948ca3326fbd4254054cf4caa71a69cf9032be09c3938544e1e3"},
+    {file = "prek-0.4.14-py3-none-macosx_10_12_x86_64.whl", hash = "sha256:6c8043aa5555c2ada561f4c69429e5117f370ad92f7d708340613b0965e725bd"},
+    {file = "prek-0.4.14-py3-none-macosx_11_0_arm64.whl", hash = "sha256:355570f0d8366a56817e55f44edf736ffc9ff2323894e21cd739ab519d343541"},
+    {file = "prek-0.4.14-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.musllinux_1_1_aarch64.whl", hash = "sha256:334f48a2b19e63c5ab741e601cb6088caaa11d1b75146900dc298b055452d551"},
+    {file = "prek-0.4.14-py3-none-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:5fbb17270df2dcb3c1aa6edfaa68f850d7968862413e58b1572e41c981f644f9"},
+    {file = "prek-0.4.14-py3-none-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:8ec46be0b1b45943a0746fdf69feeede274b0230bad32b11e2489bb600846081"},
+    {file = "prek-0.4.14-py3-none-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:a21eea6ee996dbba351c1af8c6bd1959a61c37949757c0b97aef3edde82c126a"},
+    {file = "prek-0.4.14-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:34169cb1c8dfbe4b9cb7af164f5c1c3dff68929c61ca1e1de28d378b32720836"},
+    {file = "prek-0.4.14-py3-none-manylinux_2_28_aarch64.whl", hash = "sha256:e39772ebf579f957fdbbc66ef6a7f7433bf603128cd60d5c804c70caac5f69c0"},
+    {file = "prek-0.4.14-py3-none-manylinux_2_31_riscv64.whl", hash = "sha256:a79e5940354a789e1311172a960c5daa75e3f643a47ee2be85b7d2ca1d7d980a"},
+    {file = "prek-0.4.14-py3-none-musllinux_1_1_armv7l.whl", hash = "sha256:60b6539c1b28804807849173a6b49d467f6f36ca98bbb4536f5e34114d79942a"},
+    {file = "prek-0.4.14-py3-none-musllinux_1_1_i686.whl", hash = "sha256:24cfabd9e5b8c5546ecaef562841a41a255a9dec1b7ae7761ce5a7a024ab9dd9"},
+    {file = "prek-0.4.14-py3-none-musllinux_1_1_x86_64.whl", hash = "sha256:1f08d368da45439f949885bb0b637bc7dfe6910140d5285fa8bae058697ddd06"},
+    {file = "prek-0.4.14-py3-none-win32.whl", hash = "sha256:5bfb30808ce2099c67d2a2d4cd68dc031e3fec1eeb61d73ef51a8f7c04d021cb"},
+    {file = "prek-0.4.14-py3-none-win_amd64.whl", hash = "sha256:29364012d5704475d1092eb8a96ea30b163279096ad5e0c80a620fffa79bc639"},
+    {file = "prek-0.4.14-py3-none-win_arm64.whl", hash = "sha256:ff588c02e10c8d05150763607671a22d5585c0ff7036c884d3489c2726eb215c"},
+    {file = "prek-0.4.14.tar.gz", hash = "sha256:f6d0952e31ffd6e508660749dd51b8d8de96e955ed12c40e411f3224f502fed2"},
 ]
 
 [[package]]
@@ -5126,17 +5126,18 @@ files = [
 
 [[package]]
 name = "tilecloud"
-version = "1.13.5"
+version = "1.14.0"
 description = "Tools for managing tiles"
 optional = false
-python-versions = ">=3.10"
+python-versions = ">=3.12"
 groups = ["main"]
 files = [
-    {file = "tilecloud-1.13.5-py3-none-any.whl", hash = "sha256:717874063a8cbbdce9ba68685d68521cb7de4daa8851fef0f9cc9e7b297f8567"},
-    {file = "tilecloud-1.13.5.tar.gz", hash = "sha256:82be0813ccd69bda7ebb675c6350c32802efb2b2cb9ef9265f446948ebe93ce1"},
+    {file = "tilecloud-1.14.0-py3-none-any.whl", hash = "sha256:82813276680c607a41d9e2e94e87340e3957120ae7c13590d19a35efb6394a8a"},
+    {file = "tilecloud-1.14.0.tar.gz", hash = "sha256:125445f77d325e4f6a1c0571eddfc312b0049ae8b590bd67a18e2d16e7438d9d"},
 ]
 
 [package.dependencies]
+azure-core = "1.41.0"
 bottle = "*"
 cryptography = "*"
 Pillow = "*"
@@ -5144,12 +5145,11 @@ pyproj = "*"
 requests = "*"
 
 [package.extras]
-all = ["azure-identity", "azure-storage-blob", "boto3", "prometheus_client", "pyramid", "redis"]
+all = ["azure-identity", "azure-storage-blob", "boto3", "prometheus_client", "redis"]
 aws = ["boto3"]
 azure = ["azure-identity", "azure-storage-blob"]
 prometheus = ["prometheus_client"]
 redis = ["redis"]
-wsgi = ["pyramid"]
 
 [[package]]
 name = "toml"
@@ -5247,14 +5247,14 @@ files = [
 
 [[package]]
 name = "types-pyyaml"
-version = "6.0.12.20260724"
+version = "6.0.12.20260815"
 description = "Typing stubs for PyYAML"
 optional = false
 python-versions = ">=3.10"
 groups = ["dev"]
 files = [
-    {file = "types_pyyaml-6.0.12.20260724-py3-none-any.whl", hash = "sha256:d57db930a4b2efbc57cf430ec8882765d246929432fa253092f383902329a453"},
-    {file = "types_pyyaml-6.0.12.20260724.tar.gz", hash = "sha256:3c1ce1bb73cd5ec02e90390c2b1f00e810d241d8825fd73ff359696839271b6b"},
+    {file = "types_pyyaml-6.0.12.20260815-py3-none-any.whl", hash = "sha256:6f332212b7e191f3afd5016a713c510b6340593b7ebec573c7d5d20aa5386d3b"},
+    {file = "types_pyyaml-6.0.12.20260815.tar.gz", hash = "sha256:28764110c9cf35846e733da32d8d734df7473c5dde9ef67c3b7332ec0e819858"},
 ]
 
 [[package]]
@@ -5680,4 +5680,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.14,<4"
-content-hash = "668334c58905ed383a6d0bdb98c12ae1f5ade316de5e31e6019476d16ab030d6"
+content-hash = "6e0e5afa57669d709db66a7319253db4b8a91c1292a1914c1747845437f5496a"
