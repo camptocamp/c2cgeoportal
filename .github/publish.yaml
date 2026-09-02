@@ -59,13 +59,13 @@ docker:
         - gmf{version}-qgis3.44
     # master
     - name: camptocamp/geomapfish-qgisserver
-      group: qgis-4.0-gdal3.13
+      group: qgis-4.2-gdal3.13
       tags:
-        - gmf{version}-qgis4.0-gdal3.13
+        - gmf{version}-qgis4.2-gdal3.13
     - name: camptocamp/geomapfish-qgisserver
-      group: qgis-4.0
+      group: qgis-4.2
       tags:
-        - gmf{version}-qgis4.0
+        - gmf{version}-qgis4.2
     # all versions
     - name: camptocamp/geomapfish-qgisserver
       group: qgis-ltr
