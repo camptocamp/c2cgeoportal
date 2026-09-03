@@ -269,10 +269,15 @@ URL: ``.../logout``
 
 Method: ``GET``
 
+Parameters (query):
+
+* ``came_from`` optional, the URL to which we will redirect after the logout.
+
 Result HTTP code:
 
 * 200 Success: Success.
-* 400 Bad request: When something is wrong.
+* 302 Found: Success -> redirect to ``came_from``, or to the OpenID Connect ``logout_url`` if configured.
+* 400 Bad request: When something is wrong (e.g. the ``came_from`` hostname is not allowed).
 
 User information
 ----------------
