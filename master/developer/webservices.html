@@ -274,15 +274,10 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <p>Used to log out of the application.</p>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../logout</span></code></p>
 <p>Method: <code class="docutils literal notranslate"><span class="pre">GET</span></code></p>
-<p>Parameters (query):</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">came_from</span></code> optional, the URL to which we will redirect after the logout.</p></li>
-</ul>
 <p>Result HTTP code:</p>
 <ul class="simple">
 <li><p>200 Success: Success.</p></li>
-<li><p>302 Found: Success -&gt; redirect to <code class="docutils literal notranslate"><span class="pre">came_from</span></code>, or to the OpenID Connect <code class="docutils literal notranslate"><span class="pre">logout_url</span></code> if configured.</p></li>
-<li><p>400 Bad request: When something is wrong (e.g. the <code class="docutils literal notranslate"><span class="pre">came_from</span></code> hostname is not allowed).</p></li>
+<li><p>400 Bad request: When something is wrong.</p></li>
 </ul>
 </section>
 <section id="user-information">
