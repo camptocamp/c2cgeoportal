@@ -49,6 +49,8 @@ vars:
     max_consecutive_failures: 10
     openid_connect:
       enabled: '{OPENID_CONNECT_ENABLED}'
+      # Maximum age of the refresh token cookie in second: 604800 => 7 days.
+      refresh_max_age: 604800
 
   intranet:
     networks: []

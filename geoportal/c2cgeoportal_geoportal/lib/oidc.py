@@ -276,26 +276,47 @@ class OidcRemember:
             samesite="Lax",
             domain=self.request.domain,
         )
+        refresh_token_expires_in: int | None = None
         if token_response.refresh_token is not None:
+            if token_response.refresh_expires_in is None:
+                # Not all identity providers return `refresh_expires_in`, fall back to the configured
+                # `refresh_max_age`, else the refresh token cookie would be browser-session-only.
+                refresh_max_age = openid_connect.get("refresh_max_age", 7 * 24 * 3600)
+                refresh_token_expires_in = refresh_max_age
+            else:
+                refresh_token_expires_in = token_response.refresh_expires_in
             self.request.response.set_cookie(
                 "refresh_token",
                 token_response.refresh_token,
-                max_age=token_response.refresh_expires_in,
+                max_age=refresh_token_expires_in,
                 secure=True,
                 httponly=True,
                 samesite="Lax",
                 domain=self.request.domain,
             )
+        id_token_max_age = refresh_token_expires_in
+        if id_token_max_age is None:
+            id_token_max_age = token_response.expires_in
+        # The ID token is stored to be usable as `id_token_hint` in the identity provider logout request.
+        self.request.response.set_cookie(
+            "id_token",
+            token_response.id_token,
+            max_age=id_token_max_age,
+            secure=True,
+            httponly=True,
+            samesite="Lax",
+            domain=self.request.domain,
+        )
         remember_object: OidcRememberObject = {
             "access_token_expires": (
                 datetime.datetime.now(tz=datetime.UTC) + datetime.timedelta(seconds=token_response.expires_in)
             ).isoformat(),
             "refresh_token_expires": (
                 None
-                if token_response.refresh_expires_in is None
+                if refresh_token_expires_in is None
                 else (
                     datetime.datetime.now(tz=datetime.UTC)
-                    + datetime.timedelta(seconds=token_response.refresh_expires_in)
+                    + datetime.timedelta(seconds=refresh_token_expires_in)
                 ).isoformat()
             ),
             "username": None,
