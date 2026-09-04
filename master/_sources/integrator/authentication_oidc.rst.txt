@@ -92,6 +92,47 @@ Other options
 ``provide_roles``: If ``true``, the OpenID Connect provider will provide the roles for the user,
   default is ``false``.
 
+``refresh_max_age``: The maximum age of the refresh token cookie, in seconds, used when the
+  identity provider does not provide ``refresh_expires_in`` in the token response. Default is
+  ``604800`` (7 days).
+
+``logout_url``: If present, the user will be redirected to this URL on logout (after the local
+  session cleanup), this permits to also terminate the session on the identity provider side.
+  This permits to implement the
+  `RP-Initiated Logout <https://openid.net/specs/openid-connect-rpinitiated-1_0.html>`_
+  specification. The URL is a Python format string with the following placeholders:
+
+  * ``{came_from}``: The URL the user should be redirected back to after the identity provider
+    logout, as the ``post_logout_redirect_uri`` specification parameter; it's the ``came_from``
+    query parameter of the logout request if present and allowed, else the application base URL.
+    A relative ``came_from`` value is converted to an absolute URL, because most identity
+    providers require one; the placeholder value is URL-encoded.
+  * ``{end_session_endpoint}``: The ``end_session_endpoint`` advertised in the identity provider
+    discovery document, the standard logout endpoint of the provider.
+  * ``{id_token_hint}``: The ID token received on login (stored in a cookie), recommended by the
+    specification to validate the ``post_logout_redirect_uri``; the value is URL-encoded.
+  * ``{client_id}``: The configured OpenID Connect client identifier, useful without
+    ``{id_token_hint}`` when using ``post_logout_redirect_uri``; the value is URL-encoded.
+  * ``{ui_locales}``: The current language of the user in the application, a BCP47 language tag.
+
+  Other specification or provider-specific parameters, e.g. ``state`` or ``logout_hint``, can be
+  added literally in the URL; note that ``state`` is not generated nor verified by GeoMapFish.
+  An unknown or unavailable placeholder raises an internal server error, a literal brace must be
+  escaped as ``{{`` or ``}}``.
+
+  Note: without ``logout_url``, no logout request is send to the identity provider but the user
+  is still redirected to the ``came_from`` URL after the logout.
+
+  .. code:: yaml
+
+     logout_url: https://sso.example.com/realms/my-realm/protocol/openid-connect/logout?post_logout_redirect_uri={came_from}
+
+  Generic example using the discovered end session endpoint:
+
+  .. code:: yaml
+
+     logout_url: "{end_session_endpoint}?post_logout_redirect_uri={came_from}&id_token_hint={id_token_hint}"
+
 ``login_extra_params``: Extra parameters to add to the login request.
   See `Zitadel additional parameters <https://zitadel.com/docs/apis/openidoauth/endpoints#additional-parameters>`_.
   Default is ``{}``.

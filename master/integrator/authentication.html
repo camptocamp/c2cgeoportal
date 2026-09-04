@@ -673,13 +673,48 @@ The user correspondence will be done on the email field.</p>
 </dd>
 </dl>
 <p><code class="docutils literal notranslate"><span class="pre">scopes</span></code>: The list of scopes to request, default is [<code class="docutils literal notranslate"><span class="pre">openid</span></code>, <code class="docutils literal notranslate"><span class="pre">profile</span></code>, <code class="docutils literal notranslate"><span class="pre">email</span></code>].</p>
-<dl class="simple">
+<dl>
 <dt><code class="docutils literal notranslate"><span class="pre">query_user_info</span></code>: If <code class="docutils literal notranslate"><span class="pre">true</span></code>, the OpenID Connect provider user info endpoint will be requested to</dt><dd><p>provide the user info instead of using the information provided in the <code class="docutils literal notranslate"><span class="pre">ID</span> <span class="pre">token</span></code>,
 default is <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">create_user</span></code>: If <code class="docutils literal notranslate"><span class="pre">true</span></code>, a user will be create in the geomapfish database if not exists,</dt><dd><p>default is <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">provide_roles</span></code>: If <code class="docutils literal notranslate"><span class="pre">true</span></code>, the OpenID Connect provider will provide the roles for the user,</dt><dd><p>default is <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">refresh_max_age</span></code>: The maximum age of the refresh token cookie, in seconds, used when the</dt><dd><p>identity provider does not provide <code class="docutils literal notranslate"><span class="pre">refresh_expires_in</span></code> in the token response. Default is
+<code class="docutils literal notranslate"><span class="pre">604800</span></code> (7 days).</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">logout_url</span></code>: If present, the user will be redirected to this URL on logout (after the local</dt><dd><p>session cleanup), this permits to also terminate the session on the identity provider side.
+This permits to implement the
+<a class="reference external" href="https://openid.net/specs/openid-connect-rpinitiated-1_0.html">RP-Initiated Logout</a>
+specification. The URL is a Python format string with the following placeholders:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">{came_from}</span></code>: The URL the user should be redirected back to after the identity provider
+logout, as the <code class="docutils literal notranslate"><span class="pre">post_logout_redirect_uri</span></code> specification parameter; it’s the <code class="docutils literal notranslate"><span class="pre">came_from</span></code>
+query parameter of the logout request if present and allowed, else the application base URL.
+A relative <code class="docutils literal notranslate"><span class="pre">came_from</span></code> value is converted to an absolute URL, because most identity
+providers require one; the placeholder value is URL-encoded.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">{end_session_endpoint}</span></code>: The <code class="docutils literal notranslate"><span class="pre">end_session_endpoint</span></code> advertised in the identity provider
+discovery document, the standard logout endpoint of the provider.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">{id_token_hint}</span></code>: The ID token received on login (stored in a cookie), recommended by the
+specification to validate the <code class="docutils literal notranslate"><span class="pre">post_logout_redirect_uri</span></code>; the value is URL-encoded.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">{client_id}</span></code>: The configured OpenID Connect client identifier, useful without
+<code class="docutils literal notranslate"><span class="pre">{id_token_hint}</span></code> when using <code class="docutils literal notranslate"><span class="pre">post_logout_redirect_uri</span></code>; the value is URL-encoded.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">{ui_locales}</span></code>: The current language of the user in the application, a BCP47 language tag.</p></li>
+</ul>
+<p>Other specification or provider-specific parameters, e.g. <code class="docutils literal notranslate"><span class="pre">state</span></code> or <code class="docutils literal notranslate"><span class="pre">logout_hint</span></code>, can be
+added literally in the URL; note that <code class="docutils literal notranslate"><span class="pre">state</span></code> is not generated nor verified by GeoMapFish.
+An unknown or unavailable placeholder raises an internal server error, a literal brace must be
+escaped as <code class="docutils literal notranslate"><span class="pre">{{</span></code> or <code class="docutils literal notranslate"><span class="pre">}}</span></code>.</p>
+<p>Note: without <code class="docutils literal notranslate"><span class="pre">logout_url</span></code>, no logout request is send to the identity provider but the user
+is still redirected to the <code class="docutils literal notranslate"><span class="pre">came_from</span></code> URL after the logout.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">logout_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://sso.example.com/realms/my-realm/protocol/openid-connect/logout?post_logout_redirect_uri={came_from}</span>
+</pre></div>
+</div>
+<p>Generic example using the discovered end session endpoint:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">logout_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{end_session_endpoint}?post_logout_redirect_uri={came_from}&amp;id_token_hint={id_token_hint}&quot;</span>
+</pre></div>
+</div>
 </dd>
 <dt><code class="docutils literal notranslate"><span class="pre">login_extra_params</span></code>: Extra parameters to add to the login request.</dt><dd><p>See <a class="reference external" href="https://zitadel.com/docs/apis/openidoauth/endpoints#additional-parameters">Zitadel additional parameters</a>.
 Default is <code class="docutils literal notranslate"><span class="pre">{}</span></code>.</p>
