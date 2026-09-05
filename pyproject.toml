@@ -66,8 +66,8 @@ translationstring = "1.4" # admin
 "zope.event" = "6.2" # commons, geoportal
 c2cwsgiutils = { version = "6.1.10", extras = ["broadcast", "standard", "oauth2", "debug"] }
 oauthlib = "3.3.1"
-tilecloud = "1.13.5" # geoportal
-azure-storage-blob = "12.30.0"
+tilecloud = "1.14.0" # geoportal
+azure-storage-blob = "12.30.1"
 simple_openid_connect = '2.4.0' # geoportal
 pkce = '1.0.3' # geoportal
 basicauth = "1.0.0"
@@ -94,18 +94,18 @@ pytest = "9.1.1" # tests
 pytest-asyncio = "1.4.0" # tests
 WebTest = "3.0.7" # admin tests
 types-pytz = "2026.3.1.20260727"
-types-pyyaml = "6.0.12.20260724"
+types-pyyaml = "6.0.12.20260815"
 types-python-dateutil = "2.9.0.20260807"
 types-requests = "2.*"
 types-setuptools = "84.0.0.20260812"
 mappyfile = "1.2.0"
 mapbox-vector-tile = "2.2.0"
-responses = "0.26.2"
+responses = "0.26.3"
 waitress = "3.0.2"
-boto3 = "1.43.70"
+boto3 = "1.43.89"
 # Used on upgrade
 pre-commit = "4.6.2"
-prek = "0.4.13"
+prek = "0.5.0"
 # To be able to upgrade project from version <= 2.8
 c2cciutils = { version = "1.5.14", extras = ["checks"] }
 
