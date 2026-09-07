@@ -1,3 +1,8 @@
+##### 2.8.1.379
+
+- Lock file maintenance (2.8) [c2cgeoportal#13291](https://github.com/camptocamp/c2cgeoportal/pull/13291)
+- Update dependency svgo to v3.3.5 (2.8) [ngeo#10200](https://github.com/camptocamp/ngeo/pull/10200)
+
 ##### 2.8.1.378
 
 - Update dependency gitpython to v3.1.60 (2.8) [c2cgeoportal#13272](https://github.com/camptocamp/c2cgeoportal/pull/13272)
