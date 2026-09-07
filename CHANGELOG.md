@@ -1,3 +1,9 @@
+##### 2.9.0.580
+
+- Lock file maintenance (2.9) [c2cgeoportal#13292](https://github.com/camptocamp/c2cgeoportal/pull/13292)
+- Update dependency pre-commit to v4.6.2 (2.9) [ngeo#10201](https://github.com/camptocamp/ngeo/pull/10201)
+- Update dependency svgo to v3.3.5 (2.9) [ngeo#10202](https://github.com/camptocamp/ngeo/pull/10202)
+
 ##### 2.9.0.579
 
 - Audit Dpkg 2.9 [c2cgeoportal#13290](https://github.com/camptocamp/c2cgeoportal/pull/13290)
