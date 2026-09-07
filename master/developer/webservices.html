@@ -63,50 +63,50 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <h3>Result<a class="headerlink" href="#result" title="Link to this heading">¶</a></h3>
 <p>Base for all possible results:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;ogcServers&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">OGC</span> <span class="n">Server</span> <span class="n">name</span><span class="o">&gt;</span>
+    <span class="s2">"ogcServers"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"&lt;name&gt;"</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">OGC</span> <span class="n">Server</span> <span class="n">name</span><span class="o">&gt;</span>
         <span class="o">...</span>
     <span class="p">}</span>
-    <span class="s2">&quot;themes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">themes</span><span class="o">&gt;</span><span class="p">],</span>
-    <span class="s2">&quot;group&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">group</span><span class="o">&gt;</span><span class="p">,</span>
-    <span class="s2">&quot;background_layers&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">layers</span><span class="o">&gt;</span><span class="p">],</span>
-    <span class="s2">&quot;errors&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">errors</span><span class="o">&gt;</span><span class="p">]</span>
+    <span class="s2">"themes"</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">themes</span><span class="o">&gt;</span><span class="p">],</span>
+    <span class="s2">"group"</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">group</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="s2">"background_layers"</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">layers</span><span class="o">&gt;</span><span class="p">],</span>
+    <span class="s2">"errors"</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">errors</span><span class="o">&gt;</span><span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 <section id="ogc-server">
 <h4>OGC Server<a class="headerlink" href="#ogc-server" title="Link to this heading">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-     <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wms server url&gt;&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;urlWfs&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wfs server url&gt;&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;wfsSupport&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
-     <span class="s2">&quot;imageType&quot;</span><span class="p">:</span> <span class="s2">&quot;image/(jpeg|png)&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;isSingleTile&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
-     <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;(mapserver|geoserver|qgisserver|arcgis|other)&quot;</span><span class="p">,</span>
-     <span class="s2">&quot;credential: (true|false),&quot;</span>
-     <span class="s2">&quot;attributes&quot;</span><span class="p">:</span> <span class="p">{</span>
-         <span class="s2">&quot;&lt;type name&gt;&quot;</span><span class="p">:</span> <span class="p">{</span>
-             <span class="s2">&quot;&lt;attribute name&gt;&quot;</span><span class="p">:</span> <span class="p">{</span>
-                 <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;the type name&gt;&quot;</span><span class="p">,</span>
-                 <span class="s2">&quot;namespace&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;the namespace URL&gt;&quot;</span><span class="p">,</span>
-                 <span class="s2">&quot;alias&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;the optional alias&gt;&quot;</span><span class="p">,</span>
-                 <span class="s2">&quot;minOccurs&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;the optional minimum occurs&gt;&quot;</span><span class="p">,</span>
-                 <span class="s2">&quot;maxOccurs&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;the optional maximum occurs&gt;&quot;</span>
+     <span class="s2">"url"</span><span class="p">:</span> <span class="s2">"&lt;wms server url&gt;"</span><span class="p">,</span>
+     <span class="s2">"urlWfs"</span><span class="p">:</span> <span class="s2">"&lt;wfs server url&gt;"</span><span class="p">,</span>
+     <span class="s2">"wfsSupport"</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
+     <span class="s2">"imageType"</span><span class="p">:</span> <span class="s2">"image/(jpeg|png)"</span><span class="p">,</span>
+     <span class="s2">"isSingleTile"</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
+     <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"(mapserver|geoserver|qgisserver|arcgis|other)"</span><span class="p">,</span>
+     <span class="s2">"credential: (true|false),"</span>
+     <span class="s2">"attributes"</span><span class="p">:</span> <span class="p">{</span>
+         <span class="s2">"&lt;type name&gt;"</span><span class="p">:</span> <span class="p">{</span>
+             <span class="s2">"&lt;attribute name&gt;"</span><span class="p">:</span> <span class="p">{</span>
+                 <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"&lt;the type name&gt;"</span><span class="p">,</span>
+                 <span class="s2">"namespace"</span><span class="p">:</span> <span class="s2">"&lt;the namespace URL&gt;"</span><span class="p">,</span>
+                 <span class="s2">"alias"</span><span class="p">:</span> <span class="s2">"&lt;the optional alias&gt;"</span><span class="p">,</span>
+                 <span class="s2">"minOccurs"</span><span class="p">:</span> <span class="s2">"&lt;the optional minimum occurs&gt;"</span><span class="p">,</span>
+                 <span class="s2">"maxOccurs"</span><span class="p">:</span> <span class="s2">"&lt;the optional maximum occurs&gt;"</span>
              <span class="p">}</span>
          <span class="p">}</span>
      <span class="p">},</span>
-     <span class="s2">&quot;uses&quot;</span><span class="p">:</span> <span class="p">{</span>
-         <span class="s2">&quot;map&quot;</span><span class="p">:</span> <span class="p">{</span>
-             <span class="s2">&quot;protocol&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;OGC protocol to be used to get the map&gt;&quot;</span><span class="p">,</span>
-             <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;URL to be used to get the map&gt;&quot;</span><span class="p">,</span>
+     <span class="s2">"uses"</span><span class="p">:</span> <span class="p">{</span>
+         <span class="s2">"map"</span><span class="p">:</span> <span class="p">{</span>
+             <span class="s2">"protocol"</span><span class="p">:</span> <span class="s2">"&lt;OGC protocol to be used to get the map&gt;"</span><span class="p">,</span>
+             <span class="s2">"url"</span><span class="p">:</span> <span class="s2">"&lt;URL to be used to get the map&gt;"</span><span class="p">,</span>
          <span class="p">},</span>
-         <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="p">{</span>
-             <span class="s2">&quot;protocol&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;OGC protocol to be used to do the queries&gt;&quot;</span><span class="p">,</span>
-             <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;URL to be used to do the queries&gt;&quot;</span><span class="p">,</span>
+         <span class="s2">"query"</span><span class="p">:</span> <span class="p">{</span>
+             <span class="s2">"protocol"</span><span class="p">:</span> <span class="s2">"&lt;OGC protocol to be used to do the queries&gt;"</span><span class="p">,</span>
+             <span class="s2">"url"</span><span class="p">:</span> <span class="s2">"&lt;URL to be used to do the queries&gt;"</span><span class="p">,</span>
          <span class="p">},</span>
-         <span class="s2">&quot;edit&quot;</span><span class="p">:</span> <span class="p">{</span>
-             <span class="s2">&quot;protocol&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;OGC protocol to be used to do the edits&gt;&quot;</span><span class="p">,</span>
-             <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;URL to be used to do the edits&gt;&quot;</span><span class="p">,</span>
+         <span class="s2">"edit"</span><span class="p">:</span> <span class="p">{</span>
+             <span class="s2">"protocol"</span><span class="p">:</span> <span class="s2">"&lt;OGC protocol to be used to do the edits&gt;"</span><span class="p">,</span>
+             <span class="s2">"url"</span><span class="p">:</span> <span class="s2">"&lt;URL to be used to do the edits&gt;"</span><span class="p">,</span>
          <span class="p">},</span>
      <span class="p">},</span>
  <span class="p">}</span>
@@ -121,15 +121,15 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <section id="theme">
 <h4>Theme<a class="headerlink" href="#theme" title="Link to this heading">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;icon&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;icon_url&gt;&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;functionalities&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;values&gt;&quot;</span>
+    <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"&lt;name&gt;"</span><span class="p">,</span>
+    <span class="s2">"icon"</span><span class="p">:</span> <span class="s2">"&lt;icon_url&gt;"</span><span class="p">,</span>
+    <span class="s2">"functionalities"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"&lt;name&gt;"</span><span class="p">:</span> <span class="s2">"&lt;values&gt;"</span>
     <span class="p">},</span>
-    <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;value&gt;&quot;</span>
+    <span class="s2">"metadata"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"&lt;name&gt;"</span><span class="p">:</span> <span class="s2">"&lt;value&gt;"</span>
     <span class="p">},</span>
-    <span class="s2">&quot;children&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">items</span><span class="o">&gt;</span><span class="p">]</span>
+    <span class="s2">"children"</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">items</span><span class="o">&gt;</span><span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -137,24 +137,24 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <section id="group">
 <h4>Group<a class="headerlink" href="#group" title="Link to this heading">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;mixed&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
+    <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"&lt;name&gt;"</span><span class="p">,</span>
+    <span class="s2">"mixed"</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
     <span class="c1"># if not mixed</span>
-    <span class="s2">&quot;ogcServer&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wms server url&gt;&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;wfsUrl&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wfs server url&gt;&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;wfsSupport&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
-        <span class="s2">&quot;imageType&quot;</span><span class="p">:</span> <span class="s2">&quot;image/(jpeg|png)&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;isSingleTile&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
-        <span class="s2">&quot;serverType&quot;</span><span class="p">:</span> <span class="s2">&quot;(mapserver|geoserver|qgisserver)&quot;</span><span class="p">,</span>
+    <span class="s2">"ogcServer"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"url"</span><span class="p">:</span> <span class="s2">"&lt;wms server url&gt;"</span><span class="p">,</span>
+        <span class="s2">"wfsUrl"</span><span class="p">:</span> <span class="s2">"&lt;wfs server url&gt;"</span><span class="p">,</span>
+        <span class="s2">"wfsSupport"</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
+        <span class="s2">"imageType"</span><span class="p">:</span> <span class="s2">"image/(jpeg|png)"</span><span class="p">,</span>
+        <span class="s2">"isSingleTile"</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
+        <span class="s2">"serverType"</span><span class="p">:</span> <span class="s2">"(mapserver|geoserver|qgisserver)"</span><span class="p">,</span>
     <span class="p">}</span>
-    <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;value&gt;&quot;</span>
+    <span class="s2">"metadata"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"&lt;name&gt;"</span><span class="p">:</span> <span class="s2">"&lt;value&gt;"</span>
     <span class="p">},</span>
-    <span class="s2">&quot;dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;value&gt;&quot;</span>
+    <span class="s2">"dimensions"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"&lt;name&gt;"</span><span class="p">:</span> <span class="s2">"&lt;value&gt;"</span>
     <span class="p">},</span>
-    <span class="s2">&quot;children&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">items</span><span class="o">&gt;</span><span class="p">]</span>
+    <span class="s2">"children"</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">items</span><span class="o">&gt;</span><span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -162,13 +162,13 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <section id="layer">
 <h4>Layer<a class="headerlink" href="#layer" title="Link to this heading">¶</a></h4>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;(WMS|WMTS)&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;&lt;name&gt;&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;value&gt;&quot;</span>
+<span class="w">    </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;name&gt;"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"(WMS|WMTS)"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"metadata"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"&lt;name&gt;"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;value&gt;"</span>
 <span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="nt">&quot;dimensions&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;&lt;name&gt;&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;value&gt;&quot;</span>
+<span class="w">    </span><span class="nt">"dimensions"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">"&lt;name&gt;"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;value&gt;"</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -177,60 +177,60 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <section id="wms-layer">
 <h4>WMS Layer<a class="headerlink" href="#wms-layer" title="Link to this heading">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">id</span><span class="o">&gt;</span><span class="p">,</span>
-    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;name in tree&gt;&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;layers&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;wms_layers&gt;&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;style&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;style&gt;&quot;</span><span class="p">,</span>
+    <span class="s2">"id"</span><span class="p">:</span> <span class="o">&lt;</span><span class="nb">id</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"&lt;name in tree&gt;"</span><span class="p">,</span>
+    <span class="s2">"layers"</span><span class="p">:</span> <span class="s2">"&lt;wms_layers&gt;"</span><span class="p">,</span>
+    <span class="s2">"style"</span><span class="p">:</span> <span class="s2">"&lt;style&gt;"</span><span class="p">,</span>
     <span class="c1"># if not mixed</span>
-    <span class="s2">&quot;ogcServer&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;server name&gt;&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;serverType&quot;</span><span class="p">:</span> <span class="s2">&quot;(mapserver|geoserver|qgisserver)&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;minResolutionHint&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">minResolutionHint</span><span class="o">&gt;</span><span class="p">,</span>
-    <span class="s2">&quot;maxResolutionHint&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">maxResolutionHint</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="s2">"ogcServer"</span><span class="p">:</span> <span class="s2">"&lt;server name&gt;"</span><span class="p">,</span>
+    <span class="s2">"serverType"</span><span class="p">:</span> <span class="s2">"(mapserver|geoserver|qgisserver)"</span><span class="p">,</span>
+    <span class="s2">"minResolutionHint"</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">minResolutionHint</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="s2">"maxResolutionHint"</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">maxResolutionHint</span><span class="o">&gt;</span><span class="p">,</span>
     <span class="c1"># end derecated</span>
-    <span class="s2">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;identifier_attribute_field&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;display_name&gt;&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;disclaimer&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;disclaimer&gt;&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;legend&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
-        <span class="s2">&quot;legend_rule&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;legend_rule&gt;&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;max_resolution&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">max_resolution</span><span class="o">&gt;</span><span class="p">,</span>
-        <span class="s2">&quot;min_resolution&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">min_resolution</span><span class="o">&gt;</span>
+    <span class="s2">"metadata"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"identifier_attribute_field"</span><span class="p">:</span> <span class="s2">"&lt;display_name&gt;"</span><span class="p">,</span>
+        <span class="s2">"disclaimer"</span><span class="p">:</span> <span class="s2">"&lt;disclaimer&gt;"</span><span class="p">,</span>
+        <span class="s2">"legend"</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
+        <span class="s2">"legend_rule"</span><span class="p">:</span> <span class="s2">"&lt;legend_rule&gt;"</span><span class="p">,</span>
+        <span class="s2">"max_resolution"</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">max_resolution</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="s2">"min_resolution"</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">min_resolution</span><span class="o">&gt;</span>
     <span class="p">},</span>
-    <span class="s2">&quot;metadataUrls&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">url</span><span class="o">&gt;</span><span class="p">,</span>
-        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;TC211/FGDC&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;text/html&quot;</span>
+    <span class="s2">"metadataUrls"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"url"</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">url</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"TC211/FGDC"</span><span class="p">,</span>
+        <span class="s2">"format"</span><span class="p">:</span> <span class="s2">"text/html"</span>
     <span class="p">},</span>
-    <span class="s2">&quot;time&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;mode&quot;</span><span class="p">:</span> <span class="s2">&quot;(value|range)&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;interval&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">year</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">month</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">day</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">second</span><span class="o">&gt;</span><span class="p">],</span>
-        <span class="s2">&quot;resolution&quot;</span><span class="p">:</span> <span class="s2">&quot;(year|month|day|second)&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;minValue&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">minValue</span><span class="o">&gt;</span><span class="p">,</span>
-        <span class="s2">&quot;maxValue&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">maxValue</span><span class="o">&gt;</span>
+    <span class="s2">"time"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"mode"</span><span class="p">:</span> <span class="s2">"(value|range)"</span><span class="p">,</span>
+        <span class="s2">"interval"</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">year</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">month</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">day</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">second</span><span class="o">&gt;</span><span class="p">],</span>
+        <span class="s2">"resolution"</span><span class="p">:</span> <span class="s2">"(year|month|day|second)"</span><span class="p">,</span>
+        <span class="s2">"minValue"</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">minValue</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="s2">"maxValue"</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">maxValue</span><span class="o">&gt;</span>
     <span class="p">},</span>
-    <span class="s2">&quot;childLayers&quot;</span><span class="p">:</span> <span class="p">[{</span>
-        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;queryable&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
-        <span class="s2">&quot;minResolutionHint&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">minResolutionHint</span><span class="o">&gt;</span><span class="p">,</span>
-        <span class="s2">&quot;maxResolutionHint&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">maxResolutionHint</span><span class="o">&gt;</span>
+    <span class="s2">"childLayers"</span><span class="p">:</span> <span class="p">[{</span>
+        <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"&lt;name&gt;"</span><span class="p">,</span>
+        <span class="s2">"queryable"</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
+        <span class="s2">"minResolutionHint"</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">minResolutionHint</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="s2">"maxResolutionHint"</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">maxResolutionHint</span><span class="o">&gt;</span>
     <span class="p">}],</span>
-    <span class="s2">&quot;dimensionsFilters&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;&lt;name&gt;: {</span>
-           <span class="s2">&quot;field&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;field_name&gt;&quot;</span><span class="p">,</span>
-           <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;value&gt;&quot;</span>
+    <span class="s2">"dimensionsFilters"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"&lt;name&gt;: {</span>
+           <span class="s2">"field"</span><span class="p">:</span> <span class="s2">"&lt;field_name&gt;"</span><span class="p">,</span>
+           <span class="s2">"value"</span><span class="p">:</span> <span class="s2">"&lt;value&gt;"</span>
         <span class="p">}</span>
     <span class="p">},</span>
-    <span class="s2">&quot;edit_columns&quot;</span><span class="p">:[{</span>
-        <span class="s2">&quot;maxLength&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">maxLength</span><span class="o">&gt;</span><span class="p">,</span>
-        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;name&gt;&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;nillable&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
-        <span class="s2">&quot;restriction&quot;</span><span class="p">:</span> <span class="s2">&quot;enumeration&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;enumeration&quot;</span><span class="p">:</span> <span class="p">[</span>
-            <span class="s2">&quot;&lt;value&gt;&quot;</span>
+    <span class="s2">"edit_columns"</span><span class="p">:[{</span>
+        <span class="s2">"maxLength"</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">maxLength</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"&lt;name&gt;"</span><span class="p">,</span>
+        <span class="s2">"nillable"</span><span class="p">:</span> <span class="p">(</span><span class="n">true</span><span class="o">|</span><span class="n">false</span><span class="p">),</span>
+        <span class="s2">"restriction"</span><span class="p">:</span> <span class="s2">"enumeration"</span><span class="p">,</span>
+        <span class="s2">"enumeration"</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">"&lt;value&gt;"</span>
         <span class="p">],</span>
-        <span class="s2">&quot;srid&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">srid</span><span class="o">&gt;</span><span class="p">,</span>
-        <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;(xsd:string|xsd:decimal|xsd:integer|xsd:boolean|xsd:date|xsd:dateTime|xsd:double|xsd:duration|xsd:base64Binary|xsd:time|gml:CurvePropertyType|gml:GeometryCollectionPropertyType|gml:LineStringPropertyType|gml:MultiLineStringPropertyType|gml:MultiPointPropertyType|gml:MultiPolygonPropertyType|gml:PointPropertyType|gml:PolygonPropertyType)&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;fractionDigits&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">fractionDigits</span><span class="o">&gt;</span><span class="p">,</span>
-        <span class="s2">&quot;totalDigits&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">totalDigits</span><span class="o">&gt;</span>
+        <span class="s2">"srid"</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">srid</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"(xsd:string|xsd:decimal|xsd:integer|xsd:boolean|xsd:date|xsd:dateTime|xsd:double|xsd:duration|xsd:base64Binary|xsd:time|gml:CurvePropertyType|gml:GeometryCollectionPropertyType|gml:LineStringPropertyType|gml:MultiLineStringPropertyType|gml:MultiPointPropertyType|gml:MultiPolygonPropertyType|gml:PointPropertyType|gml:PolygonPropertyType)"</span><span class="p">,</span>
+        <span class="s2">"fractionDigits"</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">fractionDigits</span><span class="o">&gt;</span><span class="p">,</span>
+        <span class="s2">"totalDigits"</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">totalDigits</span><span class="o">&gt;</span>
     <span class="p">}]</span>
 <span class="p">}</span>
 </pre></div>
@@ -239,10 +239,10 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <section id="wmts-layer">
 <h4>WMTS layer<a class="headerlink" href="#wmts-layer" title="Link to this heading">¶</a></h4>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;wmts_capabilities_url&gt;&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;layer&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;wmts_layer&gt;&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;style&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;style&gt;&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;matrix_set&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&lt;matrix_set&gt;&quot;</span>
+<span class="w">    </span><span class="nt">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;wmts_capabilities_url&gt;"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"layer"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;wmts_layer&gt;"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"style"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;style&gt;"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"matrix_set"</span><span class="p">:</span><span class="w"> </span><span class="s2">"&lt;matrix_set&gt;"</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -296,12 +296,12 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <section id="anonymous-json-result">
 <h4>Anonymous JSON result<a class="headerlink" href="#anonymous-json-result" title="Link to this heading">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;functionality&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;&lt;functionality_name&gt;&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;functionality_value&quot;</span><span class="p">],</span>
+    <span class="s2">"functionality"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"&lt;functionality_name&gt;"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"functionality_value"</span><span class="p">],</span>
         <span class="o">...</span>
     <span class="p">},</span>
-    <span class="s2">&quot;two_factor_enable&quot;</span><span class="p">:</span> <span class="n">true</span><span class="o">/</span><span class="n">false</span><span class="p">,</span> <span class="c1"># Is the two-factor authentication enabled?</span>
-    <span class="s2">&quot;is_intranet&quot;</span><span class="p">:</span> <span class="n">true</span><span class="o">/</span><span class="n">false</span>
+    <span class="s2">"two_factor_enable"</span><span class="p">:</span> <span class="n">true</span><span class="o">/</span><span class="n">false</span><span class="p">,</span> <span class="c1"># Is the two-factor authentication enabled?</span>
+    <span class="s2">"is_intranet"</span><span class="p">:</span> <span class="n">true</span><span class="o">/</span><span class="n">false</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -309,15 +309,15 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <section id="connected-json-result">
 <span id="developer-webservices-auth-connected"></span><h4>Connected JSON result<a class="headerlink" href="#connected-json-result" title="Link to this heading">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;username&gt;&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;is_intranet&quot;</span><span class="p">:</span> <span class="n">true</span><span class="o">/</span><span class="n">true</span><span class="p">,</span>
-    <span class="s2">&quot;two_factor_enable&quot;</span><span class="p">:</span> <span class="n">true</span><span class="o">/</span><span class="n">false</span><span class="p">,</span> <span class="c1"># Is the two-factor authentication enabled?</span>
-    <span class="s2">&quot;roles&quot;</span><span class="p">:</span> <span class="p">[{</span>
-        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;role_name&gt;&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">role_id</span><span class="o">&gt;</span>
+    <span class="s2">"username"</span><span class="p">:</span> <span class="s2">"&lt;username&gt;"</span><span class="p">,</span>
+    <span class="s2">"is_intranet"</span><span class="p">:</span> <span class="n">true</span><span class="o">/</span><span class="n">true</span><span class="p">,</span>
+    <span class="s2">"two_factor_enable"</span><span class="p">:</span> <span class="n">true</span><span class="o">/</span><span class="n">false</span><span class="p">,</span> <span class="c1"># Is the two-factor authentication enabled?</span>
+    <span class="s2">"roles"</span><span class="p">:</span> <span class="p">[{</span>
+        <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"&lt;role_name&gt;"</span><span class="p">,</span>
+        <span class="s2">"id"</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">role_id</span><span class="o">&gt;</span>
     <span class="p">},</span> <span class="o">...</span><span class="p">],</span>
-    <span class="s2">&quot;functionality&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;&lt;functionality_name&gt;&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;functionality_value&quot;</span><span class="p">],</span>
+    <span class="s2">"functionality"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"&lt;functionality_name&gt;"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"functionality_value"</span><span class="p">],</span>
         <span class="o">...</span>
     <span class="p">}</span>
 <span class="p">}</span>
@@ -348,9 +348,9 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <section id="init-without-two-factor-authentication-json-result">
 <h4>Init without two-factor authentication JSON result<a class="headerlink" href="#init-without-two-factor-authentication-json-result" title="Link to this heading">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;username&gt;&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;is_password_changed&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span> <span class="c1"># Always false</span>
-    <span class="s2">&quot;two_factor_enable&quot;</span><span class="p">:</span> <span class="n">false</span> <span class="c1"># Always false</span>
+    <span class="s2">"username"</span><span class="p">:</span> <span class="s2">"&lt;username&gt;"</span><span class="p">,</span>
+    <span class="s2">"is_password_changed"</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span> <span class="c1"># Always false</span>
+    <span class="s2">"two_factor_enable"</span><span class="p">:</span> <span class="n">false</span> <span class="c1"># Always false</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -358,11 +358,11 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <section id="init-two-factor-authentication-json-result">
 <h4>Init two-factor authentication JSON result<a class="headerlink" href="#init-two-factor-authentication-json-result" title="Link to this heading">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;username&gt;&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;two_factor_totp_secret&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;secret&gt;&quot;</span><span class="p">,</span> <span class="c1"># The two-factor authentication secret on first login</span>
-    <span class="s2">&quot;otp_uri&quot;</span><span class="p">:</span> <span class="s2">&quot;The OTM URI&quot;</span>
-    <span class="s2">&quot;is_password_changed&quot;</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span> <span class="c1"># Always false</span>
-    <span class="s2">&quot;two_factor_enable&quot;</span><span class="p">:</span> <span class="n">true</span> <span class="c1"># Always true</span>
+    <span class="s2">"username"</span><span class="p">:</span> <span class="s2">"&lt;username&gt;"</span><span class="p">,</span>
+    <span class="s2">"two_factor_totp_secret"</span><span class="p">:</span> <span class="s2">"&lt;secret&gt;"</span><span class="p">,</span> <span class="c1"># The two-factor authentication secret on first login</span>
+    <span class="s2">"otp_uri"</span><span class="p">:</span> <span class="s2">"The OTM URI"</span>
+    <span class="s2">"is_password_changed"</span><span class="p">:</span> <span class="n">false</span><span class="p">,</span> <span class="c1"># Always false</span>
+    <span class="s2">"two_factor_enable"</span><span class="p">:</span> <span class="n">true</span> <span class="c1"># Always true</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -388,7 +388,7 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <section id="json-result">
 <h4>JSON result<a class="headerlink" href="#json-result" title="Link to this heading">¶</a></h4>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">    </span><span class="nt">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -411,7 +411,7 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <section id="success-json-result">
 <h4>Success JSON result<a class="headerlink" href="#success-json-result" title="Link to this heading">¶</a></h4>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;success&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
+<span class="w">    </span><span class="nt">"success"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -489,8 +489,8 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <section id="id4">
 <h3>Result<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;categories&quot;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="s2">&quot;&lt;category&gt;&quot;</span><span class="p">,</span>
+    <span class="s2">"categories"</span><span class="p">:</span> <span class="p">[</span>
+        <span class="s2">"&lt;category&gt;"</span><span class="p">,</span>
         <span class="o">...</span>
     <span class="p">]</span>
 <span class="p">}</span>
@@ -533,8 +533,8 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <section id="id6">
 <h4>Result<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;items&quot;</span><span class="p">:</span> <span class="p">[{</span>
-      <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;value&gt;&quot;</span>
+    <span class="s2">"items"</span><span class="p">:</span> <span class="p">[{</span>
+      <span class="s2">"value"</span><span class="p">:</span> <span class="s2">"&lt;value&gt;"</span>
     <span class="p">},</span> <span class="o">...</span><span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
@@ -546,29 +546,29 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../layers/&lt;layer_name&gt;/&lt;layer_id&gt;/&lt;feature_id&gt;</span></code></p>
 <p>Success:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FeatureCollection&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;features&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FeatureCollection"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"features"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">       </span><span class="p">{</span>
-<span class="w">          </span><span class="nt">&quot;geometry&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">             </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MultiPoint&quot;</span><span class="p">,</span>
-<span class="w">             </span><span class="nt">&quot;coordinates&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">          </span><span class="nt">"geometry"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">             </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MultiPoint"</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">"coordinates"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">                </span><span class="p">[</span>
 <span class="w">                   </span><span class="mf">648902.2912000001</span><span class="p">,</span>
 <span class="w">                   </span><span class="mf">185911.1152</span>
 <span class="w">                </span><span class="p">]</span>
 <span class="w">             </span><span class="p">]</span>
 <span class="w">          </span><span class="p">},</span>
-<span class="w">          </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Feature&quot;</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">103</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">             </span><span class="nt">&quot;kind&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tree&quot;</span><span class="p">,</span>
-<span class="w">             </span><span class="nt">&quot;good&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">             </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nom&quot;</span><span class="p">,</span>
-<span class="w">             </span><span class="nt">&quot;internal_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">             </span><span class="nt">&quot;short_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;court&quot;</span><span class="p">,</span>
-<span class="w">             </span><span class="nt">&quot;height&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">             </span><span class="nt">&quot;short_name3&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;R&quot;</span><span class="p">,</span>
-<span class="w">             </span><span class="nt">&quot;short_name2&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2&quot;</span>
+<span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Feature"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">103</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">             </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tree"</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">"good"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nom"</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">"internal_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">"short_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"court"</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">"height"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">"short_name3"</span><span class="p">:</span><span class="w"> </span><span class="s2">"R"</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">"short_name2"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span>
 <span class="w">          </span><span class="p">}</span>
 <span class="w">       </span><span class="p">}</span>
 <span class="w">    </span><span class="p">]</span>
@@ -577,8 +577,8 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 </div>
 <p>Error :</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;error description&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;error_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;type of error&quot;</span>
+<span class="w">    </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"error description"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"error_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"type of error"</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -588,29 +588,29 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../layers/&lt;layer_name&gt;/&lt;layer_id&gt;</span></code></p>
 <p>Success:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;FeatureCollection&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;features&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"FeatureCollection"</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">"features"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">       </span><span class="p">{</span>
-<span class="w">          </span><span class="nt">&quot;geometry&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">             </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MultiPoint&quot;</span><span class="p">,</span>
-<span class="w">             </span><span class="nt">&quot;coordinates&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">          </span><span class="nt">"geometry"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">             </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"MultiPoint"</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">"coordinates"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
 <span class="w">                </span><span class="p">[</span>
 <span class="w">                   </span><span class="mf">648902.2912000001</span><span class="p">,</span>
 <span class="w">                   </span><span class="mf">185911.1152</span>
 <span class="w">                </span><span class="p">]</span>
 <span class="w">             </span><span class="p">]</span>
 <span class="w">          </span><span class="p">},</span>
-<span class="w">          </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Feature&quot;</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">103</span><span class="p">,</span>
-<span class="w">          </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">             </span><span class="nt">&quot;kind&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;tree&quot;</span><span class="p">,</span>
-<span class="w">             </span><span class="nt">&quot;good&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
-<span class="w">             </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nom&quot;</span><span class="p">,</span>
-<span class="w">             </span><span class="nt">&quot;internal_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">             </span><span class="nt">&quot;short_name&quot;</span><span class="p">:</span><span class="s2">&quot; court&quot;</span><span class="p">,</span>
-<span class="w">             </span><span class="nt">&quot;height&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
-<span class="w">             </span><span class="nt">&quot;short_name3&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;R&quot;</span><span class="p">,</span>
-<span class="w">             </span><span class="nt">&quot;short_name2&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2&quot;</span>
+<span class="w">          </span><span class="nt">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Feature"</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">103</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">"properties"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">             </span><span class="nt">"kind"</span><span class="p">:</span><span class="w"> </span><span class="s2">"tree"</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">"good"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"nom"</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">"internal_id"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">"short_name"</span><span class="p">:</span><span class="s2">" court"</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">"height"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">"short_name3"</span><span class="p">:</span><span class="w"> </span><span class="s2">"R"</span><span class="p">,</span>
+<span class="w">             </span><span class="nt">"short_name2"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span>
 <span class="w">          </span><span class="p">}</span>
 <span class="w">       </span><span class="p">}</span>
 <span class="w">    </span><span class="p">]</span>
@@ -619,8 +619,8 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 </div>
 <p>Error :</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">     </span><span class="nt">&quot;message&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;error description&quot;</span><span class="p">,</span>
-<span class="w">     </span><span class="nt">&quot;error_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;type of error&quot;</span>
+<span class="w">     </span><span class="nt">"message"</span><span class="p">:</span><span class="w"> </span><span class="s2">"error description"</span><span class="p">,</span>
+<span class="w">     </span><span class="nt">"error_type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"type of error"</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -641,7 +641,7 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <section id="id9">
 <h3>Result<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;&lt;layer&gt;&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span><span class="p">,</span>
+    <span class="s2">"&lt;layer&gt;"</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span><span class="p">,</span>
     <span class="o">...</span>
 <span class="p">}</span>
 </pre></div>
@@ -669,15 +669,15 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <section id="id11">
 <h3>Result<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h3>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;profile&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">"profile"</span><span class="p">:</span> <span class="p">[</span>
         <span class="p">{</span>
-            <span class="s2">&quot;dist&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">distance</span><span class="o">&gt;</span><span class="p">,</span>
-            <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;&lt;layer&gt;&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span><span class="p">,</span>
+            <span class="s2">"dist"</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">distance</span><span class="o">&gt;</span><span class="p">,</span>
+            <span class="s2">"values"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">"&lt;layer&gt;"</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span><span class="p">,</span>
                 <span class="o">...</span>
             <span class="p">},</span>
-            <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">easting</span><span class="o">&gt;</span><span class="p">,</span>
-            <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">northing</span><span class="o">&gt;</span>
+            <span class="s2">"x"</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">easting</span><span class="o">&gt;</span><span class="p">,</span>
+            <span class="s2">"y"</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">northing</span><span class="o">&gt;</span>
         <span class="p">},</span>
         <span class="o">...</span>
     <span class="p">]</span>
@@ -703,7 +703,7 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <section id="id13">
 <h4>Result<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;short_url&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">the</span> <span class="n">short</span> <span class="n">URL</span><span class="o">&gt;</span>
+    <span class="s2">"short_url"</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">the</span> <span class="n">short</span> <span class="n">URL</span><span class="o">&gt;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -720,7 +720,7 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <section id="id14">
 <h4>Result<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;long_url&quot;</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">the</span> <span class="n">original</span> <span class="n">URL</span><span class="o">&gt;</span>
+    <span class="s2">"long_url"</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">the</span> <span class="n">original</span> <span class="n">URL</span><span class="o">&gt;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -747,7 +747,7 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 <section id="id17">
 <h4>Result<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;success&quot;</span><span class="p">:</span> <span class="n">true</span>
+    <span class="s2">"success"</span><span class="p">:</span> <span class="n">true</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -765,16 +765,16 @@ against spam.</p>
 <section id="id18">
 <h4>Result<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;algorithm&quot;</span><span class="p">:</span> <span class="s2">&quot;PBKDF2/SHA-256&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;cost&quot;</span><span class="p">:</span> <span class="mi">5000</span><span class="p">,</span>
-        <span class="s2">&quot;keyLength&quot;</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span>
-        <span class="s2">&quot;keyPrefix&quot;</span><span class="p">:</span> <span class="s2">&quot;00&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;nonce&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;salt&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;expiresAt&quot;</span><span class="p">:</span> <span class="mi">1786625958</span>
+    <span class="s2">"parameters"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"algorithm"</span><span class="p">:</span> <span class="s2">"PBKDF2/SHA-256"</span><span class="p">,</span>
+        <span class="s2">"cost"</span><span class="p">:</span> <span class="mi">5000</span><span class="p">,</span>
+        <span class="s2">"keyLength"</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span>
+        <span class="s2">"keyPrefix"</span><span class="p">:</span> <span class="s2">"00"</span><span class="p">,</span>
+        <span class="s2">"nonce"</span><span class="p">:</span> <span class="s2">"..."</span><span class="p">,</span>
+        <span class="s2">"salt"</span><span class="p">:</span> <span class="s2">"..."</span><span class="p">,</span>
+        <span class="s2">"expiresAt"</span><span class="p">:</span> <span class="mi">1786625958</span>
     <span class="p">},</span>
-    <span class="s2">&quot;signature&quot;</span><span class="p">:</span> <span class="s2">&quot;...&quot;</span>
+    <span class="s2">"signature"</span><span class="p">:</span> <span class="s2">"..."</span>
 <span class="p">}</span>
 </pre></div>
 </div>
@@ -790,7 +790,7 @@ against spam.</p>
 <p>Method: <code class="docutils literal notranslate"><span class="pre">POST</span></code></p>
 <p>Data:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;geometries&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">geomA</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">geomB</span><span class="o">&gt;</span><span class="p">]</span>
+    <span class="s2">"geometries"</span><span class="p">:</span> <span class="p">[</span><span class="o">&lt;</span><span class="n">geomA</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">geomB</span><span class="o">&gt;</span><span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
 </div>

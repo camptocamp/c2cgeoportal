@@ -107,9 +107,9 @@ span.prompt1:before {
 </style><span class="prompt1"><span class="nv">NEW_VERSION</span><span class="o">=</span>x.y</span>
 <span class="prompt1">git<span class="w"> </span>checkout<span class="w"> </span>master</span>
 <span class="prompt1">git<span class="w"> </span>pull</span>
-<span class="prompt1">git<span class="w"> </span>checkout<span class="w"> </span>-b<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">NEW_VERSION</span><span class="si">}</span><span class="s2">&quot;</span></span>
-<span class="prompt1">git<span class="w"> </span>push<span class="w"> </span>--set-upstream<span class="w"> </span>origin<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">NEW_VERSION</span><span class="si">}</span><span class="s2">&quot;</span></span>
-<span class="prompt1">git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">NEW_VERSION</span><span class="si">}</span><span class="s2">&quot;</span></span>
+<span class="prompt1">git<span class="w"> </span>checkout<span class="w"> </span>-b<span class="w"> </span><span class="s2">"</span><span class="si">${</span><span class="nv">NEW_VERSION</span><span class="si">}</span><span class="s2">"</span></span>
+<span class="prompt1">git<span class="w"> </span>push<span class="w"> </span>--set-upstream<span class="w"> </span>origin<span class="w"> </span><span class="s2">"</span><span class="si">${</span><span class="nv">NEW_VERSION</span><span class="si">}</span><span class="s2">"</span></span>
+<span class="prompt1">git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span><span class="s2">"</span><span class="si">${</span><span class="nv">NEW_VERSION</span><span class="si">}</span><span class="s2">"</span></span>
 </pre></div></div><dl class="simple">
 <dt>In the files <code class="docutils literal notranslate"><span class="pre">.github/workflows/main.yaml</span></code> and <code class="docutils literal notranslate"><span class="pre">.github/workflows/qgis.yaml</span></code> set <code class="docutils literal notranslate"><span class="pre">MAIN_BRANCH</span></code> to</dt><dd><p><code class="docutils literal notranslate"><span class="pre">&lt;new</span> <span class="pre">version&gt;</span></code>.</p>
 </dd>
@@ -125,25 +125,25 @@ span.prompt1:before {
 <p>Run:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nv">NEW_VERSION</span><span class="o">=</span>x.y</span>
 <span class="prompt1"><span class="nv">NEXT_VERSION</span><span class="o">=</span>x.y+1</span>
-<span class="prompt1">tx<span class="w"> </span>pull<span class="w"> </span>--source<span class="w"> </span>--branch<span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">NEW_VERSION</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span>--force<span class="w"> </span><span class="se">\</span>
+<span class="prompt1">tx<span class="w"> </span>pull<span class="w"> </span>--source<span class="w"> </span>--branch<span class="o">=</span><span class="s2">"</span><span class="si">${</span><span class="nv">NEW_VERSION</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span>--force<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--resources<span class="o">=</span>geomapfish.c2cgeoportal_geoportal,geomapfish.c2cgeoportal_admin</span>
-<span class="prompt1">tx<span class="w"> </span>pull<span class="w"> </span>--translations<span class="w"> </span>--branch<span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">NEW_VERSION</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span>--force<span class="w"> </span>--all<span class="w"> </span><span class="se">\</span>
+<span class="prompt1">tx<span class="w"> </span>pull<span class="w"> </span>--translations<span class="w"> </span>--branch<span class="o">=</span><span class="s2">"</span><span class="si">${</span><span class="nv">NEW_VERSION</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span>--force<span class="w"> </span>--all<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--resources<span class="o">=</span>geomapfish.c2cgeoportal_geoportal,geomapfish.c2cgeoportal_admin</span>
 <span class="prompt1"></span>
-<span class="prompt1">tx<span class="w"> </span>push<span class="w"> </span>--branch<span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">NEXT_VERSION</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span>--source<span class="w"> </span>--force<span class="w"> </span><span class="se">\</span>
+<span class="prompt1">tx<span class="w"> </span>push<span class="w"> </span>--branch<span class="o">=</span><span class="s2">"</span><span class="si">${</span><span class="nv">NEXT_VERSION</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span>--source<span class="w"> </span>--force<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--resources<span class="o">=</span>geomapfish.c2cgeoportal_geoportal,geomapfish.c2cgeoportal_admin</span>
-<span class="prompt1">tx<span class="w"> </span>push<span class="w"> </span>--branch<span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">NEXT_VERSION</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span>--translation<span class="w"> </span>--force<span class="w"> </span><span class="se">\</span>
+<span class="prompt1">tx<span class="w"> </span>push<span class="w"> </span>--branch<span class="o">=</span><span class="s2">"</span><span class="si">${</span><span class="nv">NEXT_VERSION</span><span class="si">}</span><span class="s2">"</span><span class="w"> </span>--translation<span class="w"> </span>--force<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--resources<span class="o">=</span>geomapfish.c2cgeoportal_geoportal,geomapfish.c2cgeoportal_admin</span>
 </pre></div></div></section>
 <section id="create-a-pull-request">
 <h2>Create a pull request<a class="headerlink" href="#create-a-pull-request" title="Link to this heading">¶</a></h2>
 <p>Create a pull request to update the new version branch.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="w">  </span><span class="nv">NEW_VERSION</span><span class="o">=</span>x.y</span>
-<span class="prompt1"><span class="w">  </span>git<span class="w"> </span>checkout<span class="w"> </span>-b<span class="w"> </span><span class="s2">&quot;setup-</span><span class="si">${</span><span class="nv">NEW_VERSION</span><span class="si">}</span><span class="s2">&quot;</span></span>
+<span class="prompt1"><span class="w">  </span>git<span class="w"> </span>checkout<span class="w"> </span>-b<span class="w"> </span><span class="s2">"setup-</span><span class="si">${</span><span class="nv">NEW_VERSION</span><span class="si">}</span><span class="s2">"</span></span>
 <span class="prompt1"><span class="w">  </span>pre-commit<span class="w"> </span>run<span class="w"> </span>--files<span class="o">=</span>geoportal/package.json<span class="w"> </span>npm-lock</span>
 <span class="prompt1"><span class="w">  </span>git<span class="w"> </span>add<span class="w"> </span>geoportal/package.json<span class="w"> </span>geoportal/package-lock.json<span class="w"> </span>.github/workflows/main.yaml<span class="w"> </span>.github/workflows/qgis.yaml</span>
-<span class="prompt1"><span class="w">  </span>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Use ngeo version </span><span class="si">${</span><span class="nv">NEW_VERSION</span><span class="si">}</span><span class="s2">&quot;</span></span>
-<span class="prompt1"><span class="w">  </span>git<span class="w"> </span>push<span class="w"> </span>--set-upstream<span class="w"> </span>origin<span class="w"> </span><span class="s2">&quot;setup-</span><span class="si">${</span><span class="nv">NEW_VERSION</span><span class="si">}</span><span class="s2">&quot;</span></span>
+<span class="prompt1"><span class="w">  </span>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">"Use ngeo version </span><span class="si">${</span><span class="nv">NEW_VERSION</span><span class="si">}</span><span class="s2">"</span></span>
+<span class="prompt1"><span class="w">  </span>git<span class="w"> </span>push<span class="w"> </span>--set-upstream<span class="w"> </span>origin<span class="w"> </span><span class="s2">"setup-</span><span class="si">${</span><span class="nv">NEW_VERSION</span><span class="si">}</span><span class="s2">"</span></span>
 <span class="prompt1"></span>
 <span class="prompt1">Create<span class="w"> </span>the<span class="w"> </span>pull<span class="w"> </span>request<span class="w"> </span>on<span class="w"> </span>GitHub.</span>
 </pre></div></div></section>
@@ -172,7 +172,7 @@ span.prompt1:before {
 <span class="gd">-    name: Continuous integration</span>
 <span class="gi">+    name: Update ngeo &lt;new version&gt;</span>
 <span class="w"> </span>    ...
-<span class="gd">-    if: &quot;!startsWith(github.event.head_commit.message, &#39;[skip ci] &#39;)&quot;</span>
+<span class="gd">-    if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"</span>
 
 <span class="w"> </span>    env:
 <span class="gd">-      MAIN_BRANCH: master</span>
@@ -188,11 +188,11 @@ span.prompt1:before {
 <span class="gi">+          ref: ${{ env.MAIN_BRANCH }}</span>
 <span class="w"> </span>          fetch-depth: 0
 <span class="w"> </span>          token: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
-<span class="gd">-        if: env.HAS_SECRETS == &#39;HAS_SECRETS&#39;</span>
+<span class="gd">-        if: env.HAS_SECRETS == 'HAS_SECRETS'</span>
 <span class="gd">-      - uses: actions/checkout@v2</span>
 <span class="gd">-        with:</span>
 <span class="gd">-          fetch-depth: 0</span>
-<span class="gd">-        if: env.HAS_SECRETS != &#39;HAS_SECRETS&#39;</span>
+<span class="gd">-        if: env.HAS_SECRETS != 'HAS_SECRETS'</span>
 
 <span class="w"> </span>      ...
 
@@ -205,7 +205,7 @@ span.prompt1:before {
 <span class="w"> </span>      - run: git diff CHANGELOG.md
 <span class="gi">+      - run: |</span>
 <span class="gi">+          git add geoportal/package-lock.json</span>
-<span class="gi">+          git commit -m &quot;Update used ngeo version&quot;</span>
+<span class="gi">+          git commit -m "Update used ngeo version"</span>
 
 <span class="w"> </span>      ...
 
@@ -273,9 +273,9 @@ span.prompt1:before {
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nv">NEXT_VERSION</span><span class="o">=</span>x.y</span>
 <span class="prompt1">git<span class="w"> </span>add<span class="w"> </span>-A</span>
 <span class="prompt1">git<span class="w"> </span>add<span class="w"> </span>.github/workflows/ngeo-*.yaml</span>
-<span class="prompt1">git<span class="w"> </span>checkout<span class="w"> </span>-b<span class="w"> </span><span class="s2">&quot;start-</span><span class="si">${</span><span class="nv">NEXT_VERSION</span><span class="si">}</span><span class="s2">&quot;</span></span>
-<span class="prompt1">git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Start the version </span><span class="si">${</span><span class="nv">NEXT_VERSION</span><span class="si">}</span><span class="s2">&quot;</span></span>
-<span class="prompt1">git<span class="w"> </span>push<span class="w"> </span>--set-upstream<span class="w"> </span>origin<span class="w"> </span><span class="s2">&quot;start-</span><span class="si">${</span><span class="nv">NEXT_VERSION</span><span class="si">}</span><span class="s2">&quot;</span></span>
+<span class="prompt1">git<span class="w"> </span>checkout<span class="w"> </span>-b<span class="w"> </span><span class="s2">"start-</span><span class="si">${</span><span class="nv">NEXT_VERSION</span><span class="si">}</span><span class="s2">"</span></span>
+<span class="prompt1">git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">"Start the version </span><span class="si">${</span><span class="nv">NEXT_VERSION</span><span class="si">}</span><span class="s2">"</span></span>
+<span class="prompt1">git<span class="w"> </span>push<span class="w"> </span>--set-upstream<span class="w"> </span>origin<span class="w"> </span><span class="s2">"start-</span><span class="si">${</span><span class="nv">NEXT_VERSION</span><span class="si">}</span><span class="s2">"</span></span>
 </pre></div></div></section>
 <section id="publish-it">
 <h2>Publish it<a class="headerlink" href="#publish-it" title="Link to this heading">¶</a></h2>

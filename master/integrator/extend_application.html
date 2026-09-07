@@ -124,8 +124,8 @@ in debugging mode with auto reloading:</p>
 <p class="admonition-title">Note</p>
 <p>If you need the user credentials, you can do:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-    <span class="s2">&quot;http://geoportal:8080/loginuser&quot;</span><span class="p">,</span>
-    <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Cookie&quot;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Cookie&quot;</span><span class="p">),</span> <span class="s2">&quot;Referrer&quot;</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">referrer</span><span class="p">},</span>
+    <span class="s2">"http://geoportal:8080/loginuser"</span><span class="p">,</span>
+    <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">"Cookie"</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">headers</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Cookie"</span><span class="p">),</span> <span class="s2">"Referrer"</span><span class="p">:</span> <span class="n">request</span><span class="o">.</span><span class="n">referrer</span><span class="p">},</span>
 <span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -153,8 +153,8 @@ in debugging mode with auto reloading:</p>
 <span class="w">    </span><span class="nt">constants</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">gmfOptions</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">cssVars</span><span class="p">:</span>
-<span class="w">         </span><span class="nt">brand-primary</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;#94ac9a&#39;</span>
-<span class="w">         </span><span class="nt">brand-secondary</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;#d3e5d7&#39;</span>
+<span class="w">         </span><span class="nt">brand-primary</span><span class="p">:</span><span class="w"> </span><span class="s">'#94ac9a'</span>
+<span class="w">         </span><span class="nt">brand-secondary</span><span class="p">:</span><span class="w"> </span><span class="s">'#d3e5d7'</span>
 <span class="w">          </span><span class="c1"># Used by https://github.com/camptocamp/ngeo/pull/7527</span>
 <span class="w">          </span><span class="nt">left-panel-width</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20rem</span>
 <span class="w">          </span><span class="nt">app-margin</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.62rem</span>
@@ -314,7 +314,7 @@ build artifacts to the config image.</p>
 <span class="gi">+       static:</span>
 <span class="gi">+         # Those two lines should be commented in dev mode.</span>
 <span class="gi">+         gmfCustomJavascriptUrl:</span>
-<span class="gi">+           name: &#39;/etc/geomapfish/static/custom/custom.es.js&#39;</span>
+<span class="gi">+           name: '/etc/geomapfish/static/custom/custom.es.js'</span>
 <span class="gi">+         gmfCustomStylesheetUrl:</span>
 <span class="gi">+           name: /etc/geomapfish/static/css/desktop_alt.css</span>
 <span class="gi">+</span>
@@ -323,7 +323,7 @@ build artifacts to the config image.</p>
 <span class="gi">+           name: base</span>
 
 <span class="gi">+   # For dev this line is needed to allow the page to load the files from Vite dev server.</span>
-<span class="gi">+   # content_security_policy_main_script_src_extra: &quot;http://localhost:3001&quot;</span>
+<span class="gi">+   # content_security_policy_main_script_src_extra: "http://localhost:3001"</span>
 </pre></div>
 </div>
 </section>
@@ -346,14 +346,14 @@ in the <code class="docutils literal notranslate"><span class="pre">geoportal/va
 
 <span class="w"> </span>          # Those two lines should be commented in dev mode.
 <span class="gd">-          gmfCustomJavascriptUrl:</span>
-<span class="gd">-            name: &#39;/etc/geomapfish/static/custom/custom.es.js&#39;</span>
+<span class="gd">-            name: '/etc/geomapfish/static/custom/custom.es.js'</span>
 <span class="gi">+          # gmfCustomJavascriptUrl:</span>
-<span class="gi">+          #   name: &#39;/etc/geomapfish/static/custom/custom.es.js&#39;</span>
+<span class="gi">+          #   name: '/etc/geomapfish/static/custom/custom.es.js'</span>
 
 
 <span class="w"> </span>    # For dev this line is needed to allow the page to load the files from Vite dev server.
-<span class="gd">-    # content_security_policy_main_script_src_extra: &quot;http://localhost:3001&quot;</span>
-<span class="gi">+    content_security_policy_main_script_src_extra: &quot;http://localhost:3001&quot;</span>
+<span class="gd">-    # content_security_policy_main_script_src_extra: "http://localhost:3001"</span>
+<span class="gi">+    content_security_policy_main_script_src_extra: "http://localhost:3001"</span>
 </pre></div>
 </div>
 <p>Rename the <code class="docutils literal notranslate"><span class="pre">docker-compose.override.sample.yaml</span></code> file to <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code>.</p>
@@ -374,9 +374,9 @@ in the <code class="docutils literal notranslate"><span class="pre">geoportal/va
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">includeme</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">Configurator</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Initialize the authentication( for a Pyramid app.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">config</span><span class="o">.</span><span class="n">set_authorization_policy</span><span class="p">(</span><span class="n">ACLAuthorizationPolicy</span><span class="p">())</span>
     <span class="n">config</span><span class="o">.</span><span class="n">set_authentication_policy</span><span class="p">(</span><span class="n">create_authentication</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">get_settings</span><span class="p">()))</span>
 </pre></div>

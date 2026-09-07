@@ -712,7 +712,7 @@ is still redirected to the <code class="docutils literal notranslate"><span clas
 </pre></div>
 </div>
 <p>Generic example using the discovered end session endpoint:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">logout_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{end_session_endpoint}?post_logout_redirect_uri={came_from}&amp;id_token_hint={id_token_hint}&quot;</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">logout_url</span><span class="p">:</span><span class="w"> </span><span class="s">"{end_session_endpoint}?post_logout_redirect_uri={came_from}&amp;id_token_hint={id_token_hint}"</span>
 </pre></div>
 </div>
 </dd>
@@ -727,7 +727,7 @@ Default is <code class="docutils literal notranslate"><span class="pre">{}</span
 <dt><code class="docutils literal notranslate"><span class="pre">user_info_fields:</span></code> The mapping between the user info fields and the user fields in the GeoMapFish database,</dt><dd><p>the key is the GeoMapFish user field and the value is the field of the user info provided by the
 OpenID Connect provider, can be a Python template, for example:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sub</span>
-<span class="nt">display_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{first_name}</span><span class="nv"> </span><span class="s">{last_name}&quot;</span>
+<span class="nt">display_name</span><span class="p">:</span><span class="w"> </span><span class="s">"{first_name}</span><span class="nv"> </span><span class="s">{last_name}"</span>
 <span class="nt">email</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">email</span>
 </pre></div>
 </div>
@@ -747,7 +747,7 @@ OpenID Connect provider, can be a Python template, for example:</p>
 <span class="w">  </span><span class="nt">authentication</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">openid_connect</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://sso.example.com</span>
-<span class="w">      </span><span class="nt">client_id</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;***&#39;</span>
+<span class="w">      </span><span class="nt">client_id</span><span class="p">:</span><span class="w"> </span><span class="s">'***'</span>
 <span class="w">      </span><span class="nt">query_user_info</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 <span class="w">      </span><span class="nt">create_user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
 </pre></div>
@@ -772,8 +772,8 @@ The <code class="docutils literal notranslate"><span class="pre">update_create_u
 </div>
 <p>Configure the hooks in the project initialization:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">includeme</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
-    <span class="n">config</span><span class="o">.</span><span class="n">add_request_method</span><span class="p">(</span><span class="n">get_remember_from_user_info</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_remember_from_user_info&quot;</span><span class="p">)</span>
-    <span class="n">config</span><span class="o">.</span><span class="n">add_request_method</span><span class="p">(</span><span class="n">get_user_from_remember</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_user_from_remember&quot;</span><span class="p">)</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">add_request_method</span><span class="p">(</span><span class="n">get_remember_from_user_info</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"get_remember_from_user_info"</span><span class="p">)</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">add_request_method</span><span class="p">(</span><span class="n">get_user_from_remember</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"get_user_from_remember"</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>

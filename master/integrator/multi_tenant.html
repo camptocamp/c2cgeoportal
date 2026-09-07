@@ -53,40 +53,40 @@ see <code class="docutils literal notranslate"><span class="pre">cssVars</span><
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">get_instance_prefix</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">host</span> <span class="o">==</span> <span class="s2">&quot;org1.camptocamp.com&quot;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">&quot;org1&quot;</span>
-    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">host</span> <span class="o">==</span> <span class="s2">&quot;org2.camptocamp.com&quot;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s2">&quot;org2&quot;</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">host</span> <span class="o">==</span> <span class="s2">"org1.camptocamp.com"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">"org1"</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">host</span> <span class="o">==</span> <span class="s2">"org2.camptocamp.com"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">"org2"</span>
     <span class="c1"># Can be used to debug the application</span>
-    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DEFAULT_PREFIX&quot;</span><span class="p">,</span> <span class="s2">&quot;unknown&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"DEFAULT_PREFIX"</span><span class="p">,</span> <span class="s2">"unknown"</span><span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">get_organization_role</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">role_type</span><span class="p">):</span>
     <span class="n">prefix</span> <span class="o">=</span> <span class="n">get_instance_prefix</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">role_type</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">role_type</span><span class="si">}</span><span class="s2">"</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">get_organization_interface</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">interface</span><span class="p">):</span>
     <span class="n">prefix</span> <span class="o">=</span> <span class="n">get_instance_prefix</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">interface</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">interface</span><span class="si">}</span><span class="s2">"</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">get_organization_print_url</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
     <span class="n">prefix</span> <span class="o">=</span> <span class="n">get_instance_prefix</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
-    <span class="n">print_url</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">&quot;print_url&quot;</span><span class="p">]</span>
+    <span class="n">print_url</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">settings</span><span class="p">[</span><span class="s2">"print_url"</span><span class="p">]</span>
     <span class="c1"># Custom code can be added to have a different behavior</span>
     <span class="k">return</span> <span class="n">print_url</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">includeme</span><span class="p">(</span><span class="n">config</span><span class="p">:</span> <span class="n">Configurator</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">   </span><span class="sd">&quot;&quot;&quot;Initialize the multi-tenant.&quot;&quot;&quot;</span>
+<span class="w">   </span><span class="sd">"""Initialize the multi-tenant."""</span>
 
     <span class="n">config</span><span class="o">.</span><span class="n">add_request_method</span><span class="p">(</span>
-        <span class="n">get_organization_role</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_organization_role&quot;</span><span class="p">)</span>
+        <span class="n">get_organization_role</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"get_organization_role"</span><span class="p">)</span>
     <span class="n">config</span><span class="o">.</span><span class="n">add_request_method</span><span class="p">(</span>
-        <span class="n">get_organization_interface</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_organization_interface&quot;</span><span class="p">)</span>
+        <span class="n">get_organization_interface</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"get_organization_interface"</span><span class="p">)</span>
     <span class="n">config</span><span class="o">.</span><span class="n">add_request_method</span><span class="p">(</span>
-        <span class="n">get_organization_print_url</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;get_organization_print_url&quot;</span><span class="p">)</span>
+        <span class="n">get_organization_print_url</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"get_organization_print_url"</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -192,8 +192,8 @@ update-client-po:
 <p>Note that the extractor is able to filter themes and layers based on the given interfaces but there is no
 link between layer groups and interfaces.</p>
 <p>Modify the <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code> to create all the needed localization JSON files:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">RUN</span> <span class="n">build</span><span class="o">-</span><span class="n">l10n</span> <span class="s2">&quot;&lt;package&gt;&quot;</span>
-<span class="o">+</span> <span class="n">RUN</span> <span class="n">build</span><span class="o">-</span><span class="n">l10n</span> <span class="o">--</span><span class="n">suffix</span><span class="o">=-</span><span class="n">org1</span> <span class="o">--</span><span class="n">suffix</span><span class="o">=-</span><span class="n">org2</span> <span class="s2">&quot;&lt;package&gt;&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">-</span> <span class="n">RUN</span> <span class="n">build</span><span class="o">-</span><span class="n">l10n</span> <span class="s2">"&lt;package&gt;"</span>
+<span class="o">+</span> <span class="n">RUN</span> <span class="n">build</span><span class="o">-</span><span class="n">l10n</span> <span class="o">--</span><span class="n">suffix</span><span class="o">=-</span><span class="n">org1</span> <span class="o">--</span><span class="n">suffix</span><span class="o">=-</span><span class="n">org2</span> <span class="s2">"&lt;package&gt;"</span>
 </pre></div>
 </div>
 <p>When loading the frontend, the <code class="docutils literal notranslate"><span class="pre">dynamic</span></code> view will return the appropriate localization URLs based on the
@@ -218,8 +218,8 @@ See the definition above.</p>
 <code class="docutils literal notranslate"><span class="pre">geoportal/geomapfish_geoportal/static/tenant.js</span></code>, with:</p>
 <div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">let</span><span class="w"> </span><span class="nx">tenant</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">gmfapi</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">config</span><span class="p">.</span><span class="nx">getConfig</span><span class="p">().</span><span class="nx">getValue</span><span class="p">().</span><span class="nx">tenantOptions</span><span class="p">;</span>
 <span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">tenant</span><span class="p">.</span><span class="nx">title</span><span class="w"> </span><span class="o">!==</span><span class="w"> </span><span class="kc">undefined</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="c1">// Don&#39;t be updated by AngularJS</span>
-<span class="w">  </span><span class="kd">let</span><span class="w"> </span><span class="nx">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">);</span>
+<span class="w">  </span><span class="c1">// Don't be updated by AngularJS</span>
+<span class="w">  </span><span class="kd">let</span><span class="w"> </span><span class="nx">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">'title'</span><span class="p">);</span>
 <span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">title</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="nx">title</span><span class="p">.</span><span class="nx">remove</span><span class="p">();</span>
 <span class="w">  </span><span class="p">}</span>

@@ -111,7 +111,7 @@ docker image. So developers who modify the <code class="docutils literal notrans
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">python3<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>--user<span class="w"> </span>-e<span class="w"> </span>commons</span>
 <span class="prompt1">alembic<span class="w"> </span>--config<span class="o">=</span>commons/alembic.ini<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--name<span class="o">=[</span>main<span class="p">|</span>static<span class="o">]</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>revision<span class="w"> </span>--message<span class="w"> </span><span class="s2">&quot;&lt;Explicit name&gt;&quot;</span></span>
+<span class="w">    </span>revision<span class="w"> </span>--message<span class="w"> </span><span class="s2">"&lt;Explicit name&gt;"</span></span>
 </pre></div></div><p>This will generate the migration script in
 <code class="docutils literal notranslate"><span class="pre">commons/c2cgeoportal_commons/alembic/[main|static]/xxx_&lt;Explicite_name&gt;.py</span></code>.</p>
 <p>To get the project schema, use:

@@ -73,9 +73,9 @@ span.prompt1:before {
 <p>In the file <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static-ngeo/js/apps/Controller&lt;interface&gt;.js</span></code>,
 adapt the following lines:</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="p">...</span>
-<span class="nx">exports</span><span class="p">.</span><span class="nx">module</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">&#39;App&lt;interface&gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">[</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">module</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">angular</span><span class="p">.</span><span class="nx">module</span><span class="p">(</span><span class="s1">'App&lt;interface&gt;'</span><span class="p">,</span><span class="w"> </span><span class="p">[</span>
 <span class="p">...</span>
-<span class="nx">exports</span><span class="p">.</span><span class="nx">module</span><span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s1">&#39;&lt;Interface&gt;Controller&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">exports</span><span class="p">);</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">module</span><span class="p">.</span><span class="nx">controller</span><span class="p">(</span><span class="s1">'&lt;Interface&gt;Controller'</span><span class="p">,</span><span class="w"> </span><span class="nx">exports</span><span class="p">);</span>
 <span class="p">...</span>
 </pre></div>
 </div>
@@ -83,9 +83,9 @@ adapt the following lines:</p>
 <p>In the file <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/static-ngeo/static-ngeo/js/apps/&lt;interface&gt;.html.ejs</span></code>,
 adapt the name of the controller and the referenced css and js files to the new interface name:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">...</span>
-<span class="o">&lt;</span><span class="n">html</span> <span class="n">lang</span><span class="o">=</span><span class="s2">&quot;{{mainCtrl.lang}}&quot;</span> <span class="n">ng</span><span class="o">-</span><span class="n">controller</span><span class="o">=</span><span class="s2">&quot;&lt;Interface&gt;Controller as mainCtrl&quot;</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">html</span> <span class="n">lang</span><span class="o">=</span><span class="s2">"{{mainCtrl.lang}}"</span> <span class="n">ng</span><span class="o">-</span><span class="n">controller</span><span class="o">=</span><span class="s2">"&lt;Interface&gt;Controller as mainCtrl"</span><span class="o">&gt;</span>
 <span class="o">...</span>
-<span class="o">&lt;</span><span class="n">meta</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;interface&quot;</span> <span class="n">content</span><span class="o">=</span><span class="s2">&quot;&lt;interface&gt;&quot;</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">meta</span> <span class="n">name</span><span class="o">=</span><span class="s2">"interface"</span> <span class="n">content</span><span class="o">=</span><span class="s2">"&lt;interface&gt;"</span><span class="o">&gt;</span>
 <span class="o">...</span>
 </pre></div>
 </div>
@@ -96,11 +96,11 @@ adapt the name of the controller and the referenced css and js files to the new 
 <section id="package-file">
 <h2>Package file<a class="headerlink" href="#package-file" title="Link to this heading">¶</a></h2>
 <p>Update the interface in your <code class="docutils literal notranslate"><span class="pre">geoportal/&lt;package&gt;_geoportal/__init__.py</span></code> file:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">&quot;&lt;interface&gt;&quot;</span><span class="p">,</span> <span class="n">INTERFACE_TYPE_NGEO</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="s2">"&lt;interface&gt;"</span><span class="p">,</span> <span class="n">INTERFACE_TYPE_NGEO</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The used method has the following API:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">interface_name</span><span class="o">=</span><span class="s2">&quot;&lt;interface&gt;&quot;</span><span class="p">,</span> <span class="n">interface_type</span><span class="o">=</span><span class="n">INTERFACE_TYPE_NGEO</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">add_interface</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">interface_name</span><span class="o">=</span><span class="s2">"&lt;interface&gt;"</span><span class="p">,</span> <span class="n">interface_type</span><span class="o">=</span><span class="n">INTERFACE_TYPE_NGEO</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>where:</p>
@@ -144,11 +144,11 @@ and debug mode:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">phantomjs_routes</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;interface&gt;</span>
 <span class="w">  </span><span class="nt">params</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">no_redirect</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+<span class="w">    </span><span class="nt">no_redirect</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;interface&gt;</span>
 <span class="w">  </span><span class="nt">param</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">no_redirect</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
-<span class="w">    </span><span class="nt">debug</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span>
+<span class="w">    </span><span class="nt">no_redirect</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
+<span class="w">    </span><span class="nt">debug</span><span class="p">:</span><span class="w"> </span><span class="s">"true"</span>
 </pre></div>
 </div>
 <p>By default, the checker is enabled for the desktop and mobile interfaces.</p>

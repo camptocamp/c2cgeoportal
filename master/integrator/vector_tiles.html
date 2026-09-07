@@ -80,15 +80,15 @@ the map parameters:</p>
 </pre></div>
 </div>
 <p>Here is an example SQL query template:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_AsMVT</span><span class="p">(</span><span class="n">q</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;osm_landuse&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="p">(</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">ST_AsMVT</span><span class="p">(</span><span class="n">q</span><span class="p">,</span><span class="w"> </span><span class="s1">'osm_landuse'</span><span class="p">)</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="p">(</span>
 <span class="w">    </span><span class="k">SELECT</span>
 <span class="w">        </span><span class="n">fid</span><span class="p">,</span>
 <span class="w">        </span><span class="n">osm_id</span><span class="p">,</span>
 <span class="w">        </span><span class="n">name</span><span class="p">,</span>
 <span class="w">        </span><span class="k">type</span><span class="p">,</span>
-<span class="w">        </span><span class="n">ST_AsMVTGeom</span><span class="p">(</span><span class="ss">&quot;geom&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&lt;</span><span class="n">envelope</span><span class="o">&gt;</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">geom</span>
+<span class="w">        </span><span class="n">ST_AsMVTGeom</span><span class="p">(</span><span class="ss">"geom"</span><span class="p">,</span><span class="w"> </span><span class="o">&lt;</span><span class="n">envelope</span><span class="o">&gt;</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">geom</span>
 <span class="w">    </span><span class="k">FROM</span><span class="w"> </span><span class="n">geodata</span><span class="p">.</span><span class="n">osm_landuse</span>
-<span class="w">    </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="ss">&quot;geom&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&lt;</span><span class="n">envelope</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="w">    </span><span class="k">WHERE</span><span class="w"> </span><span class="n">ST_Intersects</span><span class="p">(</span><span class="ss">"geom"</span><span class="p">,</span><span class="w"> </span><span class="o">&lt;</span><span class="n">envelope</span><span class="o">&gt;</span><span class="p">)</span>
 <span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="n">q</span>
 </pre></div>
 </div>

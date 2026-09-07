@@ -62,7 +62,7 @@ need to use a relatively large value for the <code class="docutils literal notra
 <li><p>The <code class="docutils literal notranslate"><span class="pre">MAP</span></code> and all the <code class="docutils literal notranslate"><span class="pre">LAYER</span></code> definitions should have a <code class="docutils literal notranslate"><span class="pre">PROJECTION</span></code>. For
 example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">PROJECTION</span>
-    <span class="s2">&quot;init=epsg:2056&quot;</span>
+    <span class="s2">"init=epsg:2056"</span>
 <span class="n">END</span>
 </pre></div>
 </div>
@@ -82,15 +82,15 @@ resolution into account.</p>
 <p>Layers that you want to use in a query (box and point), in filters, or for WFS permalink features must
 support WFS GetFeature.
 To support WFS GetFeature a <code class="docutils literal notranslate"><span class="pre">LAYER</span></code> should define a template:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TEMPLATE</span> <span class="s2">&quot;fooOnlyForWFSGetFeature&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TEMPLATE</span> <span class="s2">"fooOnlyForWFSGetFeature"</span>
 </pre></div>
 </div>
 <p>This is a fake template, but this is required by the querier and for the filter.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">LAYER</span></code> should also define metadata, with a <code class="docutils literal notranslate"><span class="pre">METADATA</span></code> section. For example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;gml_include_items&quot;</span> <span class="s2">&quot;all&quot;</span>
-<span class="s2">&quot;gml_types&quot;</span> <span class="s2">&quot;auto&quot;</span>
-<span class="s2">&quot;gml_featureid&quot;</span> <span class="s2">&quot;id&quot;</span>
-<span class="s2">&quot;wfs_enable_request&quot;</span> <span class="s2">&quot;*&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">"gml_include_items"</span> <span class="s2">"all"</span>
+<span class="s2">"gml_types"</span> <span class="s2">"auto"</span>
+<span class="s2">"gml_featureid"</span> <span class="s2">"id"</span>
+<span class="s2">"wfs_enable_request"</span> <span class="s2">"*"</span>
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">gml_include_items</span></code></p>
@@ -137,9 +137,9 @@ values defined in the layer’s classes (<code class="docutils literal notransla
 <p>Similar to WFS GetFeature, this is a fake template, but it is required.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">gml_include_items</span></code>, <code class="docutils literal notranslate"><span class="pre">gml_&lt;geometry</span> <span class="pre">name&gt;_type</span></code> and <code class="docutils literal notranslate"><span class="pre">gml_geometries</span></code>
 <em>METADATA</em> variables should also be defined in the <code class="docutils literal notranslate"><span class="pre">LAYER</span></code>. For example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;gml_include_items&quot;</span> <span class="s2">&quot;all&quot;</span>
-<span class="s2">&quot;gml_geometries&quot;</span> <span class="s2">&quot;geom&quot;</span>
-<span class="s2">&quot;gml_geom_type&quot;</span> <span class="s2">&quot;polygon&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">"gml_include_items"</span> <span class="s2">"all"</span>
+<span class="s2">"gml_geometries"</span> <span class="s2">"geom"</span>
+<span class="s2">"gml_geom_type"</span> <span class="s2">"polygon"</span>
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">gml_include_items</span></code></p>
@@ -185,14 +185,14 @@ This area is specified in the administration interface while defining the <code 
 may slow down the application.</p>
 </div>
 <p>To define a restricted layer in the Mapfile, the <code class="docutils literal notranslate"><span class="pre">DATA</span></code> property of the <code class="docutils literal notranslate"><span class="pre">LAYER</span></code> should look like this:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">DATA</span><span class="w"> </span><span class="ss">&quot;&lt;the_geom&gt; FROM (</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">DATA</span><span class="w"> </span><span class="ss">"&lt;the_geom&gt; FROM (</span>
 <span class="ss">    SELECT *</span>
 <span class="ss">    FROM &lt;schema&gt;.&lt;table&gt;</span>
 <span class="ss">    WHERE ST_Contains(</span>
-<span class="ss">       (${MAPSERVER_DATA_SUBSELECT} &#39;&lt;layername&gt;&#39;),</span>
+<span class="ss">       (${MAPSERVER_DATA_SUBSELECT} '&lt;layername&gt;'),</span>
 <span class="ss">       &lt;the_geom&gt;</span>
 <span class="ss">     )</span>
-<span class="ss">) AS foo USING unique gid USING srid=&lt;projection&gt;&quot;</span>
+<span class="ss">) AS foo USING unique gid USING srid=&lt;projection&gt;"</span>
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">&lt;schema&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;table&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;layername&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;projection&gt;</span></code> and <code class="docutils literal notranslate"><span class="pre">&lt;the_geom&gt;</span></code>
@@ -229,10 +229,10 @@ area. These features will not be displayed as they are not in the area (ie not
 <p>It is required to have the following in the <code class="docutils literal notranslate"><span class="pre">VALIDATION</span></code> section of the <code class="docutils literal notranslate"><span class="pre">LAYER</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">VALIDATION</span>
   <span class="c1"># For secured layers</span>
-  <span class="s2">&quot;default_role_ids&quot;</span> <span class="s2">&quot;&quot;</span>
+  <span class="s2">"default_role_ids"</span> <span class="s2">""</span>
   <span class="c1"># Or</span>
-  <span class="c1"># &quot;default_role_ids&quot; &quot;&lt;id of the anonymous role&gt;&quot;</span>
-  <span class="s2">&quot;role_ids&quot;</span> <span class="s2">&quot;^-?[0-9,]*$&quot;</span>
+  <span class="c1"># "default_role_ids" "&lt;id of the anonymous role&gt;"</span>
+  <span class="s2">"role_ids"</span> <span class="s2">"^-?[0-9,]*$"</span>
 <span class="n">END</span>
 </pre></div>
 </div>
@@ -245,17 +245,17 @@ anonymous users apply.</p>
 <h3>Without restriction on the RestrictionArea area<a class="headerlink" href="#without-restriction-on-the-restrictionarea-area" title="Link to this heading">¶</a></h3>
 <p>If we do not need to restrict on an area, we can use the following
 <code class="docutils literal notranslate"><span class="pre">DATA</span></code> property of the <code class="docutils literal notranslate"><span class="pre">LAYER</span></code>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>DATA &quot;the_geom FROM (
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>DATA "the_geom FROM (
     SELECT
         geo.*
     FROM
         &lt;schema&gt;.&lt;table&gt; AS geo
     WHERE (
         ARRAY[%role_ids%]::integer[] &amp;&amp; ARRAY(
-            ${MAPSERVER_DATA_NOAREA_SUBSELECT} &#39;&lt;layername&gt;&#39;
+            ${MAPSERVER_DATA_NOAREA_SUBSELECT} '&lt;layername&gt;'
         )
     )
-) AS foo USING unique id USING srid=2056&quot;
+) AS foo USING unique id USING srid=2056"
 </pre></div>
 </div>
 <p>Then you do not need to define an area in the admin interface.</p>
@@ -280,10 +280,10 @@ anonymous users apply.</p>
 <p>It is required to have the following in the <code class="docutils literal notranslate"><span class="pre">VALIDATION</span></code> section of the <code class="docutils literal notranslate"><span class="pre">LAYER</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">VALIDATION</span>
   <span class="c1"># For secured layers</span>
-  <span class="s2">&quot;default_role_ids&quot;</span> <span class="s2">&quot;-1&quot;</span>
+  <span class="s2">"default_role_ids"</span> <span class="s2">"-1"</span>
   <span class="c1"># Or</span>
-  <span class="c1"># &quot;default_role_ids&quot; &quot;&lt;id of the anonymous role&gt;&quot;</span>
-  <span class="s2">&quot;role_ids&quot;</span> <span class="s2">&quot;^-?[0-9,]*$&quot;</span>
+  <span class="c1"># "default_role_ids" "&lt;id of the anonymous role&gt;"</span>
+  <span class="s2">"role_ids"</span> <span class="s2">"^-?[0-9,]*$"</span>
 <span class="n">END</span>
 </pre></div>
 </div>
@@ -305,8 +305,8 @@ attributes. The list of parameters that support variable substitution is
 available <a class="reference external" href="https://mapserver.org/cgi/runsub.html#parameters-supported">here</a>.</p>
 <p>To define variables, edit the matching <code class="docutils literal notranslate"><span class="pre">MAP</span></code>/<code class="docutils literal notranslate"><span class="pre">LAYER</span></code>/<code class="docutils literal notranslate"><span class="pre">VALIDATION</span></code>
 section in the MapFile and add:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;default_s_&lt;variable&gt;&quot;</span> <span class="s2">&quot;&lt;default_value&gt;&quot;</span>
-<span class="s2">&quot;s_&lt;variable&gt;&quot;</span> <span class="s2">&quot;&lt;validation_pattern&gt;&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s2">"default_s_&lt;variable&gt;"</span> <span class="s2">"&lt;default_value&gt;"</span>
+<span class="s2">"s_&lt;variable&gt;"</span> <span class="s2">"&lt;validation_pattern&gt;"</span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">validation_pattern</span></code> is a regular expression used to validate the
@@ -322,15 +322,15 @@ WFS GetFeature or WMS GetFeatureInfo request, you have to adapt the columns
 listed in the <code class="docutils literal notranslate"><span class="pre">DATA</span></code> section. For instance:</p>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="n">LAYER</span>
 <span class="w">    </span><span class="p">...</span>
-<span class="w">    </span><span class="k">DATA</span><span class="w"> </span><span class="ss">&quot;geom FROM (SELECT t.geom, t.type, t.gid, %s_columns% FROM geodata.table as t)  AS foo USING unique gid using SRID=2056&quot;</span>
+<span class="w">    </span><span class="k">DATA</span><span class="w"> </span><span class="ss">"geom FROM (SELECT t.geom, t.type, t.gid, %s_columns% FROM geodata.table as t)  AS foo USING unique gid using SRID=2056"</span>
 <span class="w">    </span><span class="n">METADATA</span>
 <span class="w">        </span><span class="p">...</span>
-<span class="w">        </span><span class="ss">&quot;gml_exclude_items&quot;</span><span class="w"> </span><span class="ss">&quot;type,gid&quot;</span>
-<span class="w">        </span><span class="ss">&quot;gml_include_items&quot;</span><span class="w"> </span><span class="ss">&quot;all&quot;</span>
+<span class="w">        </span><span class="ss">"gml_exclude_items"</span><span class="w"> </span><span class="ss">"type,gid"</span>
+<span class="w">        </span><span class="ss">"gml_include_items"</span><span class="w"> </span><span class="ss">"all"</span>
 <span class="w">    </span><span class="k">END</span>
 <span class="w">    </span><span class="n">VALIDATION</span>
-<span class="w">        </span><span class="ss">&quot;default_s_columns&quot;</span><span class="w"> </span><span class="ss">&quot;t.name&quot;</span>
-<span class="w">        </span><span class="ss">&quot;s_columns&quot;</span><span class="w"> </span><span class="ss">&quot;^[a-z,._]*$$&quot;</span>
+<span class="w">        </span><span class="ss">"default_s_columns"</span><span class="w"> </span><span class="ss">"t.name"</span>
+<span class="w">        </span><span class="ss">"s_columns"</span><span class="w"> </span><span class="ss">"^[a-z,._]*$$"</span>
 <span class="w">    </span><span class="k">END</span>
 <span class="w">    </span><span class="k">CLASS</span>
 <span class="w">        </span><span class="n">EXPRESSION</span><span class="w"> </span><span class="p">([</span><span class="k">type</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>

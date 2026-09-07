@@ -100,7 +100,7 @@ parameters:</p>
 <blockquote>
 <div><div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>run<span class="w"> </span>--rm<span class="w"> </span>-ti<span class="w"> </span>--volume<span class="o">=</span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>:/src<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--env<span class="o">=</span><span class="nv">SRID</span><span class="o">=</span><span class="m">2056</span><span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--env<span class="o">=</span><span class="nv">EXTENT</span><span class="o">=</span><span class="s2">&quot;2420000,1030000,2900000,1350000&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env<span class="o">=</span><span class="nv">EXTENT</span><span class="o">=</span><span class="s2">"2420000,1030000,2900000,1350000"</span><span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--user<span class="o">=</span><span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span>:<span class="k">$(</span>id<span class="w"> </span>-g<span class="k">)</span><span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>camptocamp/geomapfish-tools:<span class="si">${</span><span class="nv">GEOMAPFISH_VERSION</span><span class="si">}</span><span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>run<span class="w"> </span>/src<span class="w"> </span><span class="se">\</span>
@@ -182,7 +182,7 @@ section applies to the simple application mode or not.</p>
 <span class="prompt1">git<span class="w"> </span>remote<span class="w"> </span>add<span class="w"> </span>origin<span class="w"> </span>git@github.com:camptocamp/<span class="si">${</span><span class="nv">GEOMAPFISH_PROJECT</span><span class="si">}</span>.git</span>
 </pre></div></div><p>Commit and push on the main repository:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git<span class="w"> </span>add<span class="w"> </span>.</span>
-<span class="prompt1">git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Initial commit&quot;</span></span>
+<span class="prompt1">git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">"Initial commit"</span></span>
 <span class="prompt1">git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>master</span>
 </pre></div></div></section>
 </section>
@@ -213,7 +213,7 @@ interpreted parameters section:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">extends</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CONST_vars.yaml</span>
 
 <span class="nt">vars</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{HOST}&#39;</span>
+<span class="w">    </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="s">'{HOST}'</span>
 <span class="nn">...</span>
 <span class="nt">runtime_environment</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HOST</span>
@@ -234,7 +234,7 @@ interpreted parameters section:</p>
 <p>As the integrator, you need to edit the <code class="docutils literal notranslate"><span class="pre">vars.yaml</span></code> and <code class="docutils literal notranslate"><span class="pre">env.project</span></code> files to configure the application.</p>
 <p>Do not forget to add your changes to git:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">git<span class="w"> </span>add<span class="w"> </span>vars.yaml<span class="w"> </span>env.project</span>
-<span class="prompt1">git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Configure the project&quot;</span></span>
+<span class="prompt1">git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">"Configure the project"</span></span>
 <span class="prompt1">git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>master</span>
 </pre></div></div><div class="admonition note">
 <p class="admonition-title">Note</p>

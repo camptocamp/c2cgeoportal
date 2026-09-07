@@ -289,11 +289,11 @@ generation it we set the property <code class="docutils literal notranslate"><sp
 <span class="w">    </span><span class="nt">optipng</span><span class="p">:</span><span class="w">  </span><span class="c1"># the process command</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w">   </span><span class="nt">cmd</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">optipng %(args)s -q -zc9 -zm8 -zs3 -f5 -o %(out)s %(in)s</span><span class="w">  </span><span class="c1"># the command line</span>
 <span class="w">        </span><span class="nt">need_out</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">  </span><span class="c1"># if false the command rewrite the input file, default is false</span>
-<span class="w">        </span><span class="nt">arg</span><span class="p">:</span><span class="w">  </span><span class="c1"># argument used with the different log switches, in all cases default is &#39;&#39;</span>
-<span class="w">            </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;-q&#39;</span><span class="w"> </span><span class="c1"># the argument used by default</span>
-<span class="w">            </span><span class="nt">quiet</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;-q&#39;</span><span class="w"> </span><span class="c1"># the argument used in quiet mode</span>
-<span class="w">            </span><span class="nt">verbose</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;-v&#39;</span><span class="w"> </span><span class="c1"># the argument used in verbose mode</span>
-<span class="w">            </span><span class="nt">debug</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;-log</span><span class="nv"> </span><span class="s">/tmp/optipng.log&#39;</span><span class="w"> </span><span class="c1"># the argument user in debug mode</span>
+<span class="w">        </span><span class="nt">arg</span><span class="p">:</span><span class="w">  </span><span class="c1"># argument used with the different log switches, in all cases default is ''</span>
+<span class="w">            </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="s">'-q'</span><span class="w"> </span><span class="c1"># the argument used by default</span>
+<span class="w">            </span><span class="nt">quiet</span><span class="p">:</span><span class="w"> </span><span class="s">'-q'</span><span class="w"> </span><span class="c1"># the argument used in quiet mode</span>
+<span class="w">            </span><span class="nt">verbose</span><span class="p">:</span><span class="w"> </span><span class="s">'-v'</span><span class="w"> </span><span class="c1"># the argument used in verbose mode</span>
+<span class="w">            </span><span class="nt">debug</span><span class="p">:</span><span class="w"> </span><span class="s">'-log</span><span class="nv"> </span><span class="s">/tmp/optipng.log'</span><span class="w"> </span><span class="c1"># the argument user in debug mode</span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">cmd</span></code> can have the following optional argument:</p>
@@ -418,11 +418,11 @@ span.prompt1:before {
 <span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">s3</span>
 <span class="w">    </span><span class="c1"># the s3 bucket name</span>
 <span class="w">    </span><span class="nt">bucket</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tiles</span>
-<span class="w">    </span><span class="c1"># the used folder in the bucket [default is &#39;&#39;]</span>
-<span class="w">    </span><span class="nt">folder</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&#39;</span>
+<span class="w">    </span><span class="c1"># the used folder in the bucket [default is '']</span>
+<span class="w">    </span><span class="nt">folder</span><span class="p">:</span><span class="w"> </span><span class="s">''</span>
 <span class="w">    </span><span class="c1"># for GetCapabilities</span>
 <span class="w">    </span><span class="nt">http_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://%(host)s/%(bucket)s/%(folder)s/</span>
-<span class="w">    </span><span class="nt">cache_control</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;public,</span><span class="nv"> </span><span class="s">max-age=14400&#39;</span>
+<span class="w">    </span><span class="nt">cache_control</span><span class="p">:</span><span class="w"> </span><span class="s">'public,</span><span class="nv"> </span><span class="s">max-age=14400'</span>
 <span class="w">    </span><span class="nt">hosts</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">wmts0.&lt;host&gt;</span>
 </pre></div>
@@ -488,11 +488,11 @@ enable the daemon mode and must not specify the layer:</p>
 <span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">azure</span>
 <span class="w">    </span><span class="c1"># the Azure container name</span>
 <span class="w">    </span><span class="nt">container</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tiles</span>
-<span class="w">    </span><span class="c1"># the used folder in the container [default is &#39;&#39;]</span>
-<span class="w">    </span><span class="nt">folder</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&#39;</span>
+<span class="w">    </span><span class="c1"># the used folder in the container [default is '']</span>
+<span class="w">    </span><span class="nt">folder</span><span class="p">:</span><span class="w"> </span><span class="s">''</span>
 <span class="w">    </span><span class="c1"># for GetCapabilities</span>
 <span class="w">    </span><span class="nt">http_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://%(host)s/%(bucket)s/%(folder)s/</span>
-<span class="w">    </span><span class="nt">cache_control</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;public,</span><span class="nv"> </span><span class="s">max-age=14400&#39;</span>
+<span class="w">    </span><span class="nt">cache_control</span><span class="p">:</span><span class="w"> </span><span class="s">'public,</span><span class="nv"> </span><span class="s">max-age=14400'</span>
 <span class="w">    </span><span class="nt">hosts</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">wmts0.&lt;host&gt;</span>
 </pre></div>

@@ -64,23 +64,23 @@ where <code class="docutils literal notranslate"><span class="pre">&lt;interface
 <p>This is not possible in the simple application mode</p>
 </div>
 <p>In this file, you can add some blocks like</p>
-<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">gmf-auth-panel</span> <span class="na">slot</span><span class="o">=</span><span class="s">&quot;tool-panel-auth&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">gmf-auth-panel</span><span class="p">&gt;</span>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">gmf-auth-panel</span> <span class="na">slot</span><span class="o">=</span><span class="s">"tool-panel-auth"</span><span class="p">&gt;&lt;/</span><span class="nt">gmf-auth-panel</span><span class="p">&gt;</span>
 </pre></div>
 </div>
 <p>to include a web-component in a specific slot (one UI part of the app).</p>
 <p>You can find the available component in the <a class="extlink-ngeo_doc reference external" href="https://camptocamp.github.io/ngeo/master/apidoc/">ngeo documentation</a>.</p>
 <p>The controller (<code class="docutils literal notranslate"><span class="pre">js</span></code> file) is commonly named <code class="docutils literal notranslate"><span class="pre">mainCtrl</span></code>. So you can use a value
 from the controller by doing the following (here, the controller is the <code class="docutils literal notranslate"><span class="pre">DesktopController</span></code>):</p>
-<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&quot;{{desktopCtrl.lang}}&quot;</span> <span class="na">ng-app</span><span class="o">=</span><span class="s">&quot;mydemo&quot;</span> <span class="na">ng-controller</span><span class="o">=</span><span class="s">&quot;DesktopController as mainCtrl&quot;</span><span class="p">&gt;</span>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">"{{desktopCtrl.lang}}"</span> <span class="na">ng-app</span><span class="o">=</span><span class="s">"mydemo"</span> <span class="na">ng-controller</span><span class="o">=</span><span class="s">"DesktopController as mainCtrl"</span><span class="p">&gt;</span>
   <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
   ...
   <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
   <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
   ...
   <span class="p">&lt;</span><span class="nt">gmf-mycomponent</span>
-    <span class="na">slot</span><span class="o">=</span><span class="s">&quot;map&quot;</span>
-    <span class="na">gmf-mycomponent-variableproperty</span><span class="o">=</span><span class="s">&quot;mainCtrl.open&quot;</span>
-    <span class="na">gmf-component-staticproperty</span><span class="o">=</span><span class="s">&quot;::mainCtrl.map&quot;</span><span class="p">&gt;</span>
+    <span class="na">slot</span><span class="o">=</span><span class="s">"map"</span>
+    <span class="na">gmf-mycomponent-variableproperty</span><span class="o">=</span><span class="s">"mainCtrl.open"</span>
+    <span class="na">gmf-component-staticproperty</span><span class="o">=</span><span class="s">"::mainCtrl.map"</span><span class="p">&gt;</span>
   <span class="p">&lt;</span><span class="nt">gmf-component</span><span class="p">&gt;</span>
   ...
   <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
@@ -95,7 +95,7 @@ from the controller by doing the following (here, the controller is the <code cl
 <p>This is not possible in the simple application mode</p>
 </div>
 <p>In the controller you have some lines like:</p>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">import</span><span class="w"> </span><span class="nx">gmf</span><span class="o">&lt;</span><span class="nx">Component</span><span class="o">&gt;</span><span class="nx">Module</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;gmf/&lt;component&gt;/module&#39;</span><span class="p">;</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">import</span><span class="w"> </span><span class="nx">gmf</span><span class="o">&lt;</span><span class="nx">Component</span><span class="o">&gt;</span><span class="nx">Module</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'gmf/&lt;component&gt;/module'</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>This is needed to include the javascript of the used component.</p>
@@ -1047,7 +1047,7 @@ your style with the <code class="docutils literal notranslate"><span class="pre"
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;interface&gt;</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">constants</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">gmfCustomCSS</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">authentication</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&lt;selector&gt;</span><span class="nv"> </span><span class="s">{&lt;property&gt;:</span><span class="nv"> </span><span class="s">&lt;value&gt;;}&#39;</span>
+<span class="w">      </span><span class="nt">authentication</span><span class="p">:</span><span class="w"> </span><span class="s">'&lt;selector&gt;</span><span class="nv"> </span><span class="s">{&lt;property&gt;:</span><span class="nv"> </span><span class="s">&lt;value&gt;;}'</span>
 </pre></div>
 </div>
 </section>
@@ -1056,9 +1056,9 @@ your style with the <code class="docutils literal notranslate"><span class="pre"
 <p>In the advanced mode, you can set the style of a component by selecting the component using
 the <code class="docutils literal notranslate"><span class="pre">querySelector</span></code> native function and by appending a new style to this element.
 Example:</p>
-<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="nx">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="w"> </span><span class="s1">&#39;style&#39;</span><span class="w"> </span><span class="p">)</span>
-<span class="nx">style</span><span class="p">.</span><span class="nx">innerHTML</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;&lt;selector&gt; {&lt;property&gt;: &lt;value&gt;;}&#39;</span>
-<span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">&#39;&lt;my-component-selector&gt;&#39;</span><span class="p">).</span><span class="nx">shadowRoot</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">style</span><span class="p">);</span>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span><span class="w"> </span><span class="nx">style</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="w"> </span><span class="s1">'style'</span><span class="w"> </span><span class="p">)</span>
+<span class="nx">style</span><span class="p">.</span><span class="nx">innerHTML</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'&lt;selector&gt; {&lt;property&gt;: &lt;value&gt;;}'</span>
+<span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">'&lt;my-component-selector&gt;'</span><span class="p">).</span><span class="nx">shadowRoot</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">style</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Or alternatively, you can override a component to access and modify the <code class="docutils literal notranslate"><span class="pre">render</span></code> function. In this
@@ -1078,14 +1078,14 @@ recommended if you don’t have to override the component for another purpose.</
 <code class="docutils literal notranslate"><span class="pre">src/auth/FormElement.ts</span></code>.</p>
 <p>Here’s a <code class="docutils literal notranslate"><span class="pre">Hello</span> <span class="pre">&lt;name&gt;</span></code> component:</p>
 <div class="highlight-typescript notranslate"><div class="highlight"><pre><span></span><span class="c1">// File ...static-ngeo/js/custom/helloWorld.ts;</span>
-<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="nx">html</span><span class="p">,</span><span class="w"> </span><span class="nx">TemplateResult</span><span class="p">,</span><span class="w"> </span><span class="nx">CSSResult</span><span class="p">,</span><span class="w"> </span><span class="nx">css</span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;lit&#39;</span><span class="p">;</span>
-<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="nx">customElement</span><span class="p">,</span><span class="w"> </span><span class="nx">property</span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;lit/decorators.js&#39;</span><span class="p">;</span>
-<span class="k">import</span><span class="w"> </span><span class="nx">GmfBaseElement</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;gmfapi/elements/BaseElement&#39;</span><span class="p">;</span>
-<span class="k">import</span><span class="w"> </span><span class="nx">i18next</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;i18next&#39;</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="nx">html</span><span class="p">,</span><span class="w"> </span><span class="nx">TemplateResult</span><span class="p">,</span><span class="w"> </span><span class="nx">CSSResult</span><span class="p">,</span><span class="w"> </span><span class="nx">css</span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'lit'</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="p">{</span><span class="nx">customElement</span><span class="p">,</span><span class="w"> </span><span class="nx">property</span><span class="p">}</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'lit/decorators.js'</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="nx">GmfBaseElement</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'gmfapi/elements/BaseElement'</span><span class="p">;</span>
+<span class="k">import</span><span class="w"> </span><span class="nx">i18next</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'i18next'</span><span class="p">;</span>
 
-<span class="kd">@customElement</span><span class="p">(</span><span class="s1">&#39;hello-world&#39;</span><span class="p">)</span>
+<span class="kd">@customElement</span><span class="p">(</span><span class="s1">'hello-world'</span><span class="p">)</span>
 <span class="k">export</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="kd">class</span><span class="w"> </span><span class="nx">GmfAuthForm</span><span class="w"> </span><span class="k">extends</span><span class="w"> </span><span class="nx">GmfBaseElement</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="kd">@property</span><span class="p">({</span><span class="kr">type</span><span class="o">:</span><span class="w"> </span><span class="nb">String</span><span class="p">})</span><span class="w"> </span><span class="nx">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Unknow&#39;</span><span class="p">;</span>
+<span class="w">  </span><span class="kd">@property</span><span class="p">({</span><span class="kr">type</span><span class="o">:</span><span class="w"> </span><span class="nb">String</span><span class="p">})</span><span class="w"> </span><span class="nx">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">'Unknow'</span><span class="p">;</span>
 
 <span class="w">  </span><span class="nx">connectedCallback</span><span class="p">()</span><span class="o">:</span><span class="w"> </span><span class="ow">void</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="k">super</span><span class="p">.</span><span class="nx">connectedCallback</span><span class="p">();</span>
@@ -1103,8 +1103,8 @@ recommended if you don’t have to override the component for another purpose.</
 <span class="w">  </span><span class="k">protected</span><span class="w"> </span><span class="nx">render</span><span class="p">()</span><span class="o">:</span><span class="w"> </span><span class="nx">TemplateResult</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">html</span><span class="sb">`</span>
 <span class="sb">      &lt;div&gt;</span>
-<span class="sb">        &lt;span&gt;</span><span class="si">${</span><span class="nx">i18next</span><span class="p">.</span><span class="nx">t</span><span class="p">(</span><span class="s1">&#39;Hello&#39;</span><span class="p">)</span><span class="si">}</span><span class="sb">&amp;nbsp;&lt;/span&gt;</span>
-<span class="sb">        &lt;span class=&quot;name&quot;&gt;</span><span class="si">${</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="si">}</span><span class="sb">&lt;/span&gt;</span>
+<span class="sb">        &lt;span&gt;</span><span class="si">${</span><span class="nx">i18next</span><span class="p">.</span><span class="nx">t</span><span class="p">(</span><span class="s1">'Hello'</span><span class="p">)</span><span class="si">}</span><span class="sb">&amp;nbsp;&lt;/span&gt;</span>
+<span class="sb">        &lt;span class="name"&gt;</span><span class="si">${</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="si">}</span><span class="sb">&lt;/span&gt;</span>
 <span class="sb">      &lt;/div&gt;</span>
 <span class="sb">    `</span><span class="p">;</span>
 <span class="w">  </span><span class="p">}</span>
@@ -1112,11 +1112,11 @@ recommended if you don’t have to override the component for another purpose.</
 </pre></div>
 </div>
 <p>Then load your component in the controller of one of your interfaces:</p>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">import</span><span class="w"> </span><span class="nx">GmfAuthForm</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;../custom/helloWorld&#39;</span><span class="p">;</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">import</span><span class="w"> </span><span class="nx">GmfAuthForm</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'../custom/helloWorld'</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>At this point, if in your &lt;interface&gt; HTML app file you declare your component, it should be loaded:</p>
-<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">hello-world</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;Demo&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">hello-world</span><span class="p">&gt;</span>
+<div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="p">&lt;</span><span class="nt">hello-world</span> <span class="na">name</span><span class="o">=</span><span class="s">"Demo"</span><span class="p">&gt;&lt;/</span><span class="nt">hello-world</span><span class="p">&gt;</span>
 </pre></div>
 </div>
 <p>It should print <code class="docutils literal notranslate"><span class="pre">Hello</span> <span class="pre">Demo</span></code> (with “Demo” in a green color).</p>
@@ -1141,7 +1141,7 @@ static functions, helper and utils files instead. It will facilitate the mainten
 after each GMF update as the original code may have changed.</p>
 <p>You can define some new functions or new variables to a class via the prototype. Here’s an example with
 the ngeo auth form component:</p>
-<div class="highlight-typescript notranslate"><div class="highlight"><pre><span></span><span class="k">import</span><span class="w"> </span><span class="nx">GmfAuthForm</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">&#39;ngeo/auth/FormElement&#39;</span><span class="p">;</span>
+<div class="highlight-typescript notranslate"><div class="highlight"><pre><span></span><span class="k">import</span><span class="w"> </span><span class="nx">GmfAuthForm</span><span class="w"> </span><span class="kr">from</span><span class="w"> </span><span class="s1">'ngeo/auth/FormElement'</span><span class="p">;</span>
 
 <span class="nx">GmfAuthForm</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">myNewValue</span><span class="p">;</span>
 
@@ -1150,7 +1150,7 @@ the ngeo auth form component:</p>
 </div>
 <p>To replace an existing function, just create a function with the same name than the one to replace:</p>
 <div class="highlight-typescript notranslate"><div class="highlight"><pre><span></span><span class="nx">GmfAuthForm</span><span class="p">.</span><span class="nx">prototype</span><span class="p">.</span><span class="nx">logout</span><span class="p">(</span><span class="nx">evt</span><span class="o">:</span><span class="w"> </span><span class="kt">Event</span><span class="p">)</span><span class="o">:</span><span class="w"> </span><span class="ow">void</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;I do nothing but print a message&#39;</span><span class="p">);</span>
+<span class="w">  </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'I do nothing but print a message'</span><span class="p">);</span>
 <span class="p">};</span>
 </pre></div>
 </div>
@@ -1158,7 +1158,7 @@ the ngeo auth form component:</p>
 can modify it.</p>
 <p>Finally be sure that the file where you override or extend existing content is read by the main
 controller file of your app:</p>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">import</span><span class="w"> </span><span class="s1">&#39;../custom/myOverridenComponent.js&#39;</span><span class="p">;</span>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="k">import</span><span class="w"> </span><span class="s1">'../custom/myOverridenComponent.js'</span><span class="p">;</span>
 </pre></div>
 </div>
 <div class="admonition note">

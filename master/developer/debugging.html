@@ -145,7 +145,7 @@ different entry points. (<code class="docutils literal notranslate"><span class=
 <p>With the <code class="docutils literal notranslate"><span class="pre">docker-compose.override.yaml</span></code> configuration, Gunicorn will automatically restart
 on code modification.</p>
 <p>You can also do a graceful reload of the running Gunicorn webserver:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nb">kill</span><span class="w"> </span>-s<span class="w"> </span>HUP<span class="w"> </span><span class="sb">`</span>ps<span class="w"> </span>aux<span class="p">|</span>grep<span class="w"> </span>gunicorn<span class="p">|</span>head<span class="w"> </span>--lines<span class="o">=</span><span class="m">1</span><span class="p">|</span>awk<span class="w"> </span><span class="s1">&#39;{print $2}&#39;</span><span class="sb">`</span></span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1"><span class="nb">kill</span><span class="w"> </span>-s<span class="w"> </span>HUP<span class="w"> </span><span class="sb">`</span>ps<span class="w"> </span>aux<span class="p">|</span>grep<span class="w"> </span>gunicorn<span class="p">|</span>head<span class="w"> </span>--lines<span class="o">=</span><span class="m">1</span><span class="p">|</span>awk<span class="w"> </span><span class="s1">'{print $2}'</span><span class="sb">`</span></span>
 </pre></div></div></section>
 <section id="working-on-c2cgeoportal-itself">
 <h3>Working on c2cgeoportal itself<a class="headerlink" href="#working-on-c2cgeoportal-itself" title="Link to this heading">¶</a></h3>
@@ -161,19 +161,19 @@ Be sure that the volumes for c2cgeoportal are uncommented.</p>
 <li><p>In the code add <code class="docutils literal notranslate"><span class="pre">breakpoint()</span></code> where you want to add a breakpoint.</p></li>
 <li><p>In Visual Studio Code use the config:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;Python: Remote Attach&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;python&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;request&quot;</span><span class="p">:</span> <span class="s2">&quot;attach&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;port&quot;</span><span class="p">:</span> <span class="mi">5678</span><span class="p">,</span>
-    <span class="s2">&quot;host&quot;</span><span class="p">:</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;pathMappings&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"Python: Remote Attach"</span><span class="p">,</span>
+    <span class="s2">"type"</span><span class="p">:</span> <span class="s2">"python"</span><span class="p">,</span>
+    <span class="s2">"request"</span><span class="p">:</span> <span class="s2">"attach"</span><span class="p">,</span>
+    <span class="s2">"port"</span><span class="p">:</span> <span class="mi">5678</span><span class="p">,</span>
+    <span class="s2">"host"</span><span class="p">:</span> <span class="s2">"localhost"</span><span class="p">,</span>
+    <span class="s2">"pathMappings"</span><span class="p">:</span> <span class="p">[</span>
         <span class="p">{</span>
-            <span class="s2">&quot;localRoot&quot;</span><span class="p">:</span> <span class="s2">&quot;$</span><span class="si">{workspaceFolder}</span><span class="s2">/project/&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;remoteRoot&quot;</span><span class="p">:</span> <span class="s2">&quot;/app/&quot;</span>
+            <span class="s2">"localRoot"</span><span class="p">:</span> <span class="s2">"$</span><span class="si">{workspaceFolder}</span><span class="s2">/project/"</span><span class="p">,</span>
+            <span class="s2">"remoteRoot"</span><span class="p">:</span> <span class="s2">"/app/"</span>
         <span class="p">},</span>
         <span class="p">{</span>
-            <span class="s2">&quot;localRoot&quot;</span><span class="p">:</span> <span class="s2">&quot;$</span><span class="si">{workspaceFolder}</span><span class="s2">/c2cgeoportal/&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;remoteRoot&quot;</span><span class="p">:</span> <span class="s2">&quot;/opt/c2cgeoportal/&quot;</span>
+            <span class="s2">"localRoot"</span><span class="p">:</span> <span class="s2">"$</span><span class="si">{workspaceFolder}</span><span class="s2">/c2cgeoportal/"</span><span class="p">,</span>
+            <span class="s2">"remoteRoot"</span><span class="p">:</span> <span class="s2">"/opt/c2cgeoportal/"</span>
         <span class="p">}</span>
     <span class="p">]</span>
 <span class="p">},</span>
@@ -218,7 +218,7 @@ c2cgeoportal application.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">wsgi_lineprof.middleware</span><span class="w"> </span><span class="kn">import</span> <span class="n">LineProfilerMiddleware</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">wsgi_lineprof.filters</span><span class="w"> </span><span class="kn">import</span> <span class="n">FilenameFilter</span><span class="p">,</span> <span class="n">TotalTimeSorter</span>
 <span class="n">filters</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">FilenameFilter</span><span class="p">(</span><span class="s2">&quot;c2cgeoportal.*&quot;</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
+    <span class="n">FilenameFilter</span><span class="p">(</span><span class="s2">"c2cgeoportal.*"</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
     <span class="n">TotalTimeSorter</span><span class="p">(),</span>
 <span class="p">]</span>
 <span class="k">return</span> <span class="n">LineProfilerMiddleware</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">make_wsgi_app</span><span class="p">(),</span> <span class="n">filters</span><span class="o">=</span><span class="n">filters</span><span class="p">)</span>
@@ -232,7 +232,7 @@ c2cgeoportal application.</p>
 <section id="access-to-a-hidden-service">
 <h2>Access to a hidden service<a class="headerlink" href="#access-to-a-hidden-service" title="Link to this heading">¶</a></h2>
 <p>Within the Docker composition, you can access a port of a container; you can achieve this via <code class="docutils literal notranslate"><span class="pre">curl</span></code>, e.-g.:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tools<span class="w"> </span>curl<span class="w"> </span><span class="s2">&quot;http://mapserver:8080?SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=GetCapabilities&quot;</span></span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tools<span class="w"> </span>curl<span class="w"> </span><span class="s2">"http://mapserver:8080?SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=GetCapabilities"</span></span>
 </pre></div></div><p>You can also expose a service out of the Docker composition. For that, add a port in your
 <code class="docutils literal notranslate"><span class="pre">docker-compose.yaml</span></code>, e.g.:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">services</span><span class="p">:</span>
@@ -255,8 +255,8 @@ c2cgeoportal application.</p>
 <div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="nx">resolve</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">   </span><span class="nx">alias</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">     </span><span class="o">&lt;</span><span class="kr">package</span><span class="o">&gt;:</span><span class="w"> </span><span class="p">...,</span>
-<span class="o">+</span><span class="w">    </span><span class="nx">ngeo</span><span class="o">:</span><span class="w"> </span><span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;ngeo/src&#39;</span><span class="p">),</span>
-<span class="o">+</span><span class="w">    </span><span class="nx">gmf</span><span class="o">:</span><span class="w"> </span><span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;ngeo/contribs/gmf/src&#39;</span><span class="p">),</span>
+<span class="o">+</span><span class="w">    </span><span class="nx">ngeo</span><span class="o">:</span><span class="w"> </span><span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span><span class="w"> </span><span class="s1">'ngeo/src'</span><span class="p">),</span>
+<span class="o">+</span><span class="w">    </span><span class="nx">gmf</span><span class="o">:</span><span class="w"> </span><span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span><span class="w"> </span><span class="s1">'ngeo/contribs/gmf/src'</span><span class="p">),</span>
 <span class="w">   </span><span class="p">}</span>
 <span class="w"> </span><span class="p">}</span>
 </pre></div>

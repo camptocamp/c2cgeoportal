@@ -62,20 +62,20 @@ where the link shall appear in some instances, but not all.</p></li>
 if you list them in the <code class="docutils literal notranslate"><span class="pre">runtime_environment</span></code>:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">vars</span><span class="p">:</span>
 <span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
-<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">google_api_key</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">&#39;{GOOGLE_API_KEY}&#39;</span>
+<span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">google_api_key</span><span class="p p-Indicator">:</span><span class="w"> </span><span class="s">'{GOOGLE_API_KEY}'</span>
 <span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
 <span class="w">  </span><span class="nt">interfaces_config</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">default</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">constants</span><span class="p">:</span>
 <span class="w">        </span><span class="l l-Scalar l-Scalar-Plain">...</span>
 <span class="w">        </span><span class="l l-Scalar l-Scalar-Plain">gmfAuthenticationConfig</span><span class="p p-Indicator">:</span>
-<span class="w">          </span><span class="nt">allowPasswordReset</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{GMF_AUTH_PWD_RESET}&#39;</span>
+<span class="w">          </span><span class="nt">allowPasswordReset</span><span class="p">:</span><span class="w"> </span><span class="s">'{GMF_AUTH_PWD_RESET}'</span>
 <span class="nn">...</span>
 <span class="nt">runtime_environment</span><span class="p">:</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GOOGLE_API_KEY</span>
-<span class="w">  </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;***REMOVED***&#39;</span>
+<span class="w">  </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="s">'***REMOVED***'</span>
 <span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GMF_AUTH_PWD_RESET</span>
-<span class="w">  </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;false&#39;</span>
+<span class="w">  </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="s">'false'</span>
 </pre></div>
 </div>
 <p>Note that, in this example, the setting <code class="docutils literal notranslate"><span class="pre">allowPasswordReset</span></code> was added to the default
@@ -86,7 +86,7 @@ correct full path to this variable:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">runtime_environment</span><span class="p">:</span>
 <span class="nn">...</span>
 <span class="nt">runtime_postprocess</span><span class="p">:</span>
-<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">expression</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">str({}).lower() in (&quot;true&quot;, &quot;yes&quot;, &quot;1&quot;)</span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">expression</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">str({}).lower() in ("true", "yes", "1")</span>
 <span class="w">  </span><span class="nt">vars</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">interfaces_config.default.constants.gmfAuthenticationConfig.allowPasswordReset</span>
 </pre></div>

@@ -57,10 +57,10 @@ proxy:</p>
 <p>In Mako templates, if you need to know what scheme is used, you may test the
 value of <code class="docutils literal notranslate"><span class="pre">request.scheme</span></code>. For example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">var</span> <span class="n">WMTS_OPTIONS</span> <span class="o">=</span> <span class="p">{</span>
-<span class="o">%</span> <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">scheme</span> <span class="o">==</span> <span class="s1">&#39;https&#39;</span><span class="p">:</span>
-    <span class="n">url</span><span class="p">:</span> <span class="s1">&#39;https://my.wmts.server/&#39;</span>
+<span class="o">%</span> <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">scheme</span> <span class="o">==</span> <span class="s1">'https'</span><span class="p">:</span>
+    <span class="n">url</span><span class="p">:</span> <span class="s1">'https://my.wmts.server/'</span>
 <span class="o">%</span> <span class="k">else</span><span class="p">:</span>
-    <span class="n">url</span><span class="p">:</span> <span class="s1">&#39;https://my.wmts.server/&#39;</span>
+    <span class="n">url</span><span class="p">:</span> <span class="s1">'https://my.wmts.server/'</span>
 <span class="o">%</span> <span class="n">endif</span>
 <span class="o">/*</span> <span class="o">...</span> <span class="o">*/</span>
 <span class="p">};</span>

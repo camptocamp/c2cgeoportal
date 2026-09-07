@@ -114,12 +114,12 @@ span.prompt1:before {
 </style><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>tools<span class="w"> </span>psql<span class="w"> </span>--file<span class="o">=</span>/opt/clone_schema.sql</span>
 </pre></div></div><p>To use the function, connect to your database and perform the following statement:</p>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">clone_schema</span><span class="p">(</span>
-<span class="w">    </span><span class="s1">&#39;&lt;current_schema_name&gt;&#39;</span><span class="p">,</span>
-<span class="w">    </span><span class="s1">&#39;&lt;new_schema_name&gt;&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">TRUE</span><span class="p">);</span>
+<span class="w">    </span><span class="s1">'&lt;current_schema_name&gt;'</span><span class="p">,</span>
+<span class="w">    </span><span class="s1">'&lt;new_schema_name&gt;'</span><span class="p">,</span><span class="w"> </span><span class="k">TRUE</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>In our example, it will be:</p>
-<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">clone_schema</span><span class="p">(</span><span class="s1">&#39;main_2019&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;main_2020&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">TRUE</span><span class="p">);</span>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span><span class="w"> </span><span class="n">clone_schema</span><span class="p">(</span><span class="s1">'main_2019'</span><span class="p">,</span><span class="w"> </span><span class="s1">'main_2020'</span><span class="p">,</span><span class="w"> </span><span class="k">TRUE</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">PGSCHEMA</span></code> variable should be set in the <code class="docutils literal notranslate"><span class="pre">Makefile</span></code> to <code class="docutils literal notranslate"><span class="pre">main_2020</span></code>.</p>

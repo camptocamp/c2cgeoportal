@@ -79,18 +79,18 @@ span.prompt1:before {
 <span class="w">     </span>s3<span class="w"> </span>ls<span class="w"> </span>s3://&lt;bucket&gt;/&lt;folder&gt;</span>
 </pre></div></div><p>Create the vrt file for a raster layer:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="se">\</span>
-<span class="w">     </span><span class="s1">&#39;gdalbuildvrt /vsis3/&lt;bucket&gt;/&lt;folder&gt;/index.vrt \</span>
-<span class="s1">     $(list4vrt &lt;bucket&gt; &lt;folder&gt;/ .tif)&#39;</span></span>
+<span class="w">     </span><span class="s1">'gdalbuildvrt /vsis3/&lt;bucket&gt;/&lt;folder&gt;/index.vrt \</span>
+<span class="s1">     $(list4vrt &lt;bucket&gt; &lt;folder&gt;/ .tif)'</span></span>
 </pre></div></div><p>Azure connection string:</p>
 <p>Use list the container:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>azure<span class="w"> </span>--list-container</span>
 </pre></div></div><p>Use list the files:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>azure<span class="w"> </span>--container<span class="o">=</span>&lt;container&gt;<span class="w"> </span>--list<span class="w"> </span><span class="s1">&#39;&#39;</span></span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>azure<span class="w"> </span>--container<span class="o">=</span>&lt;container&gt;<span class="w"> </span>--list<span class="w"> </span><span class="s1">''</span></span>
 </pre></div></div><p>Create the vrt file for a raster layer:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>azure<span class="w"> </span>--container<span class="o">=</span>&lt;container&gt;<span class="w"> </span>--vrt<span class="w"> </span>&lt;folder&gt;/<span class="w"> </span>.tiff</span>
 </pre></div></div><p>Azure blob container URL:</p>
 <p>Use list the files:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>azure<span class="w"> </span>--list<span class="w"> </span><span class="s1">&#39;&#39;</span></span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>azure<span class="w"> </span>--list<span class="w"> </span><span class="s1">''</span></span>
 </pre></div></div><p>Create the vrt file for a raster layer:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>azure<span class="w"> </span>--vrt<span class="w"> </span>&lt;folder&gt;/<span class="w"> </span>.tiff</span>
 </pre></div></div></section>
@@ -99,13 +99,13 @@ span.prompt1:before {
 <p>Create the shape index file for a raster layer:</p>
 <p>Exoscale:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="se">\</span>
-<span class="w">     </span><span class="s1">&#39;gdaltindex mapserver/index.shp $( \</span>
+<span class="w">     </span><span class="s1">'gdaltindex mapserver/index.shp $( \</span>
 <span class="s1">         aws --endpoint-url http://${AWS_S3_ENDPOINT} \</span>
 <span class="s1">             --region ${AWS_DEFAULT_REGION} \</span>
 <span class="s1">             s3 ls s3://&lt;bucket&gt;/&lt;folder&gt;/ | \</span>
 <span class="s1">         grep tif$ | \</span>
-<span class="s1">         awk &#39;</span><span class="s2">&quot;&#39;&quot;</span><span class="s1">&#39;{print &quot;/vsis3/&lt;bucket&gt;/&lt;folder&gt;/&quot;$4}&#39;</span><span class="s2">&quot;&#39;&quot;</span><span class="s1">&#39; \</span>
-<span class="s1">     )&#39;</span></span>
+<span class="s1">         awk '</span><span class="s2">"'"</span><span class="s1">'{print "/vsis3/&lt;bucket&gt;/&lt;folder&gt;/"$4}'</span><span class="s2">"'"</span><span class="s1">' \</span>
+<span class="s1">     )'</span></span>
 <span class="prompt1"><span class="w"> </span>docker<span class="w"> </span>cp<span class="w"> </span>&lt;docker_compose_project_name&gt;_geoportal_1:/app/index.shp<span class="w"> </span>mapserver/</span>
 <span class="prompt1"><span class="w"> </span>docker<span class="w"> </span>cp<span class="w"> </span>&lt;docker_compose_project_name&gt;_geoportal_1:/app/index.shx<span class="w"> </span>mapserver/</span>
 <span class="prompt1"><span class="w"> </span>docker<span class="w"> </span>cp<span class="w"> </span>&lt;docker_compose_project_name&gt;_geoportal_1:/app/index.dbf<span class="w"> </span>mapserver/</span>
@@ -116,11 +116,11 @@ span.prompt1:before {
 <span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>rm<span class="w"> </span>index.dbf</span>
 <span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>rm<span class="w"> </span>index.prj</span>
 <span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="se">\</span>
-<span class="w">     </span><span class="s1">&#39;gdaltindex mapserver/index.shp $( \</span>
+<span class="w">     </span><span class="s1">'gdaltindex mapserver/index.shp $( \</span>
 <span class="s1">         azure --container=&lt;container&gt; --list &lt;folder&gt;/ | \</span>
 <span class="s1">         grep tiff$ | \</span>
-<span class="s1">         awk &#39;</span><span class="s2">&quot;&#39;&quot;</span><span class="s1">&#39;{print &quot;/vsiaz/&lt;container&gt;/&quot;$1}&#39;</span><span class="s2">&quot;&#39;&quot;</span><span class="s1">&#39; \</span>
-<span class="s1">     )&#39;</span></span>
+<span class="s1">         awk '</span><span class="s2">"'"</span><span class="s1">'{print "/vsiaz/&lt;container&gt;/"$1}'</span><span class="s2">"'"</span><span class="s1">' \</span>
+<span class="s1">     )'</span></span>
 <span class="prompt1"><span class="w"> </span>docker<span class="w"> </span>cp<span class="w"> </span>&lt;docker_compose_project_name&gt;_geoportal_1:/app/index.shp<span class="w"> </span>mapserver/&lt;set&gt;.shp</span>
 <span class="prompt1"><span class="w"> </span>docker<span class="w"> </span>cp<span class="w"> </span>&lt;docker_compose_project_name&gt;_geoportal_1:/app/index.shx<span class="w"> </span>mapserver/&lt;set&gt;.shx</span>
 <span class="prompt1"><span class="w"> </span>docker<span class="w"> </span>cp<span class="w"> </span>&lt;docker_compose_project_name&gt;_geoportal_1:/app/index.dbf<span class="w"> </span>mapserver/&lt;set&gt;.dbf</span>
@@ -131,53 +131,53 @@ span.prompt1:before {
 <span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>rm<span class="w"> </span>index.dbf</span>
 <span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>rm<span class="w"> </span>index.prj</span>
 <span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="se">\</span>
-<span class="w">     </span><span class="s1">&#39;gdaltindex mapserver/index.shp $( \</span>
+<span class="w">     </span><span class="s1">'gdaltindex mapserver/index.shp $( \</span>
 <span class="s1">         azure --list &lt;folder&gt;/ | \</span>
 <span class="s1">         grep tiff$ | \</span>
-<span class="s1">         awk &#39;</span><span class="s2">&quot;&#39;&quot;</span><span class="s1">&#39;{print &quot;/vsiaz/&lt;container&gt;/&quot;$1}&#39;</span><span class="s2">&quot;&#39;&quot;</span><span class="s1">&#39; \</span>
-<span class="s1">     )&#39;</span></span>
+<span class="s1">         awk '</span><span class="s2">"'"</span><span class="s1">'{print "/vsiaz/&lt;container&gt;/"$1}'</span><span class="s2">"'"</span><span class="s1">' \</span>
+<span class="s1">     )'</span></span>
 <span class="prompt1"><span class="w"> </span>docker<span class="w"> </span>cp<span class="w"> </span>&lt;docker_compose_project_name&gt;_geoportal_1:/app/index.shp<span class="w"> </span>mapserver/&lt;set&gt;.shp</span>
 <span class="prompt1"><span class="w"> </span>docker<span class="w"> </span>cp<span class="w"> </span>&lt;docker_compose_project_name&gt;_geoportal_1:/app/index.shx<span class="w"> </span>mapserver/&lt;set&gt;.shx</span>
 <span class="prompt1"><span class="w"> </span>docker<span class="w"> </span>cp<span class="w"> </span>&lt;docker_compose_project_name&gt;_geoportal_1:/app/index.dbf<span class="w"> </span>mapserver/&lt;set&gt;.dbf</span>
 <span class="prompt1"><span class="w"> </span>docker<span class="w"> </span>cp<span class="w"> </span>&lt;docker_compose_project_name&gt;_geoportal_1:/app/index.prj<span class="w"> </span>mapserver/&lt;set&gt;.prj</span>
 </pre></div></div><p>Add the following config in the <code class="docutils literal notranslate"><span class="pre">mapserver/mapserver.map.tmpl</span></code> file:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="s2">&quot;CPL_VSIL_CURL_USE_CACHE&quot;</span> <span class="s2">&quot;TRUE&quot;</span>
-<span class="n">CONFIG</span> <span class="s2">&quot;CPL_VSIL_CURL_CACHE_SIZE&quot;</span> <span class="s2">&quot;128000000&quot;</span>
-<span class="n">CONFIG</span> <span class="s2">&quot;CPL_VSIL_CURL_USE_HEAD&quot;</span> <span class="s2">&quot;FALSE&quot;</span>
-<span class="n">CONFIG</span> <span class="s2">&quot;GDAL_DISABLE_READDIR_ON_OPEN&quot;</span> <span class="s2">&quot;TRUE&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="s2">"CPL_VSIL_CURL_USE_CACHE"</span> <span class="s2">"TRUE"</span>
+<span class="n">CONFIG</span> <span class="s2">"CPL_VSIL_CURL_CACHE_SIZE"</span> <span class="s2">"128000000"</span>
+<span class="n">CONFIG</span> <span class="s2">"CPL_VSIL_CURL_USE_HEAD"</span> <span class="s2">"FALSE"</span>
+<span class="n">CONFIG</span> <span class="s2">"GDAL_DISABLE_READDIR_ON_OPEN"</span> <span class="s2">"TRUE"</span>
 </pre></div>
 </div>
 <p>Exoscale:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="s2">&quot;AWS_ACCESS_KEY_ID&quot;</span> <span class="s2">&quot;$</span><span class="si">{AWS_ACCESS_KEY_ID}</span><span class="s2">&quot;</span>
-<span class="n">CONFIG</span> <span class="s2">&quot;AWS_SECRET_ACCESS_KEY&quot;</span> <span class="s2">&quot;$</span><span class="si">{AWS_SECRET_ACCESS_KEY}</span><span class="s2">&quot;</span>
-<span class="n">CONFIG</span> <span class="s2">&quot;AWS_DEFAULT_REGION&quot;</span> <span class="s2">&quot;$</span><span class="si">{AWS_DEFAULT_REGION}</span><span class="s2">&quot;</span>
-<span class="n">CONFIG</span> <span class="s2">&quot;AWS_S3_ENDPOINT&quot;</span> <span class="s2">&quot;$</span><span class="si">{AWS_S3_ENDPOINT}</span><span class="s2">&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONFIG</span> <span class="s2">"AWS_ACCESS_KEY_ID"</span> <span class="s2">"$</span><span class="si">{AWS_ACCESS_KEY_ID}</span><span class="s2">"</span>
+<span class="n">CONFIG</span> <span class="s2">"AWS_SECRET_ACCESS_KEY"</span> <span class="s2">"$</span><span class="si">{AWS_SECRET_ACCESS_KEY}</span><span class="s2">"</span>
+<span class="n">CONFIG</span> <span class="s2">"AWS_DEFAULT_REGION"</span> <span class="s2">"$</span><span class="si">{AWS_DEFAULT_REGION}</span><span class="s2">"</span>
+<span class="n">CONFIG</span> <span class="s2">"AWS_S3_ENDPOINT"</span> <span class="s2">"$</span><span class="si">{AWS_S3_ENDPOINT}</span><span class="s2">"</span>
 </pre></div>
 </div>
 <p>Azure connection string:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>${DISABLE_LOCAL} CONFIG &quot;AZURE_STORAGE_CONNECTION_STRING&quot; &quot;${AZURE_STORAGE_CONNECTION_STRING}&quot;
-${DISABLE_MUTUALIZE} CONFIG &quot;AZURE_STORAGE_ACCOUNT&quot; &quot;${AZURE_STORAGE_ACCOUNT}&quot;
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>${DISABLE_LOCAL} CONFIG "AZURE_STORAGE_CONNECTION_STRING" "${AZURE_STORAGE_CONNECTION_STRING}"
+${DISABLE_MUTUALIZE} CONFIG "AZURE_STORAGE_ACCOUNT" "${AZURE_STORAGE_ACCOUNT}"
 </pre></div>
 </div>
 <p>Azure blob container URL:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>${DISABLE_LOCAL} CONFIG &quot;AZURE_STORAGE_ACCOUNT&quot; &quot;${AZURE_STORAGE_ACCOUNT}&quot;
-${DISABLE_LOCAL} CONFIG &quot;AZURE_STORAGE_SAS_TOKEN&quot; &quot;${AZURE_STORAGE_SAS_TOKEN}&quot;
-${DISABLE_MUTUALIZE} CONFIG &quot;AZURE_STORAGE_ACCOUNT&quot; &quot;${AZURE_STORAGE_ACCOUNT}&quot;
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>${DISABLE_LOCAL} CONFIG "AZURE_STORAGE_ACCOUNT" "${AZURE_STORAGE_ACCOUNT}"
+${DISABLE_LOCAL} CONFIG "AZURE_STORAGE_SAS_TOKEN" "${AZURE_STORAGE_SAS_TOKEN}"
+${DISABLE_MUTUALIZE} CONFIG "AZURE_STORAGE_ACCOUNT" "${AZURE_STORAGE_ACCOUNT}"
 </pre></div>
 </div>
 <p>Use the shape index in the layer:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">TYPE</span> <span class="n">RASTER</span>
 <span class="n">STATUS</span> <span class="n">ON</span>
-<span class="n">PROCESSING</span> <span class="s2">&quot;RESAMPLE=AVERAGE&quot;</span>
+<span class="n">PROCESSING</span> <span class="s2">"RESAMPLE=AVERAGE"</span>
 <span class="n">CONNECTIONTYPE</span> <span class="n">OGR</span>
-<span class="n">TILEINDEX</span> <span class="s2">&quot;index.shp&quot;</span>
-<span class="n">TILEITEM</span> <span class="s2">&quot;LOCATION&quot;</span>
+<span class="n">TILEINDEX</span> <span class="s2">"index.shp"</span>
+<span class="n">TILEITEM</span> <span class="s2">"LOCATION"</span>
 </pre></div>
 </div>
 <p>Add a vector layer for the object storage:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">CONNECTIONTYPE</span> <span class="n">OGR</span>
-<span class="n">CONNECTION</span> <span class="s2">&quot;$</span><span class="si">{RASTER_BASE_PATH}</span><span class="s2">&lt;path&gt;/&lt;name&gt;.shp&quot;</span>
-<span class="n">DATA</span> <span class="s2">&quot;&lt;name&gt;&quot;</span>
+<span class="n">CONNECTION</span> <span class="s2">"$</span><span class="si">{RASTER_BASE_PATH}</span><span class="s2">&lt;path&gt;/&lt;name&gt;.shp"</span>
+<span class="n">DATA</span> <span class="s2">"&lt;name&gt;"</span>
 </pre></div>
 </div>
 <p><a class="reference external" href="https://github.com/mapserver/mapserver/wiki/Render-images-straight-out-of-S3-with-the-vsicurl-driver">Some more information</a></p>

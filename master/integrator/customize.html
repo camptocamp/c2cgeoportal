@@ -173,21 +173,21 @@ add to <code class="docutils literal notranslate"><span class="pre">geoportal/&l
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">UserDetail</span><span class="p">(</span><span class="n">User</span><span class="p">):</span>
-    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;userdetail&#39;</span>
-    <span class="n">__table_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;schema&#39;</span><span class="p">:</span> <span class="n">_schema</span><span class="p">}</span>
-    <span class="n">__mapper_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;polymorphic_identity&#39;</span><span class="p">:</span> <span class="s1">&#39;detailed&#39;</span><span class="p">}</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">'userdetail'</span>
+    <span class="n">__table_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'schema'</span><span class="p">:</span> <span class="n">_schema</span><span class="p">}</span>
+    <span class="n">__mapper_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'polymorphic_identity'</span><span class="p">:</span> <span class="s1">'detailed'</span><span class="p">}</span>
     <span class="n">__colanderalchemy_config__</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;User detail&#39;</span><span class="p">),</span>
-        <span class="s1">&#39;plural&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;User details&#39;</span><span class="p">)</span>
+        <span class="s1">'title'</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">'User detail'</span><span class="p">),</span>
+        <span class="s1">'plural'</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">'User details'</span><span class="p">)</span>
     <span class="p">}</span>
     <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span>
         <span class="n">types</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span>
-        <span class="n">ForeignKey</span><span class="p">(</span><span class="n">_schema</span> <span class="o">+</span> <span class="s1">&#39;.user.id&#39;</span><span class="p">),</span>
+        <span class="n">ForeignKey</span><span class="p">(</span><span class="n">_schema</span> <span class="o">+</span> <span class="s1">'.user.id'</span><span class="p">),</span>
         <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">info</span><span class="o">=</span><span class="p">{</span>
-            <span class="s2">&quot;colanderalchemy&quot;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s2">&quot;missing&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-                <span class="s2">&quot;widget&quot;</span><span class="p">:</span> <span class="n">HiddenWidget</span><span class="p">()</span>
+            <span class="s2">"colanderalchemy"</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">"missing"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+                <span class="s2">"widget"</span><span class="p">:</span> <span class="n">HiddenWidget</span><span class="p">()</span>
             <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">)</span>
@@ -195,32 +195,32 @@ add to <code class="docutils literal notranslate"><span class="pre">geoportal/&l
     <span class="n">phone</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span>
         <span class="n">types</span><span class="o">.</span><span class="n">Unicode</span><span class="p">,</span>
         <span class="n">info</span><span class="o">=</span><span class="p">{</span>
-            <span class="s1">&#39;colanderalchemy&#39;</span><span class="p">:</span> <span class="p">{</span>
-                <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Phone&#39;</span><span class="p">)</span>
+            <span class="s1">'colanderalchemy'</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s1">'title'</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">'Phone'</span><span class="p">)</span>
             <span class="p">}</span>
         <span class="p">}</span>
     <span class="p">)</span>
 
     <span class="c1"># title</span>
-    <span class="n">title_id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">_schema</span> <span class="o">+</span> <span class="s1">&#39;.title.id&#39;</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">title</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s2">&quot;Title&quot;</span><span class="p">,</span> <span class="n">backref</span><span class="o">=</span><span class="n">backref</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">),</span> <span class="n">info</span><span class="o">=</span><span class="p">{</span>
-        <span class="s1">&#39;colanderalchemy&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Title&#39;</span><span class="p">)</span>
+    <span class="n">title_id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">Integer</span><span class="p">,</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">_schema</span> <span class="o">+</span> <span class="s1">'.title.id'</span><span class="p">),</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">relationship</span><span class="p">(</span><span class="s2">"Title"</span><span class="p">,</span> <span class="n">backref</span><span class="o">=</span><span class="n">backref</span><span class="p">(</span><span class="s1">'users'</span><span class="p">),</span> <span class="n">info</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">'colanderalchemy'</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">'title'</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">'Title'</span><span class="p">)</span>
         <span class="p">}</span>
     <span class="p">})</span>
 
 
 <span class="k">class</span><span class="w"> </span><span class="nc">Title</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
-    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">&#39;title&#39;</span>
-    <span class="n">__table_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;schema&#39;</span><span class="p">:</span> <span class="n">_schema</span><span class="p">}</span>
+    <span class="n">__tablename__</span> <span class="o">=</span> <span class="s1">'title'</span>
+    <span class="n">__table_args__</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'schema'</span><span class="p">:</span> <span class="n">_schema</span><span class="p">}</span>
     <span class="n">__colanderalchemy_config__</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Title&#39;</span><span class="p">),</span>
-        <span class="s1">&#39;plural&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Titles&#39;</span><span class="p">)</span>
+        <span class="s1">'title'</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">'Title'</span><span class="p">),</span>
+        <span class="s1">'plural'</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">'Titles'</span><span class="p">)</span>
     <span class="p">}</span>
     <span class="nb">id</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">Integer</span><span class="p">,</span> <span class="n">primary_key</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">Column</span><span class="p">(</span><span class="n">types</span><span class="o">.</span><span class="n">Unicode</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">info</span><span class="o">=</span><span class="p">{</span>
-        <span class="s1">&#39;colanderalchemy&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Name&#39;</span><span class="p">)</span>
+        <span class="s1">'colanderalchemy'</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">'title'</span><span class="p">:</span> <span class="n">_</span><span class="p">(</span><span class="s1">'Name'</span><span class="p">)</span>
         <span class="p">}</span>
     <span class="p">})</span>
 </pre></div>
@@ -249,37 +249,37 @@ For this, first ensure that the following files exist (if needed, create them as
 
 <span class="n">_list_field</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">ListField</span><span class="p">,</span> <span class="n">UserDetail</span><span class="p">)</span>
 
-<span class="n">base_schema</span> <span class="o">=</span> <span class="n">GeoFormSchemaNode</span><span class="p">(</span><span class="n">UserDetail</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="n">FormWidget</span><span class="p">(</span><span class="n">fields_template</span><span class="o">=</span><span class="s2">&quot;user_fields&quot;</span><span class="p">))</span>
+<span class="n">base_schema</span> <span class="o">=</span> <span class="n">GeoFormSchemaNode</span><span class="p">(</span><span class="n">UserDetail</span><span class="p">,</span> <span class="n">widget</span><span class="o">=</span><span class="n">FormWidget</span><span class="p">(</span><span class="n">fields_template</span><span class="o">=</span><span class="s2">"user_fields"</span><span class="p">))</span>
 <span class="n">base_schema</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">roles_schema_node</span><span class="p">(</span><span class="n">User</span><span class="o">.</span><span class="n">roles</span><span class="p">))</span>
 <span class="n">base_schema</span><span class="o">.</span><span class="n">add_unique_validator</span><span class="p">(</span><span class="n">UserDetail</span><span class="o">.</span><span class="n">username</span><span class="p">,</span> <span class="n">UserDetail</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
 
 <span class="n">settings_role</span> <span class="o">=</span> <span class="n">aliased</span><span class="p">(</span><span class="n">Role</span><span class="p">)</span>
 
 
-<span class="nd">@view_defaults</span><span class="p">(</span><span class="n">match_param</span><span class="o">=</span><span class="s1">&#39;table=userdetails&#39;</span><span class="p">)</span>
+<span class="nd">@view_defaults</span><span class="p">(</span><span class="n">match_param</span><span class="o">=</span><span class="s1">'table=userdetails'</span><span class="p">)</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">UserDetailViews</span><span class="p">(</span><span class="n">UserViews</span><span class="p">):</span>
     <span class="n">_list_fields</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">_list_field</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">),</span>
-        <span class="n">_list_field</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">),</span>
-        <span class="n">_list_field</span><span class="p">(</span><span class="s1">&#39;title&#39;</span><span class="p">),</span>
-        <span class="n">_list_field</span><span class="p">(</span><span class="s1">&#39;email&#39;</span><span class="p">),</span>
-        <span class="n">_list_field</span><span class="p">(</span><span class="s1">&#39;last_login&#39;</span><span class="p">),</span>
-        <span class="n">_list_field</span><span class="p">(</span><span class="s1">&#39;expire_on&#39;</span><span class="p">),</span>
-        <span class="n">_list_field</span><span class="p">(</span><span class="s1">&#39;deactivated&#39;</span><span class="p">),</span>
-        <span class="n">_list_field</span><span class="p">(</span><span class="s1">&#39;phone&#39;</span><span class="p">),</span>
+        <span class="n">_list_field</span><span class="p">(</span><span class="s1">'id'</span><span class="p">),</span>
+        <span class="n">_list_field</span><span class="p">(</span><span class="s1">'username'</span><span class="p">),</span>
+        <span class="n">_list_field</span><span class="p">(</span><span class="s1">'title'</span><span class="p">),</span>
+        <span class="n">_list_field</span><span class="p">(</span><span class="s1">'email'</span><span class="p">),</span>
+        <span class="n">_list_field</span><span class="p">(</span><span class="s1">'last_login'</span><span class="p">),</span>
+        <span class="n">_list_field</span><span class="p">(</span><span class="s1">'expire_on'</span><span class="p">),</span>
+        <span class="n">_list_field</span><span class="p">(</span><span class="s1">'deactivated'</span><span class="p">),</span>
+        <span class="n">_list_field</span><span class="p">(</span><span class="s1">'phone'</span><span class="p">),</span>
         <span class="n">_list_field</span><span class="p">(</span>
-            <span class="s2">&quot;settings_role&quot;</span><span class="p">,</span>
-            <span class="n">renderer</span><span class="o">=</span><span class="k">lambda</span> <span class="n">user</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">settings_role</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">settings_role</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="s2">"settings_role"</span><span class="p">,</span>
+            <span class="n">renderer</span><span class="o">=</span><span class="k">lambda</span> <span class="n">user</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">settings_role</span><span class="o">.</span><span class="n">name</span> <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">settings_role</span> <span class="k">else</span> <span class="s2">""</span><span class="p">,</span>
             <span class="n">sort_column</span><span class="o">=</span><span class="n">settings_role</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
             <span class="n">filter_column</span><span class="o">=</span><span class="n">settings_role</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="n">_list_field</span><span class="p">(</span>
-            <span class="s2">&quot;roles&quot;</span><span class="p">,</span>
-            <span class="n">renderer</span><span class="o">=</span><span class="k">lambda</span> <span class="n">user</span><span class="p">:</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">r</span><span class="o">.</span><span class="n">name</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">user</span><span class="o">.</span><span class="n">roles</span><span class="p">]),</span>
+            <span class="s2">"roles"</span><span class="p">,</span>
+            <span class="n">renderer</span><span class="o">=</span><span class="k">lambda</span> <span class="n">user</span><span class="p">:</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">r</span><span class="o">.</span><span class="n">name</span> <span class="ow">or</span> <span class="s2">""</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">user</span><span class="o">.</span><span class="n">roles</span><span class="p">]),</span>
             <span class="n">filter_column</span><span class="o">=</span><span class="n">Role</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span>
-    <span class="n">_id_field</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span>
+    <span class="n">_id_field</span> <span class="o">=</span> <span class="s1">'id'</span>
     <span class="n">_model</span> <span class="o">=</span> <span class="n">UserDetail</span>
     <span class="n">_base_schema</span> <span class="o">=</span> <span class="n">base_schema</span>
 
@@ -294,47 +294,47 @@ For this, first ensure that the following files exist (if needed, create them as
         <span class="p">)</span>
 
     <span class="nd">@view_config</span><span class="p">(</span>
-        <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;c2cgeoform_index&#39;</span><span class="p">,</span>
-        <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;./templates/index.jinja2&#39;</span>
+        <span class="n">route_name</span><span class="o">=</span><span class="s1">'c2cgeoform_index'</span><span class="p">,</span>
+        <span class="n">renderer</span><span class="o">=</span><span class="s1">'./templates/index.jinja2'</span>
     <span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">()</span>
 
     <span class="nd">@view_config</span><span class="p">(</span>
-        <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;c2cgeoform_grid&#39;</span><span class="p">,</span>
-        <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;fast_json&#39;</span>
+        <span class="n">route_name</span><span class="o">=</span><span class="s1">'c2cgeoform_grid'</span><span class="p">,</span>
+        <span class="n">renderer</span><span class="o">=</span><span class="s1">'fast_json'</span>
     <span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">grid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
 
     <span class="nd">@view_config</span><span class="p">(</span>
-        <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;c2cgeoform_item&#39;</span><span class="p">,</span>
-        <span class="n">request_method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span>
-        <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;./templates/edit.jinja2&#39;</span>
+        <span class="n">route_name</span><span class="o">=</span><span class="s1">'c2cgeoform_item'</span><span class="p">,</span>
+        <span class="n">request_method</span><span class="o">=</span><span class="s1">'GET'</span><span class="p">,</span>
+        <span class="n">renderer</span><span class="o">=</span><span class="s1">'./templates/edit.jinja2'</span>
     <span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">edit</span><span class="p">()</span>
 
     <span class="nd">@view_config</span><span class="p">(</span>
-        <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;c2cgeoform_item&#39;</span><span class="p">,</span>
-        <span class="n">request_method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span>
-        <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;./templates/edit.jinja2&#39;</span>
+        <span class="n">route_name</span><span class="o">=</span><span class="s1">'c2cgeoform_item'</span><span class="p">,</span>
+        <span class="n">request_method</span><span class="o">=</span><span class="s1">'POST'</span><span class="p">,</span>
+        <span class="n">renderer</span><span class="o">=</span><span class="s1">'./templates/edit.jinja2'</span>
     <span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 
     <span class="nd">@view_config</span><span class="p">(</span>
-        <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;c2cgeoform_item&#39;</span><span class="p">,</span>
-        <span class="n">request_method</span><span class="o">=</span><span class="s1">&#39;DELETE&#39;</span><span class="p">,</span>
-        <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;fast_json&#39;</span>
+        <span class="n">route_name</span><span class="o">=</span><span class="s1">'c2cgeoform_item'</span><span class="p">,</span>
+        <span class="n">request_method</span><span class="o">=</span><span class="s1">'DELETE'</span><span class="p">,</span>
+        <span class="n">renderer</span><span class="o">=</span><span class="s1">'fast_json'</span>
     <span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
 
     <span class="nd">@view_config</span><span class="p">(</span>
-        <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;c2cgeoform_item_duplicate&#39;</span><span class="p">,</span>
-        <span class="n">request_method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span>
-        <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;./templates/edit.jinja2&#39;</span>
+        <span class="n">route_name</span><span class="o">=</span><span class="s1">'c2cgeoform_item_duplicate'</span><span class="p">,</span>
+        <span class="n">request_method</span><span class="o">=</span><span class="s1">'GET'</span><span class="p">,</span>
+        <span class="n">renderer</span><span class="o">=</span><span class="s1">'./templates/edit.jinja2'</span>
     <span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">duplicate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">duplicate</span><span class="p">()</span>
@@ -353,58 +353,58 @@ For this, first ensure that the following files exist (if needed, create them as
 <span class="n">_list_field</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">ListField</span><span class="p">,</span> <span class="n">Title</span><span class="p">)</span>
 
 
-<span class="nd">@view_defaults</span><span class="p">(</span><span class="n">match_param</span><span class="o">=</span><span class="s1">&#39;table=titles&#39;</span><span class="p">)</span>
+<span class="nd">@view_defaults</span><span class="p">(</span><span class="n">match_param</span><span class="o">=</span><span class="s1">'table=titles'</span><span class="p">)</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">TitleViews</span><span class="p">(</span><span class="n">AbstractViews</span><span class="p">):</span>
     <span class="n">_list_fields</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="n">_list_field</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">),</span>
-        <span class="n">_list_field</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">),</span>
+        <span class="n">_list_field</span><span class="p">(</span><span class="s1">'id'</span><span class="p">),</span>
+        <span class="n">_list_field</span><span class="p">(</span><span class="s1">'name'</span><span class="p">),</span>
     <span class="p">]</span>
-    <span class="n">_id_field</span> <span class="o">=</span> <span class="s1">&#39;id&#39;</span>
+    <span class="n">_id_field</span> <span class="o">=</span> <span class="s1">'id'</span>
     <span class="n">_model</span> <span class="o">=</span> <span class="n">Title</span>
     <span class="n">_base_schema</span> <span class="o">=</span> <span class="n">base_schema</span>
 
     <span class="nd">@view_config</span><span class="p">(</span>
-        <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;c2cgeoform_index&#39;</span><span class="p">,</span>
-        <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;./templates/index.jinja2&#39;</span>
+        <span class="n">route_name</span><span class="o">=</span><span class="s1">'c2cgeoform_index'</span><span class="p">,</span>
+        <span class="n">renderer</span><span class="o">=</span><span class="s1">'./templates/index.jinja2'</span>
     <span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="p">()</span>
 
     <span class="nd">@view_config</span><span class="p">(</span>
-        <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;c2cgeoform_grid&#39;</span><span class="p">,</span>
-        <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;fast_json&#39;</span>
+        <span class="n">route_name</span><span class="o">=</span><span class="s1">'c2cgeoform_grid'</span><span class="p">,</span>
+        <span class="n">renderer</span><span class="o">=</span><span class="s1">'fast_json'</span>
     <span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">grid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
 
     <span class="nd">@view_config</span><span class="p">(</span>
-        <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;c2cgeoform_item&#39;</span><span class="p">,</span>
-        <span class="n">request_method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span>
-        <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;./templates/edit.jinja2&#39;</span>
+        <span class="n">route_name</span><span class="o">=</span><span class="s1">'c2cgeoform_item'</span><span class="p">,</span>
+        <span class="n">request_method</span><span class="o">=</span><span class="s1">'GET'</span><span class="p">,</span>
+        <span class="n">renderer</span><span class="o">=</span><span class="s1">'./templates/edit.jinja2'</span>
     <span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">view</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">edit</span><span class="p">()</span>
 
     <span class="nd">@view_config</span><span class="p">(</span>
-        <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;c2cgeoform_item&#39;</span><span class="p">,</span>
-        <span class="n">request_method</span><span class="o">=</span><span class="s1">&#39;POST&#39;</span><span class="p">,</span>
-        <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;./templates/edit.jinja2&#39;</span>
+        <span class="n">route_name</span><span class="o">=</span><span class="s1">'c2cgeoform_item'</span><span class="p">,</span>
+        <span class="n">request_method</span><span class="o">=</span><span class="s1">'POST'</span><span class="p">,</span>
+        <span class="n">renderer</span><span class="o">=</span><span class="s1">'./templates/edit.jinja2'</span>
     <span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 
     <span class="nd">@view_config</span><span class="p">(</span>
-        <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;c2cgeoform_item&#39;</span><span class="p">,</span>
-        <span class="n">request_method</span><span class="o">=</span><span class="s1">&#39;DELETE&#39;</span><span class="p">,</span>
-        <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;fast_json&#39;</span>
+        <span class="n">route_name</span><span class="o">=</span><span class="s1">'c2cgeoform_item'</span><span class="p">,</span>
+        <span class="n">request_method</span><span class="o">=</span><span class="s1">'DELETE'</span><span class="p">,</span>
+        <span class="n">renderer</span><span class="o">=</span><span class="s1">'fast_json'</span>
     <span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
 
     <span class="nd">@view_config</span><span class="p">(</span>
-        <span class="n">route_name</span><span class="o">=</span><span class="s1">&#39;c2cgeoform_item_duplicate&#39;</span><span class="p">,</span>
-        <span class="n">request_method</span><span class="o">=</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span>
-        <span class="n">renderer</span><span class="o">=</span><span class="s1">&#39;./templates/edit.jinja2&#39;</span>
+        <span class="n">route_name</span><span class="o">=</span><span class="s1">'c2cgeoform_item_duplicate'</span><span class="p">,</span>
+        <span class="n">request_method</span><span class="o">=</span><span class="s1">'GET'</span><span class="p">,</span>
+        <span class="n">renderer</span><span class="o">=</span><span class="s1">'./templates/edit.jinja2'</span>
     <span class="p">)</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">duplicate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">duplicate</span><span class="p">()</span>
@@ -438,8 +438,8 @@ For this, first ensure that the following files exist (if needed, create them as
 
 <span class="k">with</span> <span class="n">PermissionSetter</span><span class="p">(</span><span class="n">config</span><span class="p">):</span>
     <span class="c1"># Scan view decorator for adding routes</span>
-    <span class="n">config</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="s1">&#39;&lt;package&gt;_geoportal.admin.views&#39;</span><span class="p">)</span>
-<span class="n">config</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">ignore</span><span class="o">=</span><span class="s1">&#39;&lt;package&gt;_geoportal.admin.views&#39;</span><span class="p">)</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="s1">'&lt;package&gt;_geoportal.admin.views'</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">ignore</span><span class="o">=</span><span class="s1">'&lt;package&gt;_geoportal.admin.views'</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Build and run the application:</p>
@@ -458,8 +458,8 @@ span.prompt1:before {
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">c2cgeoportal_commons.models</span>
 
-<span class="n">config</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="s1">&#39;/etc/geomapfish/config.yaml&#39;</span><span class="p">)</span>
-<span class="n">engine</span> <span class="o">=</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">engine_from_config</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">get_config</span><span class="p">(),</span> <span class="s1">&#39;sqlalchemy.&#39;</span><span class="p">)</span>
+<span class="n">config</span><span class="o">.</span><span class="n">init</span><span class="p">(</span><span class="s1">'/etc/geomapfish/config.yaml'</span><span class="p">)</span>
+<span class="n">engine</span> <span class="o">=</span> <span class="n">sqlalchemy</span><span class="o">.</span><span class="n">engine_from_config</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">get_config</span><span class="p">(),</span> <span class="s1">'sqlalchemy.'</span><span class="p">)</span>
 <span class="n">c2cgeoportal_commons</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">Base</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">bind</span> <span class="o">=</span> <span class="n">engine</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="o">&lt;</span><span class="n">package</span><span class="o">&gt;</span><span class="n">_geoportal</span><span class="o">.</span><span class="n">models</span> <span class="kn">import</span><span class="w"> </span><span class="nn">Title</span><span class="o">,</span><span class="w"> </span><span class="nn">UserDetail</span>
