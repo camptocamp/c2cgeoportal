@@ -661,7 +661,8 @@ prefix and <code class="docutils literal notranslate"><span class="pre">__</span
 (default: <code class="docutils literal notranslate"><span class="pre">1</span></code>)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__IGNORE_CONFIG_ERROR</span></code>: Ignore configuration errors if set to <code class="docutils literal notranslate"><span class="pre">true</span></code>
 (default: <code class="docutils literal notranslate"><span class="pre">false</span></code>)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__MAX_GENERATION_TIME</span></code>: Maximum tile generation time in seconds before timeout
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__MAX_GENERATION_TIME</span></code>: Maximum tile generation time before timeout, accepts ISO 8601
+durations (e.g.: <code class="docutils literal notranslate"><span class="pre">PT1M</span></code>), short format (e.g.: <code class="docutils literal notranslate"><span class="pre">60s</span></code>, <code class="docutils literal notranslate"><span class="pre">1m</span></code>) or seconds (e.g.: <code class="docutils literal notranslate"><span class="pre">60</span></code>)
 (default: <code class="docutils literal notranslate"><span class="pre">60</span></code>)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__ALLOWED_PROCESS_COMMANDS</span></code>: Comma-separated list of allowed process commands
 (default: <code class="docutils literal notranslate"><span class="pre">optipng,jpegoptim,pngquant</span></code>)</p></li>
@@ -726,8 +727,18 @@ prefix and <code class="docutils literal notranslate"><span class="pre">__</span
 (default: <code class="docutils literal notranslate"><span class="pre">false</span></code>)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__POSTGRESQL__OBJGRAPH_LIMIT</span></code>: Number of entries to include in PostgreSQL objgraph reports
 (default: <code class="docutils literal notranslate"><span class="pre">10</span></code>)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__POSTGRESQL__INIT_TIMEOUT</span></code>: Timeout in seconds for PostgreSQL database initialization
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__POSTGRESQL__INIT_TIMEOUT</span></code>: Timeout for PostgreSQL database initialization, accepts
+ISO 8601 durations (e.g.: <code class="docutils literal notranslate"><span class="pre">PT30S</span></code>), short format (e.g.: <code class="docutils literal notranslate"><span class="pre">30s</span></code>, <code class="docutils literal notranslate"><span class="pre">1m</span></code>) or seconds (e.g.: <code class="docutils literal notranslate"><span class="pre">30</span></code>)
 (default: <code class="docutils literal notranslate"><span class="pre">30</span></code>)</p></li>
+</ul>
+<p>Redis:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__REDIS__TIMEOUT</span></code>: Timeout used when waiting for messages from the Redis queue, accepts
+ISO 8601 durations (e.g.: <code class="docutils literal notranslate"><span class="pre">PT5S</span></code>), short format (e.g.: <code class="docutils literal notranslate"><span class="pre">5s</span></code>, <code class="docutils literal notranslate"><span class="pre">1m</span></code>) or seconds (e.g.: <code class="docutils literal notranslate"><span class="pre">5</span></code>)
+(default: <code class="docutils literal notranslate"><span class="pre">None</span></code>, the <code class="docutils literal notranslate"><span class="pre">redis.timeout</span></code> of the main configuration is used, <code class="docutils literal notranslate"><span class="pre">5</span></code> by default)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__REDIS__SOCKET_TIMEOUT</span></code>: Redis socket timeout, accepts ISO 8601 durations (e.g.: <code class="docutils literal notranslate"><span class="pre">PT30S</span></code>),
+short format (e.g.: <code class="docutils literal notranslate"><span class="pre">30s</span></code>, <code class="docutils literal notranslate"><span class="pre">1m</span></code>) or seconds (e.g.: <code class="docutils literal notranslate"><span class="pre">30</span></code>)
+(default: <code class="docutils literal notranslate"><span class="pre">None</span></code>, the <code class="docutils literal notranslate"><span class="pre">redis.socket_timeout</span></code> of the main configuration is used)</p></li>
 </ul>
 <p>See also: <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/settings.py">settings.py</a>.</p>
 </section>
