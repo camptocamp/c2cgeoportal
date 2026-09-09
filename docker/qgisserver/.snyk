@@ -2,6 +2,10 @@
 version: v1.25.1
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
+  SNYK-PYTHON-SETUPTOOLS-17895075:
+    - '*':
+        reason: Patched version not available for used Python version
+        created: 2026-09-09T10:49:42.000Z
   SNYK-PYTHON-SETUPTOOLS-9964606:
     - '*':
         reason: Patched version not available for used Python version

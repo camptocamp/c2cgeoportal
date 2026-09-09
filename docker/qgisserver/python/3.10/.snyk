@@ -6,6 +6,10 @@ ignore:
     - '*':
         reason: Unable to install this version, we shouldn't be impacted by this vulnerability
         created: 2024-08-15T05:44:43.586Z
+  SNYK-PYTHON-SETUPTOOLS-17895075:
+    - '*':
+        reason: Patched version not available for used Python version
+        created: 2026-09-09T10:49:42.000Z
   SNYK-PYTHON-SETUPTOOLS-9964606:
     - '*':
         reason: Patched version not available for used Python version
