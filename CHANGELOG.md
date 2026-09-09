@@ -1,3 +1,8 @@
+##### 2.7.1.327
+
+- Update dependency gitpython to v3.1.59 [SECURITY] (2.7) [c2cgeoportal#13286](https://github.com/camptocamp/c2cgeoportal/pull/13286)
+- Audit Snyk check/fix 2.7 [c2cgeoportal#13299](https://github.com/camptocamp/c2cgeoportal/pull/13299)
+
 ##### 2.7.1.326
 
 - Update dependency lxml to v6.1.2 (2.7) [c2cgeoportal#13258](https://github.com/camptocamp/c2cgeoportal/pull/13258)
