@@ -227,6 +227,9 @@ class MapservProxy(OGCProxy):
             cache=use_cache,
             headers=headers,
             body=self.request.body,
+            # The OGC API backends build the links from the request URL, the original Host header
+            # is required to have correct links (protocol and hostname) in the generated responses.
+            forward_host=True,
         )
 
     def _proxy_callback(

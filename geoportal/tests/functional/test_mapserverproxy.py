@@ -287,6 +287,8 @@ class TestMapserverproxyView(TestCase):
             response = MapservProxy(request).proxy_ogcapi_mapserver()
         assert response.status_code == 200
         assert mock_request.call_args.args[1].startswith("http://mapserver:8080/ogcapi?")
+        # The original Host header is forwarded to build correct links in the OGC API responses
+        assert mock_request.call_args.kwargs["headers"]["Host"] == "example.com"
 
     def test_ogcapi_qgisserver_landing(self) -> None:
         from unittest.mock import MagicMock, patch
@@ -306,6 +308,8 @@ class TestMapserverproxyView(TestCase):
             response = MapservProxy(request).proxy_ogcapi_qgisserver()
         assert response.status_code == 200
         assert mock_request.call_args.args[1].startswith("http://mapserver:8080/wfs3?")
+        # The original Host header is forwarded to build correct links in the OGC API responses
+        assert mock_request.call_args.kwargs["headers"]["Host"] == "example.com"
 
     def test_get_legend_graphic(self) -> None:
         from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
