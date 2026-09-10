@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2025, Camptocamp SA
+# Copyright (c) 2013-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -268,6 +268,44 @@ class TestMapserverproxyView(TestCase):
         request = self._create_dummy_request()
         response = MapservProxy(request).proxy()
         assert response.status_code == 200
+
+    def test_ogcapi_mapserver_landing(self) -> None:
+        from unittest.mock import MagicMock, patch
+
+        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
+
+        request = self._create_dummy_request()
+        request.method = "GET"
+        # The landing route `/mapserv_proxy/{ogcserver}/ogcapi` has no `path` element in the matchdict
+        request.matchdict = {"ogcserver": "__test_ogc_server"}
+        backend_response = MagicMock()
+        backend_response.ok = True
+        backend_response.status_code = 200
+        backend_response.content = b"{}"
+        backend_response.headers = {"Content-Type": "application/json"}
+        with patch("requests.request", return_value=backend_response) as mock_request:
+            response = MapservProxy(request).proxy_ogcapi_mapserver()
+        assert response.status_code == 200
+        assert mock_request.call_args.args[1].startswith("http://mapserver:8080/ogcapi?")
+
+    def test_ogcapi_qgisserver_landing(self) -> None:
+        from unittest.mock import MagicMock, patch
+
+        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
+
+        request = self._create_dummy_request()
+        request.method = "GET"
+        # The landing route `/mapserv_proxy/{ogcserver}/wfs3` has no `path` element in the matchdict
+        request.matchdict = {"ogcserver": "__test_ogc_server"}
+        backend_response = MagicMock()
+        backend_response.ok = True
+        backend_response.status_code = 200
+        backend_response.content = b"{}"
+        backend_response.headers = {"Content-Type": "application/json"}
+        with patch("requests.request", return_value=backend_response) as mock_request:
+            response = MapservProxy(request).proxy_ogcapi_qgisserver()
+        assert response.status_code == 200
+        assert mock_request.call_args.args[1].startswith("http://mapserver:8080/wfs3?")
 
     def test_get_legend_graphic(self) -> None:
         from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy

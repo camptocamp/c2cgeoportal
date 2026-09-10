@@ -34,12 +34,12 @@ For QGIS Server, the URL didn't changes, it is ``config://qgisserver?MAP=<projec
 
 QGIS Server and MapServer are already configured to support the OGC API and detect automatically if the compatible path is requested.
 
-Landing pages for both MapServer and QGIS Server are not supported yet.
-
 OGC API features are accessible through ``mapserv_proxy``, with the following URLs:
 
-* ``/mapserv_proxy/<ogc-server>/ogcapi/*``: The MapServer path.
-* ``/mapserv_proxy/<ogc-server>/wfs3/*``: The QGIS Server path.
+* ``/mapserv_proxy/<ogc-server>/ogcapi`` and ``/mapserv_proxy/<ogc-server>/ogcapi/*``: The MapServer paths,
+  the first one is the landing page.
+* ``/mapserv_proxy/<ogc-server>/wfs3`` and ``/mapserv_proxy/<ogc-server>/wfs3/*``: The QGIS Server paths,
+  the first one is the landing page.
 
 
 OGC API Documentation
