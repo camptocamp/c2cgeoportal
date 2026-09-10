@@ -465,7 +465,8 @@ URL: ``.../search/capabilities``
 Parameters
 ----------
 
-None.
+* ``lang``: Language used to filter the categories (optional). If not provided, the locale negotiated from the request is used.
+* ``interface``: Filter categories to a specific interface (optional). If not provided, only entries without interface are considered.
 
 Result
 ------
@@ -480,6 +481,10 @@ Result
     }
 
 The list contains all distinct non-null ``category`` values (``layer_name`` in the table) sorted alphabetically.
+
+Like for the search endpoint, the categories are filtered to what the current user can see
+(public entries, entries without role for registered users, and entries of the user roles)
+and to the used language (entries without language are always kept).
 
 
 Layers
