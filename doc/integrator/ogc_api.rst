@@ -36,10 +36,12 @@ QGIS Server and MapServer are already configured to support the OGC API and dete
 
 OGC API features are accessible through ``mapserv_proxy``, with the following URLs:
 
-* ``/mapserv_proxy/<ogc-server>/ogcapi`` and ``/mapserv_proxy/<ogc-server>/ogcapi/*``: The MapServer paths,
-  the first one is the landing page.
-* ``/mapserv_proxy/<ogc-server>/wfs3`` and ``/mapserv_proxy/<ogc-server>/wfs3/*``: The QGIS Server paths,
-  the first one is the landing page.
+* ``/mapserv_proxy/<ogc-server>/ogcapi`` and ``/mapserv_proxy/<ogc-server>/ogcapi/*``:
+  The MapServer and QGIS Server paths, the first one is the landing page.
+
+QGIS Server uses ``/ogcapi`` as the OGC API root by default since QGIS 4, it can be configured with
+``QGIS_SERVER_API_WFS3_ROOT_PATH`` since QGIS 3.44.3. The former ``/mapserv_proxy/<ogc-server>/wfs3/*``
+paths are removed.
 
 
 OGC API Documentation

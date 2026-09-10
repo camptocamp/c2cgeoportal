@@ -192,11 +192,6 @@ class MapservProxy(OGCProxy):
     def proxy_ogcapi_mapserver(self) -> Response:
         return self.proxy_ogcapi("ogcapi")
 
-    @view_config(route_name="mapserverproxy_ogcapi_qgisserver")  # type: ignore[untyped-decorator]
-    @view_config(route_name="mapserverproxy_ogcapi_qgisserver_root")  # type: ignore[untyped-decorator]
-    def proxy_ogcapi_qgisserver(self) -> Response:
-        return self.proxy_ogcapi("wfs3")
-
     def proxy_ogcapi(self, subpath: str) -> Response:
         self._setup_auth()
 
