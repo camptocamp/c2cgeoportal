@@ -460,7 +460,10 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 </section>
 <section id="id3">
 <h3>Parameters<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h3>
-<p>None.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">lang</span></code>: Language used to filter the categories (optional). If not provided, the locale negotiated from the request is used.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">interface</span></code>: Filter categories to a specific interface (optional). If not provided, only entries without interface are considered.</p></li>
+</ul>
 </section>
 <section id="id4">
 <h3>Result<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h3>
@@ -473,6 +476,9 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 </pre></div>
 </div>
 <p>The list contains all distinct non-null <code class="docutils literal notranslate"><span class="pre">category</span></code> values (<code class="docutils literal notranslate"><span class="pre">layer_name</span></code> in the table) sorted alphabetically.</p>
+<p>Like for the search endpoint, the categories are filtered to what the current user can see
+(public entries, entries without role for registered users, and entries of the user roles)
+and to the used language (entries without language are always kept).</p>
 </section>
 </section>
 <section id="layers">
