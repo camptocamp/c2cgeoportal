@@ -72,6 +72,34 @@ class FullTextSearchView:
 
         return DBSession.query(Interface).filter_by(name=interface).one().id
 
+    def _get_user_filter(self) -> ColumnElement[bool]:
+        """Get the filter on the entries visible by the current user."""
+        if self.request.user is None:
+            return or_(
+                FullTextSearch.public.is_(True),
+                FullTextSearch.role_id.in_(get_roles_id(self.request)),
+            )
+        return or_(
+            FullTextSearch.public.is_(True),
+            FullTextSearch.role_id.is_(None),
+            FullTextSearch.role_id.in_(get_roles_id(self.request)),
+        )
+
+    def _get_interface_filter(self) -> ColumnElement[bool]:
+        """Get the filter on the interface requested by the user."""
+        if "interface" in self.request.params:
+            return or_(
+                FullTextSearch.interface_id.is_(None),
+                FullTextSearch.interface_id == self._get_interface_id(self.request.params["interface"]),
+            )
+        interface_filter: ColumnElement[bool] = FullTextSearch.interface_id.is_(None)
+        return interface_filter
+
+    @staticmethod
+    def _get_lang_filter(lang: str) -> ColumnElement[bool]:
+        """Get the filter on the language used by the user."""
+        return or_(FullTextSearch.lang.is_(None), FullTextSearch.lang == lang)
+
     @view_config(route_name="fulltextsearch", renderer="geojson")  # type: ignore[misc]
     def fulltextsearch(self) -> FeatureCollection:
         assert DBSession is not None
@@ -106,36 +134,12 @@ class FullTextSearchView:
         ]
         terms_ts = "&".join(w + ":*" for w in terms_array if w != "")
         _filter: ColumnElement[bool] = FullTextSearch.ts.op("@@")(func.to_tsquery(language, terms_ts))
-        if self.request.user is None:
-            _filter = and_(
-                _filter,
-                or_(
-                    FullTextSearch.public.is_(True),
-                    FullTextSearch.role_id.in_(get_roles_id(self.request)),
-                ),
-            )
-        else:
-            _filter = and_(
-                _filter,
-                or_(
-                    FullTextSearch.public.is_(True),
-                    FullTextSearch.role_id.is_(None),
-                    FullTextSearch.role_id.in_(get_roles_id(self.request)),
-                ),
-            )
-
-        if "interface" in self.request.params:
-            _filter = and_(
-                _filter,
-                or_(
-                    FullTextSearch.interface_id.is_(None),
-                    FullTextSearch.interface_id == self._get_interface_id(self.request.params["interface"]),
-                ),
-            )
-        else:
-            _filter = and_(_filter, FullTextSearch.interface_id.is_(None))
-
-        _filter = and_(_filter, or_(FullTextSearch.lang.is_(None), FullTextSearch.lang == lang))
+        _filter = and_(
+            _filter,
+            self._get_user_filter(),
+            self._get_interface_filter(),
+            self._get_lang_filter(lang),
+        )
 
         null_category = self.request.params.get("null_category", "false").lower() in ("true", "1", "yes")
         if "categories" in self.request.params:
@@ -235,11 +239,19 @@ class FullTextSearchView:
     def capabilities(self) -> dict[str, Any]:
         """Full text search capabilities."""
         assert DBSession is not None
+
+        lang = locale_negotiator(self.request)
+        _filter = and_(
+            self._get_user_filter(),
+            self._get_interface_filter(),
+            self._get_lang_filter(lang),
+        )
         categories = [
             category[0]
             for category in (
                 DBSession.query(FullTextSearch.layer_name)
                 .distinct(FullTextSearch.layer_name)
+                .filter(_filter)
                 .order_by(FullTextSearch.layer_name)
                 .all()
             )
