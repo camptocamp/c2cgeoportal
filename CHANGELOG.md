@@ -1,3 +1,7 @@
+##### 2.9.0.582
+
+- Filter the search capabilities by user, language and interface [c2cgeoportal#13302](https://github.com/camptocamp/c2cgeoportal/pull/13302)
+
 ##### 2.9.0.581
 
 - Audit Dpkg 2.9 [c2cgeoportal#13296](https://github.com/camptocamp/c2cgeoportal/pull/13296)
