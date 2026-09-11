@@ -621,11 +621,98 @@ class TestFulltextsearchView(TestCase):
     def test_capabilities(self) -> None:
         from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
 
+        # Anonymous: only the categories of public entries (entry2 is private without
+        # role and entry3 is private with role2, both are excluded)
         request = self._create_dummy_request()
         fts = FullTextSearchView(request)
         response = fts.capabilities()
         assert set(response.keys()) == {"categories"}
+        assert set(response["categories"]) == {"layer1"}
+
+        # Registered user1: also the private entries without role (entry2)
+        request = self._create_dummy_request(username="__test_user1")
+        fts = FullTextSearchView(request)
+        response = fts.capabilities()
+        assert set(response["categories"]) == {"layer1", "layer2"}
+
+        # Registered user2: also the entries of its role2 (entry3)
+        request = self._create_dummy_request(username="__test_user2")
+        fts = FullTextSearchView(request)
+        response = fts.capabilities()
         assert set(response["categories"]) == {"layer1", "layer2", "layer3"}
+
+    def test_capabilities_lang(self) -> None:
+        import transaction
+        from sqlalchemy import func
+
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.main import FullTextSearch
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
+
+        entry_fr = FullTextSearch()
+        entry_fr.label = "label_fr"
+        entry_fr.layer_name = "layer_fr"
+        entry_fr.ts = func.to_tsvector("french", "capacities_fr")
+        entry_fr.public = True
+        entry_fr.lang = "fr"
+
+        entry_en = FullTextSearch()
+        entry_en.label = "label_en"
+        entry_en.layer_name = "layer_en"
+        entry_en.ts = func.to_tsvector("french", "capacities_en")
+        entry_en.public = True
+        entry_en.lang = "en"
+
+        DBSession.add_all([entry_fr, entry_en])
+        transaction.commit()
+
+        # The negotiated language is fr by default
+        request = self._create_dummy_request()
+        fts = FullTextSearchView(request)
+        response = fts.capabilities()
+        assert "layer_fr" in response["categories"]
+        assert "layer_en" not in response["categories"]
+        # Entries without language are always present
+        assert "layer1" in response["categories"]
+
+        request = self._create_dummy_request(params={"lang": "en"})
+        fts = FullTextSearchView(request)
+        response = fts.capabilities()
+        assert "layer_en" in response["categories"]
+        assert "layer_fr" not in response["categories"]
+        assert "layer1" in response["categories"]
+
+    def test_capabilities_interface(self) -> None:
+        import transaction
+        from sqlalchemy import func
+
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.main import FullTextSearch, Interface
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
+
+        entry_iface = FullTextSearch()
+        entry_iface.label = "label_iface"
+        entry_iface.layer_name = "layer_iface"
+        entry_iface.ts = func.to_tsvector("french", "capacities_iface")
+        entry_iface.public = True
+        entry_iface.interface = DBSession.query(Interface).filter_by(name="main").one()
+
+        DBSession.add(entry_iface)
+        transaction.commit()
+
+        # No interface parameter: only the entries without interface
+        request = self._create_dummy_request()
+        fts = FullTextSearchView(request)
+        response = fts.capabilities()
+        assert "layer_iface" not in response["categories"]
+        assert "layer1" in response["categories"]
+
+        # interface=main: entries without interface and entries of the main interface
+        request = self._create_dummy_request(params={"interface": "main"})
+        fts = FullTextSearchView(request)
+        response = fts.capabilities()
+        assert "layer_iface" in response["categories"]
+        assert "layer1" in response["categories"]
 
     def test_duplicate_entries(self):
         import transaction
