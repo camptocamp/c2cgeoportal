@@ -43,6 +43,10 @@ QGIS Server uses ``/ogcapi`` as the OGC API root by default since QGIS 4, it can
 ``QGIS_SERVER_API_WFS3_ROOT_PATH`` since QGIS 3.44.3. The former ``/mapserv_proxy/<ogc-server>/wfs3/*``
 paths are removed.
 
+QGIS Server builds the OGC API URLs from the request, the proxy forwards the original ``Host`` header and
+the ``HTTPS`` environment variable of the QGIS Server container should be set to ``on`` when the
+application is served in HTTPS.
+
 
 OGC API Documentation
 ---------------------
