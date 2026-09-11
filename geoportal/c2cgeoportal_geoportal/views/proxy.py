@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2025, Camptocamp SA
+# Copyright (c) 2011-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -62,6 +62,7 @@ class Proxy:
         cache: bool = False,
         body: bytes | None = None,
         headers: dict[str, str] | None = None,
+        forward_host: bool = False,
     ) -> requests.models.Response:
         # Get query string
         params = dict(self.request.params) if params is None else params
@@ -76,7 +77,7 @@ class Proxy:
 
         # Forward request to target (without Host Header).
         # The original Host will be added back by pyramid.
-        if url.hostname not in self.host_forward_host and "Host" in headers:
+        if not forward_host and url.hostname not in self.host_forward_host and "Host" in headers:
             headers.pop("Host")
 
         # Forward the request tracking ID to the other service. This will allow to follow the logs belonging

@@ -188,12 +188,9 @@ class MapservProxy(OGCProxy):
             self.params.update(get_mapserver_substitution_params(self.request))
 
     @view_config(route_name="mapserverproxy_ogcapi_mapserver")  # type: ignore[untyped-decorator]
+    @view_config(route_name="mapserverproxy_ogcapi_mapserver_root")  # type: ignore[untyped-decorator]
     def proxy_ogcapi_mapserver(self) -> Response:
         return self.proxy_ogcapi("ogcapi")
-
-    @view_config(route_name="mapserverproxy_ogcapi_qgisserver")  # type: ignore[untyped-decorator]
-    def proxy_ogcapi_qgisserver(self) -> Response:
-        return self.proxy_ogcapi("wfs3")
 
     def proxy_ogcapi(self, subpath: str) -> Response:
         self._setup_auth()
@@ -204,7 +201,7 @@ class MapservProxy(OGCProxy):
 
         _url = self._get_wfs_url(errors)
         if _url is not None:
-            _url.path = "/".join([_url.path.rstrip("/"), subpath, *self.request.matchdict["path"]])
+            _url.path = "/".join([_url.path.rstrip("/"), subpath, *self.request.matchdict.get("path", ())])
 
         if _url is None:
             _LOG.error("Error getting the URL:\n%s", "\n".join(errors))
@@ -225,6 +222,9 @@ class MapservProxy(OGCProxy):
             cache=use_cache,
             headers=headers,
             body=self.request.body,
+            # The OGC API backends build the links from the request URL, the original Host header
+            # is required to have correct links (protocol and hostname) in the generated responses.
+            forward_host=True,
         )
 
     def _proxy_callback(

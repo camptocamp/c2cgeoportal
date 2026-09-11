@@ -49,12 +49,12 @@ import requests
         #     60,
         # ),
         # (
-        #     "http://qgisserver:8080/mapserv_proxy/qgisserver/wfs3/collections/points/items",
+        #     "http://qgisserver:8080/mapserv_proxy/qgisserver/ogcapi/collections/points/items",
         #     {"map": "/etc/qgisserver/project.qgs", "bbox": "6.0,46.0,7.0,47.0", "limit": "100"},
         #     60,
         # ),
         # (
-        #     "https://front/mapserv_proxy/qgisserver/wfs3/collections/points/items",
+        #     "https://front/mapserv_proxy/qgisserver/ogcapi/collections/points/items",
         #     {"bbox": "6.0,46.0,7.0,47.0", "limit": "100"},
         #     60,
         # ),
