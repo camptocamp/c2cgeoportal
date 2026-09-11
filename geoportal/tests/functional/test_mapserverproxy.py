@@ -276,6 +276,8 @@ class TestMapserverproxyView(TestCase):
 
         request = self._create_dummy_request()
         request.method = "GET"
+        # The DummyRequest headers are a plain dictionary, set the Host header as in a real request
+        request.headers["Host"] = "example.com"
         # The landing route `/mapserv_proxy/{ogcserver}/ogcapi` has no `path` element in the matchdict
         request.matchdict = {"ogcserver": "__test_ogc_server"}
         backend_response = MagicMock()
