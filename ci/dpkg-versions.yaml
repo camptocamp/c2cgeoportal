@@ -1154,8 +1154,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40:
   ubuntu_24_04/libicu74: 74.2-1ubuntu3.1
   ubuntu_24_04/libidn2-0: 2.3.7-2build1.1
   ubuntu_24_04/libimagequant0: 2.18.0-1build1
-  ubuntu_24_04/libinput-bin: 1.25.0-1ubuntu3.1
-  ubuntu_24_04/libinput10: 1.25.0-1ubuntu3.1
+  ubuntu_24_04/libinput-bin: 1.25.0-1ubuntu3.7
+  ubuntu_24_04/libinput10: 1.25.0-1ubuntu3.7
   ubuntu_24_04/libisl23: 0.26-3build1.1
   ubuntu_24_04/libitm1: 14.2.0-4ubuntu2~24.04.1
   ubuntu_24_04/libjansson4: 2.14-2build2
@@ -1560,8 +1560,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40-gdal3.10:
   ubuntu_24_04/libicu74: 74.2-1ubuntu3.1
   ubuntu_24_04/libidn2-0: 2.3.7-2build1.1
   ubuntu_24_04/libimagequant0: 2.18.0-1build1
-  ubuntu_24_04/libinput-bin: 1.25.0-1ubuntu3.1
-  ubuntu_24_04/libinput10: 1.25.0-1ubuntu3.1
+  ubuntu_24_04/libinput-bin: 1.25.0-1ubuntu3.7
+  ubuntu_24_04/libinput10: 1.25.0-1ubuntu3.7
   ubuntu_24_04/libisl23: 0.26-3build1.1
   ubuntu_24_04/libitm1: 14.2.0-4ubuntu2~24.04.1
   ubuntu_24_04/libjansson4: 2.14-2build2
@@ -1964,8 +1964,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_24_04/libice6: 2:1.0.10-1build3
   ubuntu_24_04/libicu74: 74.2-1ubuntu3.1
   ubuntu_24_04/libidn2-0: 2.3.7-2build1.1
-  ubuntu_24_04/libinput-bin: 1.25.0-1ubuntu3.1
-  ubuntu_24_04/libinput10: 1.25.0-1ubuntu3.1
+  ubuntu_24_04/libinput-bin: 1.25.0-1ubuntu3.7
+  ubuntu_24_04/libinput10: 1.25.0-1ubuntu3.7
   ubuntu_24_04/libisl23: 0.26-3build1.1
   ubuntu_24_04/libitm1: 14.2.0-4ubuntu2~24.04.1
   ubuntu_24_04/libjansson4: 2.14-2build2
@@ -2368,8 +2368,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_24_04/libice6: 2:1.0.10-1build3
   ubuntu_24_04/libicu74: 74.2-1ubuntu3.1
   ubuntu_24_04/libidn2-0: 2.3.7-2build1.1
-  ubuntu_24_04/libinput-bin: 1.25.0-1ubuntu3.1
-  ubuntu_24_04/libinput10: 1.25.0-1ubuntu3.1
+  ubuntu_24_04/libinput-bin: 1.25.0-1ubuntu3.7
+  ubuntu_24_04/libinput10: 1.25.0-1ubuntu3.7
   ubuntu_24_04/libipt2: 2.0.6-1build1
   ubuntu_24_04/libisl23: 0.26-3build1.1
   ubuntu_24_04/libitm1: 14.2.0-4ubuntu2~24.04.1
@@ -2774,8 +2774,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/libicu74: 74.2-1ubuntu3.1
   ubuntu_24_04/libidn2-0: 2.3.7-2build1.1
   ubuntu_24_04/libimagequant0: 2.18.0-1build1
-  ubuntu_24_04/libinput-bin: 1.25.0-1ubuntu3.1
-  ubuntu_24_04/libinput10: 1.25.0-1ubuntu3.1
+  ubuntu_24_04/libinput-bin: 1.25.0-1ubuntu3.7
+  ubuntu_24_04/libinput10: 1.25.0-1ubuntu3.7
   ubuntu_24_04/libisl23: 0.26-3build1.1
   ubuntu_24_04/libitm1: 14.2.0-4ubuntu2~24.04.1
   ubuntu_24_04/libjansson4: 2.14-2build2
