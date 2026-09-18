@@ -1,3 +1,7 @@
+##### 2.7.1.330
+
+- Update dependency gitpython to v3.1.60 [SECURITY] (2.7) [c2cgeoportal#13315](https://github.com/camptocamp/c2cgeoportal/pull/13315)
+
 ##### 2.7.1.329
 
 - Update dependency soupsieve to v2.9 [SECURITY] (2.7) [c2cgeoportal#13313](https://github.com/camptocamp/c2cgeoportal/pull/13313)
