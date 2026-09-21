@@ -1,3 +1,8 @@
+##### 2.9.0.589
+
+- Update dependency soupsieve to v2.9 [SECURITY] (2.9) [c2cgeoportal#13314](https://github.com/camptocamp/c2cgeoportal/pull/13314)
+- Lock file maintenance (2.9) [c2cgeoportal#13317](https://github.com/camptocamp/c2cgeoportal/pull/13317)
+
 ##### 2.9.0.588
 
 - Audit Dpkg 2.9 [c2cgeoportal#13312](https://github.com/camptocamp/c2cgeoportal/pull/13312)
