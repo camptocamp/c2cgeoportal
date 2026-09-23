@@ -83,7 +83,6 @@ services:
       - PGOPTIONS
       - MAPSERVER_CONFIG_FILE=/etc/mapserver/mapserver.conf
       - MAPSERVER_BASE_PATH=/mapserv_proxy
-      - OGCAPI_HTML_TEMPLATE_DIRECTORY=/usr/local/share/mapserver/ogcapi/templates/html-bootstrap4/
       - AWS_ACCESS_KEY_ID
       - AWS_SECRET_ACCESS_KEY
       - AWS_DEFAULT_REGION
@@ -124,6 +123,7 @@ services:
       - CPL_VSIL_CURL_USE_HEAD
       - GDAL_DISABLE_READDIR_ON_OPEN
       - QGIS_SERVER_LOG_LEVEL
+      - HTTPS
       - QGIS_AUTH_DB_DIR_PATH
       - QGIS_SERVER_IGNORE_BAD_LAYERS
       - QGIS_SERVER_DISABLE_GETPRINT

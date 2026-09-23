@@ -742,22 +742,22 @@ def includeme(config: pyramid.config.Configurator) -> None:
     )
     # OGC Api routes
     config.add_route(
-        "mapserverproxy_ogcapi_mapserver",
-        "/mapserv_proxy/{ogcserver}/ogcapi/*path",
+        "mapserverproxy_ogcapi_mapserver_root",
+        "/mapserv_proxy/{ogcserver}/ogcapi",
         mapserverproxy=True,
         pregenerator=C2CPregenerator(role=True),
         request_method="GET",
     )
     config.add_route(
-        "mapserverproxy_ogcapi_qgisserver",
-        "/mapserv_proxy/{ogcserver}/wfs3/*path",
+        "mapserverproxy_ogcapi_mapserver",
+        "/mapserv_proxy/{ogcserver}/ogcapi/*path",
         mapserverproxy=True,
         pregenerator=C2CPregenerator(role=True),
         request_method=("GET", "POST", "PUT", "DELETE", "PATCH"),
     )
     add_cors_route(config, "/mapserv_proxy", "mapserver")
+    add_cors_route(config, "/mapserv_proxy/{ogcserver}/ogcapi", "mapserver_ogcapi_mapserver")
     add_cors_route(config, "/mapserv_proxy/{ogcserver}/ogcapi/*path", "mapserver_ogcapi_mapserver")
-    add_cors_route(config, "/mapserv_proxy/{ogcserver}/wfs3/*path", "mapserver_ogcapi_qgisserver")
 
     # Add route to the tinyows proxy
     config.add_route("tinyowsproxy", "/tinyows_proxy", pregenerator=C2CPregenerator(role=True))

@@ -98,6 +98,12 @@ class TestIncludeme(TestCase):
         self.config.set_user_validator(custom_validator)
         assert self.config.registry.validate_user == custom_validator
 
+    def test_ogcapi_routes(self) -> None:
+        self.config.include(c2cgeoportal_geoportal.includeme)
+        routes = {route.name: route.pattern for route in self.config.get_routes_mapper().get_routes()}
+        assert routes["mapserverproxy_ogcapi_mapserver_root"] == "/mapserv_proxy/{ogcserver}/ogcapi"
+        assert routes["mapserverproxy_ogcapi_mapserver"] == "/mapserv_proxy/{ogcserver}/ogcapi/*path"
+
 
 @pytest.mark.parametrize(
     ("authorized", "value", "expected"),
