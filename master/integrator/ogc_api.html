@@ -59,12 +59,17 @@ e.g.: <code class="docutils literal notranslate"><span class="pre">config://maps
 The alias is at two place in the URL to make working both the WMS and the OGC API.</p>
 <p>For QGIS Server, the URL didn’t changes, it is <code class="docutils literal notranslate"><span class="pre">config://qgisserver?MAP=&lt;project_file&gt;</span></code>.</p>
 <p>QGIS Server and MapServer are already configured to support the OGC API and detect automatically if the compatible path is requested.</p>
-<p>Landing pages for both MapServer and QGIS Server are not supported yet.</p>
 <p>OGC API features are accessible through <code class="docutils literal notranslate"><span class="pre">mapserv_proxy</span></code>, with the following URLs:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">/mapserv_proxy/&lt;ogc-server&gt;/ogcapi/*</span></code>: The MapServer path.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">/mapserv_proxy/&lt;ogc-server&gt;/wfs3/*</span></code>: The QGIS Server path.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">/mapserv_proxy/&lt;ogc-server&gt;/ogcapi</span></code> and <code class="docutils literal notranslate"><span class="pre">/mapserv_proxy/&lt;ogc-server&gt;/ogcapi/*</span></code>:
+The MapServer and QGIS Server paths, the first one is the landing page.</p></li>
 </ul>
+<p>QGIS Server uses <code class="docutils literal notranslate"><span class="pre">/ogcapi</span></code> as the OGC API root by default since QGIS 4, it can be configured with
+<code class="docutils literal notranslate"><span class="pre">QGIS_SERVER_API_WFS3_ROOT_PATH</span></code> since QGIS 3.44.3. The former <code class="docutils literal notranslate"><span class="pre">/mapserv_proxy/&lt;ogc-server&gt;/wfs3/*</span></code>
+paths are removed.</p>
+<p>QGIS Server builds the OGC API URLs from the request, the proxy forwards the original <code class="docutils literal notranslate"><span class="pre">Host</span></code> header and
+the <code class="docutils literal notranslate"><span class="pre">HTTPS</span></code> environment variable of the QGIS Server container should be set to <code class="docutils literal notranslate"><span class="pre">on</span></code> when the
+application is served in HTTPS.</p>
 </section>
 <section id="ogc-api-documentation">
 <h1>OGC API Documentation<a class="headerlink" href="#ogc-api-documentation" title="Link to this heading">¶</a></h1>
