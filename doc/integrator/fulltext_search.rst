@@ -82,6 +82,17 @@ A script is available to fill the full-text search table:
    :ref: c2cgeoportal_geoportal.scripts.theme2fts.get_argparser
    :prog: docker compose exec geoportal theme2fts
 
+The script only indexes visible content:
+
+* A layer is indexed for an interface when it is attached to the interface and it is visible,
+  that is to say public, or accessible to a role through a restriction area.
+* A layer group (block or folder) and a theme are indexed for an interface only when they
+  contain at least one visible layer attached to that interface.
+* For a private theme (not public), the indexed roles are the theme restricted roles.
+* For a public theme, the anonymous entries are indexed only when the theme contains public
+  layers, and role entries are indexed for the roles that have access, through a restriction
+  area, to at least one of the theme's private layers.
+
 Note that some tree items' metadata are used by the ``theme2fts`` script:
 
 * ``searchAlias``: Comma separated list of search alias (keywords) to be added to the ``tsearch.ts``
