@@ -365,8 +365,9 @@ class Import:
         if role is not None and role.id not in self.theme_roles[theme.id]:
             return
 
-        fill = False
         for interface in self.interfaces:
+            # Reset per interface to not index the theme on an interface without visible content
+            fill = False
             if interface in theme.interfaces:
                 for child in theme.children:
                     fill = self._add_block(child, interface, role) or fill
