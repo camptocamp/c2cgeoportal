@@ -163,6 +163,7 @@ class Import:
             LayerGroup,
             LayerWMS,
             LayerWMTS,
+            RestrictionArea,
             Role,
             Theme,
         )
@@ -186,10 +187,20 @@ class Import:
         print("Create cache")
         start_time = time.time()
         self._layerswms_cache = (
-            self.session.query(LayerWMS).options(sqlalchemy.orm.subqueryload(LayerWMS.metadatas)).all()
+            self.session.query(LayerWMS)
+            .options(
+                sqlalchemy.orm.subqueryload(LayerWMS.metadatas),
+                sqlalchemy.orm.subqueryload(LayerWMS.restrictionareas).subqueryload(RestrictionArea.roles),
+            )
+            .all()
         )
         self._layerswmts_cache = (
-            self.session.query(LayerWMTS).options(sqlalchemy.orm.subqueryload(LayerWMTS.metadatas)).all()
+            self.session.query(LayerWMTS)
+            .options(
+                sqlalchemy.orm.subqueryload(LayerWMTS.metadatas),
+                sqlalchemy.orm.subqueryload(LayerWMTS.restrictionareas).subqueryload(RestrictionArea.roles),
+            )
+            .all()
         )
         self._layergroup_cache = (
             self.session.query(LayerGroup)
@@ -238,11 +249,14 @@ class Import:
             self.public_theme[interface.id] = set()
             self.public_group[interface.id] = set()
             self.public_layer[interface.id] = set()
+        self.theme_roles: dict[int, set[int]] = {}
 
         self.full_text_search: list[dict[str, Any]] = []
 
         for theme in self.session.query(Theme).filter_by(public=True).all():
             self._add_theme(theme)
+
+        self.theme_roles = self._extract_themes_roles(all_themes)
 
         for role in self.session.query(Role).all():
             for theme in all_themes:
@@ -313,12 +327,42 @@ class Import:
                     }
                 )
 
+    def _extract_themes_roles(
+        self,
+        themes: list["c2cgeoportal_commons.models.main.Theme"],
+    ) -> dict[int, set[int]]:
+        """
+        Get the roles that give access to each theme, indexed by theme id.
+
+        For a private theme, the roles are the restricted roles. For a public theme, the roles are
+        extracted from the restriction areas of the not public child layers.
+        """
+        from c2cgeoportal_commons.models.main import (  # pylint: disable=import-outside-toplevel
+            Layer,
+            LayerGroup,
+        )
+
+        themes_roles: dict[int, set[int]] = {}
+        for theme in themes:
+            roles = {role.id for role in theme.restricted_roles}
+            if theme.public:
+                stack = list(theme.children)
+                while stack:
+                    item = stack.pop()
+                    if isinstance(item, LayerGroup):
+                        stack.extend(item.children)
+                    elif isinstance(item, Layer) and not item.public:
+                        for restrictionarea in item.restrictionareas:
+                            roles.update(role.id for role in restrictionarea.roles)
+            themes_roles[theme.id] = roles
+        return themes_roles
+
     def _add_theme(
         self,
         theme: "c2cgeoportal_commons.models.main.Theme",
         role: Optional["c2cgeoportal_commons.models.main.Role"] = None,
     ) -> None:
-        if role is not None and role not in theme.restricted_roles:
+        if role is not None and role.id not in self.theme_roles[theme.id]:
             return
 
         fill = False
