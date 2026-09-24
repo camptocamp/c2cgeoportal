@@ -169,6 +169,17 @@ by default if we find more than one element with the same name only one will be 
 </dd>
 </dl>
 </section>
+<p>The script only indexes visible content:</p>
+<ul class="simple">
+<li><p>A layer is indexed for an interface when it is attached to the interface and it is visible,
+that is to say public, or accessible to a role through a restriction area.</p></li>
+<li><p>A layer group (block or folder) and a theme are indexed for an interface only when they
+contain at least one visible layer attached to that interface.</p></li>
+<li><p>For a private theme (not public), the indexed roles are the theme restricted roles.</p></li>
+<li><p>For a public theme, the anonymous entries are indexed only when the theme contains public
+layers, and role entries are indexed for the roles that have access, through a restriction
+area, to at least one of the theme’s private layers.</p></li>
+</ul>
 <p>Note that some tree items’ metadata are used by the <code class="docutils literal notranslate"><span class="pre">theme2fts</span></code> script:</p>
 <ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">searchAlias</span></code>: Comma separated list of search alias (keywords) to be added to the <code class="docutils literal notranslate"><span class="pre">tsearch.ts</span></code>
