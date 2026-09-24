@@ -94,6 +94,12 @@ Information
    role and when we have a reverse proxy with cache. Now it's always set to private for all the endpoints
    that use the authentication.
 
+5. The `theme2fts` script now indexes the public themes that contain only private layers: the entries
+   are created for the roles that have access to the layers through a restriction area, like it is
+   already the case for the private themes. A theme is also no more indexed on the interfaces where it
+   has no visible content. If you are concerned, you should re-run the `theme2fts` script to update the
+   full-text search table.
+
 Changes to apply
 ================
 
