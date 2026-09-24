@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2025, Camptocamp SA
+# Copyright (c) 2018-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -26,6 +26,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import copy
 from collections.abc import Iterable
 from typing import TYPE_CHECKING, Any
 
@@ -143,3 +144,43 @@ def get_private_layers(ogc_server_ids: Iterable[int]) -> dict[int, "main.LayerWM
     results = q.all()
     DBSession.expunge_all()
     return {r.id: r for r in results}
+
+
+def get_unauthorized_layers(
+    request: Request,
+    ogc_server_id: int,
+    wms_children_map: dict[str, list[str]],
+) -> set[str]:
+    """
+    Get the set of OGC layer names that the current user is not authorized to access.
+
+    A layer is unauthorized if it is private (public=False) in c2cgeoportal AND the user does not have
+    access to it through their roles. When a parent group is unauthorized, all its descendant layers are
+    also considered unauthorized.
+
+    Layers that are not defined in c2cgeoportal at all are considered public (not unauthorized).
+    """
+    gmf_private_layers = copy.copy(get_private_layers([ogc_server_id]))
+    for id_ in list(get_protected_layers(request, [ogc_server_id]).keys()):
+        if id_ in gmf_private_layers:
+            del gmf_private_layers[id_]
+
+    unauthorized: set[str] = set()
+    for gmf_layer in list(gmf_private_layers.values()):
+        for ogc_layer in gmf_layer.layer.split(","):
+            unauthorized.add(ogc_layer)
+            _add_descendants(ogc_layer, wms_children_map, unauthorized)
+
+    return unauthorized
+
+
+def _add_descendants(
+    layer_name: str,
+    wms_children_map: dict[str, list[str]],
+    result: set[str],
+) -> None:
+    """Recursively add all descendants of a layer to the result set."""
+    for child in wms_children_map.get(layer_name, []):
+        if child not in result:
+            result.add(child)
+            _add_descendants(child, wms_children_map, result)
