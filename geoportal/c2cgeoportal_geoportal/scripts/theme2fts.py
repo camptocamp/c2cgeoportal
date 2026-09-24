@@ -415,9 +415,10 @@ class Import:
             return
 
         start_time = time.time()
-        fill = False
         nb_fts_entries = 0
         for interface in self.interfaces:
+            # Reset per interface to not index the theme on an interface without visible content
+            fill = False
             if interface in theme.interfaces:
                 for child in theme.children:
                     fill = self._add_block(child, interface, role) or fill
