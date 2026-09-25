@@ -475,32 +475,32 @@ class TestImport:
                 for e in expected:
                     self.assert_fts(dbsession_old, e)
 
-    def test_public_theme_with_private_content(self, dbsession, settings, test_data):
+    def test_public_theme_with_private_content(self, dbsession_old, settings, test_data):
         """A public theme with only private layers is indexed for the roles of the layers restriction areas."""
         from c2cgeoportal_commons.models import main
         from c2cgeoportal_geoportal.scripts.theme2fts import Import
 
         content_theme = main.Theme(name="content_theme")
         content_theme.interfaces = list(test_data["interfaces"].values())
-        dbsession.add(content_theme)
+        dbsession_old.add(content_theme)
 
         content_group = main.LayerGroup(name="content_group")
-        add_parent(dbsession, content_group, content_theme)
-        dbsession.add(content_group)
+        add_parent(dbsession_old, content_group, content_theme)
+        dbsession_old.add(content_group)
 
         content_layer = main.LayerWMS(name="content_layer", public=False)
         content_layer.ogc_server = test_data["ogc_server"]
         content_layer.interfaces = list(test_data["interfaces"].values())
-        add_parent(dbsession, content_layer, content_group)
-        dbsession.add(content_layer)
+        add_parent(dbsession_old, content_layer, content_group)
+        dbsession_old.add(content_layer)
 
         content_ra = main.RestrictionArea(name="content_ra")
         content_ra.roles = [test_data["roles"]["role"]]
         content_ra.layers = [content_layer]
-        dbsession.add(content_ra)
-        dbsession.flush()
+        dbsession_old.add(content_ra)
+        dbsession_old.flush()
 
-        Import(dbsession, settings, options())
+        Import(dbsession_old, settings, options())
 
         for lang in settings["available_locale_names"]:
             for interface in test_data["interfaces"].values():
@@ -551,43 +551,43 @@ class TestImport:
                     },
                 ]
                 for e in expected:
-                    self.assert_fts(dbsession, e)
+                    self.assert_fts(dbsession_old, e)
 
         # Nothing for the anonymous and for a role without access to the layer
         for label in ("content_theme_fr", "content_group_fr", "content_layer_fr"):
             for role in (None, test_data["roles"]["empty role"]):
                 assert (
-                    dbsession.query(main.FullTextSearch)
+                    dbsession_old.query(main.FullTextSearch)
                     .filter(main.FullTextSearch.label == label)
                     .filter(main.FullTextSearch.role == role)
                     .count()
                     == 0
                 )
 
-    def test_theme_without_visible_content_per_interface(self, dbsession, settings, test_data):
+    def test_theme_without_visible_content_per_interface(self, dbsession_old, settings, test_data):
         """A theme is indexed only on the interfaces where it has visible content."""
         from c2cgeoportal_commons.models import main
         from c2cgeoportal_geoportal.scripts.theme2fts import Import
 
         other_interface = main.Interface(name="other")
-        dbsession.add(other_interface)
+        dbsession_old.add(other_interface)
 
         interfaces_theme = main.Theme(name="interfaces_theme")
         interfaces_theme.interfaces = [test_data["interfaces"]["desktop"], other_interface]
-        dbsession.add(interfaces_theme)
+        dbsession_old.add(interfaces_theme)
 
         interfaces_group = main.LayerGroup(name="interfaces_group")
-        add_parent(dbsession, interfaces_group, interfaces_theme)
-        dbsession.add(interfaces_group)
+        add_parent(dbsession_old, interfaces_group, interfaces_theme)
+        dbsession_old.add(interfaces_group)
 
         interfaces_layer = main.LayerWMS(name="interfaces_layer")
         interfaces_layer.ogc_server = test_data["ogc_server"]
         interfaces_layer.interfaces = [test_data["interfaces"]["desktop"]]
-        add_parent(dbsession, interfaces_layer, interfaces_group)
-        dbsession.add(interfaces_layer)
-        dbsession.flush()
+        add_parent(dbsession_old, interfaces_layer, interfaces_group)
+        dbsession_old.add(interfaces_layer)
+        dbsession_old.flush()
 
-        Import(dbsession, settings, options())
+        Import(dbsession_old, settings, options())
 
         for lang in settings["available_locale_names"]:
             expected = [
@@ -635,13 +635,13 @@ class TestImport:
                 },
             ]
             for e in expected:
-                self.assert_fts(dbsession, e)
+                self.assert_fts(dbsession_old, e)
 
         # No row on the interface without visible content
         for name in ("interfaces_theme", "interfaces_group", "interfaces_layer"):
             for lang in settings["available_locale_names"]:
                 assert (
-                    dbsession.query(main.FullTextSearch)
+                    dbsession_old.query(main.FullTextSearch)
                     .filter(main.FullTextSearch.label == f"{name}_{lang}")
                     .filter(main.FullTextSearch.interface == other_interface)
                     .count()
