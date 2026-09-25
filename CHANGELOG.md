@@ -1,3 +1,7 @@
+##### 2.9.0.595
+
+- Audit Dpkg 2.9 [c2cgeoportal#13324](https://github.com/camptocamp/c2cgeoportal/pull/13324)
+
 ##### 2.9.0.594
 
 - Extract the theme roles from the child layers restriction areas in theme2fts [c2cgeoportal#13322](https://github.com/camptocamp/c2cgeoportal/pull/13322)
