@@ -26,12 +26,9 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import logging
-import threading
 from functools import partial
 from typing import Any, cast
 
-import requests
 from c2cgeoform import JSONDict
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import (
@@ -61,8 +58,6 @@ _list_field = partial(ListField, OGCServer)
 
 base_schema = GeoFormSchemaNode(OGCServer, widget=FormWidget(fields_template="ogcserver_fields"))
 base_schema.add_unique_validator(OGCServer.name, OGCServer.id)
-
-_LOG = logging.getLogger(__name__)
 
 
 @view_defaults(match_param="table=ogc_servers")
@@ -161,8 +156,9 @@ class OGCServerViews(LoggedViews[OGCServer]):
     def save(self) -> SaveResponse:
         result = super().save()
         if isinstance(result, HTTPFound):
-            assert self._obj is not None
-            self._update_cache(self._obj)
+            # The OGCServer model has no SQLAlchemy cache invalidation event,
+            # broadcast the invalidation to have the new values on all the pods.
+            cache_invalidate_cb()
         return result
 
     @view_config(route_name="c2cgeoform_item", request_method="DELETE", renderer="fast_json")  # type: ignore[misc]
@@ -232,28 +228,4 @@ class OGCServerViews(LoggedViews[OGCServer]):
                 "report": synchronizer.report(),
             }
 
-        self._update_cache(obj)
-
         return {}
-
-    def _update_cache(self, ogc_server: OGCServer) -> None:
-        try:
-            ogc_server_id = ogc_server.id
-
-            def update_cache() -> None:
-                response = requests.get(
-                    self._request.route_url(
-                        "ogc_server_clear_cache",
-                        id=ogc_server_id,
-                        _query={
-                            "came_from": self._request.current_route_url(),
-                        },
-                    ),
-                    timeout=60,
-                )
-                if not response.ok:
-                    _LOG.error("Error while cleaning the OGC server cache:\n%s", response.text)
-
-            threading.Thread(target=update_cache).start()
-        except Exception:  # pylint: disable=broad-exception-caught
-            _LOG.error("Error on cleaning the OGC server cache", exc_info=True)
