@@ -698,6 +698,12 @@ durations (e.g.: <code class="docutils literal notranslate"><span class="pre">PT
 <li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__WMTS_PATH</span></code>: Path used in WMTS capabilities URLs, overrides the route prefix
 (default: the value of <code class="docutils literal notranslate"><span class="pre">C2C__ROUTE_PREFIX</span></code> without a leading <code class="docutils literal notranslate"><span class="pre">/</span></code>)</p></li>
 </ul>
+<p>Security:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__SECURITY__ADMIN_TEST_IMG_SRC</span></code>: Comma-separated list of additional URLs allowed in
+the <code class="docutils literal notranslate"><span class="pre">img-src</span></code> directive of the Content-Security-Policy of the <code class="docutils literal notranslate"><span class="pre">/admin/test</span></code> page, in addition to
+<code class="docutils literal notranslate"><span class="pre">'self'</span></code> (default: empty)</p></li>
+</ul>
 <p>Worker:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__NB_TASKS</span></code>: Number of concurrent tasks to run in parallel
@@ -764,6 +770,10 @@ the jobs, but cannot launch a generation, nor cancel or retry a job.</p></li>
 </ul>
 <p>In the test page, clicking on the map sends a WMTS GetFeatureInfo request on the active layer (if queryable)
 and displays the response in a “Feature info” panel.</p>
+<p>The test page is served with a Content-Security-Policy that only allows images from the application itself.
+If the page must load images from external servers (for example images referenced by GetFeatureInfo HTML
+responses), add their URLs, comma separated, to the <code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__SECURITY__ADMIN_TEST_IMG_SRC</span></code>
+environment variable; they are added to the <code class="docutils literal notranslate"><span class="pre">img-src</span></code> directive of the test page CSP.</p>
 </section>
 </section>
 
