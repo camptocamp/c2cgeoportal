@@ -350,6 +350,9 @@ services:
   tools:
     image: ghcr.io/camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION}
     restart: unless-stopped
+    # The keep-alive command does not handle SIGTERM as PID 1, Tini forwards the
+    # signals to be able to stop the container without reaching the grace timeout.
+    init: true
     volumes:
       - .:/src
     environment:
