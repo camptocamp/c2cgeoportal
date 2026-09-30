@@ -135,7 +135,7 @@ pygments = "==2.20.0"
 pyjwt = "==2.14.0"
 requests = "==2.33.0"
 setuptools = "==83.0.0"
-urllib3 = "==2.7.0"
+urllib3 = "==2.8.0"
 protobuf = "==5.29.6"
 
 [dev-packages]
