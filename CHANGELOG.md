@@ -1,3 +1,8 @@
+##### 2.8.1.384
+
+- Update dependency oauthlib to v4 [SECURITY] (2.8) [c2cgeoportal#13334](https://github.com/camptocamp/c2cgeoportal/pull/13334)
+- Audit Snyk check/fix 2.8 [c2cgeoportal#13361](https://github.com/camptocamp/c2cgeoportal/pull/13361)
+
 ##### 2.8.1.383
 
 - Update dependency gitpython to v3.1.62 [SECURITY] (2.8) [c2cgeoportal#13354](https://github.com/camptocamp/c2cgeoportal/pull/13354)
