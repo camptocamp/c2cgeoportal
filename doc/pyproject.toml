@@ -28,7 +28,7 @@ boto3 = { version = "1.35.99", optional = true }
 jinja2 = "3.1.6"
 cryptography = "50.0.1"
 requests = "2.33.1"
-urllib3 = "2.7.0"
+urllib3 = "2.8.0"
 azure-core = "1.38.2"
 pillow = "12.3.0"
 pyjwt = "2.15.0"
