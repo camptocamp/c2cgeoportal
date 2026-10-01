@@ -78,7 +78,7 @@ repos:
         additional_dependencies:
           - prettier@3.9.6 # npm
           - prettier-plugin-sh@0.19.0 # npm
-          - prettier-plugin-toml@2.0.6 # npm
+          - prettier-plugin-toml@3.0.0 # npm
         exclude: |-
           (?x)(
             ^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/{{cookiecutter\.project}}/
