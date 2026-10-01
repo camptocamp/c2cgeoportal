@@ -65,7 +65,7 @@ transaction = "5.1" # commons, geoportal
 translationstring = "1.4" # admin
 "zope.event" = "6.2" # commons, geoportal
 c2cwsgiutils = { version = "6.1.10", extras = ["broadcast", "standard", "oauth2", "debug"] }
-oauthlib = "3.3.1"
+oauthlib = "4.0.0"
 tilecloud = "1.14.0" # geoportal
 azure-storage-blob = "12.30.3"
 simple_openid_connect = '2.4.0' # geoportal
