@@ -131,7 +131,7 @@ c2cgeoportal = "c2cgeoportal_geoportal.lib.loader:Loader"
 [build-system]
 requires = [
     "poetry-dynamic-versioning[plugin]==1.10.0",
-    "poetry-plugin-tweak-dependencies-version==1.5.6",
+    "poetry-plugin-tweak-dependencies-version==1.5.7",
     "poetry-plugin-drop-python-upper-constraint==1.0.1"
 ]
 build-backend = "poetry.core.masonry.api"
