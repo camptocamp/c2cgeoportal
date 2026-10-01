@@ -1,3 +1,8 @@
+##### 2.9.0.602
+
+- Update dependency pyjwt to v2.15.0 [SECURITY] (2.9) [c2cgeoportal#13342](https://github.com/camptocamp/c2cgeoportal/pull/13342)
+- Update dependency urllib3 to v2.8.0 [SECURITY] (2.9) [c2cgeoportal#13343](https://github.com/camptocamp/c2cgeoportal/pull/13343)
+
 ##### 2.9.0.601
 
 - Update all patch/minor versions (2.9) [c2cgeoportal#13357](https://github.com/camptocamp/c2cgeoportal/pull/13357)
