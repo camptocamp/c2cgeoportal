@@ -1,3 +1,7 @@
+##### 2.7.1.335
+
+- Update dependency lxml to v6.1.3 (2.7) [c2cgeoportal#13359](https://github.com/camptocamp/c2cgeoportal/pull/13359)
+
 ##### 2.7.1.334
 
 - Update dependency gitpython to v3.1.62 [SECURITY] (2.7) [c2cgeoportal#13352](https://github.com/camptocamp/c2cgeoportal/pull/13352)
