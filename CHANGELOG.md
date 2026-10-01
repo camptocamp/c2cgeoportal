@@ -1,3 +1,7 @@
+##### 2.8.1.385
+
+- Update dependency cryptography to v50.0.2 (2.8) [c2cgeoportal#13370](https://github.com/camptocamp/c2cgeoportal/pull/13370)
+
 ##### 2.8.1.384
 
 - Update dependency oauthlib to v4 [SECURITY] (2.8) [c2cgeoportal#13334](https://github.com/camptocamp/c2cgeoportal/pull/13334)
