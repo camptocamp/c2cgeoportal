@@ -20,7 +20,7 @@ permissions:
 jobs:
   not-failed-backport:
     name: Test that's not a failed backport
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 5
 
     steps:
@@ -29,7 +29,7 @@ jobs:
 
   main:
     name: Continuous integration
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 135
     if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
 

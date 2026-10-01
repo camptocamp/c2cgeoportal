@@ -21,7 +21,7 @@ permissions:
 
 jobs:
   common:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     name: QGIS build
     timeout-minutes: 30
     if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
@@ -42,7 +42,7 @@ jobs:
           path: /tmp/tools.docker
 
   main:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     name: QGIS build
     timeout-minutes: 15
     needs: common
@@ -150,7 +150,7 @@ jobs:
           echo "::set-output name=success-${version//\./-}::true"
 
   success:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     name: QGIS build success
     timeout-minutes: 15
     needs: main
