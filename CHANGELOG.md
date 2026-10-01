@@ -1,3 +1,7 @@
+##### 2.9.0.603
+
+- Audit Dpkg 2.9 [c2cgeoportal#13367](https://github.com/camptocamp/c2cgeoportal/pull/13367)
+
 ##### 2.9.0.602
 
 - Update dependency pyjwt to v2.15.0 [SECURITY] (2.9) [c2cgeoportal#13342](https://github.com/camptocamp/c2cgeoportal/pull/13342)
