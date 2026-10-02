@@ -222,3 +222,10 @@ QGIS server:
  * ``GDAL_DISABLE_READDIR_ON_OPEN``: GDAL option, default to ``TRUE``.
  * `Other GDAL environment variables
    <https://gdal.org/user/configoptions.html#list-of-configuration-options-and-where-they-apply>`_.
+
+TileCloud-chain:
+
+ * ``C2C__AUTH__JWT__SECRET``: The secret used to sign the TileCloud-chain authentication JWT cookies,
+   it is required when the GitHub authentication is configured. It is automatically generated on
+   project creation and stored in the ``tilecloudchain_jwt_secret`` template variable of the
+   ``project.yaml`` file.

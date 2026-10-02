@@ -5,6 +5,7 @@
   "extent": "",
   "extent_mapserver": "",
   "authtkt_secret": "",
+  "tilecloudchain_jwt_secret": "",
   "unsafe_long_version": false,
   "geomapfish_version": "",
   "geomapfish_main_version": "",
