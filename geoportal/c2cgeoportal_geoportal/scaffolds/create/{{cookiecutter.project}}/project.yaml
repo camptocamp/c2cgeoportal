@@ -10,6 +10,7 @@ template_vars:
   srid: {{cookiecutter.srid}}
   extent: {{cookiecutter.extent}}
   authtkt_secret: {{cookiecutter.authtkt_secret}}
+  tilecloudchain_jwt_secret: {{cookiecutter.tilecloudchain_jwt_secret}}
 env:
   files:
     - env.default

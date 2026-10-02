@@ -177,10 +177,14 @@ class PCreateCommand:
             "project": project_name,
             "package": pkg_name,
             "authtkt_secret": gen_secret(),
+            "tilecloudchain_jwt_secret": gen_secret(),
         }
         context.update(self.read_project_file())
         if os.environ.get("CI") == "true":
             context["authtkt_secret"] = "io7heoDui8xaikie1rushaeGeiph8Bequei6ohchaequob6viejei0xooWeuvohf"  # noqa: S105 # nosec
+            context["tilecloudchain_jwt_secret"] = (  # nosec
+                "Thae9xei2ooPhae5chei7Wee3ahngie4Xoh6aej5uYoh9aepheev3Quai7xooWae"  # noqa: S105
+            )
 
         self.get_var(context, "srid", "Spatial Reference System Identifier (e.g. 2056): ", int)
         srid = cast("int", context["srid"])
