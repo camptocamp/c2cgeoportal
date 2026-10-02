@@ -1,3 +1,7 @@
+##### 2.9.0.605
+
+- Update dependency oauthlib to v4 [SECURITY] (2.9) [c2cgeoportal#13336](https://github.com/camptocamp/c2cgeoportal/pull/13336)
+
 ##### 2.9.0.604
 
 - Update dependency cryptography to v50.0.2 (2.9) [c2cgeoportal#13371](https://github.com/camptocamp/c2cgeoportal/pull/13371)
