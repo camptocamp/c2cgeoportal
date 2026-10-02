@@ -1,3 +1,7 @@
+##### 2.9.0.604
+
+- Update dependency cryptography to v50.0.2 (2.9) [c2cgeoportal#13371](https://github.com/camptocamp/c2cgeoportal/pull/13371)
+
 ##### 2.9.0.603
 
 - Audit Dpkg 2.9 [c2cgeoportal#13367](https://github.com/camptocamp/c2cgeoportal/pull/13367)
