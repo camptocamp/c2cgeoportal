@@ -1,3 +1,7 @@
+##### 2.9.0.606
+
+- Audit Snyk check/fix 2.9 [c2cgeoportal#13374](https://github.com/camptocamp/c2cgeoportal/pull/13374)
+
 ##### 2.9.0.605
 
 - Update dependency oauthlib to v4 [SECURITY] (2.9) [c2cgeoportal#13336](https://github.com/camptocamp/c2cgeoportal/pull/13336)
