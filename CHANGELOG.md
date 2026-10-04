@@ -1,3 +1,10 @@
+##### 2.8.1.386
+
+- Lock file maintenance (2.8) [c2cgeoportal#13375](https://github.com/camptocamp/c2cgeoportal/pull/13375)
+- Update dependency moment to v2.31.0 [SECURITY] (2.8) [ngeo#10211](https://github.com/camptocamp/ngeo/pull/10211)
+- Update dependency urllib3 to v2.8.0 [SECURITY] (2.8) [ngeo#10216](https://github.com/camptocamp/ngeo/pull/10216)
+- Update dependency @types/d3-selection to v3.0.12 (2.8) [ngeo#10217](https://github.com/camptocamp/ngeo/pull/10217)
+
 ##### 2.8.1.385
 
 - Update dependency cryptography to v50.0.2 (2.8) [c2cgeoportal#13370](https://github.com/camptocamp/c2cgeoportal/pull/13370)
