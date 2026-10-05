@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   main:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     name: Continuous integration
     timeout-minutes: 10
 
