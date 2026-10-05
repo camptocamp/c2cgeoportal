@@ -1,3 +1,12 @@
+##### 2.9.0.607
+
+- Lock file maintenance (2.9) [c2cgeoportal#13376](https://github.com/camptocamp/c2cgeoportal/pull/13376)
+- Audit Snyk check/fix 2.9 [ngeo#10209](https://github.com/camptocamp/ngeo/pull/10209)
+- Update dependency moment to v2.31.0 [SECURITY] (2.9) [ngeo#10212](https://github.com/camptocamp/ngeo/pull/10212)
+- Update dependency css-loader to v7.1.5 (2.9) [ngeo#10219](https://github.com/camptocamp/ngeo/pull/10219)
+- Audit Snyk check/fix 2.9 [ngeo#10220](https://github.com/camptocamp/ngeo/pull/10220)
+- Audit Snyk check/fix 2.9 [ngeo#10221](https://github.com/camptocamp/ngeo/pull/10221)
+
 ##### 2.9.0.606
 
 - Audit Snyk check/fix 2.9 [c2cgeoportal#13374](https://github.com/camptocamp/c2cgeoportal/pull/13374)
