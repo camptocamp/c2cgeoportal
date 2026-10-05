@@ -1,20 +1,10 @@
 [tool.mypy]
-python_version = 3.10
+python_version = 3.14
 warn_redundant_casts = true
 warn_unused_ignores = true
 check_untyped_defs = true
 skip_version_check = true
 ignore_missing_imports = true
-
-[tool.black]
-line-length = 110
-target-version = ['py310']
-
-[tool.isort]
-profile = "black"
-line_length = 110
-known_third_party = "c2cwsgiutils,c2cgeoform,qgis,pytest"
-known_first_party = ["geomapfish_qgisserver", "c2cgeoportal_commons"]
 
 [tool.poetry]
 name = 'c2cgeoportal'
@@ -23,7 +13,7 @@ description = 'Not used'
 authors = []
 
 [tool.poetry.dependencies]
-python = ">=3.10,<3.13"
+python = ">=3.14,<4"
 c2cwsgiutils = { extras = ["broadcast"], version = "6.1.10" }
 papyrus = "2.6.2" # commons
 transaction = "5.0" # commons
