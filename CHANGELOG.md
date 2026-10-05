@@ -1,3 +1,7 @@
+##### 2.7.1.338
+
+- Update dependency pytz to v2026.5 (2.7) [c2cgeoportal#13384](https://github.com/camptocamp/c2cgeoportal/pull/13384)
+
 ##### 2.7.1.337
 
 - Update dependency cryptography to v50.0.2 (2.7) [c2cgeoportal#13369](https://github.com/camptocamp/c2cgeoportal/pull/13369)
