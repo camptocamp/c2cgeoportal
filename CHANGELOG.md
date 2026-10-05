@@ -1,3 +1,7 @@
+##### 2.8.1.388
+
+- Update dependency pytz to v2026.5 (2.8) [c2cgeoportal#13385](https://github.com/camptocamp/c2cgeoportal/pull/13385)
+
 ##### 2.8.1.387
 
 - Update all patch/minor versions (2.8) [c2cgeoportal#13355](https://github.com/camptocamp/c2cgeoportal/pull/13355)
