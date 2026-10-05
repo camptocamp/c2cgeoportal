@@ -1,3 +1,7 @@
+##### 2.8.1.387
+
+- Update all patch/minor versions (2.8) [c2cgeoportal#13355](https://github.com/camptocamp/c2cgeoportal/pull/13355)
+
 ##### 2.8.1.386
 
 - Lock file maintenance (2.8) [c2cgeoportal#13375](https://github.com/camptocamp/c2cgeoportal/pull/13375)
