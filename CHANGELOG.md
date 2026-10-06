@@ -1,3 +1,7 @@
+##### 2.9.0.611
+
+- Update dependency Mako to v1.4.2 [SECURITY] (2.9) [c2cgeoportal#13389](https://github.com/camptocamp/c2cgeoportal/pull/13389)
+
 ##### 2.9.0.610
 
 - Update dependency pytz to v2026.5 (2.9) [c2cgeoportal#13386](https://github.com/camptocamp/c2cgeoportal/pull/13386)
