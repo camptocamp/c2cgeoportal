@@ -1,3 +1,7 @@
+##### 2.8.1.389
+
+- Audit Snyk check/fix 2.8 [c2cgeoportal#13381](https://github.com/camptocamp/c2cgeoportal/pull/13381)
+
 ##### 2.8.1.388
 
 - Update dependency pytz to v2026.5 (2.8) [c2cgeoportal#13385](https://github.com/camptocamp/c2cgeoportal/pull/13385)
