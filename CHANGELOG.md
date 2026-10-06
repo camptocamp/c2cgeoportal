@@ -1,3 +1,7 @@
+##### 2.9.0.613
+
+- Audit Dpkg 2.9 [c2cgeoportal#13390](https://github.com/camptocamp/c2cgeoportal/pull/13390)
+
 ##### 2.9.0.612
 
 - Pin initialise-gopass-summon-action to a known good commit [c2cgeoportal#13379](https://github.com/camptocamp/c2cgeoportal/pull/13379)
