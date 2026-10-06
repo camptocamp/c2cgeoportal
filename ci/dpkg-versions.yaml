@@ -227,7 +227,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libflac8: 1.3.3-2ubuntu0.2
   ubuntu_22_04/libfontconfig1: 2.13.1-4.2ubuntu5
   ubuntu_22_04/libfontenc1: 1:1.1.4-1build3
-  ubuntu_22_04/libfreetype6: 2.11.1+dfsg-1ubuntu0.3
+  ubuntu_22_04/libfreetype6: 2.11.1+dfsg-1ubuntu0.4
   ubuntu_22_04/libfreexl1: 1.0.6-1
   ubuntu_22_04/libfribidi0: 1.0.8-2ubuntu3.1
   ubuntu_22_04/libfyba0: 4.1.1-7
@@ -674,7 +674,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libflac8: 1.3.3-2ubuntu0.2
   ubuntu_22_04/libfontconfig1: 2.13.1-4.2ubuntu5
   ubuntu_22_04/libfontenc1: 1:1.1.4-1build3
-  ubuntu_22_04/libfreetype6: 2.11.1+dfsg-1ubuntu0.3
+  ubuntu_22_04/libfreetype6: 2.11.1+dfsg-1ubuntu0.4
   ubuntu_22_04/libfreexl1: 1.0.6-1
   ubuntu_22_04/libfribidi0: 1.0.8-2ubuntu3.1
   ubuntu_22_04/libfyba0: 4.1.1-7
@@ -1116,7 +1116,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40:
   ubuntu_24_04/libflac12t64: 1.4.3+ds-2.1ubuntu2
   ubuntu_24_04/libfontconfig1: 2.15.0-1.1ubuntu2
   ubuntu_24_04/libfontenc1: 1:1.1.8-1build1
-  ubuntu_24_04/libfreetype6: 2.13.2+dfsg-1ubuntu0.1
+  ubuntu_24_04/libfreetype6: 2.13.2+dfsg-1ubuntu0.2
   ubuntu_24_04/libfreexl1: 2.0.0-1build2
   ubuntu_24_04/libfribidi0: 1.0.13-3build1
   ubuntu_24_04/libgbm1: 25.2.8-0ubuntu0.24.04.2
@@ -1522,7 +1522,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.40-gdal3.10:
   ubuntu_24_04/libflac12t64: 1.4.3+ds-2.1ubuntu2
   ubuntu_24_04/libfontconfig1: 2.15.0-1.1ubuntu2
   ubuntu_24_04/libfontenc1: 1:1.1.8-1build1
-  ubuntu_24_04/libfreetype6: 2.13.2+dfsg-1ubuntu0.1
+  ubuntu_24_04/libfreetype6: 2.13.2+dfsg-1ubuntu0.2
   ubuntu_24_04/libfreexl1: 2.0.0-1build2
   ubuntu_24_04/libfribidi0: 1.0.13-3build1
   ubuntu_24_04/libgbm1: 25.2.8-0ubuntu0.24.04.2
@@ -1928,7 +1928,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_24_04/libflac12t64: 1.4.3+ds-2.1ubuntu2
   ubuntu_24_04/libfontconfig1: 2.15.0-1.1ubuntu2
   ubuntu_24_04/libfontenc1: 1:1.1.8-1build1
-  ubuntu_24_04/libfreetype6: 2.13.2+dfsg-1ubuntu0.1
+  ubuntu_24_04/libfreetype6: 2.13.2+dfsg-1ubuntu0.2
   ubuntu_24_04/libfreexl1: 2.0.0-1build2
   ubuntu_24_04/libgbm1: 25.2.8-0ubuntu0.24.04.2
   ubuntu_24_04/libgcc-13-dev: 13.3.0-6ubuntu2~24.04.1
@@ -2332,7 +2332,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_24_04/libflac12t64: 1.4.3+ds-2.1ubuntu2
   ubuntu_24_04/libfontconfig1: 2.15.0-1.1ubuntu2
   ubuntu_24_04/libfontenc1: 1:1.1.8-1build1
-  ubuntu_24_04/libfreetype6: 2.13.2+dfsg-1ubuntu0.1
+  ubuntu_24_04/libfreetype6: 2.13.2+dfsg-1ubuntu0.2
   ubuntu_24_04/libfreexl1: 2.0.0-1build2
   ubuntu_24_04/libgbm1: 25.2.8-0ubuntu0.24.04.2
   ubuntu_24_04/libgcc-13-dev: 13.3.0-6ubuntu2~24.04.1
@@ -2736,7 +2736,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/libflac12t64: 1.4.3+ds-2.1ubuntu2
   ubuntu_24_04/libfontconfig1: 2.15.0-1.1ubuntu2
   ubuntu_24_04/libfontenc1: 1:1.1.8-1build1
-  ubuntu_24_04/libfreetype6: 2.13.2+dfsg-1ubuntu0.1
+  ubuntu_24_04/libfreetype6: 2.13.2+dfsg-1ubuntu0.2
   ubuntu_24_04/libfreexl1: 2.0.0-1build2
   ubuntu_24_04/libfribidi0: 1.0.13-3build1
   ubuntu_24_04/libgbm1: 25.2.8-0ubuntu0.24.04.2
@@ -3181,7 +3181,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_24_04/libfftw3-single3: 3.3.10-1ubuntu3
   ubuntu_24_04/libflac12t64: 1.4.3+ds-2.1ubuntu2
   ubuntu_24_04/libfontconfig1: 2.15.0-1.1ubuntu2
-  ubuntu_24_04/libfreetype6: 2.13.2+dfsg-1ubuntu0.1
+  ubuntu_24_04/libfreetype6: 2.13.2+dfsg-1ubuntu0.2
   ubuntu_24_04/libfreexl1: 2.0.0-1build2
   ubuntu_24_04/libfribidi0: 1.0.13-3build1
   ubuntu_24_04/libgbm1: 25.2.8-0ubuntu0.24.04.2
@@ -3934,7 +3934,7 @@ camptocamp/geomapfish:latest:
   ubuntu_24_04/libfftw3-single3: 3.3.10-1ubuntu3
   ubuntu_24_04/libflac12t64: 1.4.3+ds-2.1ubuntu2
   ubuntu_24_04/libfontconfig1: 2.15.0-1.1ubuntu2
-  ubuntu_24_04/libfreetype6: 2.13.2+dfsg-1ubuntu0.1
+  ubuntu_24_04/libfreetype6: 2.13.2+dfsg-1ubuntu0.2
   ubuntu_24_04/libfreexl1: 2.0.0-1build2
   ubuntu_24_04/libfribidi0: 1.0.13-3build1
   ubuntu_24_04/libgbm1: 25.2.8-0ubuntu0.24.04.2
@@ -4636,7 +4636,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_24_04/libfftw3-single3: 3.3.10-1ubuntu3
   ubuntu_24_04/libflac12t64: 1.4.3+ds-2.1ubuntu2
   ubuntu_24_04/libfontconfig1: 2.15.0-1.1ubuntu2
-  ubuntu_24_04/libfreetype6: 2.13.2+dfsg-1ubuntu0.1
+  ubuntu_24_04/libfreetype6: 2.13.2+dfsg-1ubuntu0.2
   ubuntu_24_04/libfreexl1: 2.0.0-1build2
   ubuntu_24_04/libfribidi0: 1.0.13-3build1
   ubuntu_24_04/libgbm1: 25.2.8-0ubuntu0.24.04.2
