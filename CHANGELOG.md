@@ -1,3 +1,7 @@
+##### 2.9.0.612
+
+- Pin initialise-gopass-summon-action to a known good commit [c2cgeoportal#13379](https://github.com/camptocamp/c2cgeoportal/pull/13379)
+
 ##### 2.9.0.611
 
 - Update dependency Mako to v1.4.2 [SECURITY] (2.9) [c2cgeoportal#13389](https://github.com/camptocamp/c2cgeoportal/pull/13389)
