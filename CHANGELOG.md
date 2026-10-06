@@ -1,3 +1,7 @@
+##### 2.7.1.339
+
+- Update dependency mako to v1.4.2 [SECURITY] (2.7) [c2cgeoportal#13387](https://github.com/camptocamp/c2cgeoportal/pull/13387)
+
 ##### 2.7.1.338
 
 - Update dependency pytz to v2026.5 (2.7) [c2cgeoportal#13384](https://github.com/camptocamp/c2cgeoportal/pull/13384)
