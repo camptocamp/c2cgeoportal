@@ -1,0 +1,48 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/camptocamp/tag-publish/1.2.6/tag_publish/schema.json
+
+docker:
+  images:
+  - name: camptocamp/geomapfish
+  - name: camptocamp/geomapfish-config
+  - name: camptocamp/geomapfish-tools
+  - name: camptocamp/geomapfish
+    group: full
+  - name: camptocamp/geomapfish-config
+    group: full
+  - name: camptocamp/geomapfish-tools
+    group: full
+  - name: camptocamp/geomapfishapp-geoportal
+  - name: camptocamp/geomapfish-qgisserver
+    group: qgis-3.28
+    tags:
+    - gmf{version}-qgis3.28
+  - name: camptocamp/geomapfish-qgisserver
+    group: qgis-3.28-gdal3.6
+    tags:
+    - gmf{version}-qgis3.28-gdal3.6
+  - name: camptocamp/geomapfish-qgisserver
+    group: qgis-3.28-gdal3.7
+    tags:
+    - gmf{version}-qgis3.28-gdal3.7
+  - name: camptocamp/geomapfish-qgisserver
+    group: qgis-3.34-gdal3.7
+    tags:
+    - gmf{version}-qgis3.34-gdal3.7
+  - name: camptocamp/geomapfish-qgisserver
+    group: qgis-3.34-gdal3.8
+    tags:
+    - gmf{version}-qgis3.34-gdal3.8
+  - name: camptocamp/geomapfish-qgisserver
+    group: qgis-3.34
+    tags:
+    - gmf{version}-qgis3.34
+pypi:
+  versions_type:
+  - version_tag
+  packages:
+  - folder: commons
+    group: pypi
+  - folder: geoportal
+    group: pypi
+  - folder: admin
+    group: pypi
