@@ -31,6 +31,8 @@ docker:
     tags:
     - gmf{version}-qgis3.34
 pypi:
+  versions_type:
+  - version_tag
   packages:
   - folder: commons
     group: pypi
