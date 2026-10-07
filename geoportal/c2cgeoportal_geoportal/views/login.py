@@ -32,7 +32,7 @@ import secrets
 import string
 import sys
 import urllib.parse
-from typing import Any
+from typing import Any, cast
 
 import pkce
 import pyotp
@@ -167,7 +167,9 @@ class Login:
                                     "is_password_changed": False,  # nosec
                                     "two_factor_enable": self.two_factor_auth,
                                     "two_factor_totp_secret": user.tech_data["2fa_totp_secret"],
-                                    "otp_uri": pyotp.TOTP(user.tech_data["2fa_totp_secret"]).provisioning_uri(
+                                    "otp_uri": pyotp.TOTP(
+                                        cast("str", user.tech_data["2fa_totp_secret"]),
+                                    ).provisioning_uri(
                                         user.email,
                                         issuer_name=self.two_factor_issuer_name,
                                     ),
