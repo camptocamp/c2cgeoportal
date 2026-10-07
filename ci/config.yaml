@@ -8,4 +8,3 @@ audit:
   snyk:
     files_no_install:
       - geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}/ci/requirements.txt
-
