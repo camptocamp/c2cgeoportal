@@ -9,6 +9,10 @@ on:
       - '*'
   pull_request:
 
+permissions:
+  packages: write
+  id-token: write
+
 env:
   HAS_SECRETS: ${{ secrets.HAS_SECRETS }}
   DOCKER_BUILDKIT: 1
@@ -73,13 +77,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: camptocamp/initialise-gopass-summon-action@17703c87720ba3766abc90da60b437783b530d93 # v2.0.1
-        with:
-          ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
-          github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
-          patterns: docker
-        if: env.HAS_SECRETS == 'HAS_SECRETS'
-
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
@@ -128,13 +125,14 @@ jobs:
 
       - name: Publish
         run: >
-          c2cciutils-publish
+          tag-publish
           --group=qgis-${{ matrix.version }}
           --docker-versions=${{ steps.version.outputs.versions }}
-          --snyk-version=${{ steps.version.outputs.snyk_version }}
         if: >
           env.HAS_SECRETS == 'HAS_SECRETS'
           && steps.version.outputs.versions != ''
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - run: git diff --exit-code --patch > /tmp/dpkg-versions.patch || true
         if: failure()

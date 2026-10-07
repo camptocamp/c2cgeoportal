@@ -9,6 +9,11 @@ on:
       - '*'
   pull_request:
 
+permissions:
+  contents: write
+  packages: write
+  id-token: write
+
 env:
   HAS_SECRETS: ${{ secrets.HAS_SECRETS }}
 
@@ -55,7 +60,7 @@ jobs:
         with:
           ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
           github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
-          patterns: pypi docker transifex
+          patterns: transifex
         if: env.HAS_SECRETS == 'HAS_SECRETS'
 
       - uses: actions/setup-python@v5
@@ -263,15 +268,16 @@ jobs:
           make --makefile=build.mk build-translations
       - name: Publish
         run: >
-          c2cciutils-publish
+          tag-publish
           --docker-versions=${{ steps.version.outputs.versions }}
-          --snyk-version=${{ steps.version.outputs.snyk_version }}
         if: >
           env.HAS_SECRETS == 'HAS_SECRETS'
           && steps.version.outputs.versions != ''
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish version branch to pypi
         run: |
-          c2cciutils-publish --group=pypi --type=version_tag --version=${{ steps.version.outputs.full }}
+          tag-publish --group=pypi --type=version_tag --version=${{ steps.version.outputs.full }}
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && env.HAS_SECRETS == 'HAS_SECRETS'

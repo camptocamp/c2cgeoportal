@@ -110,9 +110,9 @@ security_response = requests.get(
     headers=c2cciutils.add_authorization_header({}),
     timeout=30,
 )
-with open("ci/config.yaml", encoding="utf-8") as open_file:
+with open(".github/publish.yaml", encoding="utf-8") as open_file:
     config = yaml.load(open_file, Loader=yaml.SafeLoader)
-docker_config = config.get("publish", {}).get("docker", {})
+docker_config = config.get("docker", {})
 
 if (
     security_response.ok
