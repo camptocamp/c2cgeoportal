@@ -30,6 +30,14 @@ Information
    QGIS Server container environment for the Kubernetes deployments, when the application is served
    in HTTPS.
 
+3. The QGIS desktop Docker images (`camptocamp/qgis-server:<version>-desktop`) are abandoned, the
+   `docker-compose-qgis.yaml` file and the `make qgis` target are removed from the project template,
+   use a QGIS desktop installed locally instead.
+
+4. The default QGIS Server version is now `master` for the new projects (in the `env.default` file),
+   the `env.default` file is not updated by the upgrade process then the existing projects are not
+   impacted, you can set `QGIS_VERSION` in the `env.project` file to change the used version.
+
 Changes to apply
 ================
 

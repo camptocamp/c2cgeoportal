@@ -74,3 +74,6 @@ upgrade_files:
   - action: move
     from: ci/config.yaml
     to: .github/publish.yaml
+  - action: remove
+    paths:
+      - docker-compose-qgis.yaml
