@@ -38,6 +38,9 @@ Information
    the `env.default` file is not updated by the upgrade process then the existing projects are not
    impacted, you can set `QGIS_VERSION` in the `env.project` file to change the used version.
 
+5. The MapServer Docker image is now `camptocamp/mapserver:8.6-gdal3.13`, based on Ubuntu 26.04
+   through `ghcr.io/osgeo/gdal:ubuntu-small-3.13.3`.
+
 Changes to apply
 ================
 
