@@ -36,7 +36,7 @@ from typing import Any, Literal, Optional, cast, get_args
 import pyramid.request
 import sqlalchemy.orm.base
 from c2c.template.config import config
-from geoalchemy2 import Geometry
+from geoalchemy2 import Geometry, WKBElement, WKTElement
 from geoalchemy2.shape import to_shape
 from papyrus.geo_interface import GeoInterface
 from sqlalchemy import Column, ForeignKey, Table, UniqueConstraint, event
@@ -139,7 +139,9 @@ class FullTextSearch(GeoInterface, Base):  # type: ignore[valid-type,misc]
     lang: Mapped[str] = mapped_column(String(2), nullable=True)
     public: Mapped[bool] = mapped_column(Boolean, server_default="true")
     ts = mapped_column(TsVector)
-    the_geom = mapped_column(Geometry("GEOMETRY", srid=_srid, spatial_index=False))
+    the_geom: Mapped[WKBElement | WKTElement | None] = mapped_column(
+        Geometry("GEOMETRY", srid=_srid, spatial_index=False),
+    )
     params = mapped_column(JSONEncodedDict, nullable=True)
     actions = mapped_column(JSONEncodedDict, nullable=True)
     from_theme: Mapped[bool] = mapped_column(Boolean, server_default="false")
@@ -277,7 +279,7 @@ class Role(Base):  # type: ignore[valid-type,misc]
             },
         },
     )
-    extent = mapped_column(
+    extent: Mapped[WKBElement | WKTElement | None] = mapped_column(
         Geometry("POLYGON", srid=_srid, spatial_index=False),
         info={
             "colanderalchemy": {
@@ -308,7 +310,7 @@ class Role(Base):  # type: ignore[valid-type,misc]
         name: str = "",
         description: str = "",
         functionalities: list[Functionality] | None = None,
-        extent: Geometry | None = None,
+        extent: WKBElement | WKTElement | None = None,
     ) -> None:
         if functionalities is None:
             functionalities = []
@@ -324,7 +326,10 @@ class Role(Base):  # type: ignore[valid-type,misc]
     def bounds(self) -> tuple[float, float, float, float] | None:
         if self.extent is None:
             return None
-        return cast("tuple[float, float, float, float]", to_shape(self.extent).bounds)
+        return cast(
+            "tuple[float, float, float, float]",
+            to_shape(self.extent).bounds,
+        )
 
 
 event.listen(Role.functionalities, "set", cache_invalidate_cb)
@@ -1579,7 +1584,7 @@ class RestrictionArea(Base):  # type: ignore[valid-type,misc]
             },
         },
     )
-    area = mapped_column(
+    area: Mapped[WKBElement | WKTElement | None] = mapped_column(
         Geometry("MULTIPOLYGON", srid=_srid),
         info={
             "colanderalchemy": {
@@ -1655,7 +1660,7 @@ class RestrictionArea(Base):  # type: ignore[valid-type,misc]
         description: str = "",
         layers: list[Layer] | None = None,
         roles: list[Role] | None = None,
-        area: Geometry | None = None,
+        area: WKBElement | WKTElement | None = None,
         readwrite: bool = False,
     ) -> None:
         if layers is None:

@@ -23,6 +23,9 @@ convention = "numpy"
 known-third-party = ["c2cwsgiutils", "c2cgeoform"]
 known-first-party = ["c2cgeoportal_commons", "c2cgeoportal_geoportal", "c2cgeoportal_admin", "geomapfish_qgisserver"]
 
+[tool.ruff.lint.flake8-type-checking]
+runtime-evaluated-base-classes = ["c2cgeoportal_commons.models.Base"]
+
 [tool.poetry.dependencies]
 python = ">=3.14,<4"
 alembic = "1.20.1" # geoportal

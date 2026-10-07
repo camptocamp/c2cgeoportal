@@ -306,6 +306,7 @@ class TestRole(TestTreeGroup):
             (511073.1973649057, 108541.7344432737),
             (719383.7988896352, 109062.8141734005),
         ]
+        assert role.extent is not None
         actual_coords = to_shape(role.extent).exterior.coords[:]
         assert len(expected_coords) == len(actual_coords)
         for expected, actual in zip(expected_coords, actual_coords, strict=False):
