@@ -53,11 +53,11 @@ jobs:
         # The versions should be set everywhere we have a == QGIS version == comment
         version:
           - '4.2'
-          # Used as default version
           - 4.2-gdal3.13
           - ltr
           - lr
           - lr-debug
+          # Used as default version
           - master
 
     # == QGIS version ==

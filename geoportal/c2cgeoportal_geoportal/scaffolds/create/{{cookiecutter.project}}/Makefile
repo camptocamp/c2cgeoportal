@@ -45,10 +45,6 @@ eslint: ## Runs the eslint checks
 			eslint $(ESLINT_TS_FILES); \
 	fi
 
-.PHONY: qgis
-qgis: ## Run QGIS desktop
-	docker compose -f docker-compose.yaml -f docker-compose-qgis.yaml run --rm qgis
-
 secrets.tar.bz2.gpg: env.secrets ## Encrypt the secrets for committing changes
 	tar -jcf secrets.tar.bz2 $^
 	rm -f $@
