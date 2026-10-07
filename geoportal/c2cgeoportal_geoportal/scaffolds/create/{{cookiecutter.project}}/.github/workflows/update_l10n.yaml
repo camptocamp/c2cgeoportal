@@ -14,18 +14,28 @@ jobs:
     runs-on: ubuntu-26.04
     name: Update l10n cron job
     timeout-minutes: 10
-    # The translations are read from the running instance, set the `PROJECT_PUBLIC_URL` repository
-    # variable to the public URL of the project to enable this job.
-    if: vars.PROJECT_PUBLIC_URL != ''
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - branch: int-{{cookiecutter.geomapfish_main_version_dash}}
+            base_url: int.customer.ch
+          - branch: prod-{{cookiecutter.geomapfish_main_version_dash}}
+            base_url: prod.customer.ch
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{'{{'}} matrix.branch {{'}}'}}
 
       - run: ./build --env
-      - run: PROJECT_PUBLIC_URL=${{'{{'}} vars.PROJECT_PUBLIC_URL {{'}}'}} make -e update-po-from-url
+      - run: PROJECT_PUBLIC_URL=${{'{{'}} matrix.base_url {{'}}'}} make -e update-po-from-url
 
-      # The job fails when the translations changed, the `patch` module of ghci picks the artifact up,
-      # commits it on this branch and opens the pull request, no personal access token is needed here.
+      # The job fails when the translations changed. The `patch` module of ghci picks the artifact up,
+      # applies it on the branch carried by its name and opens the pull request, so no personal access
+      # token is needed here anymore.
+      - run: sudo chown -R $(id -u) .
       - run: git add --all
       - run: git diff --staged --exit-code
         id: diff
@@ -33,7 +43,7 @@ jobs:
         if: failure() && steps.diff.outcome == 'failure'
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: Update the l10n files.patch
+          name: Update the l10n files on ${{'{{'}} matrix.branch {{'}}'}} [${{'{{'}} matrix.branch {{'}}'}}].patch
           path: /tmp/Update-the-l10n-files.patch
           retention-days: 1
         if: failure() && steps.diff.outcome == 'failure'
