@@ -27,6 +27,8 @@ docker:
     tags:
     - gmf{version}-qgisltr
 pypi:
+  versions_type:
+  - version_tag
   packages:
   - folder: commons
     group: pypi
