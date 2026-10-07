@@ -1,4 +1,4 @@
-FROM ghcr.io/camptocamp/mapserver:8.6-gdal3.12
+FROM ghcr.io/camptocamp/mapserver:8.6-gdal3.13
 LABEL org.opencontainers.image.authors="Camptocamp <info@camptocamp.com>"
 
 RUN --mount=type=cache,target=/var/lib/apt/lists \
