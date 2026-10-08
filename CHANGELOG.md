@@ -1,3 +1,7 @@
+##### 2.9.0.616
+
+- Audit Dpkg 2.9 [c2cgeoportal#13397](https://github.com/camptocamp/c2cgeoportal/pull/13397)
+
 ##### 2.9.0.615
 
 - Exclude the dpkg versions list from Sonar [c2cgeoportal#13398](https://github.com/camptocamp/c2cgeoportal/pull/13398)
