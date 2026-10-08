@@ -1,3 +1,7 @@
+##### 2.7.1.340
+
+- Migrate the publishing from c2cciutils-publish to tag-publish [c2cgeoportal#13396](https://github.com/camptocamp/c2cgeoportal/pull/13396)
+
 ##### 2.7.1.339
 
 - Update dependency mako to v1.4.2 [SECURITY] (2.7) [c2cgeoportal#13387](https://github.com/camptocamp/c2cgeoportal/pull/13387)
