@@ -1,3 +1,7 @@
+##### 2.9.0.615
+
+- Exclude the dpkg versions list from Sonar [c2cgeoportal#13398](https://github.com/camptocamp/c2cgeoportal/pull/13398)
+
 ##### 2.9.0.614
 
 - Migrate the publishing from c2cciutils-publish to tag-publish [c2cgeoportal#13394](https://github.com/camptocamp/c2cgeoportal/pull/13394)
