@@ -4,6 +4,10 @@ on:
   push:
   pull_request:
 
+permissions:
+  packages: write
+  id-token: write
+
 env:
   HAS_SECRETS: ${{ secrets.HAS_SECRETS }}
 
@@ -44,13 +48,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: camptocamp/initialise-gopass-summon-action@17703c87720ba3766abc90da60b437783b530d93 # v2.0.1
-        with:
-          ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
-          github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
-          patterns: docker
-        if: env.HAS_SECRETS == 'HAS_SECRETS'
-
       - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
       - run: python3 -m pip install --user --requirement=ci/requirements.txt
 
@@ -89,20 +86,41 @@ jobs:
         id: version
         if: env.HAS_SECRETS == 'HAS_SECRETS'
 
+      # `tag-publish` imports `tomllib`, available from Python 3.11, while the runner Python of
+      # `ubuntu-22.04` is 3.10 and the previous steps need their pinned packages, hence a dedicated
+      # interpreter installed in `${HOME}/.local`, which is already in `GITHUB_PATH`.
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.11'
+      - run: python3 -m pip install --user '--only-binary=:all:' --no-binary=markdown-table tag-publish==1.2.6
+
       - name: Publish feature branch
         run: |
-          c2cciutils-publish --group=qgis-${{ matrix.version }}
+          tag-publish --group=qgis-${{ matrix.version }}
         if: >
           github.ref != format('refs/heads/{0}', env.MAIN_BRANCH)
           && env.HAS_SECRETS == 'HAS_SECRETS'
           && ! contains(github.ref_name, '/')
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Publish version branch
         run: |
-          c2cciutils-publish --group=qgis-${{ matrix.version }} --type=version_branch \
-            --version=${{ steps.version.outputs.major }}
+          tag-publish --group=qgis-${{ matrix.version }} \
+            --docker-versions=${{ steps.version.outputs.major }}
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && env.HAS_SECRETS == 'HAS_SECRETS'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - run: git diff --exit-code --patch > /tmp/dpkg-versions.patch || true
+        if: failure()
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Update QGIS ${{ matrix.version }} dpkg versions list.patch
+          path: /tmp/dpkg-versions.patch
+          retention-days: 1
+        if: failure()
 
       # Mark as success
       - id: success
