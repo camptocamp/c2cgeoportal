@@ -242,7 +242,7 @@ jobs:
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: '3.11'
-      - run: python3 -m pip install --user tag-publish==1.2.6
+      - run: python3 -m pip install --user --only-binary=:all: tag-publish==1.2.6
 
       - name: Publish feature branch
         run: |
