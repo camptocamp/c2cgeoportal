@@ -54,7 +54,7 @@ On release creation:
    All changes should be committed.
 
    The branch protection is automatically applied by the repository rulesets
-   (they match the ``refs/heads/[0-9].[0-9]`` branches).
+   (they match the ``refs/heads/[0-9].[0-9]`` and ``refs/heads/[0-9].[0-9][0-9]`` branches).
 
 Create the new branch on demo
 -----------------------------

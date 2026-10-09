@@ -29,7 +29,7 @@ The detailed commands are in `doc/developer/build_release.rst`.
   - Pull the Transifex branch resources
     (`tx pull --source --branch=<version> --force --resources=...` and the translations).
 - The branch protection is automatically applied by the repository rulesets, they match the
-  `refs/heads/[0-9].[0-9]` branches.
+  `refs/heads/[0-9].[0-9]` and `refs/heads/[0-9].[0-9][0-9]` branches.
 - The demo branch (`prod-<version>`) and the argocd application (`add-demo-<version>`) are managed in
   `demo_geomapfish` and `argocd-gs-gmf-apps`.
 
