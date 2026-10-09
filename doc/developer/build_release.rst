@@ -17,8 +17,8 @@ For example, ``<release>`` can be ``2.0.0rc1`` for the first release candidate
 of the version ``2.0``, ``2.0.0`` for the final release, ``2.0.1`` for
 the first bug fix release, and ``<version>`` can be ``2.0``, ``2.1``, ...
 
-The version lifecycle involves the ``ngeo``, ``c2cgeoportal``, ``demo_geomapfish`` and
-``argocd-gs-gmf-apps`` repositories; when a version is added, all of them should be consistent.
+The version lifecycle involves the ``ngeo``, ``c2cgeoportal``, the demo and ``argocd-gs-gmf-apps``
+repositories; when a version is added, all of them should be consistent.
 
 .. _developer_build_release_pre_release_task:
 
