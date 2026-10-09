@@ -199,7 +199,7 @@ When upgrading a c2cgeoportal application, things happen as follow:
 
 - You manually run `./build --upgrade <target_version>`;
 - This script downloads the `./upgrade` script from target branch on GitHub;
-- The freshly downloaded `./upgrade` script pull images from Docker Hub;
+- The freshly downloaded `./upgrade` script pull images from the GitHub Container Registry (ghcr.io);
 - The `c2cupgrade` tool is ran from the fresh pulled image.
 
 Note that this does not offer you the possibility to interfere or debug anything.
@@ -212,7 +212,7 @@ the root of your local c2cgeoportal folder, example:
    # Initiate the upgrade by getting the ./upgrade script from you local c2cgeoportal clone.
    ./build --debug=../c2cgeoportal --upgrade master
 
-   # Run the upgrade step 1 without pulling images from Docker hub,
+   # Run the upgrade step 1 without pulling images from the GitHub Container Registry,
    # and with c2cupgrade file mounted from you local c2cgeoportal folder.
    ./upgrade --debug=../c2cgeoportal latest 1
 

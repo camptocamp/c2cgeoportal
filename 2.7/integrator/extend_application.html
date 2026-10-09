@@ -351,7 +351,7 @@ in the <code class="docutils literal notranslate"><span class="pre">geoportal/va
 <p>Create a file named <code class="docutils literal notranslate"><span class="pre">Dockerfile</span></code> with the following content:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>ARG GEOMAPFISH_MAIN_VERSION
 
-FROM camptocamp/geomapfish:${GEOMAPFISH_MAIN_VERSION} as runner
+FROM ghcr.io/camptocamp/geomapfish:${GEOMAPFISH_MAIN_VERSION} as runner
 
 COPY authentication.py /app/geomapfishapp_geoportal/
 </pre></div>

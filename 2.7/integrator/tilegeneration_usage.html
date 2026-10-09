@@ -167,6 +167,9 @@ the borders. The <code class="docutils literal notranslate"><span class="pre">me
 </div>
 <p>Where <code class="docutils literal notranslate"><span class="pre">&lt;z/x/y&gt;</span></code> should refer to an empty tile/metatile. Generally it’s a good idea to use z as the maximum
 zoom, x and y as 0.</p>
+<p>The source server should return a uniform empty image for the given tile/metatile. If it returns no data at
+all (HTTP <code class="docutils literal notranslate"><span class="pre">204</span></code> or <code class="docutils literal notranslate"><span class="pre">404</span></code>), the tile is dropped, no hash can be computed and an error message is printed
+instead.</p>
 </section>
 <section id="configure-geom-sql">
 <h4>Configure geom/sql<a class="headerlink" href="#configure-geom-sql" title="Permalink to this headline">¶</a></h4>
