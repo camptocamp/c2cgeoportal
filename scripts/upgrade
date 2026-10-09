@@ -100,13 +100,19 @@ else:
                 ]
             )
             subprocess.check_call(
-                ["docker", "pull", "ghcr.io/camptocamp/geomapfish-tools:{version}".format(version=args.version)]
+                [
+                    "docker",
+                    "pull",
+                    "ghcr.io/camptocamp/geomapfish-tools:{version}".format(version=args.version),
+                ]
             )
             subprocess.check_call(
                 [
                     "docker",
                     "pull",
-                    "ghcr.io/camptocamp/geomapfish-config:{major_version}".format(major_version=major_version),
+                    "ghcr.io/camptocamp/geomapfish-config:{major_version}".format(
+                        major_version=major_version
+                    ),
                 ]
             )
 
