@@ -102,6 +102,7 @@ if args.full:
     sys.exit(0)
 
 import c2cciutils
+import tag_publish.configuration
 
 latest = False
 security_response = requests.get(
@@ -109,13 +110,13 @@ security_response = requests.get(
     headers=c2cciutils.add_authorization_header({}),
     timeout=30,
 )
-with open("ci/config.yaml", encoding="utf-8") as open_file:
+with open(".github/publish.yaml", encoding="utf-8") as open_file:
     config = yaml.load(open_file, Loader=yaml.SafeLoader)
-docker_config = config.get("publish", {}).get("docker", {})
+docker_config = config.get("docker", {})
 
 if (
     security_response.ok
-    and docker_config.get("latest", c2cciutils.configuration.PUBLISH_DOCKER_LATEST_DEFAULT) is True
+    and docker_config.get("latest", tag_publish.configuration.DOCKER_LATEST_DEFAULT) is True
 ):
     security = c2cciutils.security.Security(security_response.text)
     version_index = security.headers.index("Version")
