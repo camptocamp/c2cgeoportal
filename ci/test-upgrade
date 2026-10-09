@@ -14,7 +14,7 @@ function pcreate {
     docker run --rm ${DOCKER_ENV} \
         --volume="$1:/src" \
         --user="$(id -u):$(id -g)" \
-        "camptocamp/geomapfish-tools:$3" \
+        "ghcr.io/camptocamp/geomapfish-tools:$3" \
         run /src pcreate --scaffold="$2" testgeomapfish ${PCREATE_ARGS}
 }
 
@@ -73,7 +73,7 @@ function pcreate-old {
     # shellcheck disable=SC2086
     docker run --rm ${DOCKER_ENV} \
         --volume="$1:/src" \
-        "camptocamp/geomapfish-tools:$3" \
+        "ghcr.io/camptocamp/geomapfish-tools:$3" \
         run "$(id -u)" "$(id -g)" /src pcreate --scaffold="$2" testgeomapfish ${PCREATE_ARGS}
 }
 
@@ -204,5 +204,5 @@ fi
 
 if [ "$1" = "cleanup" ]; then
     rm --recursive --force "${WORKSPACE}/ref" "${WORKSPACE}/v270" "${WORKSPACE}/v280" "${WORKSPACE}/v290" "${WORKSPACE}/v210"
-    docker images --format '{{.Repository}}:{{.Tag}}' | grep 'camptocamp/geomapfish.*:2.[678]'
+    docker images --format '{{.Repository}}:{{.Tag}}' | grep 'ghcr.io/camptocamp/geomapfish.*:2.[678]'
 fi

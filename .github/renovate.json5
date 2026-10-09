@@ -92,11 +92,6 @@
       enabled: false,
       matchFileNames: ['geoportal/requirements.txt'],
     },
-    /** Ignore .github/workflows/rebuild-*.yaml */
-    {
-      matchFileNames: ['.github/workflows/rebuild-*.yaml'],
-      enabled: false,
-    },
     /** Ignore .github/workflows/ngeo-*.yaml */
     {
       matchFileNames: ['.github/workflows/ngeo-*.yaml'],

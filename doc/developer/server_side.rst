@@ -25,16 +25,16 @@ Docker images
 
 GeoMapFish provides the following Docker images:
 
-- ``camptocamp/geomapfish`` the base image for the project geoportal runtime image.
-- ``camptocamp/geomapfish-config`` the base image for the project config runtime image.
-- ``camptocamp/geomapfish-tools`` the base image for the build and for custom tools.
-- ``camptocamp/geomapfish-qgisserver`` the QGIS server image with the restricted access plugin.
-- ``camptocamp/geomapfishapp-geoportal`` the geoportal image in simple application mode.
+- ``ghcr.io/camptocamp/geomapfish`` the base image for the project geoportal runtime image.
+- ``ghcr.io/camptocamp/geomapfish-config`` the base image for the project config runtime image.
+- ``ghcr.io/camptocamp/geomapfish-tools`` the base image for the build and for custom tools.
+- ``ghcr.io/camptocamp/geomapfish-qgisserver`` the QGIS server image with the restricted access plugin.
+- ``ghcr.io/camptocamp/geomapfishapp-geoportal`` the geoportal image in simple application mode.
 
 In the project you will have two images:
 
-- ``camptocamp/<project>-geoportal`` the geoportal image
-- ``camptocamp/<project>-config`` the config image
+- ``ghcr.io/camptocamp/<project>-geoportal`` the geoportal image
+- ``ghcr.io/camptocamp/<project>-config`` the config image
 
 Tests
 -----

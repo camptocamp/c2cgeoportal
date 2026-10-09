@@ -11,6 +11,8 @@ env:
 
 permissions:
   contents: write
+  packages: write
+  id-token: write
 
 jobs:
   main:
@@ -34,12 +36,6 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
           ref: ${{ env.MAIN_BRANCH }}
-
-      - uses: camptocamp/initialise-gopass-summon-action@17703c87720ba3766abc90da60b437783b530d93 # v2
-        with:
-          ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
-          github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
-          patterns: pypi docker transifex
 
       - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
       - run: python3 -m pip install --user --requirement=ci/requirements.txt
@@ -169,11 +165,26 @@ jobs:
             git push origin HEAD:${{ env.MAIN_BRANCH }} \
           )
 
+      # `tag-publish` imports `tomllib`, available from Python 3.11, while the runner Python of
+      # `ubuntu-22.04` is 3.10 and the previous steps need their pinned packages, hence a dedicated
+      # interpreter installed in `${HOME}/.local`, which is already in `GITHUB_PATH`.
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.11'
+      - run: python3 -m pip install --user '--only-binary=:all:' --no-binary=markdown-table tag-publish==1.2.6
+
       - name: Publish version branch
         run: |
-          c2cciutils-publish --type=version_branch --version=${{ steps.version.outputs.major }}
-          c2cciutils-publish --type=version_branch --version=${{ steps.version.outputs.major_minor }}
-          c2cciutils-publish --group=full --type=version_branch --version=${{ steps.version.outputs.full }}
+          tag-publish --docker-versions=${{ steps.version.outputs.major }},${{ steps.version.outputs.major_minor }}
+          tag-publish --group=full --docker-versions=${{ steps.version.outputs.full }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish version branch to pypi
+        run: |
+          tag-publish --group=pypi --type=version_tag --version=${{ steps.version.outputs.full }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Notify demo
         run: >

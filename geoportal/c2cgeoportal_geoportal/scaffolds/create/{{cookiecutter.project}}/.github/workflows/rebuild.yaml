@@ -39,6 +39,6 @@ jobs:
         run: ./build
 
       - name: Publish
-        run: tag-publish --branch=${{'{{'}} matrix.branch }} --type=rebuild
+        run: tag-publish --type=rebuild --version=${{'{{'}} matrix.branch }}
         env:
           GITHUB_TOKEN: ${{'{{'}} secrets.GITHUB_TOKEN }}
