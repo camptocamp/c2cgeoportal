@@ -27,7 +27,7 @@ function pcreate {
             DOCKER_ENV="--env=CI --env=SRID=21781 --env=EXTENT=489246.36,78873.44,837119.76,296543.14"
         fi
         docker run --rm ${DOCKER_ENV} \
-            --volume=$1/testgeomapfish:/src/testgeomapfish camptocamp/geomapfish-tools:$3 \
+            --volume=$1/testgeomapfish:/src/testgeomapfish ghcr.io/camptocamp/geomapfish-tools:$3 \
             run "$(id -u)" "$(id -g)" /src pcreate --scaffold=$2 testgeomapfish ${PCREATE_ARGS}
     fi
 }
@@ -146,7 +146,7 @@ then
     create ${WORKSPACE}/v27 ${MAJOR_VERSION}
     create ${WORKSPACE}/v260 2.6.0.130
     create ${WORKSPACE}/v240 2.4.2.84
-    docker rmi camptocamp/geomapfish-tools:2.6.0.130
+    docker rmi ghcr.io/camptocamp/geomapfish-tools:2.6.0.130
     docker rmi camptocamp/geomapfish-build:2.4.2.84
 
     cd ${WORKSPACE}/ref/testgeomapfish

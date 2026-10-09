@@ -27,7 +27,7 @@ For this procedure, we need to set some environment variables:
    GEOMAPFISH_PROJECT=<project>
    GEOMAPFISH_PACKAGE=<package>
 
-Where ``<release>`` can be found on :docker_hub:`Docker Hub <camptocamp/geomapfish-tools>`,
+Where ``<release>`` can be found on :ghcr:`GitHub Container Registry <geomapfish-tools>`,
 <project> is the project name that should be the GitHub repository name, <package> is the package name.
 
 
@@ -42,7 +42,7 @@ c2cgeoportal application you want to create the new application from:
 .. prompt:: bash
 
     docker run --rm \
-        camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION} \
+        ghcr.io/camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION} \
         pcreate -l
 
 You should at least see the c2cgeoportal scaffolds:
@@ -60,7 +60,7 @@ To create the application (simple or advance), first apply the ``create`` scaffo
 .. prompt:: bash
 
     docker run --rm -ti --volume=$(pwd):/src \
-        camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION} \
+        ghcr.io/camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION} \
         run $(id -u) $(id -g) /src \
         pcreate --scaffold=create \
         ${GEOMAPFISH_PROJECT}
@@ -83,7 +83,7 @@ it later.
         docker run --rm -ti --volume=$(pwd):/src \
             --env=SRID=2056 \
             --env=EXTENT="2420000,1030000,2900000,1350000" \
-            camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION} \
+            ghcr.io/camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION} \
             run $(id -u) $(id -g) /src \
             pcreate --scaffold=create \
             --package-name=${GEOMAPFISH_PACKAGE} \
@@ -97,7 +97,7 @@ For an advance application, apply the ``advance_create`` scaffold:
 .. prompt:: bash
 
     docker run --rm -ti --volume=$(pwd):/src \
-        camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION} \
+        ghcr.io/camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION} \
         run $(id -u) $(id -g) /src \
         pcreate --scaffold=advance_create \
         ${GEOMAPFISH_PROJECT} --overwrite
@@ -108,7 +108,7 @@ Now apply the ``update`` scaffold (for simple and advance applications):
 .. prompt:: bash
 
     docker run --rm -ti --volume=$(pwd):/src \
-        camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION} \
+        ghcr.io/camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION} \
         run $(id -u) $(id -g) /src \
         pcreate --scaffold=update \
         ${GEOMAPFISH_PROJECT} --overwrite
@@ -128,7 +128,7 @@ For an advance application apply the ``advance_update`` scaffold:
 .. prompt:: bash
 
     docker run --rm -ti --volume=$(pwd):/src \
-        camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION} \
+        ghcr.io/camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION} \
         run $(id -u) $(id -g) /src \
         pcreate -s advance_update ${GEOMAPFISH_PROJECT} --overwrite
 
