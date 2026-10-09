@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@snyk/protect": "1.1307.4",
-    "ngeo": "2.10.0-latest.20260904T024546Z.251b83d62",
+    "ngeo": "version-2.10-latest",
     "ol": "10.10.0",
     "puppeteer": "25.12.0"
   },
