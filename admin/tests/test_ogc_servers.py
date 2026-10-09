@@ -84,7 +84,7 @@ class TestOGCServer(AbstractViewsTests):
     def test_submit_new(self, dbsession, test_app) -> None:
         from c2cgeoportal_commons.models.main import Log, LogAction, OGCServer
 
-        with patch("c2cgeoportal_admin.views.ogc_servers.OGCServerViews._update_cache"):
+        with patch("c2cgeoportal_admin.views.ogc_servers.cache_invalidate_cb") as cache_invalidate:
             resp = test_app.post(
                 "/admin/ogc_servers/new",
                 {
@@ -97,6 +97,7 @@ class TestOGCServer(AbstractViewsTests):
                 },
                 status=302,
             )
+        cache_invalidate.assert_called_once_with()
         ogc_server = dbsession.query(OGCServer).filter(OGCServer.name == "new_name").one()
         assert str(ogc_server.id) == re.match(
             r"http://localhost/admin/ogc_servers/(.*)\?msg_col=submit_ok",
@@ -122,8 +123,9 @@ class TestOGCServer(AbstractViewsTests):
         assert self.get_first_field_named(form, "id").attrs["type"] == "hidden"
         assert ogc_server.name == form["name"].value
         form["description"] = "new_description"
-        with patch("c2cgeoportal_admin.views.ogc_servers.OGCServerViews._update_cache"):
+        with patch("c2cgeoportal_admin.views.ogc_servers.cache_invalidate_cb") as cache_invalidate:
             assert form.submit().status_int == 302
+        cache_invalidate.assert_called_once_with()
         assert ogc_server.description == "new_description"
 
         log = dbsession.query(Log).one()
@@ -157,8 +159,9 @@ class TestOGCServer(AbstractViewsTests):
         form = resp.form
         assert self.get_first_field_named(form, "id").value == ""
         self.set_first_field_named(form, "name", "clone")
-        with patch("c2cgeoportal_admin.views.ogc_servers.OGCServerViews._update_cache"):
+        with patch("c2cgeoportal_admin.views.ogc_servers.cache_invalidate_cb") as cache_invalidate:
             resp = form.submit("submit")
+        cache_invalidate.assert_called_once_with()
         assert resp.status_int == 302
         server = dbsession.query(OGCServer).filter(OGCServer.name == "clone").one()
         assert str(server.id) == re.match(
