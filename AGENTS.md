@@ -12,6 +12,51 @@ The QGIS version appears in multiple places and all of them should be coherent:
 - In `geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}/env.default` we should have the default version.
 - In `.github/publish.yaml`, also the QGIS tags for the supported versions.
 
+## Version lifecycle
+
+The version lifecycle involves the linked repositories `ngeo`, `c2cgeoportal`, `demo_geomapfish` and
+`argocd-gs-gmf-apps`; when a version is added, all of them should be kept consistent.
+The detailed commands are in `doc/developer/build_release.rst`.
+
+### Create the stabilization branch `<version>` from `master`
+
+- Push the branch: `git push origin origin/master:refs/heads/<version>`.
+- On the new branch:
+  - Set `MAIN_BRANCH: '<version>'` in `.github/workflows/main.yaml` and `.github/workflows/qgis.yaml`.
+  - Remove the workflows that only make sense on the default branch (`ngeo-*.yaml`, `rebuild-*.yaml`, ...).
+  - Set `"ngeo": "version-<version>-latest"` in `geoportal/package.json` and regenerate
+    `package-lock.json` with the `npm-lock` pre-commit hook, in a `setup-<version>` pull request.
+  - Pull the Transifex branch resources
+    (`tx pull --source --branch=<version> --force --resources=...` and the translations).
+- The branch protection is automatically applied by the repository rulesets, they match the
+  `refs/heads/[0-9].[0-9]` branches.
+- The demo branch (`prod-<version>`) and the argocd application (`add-demo-<version>`) are managed in
+  `demo_geomapfish` and `argocd-gs-gmf-apps`.
+
+### Start the next version `<version + 1>` on `master`
+
+In a `start-<version + 1>` pull request:
+
+- Set `MAJOR_VERSION: '<version + 1>'` in `.github/workflows/main.yaml` and `.github/workflows/qgis.yaml`.
+- Add the `.github/workflows/ngeo-<version>.yaml` maintenance workflow, adapted from the previous one
+  (`repository_dispatch: ngeo_<version>_updated`, `MAIN_BRANCH`/`MAJOR_VERSION`, `QGIS_VERSION`, the
+  `ci/test-upgrade` steps). It updates ngeo, the change log and the version on the stabilization branch
+  and republishes the images with
+  `tag-publish --type=rebuild --version=<version> --docker-versions=...`.
+- Add `| <version> | To be defined |` in `SECURITY.md`; GHCI keeps the Renovate `baseBranchPatterns` and
+  the `backport <version>` labels up to date from this file.
+- Update the defaults: `Makefile` (`MAJOR_VERSION`, `MAJOR_MINOR_VERSION`, `VERSION`),
+  `scripts/get-version` (default `MAJOR_VERSION`) and `scripts/updated_version` (threshold).
+- Update `ci/test-upgrade`: rename the current development version test to `<version + 1>` and add the
+  migration test from `<version>` (with the used image tag) and its case and cleanup; add the
+  corresponding step in `.github/workflows/main.yaml`.
+- Push the Transifex resources of the next version (`tx push --branch=<version + 1> ...`).
+
+### On release `<version>.0`
+
+- Reset `CHANGELOG.md` and `ci/changelog.yaml` on the stabilization branch.
+- Tag the release and publish it.
+
 ## Bash
 
 Use the long parameter names for clarity and maintainability.
