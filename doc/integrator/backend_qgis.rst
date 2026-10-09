@@ -204,7 +204,7 @@ Access Restrictions
 
 The access restriction functionality described here is available only for Docker projects.
 
-We provide a Docker image named ``camptocamp/geomapfish-qgisserver`` with tag pattern:
+We provide a Docker image named ``ghcr.io/camptocamp/geomapfish-qgisserver`` with tag pattern:
 ``gmf<Minor GeoMapFish version}-qgis<Minor QGIS version>[-gdal<Minor GDAL version>]``.
 
 
