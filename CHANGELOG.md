@@ -1,3 +1,7 @@
+##### 2.7.1.343
+
+- Audit Dpkg 2.7 [c2cgeoportal#13421](https://github.com/camptocamp/c2cgeoportal/pull/13421)
+
 ##### 2.7.1.341
 
 - [Backport 2.7] Use ghcr.io instead of Docker Hub [c2cgeoportal#13405](https://github.com/camptocamp/c2cgeoportal/pull/13405)
