@@ -39,7 +39,7 @@ jobs:
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: '3.14'
-      - run: python3 -m pip install --requirement=ci/requirements.txt
+      - run: python3 -m pip install '--only-binary=:all:' --requirement=ci/requirements.txt
       - name: Environment information
         run: c2cciutils-env
         env:
@@ -51,7 +51,8 @@ jobs:
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 24.x
-      - run: cd geoportal && npm update
+      - run: npm update --ignore-scripts
+        working-directory: geoportal
       - id: version
         run: scripts/get-version --auto-increment --github
 
@@ -70,7 +71,7 @@ jobs:
           retention-days: 1
         if: failure()
 
-      - run: python3 -m pip install --requirement=requirements.txt
+      - run: python3 -m pip install '--only-binary=:all:' --requirement=requirements.txt
 
         # Build images
       - run: make build-runner
@@ -89,10 +90,10 @@ jobs:
       - run: |
           docker compose exec tests alembic --config=/opt/c2cgeoportal/commons/alembic.ini --name=main check \
             || docker compose exec tests alembic --config=/opt/c2cgeoportal/commons/alembic.ini --name=main \
-            revision --autogenerate --message='${{ github.event.pull_request.title }}'
+            revision --autogenerate --message="${PULL_REQUEST_TITLE}"
           docker compose exec tests alembic --config=/opt/c2cgeoportal/commons/alembic.ini --name=static check \
             || docker compose exec tests alembic --config=/opt/c2cgeoportal/commons/alembic.ini --name=static \
-            revision --autogenerate --message='${{ github.event.pull_request.title }}'
+            revision --autogenerate --message="${PULL_REQUEST_TITLE}"
           sudo chmod go+rw -R commons/c2cgeoportal_commons/alembic/
           # Replace 'main' by schema and 'main. by f'{schema}.
           sed -i "s/'main'/schema/g" commons/c2cgeoportal_commons/alembic/*/*.py
@@ -107,6 +108,8 @@ jobs:
           git add commons/c2cgeoportal_commons/alembic/main/*.py commons/c2cgeoportal_commons/alembic/static/*.py
           git diff --staged --patch > /tmp/alembic.patch
           git diff --staged --exit-code
+        env:
+          PULL_REQUEST_TITLE: ${{ github.event.pull_request.title }}
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: Add Alembic upgrade script.patch
@@ -171,7 +174,7 @@ jobs:
           # and the first pyupgrade pre-commit hook in .pre-commit-config.yaml
           python-version: '3.8' # Shouldn't be upgraded to latest Python version
       - run: python --version|grep ' 3\.8\.'
-      - run: pip install --requirement=ci/requirements-project.txt
+      - run: pip install '--only-binary=:all:' --requirement=ci/requirements-project.txt
       - run: docker compose version
 
       # Test App
@@ -203,7 +206,7 @@ jobs:
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: '3.14'
-      - run: pip install --requirement=ci/requirements-back.txt
+      - run: pip install '--only-binary=:all:' --requirement=ci/requirements-back.txt
       - run: docker compose version
 
       - name: Init Git
