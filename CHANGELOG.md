@@ -1,3 +1,7 @@
+##### 2.9.0.617
+
+- Invalidate the cache with a broadcast on OGC server save [c2cgeoportal#13325](https://github.com/camptocamp/c2cgeoportal/pull/13325)
+
 ##### 2.9.0.616
 
 - Audit Dpkg 2.9 [c2cgeoportal#13397](https://github.com/camptocamp/c2cgeoportal/pull/13397)
