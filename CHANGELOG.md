@@ -1,3 +1,7 @@
+##### 2.7.1.341
+
+- [Backport 2.7] Use ghcr.io instead of Docker Hub [c2cgeoportal#13405](https://github.com/camptocamp/c2cgeoportal/pull/13405)
+
 ##### 2.7.1.340
 
 - Migrate the publishing from c2cciutils-publish to tag-publish [c2cgeoportal#13396](https://github.com/camptocamp/c2cgeoportal/pull/13396)
