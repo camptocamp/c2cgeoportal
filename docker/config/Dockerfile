@@ -13,7 +13,12 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
 # We don't directly use `poetry install` because it force to use a virtual environment.
 FROM base-all AS poetry
 
-# Install Poetry
+# Install Poetry in a dedicated virtual environment to not conflict with the
+# Python packages provided by the distribution (e.g. python3-packaging cannot
+# be uninstalled by pip because it has no RECORD file).
+RUN python3 -m venv /venv
+ENV PATH=/venv/bin:$PATH
+
 WORKDIR /tmp
 COPY requirements.txt ./
 RUN --mount=type=cache,target=/root/.cache \
