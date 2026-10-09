@@ -60,7 +60,6 @@
         'ghcr.io/camptocamp/mapfish_print',
         'camptocamp/mapfish_print',
         'ghcr.io/camptocamp/tilecloud-chain',
-        'camptocamp/tilecloud-chain',
         'redis',
         'bitnami/redis',
         'bitnami/redis-sentinel',
