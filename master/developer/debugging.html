@@ -190,7 +190,7 @@ Be sure that the volumes for c2cgeoportal are uncommented.</p>
 <ul class="simple">
 <li><p>You manually run <cite>./build –upgrade &lt;target_version&gt;</cite>;</p></li>
 <li><p>This script downloads the <cite>./upgrade</cite> script from target branch on GitHub;</p></li>
-<li><p>The freshly downloaded <cite>./upgrade</cite> script pull images from Docker Hub;</p></li>
+<li><p>The freshly downloaded <cite>./upgrade</cite> script pull images from the GitHub Container Registry (ghcr.io);</p></li>
 <li><p>The <cite>c2cupgrade</cite> tool is ran from the fresh pulled image.</p></li>
 </ul>
 <p>Note that this does not offer you the possibility to interfere or debug anything.</p>
@@ -200,7 +200,7 @@ the root of your local c2cgeoportal folder, example:</p>
 <div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initiate the upgrade by getting the ./upgrade script from you local c2cgeoportal clone.</span>
 ./build<span class="w"> </span>--debug<span class="o">=</span>../c2cgeoportal<span class="w"> </span>--upgrade<span class="w"> </span>master
 
-<span class="c1"># Run the upgrade step 1 without pulling images from Docker hub,</span>
+<span class="c1"># Run the upgrade step 1 without pulling images from the GitHub Container Registry,</span>
 <span class="c1"># and with c2cupgrade file mounted from you local c2cgeoportal folder.</span>
 ./upgrade<span class="w"> </span>--debug<span class="o">=</span>../c2cgeoportal<span class="w"> </span>latest<span class="w"> </span><span class="m">1</span>
 </pre></div>

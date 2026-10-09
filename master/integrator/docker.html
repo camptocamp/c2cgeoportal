@@ -404,15 +404,15 @@ window.runMermaid = runMermaid;</script>
     client(Web client);
 
     k8s[Kubernetes routing];
-    geoportal[GeoMapFish server&lt;br&gt;camptocamp/geomapfishapp-geoportal];
-    tcc[TileCloud-chain&lt;br&gt;camptocamp/tilecloud-chain];
-    tccs[TileCloud-chain slave&lt;br&gt;camptocamp/tilecloud-chain];
-    mapserver[MapServer&lt;br&gt;camptocamp/mapserver&lt;br&gt;or/and&lt;br&gt;camptocamp/qgis-server];
+    geoportal[GeoMapFish server&lt;br&gt;ghcr.io/camptocamp/geomapfishapp-geoportal];
+    tcc[TileCloud-chain&lt;br&gt;ghcr.io/camptocamp/tilecloud-chain];
+    tccs[TileCloud-chain slave&lt;br&gt;ghcr.io/camptocamp/tilecloud-chain];
+    mapserver[MapServer&lt;br&gt;ghcr.io/camptocamp/mapserver&lt;br&gt;or/and&lt;br&gt;ghcr.io/camptocamp/qgis-server];
     tinyows[tinyows];
-    print[Mapfist Print&lt;br&gt;camptocamp/mapfish-print];
-    alembic[GeoMapFish alembic&lt;br&gt;camptocamp/geomapfishapp-geoportal&lt;br&gt;minor database upgrades];
+    print[Mapfist Print&lt;br&gt;ghcr.io/camptocamp/mapfish_print];
+    alembic[GeoMapFish alembic&lt;br&gt;ghcr.io/camptocamp/geomapfishapp-geoportal&lt;br&gt;minor database upgrades];
     config[Project config&lt;br&gt;camtocamp/%project%-config&lt;br&gt;provides the config for all other containers];
-    tools[GeoMapFish tools&lt;br&gt;camptocamp/geomapfishapp-tools];
+    tools[GeoMapFish tools&lt;br&gt;ghcr.io/camptocamp/geomapfish-tools];
 
     redis[(Redis)];
     redis:::data;
@@ -454,15 +454,15 @@ window.runMermaid = runMermaid;</script>
     apache[Apache];
     subgraph Project composition
     haproxy[haproxy];
-    geoportal[GeoMapFish server&lt;br&gt;camptocamp/geomapfishapp-geoportal];
-    tcc[TileCloud-chain&lt;br&gt;camptocamp/tilecloud-chain];
-    tccs[TileCloud-chain slave&lt;br&gt;camptocamp/tilecloud-chain];
-    mapserver[MapServer&lt;br&gt;camptocamp/mapserver&lt;br&gt;or/and&lt;br&gt;camptocamp/qgis-server];
+    geoportal[GeoMapFish server&lt;br&gt;ghcr.io/camptocamp/geomapfishapp-geoportal];
+    tcc[TileCloud-chain&lt;br&gt;ghcr.io/camptocamp/tilecloud-chain];
+    tccs[TileCloud-chain slave&lt;br&gt;ghcr.io/camptocamp/tilecloud-chain];
+    mapserver[MapServer&lt;br&gt;ghcr.io/camptocamp/mapserver&lt;br&gt;or/and&lt;br&gt;ghcr.io/camptocamp/qgis-server];
     tinyows[tinyows];
-    print[Mapfist Print&lt;br&gt;camptocamp/mapfish-print];
-    alembic[GeoMapFish alembic&lt;br&gt;camptocamp/geomapfishapp-geoportal&lt;br&gt;minor database upgrades];
+    print[Mapfist Print&lt;br&gt;ghcr.io/camptocamp/mapfish_print];
+    alembic[GeoMapFish alembic&lt;br&gt;ghcr.io/camptocamp/geomapfishapp-geoportal&lt;br&gt;minor database upgrades];
     config[Project config&lt;br&gt;camtocamp/%project%-config&lt;br&gt;provides the config for all other containers];
-    tools[GeoMapFish tools&lt;br&gt;camptocamp/geomapfishapp-tools];
+    tools[GeoMapFish tools&lt;br&gt;ghcr.io/camptocamp/geomapfish-tools];
 
     redis[(Redis)];
     redis:::data;
@@ -506,8 +506,8 @@ window.runMermaid = runMermaid;</script>
 <h2>Docker Images<a class="headerlink" href="#docker-images" title="Link to this heading">¶</a></h2>
 <p>When you build your application, the following images will be generated:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">camptocamp/&lt;package&gt;_geoportal:latest</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">camptocamp/&lt;package&gt;_config:latest</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ghcr.io/camptocamp/&lt;package&gt;_geoportal:latest</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ghcr.io/camptocamp/&lt;package&gt;_config:latest</span></code></p></li>
 </ul>
 <p>The tag is by default <code class="docutils literal notranslate"><span class="pre">latest</span></code>, but you can change it by setting the <code class="docutils literal notranslate"><span class="pre">DOCKER_TAG</span></code> Makefile variable.</p>
 </section>
