@@ -63,22 +63,19 @@ You should create the new version branch.
 
 You should set the default branch to the new branch.
 
-On the new branch you should copy the file ``.github/workflows/upgrade-<new version>.yaml`` to
-``.github/workflows/upgrade-<next version>.yaml`` and update the versions in the new file:
+On the new branch:
 
-.. code::
+* Set ``VERSION=<next version>`` in the ``scripts/upgrade`` file.
+* Copy the file ``.github/workflows/upgrade-<new version>.yaml`` to
+  ``.github/workflows/upgrade-<next version>.yaml`` and update:
 
-   name: Upgrade <version>
+  * the workflow and the job names,
+  * the ``repository_dispatch`` type to ``geomapfish_<next version>_updated``,
+  * the branch matrix to ``prod-<next version>`` and ``prod-<next version>-advance``.
 
-   on:
-     repository_dispatch:
-       types:
-         - geomapfish_<version>_updated
-
-       name: Upgrade <version>
-
-           branch:
-             - prod-<version>
+* Add the new branch to the ``update_l10n.yaml`` matrix with the URL
+  ``https://geomapfish-demo-<next version>.camptocamp.com/``, and to the ``rebuild.yaml`` matrix
+  (once the demo is deployed).
 
 Create the new branch
 ---------------------
@@ -240,7 +237,14 @@ Send a release email to the ``geomapfish@googlegroups.com`` and
 Create the new demo
 -------------------
 
-Create the new demo on Kubernetes
+Create the new demo on Kubernetes:
+
+In ``argocd-gs-gmf-apps``, add the files of the new version
+(``values/geomapfish/<next version>-*.yaml``, ``apps/prod/demo/gmf-<next version>``,
+``apps/prod/demo/ingress-<next version>`` and ``apps/values/demo/values-geomapfish-<next version>.yaml``
+with the incremented ``REDIS_DB``).
+Defer the ``geomapfish-demo-master``/``geomapfish-demo-latest`` ingress switches until the images of the
+new version are published.
 
 Use the new demo
 ----------------
