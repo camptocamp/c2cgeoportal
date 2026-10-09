@@ -28,6 +28,8 @@
 
 from functools import partial
 
+import colander
+import deform
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import (
     DeleteResponse,
@@ -37,6 +39,7 @@ from c2cgeoform.views.abstract_views import (
     ObjectResponse,
     SaveResponse,
 )
+from pyramid.httpexceptions import HTTPFound
 from pyramid.view import view_config, view_defaults
 
 from c2cgeoportal_admin.views.logged_views import LoggedViews
@@ -45,6 +48,14 @@ from c2cgeoportal_commons.models.main import Interface
 _list_field = partial(ListField, Interface)
 
 base_schema = GeoFormSchemaNode(Interface)
+base_schema.add(
+    colander.SchemaNode(
+        colander.Integer(),
+        name="duplicate_from",
+        missing=colander.drop,
+        widget=deform.widget.HiddenWidget(),
+    ),
+)
 
 
 @view_defaults(match_param="table=interfaces")
@@ -82,7 +93,22 @@ class InterfacesViews(LoggedViews[Interface]):
 
     @view_config(route_name="c2cgeoform_item", request_method="POST", renderer="../templates/edit.jinja2")  # type: ignore[untyped-decorator]
     def save(self) -> SaveResponse:
-        return super().save()
+        response = super().save()
+        if self._is_new() and isinstance(response, HTTPFound):
+            self._copy_relations_if_duplicate()
+        return response
+
+    def _copy_relations_if_duplicate(self) -> None:
+        if self._appstruct is None or self._obj is None:
+            return
+        duplicate_from = self._appstruct.get("duplicate_from")
+        if duplicate_from is None:
+            return
+        source = self._request.dbsession.query(Interface).get(duplicate_from)
+        if source is not None:
+            self._obj.layers = list(source.layers)
+            self._obj.theme = list(source.theme)
+            self._request.dbsession.flush()
 
     @view_config(route_name="c2cgeoform_item", request_method="DELETE", renderer="fast_json")  # type: ignore[untyped-decorator]
     def delete(self) -> DeleteResponse:
@@ -94,4 +120,7 @@ class InterfacesViews(LoggedViews[Interface]):
         renderer="../templates/edit.jinja2",
     )
     def duplicate(self) -> ObjectResponse:
-        return super().duplicate()
+        source = self._get_object()
+        response = super().duplicate()
+        response["form_render_args"][0]["duplicate_from"] = source.id
+        return response

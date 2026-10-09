@@ -55,7 +55,7 @@ def interface_test_data(dbsession, transact):
     interfaces = []
     for i in range(5):
         interface = Interface(name=f"interface_{i}", description=f"description_{i}")
-        interface.themes = [themes[i % 2], themes[(i + 5) % 5]]
+        interface.theme = [themes[i % 2], themes[(i + 2) % 5]]
         interface.layers = [layers[i % 2], layers[(i + 4) % 5]]
 
         dbsession.add(interface)
@@ -96,8 +96,8 @@ class TestInterface(AbstractViewsTests):
         assert first_interface.description == first_row["description"]
         assert len(first_interface.layers) == 2
         assert first_interface.layers[1].name == "layer_wms_4"
-        assert len(first_interface.themes) == 2
-        assert first_interface.themes[1].name == "theme_0"
+        assert len(first_interface.theme) == 2
+        assert first_interface.theme[1].name == "theme_2"
 
     def test_grid_search(self, test_app) -> None:
         # search on interface name
@@ -118,6 +118,8 @@ class TestInterface(AbstractViewsTests):
             resp.location,
         ).group(1)
         assert interface.name == "new_name"
+        assert interface.layers == []
+        assert interface.theme == []
 
         log = dbsession.query(Log).one()
         assert log.date is not None
@@ -167,10 +169,21 @@ class TestInterface(AbstractViewsTests):
         assert log.element_name == interface.name
         assert log.username == "test_user"
 
-    def test_duplicate(self, interface_test_data, test_app) -> None:
+    def test_duplicate(self, interface_test_data, test_app, dbsession) -> None:
+        from c2cgeoportal_commons.models.main import Interface
+
         interface = interface_test_data["interfaces"][3]
         resp = test_app.get(f"/admin/interfaces/{interface.id}/duplicate", status=200)
         form = resp.form
         assert self.get_first_field_named(form, "id").value == ""
         assert str(interface.description or "") == "description_3"
+        assert self.get_first_field_named(form, "duplicate_from").value == str(interface.id)
+        assert self.get_first_field_named(form, "duplicate_from").attrs["type"] == "hidden"
+
+        self.set_first_field_named(form, "name", "duplicated")
         assert form.submit().status_int == 302
+
+        duplicated = dbsession.query(Interface).filter(Interface.name == "duplicated").one()
+        assert duplicated.id != interface.id
+        assert {layer.id for layer in duplicated.layers} == {layer.id for layer in interface.layers}
+        assert {theme.id for theme in duplicated.theme} == {theme.id for theme in interface.theme}
