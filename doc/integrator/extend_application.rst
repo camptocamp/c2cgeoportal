@@ -374,7 +374,7 @@ Create a file named ``Dockerfile`` with the following content:
 
    ARG GEOMAPFISH_MAIN_VERSION
 
-   FROM camptocamp/geomapfish:${GEOMAPFISH_MAIN_VERSION} as runner
+   FROM ghcr.io/camptocamp/geomapfish:${GEOMAPFISH_MAIN_VERSION} as runner
 
    COPY authentication.py /app/geomapfishapp_geoportal/
 

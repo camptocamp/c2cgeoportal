@@ -33,6 +33,8 @@ import re
 import subprocess
 from typing import Dict, List, Tuple
 
+from packaging.version import Version
+
 
 def output(cmd: List[str]) -> bytes:
     try:
@@ -53,7 +55,7 @@ def get_versions(
                 "run",
                 "--rm",
                 "--entrypoint=",
-                f"camptocamp/geomapfish-tools:{version}",
+                f"ghcr.io/camptocamp/geomapfish-tools:{version}",
                 "dpkg-query",
                 "--show",
                 "-f",
@@ -74,7 +76,7 @@ def get_versions(
                     "run",
                     "--rm",
                     "--entrypoint=",
-                    f"camptocamp/geomapfish:{version}",
+                    f"ghcr.io/camptocamp/geomapfish:{version}",
                     "cat",
                     "/etc/issue",
                 ]
@@ -91,7 +93,7 @@ def get_versions(
                     "run",
                     "--rm",
                     "--entrypoint=",
-                    f"camptocamp/geomapfish:{version}",
+                    f"ghcr.io/camptocamp/geomapfish:{version}",
                     "python3",
                     "--version",
                 ]
@@ -108,7 +110,7 @@ def get_versions(
                     "run",
                     "--rm",
                     "--entrypoint=",
-                    f"camptocamp/geomapfish-tools:{version}",
+                    f"ghcr.io/camptocamp/geomapfish-tools:{version}",
                     "node",
                     "--version",
                 ]
@@ -125,7 +127,7 @@ def get_versions(
                     "run",
                     "--rm",
                     "--entrypoint=",
-                    f"camptocamp/geomapfish-tools:{version}",
+                    f"ghcr.io/camptocamp/geomapfish-tools:{version}",
                     "npm",
                     "--version",
                 ]
@@ -146,7 +148,7 @@ def get_versions(
                         "run",
                         "--rm",
                         "--entrypoint=",
-                        f"camptocamp/geomapfish:{version}",
+                        f"ghcr.io/camptocamp/geomapfish:{version}",
                         "gdalinfo",
                         "--version",
                     ]
@@ -163,7 +165,7 @@ def get_versions(
                         "run",
                         "--rm",
                         "--entrypoint=",
-                        f"camptocamp/geomapfish-tools:{version}",
+                        f"ghcr.io/camptocamp/geomapfish-tools:{version}",
                         "pkg-config",
                         "--modversion",
                         "proj",
@@ -183,7 +185,7 @@ def get_versions(
                     "run",
                     "--rm",
                     "--entrypoint=",
-                    f"camptocamp/geomapfish:{version}",
+                    f"ghcr.io/camptocamp/geomapfish:{version}",
                     "python3",
                     "-m",
                     "pip",
@@ -194,27 +196,45 @@ def get_versions(
             .split("\n")
             if e and len(e.split("==")) == 2 and e[0] not in ("#", "-")
         },
-        {
-            e: v["version"]
-            for e, v in json.loads(
-                output(
-                    [
-                        "docker",
-                        "run",
-                        "--rm",
-                        "--entrypoint=",
-                        f"camptocamp/geomapfish-tools:{version}",
-                        "npm",
-                        "list",
-                        "--global",
-                        "--json",
-                        "--depth=0",
-                    ]
-                )
-            )["dependencies"].items()
-            if "version" in v and e != "ngeo"
-        },
+        {e: v["version"] for e, v in _get_npm_versions(version).items() if "version" in v and e != "ngeo"},
     )
+
+
+def _get_npm_versions(version_str: str) -> Dict[str, Dict[str, str]]:
+    version = Version("999!9" if version_str == "latest" else version_str)
+    if version >= Version("2.9.0"):
+        return json.loads(
+            output(
+                [
+                    "docker",
+                    "run",
+                    "--rm",
+                    "--entrypoint=",
+                    "--workdir=/opt/c2cgeoportal/geoportal",
+                    f"ghcr.io/camptocamp/geomapfish-tools:{version_str}",
+                    "npm",
+                    "list",
+                    "--json",
+                    "--depth=0",
+                ]
+            )
+        )["dependencies"]
+    return json.loads(
+        output(
+            [
+                "docker",
+                "run",
+                "--rm",
+                "--entrypoint=",
+                f"ghcr.io/camptocamp/geomapfish-tools:{version_str}",
+                "npm",
+                "list",
+                "--global",
+                "--json",
+                "--depth=0",
+            ]
+        )
+    )["dependencies"]
 
 
 def print_package_update(package_old: Dict[str, str], package_new: Dict[str, str]) -> None:
