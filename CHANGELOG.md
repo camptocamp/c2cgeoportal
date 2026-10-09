@@ -1,3 +1,7 @@
+##### 2.8.1.390
+
+- Migrate the publishing from c2cciutils-publish to tag-publish [c2cgeoportal#13395](https://github.com/camptocamp/c2cgeoportal/pull/13395)
+
 ##### 2.8.1.389
 
 - Audit Snyk check/fix 2.8 [c2cgeoportal#13381](https://github.com/camptocamp/c2cgeoportal/pull/13381)
