@@ -1,0 +1,900 @@
+.. _developer_webservices:
+
+=========================
+Webservices documentation
+=========================
+
+
+Theme webservice
+================
+
+URL: ``.../themes``
+
+Parameters
+----------
+
+* ``version``: ``2``, API version, default is ``2``.
+* ``interface``: used interface, default is ``desktop``.
+* ``sets``: kind of data we want to get, can be ``all``, ``themes``, ``group``
+  or ``background_layers``, default is ``all``.
+* ``background``: parent group of background layers to get.
+* ``group``: the group to get.
+* ``min_levels``: minimum number of group levels that is required, default is ``1``.
+
+Requests examples:
+
+* themes
+* themes?background=background
+* themes?group=Transport
+* themes?group=Transport&sets=group
+
+Result
+------
+
+Base for all possible results:
+
+
+.. code::
+
+    {
+        "ogcServers": {
+            "<name>": <OGC Server name>
+            ...
+        }
+        "themes": [<themes>],
+        "group": <group>,
+        "background_layers": [<layers>],
+        "errors": [<errors>]
+    }
+
+OGC Server
+~~~~~~~~~~
+
+.. code::
+
+   {
+        "url": "<wms server url>",
+        "urlWfs": "<wfs server url>",
+        "wfsSupport": (true|false),
+        "imageType": "image/(jpeg|png)",
+        "isSingleTile": (true|false),
+        "type": "(mapserver|geoserver|qgisserver|arcgis|other)",
+        "credential: (true|false),"
+        "attributes": {
+            "<type name>": {
+                "<attribute name>": {
+                    "type": "<the type name>",
+                    "namespace": "<the namespace URL>",
+                    "alias": "<the optional alias>",
+                    "minOccurs": "<the optional minimum occurs>",
+                    "maxOccurs": "<the optional maximum occurs>"
+                }
+            }
+        },
+        "uses": {
+            "map": {
+                "protocol": "<OGC protocol to be used to get the map>",
+                "url": "<URL to be used to get the map>",
+            },
+            "query": {
+                "protocol": "<OGC protocol to be used to do the queries>",
+                "url": "<URL to be used to do the queries>",
+            },
+            "edit": {
+                "protocol": "<OGC protocol to be used to do the edits>",
+                "url": "<URL to be used to do the edits>",
+            },
+        },
+    }
+
+The ``protocol`` can be ``WMS``, ``WMS/GetFeatureInfo``, ``WFS/GetFeature``,
+``OGC API - Maps``, ``OGC API - Features``.
+
+The ``uses`` is used by ``GeoGirafe``, not by ``ngeo``.
+
+The ``urlWfs`` and ``wfsSupport`` are used by ``ngeo``, not by ``GeoGirafe`` (=> deprecated, will be removed in future version).
+
+The ``isSingleTile`` isn't used by any clients (=> deprecated, will be removed in future version).
+
+
+Theme
+~~~~~
+
+.. code::
+
+    {
+        "name": "<name>",
+        "icon": "<icon_url>",
+        "functionalities": {
+            "<name>": "<values>"
+        },
+        "metadata": {
+            "<name>": "<value>"
+        },
+        "children": [<items>]
+    }
+
+
+Group
+~~~~~
+
+.. code::
+
+    {
+        "name": "<name>",
+        "mixed": (true|false),
+        # if not mixed
+        "ogcServer": {
+            "url": "<wms server url>",
+            "wfsUrl": "<wfs server url>",
+            "wfsSupport": (true|false),
+            "imageType": "image/(jpeg|png)",
+            "isSingleTile": (true|false),
+            "serverType": "(mapserver|geoserver|qgisserver)",
+        }
+        "metadata": {
+            "<name>": "<value>"
+        },
+        "dimensions": {
+            "<name>": "<value>"
+        },
+        "children": [<items>]
+    }
+
+
+Layer
+~~~~~
+
+.. code:: json
+
+    {
+        "name": "<name>",
+        "type": "(WMS|WMTS)",
+        "metadata": {
+            "<name>": "<value>"
+        },
+        "dimensions": {
+            "<name>": "<value>"
+        }
+    }
+
+
+WMS Layer
+~~~~~~~~~
+
+.. code::
+
+    {
+        "id": <id>,
+        "name": "<name in tree>",
+        "layers": "<wms_layers>",
+        "style": "<style>",
+        # if not mixed
+        "ogcServer": "<server name>",
+        "serverType": "(mapserver|geoserver|qgisserver)",
+        "minResolutionHint": <minResolutionHint>,
+        "maxResolutionHint": <maxResolutionHint>,
+        # end derecated
+        "metadata": {
+            "identifier_attribute_field": "<display_name>",
+            "disclaimer": "<disclaimer>",
+            "legend": (true|false),
+            "legend_rule": "<legend_rule>",
+            "max_resolution": <max_resolution>,
+            "min_resolution": <min_resolution>
+        },
+        "metadataUrls": {
+            "url": <url>,
+            "type": "TC211/FGDC",
+            "format": "text/html"
+        },
+        "time": {
+            "mode": "(value|range)",
+            "interval": [<year>, <month>, <day>, <second>],
+            "resolution": "(year|month|day|second)",
+            "minValue": <minValue>,
+            "maxValue": <maxValue>
+        },
+        "childLayers": [{
+            "name": "<name>",
+            "queryable": (true|false),
+            "minResolutionHint": <minResolutionHint>,
+            "maxResolutionHint": <maxResolutionHint>
+        }],
+        "dimensionsFilters": {
+            "<name>: {
+               "field": "<field_name>",
+               "value": "<value>"
+            }
+        },
+        "edit_columns":[{
+            "maxLength": <maxLength>,
+            "name": "<name>",
+            "nillable": (true|false),
+            "restriction": "enumeration",
+            "enumeration": [
+                "<value>"
+            ],
+            "srid": <srid>,
+            "type": "(xsd:string|xsd:decimal|xsd:integer|xsd:boolean|xsd:date|xsd:dateTime|xsd:double|xsd:duration|xsd:base64Binary|xsd:time|gml:CurvePropertyType|gml:GeometryCollectionPropertyType|gml:LineStringPropertyType|gml:MultiLineStringPropertyType|gml:MultiPointPropertyType|gml:MultiPolygonPropertyType|gml:PointPropertyType|gml:PolygonPropertyType)",
+            "fractionDigits": <fractionDigits>,
+            "totalDigits": <totalDigits>
+        }]
+    }
+
+
+WMTS layer
+~~~~~~~~~~
+
+.. code:: json
+
+    {
+        "url": "<wmts_capabilities_url>",
+        "layer": "<wmts_layer>",
+        "style": "<style>",
+        "matrix_set": "<matrix_set>"
+    }
+
+
+Authentication
+==============
+
+Login
+-----
+
+Used to login in the application.
+
+URL: ``.../login``
+
+Method: ``POST``
+
+Parameters (post form):
+
+* ``login``
+* ``password``
+* ``came_from`` the URL to which we will redirect after a successful request.
+
+Result HTTP code:
+
+* 200 Success: Success with the JSON result as :ref:`developer_webservices_auth_connected`.
+* 302 Found: Success -> redirect to ``came_from``.
+* 400 Bad request: When something is wrong.
+
+Logout
+------
+
+Used to log out of the application.
+
+URL: ``.../logout``
+
+Method: ``GET``
+
+Parameters (query):
+
+* ``came_from`` optional, the URL to which we will redirect after the logout.
+
+Result HTTP code:
+
+* 200 Success: Success.
+* 302 Found: Success -> redirect to ``came_from``, or to the OpenID Connect ``logout_url`` if configured.
+* 400 Bad request: When something is wrong (e.g. the ``came_from`` hostname is not allowed).
+
+User information
+----------------
+
+Used to get the user information.
+
+URL: ``.../loginuser``
+
+Result HTTP code:
+
+* 200 Success: Success.
+
+Anonymous JSON result
+~~~~~~~~~~~~~~~~~~~~~
+
+.. code::
+
+   {
+       "functionality": {
+           "<functionality_name>": ["functionality_value"],
+           ...
+       },
+       "two_factor_enable": true/false, # Is the two-factor authentication enabled?
+       "is_intranet": true/false
+   }
+
+.. _developer_webservices_auth_connected:
+
+Connected JSON result
+~~~~~~~~~~~~~~~~~~~~~
+
+.. code::
+
+   {
+       "username": "<username>",
+       "is_intranet": true/true,
+       "two_factor_enable": true/false, # Is the two-factor authentication enabled?
+       "roles": [{
+           "name": "<role_name>",
+           "id": <role_id>
+       }, ...],
+       "functionality": {
+           "<functionality_name>": ["functionality_value"],
+           ...
+       }
+   }
+
+User login
+----------
+
+Login to the application.
+
+URL: ``.../login``
+
+Parameters (post form):
+
+* ``login``
+* ``password``
+* ``otp``: The second factor code
+
+Result HTTP code:
+
+* 200 Success: Success.
+* 302 Found: Success with providing ``came_from`` parameter.
+* 400 Bad request: When ``login`` or ``password`` is missing.
+* 401 Unauthorized: On login failed.
+
+
+Login successful
+~~~~~~~~~~~~~~~~
+
+
+Init without two-factor authentication JSON result
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code::
+
+   {
+       "username": "<username>",
+       "is_password_changed": false, # Always false
+       "two_factor_enable": false # Always false
+   }
+
+
+Init two-factor authentication JSON result
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code::
+
+   {
+       "username": "<username>",
+       "two_factor_totp_secret": "<secret>", # The two-factor authentication secret on first login
+       "otp_uri": "The OTM URI"
+       "is_password_changed": false, # Always false
+       "two_factor_enable": true # Always true
+   }
+
+Change password
+---------------
+
+Used to change the user password.
+
+URL: ``.../loginchangepassword``
+
+Method: ``POST``
+
+Parameters (post form):
+
+* ``login``
+* ``oldPassword``
+* ``newPassword``
+* ``confirmNewPassword``
+
+Result HTTP code:
+
+* 200 Success: Success.
+* 400 Bad request: When something is wrong.
+
+JSON result
+~~~~~~~~~~~
+
+.. code:: json
+
+   {
+       "success": true
+   }
+
+
+Generate a new password
+-----------------------
+
+URL: ``.../loginresetpassword``
+
+Method: ``POST``
+
+Used when the user lost his/her password.
+
+Parameters (post form):
+
+* ``login``
+
+Result HTTP code:
+
+* 200 Success: Success.
+* 400 Bad request: When something is wrong.
+
+Success JSON result
+~~~~~~~~~~~~~~~~~~~
+
+.. code:: json
+
+   {
+       "success": true
+   }
+
+.. _developer_webservices_fts:
+
+Full-text search
+================
+
+URL: ``.../search``
+
+Parameters
+----------
+
+* ``query``: Text to search (required).
+* ``limit``: Maximum number of results (optional, default is ``fulltextsearch.defaultlimit``, capped by ``fulltextsearch.maxlimit`` which defaults to ``200``).
+* ``partitionlimit``: Maximum number of results per layer (optional, default ``0``, also capped by ``fulltextsearch.maxlimit``).
+* ``lang``: Language for the search (optional). If not provided, the locale negotiated from the request is used.
+* ``interface``: Filter results to a specific interface (optional). If not provided, only entries without interface are returned.
+* ``categories``: Limit results to categories (optional). Comma-separated list of category (``layer_name`` in the table). In order to retrieve matches where ``layer_name`` is ``NULL`` by the same request you will also have to specify parameter ``null_category``.
+* ``null_category``: Optional, default ``false``, used to get the items with ``NULL`` category (``layer_name`` in the table).
+* ``ranksystem``: Set to ``ts_rank_cd`` to use that ranking; otherwise ``similarity`` is used.
+
+The language used for stemming is the locale negotiated from the request; there is no ``lang`` parameter.
+
+``categories`` and ``null_category`` parameters combinations table:
+
++-----------------+----------------------+-------------------------------------------------------------------+
+| ``categories``  | ``null_category``    | Result                                                            |
++=================+======================+===================================================================+
+| not set         | ``false`` or not set | all matches, regardless of ``layer_name``.                        |
++-----------------+----------------------+-------------------------------------------------------------------+
+| not set         | ``true``             | only matches where ``layer_name`` is ``NULL``.                    |
++-----------------+----------------------+-------------------------------------------------------------------+
+| set             | ``false`` or not set | matches where ``layer_name`` is in ``categories``.                |
++-----------------+----------------------+-------------------------------------------------------------------+
+| set             | ``true``             | matches where ``layer_name`` is in ``categories`` or is ``NULL``. |
++-----------------+----------------------+-------------------------------------------------------------------+
+
+Result
+------
+
+A GeoJSON of a feature collection with the properties:
+
+* ``label``: Text to display.
+* ``layer_name``: Layer to display.
+* ``params``: :ref:`integrator_fulltext_search_params` to set.
+* ``actions``: List of actions.
+
+If ``actions`` is not set but ``layer_name`` is present, a default ``[{"action": "add_layer", "data": <layer_name>}]`` is returned.
+
+The `actions` is a dictionary with:
+
+* ``action``: the type of action (``add_theme|add_group|add_layer``).
+* ``data``: data needed for the action (the item name).
+
+Full-text search capabilities
+-----------------------------
+
+URL: ``.../search/capabilities``
+
+Parameters
+----------
+
+* ``lang``: Language used to filter the categories (optional). If not provided, the locale negotiated from the request is used.
+* ``interface``: Filter categories to a specific interface (optional). If not provided, only entries without interface are considered.
+
+Result
+------
+
+.. code::
+
+    {
+        "categories": [
+            "<category>",
+            ...
+        ]
+    }
+
+The list contains all distinct non-null ``category`` values (``layer_name`` in the table) sorted alphabetically.
+
+Like for the search endpoint, the categories are filtered to what the current user can see
+(public entries, entries without role for registered users, and entries of the user roles)
+and to the used language (entries without language are always kept).
+
+
+Layers
+======
+
+All endpoints
+-------------
+
+* ``GET .../layers/<layer_id>/md.xsd`` – XSD description of the layer.
+* ``GET .../layers/<layer_id>/count`` – returns the number of features the current user can see: ``{"count": <int>}``.
+* ``GET .../layers/<layer_id>`` or ``.../layers/1,2,3`` – read features (MapFish protocol). Supports the same query parameters as MapFish (filters, bbox, limit, etc.).
+* ``GET .../layers/<layer_id>/<feature_id>`` – read a single feature.
+* ``POST .../layers/<layer_id>`` – create features. Body: GeoJSON ``FeatureCollection`` (content-type ``application/json``). Response: created features.
+* ``PUT .../layers/<layer_id>/<feature_id>`` – update a feature. Body: GeoJSON ``Feature`` (content-type ``application/json``). Response: updated feature collection.
+* ``DELETE .../layers/<layer_id>/<feature_id>`` – delete a feature. Response: empty body with HTTP 200.
+* ``GET .../layers/<layer_name>/values/<field_name>`` – enumerate distinct values.
+
+Layer description
+-----------------
+
+URL: ``.../layers/<layer_id>/md.xsd``
+
+Result
+~~~~~~
+
+A standard xsd document that describes the layer.
+
+MapFish protocol
+----------------
+
+URL: ``.../layers/<layer_id>/....``
+
+`Parameters and results, see the MapFish protocol <https://github.com/elemoine/papyrus/wiki/Protocol>`_.
+
+Enumerate attributes
+--------------------
+
+URL: ``.../layers/<layer_name>/values/<field_name>``
+
+Result
+~~~~~~
+
+.. code::
+
+    {
+        "items": [{
+          "value": "<value>"
+        }, ...]
+    }
+
+
+Update feature
+--------------
+
+URL: ``.../layers/<layer_name>/<layer_id>/<feature_id>``
+
+Success:
+
+.. code:: json
+
+   {
+       "type": "FeatureCollection",
+       "features": [
+          {
+             "geometry": {
+                "type": "MultiPoint",
+                "coordinates": [
+                   [
+                      648902.2912000001,
+                      185911.1152
+                   ]
+                ]
+             },
+             "type": "Feature",
+             "id": 103,
+             "properties": {
+                "kind": "tree",
+                "good": true,
+                "name": "nom",
+                "internal_id": null,
+                "short_name": "court",
+                "height": null,
+                "short_name3": "R",
+                "short_name2": "2"
+             }
+          }
+       ]
+   }
+
+Error :
+
+.. code:: json
+
+    {
+        "message": "error description",
+        "error_type": "type of error"
+    }
+
+Update feature
+--------------
+
+URL: ``.../layers/<layer_name>/<layer_id>``
+
+Success:
+
+.. code:: json
+
+   {
+       "type": "FeatureCollection",
+       "features": [
+          {
+             "geometry": {
+                "type": "MultiPoint",
+                "coordinates": [
+                   [
+                      648902.2912000001,
+                      185911.1152
+                   ]
+                ]
+             },
+             "type": "Feature",
+             "id": 103,
+             "properties": {
+                "kind": "tree",
+                "good": true,
+                "name": "nom",
+                "internal_id": null,
+                "short_name":" court",
+                "height": null,
+                "short_name3": "R",
+                "short_name2": "2"
+             }
+          }
+       ]
+   }
+
+
+Error :
+
+.. code:: json
+
+     {
+          "message": "error description",
+          "error_type": "type of error"
+     }
+
+
+Raster
+======
+
+URL: ``.../raster``
+
+Method: ``GET``
+
+Parameters
+----------
+
+* ``lon``: The longitude.
+* ``lat``: The latitude.
+* ``layers``: The raster layers we want to query.
+
+Result
+------
+
+.. code::
+
+    {
+        "<layer>": <value>,
+        ...
+    }
+
+
+Vector tiles
+============
+
+URL: ``.../vector_tiles/<layer_name>/<z>/<x>/<y>.pbf``
+
+Method: ``GET``
+
+Returns a binary Mapbox vector tile for the given layer and XYZ tile coordinate. The route ``/vector_tiles`` (HEAD) exists only as a helper in templates.
+
+
+Digital Elevation Model
+=======================
+
+URL: ``.../profile.json``
+
+Method ``POST``
+
+Parameters
+----------
+
+* ``geom``: Geometry to sample (GeoJSON encoded as a string).
+* ``nbPoints``: Maximum number of points along the path (required).
+* ``layers``: Comma-separated raster layer names to use (optional, default all configured raster layers).
+
+Result
+------
+
+.. code::
+
+    {
+        "profile": [
+            {
+                "dist": <distance>,
+                "values": {
+                    "<layer>": <value>,
+                    ...
+                },
+                "x": <easting>,
+                "y": <northing>
+            },
+            ...
+        ]
+    }
+
+
+Shortener
+=========
+
+Create
+------
+
+URL: ``.../short/create``
+
+Method ``POST``
+
+Parameters
+~~~~~~~~~~
+
+* ``url``: URL to shorten.
+* ``email``: Email address to send a message to (optional).
+* ``message``: The user message to add in the email (optional).
+
+Result
+~~~~~~
+
+.. code::
+
+    {
+        "short_url": <the short URL>
+    }
+
+Get
+---
+
+URL: ``.../s/<ref>``
+
+Result: HTTP 302 redirect to the original URL.
+
+Fetch
+-----
+
+URL: ``.../short/get/<ref>``
+
+Result
+~~~~~~
+
+.. code::
+
+    {
+        "long_url": <the original URL>
+    }
+
+
+Feedback
+========
+
+Create
+------
+
+URL: ``.../feedback``
+
+Method ``POST``
+
+Parameters
+~~~~~~~~~~
+
+* ``user_agent``: User agent string.
+* ``application``: Application identifier.
+* ``permalink``: The current map permalink URL.
+* ``email``: User email address.
+* ``email_optional``: Email address to send a notification to (optional).
+* ``feedback``: The feedback text.
+
+Result
+~~~~~~
+
+.. code::
+
+    {
+        "success": true
+    }
+
+
+ALTCHA
+======
+
+The ALTCHA service provides proof-of-work challenges used to protect forms
+against spam.
+
+Challenge
+---------
+
+URL: ``.../altcha/challenge``
+
+Method ``GET``
+
+Result
+~~~~~~
+
+.. code::
+
+    {
+        "parameters": {
+            "algorithm": "PBKDF2/SHA-256",
+            "cost": 5000,
+            "keyLength": 32,
+            "keyPrefix": "00",
+            "nonce": "...",
+            "salt": "...",
+            "expiresAt": 1786625958
+        },
+        "signature": "..."
+    }
+
+
+Geometry processing
+===================
+
+This service provides geometry processing (currently only one)
+
+Difference
+----------
+
+URL: ``.../difference``
+
+Method: ``POST``
+
+Data:
+
+.. code::
+
+   {
+       "geometries": [<geomA>, <geomB>]
+   }
+
+Where ``<geomA>`` is a GeoJSON geometry to extrude,
+and the ``<geomB>`` is the geometry used to do the extrude.
+
+Result: the new ``GeoJSON`` geometry.
+
+
+Localization pot
+================
+
+This service create and returns the list of strings to translate for the localization in gettext POT format.
+
+URL: ``.../locale.pot``
+
+Method: ``GET``
+
+Parameters
+----------
+
+ - ``interfaces``: List of interfaces we want to use.
+ - ``theme_regex``: Regular expression used to filter the themes.
+ - ``group_regex``: Regular expression used to filter the layer groups.
+ - ``wmslayer_regex``: Regular expression used to filter the WMS layers.
+ - ``wmtslayer_regex``: Regular expression used to filter the WMTS layers.
+ - ``ignore_i18n_errors``: ``TRUE`` to ignore most of the error expected during the extraction.
+
+
+Map server proxy
+================
+
+This is a proxy to access OGC servers.
+
+URL: ``.../mapserv_proxy`` or ``.../mapserv_proxy/<ogcserver>/...``
+
+Parameters
+----------
+
+ - ``ogcserver``: The OGC server name to use.
+ - ``ogcserver_type``: The type of request we want to do, can be ``map``, ``query`` or ``edit``, used to get the correct URL (and authentication type) in the OGC server configuration, it not provided we use the ``url_wfs`` if we detect a WFS request, else we use ``url``.

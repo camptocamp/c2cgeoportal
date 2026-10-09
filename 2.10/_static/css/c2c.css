@@ -1,0 +1,13 @@
+div.sphinxsidebar {
+  font-size: 13px;
+}
+div.body h5 {
+  font-weight: bold;
+  font-size: 110%;
+}
+table.align-default {
+  margin-left: 0;
+}
+.row-even {
+  background-color: #eef;
+}
