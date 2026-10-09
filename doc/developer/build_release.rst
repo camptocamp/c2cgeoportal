@@ -123,6 +123,13 @@ Run:
     tx push --branch="${NEXT_VERSION}" --translation --force \
         --resources=geomapfish.c2cgeoportal_geoportal,geomapfish.c2cgeoportal_admin
 
+.. note::
+
+   The ngeo Transifex resources are pushed from the ``ngeo`` repository. If a resource reached the branch
+   limit, ngeo puts the branch in the resource name (e.g. ``gmf-apps-2-11``) instead of using a branch:
+   report the rename in the ``.tx/config`` file and in the ``dependencies.mk`` pull command, without the
+   ``--branch`` argument.
+
 Create a pull request
 ---------------------
 

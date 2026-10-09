@@ -51,6 +51,9 @@ In a `start-<version + 1>` pull request:
   migration test from `<version>` (with the used image tag) and its case and cleanup; add the
   corresponding step in `.github/workflows/main.yaml`.
 - Push the Transifex resources of the next version (`tx push --branch=<version + 1> ...`).
+- If a Transifex resource reached the branch limit, ngeo puts the branch in the resource name (e.g.
+  `gmf-apps-2-11`): report the rename in `.tx/config` and in the `dependencies.mk` pull command
+  (without `--branch`).
 
 ### On release `<version>.0`
 

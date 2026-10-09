@@ -83,7 +83,7 @@ admin/c2cgeoportal_admin/locale/%/LC_MESSAGES/c2cgeoportal_admin.po: $(TX_DEPEND
 geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}/geoportal/{{cookiecutter.package}}_geoportal/locale/%/LC_MESSAGES/{{cookiecutter.package}}_geoportal-client.po: \
 		$(TX_DEPENDENCIES)
 	mkdir --parent $(dir $@)
-	tx pull --translations --branch=$(MAJOR_VERSION) --languages=$* --resources=ngeo.gmf-apps --force
+	tx pull --translations --languages=$* --resources=ngeo.gmf-apps-2-11 --force
 	sed -i 's/[[:space:]]\+$$//' $@
 	test -s $@
 
