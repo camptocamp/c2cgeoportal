@@ -10,7 +10,7 @@ The QGIS version appears in multiple places and all of them should be coherent:
   - `main` `outputs`.
   - `success` first `steps`.
 - In `geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}/env.default` we should have the default version.
-- In `.github/publish.yaml`, also the version for version `2.7` and `2.8`; see `.github/workflows/rebuild-qgis-*`.
+- In `.github/publish.yaml`, also the QGIS tags for the supported versions.
 
 ## Bash
 

@@ -8,6 +8,8 @@ on:
 
 permissions:
   contents: write
+  packages: write
+  id-token: write
 
 jobs:
   main:
@@ -33,12 +35,6 @@ jobs:
           fetch-depth: 0
           ref: ${{ env.MAIN_BRANCH }}
           token: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
-
-      - uses: camptocamp/initialise-gopass-summon-action@17703c87720ba3766abc90da60b437783b530d93 # v2
-        with:
-          ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
-          github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
-          patterns: pypi docker transifex
 
       - uses: actions/setup-python@v5
         with:
@@ -239,11 +235,13 @@ jobs:
           )
       - name: Publish
         run: >
-          c2cciutils-publish
-          --docker-versions=${{ steps.version.outputs.versions }}
-          --snyk-version=${{ steps.version.outputs.snyk_version }}
+          tag-publish
           --type=rebuild
+          --version=${{ env.MAIN_BRANCH }}
+          --docker-versions=${{ steps.version.outputs.versions }}
         if: steps.version.outputs.versions != ''
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: git diff --exit-code --patch > /tmp/dpkg-versions.patch || true
         if: failure()
       - uses: actions/upload-artifact@v4

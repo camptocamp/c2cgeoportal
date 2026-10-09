@@ -15,15 +15,15 @@ For OpenShift projects:
         client(Web client);
 
         k8s[Kubernetes routing];
-        geoportal[GeoMapFish server<br>camptocamp/geomapfishapp-geoportal];
-        tcc[TileCloud-chain<br>camptocamp/tilecloud-chain];
-        tccs[TileCloud-chain slave<br>camptocamp/tilecloud-chain];
-        mapserver[MapServer<br>camptocamp/mapserver<br>or/and<br>camptocamp/qgis-server];
+        geoportal[GeoMapFish server<br>ghcr.io/camptocamp/geomapfishapp-geoportal];
+        tcc[TileCloud-chain<br>ghcr.io/camptocamp/tilecloud-chain];
+        tccs[TileCloud-chain slave<br>ghcr.io/camptocamp/tilecloud-chain];
+        mapserver[MapServer<br>ghcr.io/camptocamp/mapserver<br>or/and<br>ghcr.io/camptocamp/qgis-server];
         tinyows[tinyows];
-        print[Mapfist Print<br>camptocamp/mapfish-print];
-        alembic[GeoMapFish alembic<br>camptocamp/geomapfishapp-geoportal<br>minor database upgrades];
+        print[Mapfist Print<br>ghcr.io/camptocamp/mapfish_print];
+        alembic[GeoMapFish alembic<br>ghcr.io/camptocamp/geomapfishapp-geoportal<br>minor database upgrades];
         config[Project config<br>camtocamp/%project%-config<br>provides the config for all other containers];
-        tools[GeoMapFish tools<br>camptocamp/geomapfishapp-tools];
+        tools[GeoMapFish tools<br>ghcr.io/camptocamp/geomapfish-tools];
 
         redis[(Redis)];
         redis:::data;
@@ -68,15 +68,15 @@ For standalone projects:
         apache[Apache];
         subgraph Project composition
         haproxy[haproxy];
-        geoportal[GeoMapFish server<br>camptocamp/geomapfishapp-geoportal];
-        tcc[TileCloud-chain<br>camptocamp/tilecloud-chain];
-        tccs[TileCloud-chain slave<br>camptocamp/tilecloud-chain];
-        mapserver[MapServer<br>camptocamp/mapserver<br>or/and<br>camptocamp/qgis-server];
+        geoportal[GeoMapFish server<br>ghcr.io/camptocamp/geomapfishapp-geoportal];
+        tcc[TileCloud-chain<br>ghcr.io/camptocamp/tilecloud-chain];
+        tccs[TileCloud-chain slave<br>ghcr.io/camptocamp/tilecloud-chain];
+        mapserver[MapServer<br>ghcr.io/camptocamp/mapserver<br>or/and<br>ghcr.io/camptocamp/qgis-server];
         tinyows[tinyows];
-        print[Mapfist Print<br>camptocamp/mapfish-print];
-        alembic[GeoMapFish alembic<br>camptocamp/geomapfishapp-geoportal<br>minor database upgrades];
+        print[Mapfist Print<br>ghcr.io/camptocamp/mapfish_print];
+        alembic[GeoMapFish alembic<br>ghcr.io/camptocamp/geomapfishapp-geoportal<br>minor database upgrades];
         config[Project config<br>camtocamp/%project%-config<br>provides the config for all other containers];
-        tools[GeoMapFish tools<br>camptocamp/geomapfishapp-tools];
+        tools[GeoMapFish tools<br>ghcr.io/camptocamp/geomapfish-tools];
 
         redis[(Redis)];
         redis:::data;
@@ -121,8 +121,8 @@ Docker Images
 
 When you build your application, the following images will be generated:
 
-* ``camptocamp/<package>_geoportal:latest``
-* ``camptocamp/<package>_config:latest``
+* ``ghcr.io/camptocamp/<package>_geoportal:latest``
+* ``ghcr.io/camptocamp/<package>_config:latest``
 
 The tag is by default ``latest``, but you can change it by setting the ``DOCKER_TAG`` Makefile variable.
 
