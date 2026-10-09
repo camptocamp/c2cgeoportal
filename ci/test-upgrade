@@ -70,11 +70,21 @@ function pcreate-old {
     if [ "$2" == c2cgeoportal_create ]; then
         DOCKER_ENV="--env=CI --env=SRID=21781 --env=EXTENT=489246.36,78873.44,837119.76,296543.14"
     fi
-    # shellcheck disable=SC2086
-    docker run --rm ${DOCKER_ENV} \
-        --volume="$1:/src" \
-        "ghcr.io/camptocamp/geomapfish-tools:$3" \
-        run "$(id -u)" "$(id -g)" /src pcreate --scaffold="$2" testgeomapfish ${PCREATE_ARGS}
+    # Since the version 2.10.0 the run script uses the --user option instead of the user and group arguments
+    if [ "$(printf '%s\n2.10.0\n' "$3" | sort --version-sort | head --lines=1)" == "2.10.0" ]; then
+        # shellcheck disable=SC2086
+        docker run --rm ${DOCKER_ENV} \
+            --volume="$1:/src" \
+            --user="$(id -u):$(id -g)" \
+            "ghcr.io/camptocamp/geomapfish-tools:$3" \
+            run /src pcreate --scaffold="$2" testgeomapfish ${PCREATE_ARGS}
+    else
+        # shellcheck disable=SC2086
+        docker run --rm ${DOCKER_ENV} \
+            --volume="$1:/src" \
+            "ghcr.io/camptocamp/geomapfish-tools:$3" \
+            run "$(id -u)" "$(id -g)" /src pcreate --scaffold="$2" testgeomapfish ${PCREATE_ARGS}
+    fi
 }
 
 # $1: folder
