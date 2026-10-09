@@ -234,7 +234,7 @@ def _get_versions(
 
 def _get_npm_versions(version_str: str) -> dict[str, dict[str, str]]:
     version = Version("999!9" if version_str == "latest" else version_str)
-    if version >= Version("2.10.0"):
+    if version >= Version("2.11.0"):
         return json.loads(
             _output(
                 [

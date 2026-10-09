@@ -180,7 +180,8 @@ if [ "$1" = "init" ]; then
     cd "${WORKSPACE}/ref/testgeomapfish"
     cd -
 
-    create "${WORKSPACE}/v210" "${MAJOR_VERSION}"
+    create "${WORKSPACE}/v211" "${MAJOR_VERSION}"
+    create-old "${WORKSPACE}/v210" 2.10.0
     create-old "${WORKSPACE}/v290" 2.9.0.133
     create-old "${WORKSPACE}/v280" 2.8.0.74
     create-old "${WORKSPACE}/v270" 2.7.0.65
@@ -202,7 +203,11 @@ if [ "$1" = "210" ]; then
     upgrade "$1"
 fi
 
+if [ "$1" = "211" ]; then
+    upgrade "$1"
+fi
+
 if [ "$1" = "cleanup" ]; then
-    rm --recursive --force "${WORKSPACE}/ref" "${WORKSPACE}/v270" "${WORKSPACE}/v280" "${WORKSPACE}/v290" "${WORKSPACE}/v210"
-    docker images --format '{{.Repository}}:{{.Tag}}' | grep 'ghcr.io/camptocamp/geomapfish.*:2.[678]'
+    rm --recursive --force "${WORKSPACE}/ref" "${WORKSPACE}/v270" "${WORKSPACE}/v280" "${WORKSPACE}/v290" "${WORKSPACE}/v210" "${WORKSPACE}/v211"
+    docker images --format '{{.Repository}}:{{.Tag}}' | grep -E 'ghcr.io/camptocamp/geomapfish.*:2\.(7|8|9|10|11)'
 fi
