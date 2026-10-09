@@ -1,3 +1,7 @@
+##### 2.9.0.618
+
+- [Backport 2.9] Use ghcr.io instead of Docker Hub [c2cgeoportal#13407](https://github.com/camptocamp/c2cgeoportal/pull/13407)
+
 ##### 2.9.0.617
 
 - Invalidate the cache with a broadcast on OGC server save [c2cgeoportal#13325](https://github.com/camptocamp/c2cgeoportal/pull/13325)
