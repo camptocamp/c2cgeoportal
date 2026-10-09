@@ -5,6 +5,7 @@
 | Version | Supported Until |
 | ------- | --------------- |
 | <= 2.6  | Unsupported     |
-| 2.7     | 23/06/2026      |
+| 2.7     | Best effort     |
 | 2.8     | 27/06/2027      |
 | 2.9     | 30/04/2029      |
+| 2.10    | To be defined   |

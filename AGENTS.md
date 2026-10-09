@@ -12,6 +12,72 @@ The QGIS version appears in multiple places and all of them should be coherent:
 - In `geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter.project}}/env.default` we should have the default version.
 - In `.github/publish.yaml`, also the QGIS tags for the supported versions.
 
+## Version lifecycle
+
+The version lifecycle involves the linked repositories `ngeo`, `c2cgeoportal`, `demo_geomapfish` and
+`argocd-gs-gmf-apps`; when a version is added, all of them should be kept consistent.
+The detailed commands are in `doc/developer/build_release.rst`.
+
+### Create the stabilization branch `<version>` from `master`
+
+- Push the branch: `git push origin origin/master:refs/heads/<version>`.
+- On the new branch:
+  - Set `MAIN_BRANCH: '<version>'` in `.github/workflows/main.yaml` and `.github/workflows/qgis.yaml`.
+  - Remove the workflows that only make sense on the default branch (`ngeo-*.yaml`, `rebuild-*.yaml`, ...).
+  - Set `"ngeo": "version-<version>-latest"` in `geoportal/package.json` and regenerate
+    `package-lock.json` with the `npm-lock` pre-commit hook, in a `setup-<version>` pull request.
+  - Pull the Transifex branch resources
+    (`tx pull --source --branch=<version> --force --resources=...` and the translations).
+  - Verify that the change log creation is working (`ci/changelog`).
+- The branch protection is automatically applied by the repository rulesets, they match the
+  `refs/heads/[0-9].[0-9]` and `refs/heads/[0-9].[0-9][0-9]` branches.
+- In `ngeo`, create the `<version>` branch from `ngeo` `master` and open a `start-<version + 1>` pull
+  request on `ngeo` `master` (version in `Makefile` and `package.json`, `SECURITY.md` row,
+  `renovate.json5` `baseBranchPatterns`).
+- In `demo_geomapfish`, create the `prod-<version + 1>` branch from the current default branch and set it
+  as the default branch. On the new branch:
+  - Set `VERSION=<version + 1>` in `scripts/upgrade`.
+  - Copy the file `.github/workflows/upgrade-<version>.yaml` to
+    `.github/workflows/upgrade-<version + 1>.yaml` and adapt the workflow and job names, the
+    `repository_dispatch` type (`geomapfish_<version + 1>_updated`) and the branch matrix
+    (`prod-<version + 1>`/`prod-<version + 1>-advance`).
+  - Add the branch to the `update_l10n.yaml` and `rebuild.yaml` matrices (once the demo is deployed).
+- In `argocd-gs-gmf-apps`, add `values/geomapfish/<version + 1>-*.yaml`, `apps/prod/demo/gmf-<version + 1>`,
+  `apps/prod/demo/ingress-<version + 1>` and `apps/values/demo/values-geomapfish-<version + 1>.yaml` (with
+  `REDIS_DB` incremented); defer the `geomapfish-demo-master`/`geomapfish-demo-latest` ingress switches
+  until the images of the new version are published.
+
+### Start the next version `<version + 1>` on `master`
+
+In a `start-<version + 1>` pull request:
+
+- Set `MAJOR_VERSION: '<version + 1>'` in `.github/workflows/main.yaml` and `.github/workflows/qgis.yaml`.
+- Add the `.github/workflows/ngeo-<version>.yaml` maintenance workflow, adapted from the previous one
+  (`repository_dispatch: ngeo_<version>_updated` sent by the `ngeo` `<version>` branch builds,
+  `MAIN_BRANCH`/`MAJOR_VERSION`, `QGIS_VERSION`, the `ci/test-upgrade` steps). It updates ngeo, the
+  change log and the version on the stabilization branch and republishes the images with
+  `tag-publish --type=rebuild --version=<version> --docker-versions=...`.
+  The `ngeo_master_updated` dispatch is ignored: on `master` the ngeo dependency is updated by Renovate.
+- Add `| <version> | To be defined |` in `SECURITY.md`; GHCI keeps the Renovate `baseBranchPatterns` and
+  the `backport <version>` labels up to date from this file.
+- Update the defaults: `Makefile` (`MAJOR_VERSION`, `MAJOR_MINOR_VERSION`, `VERSION`),
+  `scripts/get-version` (default `MAJOR_VERSION`) and `scripts/updated_version` (threshold).
+- Update `ci/test-upgrade`: rename the current development version test to `<version + 1>` and add the
+  migration test from `<version>` (with the used image tag) and its case and cleanup; add the
+  corresponding step in `.github/workflows/main.yaml`.
+- Push the Transifex resources of the next version (`tx push --branch=<version + 1> ...`).
+- If a Transifex resource reached the branch limit, ngeo puts the branch in the resource name (e.g.
+  `gmf-apps-2-11`): report the rename in `.tx/config` and in the `dependencies.mk` pull command
+  (without `--branch`).
+
+### On release `<version>.0`
+
+- Reset `CHANGELOG.md` and `ci/changelog.yaml` on the stabilization branch.
+- Tag the release and publish it.
+- In `ngeo` `master`, switch the demo URLs from `https://geomapfish-demo-<version>.camptocamp.com` to
+  `https://geomapfish-demo-<version + 1>.camptocamp.com`.
+- In `argocd-gs-gmf-apps`, switch the `ingress-2-latest` alias to `gmf-<version>`.
+
 ## Bash
 
 Use the long parameter names for clarity and maintainability.

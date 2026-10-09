@@ -17,6 +17,9 @@ For example, ``<release>`` can be ``2.0.0rc1`` for the first release candidate
 of the version ``2.0``, ``2.0.0`` for the final release, ``2.0.1`` for
 the first bug fix release, and ``<version>`` can be ``2.0``, ``2.1``, ...
 
+The version lifecycle involves the ``ngeo``, ``c2cgeoportal``, the demo and ``argocd-gs-gmf-apps``
+repositories; when a version is added, all of them should be consistent.
+
 .. _developer_build_release_pre_release_task:
 
 Tasks to do
@@ -30,13 +33,13 @@ On branch creation (start of the integration phase):
 
 * Create the new branch on demo
 * Create the new branch
+* Clean the workflows of the new branch
 * Use the ``ngeo`` package linked to the new branch
 * Create the new Transifex resources
 * Update the master branch
-* Protect the new branch
-* Configure the rebuild
+* Configure the new branch
+* Add the migration test from the new version
 * Verify that the change log creation is working
-* Configure the branch on the status dashboard
 
 On release creation:
 
@@ -50,6 +53,9 @@ On release creation:
 
    All changes should be committed.
 
+   The branch protection is automatically applied by the repository rulesets
+   (they match the ``refs/heads/[0-9].[0-9]`` and ``refs/heads/[0-9].[0-9][0-9]`` branches).
+
 Create the new branch on demo
 -----------------------------
 
@@ -57,40 +63,37 @@ You should create the new version branch.
 
 You should set the default branch to the new branch.
 
-On the new branch you should copy the file ``.github/workflows/upgrade-<new version>.yaml`` to
-``.github/workflows/upgrade-<next version>.yaml`` and update the versions in the new file:
+On the new branch:
 
-.. code::
+* Set ``VERSION=<next version>`` in the ``scripts/upgrade`` file.
+* Copy the file ``.github/workflows/upgrade-<new version>.yaml`` to
+  ``.github/workflows/upgrade-<next version>.yaml`` and update:
 
-   name: Upgrade <version>
+  * the workflow and the job names,
+  * the ``repository_dispatch`` type to ``geomapfish_<next version>_updated``,
+  * the branch matrix to ``prod-<next version>`` and ``prod-<next version>-advance``.
 
-   on:
-     repository_dispatch:
-       types:
-         - geomapfish_<version>_updated
-
-       name: Upgrade <version>
-
-           branch:
-             - prod-<version>
+* Add the new branch to the ``update_l10n.yaml`` matrix with the URL
+  ``https://geomapfish-demo-<next version>.camptocamp.com/``, and to the ``rebuild.yaml`` matrix
+  (once the demo is deployed).
 
 Create the new branch
 ---------------------
 
-You should create the new version branch.
+You should create the new version branch, directly from the ``master`` branch.
 
 .. prompt:: bash
 
     NEW_VERSION=x.y
-    git checkout master
-    git pull
-    git checkout -b "${NEW_VERSION}"
-    git push --set-upstream origin "${NEW_VERSION}"
-    git push origin "${NEW_VERSION}"
-
+    git fetch origin
+    git push origin origin/master:refs/heads/"${NEW_VERSION}"
 
 In the files ``.github/workflows/main.yaml`` and ``.github/workflows/qgis.yaml`` set ``MAIN_BRANCH`` to
   ``<new version>``.
+
+Clean the workflows of the new branch: only the workflows that are also relevant on a stabilization branch
+should be kept (``main.yaml``, ``qgis.yaml``, ``tag.yaml``, ``pull-request-automation.yaml``), the ones that
+only make sense on the default branch (``ngeo-*.yaml``, ``rebuild-*.yaml``, ...) should be removed.
 
 Use the ``ngeo`` package linked to the new branch
 -------------------------------------------------
@@ -117,6 +120,13 @@ Run:
     tx push --branch="${NEXT_VERSION}" --translation --force \
         --resources=geomapfish.c2cgeoportal_geoportal,geomapfish.c2cgeoportal_admin
 
+.. note::
+
+   The ngeo Transifex resources are pushed from the ``ngeo`` repository. If a resource reached the branch
+   limit, ngeo puts the branch in the resource name (e.g. ``gmf-apps-2-11``) instead of using a branch:
+   report the rename in the ``.tx/config`` file and in the ``dependencies.mk`` pull command, without the
+   ``--branch`` argument.
+
 Create a pull request
 ---------------------
 
@@ -134,94 +144,23 @@ Create a pull request to update the new version branch.
   Create the pull request on GitHub.
 
 Update the master branch
--------------------------
+------------------------
+
+Copy the maintenance workflow of an existing version (e.g. ``.github/workflows/ngeo-<new version - 1>.yaml``)
+to ``.github/workflows/ngeo-<new version>.yaml`` and update it:
+
+* the ``name`` and the job name to ``Update ngeo <new version>``,
+* the repository dispatch type to ``ngeo_<new version>_updated``,
+* ``MAIN_BRANCH`` and ``MAJOR_VERSION`` to ``<new version>``,
+* the ``QGIS_VERSION`` used to build the QGIS server,
+* the ``ci/test-upgrade`` steps with the ones from the new version branch.
+
+This workflow checks out the stabilization branch, updates the ``ngeo`` package, the change log and the
+version, pushes the changes on the stabilization branch and republishes the images with:
 
 .. prompt:: bash
 
-    git checkout master
-    git pull
-
-Copy the file ``.github/workflows/main.yaml`` from new version branch to master branch as
-``.github/workflows/ngeo-<new version>.yaml`` and do the following changes:
-
-.. code:: diff
-
-   -name: Continuous integration
-   +name: Update ngeo <new version>
-
-    on:
-   -  push:
-   +  repository_dispatch:
-   +    types:
-   +    - ngeo_<new version>_updated
-   +  workflow_dispatch:
-
-    jobs:
-   -  not-failed-backport:
-   -    ...
-
-      build:
-        ...
-   -    name: Continuous integration
-   +    name: Update ngeo <new version>
-        ...
-   -    if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
-
-        env:
-   -      MAIN_BRANCH: master
-   -      MAJOR_VERSION: x.y
-   +      MAIN_BRANCH: x.y
-   +      MAJOR_VERSION: x.y
-
-        steps:
-          ...
-
-          - uses: actions/checkout@v2
-            with:
-   +          ref: ${{ env.MAIN_BRANCH }}
-              fetch-depth: 0
-              token: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
-   -        if: env.HAS_SECRETS == 'HAS_SECRETS'
-   -      - uses: actions/checkout@v2
-   -        with:
-   -          fetch-depth: 0
-   -        if: env.HAS_SECRETS != 'HAS_SECRETS'
-
-          ...
-
-   +      - run: cd geoportal && npm update
-          - run: scripts/get-version --auto-increment --github
-            id: version
-
-          ...
-
-          - run: git diff CHANGELOG.md
-   +      - run: |
-   +          git add geoportal/package-lock.json
-   +          git commit -m "Update used ngeo version"
-
-          ...
-
-          - name: Publish
-            run: >
-              tag-publish
-              --docker-versions=${{ steps.version.outputs.versions }}
-   +          --type=rebuild
-
-   -      - name: Publish version branch to pypi
-   -        ...
-   -
-   -      - name: Publish to Transifex
-   -        ...
-   -
-   -      - name: Publish documentation to GitHub.io
-   -        ...
-
-
-And also remove all the `if` concerning the following tests:
-
-- ``github.ref != format('refs/heads/{0}', env.MAIN_BRANCH)``
-- ``env.HAS_SECRETS == 'HAS_SECRETS`` (optional)
+    tag-publish --type=rebuild --version=<new version> --docker-versions=...
 
 Configure the new branch
 ------------------------
@@ -229,7 +168,23 @@ Configure the new branch
 In the file ``.github/workflows/main.yaml`` and ``.github/workflows/qgis.yaml`` set ``MAJOR_VERSION`` to
   ``<next version>``.
 
-In the Makefile, update the default value for ``MAJOR_VERSION``, ``MAJOR_MINOR_VERSION`` and ``VERSION``.
+In the ``Makefile``, update the default value for ``MAJOR_VERSION``, ``MAJOR_MINOR_VERSION`` and ``VERSION``.
+
+In the ``scripts/get-version`` file, update the default ``MAJOR_VERSION``.
+
+In the ``scripts/updated_version`` file, update the version used to select the json output of ``npm list``.
+
+Add the migration test from the new version
+-------------------------------------------
+
+In the ``ci/test-upgrade`` file:
+
+* rename the current development version test (e.g. ``v210``) to the next version (``v211``) with the
+  ``create`` function,
+* add the migration test from the new version (``v210``) with the ``create-old`` function and the used image
+  tag (e.g. ``2.10.0``), and add the associated case and cleanup.
+
+In the ``.github/workflows/main.yaml`` file, add the ``ci/test-upgrade`` step of the new version.
 
 Reset the change log
 --------------------
@@ -256,22 +211,19 @@ On the master branch, update the file ``SECURITY.md`` with the security informat
 
 .. code::
 
-  | x.y+1 | To be defined |
+  | x.y | To be defined |
 
-Backport label
---------------
-
-Create the new back port label named ``backport_<new_version>``.
+The GHCI application uses this file to keep the Renovate ``baseBranchPatterns`` and the
+``backport <version>`` labels up to date.
 
 Create the pull request
 -----------------------
 
 .. prompt:: bash
 
-    NEXT_VERSION=x.y
-    git add -A
-    git add .github/workflows/ngeo-*.yaml
+    NEXT_VERSION=x.y+1
     git checkout -b "start-${NEXT_VERSION}"
+    git add --all
     git commit -m "Start the version ${NEXT_VERSION}"
     git push --set-upstream origin "start-${NEXT_VERSION}"
 
@@ -285,7 +237,14 @@ Send a release email to the ``geomapfish@googlegroups.com`` and
 Create the new demo
 -------------------
 
-Create the new demo on Kubernetes
+Create the new demo on Kubernetes:
+
+In ``argocd-gs-gmf-apps``, add the files of the new version
+(``values/geomapfish/<next version>-*.yaml``, ``apps/prod/demo/gmf-<next version>``,
+``apps/prod/demo/ingress-<next version>`` and ``apps/values/demo/values-geomapfish-<next version>.yaml``
+with the incremented ``REDIS_DB``).
+Defer the ``geomapfish-demo-master``/``geomapfish-demo-latest`` ingress switches until the images of the
+new version are published.
 
 Use the new demo
 ----------------
