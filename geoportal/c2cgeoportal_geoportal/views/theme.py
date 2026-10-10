@@ -346,11 +346,11 @@ class Theme:
 
         return url, content, errors
 
-    def _create_layer_query(self, interface: str) -> sqlalchemy.orm.query.RowReturningQuery[tuple[str]]:
+    def _create_layer_query(self, interface: str) -> sqlalchemy.orm.query.RowReturningQuery[str]:
         """Create an SQLAlchemy query for Layer and for the role identified to by ``role_id``."""
         assert models.DBSession is not None
 
-        query: sqlalchemy.orm.query.RowReturningQuery[tuple[str]] = models.DBSession.query(
+        query: sqlalchemy.orm.query.RowReturningQuery[str] = models.DBSession.query(
             main.Layer.name,
         ).filter(main.Layer.public.is_(True))
 
@@ -767,7 +767,7 @@ class Theme:
 
     def _layers(self, interface: str) -> list[str]:
         query = self._create_layer_query(interface=interface)
-        return [name for (name,) in query.all()]
+        return [row[0] for row in query.all()]
 
     async def _wms_layers(
         self,
@@ -1240,7 +1240,7 @@ class Theme:
             export_group = group is not None and sets in ("all", "group")
             export_background = background_layers_group is not None and sets in ("all", "background")
 
-            result: dict[str, dict[str, Any] | list[Any]] = {}
+            result: dict[str, Any] = {}
             all_errors: set[str] = set()
             _LOG.debug("Start preload")
             start_time = time.time()
