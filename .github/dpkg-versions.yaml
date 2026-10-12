@@ -498,9 +498,9 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28:
   ubuntu_22_04/libwebpdemux2: 1.2.2-2ubuntu0.22.04.2
   ubuntu_22_04/libwebpmux3: 1.2.2-2ubuntu0.22.04.2
   ubuntu_22_04/libwoff1: 1.0.2-1build4
-  ubuntu_22_04/libx11-6: 2:1.7.5-1ubuntu0.3
-  ubuntu_22_04/libx11-data: 2:1.7.5-1ubuntu0.3
-  ubuntu_22_04/libx11-xcb1: 2:1.7.5-1ubuntu0.3
+  ubuntu_22_04/libx11-6: 2:1.7.5-1ubuntu0.4
+  ubuntu_22_04/libx11-data: 2:1.7.5-1ubuntu0.4
+  ubuntu_22_04/libx11-xcb1: 2:1.7.5-1ubuntu0.4
   ubuntu_22_04/libxau6: 1:1.0.9-1build5
   ubuntu_22_04/libxaw7: 2:1.0.14-1
   ubuntu_22_04/libxcb-dri2-0: 1.14-3ubuntu3
@@ -873,9 +873,9 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28-gdal3.6:
   ubuntu_22_04/libwayland-server0: 1.20.0-1ubuntu0.1
   ubuntu_22_04/libwebp7: 1.2.2-2ubuntu0.22.04.2
   ubuntu_22_04/libwoff1: 1.0.2-1build4
-  ubuntu_22_04/libx11-6: 2:1.7.5-1ubuntu0.3
-  ubuntu_22_04/libx11-data: 2:1.7.5-1ubuntu0.3
-  ubuntu_22_04/libx11-xcb1: 2:1.7.5-1ubuntu0.3
+  ubuntu_22_04/libx11-6: 2:1.7.5-1ubuntu0.4
+  ubuntu_22_04/libx11-data: 2:1.7.5-1ubuntu0.4
+  ubuntu_22_04/libx11-xcb1: 2:1.7.5-1ubuntu0.4
   ubuntu_22_04/libxau6: 1:1.0.9-1build5
   ubuntu_22_04/libxaw7: 2:1.0.14-1
   ubuntu_22_04/libxcb-dri2-0: 1.14-3ubuntu3
@@ -1253,9 +1253,9 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28-gdal3.7:
   ubuntu_22_04/libwebpdemux2: 1.2.2-2ubuntu0.22.04.2
   ubuntu_22_04/libwebpmux3: 1.2.2-2ubuntu0.22.04.2
   ubuntu_22_04/libwoff1: 1.0.2-1build4
-  ubuntu_22_04/libx11-6: 2:1.7.5-1ubuntu0.3
-  ubuntu_22_04/libx11-data: 2:1.7.5-1ubuntu0.3
-  ubuntu_22_04/libx11-xcb1: 2:1.7.5-1ubuntu0.3
+  ubuntu_22_04/libx11-6: 2:1.7.5-1ubuntu0.4
+  ubuntu_22_04/libx11-data: 2:1.7.5-1ubuntu0.4
+  ubuntu_22_04/libx11-xcb1: 2:1.7.5-1ubuntu0.4
   ubuntu_22_04/libxau6: 1:1.0.9-1build5
   ubuntu_22_04/libxaw7: 2:1.0.14-1
   ubuntu_22_04/libxcb-dri2-0: 1.14-3ubuntu3
@@ -1686,9 +1686,9 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libwebpdemux2: 1.2.2-2ubuntu0.22.04.2
   ubuntu_22_04/libwebpmux3: 1.2.2-2ubuntu0.22.04.2
   ubuntu_22_04/libwoff1: 1.0.2-1build4
-  ubuntu_22_04/libx11-6: 2:1.7.5-1ubuntu0.3
-  ubuntu_22_04/libx11-data: 2:1.7.5-1ubuntu0.3
-  ubuntu_22_04/libx11-xcb1: 2:1.7.5-1ubuntu0.3
+  ubuntu_22_04/libx11-6: 2:1.7.5-1ubuntu0.4
+  ubuntu_22_04/libx11-data: 2:1.7.5-1ubuntu0.4
+  ubuntu_22_04/libx11-xcb1: 2:1.7.5-1ubuntu0.4
   ubuntu_22_04/libx265-199: 3.5-2
   ubuntu_22_04/libxau6: 1:1.0.9-1build5
   ubuntu_22_04/libxaw7: 2:1.0.14-1
@@ -2124,9 +2124,9 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.7:
   ubuntu_22_04/libwebpdemux2: 1.2.2-2ubuntu0.22.04.2
   ubuntu_22_04/libwebpmux3: 1.2.2-2ubuntu0.22.04.2
   ubuntu_22_04/libwoff1: 1.0.2-1build4
-  ubuntu_22_04/libx11-6: 2:1.7.5-1ubuntu0.3
-  ubuntu_22_04/libx11-data: 2:1.7.5-1ubuntu0.3
-  ubuntu_22_04/libx11-xcb1: 2:1.7.5-1ubuntu0.3
+  ubuntu_22_04/libx11-6: 2:1.7.5-1ubuntu0.4
+  ubuntu_22_04/libx11-data: 2:1.7.5-1ubuntu0.4
+  ubuntu_22_04/libx11-xcb1: 2:1.7.5-1ubuntu0.4
   ubuntu_22_04/libx265-199: 3.5-2
   ubuntu_22_04/libxau6: 1:1.0.9-1build5
   ubuntu_22_04/libxaw7: 2:1.0.14-1
@@ -2562,9 +2562,9 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libwebpdemux2: 1.2.2-2ubuntu0.22.04.2
   ubuntu_22_04/libwebpmux3: 1.2.2-2ubuntu0.22.04.2
   ubuntu_22_04/libwoff1: 1.0.2-1build4
-  ubuntu_22_04/libx11-6: 2:1.7.5-1ubuntu0.3
-  ubuntu_22_04/libx11-data: 2:1.7.5-1ubuntu0.3
-  ubuntu_22_04/libx11-xcb1: 2:1.7.5-1ubuntu0.3
+  ubuntu_22_04/libx11-6: 2:1.7.5-1ubuntu0.4
+  ubuntu_22_04/libx11-data: 2:1.7.5-1ubuntu0.4
+  ubuntu_22_04/libx11-xcb1: 2:1.7.5-1ubuntu0.4
   ubuntu_22_04/libx265-199: 3.5-2
   ubuntu_22_04/libxau6: 1:1.0.9-1build5
   ubuntu_22_04/libxaw7: 2:1.0.14-1
@@ -2944,9 +2944,9 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/libwebp7: 1.2.2-2ubuntu0.22.04.2
   ubuntu_22_04/libwebpdemux2: 1.2.2-2ubuntu0.22.04.2
   ubuntu_22_04/libwebpmux3: 1.2.2-2ubuntu0.22.04.2
-  ubuntu_22_04/libx11-6: 2:1.7.5-1ubuntu0.3
-  ubuntu_22_04/libx11-data: 2:1.7.5-1ubuntu0.3
-  ubuntu_22_04/libx11-xcb1: 2:1.7.5-1ubuntu0.3
+  ubuntu_22_04/libx11-6: 2:1.7.5-1ubuntu0.4
+  ubuntu_22_04/libx11-data: 2:1.7.5-1ubuntu0.4
+  ubuntu_22_04/libx11-xcb1: 2:1.7.5-1ubuntu0.4
   ubuntu_22_04/libxau6: 1:1.0.9-1build5
   ubuntu_22_04/libxcb-dri3-0: 1.14-3ubuntu3
   ubuntu_22_04/libxcb-randr0: 1.14-3ubuntu3
@@ -3302,9 +3302,9 @@ camptocamp/geomapfish:latest:
   ubuntu_22_04/libwebp7: 1.2.2-2ubuntu0.22.04.2
   ubuntu_22_04/libwebpdemux2: 1.2.2-2ubuntu0.22.04.2
   ubuntu_22_04/libwebpmux3: 1.2.2-2ubuntu0.22.04.2
-  ubuntu_22_04/libx11-6: 2:1.7.5-1ubuntu0.3
-  ubuntu_22_04/libx11-data: 2:1.7.5-1ubuntu0.3
-  ubuntu_22_04/libx11-xcb1: 2:1.7.5-1ubuntu0.3
+  ubuntu_22_04/libx11-6: 2:1.7.5-1ubuntu0.4
+  ubuntu_22_04/libx11-data: 2:1.7.5-1ubuntu0.4
+  ubuntu_22_04/libx11-xcb1: 2:1.7.5-1ubuntu0.4
   ubuntu_22_04/libxau6: 1:1.0.9-1build5
   ubuntu_22_04/libxcb-dri3-0: 1.14-3ubuntu3
   ubuntu_22_04/libxcb-randr0: 1.14-3ubuntu3
@@ -3627,9 +3627,9 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_22_04/libwebp7: 1.2.2-2ubuntu0.22.04.2
   ubuntu_22_04/libwebpdemux2: 1.2.2-2ubuntu0.22.04.2
   ubuntu_22_04/libwebpmux3: 1.2.2-2ubuntu0.22.04.2
-  ubuntu_22_04/libx11-6: 2:1.7.5-1ubuntu0.3
-  ubuntu_22_04/libx11-data: 2:1.7.5-1ubuntu0.3
-  ubuntu_22_04/libx11-xcb1: 2:1.7.5-1ubuntu0.3
+  ubuntu_22_04/libx11-6: 2:1.7.5-1ubuntu0.4
+  ubuntu_22_04/libx11-data: 2:1.7.5-1ubuntu0.4
+  ubuntu_22_04/libx11-xcb1: 2:1.7.5-1ubuntu0.4
   ubuntu_22_04/libxau6: 1:1.0.9-1build5
   ubuntu_22_04/libxcb-dri3-0: 1.14-3ubuntu3
   ubuntu_22_04/libxcb-randr0: 1.14-3ubuntu3
