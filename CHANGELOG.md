@@ -1,3 +1,7 @@
+##### 2.7.1.346
+
+- Audit Dpkg 2.7 [c2cgeoportal#13438](https://github.com/camptocamp/c2cgeoportal/pull/13438)
+
 ##### 2.7.1.345
 
 - Audit Dpkg 2.7 [c2cgeoportal#13436](https://github.com/camptocamp/c2cgeoportal/pull/13436)
