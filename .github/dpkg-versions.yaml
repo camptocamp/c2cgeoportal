@@ -230,8 +230,8 @@ camptocamp/geomapfish-config:latest:
   ubuntu_26_04/libnpth0t64: 1.8-3build1
   ubuntu_26_04/libnspr4: 2:4.38.2-1ubuntu1
   ubuntu_26_04/libnspr4-dev: 2:4.38.2-1ubuntu1
-  ubuntu_26_04/libnss3: 2:3.120-1ubuntu2.1
-  ubuntu_26_04/libnss3-dev: 2:3.120-1ubuntu2.1
+  ubuntu_26_04/libnss3: 2:3.120-1ubuntu2.2
+  ubuntu_26_04/libnss3-dev: 2:3.120-1ubuntu2.2
   ubuntu_26_04/libodbc2: 2.3.14-1
   ubuntu_26_04/libodbccr2: 2.3.14-1
   ubuntu_26_04/libodbcinst2: 2.3.14-1
@@ -252,9 +252,9 @@ camptocamp/geomapfish-config:latest:
   ubuntu_26_04/libpkgconf7: 2.5.1-4
   ubuntu_26_04/libpng-dev: 1.6.57-1ubuntu0.1
   ubuntu_26_04/libpng16-16t64: 1.6.57-1ubuntu0.1
-  ubuntu_26_04/libpoppler-dev: 26.01.0-2ubuntu0.2
-  ubuntu_26_04/libpoppler-private-dev: 26.01.0-2ubuntu0.2
-  ubuntu_26_04/libpoppler156: 26.01.0-2ubuntu0.2
+  ubuntu_26_04/libpoppler-dev: 26.01.0-2ubuntu0.3
+  ubuntu_26_04/libpoppler-private-dev: 26.01.0-2ubuntu0.3
+  ubuntu_26_04/libpoppler156: 26.01.0-2ubuntu0.3
   ubuntu_26_04/libpq-dev: 18.6-0ubuntu0.26.04.1
   ubuntu_26_04/libpq5: 18.6-0ubuntu0.26.04.1
   ubuntu_26_04/libproc2-0: 2:4.0.4-9ubuntu1
@@ -602,7 +602,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.2:
   ubuntu_26_04/libnghttp2-14: 1.68.0-2ubuntu0.2
   ubuntu_26_04/libnorm1t64: 1.5.9+dfsg-4
   ubuntu_26_04/libnspr4: 2:4.38.2-1ubuntu1
-  ubuntu_26_04/libnss3: 2:3.120-1ubuntu2.1
+  ubuntu_26_04/libnss3: 2:3.120-1ubuntu2.2
   ubuntu_26_04/libnuma1: 2.0.19-1build1
   ubuntu_26_04/libogg0: 1.3.6-2
   ubuntu_26_04/libopengl0: 1.7.0-3
@@ -1124,7 +1124,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.2-gdal3.13:
   ubuntu_26_04/libnghttp2-14: 1.68.0-2ubuntu0.2
   ubuntu_26_04/libnorm1t64: 1.5.9+dfsg-4
   ubuntu_26_04/libnspr4: 2:4.38.2-1ubuntu1
-  ubuntu_26_04/libnss3: 2:3.120-1ubuntu2.1
+  ubuntu_26_04/libnss3: 2:3.120-1ubuntu2.2
   ubuntu_26_04/libnuma1: 2.0.19-1build1
   ubuntu_26_04/libogg0: 1.3.6-2
   ubuntu_26_04/libopengl0: 1.7.0-3
@@ -1646,7 +1646,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_26_04/libnghttp2-14: 1.68.0-2ubuntu0.2
   ubuntu_26_04/libnorm1t64: 1.5.9+dfsg-4
   ubuntu_26_04/libnspr4: 2:4.38.2-1ubuntu1
-  ubuntu_26_04/libnss3: 2:3.120-1ubuntu2.1
+  ubuntu_26_04/libnss3: 2:3.120-1ubuntu2.2
   ubuntu_26_04/libnuma1: 2.0.19-1build1
   ubuntu_26_04/libogg0: 1.3.6-2
   ubuntu_26_04/libopengl0: 1.7.0-3
@@ -2175,7 +2175,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_26_04/libnghttp2-14: 1.68.0-2ubuntu0.2
   ubuntu_26_04/libnorm1t64: 1.5.9+dfsg-4
   ubuntu_26_04/libnspr4: 2:4.38.2-1ubuntu1
-  ubuntu_26_04/libnss3: 2:3.120-1ubuntu2.1
+  ubuntu_26_04/libnss3: 2:3.120-1ubuntu2.2
   ubuntu_26_04/libnuma1: 2.0.19-1build1
   ubuntu_26_04/libogg0: 1.3.6-2
   ubuntu_26_04/libopengl0: 1.7.0-3
@@ -3108,7 +3108,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_26_04/libnghttp2-14: 1.68.0-2ubuntu0.2
   ubuntu_26_04/libnorm1t64: 1.5.9+dfsg-4
   ubuntu_26_04/libnspr4: 2:4.38.2-1ubuntu1
-  ubuntu_26_04/libnss3: 2:3.120-1ubuntu2.1
+  ubuntu_26_04/libnss3: 2:3.120-1ubuntu2.2
   ubuntu_26_04/libnuma1: 2.0.19-1build1
   ubuntu_26_04/libogg0: 1.3.6-2
   ubuntu_26_04/libopengl0: 1.7.0-3
@@ -3511,7 +3511,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_26_04/libcap-ng0: 0.8.5-4build5
   ubuntu_26_04/libcap2: 1:2.75-10ubuntu2
   ubuntu_26_04/libcap2-bin: 1:2.75-10ubuntu2
-  ubuntu_26_04/libcares2: 1.34.6-1ubuntu0.1
+  ubuntu_26_04/libcares2: 1.34.6-1ubuntu0.2
   ubuntu_26_04/libcc1-0: 16-20260322-1ubuntu1
   ubuntu_26_04/libcom-err2: 1.47.2-3ubuntu4
   ubuntu_26_04/libcrypt-dev: 1:4.5.1-1
@@ -3613,7 +3613,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_26_04/libnode127: 22.22.1+dfsg+~cs22.19.15-1ubuntu1
   ubuntu_26_04/libnpth0t64: 1.8-3build1
   ubuntu_26_04/libnspr4: 2:4.38.2-1ubuntu1
-  ubuntu_26_04/libnss3: 2:3.120-1ubuntu2.1
+  ubuntu_26_04/libnss3: 2:3.120-1ubuntu2.2
   ubuntu_26_04/libopenjp2-7: 2.5.4-1ubuntu0.1
   ubuntu_26_04/libp11-kit0: 0.26.2-2
   ubuntu_26_04/libpam-modules: 1.7.0-5ubuntu3.2
@@ -4192,7 +4192,7 @@ camptocamp/geomapfish:latest:
   ubuntu_26_04/libc6: 2.43-2ubuntu2.4
   ubuntu_26_04/libcairo2: 1.18.4-3
   ubuntu_26_04/libcap-ng0: 0.8.5-4build5
-  ubuntu_26_04/libcares2: 1.34.6-1ubuntu0.1
+  ubuntu_26_04/libcares2: 1.34.6-1ubuntu0.2
   ubuntu_26_04/libcom-err2: 1.47.2-3ubuntu4
   ubuntu_26_04/libcrypt-dev: 1:4.5.1-1
   ubuntu_26_04/libcrypt1: 1:4.5.1-1
@@ -4272,7 +4272,7 @@ camptocamp/geomapfish:latest:
   ubuntu_26_04/libnode127: 22.22.1+dfsg+~cs22.19.15-1ubuntu1
   ubuntu_26_04/libnpth0t64: 1.8-3build1
   ubuntu_26_04/libnspr4: 2:4.38.2-1ubuntu1
-  ubuntu_26_04/libnss3: 2:3.120-1ubuntu2.1
+  ubuntu_26_04/libnss3: 2:3.120-1ubuntu2.2
   ubuntu_26_04/libopenjp2-7: 2.5.4-1ubuntu0.1
   ubuntu_26_04/libp11-kit0: 0.26.2-2
   ubuntu_26_04/libpam-modules: 1.7.0-5ubuntu3.2
@@ -4816,7 +4816,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_26_04/libc6: 2.43-2ubuntu2.4
   ubuntu_26_04/libcairo2: 1.18.4-3
   ubuntu_26_04/libcap-ng0: 0.8.5-4build5
-  ubuntu_26_04/libcares2: 1.34.6-1ubuntu0.1
+  ubuntu_26_04/libcares2: 1.34.6-1ubuntu0.2
   ubuntu_26_04/libcom-err2: 1.47.2-3ubuntu4
   ubuntu_26_04/libcrypt-dev: 1:4.5.1-1
   ubuntu_26_04/libcrypt1: 1:4.5.1-1
@@ -4896,7 +4896,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_26_04/libnode127: 22.22.1+dfsg+~cs22.19.15-1ubuntu1
   ubuntu_26_04/libnpth0t64: 1.8-3build1
   ubuntu_26_04/libnspr4: 2:4.38.2-1ubuntu1
-  ubuntu_26_04/libnss3: 2:3.120-1ubuntu2.1
+  ubuntu_26_04/libnss3: 2:3.120-1ubuntu2.2
   ubuntu_26_04/libopenjp2-7: 2.5.4-1ubuntu0.1
   ubuntu_26_04/libp11-kit0: 0.26.2-2
   ubuntu_26_04/libpam-modules: 1.7.0-5ubuntu3.2
