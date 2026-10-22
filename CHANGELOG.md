@@ -1,3 +1,7 @@
+##### 2.7.1.349
+
+- Audit Dpkg 2.7 [c2cgeoportal#13447](https://github.com/camptocamp/c2cgeoportal/pull/13447)
+
 ##### 2.7.1.348
 
 - Update dependency certifi to v2026.10.19 [SECURITY] (2.7) [c2cgeoportal#13452](https://github.com/camptocamp/c2cgeoportal/pull/13452)
