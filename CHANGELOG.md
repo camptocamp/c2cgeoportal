@@ -1,3 +1,9 @@
+##### 2.9.0.621
+
+- Audit Dpkg 2.9 [c2cgeoportal#13423](https://github.com/camptocamp/c2cgeoportal/pull/13423)
+- Update dependency certifi to v2026.10.19 [SECURITY] (2.9) [c2cgeoportal#13454](https://github.com/camptocamp/c2cgeoportal/pull/13454)
+- Update dependency gitpython to v3.2.1 [SECURITY] (2.9) [c2cgeoportal#13490](https://github.com/camptocamp/c2cgeoportal/pull/13490)
+
 ##### 2.9.0.620
 
 - Add the description required by the applications-download schema [c2cgeoportal#13477](https://github.com/camptocamp/c2cgeoportal/pull/13477)
