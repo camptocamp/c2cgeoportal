@@ -1,3 +1,7 @@
+##### 2.7.1.353
+
+- Update dependency pylint to v4 [SECURITY] (2.7) [c2cgeoportal#13491](https://github.com/camptocamp/c2cgeoportal/pull/13491)
+
 ##### 2.7.1.352
 
 - Update dependency gitpython to v3.2.1 [SECURITY] (2.7) [c2cgeoportal#13487](https://github.com/camptocamp/c2cgeoportal/pull/13487)
