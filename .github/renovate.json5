@@ -70,8 +70,6 @@
       matchDatasources: ['docker'],
       matchDepNames: ['ghcr.io/camptocamp/mapserver', 'camptocamp/mapserver'],
       versioning: 'regex:^(?<major>\\d+)\\.(?<minor>\\d+)-gdal(?<gdalMajor>\\d+)\\.(?<gdalMinor>\\d+)$',
-      rangeStrategy: 'bump',
-      bumpVersion: '*',
     },
     {
       matchDatasources: ['docker'],
