@@ -6,3 +6,4 @@ checks:
   codespell: False
   dependabot_config: False
   setup: False
+  snyk: False
