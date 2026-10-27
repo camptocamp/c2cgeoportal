@@ -5,6 +5,11 @@ on:
   schedule:
     - cron: '30 2 * * *'
 
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+
 jobs:
   rebuild:
     runs-on: ubuntu-24.04
@@ -19,18 +24,11 @@ jobs:
           - prod-{{cookiecutter.geomapfish_main_version_dash}}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           ref: ${{'{{'}} matrix.branch }}
 
-      # Requires CI_GPG_PRIVATE_KEY and GOPASS_CI_GITHUB_TOKEN secrets.
-      - uses: camptocamp/initialise-gopass-summon-action@17703c87720ba3766abc90da60b437783b530d93 # v2.0.1
-        with:
-          ci-gpg-private-key: ${{'{{'}} secrets.CI_GPG_PRIVATE_KEY }}
-          github-gopass-ci-token: ${{'{{'}} secrets.GOPASS_CI_GITHUB_TOKEN }}
-          patterns: docker
-
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
         with:
           python-version: '3.11'
       - run: python3 -m pip install --requirement=ci/requirements.txt
@@ -40,5 +38,17 @@ jobs:
       - name: Build
         run: ./build
 
+      # `tag-publish` comes from the `.github/publish` uv project of the checked out branch, with
+      # its dependencies fully locked, instead of the `ci/requirements.txt` of that branch.
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          version: latest-known
+          cache-python: true
+          python-version: '3.11'
+
       - name: Publish
-        run: c2cciutils-publish --branch=${{'{{'}} matrix.branch }} --type=rebuild
+        run: >
+          uv run --locked --isolated --project=.github/publish
+          tag-publish --type=rebuild --version=${{'{{'}} matrix.branch }}
+        env:
+          GITHUB_TOKEN: ${{'{{'}} secrets.GITHUB_TOKEN }}

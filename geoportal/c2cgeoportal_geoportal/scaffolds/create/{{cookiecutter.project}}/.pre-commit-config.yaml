@@ -33,3 +33,10 @@ repos:
     rev: 24.10.0
     hooks:
       - id: black
+  - repo: https://github.com/sbrunner/hooks
+    rev: 1.9.0
+    hooks:
+      - id: uv-lock
+        additional_dependencies:
+          - uv==0.13.4 # pypi
+        files: ^\.github/publish/pyproject\.toml$
