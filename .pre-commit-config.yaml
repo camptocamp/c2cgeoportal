@@ -37,7 +37,7 @@ repos:
       - id: check-symlinks
       - id: fix-byte-order-marker
   - repo: https://github.com/sbrunner/hooks
-    rev: 1.8.0
+    rev: 1.9.0
     hooks:
       - id: copyright
       - id: workflows-require-timeout
@@ -47,6 +47,10 @@ repos:
           - poetry==2.5.1 # pypi
       - id: npm-lock
       - id: canonicalize
+      - id: uv-lock
+        additional_dependencies:
+          - uv==0.13.4 # pypi
+        files: ^geoportal/.*/\.github/publish/pyproject\.toml$
       - id: prospector-to-ruff
         additional_dependencies:
           - prospector-profile-duplicated==1.12.0 # pypi
