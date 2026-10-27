@@ -1,3 +1,7 @@
+##### 2.9.0.620
+
+- Add the description required by the applications-download schema [c2cgeoportal#13477](https://github.com/camptocamp/c2cgeoportal/pull/13477)
+
 ##### 2.9.0.619
 
 - Use the locally built images in the changelog version script [c2cgeoportal#13467](https://github.com/camptocamp/c2cgeoportal/pull/13467)
