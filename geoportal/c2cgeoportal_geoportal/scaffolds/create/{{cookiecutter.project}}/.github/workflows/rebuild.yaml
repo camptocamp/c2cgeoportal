@@ -38,6 +38,12 @@ jobs:
       - name: Build
         run: ./build
 
+      # `tag-publish` is installed in its own virtual environment: the matrix checks out other
+      # branches, whose `ci/requirements.txt` doesn't necessarily provide it.
+      - run: python3 -m venv ${HOME}/.tag-publish
+      - run: ${HOME}/.tag-publish/bin/pip install '--only-binary=:all:' tag-publish==1.2.6
+      - run: echo "${HOME}/.tag-publish/bin" >> ${GITHUB_PATH}
+
       - name: Publish
         run: tag-publish --type=rebuild --version=${{'{{'}} matrix.branch }}
         env:
