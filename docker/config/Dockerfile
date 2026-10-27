@@ -7,17 +7,16 @@ RUN --mount=type=cache,target=/var/lib/apt/lists \
     apt-get update \
     && apt-get upgrade --assume-yes \
     && apt-get install --assume-yes --no-install-recommends gettext-base python3-pip python3-venv python-is-python3 adduser libgdal-dev build-essential python3-dev \
-    && rm /usr/lib/python*/EXTERNALLY-MANAGED
+    && python3 -m venv --system-site-packages /venv
+
+# The Python packages are installed in a dedicated virtual environment to not conflict with the
+# ones provided by the distribution (e.g. python3-packaging cannot be uninstalled by pip because
+# it has no RECORD file), `--system-site-packages` keeps the distribution ones available.
+ENV PATH=/venv/bin:$PATH
 
 # Used to convert the locked packages by poetry to pip requirements format
 # We don't directly use `poetry install` because it force to use a virtual environment.
 FROM base-all AS poetry
-
-# Install Poetry in a dedicated virtual environment to not conflict with the
-# Python packages provided by the distribution (e.g. python3-packaging cannot
-# be uninstalled by pip because it has no RECORD file).
-RUN python3 -m venv /venv
-ENV PATH=/venv/bin:$PATH
 
 WORKDIR /tmp
 COPY requirements.txt ./
