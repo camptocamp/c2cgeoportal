@@ -1,3 +1,7 @@
+##### 2.9.0.619
+
+- Use the locally built images in the changelog version script [c2cgeoportal#13467](https://github.com/camptocamp/c2cgeoportal/pull/13467)
+
 ##### 2.9.0.618
 
 - [Backport 2.9] Use ghcr.io instead of Docker Hub [c2cgeoportal#13407](https://github.com/camptocamp/c2cgeoportal/pull/13407)
