@@ -35,7 +35,7 @@ repos:
       - id: check-symlinks
       - id: fix-byte-order-marker
   - repo: https://github.com/sbrunner/hooks
-    rev: 1.1.2
+    rev: 1.9.0
     hooks:
       - id: copyright
       - id: workflows-require-timeout
@@ -44,11 +44,6 @@ repos:
         additional_dependencies:
           - poetry==1.8.5 # pypi
       - id: npm-lock
-  # A second entry of the same repository: 1.1.2 above doesn't provide the `uv-lock` hook, and
-  # bumping it would change the behavior of the other hooks on this stabilization branch.
-  - repo: https://github.com/sbrunner/hooks
-    rev: 1.9.0
-    hooks:
       - id: uv-lock
         additional_dependencies:
           - uv==0.13.4 # pypi
