@@ -1,3 +1,7 @@
+##### 2.7.1.352
+
+- Update dependency gitpython to v3.2.1 [SECURITY] (2.7) [c2cgeoportal#13487](https://github.com/camptocamp/c2cgeoportal/pull/13487)
+
 ##### 2.7.1.351
 
 - Add the description required by the applications-download schema [c2cgeoportal#13475](https://github.com/camptocamp/c2cgeoportal/pull/13475)
