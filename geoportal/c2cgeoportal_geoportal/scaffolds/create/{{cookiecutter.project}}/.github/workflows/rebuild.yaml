@@ -7,10 +7,14 @@ on:
 
 env:
   PROJECT: {{cookiecutter.package}}
-  # Requires CI_GPG_PRIVATE_KEY and GOPASS_CI_GITHUB_TOKEN secrets.
   # OPENSHIFT_PROJECT: gs-gmf-{{cookiecutter.package}}
   # The release branches
   HELM_RELEASE_NAMES: int-{{cookiecutter.geomapfish_main_version_dash}},prod-{{cookiecutter.geomapfish_main_version_dash}}
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write
 
 jobs:
   rebuild:
@@ -26,15 +30,9 @@ jobs:
           - prod-{{cookiecutter.geomapfish_main_version_dash}}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           ref: ${{'{{'}} matrix.branch }}
-
-      - uses: camptocamp/initialise-gopass-summon-action@17703c87720ba3766abc90da60b437783b530d93 # v2.0.1
-        with:
-          ci-gpg-private-key: ${{'{{'}} secrets.CI_GPG_PRIVATE_KEY }}
-          github-gopass-ci-token: ${{'{{'}} secrets.GOPASS_CI_GITHUB_TOKEN }}
-          patterns: docker
 
       - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
       - run: python3 -m pip install --user --requirement=ci/requirements.txt
@@ -42,5 +40,18 @@ jobs:
       - name: Build
         run: ./build --docker-compose-version-2
 
+      # `tag-publish` comes from the `.github/publish` uv project of the checked out branch, with
+      # its dependencies fully locked, instead of the `ci/requirements.txt` of that branch. It is
+      # installed with its own Python, `tag-publish` requires 3.11 and this runner has 3.10.
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          version: latest-known
+          cache-python: true
+          python-version: '3.11'
+
       - name: Publish
-        run: c2cciutils-publish --branch=${{'{{'}} matrix.branch }} --type=rebuild
+        run: >
+          uv run --locked --isolated --project=.github/publish
+          tag-publish --type=rebuild --version=${{'{{'}} matrix.branch }}
+        env:
+          GITHUB_TOKEN: ${{'{{'}} secrets.GITHUB_TOKEN }}
