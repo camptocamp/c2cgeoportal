@@ -6,6 +6,6 @@ line-length = 110
 convention = "numpy"
 
 [project]
-name = "{{cookiecutter.project}}"
+name = "Geoportal"
 classifiers = []
 dynamic = ["dependencies", "version"]
