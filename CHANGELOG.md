@@ -1,3 +1,7 @@
+##### 2.7.1.351
+
+- Add the description required by the applications-download schema [c2cgeoportal#13475](https://github.com/camptocamp/c2cgeoportal/pull/13475)
+
 ##### 2.7.1.350
 
 - Remove the markdown-table exception from the tag-publish installation [c2cgeoportal#13473](https://github.com/camptocamp/c2cgeoportal/pull/13473)
