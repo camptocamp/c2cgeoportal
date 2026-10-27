@@ -27,8 +27,8 @@ repos:
         exclude: ^ci/tileindex/SRTM2056\.prj$
       - id: trailing-whitespace
       - id: mixed-line-ending
-  - repo: https://github.com/sbrunner/pre-commit-hooks
-    rev: 0.6.0
+  - repo: https://github.com/sbrunner/hooks
+    rev: 1.9.0
     hooks:
       - id: copyright
       - id: workflows-require-timeout
@@ -40,11 +40,6 @@ repos:
         exclude: ^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/{{cookiecutter\.project}}/
         additional_dependencies:
           - poetry==1.6.1 # pypi
-  # The entry above is the old `sbrunner/pre-commit-hooks` repository, which doesn't provide the
-  # `uv-lock` hook, hence this second entry.
-  - repo: https://github.com/sbrunner/hooks
-    rev: 1.9.0
-    hooks:
       - id: uv-lock
         additional_dependencies:
           - uv==0.13.4 # pypi
