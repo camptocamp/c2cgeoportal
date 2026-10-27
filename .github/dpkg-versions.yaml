@@ -78,8 +78,8 @@ camptocamp/geomapfish-config:latest:
   ubuntu_26_04/libblosc1: 1.21.5+ds-2
   ubuntu_26_04/libboost-dev: 1.90.0.1ubuntu3
   ubuntu_26_04/libboost1.90-dev: 1.90.0-6ubuntu1
-  ubuntu_26_04/libbrotli-dev: 1.2.0-3build1
-  ubuntu_26_04/libbrotli1: 1.2.0-3build1
+  ubuntu_26_04/libbrotli-dev: 1.2.0-3ubuntu0.1
+  ubuntu_26_04/libbrotli1: 1.2.0-3ubuntu0.1
   ubuntu_26_04/libbsd0: 0.12.2-2build2
   ubuntu_26_04/libbz2-1.0: 1.0.8-6ubuntu0.1
   ubuntu_26_04/libbz2-dev: 1.0.8-6ubuntu0.1
@@ -462,7 +462,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.2:
   ubuntu_26_04/libblas3: 3.12.1-7ubuntu1
   ubuntu_26_04/libblkid1: 2.41.3-3ubuntu2.2
   ubuntu_26_04/libbluray3: 1:1.4.1-1
-  ubuntu_26_04/libbrotli1: 1.2.0-3build1
+  ubuntu_26_04/libbrotli1: 1.2.0-3ubuntu0.1
   ubuntu_26_04/libbsd0: 0.12.2-2build2
   ubuntu_26_04/libbz2-1.0: 1.0.8-6ubuntu0.1
   ubuntu_26_04/libc-bin: 2.43-2ubuntu2.4
@@ -984,7 +984,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.2-gdal3.13:
   ubuntu_26_04/libblas3: 3.12.1-7ubuntu1
   ubuntu_26_04/libblkid1: 2.41.3-3ubuntu2.2
   ubuntu_26_04/libbluray3: 1:1.4.1-1
-  ubuntu_26_04/libbrotli1: 1.2.0-3build1
+  ubuntu_26_04/libbrotli1: 1.2.0-3ubuntu0.1
   ubuntu_26_04/libbsd0: 0.12.2-2build2
   ubuntu_26_04/libbz2-1.0: 1.0.8-6ubuntu0.1
   ubuntu_26_04/libc-bin: 2.43-2ubuntu2.4
@@ -1506,7 +1506,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_26_04/libblas3: 3.12.1-7ubuntu1
   ubuntu_26_04/libblkid1: 2.41.3-3ubuntu2.2
   ubuntu_26_04/libbluray3: 1:1.4.1-1
-  ubuntu_26_04/libbrotli1: 1.2.0-3build1
+  ubuntu_26_04/libbrotli1: 1.2.0-3ubuntu0.1
   ubuntu_26_04/libbsd0: 0.12.2-2build2
   ubuntu_26_04/libbz2-1.0: 1.0.8-6ubuntu0.1
   ubuntu_26_04/libc-bin: 2.43-2ubuntu2.4
@@ -2030,7 +2030,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_26_04/libblas3: 3.12.1-7ubuntu1
   ubuntu_26_04/libblkid1: 2.41.3-3ubuntu2.2
   ubuntu_26_04/libbluray3: 1:1.4.1-1
-  ubuntu_26_04/libbrotli1: 1.2.0-3build1
+  ubuntu_26_04/libbrotli1: 1.2.0-3ubuntu0.1
   ubuntu_26_04/libbsd0: 0.12.2-2build2
   ubuntu_26_04/libbz2-1.0: 1.0.8-6ubuntu0.1
   ubuntu_26_04/libc-bin: 2.43-2ubuntu2.4
@@ -2550,7 +2550,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/libbinutils: 2.42-4ubuntu2.8
   ubuntu_24_04/libblas3: 3.12.0-3build1.1
   ubuntu_24_04/libblkid1: 2.39.3-9ubuntu6.6
-  ubuntu_24_04/libbrotli1: 1.1.0-2build2
+  ubuntu_24_04/libbrotli1: 1.1.0-2ubuntu0.1
   ubuntu_24_04/libbsd0: 0.12.1-1build1.1
   ubuntu_24_04/libbz2-1.0: 1.0.8-5.1ubuntu0.1
   ubuntu_24_04/libc-bin: 2.39-0ubuntu8.9
@@ -2968,7 +2968,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_26_04/libblas3: 3.12.1-7ubuntu1
   ubuntu_26_04/libblkid1: 2.41.3-3ubuntu2.2
   ubuntu_26_04/libbluray3: 1:1.4.1-1
-  ubuntu_26_04/libbrotli1: 1.2.0-3build1
+  ubuntu_26_04/libbrotli1: 1.2.0-3ubuntu0.1
   ubuntu_26_04/libbsd0: 0.12.2-2build2
   ubuntu_26_04/libbz2-1.0: 1.0.8-6ubuntu0.1
   ubuntu_26_04/libc-bin: 2.43-2ubuntu2.4
@@ -3499,7 +3499,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_26_04/libblas3: 3.12.1-7ubuntu1
   ubuntu_26_04/libblkid1: 2.41.3-3ubuntu2.2
   ubuntu_26_04/libbpf1: 1:1.6.3-1ubuntu1
-  ubuntu_26_04/libbrotli1: 1.2.0-3build1
+  ubuntu_26_04/libbrotli1: 1.2.0-3ubuntu0.1
   ubuntu_26_04/libbsd0: 0.12.2-2build2
   ubuntu_26_04/libbz2-1.0: 1.0.8-6ubuntu0.1
   ubuntu_26_04/libc-bin: 2.43-2ubuntu2.4
@@ -4184,7 +4184,7 @@ camptocamp/geomapfish:latest:
   ubuntu_26_04/libavahi-common3: 0.8-18ubuntu1.1
   ubuntu_26_04/libblas3: 3.12.1-7ubuntu1
   ubuntu_26_04/libblkid1: 2.41.3-3ubuntu2.2
-  ubuntu_26_04/libbrotli1: 1.2.0-3build1
+  ubuntu_26_04/libbrotli1: 1.2.0-3ubuntu0.1
   ubuntu_26_04/libbsd0: 0.12.2-2build2
   ubuntu_26_04/libbz2-1.0: 1.0.8-6ubuntu0.1
   ubuntu_26_04/libc-bin: 2.43-2ubuntu2.4
@@ -4808,7 +4808,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_26_04/libavahi-common3: 0.8-18ubuntu1.1
   ubuntu_26_04/libblas3: 3.12.1-7ubuntu1
   ubuntu_26_04/libblkid1: 2.41.3-3ubuntu2.2
-  ubuntu_26_04/libbrotli1: 1.2.0-3build1
+  ubuntu_26_04/libbrotli1: 1.2.0-3ubuntu0.1
   ubuntu_26_04/libbsd0: 0.12.2-2build2
   ubuntu_26_04/libbz2-1.0: 1.0.8-6ubuntu0.1
   ubuntu_26_04/libc-bin: 2.43-2ubuntu2.4
