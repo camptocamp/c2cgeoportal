@@ -1,3 +1,7 @@
+##### 2.7.1.354
+
+- Update dependency certifi to v2026.10.23 (2.7) [c2cgeoportal#13495](https://github.com/camptocamp/c2cgeoportal/pull/13495)
+
 ##### 2.7.1.353
 
 - Update dependency pylint to v4 [SECURITY] (2.7) [c2cgeoportal#13491](https://github.com/camptocamp/c2cgeoportal/pull/13491)
