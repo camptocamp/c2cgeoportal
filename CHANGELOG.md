@@ -1,3 +1,9 @@
+##### 2.8.1.393
+
+- Remove the markdown-table exception from the tag-publish installation [c2cgeoportal#13472](https://github.com/camptocamp/c2cgeoportal/pull/13472)
+- Add the description required by the applications-download schema [c2cgeoportal#13476](https://github.com/camptocamp/c2cgeoportal/pull/13476)
+- Update dependency gitpython to v3.2.1 [SECURITY] (2.8) [c2cgeoportal#13489](https://github.com/camptocamp/c2cgeoportal/pull/13489)
+
 ##### 2.8.1.392
 
 - Use the locally built images in the changelog version script and disable the Snyk check [c2cgeoportal#13479](https://github.com/camptocamp/c2cgeoportal/pull/13479)
