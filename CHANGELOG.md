@@ -1,3 +1,7 @@
+##### 2.8.1.392
+
+- Use the locally built images in the changelog version script and disable the Snyk check [c2cgeoportal#13479](https://github.com/camptocamp/c2cgeoportal/pull/13479)
+
 ##### 2.8.1.391
 
 - [Backport 2.8] Use ghcr.io instead of Docker Hub [c2cgeoportal#13406](https://github.com/camptocamp/c2cgeoportal/pull/13406)
