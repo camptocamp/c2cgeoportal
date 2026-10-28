@@ -500,6 +500,14 @@
             "index": "pypi",
             "version": "==1.10.1"
         },
+        "fsspec": {
+            "hashes": [
+                "sha256:02e0b71817df9b2169dc30a16832045764def1191b43dcff5bb85bdee212d2a1",
+                "sha256:f5bac145310fe30e16e1471bd6840b2d990d609e872251d7e674241822abf01a"
+            ],
+            "index": "pypi",
+            "version": "==2026.6.0"
+        },
         "geoalchemy2": {
             "hashes": [
                 "sha256:43ce38a5387c9b380b4c9d20d720c3d8cf1752ca4f5f18aa88041be11f6948a3",
