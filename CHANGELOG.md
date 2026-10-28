@@ -1,3 +1,7 @@
+##### 2.7.1.356
+
+- Audit Dpkg 2.7 [c2cgeoportal#13507](https://github.com/camptocamp/c2cgeoportal/pull/13507)
+
 ##### 2.7.1.355
 
 - [Backport 2.7] Migrate the scaffolded publishing to tag-publish with a uv locked environment [c2cgeoportal#13484](https://github.com/camptocamp/c2cgeoportal/pull/13484)
