@@ -123,7 +123,7 @@ repos:
       - id: prospector
         additional_dependencies:
           - setuptools==78.1.1 # pypi
-          - pylint==2.16.0 # pypi
+          - pylint==4.0.9 # pypi
         args:
           - --tool=pydocstyle
           - --die-on-tool-error
