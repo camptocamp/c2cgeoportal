@@ -4,7 +4,7 @@ requires-python = ">=3.11"
 
 [options]
 exclude-newer = "0001-01-01T00:00:00Z" # This has no effect and is included for backwards compatibility when using relative exclude-newer values.
-exclude-newer-span = "P7D"
+exclude-newer-span = "P2D"
 
 [[package]]
 name = "annotated-types"
@@ -351,7 +351,7 @@ dependencies = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "tag-publish", extras = ["docker"], specifier = "==1.3.1" }]
+requires-dist = [{ name = "tag-publish", extras = ["docker"], specifier = "==1.3.2" }]
 
 [[package]]
 name = "pydantic"
@@ -572,16 +572,16 @@ wheels = [
 
 [[package]]
 name = "tag-publish"
-version = "1.3.1"
+version = "1.3.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "githubkit" },
     { name = "pyyaml" },
     { name = "security-md" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d0/a5/50a1a091172008d56402269253dc8ae19c171c288ebe20316f8f5b0d5536/tag_publish-1.3.1.tar.gz", hash = "sha256:f10e4ac42edd8ca053507a7186bf38b426e90f4144929c645fa8305dec2ef3fc", size = 31253, upload-time = "2026-10-08T11:45:54.133Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/a5/a0/5ea1839aeff648f003fa0f3f31113b9f9f47219283fac9a6d2c0e6f794fa/tag_publish-1.3.2.tar.gz", hash = "sha256:705a878f6f6f5ff39d7b88018b0a11ff6f6df6159835da457c4590f21d9e7d90", size = 31385, upload-time = "2026-10-26T08:38:18.468Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/71/d3/638c3e55b8ae5b9279b5d64841f32678b46cbc62a5b4a7ee6b9c350923d3/tag_publish-1.3.1-py3-none-any.whl", hash = "sha256:78d1c475dbef1ba24bc89c20a0424decde637eb9ac9bad26dad7d1811a5f975f", size = 31013, upload-time = "2026-10-08T11:45:53.187Z" },
+    { url = "https://files.pythonhosted.org/packages/7c/b2/7155d6582365f7c935237848de9e153c88a9f0aafd13eee6f84882ac3d6c/tag_publish-1.3.2-py3-none-any.whl", hash = "sha256:c673b7b269d4e8ef274117e5c0bae39fb791181add008dab0817bee3049e8460", size = 31162, upload-time = "2026-10-26T08:38:17.31Z" },
 ]
 
 [package.optional-dependencies]
