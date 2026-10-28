@@ -6,6 +6,7 @@ checks:
   dependabot_config: False
   prospector_config: False
   setup: False
+  snyk: False
 
 version:
   branch_to_version_re:
