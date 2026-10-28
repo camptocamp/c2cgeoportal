@@ -1,3 +1,11 @@
+##### 2.8.1.394
+
+- Lock file maintenance (2.8) [c2cgeoportal#13427](https://github.com/camptocamp/c2cgeoportal/pull/13427)
+- Update dependency certifi to v2026.10.19 [SECURITY] (2.8) [c2cgeoportal#13453](https://github.com/camptocamp/c2cgeoportal/pull/13453)
+- [Backport 2.8] Migrate the scaffolded publishing to tag-publish with a uv locked environment [c2cgeoportal#13485](https://github.com/camptocamp/c2cgeoportal/pull/13485)
+- Update dependency Mako to v1.4.2 [SECURITY] (2.8) [ngeo#10223](https://github.com/camptocamp/ngeo/pull/10223)
+- Force the modern syntax transforms that webpack 4 cannot parse [ngeo#10234](https://github.com/camptocamp/ngeo/pull/10234)
+
 ##### 2.8.1.393
 
 - Remove the markdown-table exception from the tag-publish installation [c2cgeoportal#13472](https://github.com/camptocamp/c2cgeoportal/pull/13472)
