@@ -18,4 +18,216 @@ ignore:
     - '*':
         reason: Upgrading setuptools>=83 removes pkg_resources, breaking lingua and prospector
         created: 2026-07-11T20:00:00.000Z
+  SNYK-PYTHON-PILLOW-15265439:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-16032068:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-16419303:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-16419304:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-16419307:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-17824465:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-17824466:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-17824467:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-17824468:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-17824469:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-17972376:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-17972377:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-17972381:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-17972384:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-17972386:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21277713:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21277726:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21277727:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21277734:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21277776:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21277777:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21277778:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21277779:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21277780:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21277782:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21277783:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21277784:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21277785:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21277786:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21277787:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21277792:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21277793:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21277794:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21277795:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21277796:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21277797:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21277798:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21277799:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21277801:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21277802:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21279300:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21369600:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21430900:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21430916:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21430917:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21430990:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21430991:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21430998:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21430999:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21431000:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21431005:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21431018:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
+  SNYK-PYTHON-PILLOW-21431022:
+    - '*':
+        reason: not compatible with used Python version, pillow >= 13.0.0 requires Python >= 3.11
+        created: 2026-10-28T15:40:19.000Z
 patch: {}

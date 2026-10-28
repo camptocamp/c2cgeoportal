@@ -9,4 +9,3 @@ virtualenv>=20.26.0 # not directly required, pinned by Snyk to avoid a vulnerabi
 urllib3>=2.6.3 # not directly required, pinned by Snyk to avoid a vulnerability
 protobuf>=6.33.5 # not directly required, pinned by Snyk to avoid a vulnerability
 tag-publish==1.2.6
-filelock>=4.2.1 # not directly required, pinned by Snyk to avoid a vulnerability
