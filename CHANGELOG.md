@@ -1,3 +1,7 @@
+##### 2.7.1.355
+
+- [Backport 2.7] Migrate the scaffolded publishing to tag-publish with a uv locked environment [c2cgeoportal#13484](https://github.com/camptocamp/c2cgeoportal/pull/13484)
+
 ##### 2.7.1.354
 
 - Update dependency certifi to v2026.10.23 (2.7) [c2cgeoportal#13495](https://github.com/camptocamp/c2cgeoportal/pull/13495)
