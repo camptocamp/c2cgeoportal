@@ -60,13 +60,6 @@ jobs:
           fetch-depth: 0
         if: env.HAS_SECRETS != 'HAS_SECRETS'
 
-      - uses: camptocamp/initialise-gopass-summon-action@17703c87720ba3766abc90da60b437783b530d93 # v2.0.1
-        with:
-          ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
-          github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
-          patterns: transifex
-        if: env.HAS_SECRETS == 'HAS_SECRETS'
-
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: '3.14'
@@ -330,13 +323,14 @@ jobs:
           git status --ignored || true
           make build-tools
           docker run --name=transifex -ti --rm --detach --volume=${HOME}:/root camptocamp/geomapfish-tools tail -f /dev/null
-          docker exec --env=TRANSIFEX_TOKEN=$(gopass show gs/ci/transifex/rw/token) transifex bash -c \
+          docker exec --env=TRANSIFEX_TOKEN="${TRANSIFEX_TOKEN}" transifex bash -c \
               '(cd /opt/c2cgeoportal; make --makefile=dependencies.mk transifex-private-credentials)'
           docker exec transifex bash -c \
               '(cd /opt/c2cgeoportal; make --makefile=dependencies.mk transifex-send)'
           docker stop transifex
         env:
           DOCKER_BUILDKIT: '1'
+          TRANSIFEX_TOKEN: ${{ secrets.TRANSIFEX_TOKEN }}
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && env.HAS_SECRETS == 'HAS_SECRETS'
