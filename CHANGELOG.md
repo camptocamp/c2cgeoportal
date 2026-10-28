@@ -1,3 +1,7 @@
+##### 2.9.0.622
+
+- Update dependency certifi to v2026.10.23 (2.9) [c2cgeoportal#13496](https://github.com/camptocamp/c2cgeoportal/pull/13496)
+
 ##### 2.9.0.621
 
 - Audit Dpkg 2.9 [c2cgeoportal#13423](https://github.com/camptocamp/c2cgeoportal/pull/13423)
