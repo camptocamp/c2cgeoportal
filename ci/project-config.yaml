@@ -8,5 +8,6 @@ checks:
       - ^geoportal/testgeomapfishapp_geoportal/locale/.*
       - ^geoportal/testgeomapfishapp_geoportal/static-ngeo/js/apps/Controller.*\.js$
       - ^print/print-apps/testgeomapfishapp/.*\.jrxml$
+      - ^\.github/publish/uv\.lock$
   dependabot_config: False
   setup: False
