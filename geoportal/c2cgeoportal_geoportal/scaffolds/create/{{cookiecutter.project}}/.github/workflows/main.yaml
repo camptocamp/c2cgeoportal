@@ -4,10 +4,11 @@ name: Continuous integration
 on:
   push:
 
-# To publish the images to be used on Kubernetes
-# env:
-#   PROJECT: {{cookiecutter.package}}
-#   HAS_SECRETS: ${{'{{'}} secrets.HAS_SECRETS }}
+permissions:
+  contents: read
+  # To publish the images to be used on Kubernetes
+  # packages: write
+  # id-token: write
 
 jobs:
   main:
@@ -16,15 +17,7 @@ jobs:
     timeout-minutes: 10
 
     steps:
-      - uses: actions/checkout@v2
-
-      # To publish the images to be used on Kubernetes
-      # - uses: camptocamp/initialise-gopass-summon-action@v2
-      #   with:
-      #     ci-gpg-private-key: ${{'{{'}} secrets.CI_GPG_PRIVATE_KEY }}
-      #     github-gopass-ci-token: ${{'{{'}} secrets.GOPASS_CI_GITHUB_TOKEN }}
-      #     patterns: docker
-      #   if: env.HAS_SECRETS == 'HAS_SECRETS'
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
       - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
       - run: python3 -m pip install --user --requirement=ci/requirements.txt
@@ -54,4 +47,6 @@ jobs:
 
       # To publish the images to be used on Kubernetes
       # - name: Publish
-      #   run: c2cciutils-publish
+      #   run: uv run --locked --isolated --project=.github/publish tag-publish
+      #  env:
+      #    GITHUB_TOKEN: ${{'{{'}} secrets.GITHUB_TOKEN }}

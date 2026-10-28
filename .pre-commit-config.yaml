@@ -27,8 +27,8 @@ repos:
         exclude: ^ci/tileindex/SRTM2056\.prj$
       - id: trailing-whitespace
       - id: mixed-line-ending
-  - repo: https://github.com/sbrunner/pre-commit-hooks
-    rev: 0.6.0
+  - repo: https://github.com/sbrunner/hooks
+    rev: 1.9.0
     hooks:
       - id: copyright
       - id: workflows-require-timeout
@@ -40,6 +40,10 @@ repos:
         exclude: ^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/{{cookiecutter\.project}}/
         additional_dependencies:
           - poetry==1.6.1 # pypi
+      - id: uv-lock
+        additional_dependencies:
+          - uv==0.13.4 # pypi
+        files: ^geoportal/.*/\.github/publish/pyproject\.toml$
   - repo: https://github.com/codespell-project/codespell
     rev: v2.2.6
     hooks:
