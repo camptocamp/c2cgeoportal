@@ -41,7 +41,7 @@ wrapt = "==1.13.3"
 "zope.deprecation" = "==4.4.0"
 "zope.interface" = "==5.4.0"
 mako = "==1.4.2"
-setuptools = "==83.0.0"
+setuptools = "==84.1.0"
 
 [dev-packages]
 prospector = {extras = ["with_mypy", "with_bandit"], version = "==1.7.7"}
@@ -71,7 +71,7 @@ pylint-flask = "==0.6"
 pylint-plugin-utils = "==0.7"
 requirements-detector = "==0.7"
 setoptconf-tmp = "==0.3.1"
-setuptools = "==70.0.0"
+setuptools = "==84.1.0"
 smmap = "==5.0.3"
 snowballstemmer = "==2.2.0"
 stevedore = "==3.5.2"

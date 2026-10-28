@@ -134,7 +134,7 @@ pip = "==26.1.2"
 pygments = "==2.20.0"
 pyjwt = "==2.15.0"
 requests = "==2.33.0"
-setuptools = "==83.0.0"
+setuptools = "==84.1.0"
 urllib3 = "==2.7.0"
 protobuf = "==5.29.6"
 
