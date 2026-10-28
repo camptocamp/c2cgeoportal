@@ -124,7 +124,7 @@ jobs:
           docker compose exec -T tests coverage report
           docker compose exec -T tests coverage html --directory=/tmp/coverage
           mkdir --parent artifacts/geoportal-coverage
-          docker cp c2cgeoportal_tests_1:/tmp/coverage/ artifacts/geoportal-coverage/
+          docker compose cp tests:/tmp/coverage/ artifacts/geoportal-coverage/
         if: always()
       - run: c2cciutils-docker-logs
         if: always()
