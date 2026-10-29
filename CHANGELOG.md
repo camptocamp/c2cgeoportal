@@ -1,3 +1,8 @@
+##### 2.8.1.395
+
+- Audit Dpkg 2.8 [c2cgeoportal#13508](https://github.com/camptocamp/c2cgeoportal/pull/13508)
+- Update dependency certifi to v2026.10.23 (2.8) [c2cgeoportal#13511](https://github.com/camptocamp/c2cgeoportal/pull/13511)
+
 ##### 2.8.1.394
 
 - Lock file maintenance (2.8) [c2cgeoportal#13427](https://github.com/camptocamp/c2cgeoportal/pull/13427)
