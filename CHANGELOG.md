@@ -1,3 +1,8 @@
+##### 2.7.1.359
+
+- Use docker compose cp to extract the coverage of the tests [c2cgeoportal#13500](https://github.com/camptocamp/c2cgeoportal/pull/13500)
+- [Backport 2.7] Use the TRANSIFEX_TOKEN secret instead of the gopass store [c2cgeoportal#13502](https://github.com/camptocamp/c2cgeoportal/pull/13502)
+
 ##### 2.7.1.358
 
 - Update dependency tag-publish to v1.3.2 (2.7) [c2cgeoportal#13510](https://github.com/camptocamp/c2cgeoportal/pull/13510)
