@@ -1,3 +1,7 @@
+##### 2.7.1.358
+
+- Update dependency tag-publish to v1.3.2 (2.7) [c2cgeoportal#13510](https://github.com/camptocamp/c2cgeoportal/pull/13510)
+
 ##### 2.7.1.356
 
 - Audit Dpkg 2.7 [c2cgeoportal#13507](https://github.com/camptocamp/c2cgeoportal/pull/13507)
