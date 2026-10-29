@@ -1,6 +1,5 @@
 [tool.uv]
 no-build = true
-no-binary-package = ["markdown-table"]
 exclude-newer = "2 days"
 
 [project]
