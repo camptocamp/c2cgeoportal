@@ -194,7 +194,7 @@ class PCreateCommand:
             "extent",
             (
                 f"Extent (minx miny maxx maxy): in EPSG: {srid} projection, default is "
-                f"[{extent[0]} {extent[1]} {extent[2]} {extent[3]}]: "
+                f"{extent[0]} {extent[1]} {extent[2]} {extent[3]}: "
                 if extent
                 else f"Extent (minx miny maxx maxy): in EPSG: {srid} projection: "
             ),

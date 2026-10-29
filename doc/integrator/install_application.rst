@@ -105,7 +105,7 @@ This previous command will do many things like:
   * adapt the application configuration to your environment,
   * build the JavaScript and CSS resources into compressed files.
 
-Activate the devlopement environment:
+Activate the development environment:
 
 .. prompt:: bash
 
@@ -128,7 +128,7 @@ Then create the application tables:
 
 Your application should now be available at: ``https://localhost:8484/``.
 
-If you ahave an Apache in front of your application,
+If you have an Apache in front of your application,
 add in the ``/var/www/vhosts/<vhost_name>/conf/proxies.conf`` file
 (create it if it does not exist):
 
