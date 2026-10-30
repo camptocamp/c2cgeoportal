@@ -79,7 +79,7 @@ geomapfish-admin-config = "c2cgeoportal_admin.lib.lingva_extractor:GeomapfishCon
 
 [build-system]
 requires = [
-    "poetry-dynamic-versioning[plugin]==1.10.0",
+    "poetry-dynamic-versioning[plugin]==1.10.1",
     "poetry-plugin-tweak-dependencies-version==1.5.7",
     "poetry-plugin-drop-python-upper-constraint==1.0.1"
 ]

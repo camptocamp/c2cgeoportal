@@ -466,22 +466,22 @@ dev = ["backports.zoneinfo ; python_version < \"3.9\"", "freezegun (>=1.0,<2.0)"
 
 [[package]]
 name = "beartype"
-version = "0.22.9"
+version = "0.23.1"
 description = "Unbearably fast near-real-time pure-Python runtime-static type-checker."
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "beartype-0.22.9-py3-none-any.whl", hash = "sha256:d16c9bbc61ea14637596c5f6fbff2ee99cbe3573e46a716401734ef50c3060c2"},
-    {file = "beartype-0.22.9.tar.gz", hash = "sha256:8f82b54aa723a2848a56008d18875f91c1db02c32ef6a62319a002e3e25a975f"},
+    {file = "beartype-0.23.1-py3-none-any.whl", hash = "sha256:4461b4dc57e3fdd6c8a8464b22cf118002eea107c33e9fef651c69068ab3cce3"},
+    {file = "beartype-0.23.1.tar.gz", hash = "sha256:8b805f246b32931c74f2b321ea0939fe5bb2ff43c12a3eff19cc4c854b832e1d"},
 ]
 
 [package.extras]
-dev = ["autoapi (>=0.9.0)", "celery", "click", "coverage (>=5.5)", "docutils (>=0.22.0)", "equinox ; sys_platform == \"linux\" and python_version < \"3.15.0\"", "fastmcp ; python_version < \"3.14.0\"", "jax[cpu] ; sys_platform == \"linux\" and python_version < \"3.15.0\"", "jaxtyping ; sys_platform == \"linux\"", "langchain ; python_version < \"3.14.0\" and sys_platform != \"darwin\" and platform_python_implementation != \"PyPy\"", "mypy (>=0.800) ; platform_python_implementation != \"PyPy\"", "nuitka (>=1.2.6) ; sys_platform == \"linux\" and python_version < \"3.14.0\"", "numba ; python_version < \"3.14.0\"", "numpy ; python_version < \"3.15.0\" and sys_platform != \"darwin\" and platform_python_implementation != \"PyPy\"", "pandera (>=0.26.0) ; python_version < \"3.14.0\"", "poetry", "polars ; python_version < \"3.14.0\"", "pydata-sphinx-theme (<=0.7.2)", "pygments", "pyinstaller", "pyright (>=1.1.370)", "pytest (>=6.2.0)", "redis", "rich-click", "setuptools", "sphinx", "sphinx (>=4.2.0,<6.0.0)", "sphinxext-opengraph (>=0.7.5)", "sqlalchemy", "torch ; sys_platform == \"linux\" and python_version < \"3.14.0\"", "tox (>=3.20.1)", "typer", "typing-extensions (>=3.10.0.0)", "xarray ; python_version < \"3.15.0\""]
-doc-ghp = ["mkdocs-material[imaging] (>=9.6.0)", "mkdocstrings-python (>=1.16.0)", "mkdocstrings-python-xref (>=1.16.0)"]
+dev = ["autoapi (>=0.9.0)", "celery", "click", "coverage (>=5.5)", "crosshair-tool", "equinox ; sys_platform == \"linux\" and python_version < \"3.15.0\"", "fastmcp (>=4.0.0) ; python_version < \"3.16.0\"", "jax[cpu] ; sys_platform == \"linux\" and python_version < \"3.15.0\"", "jaxtyping ; sys_platform == \"linux\"", "langchain ; python_version < \"3.15.0\" and sys_platform != \"darwin\" and platform_python_implementation != \"PyPy\"", "mypy (>=0.800) ; platform_python_implementation != \"PyPy\"", "nuitka (>=1.2.6) ; sys_platform == \"linux\" and python_version < \"3.15.0\"", "numba ; python_version < \"3.15.0\"", "numpy ; python_version < \"3.15.0\" and sys_platform != \"darwin\" and platform_python_implementation != \"PyPy\"", "pandera (>=0.26.0) ; python_version < \"3.15.0\"", "poetry", "polars ; python_version < \"3.15.0\"", "pydata-sphinx-theme (<=0.7.2)", "pygments", "pyinstaller", "pyright (>=1.1.370)", "pytest (>=6.2.0)", "redis", "rich-click", "setuptools", "sphinx (>=4.2.0,<6.0.0)", "sphinxext-opengraph (>=0.7.5)", "sqlalchemy[asyncio]", "torch ; sys_platform == \"linux\" and python_version < \"3.15.0\"", "tox (>=3.20.1)", "typer", "typing-extensions (>=3.10.0.0)", "xarray ; python_version < \"3.15.0\""]
+doc-ghp = ["mkdocstrings-python (>=2.0.3)", "mkdocstrings-python-xref (>=2.1.1)", "zensical (>=0.0.43)"]
 doc-rtd = ["autoapi (>=0.9.0)", "pydata-sphinx-theme (<=0.7.2)", "setuptools", "sphinx (>=4.2.0,<6.0.0)", "sphinxext-opengraph (>=0.7.5)"]
-test = ["celery", "click", "coverage (>=5.5)", "docutils (>=0.22.0)", "equinox ; sys_platform == \"linux\" and python_version < \"3.15.0\"", "fastmcp ; python_version < \"3.14.0\"", "jax[cpu] ; sys_platform == \"linux\" and python_version < \"3.15.0\"", "jaxtyping ; sys_platform == \"linux\"", "langchain ; python_version < \"3.14.0\" and sys_platform != \"darwin\" and platform_python_implementation != \"PyPy\"", "mypy (>=0.800) ; platform_python_implementation != \"PyPy\"", "nuitka (>=1.2.6) ; sys_platform == \"linux\" and python_version < \"3.14.0\"", "numba ; python_version < \"3.14.0\"", "numpy ; python_version < \"3.15.0\" and sys_platform != \"darwin\" and platform_python_implementation != \"PyPy\"", "pandera (>=0.26.0) ; python_version < \"3.14.0\"", "poetry", "polars ; python_version < \"3.14.0\"", "pygments", "pyinstaller", "pyright (>=1.1.370)", "pytest (>=6.2.0)", "redis", "rich-click", "sphinx", "sqlalchemy", "torch ; sys_platform == \"linux\" and python_version < \"3.14.0\"", "tox (>=3.20.1)", "typer", "typing-extensions (>=3.10.0.0)", "xarray ; python_version < \"3.15.0\""]
-test-tox = ["celery", "click", "docutils (>=0.22.0)", "equinox ; sys_platform == \"linux\" and python_version < \"3.15.0\"", "fastmcp ; python_version < \"3.14.0\"", "jax[cpu] ; sys_platform == \"linux\" and python_version < \"3.15.0\"", "jaxtyping ; sys_platform == \"linux\"", "langchain ; python_version < \"3.14.0\" and sys_platform != \"darwin\" and platform_python_implementation != \"PyPy\"", "mypy (>=0.800) ; platform_python_implementation != \"PyPy\"", "nuitka (>=1.2.6) ; sys_platform == \"linux\" and python_version < \"3.14.0\"", "numba ; python_version < \"3.14.0\"", "numpy ; python_version < \"3.15.0\" and sys_platform != \"darwin\" and platform_python_implementation != \"PyPy\"", "pandera (>=0.26.0) ; python_version < \"3.14.0\"", "poetry", "polars ; python_version < \"3.14.0\"", "pygments", "pyinstaller", "pyright (>=1.1.370)", "pytest (>=6.2.0)", "redis", "rich-click", "sphinx", "sqlalchemy", "torch ; sys_platform == \"linux\" and python_version < \"3.14.0\"", "typer", "typing-extensions (>=3.10.0.0)", "xarray ; python_version < \"3.15.0\""]
+test = ["celery", "click", "coverage (>=5.5)", "crosshair-tool", "equinox ; sys_platform == \"linux\" and python_version < \"3.15.0\"", "fastmcp (>=4.0.0) ; python_version < \"3.16.0\"", "jax[cpu] ; sys_platform == \"linux\" and python_version < \"3.15.0\"", "jaxtyping ; sys_platform == \"linux\"", "langchain ; python_version < \"3.15.0\" and sys_platform != \"darwin\" and platform_python_implementation != \"PyPy\"", "mypy (>=0.800) ; platform_python_implementation != \"PyPy\"", "nuitka (>=1.2.6) ; sys_platform == \"linux\" and python_version < \"3.15.0\"", "numba ; python_version < \"3.15.0\"", "numpy ; python_version < \"3.15.0\" and sys_platform != \"darwin\" and platform_python_implementation != \"PyPy\"", "pandera (>=0.26.0) ; python_version < \"3.15.0\"", "poetry", "polars ; python_version < \"3.15.0\"", "pygments", "pyinstaller", "pyright (>=1.1.370)", "pytest (>=6.2.0)", "redis", "rich-click", "sqlalchemy[asyncio]", "torch ; sys_platform == \"linux\" and python_version < \"3.15.0\"", "tox (>=3.20.1)", "typer", "typing-extensions (>=3.10.0.0)", "xarray ; python_version < \"3.15.0\""]
+test-tox = ["celery", "click", "crosshair-tool", "equinox ; sys_platform == \"linux\" and python_version < \"3.15.0\"", "fastmcp (>=4.0.0) ; python_version < \"3.16.0\"", "jax[cpu] ; sys_platform == \"linux\" and python_version < \"3.15.0\"", "jaxtyping ; sys_platform == \"linux\"", "langchain ; python_version < \"3.15.0\" and sys_platform != \"darwin\" and platform_python_implementation != \"PyPy\"", "mypy (>=0.800) ; platform_python_implementation != \"PyPy\"", "nuitka (>=1.2.6) ; sys_platform == \"linux\" and python_version < \"3.15.0\"", "numba ; python_version < \"3.15.0\"", "numpy ; python_version < \"3.15.0\" and sys_platform != \"darwin\" and platform_python_implementation != \"PyPy\"", "pandera (>=0.26.0) ; python_version < \"3.15.0\"", "poetry", "polars ; python_version < \"3.15.0\"", "pygments", "pyinstaller", "pyright (>=1.1.370)", "pytest (>=6.2.0)", "redis", "rich-click", "sqlalchemy[asyncio]", "torch ; sys_platform == \"linux\" and python_version < \"3.15.0\"", "typer", "typing-extensions (>=3.10.0.0)", "xarray ; python_version < \"3.15.0\""]
 test-tox-coverage = ["coverage (>=5.5)"]
 
 [[package]]
@@ -4605,13 +4605,14 @@ test = ["lxml (>=4.9)", "pytest (>=8.0)", "pytest-cov", "setuptools (>=70.0)", "
 
 [[package]]
 name = "sphinx-jsonschema"
-version = "1.19.2"
+version = "1.20.0"
 description = "Sphinx extension to display JSON Schema"
 optional = false
 python-versions = "*"
 groups = ["main"]
 files = [
-    {file = "sphinx_jsonschema-1.19.2.tar.gz", hash = "sha256:1a48954217c2b3c6759c89b9ddd2c8e5b668b8730564e0283b009f23932be150"},
+    {file = "sphinx_jsonschema-1.20.0-py3-none-any.whl", hash = "sha256:84c94d08bb0ebcff2cdc96c9eb5372153270f16f342776f48856b5b1d1f17732"},
+    {file = "sphinx_jsonschema-1.20.0.tar.gz", hash = "sha256:472631960973368790afef549325b5faeab1a9ed205f5f14b753c4c2d62045ba"},
 ]
 
 [package.dependencies]
@@ -4644,25 +4645,22 @@ urllib3 = "*"
 
 [[package]]
 name = "sphinx-substitution-extensions"
-version = "2026.8.13.1"
+version = "2026.10.9"
 description = "Extensions for Sphinx which allow for substitutions."
 optional = false
 python-versions = ">=3.11"
 groups = ["main"]
 files = [
-    {file = "sphinx_substitution_extensions-2026.8.13.1-py3-none-any.whl", hash = "sha256:6006ee556fed311f57113337cb095b31aef5014875ba2d905e9271e6210c8e04"},
-    {file = "sphinx_substitution_extensions-2026.8.13.1.tar.gz", hash = "sha256:a4c64ed45614af028b6e397f001852e3968d8d06db2e02f79cceec8de53623a8"},
+    {file = "sphinx_substitution_extensions-2026.10.9-py3-none-any.whl", hash = "sha256:e1b9365f462eaaaca50dd80f21504255345a08ce980a8b10c35be5afd972e73d"},
+    {file = "sphinx_substitution_extensions-2026.10.9.tar.gz", hash = "sha256:8778fbb7816199238a3cd2df3acb01e9d99f792a9c9d9456f03704e79285d5ad"},
 ]
 
 [package.dependencies]
-beartype = ">=0.22.9"
+beartype = ">=0.23.0rc2"
 docutils = ">=0.19"
 myst-parser = ">=4.0.0"
 sphinx = ">=8.1.0"
-
-[package.extras]
-dev = ["actionlint-py (==1.7.12.24)", "check-manifest (==0.51)", "deptry (==0.25.1)", "doc8 (==2.0.0)", "doc8-custom-ignores (==2026.7.29.1)", "doccmd (==2026.7.19)", "interrogate (==1.7.0)", "mypy-strict-kwargs (==2026.7.19.1)", "mypy[faster-cache] (==2.3.0)", "no-defaults (==2.1.0)", "prek (==0.4.12)", "pydocstringformatter (==1.0.0)", "pylint[spelling] (==4.0.6)", "pyproject-fmt (==2.27.0)", "pyrefly (==1.2.0)", "pyright (==1.1.411)", "pyroma (==5.0.1)", "pytest (==9.1.1)", "pytest-beartype-tests (==2026.4.26)", "pytest-cov (==7.1.0)", "ruff (==0.16.2)", "shellcheck-py (==0.11.0.1)", "shfmt-py (==4.0.0)", "sphinx (>=9,<10)", "sphinx-lint (==1.0.2)", "sphinx-toolbox (==4.3.0)", "strict-kwargs (==2026.7.24)", "towncrier (==25.8.0)", "ty (==0.0.69)", "types-docutils (==0.22.3.20260724)", "vale (==3.13.0.0)", "vulture (==2.16)", "yamlfix (==1.19.1)", "zizmor (==1.29.0)"]
-release = ["check-wheel-contents (==0.6.3)", "towncrier (==25.8.0)"]
+typing-extensions = ">=4.6.0"
 
 [[package]]
 name = "sphinxcontrib-applehelp"
@@ -5934,4 +5932,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.14,<4"
-content-hash = "9c5b0692d68001891309c6f33e0595b2e5dd0b1e824c758011c9e6061132ee4f"
+content-hash = "f9af869d6a9e128267515bca16d3e1b0b76b372a6fae1a7ef7385abf10d48255"
