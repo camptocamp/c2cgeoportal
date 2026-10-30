@@ -1,4 +1,8 @@
 c2cciutils==1.7.5
 pre-commit==4.6.2
+poetry==2.0.1
+poetry-dynamic-versioning[plugin]==1.10.0
+poetry-plugin-tweak-dependencies-version==1.5.7
+poetry-plugin-drop-python-upper-constraint==1.0.1
 tag-publish==1.2.6
 applications-download==1.7.0
