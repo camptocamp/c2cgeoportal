@@ -264,6 +264,8 @@ jobs:
       - name: Push version and changelog
         run: |
           set -eux
+          git config --global user.name CI
+          git config --global user.email "geospatial-bot@camptocamp.com"
           git add ci/ci.yaml ci/changelog.yaml CHANGELOG.md
           git diff --staged --quiet || (\
             git commit -m "[skip ci] Update the minor version"; \
