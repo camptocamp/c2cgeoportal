@@ -70,6 +70,7 @@ jobs:
       #     cache-python: true
       #     python-version: '3.11'
       # - name: Publish
-      #   run: uv run --locked --isolated --project=.github/publish tag-publish
+      #   run: >
+      #     uv run --locked --isolated --project=.github/publish tag-publish
       #  env:
       #    GITHUB_TOKEN: ${{'{{'}} secrets.GITHUB_TOKEN }}
