@@ -935,7 +935,7 @@ def includeme(config: pyramid.config.Configurator) -> None:
 
     admin_interface = (
         config.get_settings().get("enable_admin_interface", False)
-        and importlib.util.find_spec("c2cgeoportal_admin") is not None  # type: ignore[attr-defined]
+        and importlib.util.find_spec("c2cgeoportal_admin") is not None
     )
     if admin_interface:
         add_admin_interface(config)

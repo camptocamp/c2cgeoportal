@@ -31,7 +31,7 @@ import logging
 import os
 import re
 from datetime import datetime
-from typing import Any, Literal, Optional, cast, get_args
+from typing import TYPE_CHECKING, Any, Literal, Optional, cast, get_args
 
 import pyramid.request
 import sqlalchemy.orm.base
@@ -49,6 +49,9 @@ import c2cgeoportal_commons.lib.literal
 from c2cgeoportal_commons.lib.url import get_url2
 from c2cgeoportal_commons.models import Base, _, cache_invalidate_cb
 from c2cgeoportal_commons.models.sqlalchemy import JSONEncodedDict, TsVector
+
+if TYPE_CHECKING:
+    from geoalchemy2.elements import WKBElement, WKTElement
 
 try:
     import colander
@@ -324,7 +327,10 @@ class Role(Base):  # type: ignore[valid-type,misc]
     def bounds(self) -> tuple[float, float, float, float] | None:
         if self.extent is None:
             return None
-        return cast("tuple[float, float, float, float]", to_shape(self.extent).bounds)
+        return cast(
+            "tuple[float, float, float, float]",
+            to_shape(cast("WKBElement | WKTElement", self.extent)).bounds,
+        )
 
 
 event.listen(Role.functionalities, "set", cache_invalidate_cb)

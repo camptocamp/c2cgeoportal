@@ -27,7 +27,7 @@
 
 
 import re
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, cast
 
 import pyramid.request
 import sqlalchemy.orm.query
@@ -50,6 +50,8 @@ IGNORED_CHARS_RE = re.compile(r"[()&|!:<>\t]")
 IGNORED_STARTUP_CHARS_RE = re.compile(r"^[']*")
 
 if TYPE_CHECKING:
+    from geoalchemy2.elements import WKBElement, WKTElement
+
     _Result = sqlalchemy.orm.query.RowReturningQuery[tuple[Any, Any, Any, Any, Any, Any]]
 else:
     _Result = sqlalchemy.orm.query.RowReturningQuery
@@ -226,7 +228,7 @@ class FullTextSearchView:
                 properties["actions"] = [{"action": "add_layer", "data": o.layer_name}]
 
             if o.the_geom is not None:
-                geom = to_shape(o.the_geom)
+                geom = to_shape(cast("WKBElement | WKTElement", o.the_geom))
                 feature = Feature(id=o.id, geometry=geom, properties=properties, bbox=geom.bounds)
                 features.append(feature)
             else:
