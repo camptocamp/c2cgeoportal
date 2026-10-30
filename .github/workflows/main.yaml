@@ -9,13 +9,13 @@ on:
       - '*'
   pull_request:
 
+# The `packages` and `id-token` write permissions are only used by the `publish` job.
 permissions:
   contents: write
-  packages: write
-  id-token: write
 
 env:
   HAS_SECRETS: ${{ secrets.HAS_SECRETS }}
+  MAIN_BRANCH: '2.9'
 
 jobs:
   not-failed-backport:
@@ -33,8 +33,12 @@ jobs:
     timeout-minutes: 135
     if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
 
+    outputs:
+      success: ${{ steps.success.outputs.success }}
+      versions: ${{ steps.version.outputs.versions }}
+      version_full: ${{ steps.version.outputs.full }}
+
     env:
-      MAIN_BRANCH: '2.9'
       MAJOR_VERSION: '2.9'
 
     steps:
@@ -56,17 +60,10 @@ jobs:
           fetch-depth: 0
         if: env.HAS_SECRETS != 'HAS_SECRETS'
 
-      - uses: camptocamp/initialise-gopass-summon-action@17703c87720ba3766abc90da60b437783b530d93 # v2.0.1
-        with:
-          ci-gpg-private-key: ${{secrets.CI_GPG_PRIVATE_KEY}}
-          github-gopass-ci-token: ${{secrets.GOPASS_CI_GITHUB_TOKEN}}
-          patterns: transifex
-        if: env.HAS_SECRETS == 'HAS_SECRETS'
-
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
-      - run: python3 -m pip install --requirement=ci/requirements.txt
+      - run: python3 -m pip install '--only-binary=:all:' --requirement=ci/requirements.txt
       - name: Environment information
         run: c2cciutils-env
         env:
@@ -215,6 +212,9 @@ jobs:
 
         # Test Upgrade
       - run: DOCKER_TAG=${{ steps.version.outputs.full }} make build-tools
+      - run: >
+          docker tag camptocamp/geomapfish-tools:${{ steps.version.outputs.full }}
+          ghcr.io/camptocamp/geomapfish-tools:${MAJOR_VERSION}
       - run: DOCKER_TAG=${{ steps.version.outputs.full }} make build-runner
       - run: DOCKER_TAG=${{ steps.version.outputs.full }} make build-config
       - run: docker images | grep "<none>" | awk '{print $3}' | xargs --no-run-if-empty docker rmi || true
@@ -266,32 +266,55 @@ jobs:
           sudo apt-get install --yes gettext
           make --makefile=dependencies.mk dependencies
           make --makefile=build.mk build-translations
-      - name: Publish
-        run: >
-          tag-publish
-          --docker-versions=${{ steps.version.outputs.versions }}
-        if: >
-          env.HAS_SECRETS == 'HAS_SECRETS'
-          && steps.version.outputs.versions != ''
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Publish version branch to pypi
+      # The Python packages and the images are given to the `publish` job, which is the only one
+      # with the write permissions.
+      - name: Build the Python packages
         run: |
-          tag-publish --group=pypi --type=version_tag --version=${{ steps.version.outputs.full }}
+          set -eux
+          for folder in commons geoportal admin; do
+            rm -rf "${folder}/dist"
+            (cd "${folder}"; python3 ./setup.py egg_info --no-date bdist_wheel)
+          done
+        env:
+          VERSION: ${{ steps.version.outputs.full }}
+          VERSION_TYPE: version_tag
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && env.HAS_SECRETS == 'HAS_SECRETS'
           && env.MAIN_BRANCH != 'master'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: git diff --exit-code --patch > /tmp/dpkg-versions.patch || true
-        if: failure()
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: Update dpkg versions list.patch
-          path: /tmp/dpkg-versions.patch
+          name: python-packages
+          path: |-
+            commons/dist
+            geoportal/dist
+            admin/dist
           retention-days: 1
-        if: failure()
+        if: >
+          github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
+          && env.HAS_SECRETS == 'HAS_SECRETS'
+          && env.MAIN_BRANCH != 'master'
+
+      - name: Save the images
+        run: >
+          docker save camptocamp/geomapfish:latest camptocamp/geomapfish-config:latest
+          camptocamp/geomapfish-tools:latest camptocamp/geomapfishapp-geoportal:latest
+          | gzip --fast > /tmp/images.docker.gz
+        if: >
+          env.HAS_SECRETS == 'HAS_SECRETS'
+          && steps.version.outputs.versions != ''
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: images.docker.gz
+          path: /tmp/images.docker.gz
+          retention-days: 1
+        if: >
+          env.HAS_SECRETS == 'HAS_SECRETS'
+          && steps.version.outputs.versions != ''
+
+      # Mark as success
+      - id: success
+        run: echo "success=true" >> $GITHUB_OUTPUT
 
       - name: Notify demo
         run: >
@@ -333,3 +356,83 @@ jobs:
         if: always()
       - run: df -h
         if: always()
+
+  publish:
+    name: Publish
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    needs: main
+    if: always()
+
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+
+    steps:
+      - run: '[[ "${{ needs.main.outputs.success }}" == "true" ]]'
+
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          version: latest-known
+          cache-python: true
+          python-version: '3.14'
+
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: images.docker.gz
+          path: /tmp/
+        if: >
+          env.HAS_SECRETS == 'HAS_SECRETS'
+          && needs.main.outputs.versions != ''
+      - run: docker load --input=/tmp/images.docker.gz
+        if: >
+          env.HAS_SECRETS == 'HAS_SECRETS'
+          && needs.main.outputs.versions != ''
+
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: python-packages
+          path: ./
+        if: >
+          github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
+          && env.HAS_SECRETS == 'HAS_SECRETS'
+          && env.MAIN_BRANCH != 'master'
+
+      # tag-publish logs in to ghcr.io by itself with the GITHUB_TOKEN.
+      - name: Publish
+        run: >
+          uv run --locked --isolated --no-build --project=.github/publish
+          tag-publish --docker-versions=${{ needs.main.outputs.versions }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: >
+          env.HAS_SECRETS == 'HAS_SECRETS'
+          && needs.main.outputs.versions != ''
+
+      # The wheels are built by the main job, tag-publish only uploads what is in the dist folders.
+      - name: Publish version branch to pypi
+        run: |
+          set -eux
+          for folder in commons geoportal admin; do
+            ls "${folder}"/dist/*.whl > /dev/null
+          done
+          uv run --locked --isolated --no-build --project=.github/publish \
+            tag-publish --group=pypi --type=version_tag --version=${{ needs.main.outputs.version_full }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: >
+          github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
+          && env.HAS_SECRETS == 'HAS_SECRETS'
+          && env.MAIN_BRANCH != 'master'
+
+      - run: git diff --exit-code --patch > /tmp/dpkg-versions.patch || true
+        if: failure()
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: Update dpkg versions list.patch
+          path: /tmp/dpkg-versions.patch
+          retention-days: 1
+        if: failure()

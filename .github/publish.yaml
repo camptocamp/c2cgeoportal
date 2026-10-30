@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/camptocamp/tag-publish/1.2.6/tag_publish/schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/camptocamp/tag-publish/1.3.2/tag_publish/schema.json
 
 docker:
   images:
@@ -30,9 +30,20 @@ pypi:
   versions_type:
     - version_tag
   packages:
+    # The wheels are built by the `main` job and given to the `publish` job as an artifact, hence
+    # the no-op build command: the publishing job must not install a build toolchain.
     - folder: commons
       group: pypi
+      build_command:
+        - /bin/echo
+        - The wheels are provided as a CI artifact
     - folder: geoportal
       group: pypi
+      build_command:
+        - /bin/echo
+        - The wheels are provided as a CI artifact
     - folder: admin
       group: pypi
+      build_command:
+        - /bin/echo
+        - The wheels are provided as a CI artifact
