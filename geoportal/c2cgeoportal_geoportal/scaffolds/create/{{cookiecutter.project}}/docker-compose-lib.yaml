@@ -350,7 +350,7 @@ services:
     environment: *geoportal-env
 
   tools:
-    image: camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION}
+    image: ghcr.io/camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION}
     restart: unless-stopped
     volumes:
       - .:/src
