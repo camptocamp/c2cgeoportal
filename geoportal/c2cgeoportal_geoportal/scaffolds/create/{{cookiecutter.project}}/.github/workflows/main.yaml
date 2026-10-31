@@ -46,7 +46,15 @@ jobs:
         run: make checks
 
       # To publish the images to be used on Kubernetes
+      # `tag-publish` comes from the `.github/publish` uv project of the checked out branch, with
+      # its dependencies fully locked, instead of the `ci/requirements.txt` of that branch.
+      # - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+      #   with:
+      #     version: latest-known
+      #     cache-python: true
+      #     python-version: '3.14'
       # - name: Publish
-      #   run: uv run --locked --isolated --project=.github/publish tag-publish
+      #   run: >
+      #     uv run --locked --isolated --project=.github/publish tag-publish
       #  env:
       #    GITHUB_TOKEN: ${{'{{'}} secrets.GITHUB_TOKEN }}
