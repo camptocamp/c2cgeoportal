@@ -500,6 +500,14 @@
             "index": "pypi",
             "version": "==1.10.1"
         },
+        "fsspec": {
+            "hashes": [
+                "sha256:02e0b71817df9b2169dc30a16832045764def1191b43dcff5bb85bdee212d2a1",
+                "sha256:f5bac145310fe30e16e1471bd6840b2d990d609e872251d7e674241822abf01a"
+            ],
+            "index": "pypi",
+            "version": "==2026.6.0"
+        },
         "geoalchemy2": {
             "hashes": [
                 "sha256:43ce38a5387c9b380b4c9d20d720c3d8cf1752ca4f5f18aa88041be11f6948a3",
@@ -840,11 +848,11 @@
         },
         "mako": {
             "hashes": [
-                "sha256:8f61569480282dbf557145ce441e4ba888be453c30989f879f0d652e39f53ea9",
-                "sha256:9f778e93289bd410bb35daadeb4fc66d95a746f0b75777b942088b7fd7af550a"
+                "sha256:e70a2a4308952b33a21208bfd6725da79fae5a8c224578f8cfdeb60e5ace03df",
+                "sha256:7227a060ee3af55a493af61d73d6beef13044b81dba9586736c13945f09464ce"
             ],
             "index": "pypi",
-            "version": "==1.3.12"
+            "version": "==1.4.2"
         },
         "markupsafe": {
             "hashes": [
