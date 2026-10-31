@@ -40,14 +40,22 @@ repos:
       - id: copyright
       - id: workflows-require-timeout
       - id: poetry-lock
-        exclude: ^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/{{cookiecutter\.project}}/
+        exclude: |-
+          (?x)^(
+            geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/{{cookiecutter\.project}}/.*
+            |\.github/publish/.*
+          )$
         additional_dependencies:
           - poetry==1.8.5 # pypi
       - id: npm-lock
       - id: uv-lock
         additional_dependencies:
           - uv==0.13.4 # pypi
-        files: ^geoportal/.*/\.github/publish/pyproject\.toml$
+        files: |-
+          (?x)^(
+            \.github/publish/pyproject\.toml
+            |geoportal/.*/\.github/publish/pyproject\.toml
+          )$
   - repo: https://github.com/codespell-project/codespell
     rev: v2.4.3
     hooks:
