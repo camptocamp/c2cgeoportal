@@ -340,6 +340,7 @@ jobs:
           docker stop transifex
         env:
           DOCKER_BUILDKIT: '1'
+          TRANSIFEX_TOKEN: ${{ secrets.TRANSIFEX_TOKEN }}
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && env.HAS_SECRETS == 'HAS_SECRETS'
