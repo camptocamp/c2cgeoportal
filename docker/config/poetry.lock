@@ -397,14 +397,14 @@ htmlsoup = ["BeautifulSoup4"]
 
 [[package]]
 name = "mako"
-version = "1.4.2"
+version = "1.4.3"
 description = "A super-fast templating language that borrows the best ideas from the existing templating languages."
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "mako-1.4.2-py3-none-any.whl", hash = "sha256:e70a2a4308952b33a21208bfd6725da79fae5a8c224578f8cfdeb60e5ace03df"},
-    {file = "mako-1.4.2.tar.gz", hash = "sha256:7227a060ee3af55a493af61d73d6beef13044b81dba9586736c13945f09464ce"},
+    {file = "mako-1.4.3-py3-none-any.whl", hash = "sha256:723296007c870bfd6b3f0c3230dba7198096e5269297ebf5e4eff9e7ffa39d4f"},
+    {file = "mako-1.4.3.tar.gz", hash = "sha256:cd6537fe88d5fec315c55c2f8529bc4ce7a9a352ad7db3eeaa6a66e2dd4ec37a"},
 ]
 
 [package.dependencies]
@@ -537,4 +537,4 @@ toml = ["toml"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.11"
-content-hash = "ee916c3c16fb7cea94e5abb45b6ba4eb2958bb4c7d1a8e97269c783926172fd4"
+content-hash = "b93d80e9432e5fd23d353af0ecb22b74e197abcb82b6bd070986f58038274faf"
