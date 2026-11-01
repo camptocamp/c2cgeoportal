@@ -9,7 +9,7 @@ repos:
       - id: copyright
       - id: uv-lock
         additional_dependencies:
-          - uv==0.13.4 # pypi
+          - uv==0.13.5 # pypi
         files: ^geoportal/.*/\.github/publish/pyproject\.toml$
   - repo: https://github.com/PyCQA/isort
     rev: 5.12.0
