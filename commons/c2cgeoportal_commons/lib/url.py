@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2025, Camptocamp SA
+# Copyright (c) 2013-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -59,7 +59,7 @@ class Url:
             self.query = dict(urllib.parse.parse_qsl(url_split.query))
             self.fragment = url_split.fragment
 
-    def clone(self) -> "Url":
+    def clone(self) -> Url:
         result = Url()
         result.scheme = self.scheme
         result._netloc = self._netloc  # pylint: disable=protected-access
@@ -122,7 +122,7 @@ class Url:
         self._port = port
         self.netloc = (self._hostname or "") if port is None else f"{self._hostname}:{port}"
 
-    def add_query(self, query: dict[str, str], force: bool = False) -> "Url":
+    def add_query(self, query: dict[str, str], force: bool = False) -> Url:
         if query:
             for key, value in query.items():
                 if force or key not in self.query:

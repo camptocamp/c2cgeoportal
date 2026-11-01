@@ -362,13 +362,13 @@ def is_valid_referrer(request: pyramid.request.Request, settings: dict[str, Any]
 
 def create_get_user_from_request(
     settings: dict[str, Any],
-) -> Callable[[pyramid.request.Request, str | None], Optional["static.User"]]:
+) -> Callable[[pyramid.request.Request, str | None], static.User | None]:
     """Get the get_user_from_request function."""
 
     def get_user_from_request(
         request: pyramid.request.Request,
         username: str | None = None,
-    ) -> Optional["static.User"]:
+    ) -> static.User | None:
         """
         Return the User object for the request.
 

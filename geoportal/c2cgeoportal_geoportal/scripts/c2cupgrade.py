@@ -1,4 +1,4 @@
-# Copyright (c) 2014-2025, Camptocamp SA
+# Copyright (c) 2014-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -107,9 +107,9 @@ class Step:
 
     def __call__(
         self,
-        current_step: Callable[["C2cUpgradeTool", int], None],
-    ) -> Callable[["C2cUpgradeTool"], None]:
-        def decorate(c2cupgradetool: "C2cUpgradeTool") -> None:
+        current_step: Callable[[C2cUpgradeTool, int], None],
+    ) -> Callable[[C2cUpgradeTool], None]:
+        def decorate(c2cupgradetool: C2cUpgradeTool) -> None:
             try:
                 if os.path.isfile(f".UPGRADE{self.step_number - 1}"):
                     os.unlink(f".UPGRADE{self.step_number - 1}")

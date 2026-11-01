@@ -105,7 +105,7 @@ class TestLayers(TestCase):
         none_area: bool = False,
         attr_list: bool = False,
         exclude_properties: bool = False,
-        metadatas: list["Metadata"] | None = None,
+        metadatas: list[Metadata] | None = None,
         geom_type: bool = False,
     ) -> None:
         """
