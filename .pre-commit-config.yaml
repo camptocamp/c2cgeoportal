@@ -50,7 +50,7 @@ repos:
           - poetry==1.6.1 # pypi
       - id: uv-lock
         additional_dependencies:
-          - uv==0.13.4 # pypi
+          - uv==0.13.5 # pypi
         files: |-
           (?x)^(
             \.github/publish/pyproject\.toml
