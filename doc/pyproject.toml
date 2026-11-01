@@ -2,7 +2,7 @@
 python = ">=3.14,<4"
 alabaster = "1.0.0" # theme
 Pygments = "2.21.0"
-Sphinx = "9.1.0"
+Sphinx = "9.2.0"
 sphinx-prompt = "1.10.2"
 sphinx-jsonschema = "1.19.2"
 sphinx-argparse = "0.6.1"
