@@ -57,7 +57,7 @@ _LOG = logging.getLogger(__name__)
 class Raster:
     """All the view concerned the raster (point, not the profile profile)."""
 
-    data: dict[str, "fiona.collection.Collection | DatasetReader"] = {}  # noqa: RUF012
+    data: dict[str, fiona.collection.Collection | DatasetReader] = {}  # noqa: RUF012
     _data_lock = threading.RLock()
 
     def __init__(self, request: pyramid.request.Request) -> None:
@@ -121,7 +121,7 @@ class Raster:
         set_common_headers(self.request, "raster", Cache.PUBLIC_NO)
         return result
 
-    def _get_data(self, layer: dict[str, Any], name: str) -> "fiona.collection.Collection | DatasetReader":
+    def _get_data(self, layer: dict[str, Any], name: str) -> fiona.collection.Collection | DatasetReader:
         with self._data_lock:
             if name not in self.data:
                 path = layer["file"]

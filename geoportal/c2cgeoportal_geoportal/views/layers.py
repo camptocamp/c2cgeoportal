@@ -85,7 +85,7 @@ _CACHE_REGION = get_region("std")
 
 
 class _BaseCallback:
-    def __init__(self, layer: "main.Layer") -> None:
+    def __init__(self, layer: main.Layer) -> None:
         self.layer = layer
 
     def update(self, request: pyramid.request.Request, obj: Any) -> None:
@@ -209,7 +209,7 @@ class Layers:
         return cast("dict[str, Any]", request.registry.settings.get("layers", {}))
 
     @staticmethod
-    def _get_geom_col_info(layer: "main.Layer") -> tuple[str, int]:
+    def _get_geom_col_info(layer: main.Layer) -> tuple[str, int]:
         """
         Return information about the layer's geometry column.
 
@@ -229,7 +229,7 @@ class Layers:
         raise HTTPInternalServerError(f'Failed getting geometry column info for table "{layer.geo_table!s}".')
 
     @staticmethod
-    def _get_layer(layer_id: int) -> "main.Layer":
+    def _get_layer(layer_id: int) -> main.Layer:
         """Return a ``Layer`` object for ``layer_id``."""
         from c2cgeoportal_commons.models.main import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             Layer,
@@ -250,7 +250,7 @@ class Layers:
             raise HTTPNotFound(f"Layer {layer_id:d} has no geo table")
         return cast("main.Layer", layer)
 
-    def _get_layers_for_request(self) -> Generator["main.Layer", None, None]:
+    def _get_layers_for_request(self) -> Generator[main.Layer]:
         """
         Get a generator function that yields ``Layer`` objects.
 
@@ -267,11 +267,11 @@ class Layers:
                 f"A Layer id in '{self.request.matchdict['layer_id']}' is not an integer",
             )
 
-    def _get_layer_for_request(self) -> "main.Layer":
+    def _get_layer_for_request(self) -> main.Layer:
         """Return a ``Layer`` object for the first layer id found in the ``layer_id`` matchdict."""
         return next(self._get_layers_for_request())
 
-    def _get_protocol_for_layer(self, layer: "main.Layer") -> Protocol:
+    def _get_protocol_for_layer(self, layer: main.Layer) -> Protocol:
         """Return a papyrus ``Protocol`` for the ``Layer`` object."""
         cls = get_layer_class(layer)
         geom_attr = self._get_geom_col_info(layer)[0]
@@ -290,7 +290,7 @@ class Layers:
         layer = self._get_layer_for_request()
         return self._get_protocol_for_layer(layer)
 
-    def _proto_read(self, layer: "main.Layer") -> FeatureCollection:
+    def _proto_read(self, layer: main.Layer) -> FeatureCollection:
         """Read features for the layer based on the self.request."""
         from c2cgeoportal_commons.models.main import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             Layer,
@@ -460,7 +460,7 @@ class Layers:
                 raise TopologicalError(reason)
 
     @staticmethod
-    def get_metadata(layer: "main.Layer", key: str, default: str | None = None) -> str | None:
+    def get_metadata(layer: main.Layer, key: str, default: str | None = None) -> str | None:
         metadata = layer.get_metadata(key)
         if len(metadata) == 1:
             metadata = metadata[0]
@@ -468,7 +468,7 @@ class Layers:
         return default
 
     @classmethod
-    def _get_validation_setting(cls, layer: "main.Layer", request: pyramid.request.Request) -> bool:
+    def _get_validation_setting(cls, layer: main.Layer, request: pyramid.request.Request) -> bool:
         # The validation UIMetadata is stored as a string, not a boolean
         should_validate = cls.get_metadata(layer, "geometryValidation", None)
         if should_validate:
@@ -546,7 +546,7 @@ class Layers:
         return set(cast("list[tuple[str, ...]]", dbsession.query(attribute).order_by(attribute).all()))
 
 
-def get_layer_class(layer: "main.Layer", with_last_update_columns: bool = False) -> type:
+def get_layer_class(layer: main.Layer, with_last_update_columns: bool = False) -> type:
     """
     Get the SQLAlchemy class to edit a GeoMapFish layer.
 
@@ -623,7 +623,7 @@ class ColumnProperties(TypedDict, total=False):
     totalDigits: int
 
 
-def get_layer_metadata(layer: "main.Layer") -> list[ColumnProperties]:
+def get_layer_metadata(layer: main.Layer) -> list[ColumnProperties]:
     """Get the metadata related to a layer."""
     assert models.DBSession is not None
 
