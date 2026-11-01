@@ -5083,13 +5083,14 @@ test = ["lxml (>=4.9)", "pytest (>=8.0)", "pytest-cov", "setuptools (>=70.0)", "
 
 [[package]]
 name = "sphinx-jsonschema"
-version = "1.19.2"
+version = "1.20.0"
 description = "Sphinx extension to display JSON Schema"
 optional = false
 python-versions = "*"
 groups = ["main"]
 files = [
-    {file = "sphinx_jsonschema-1.19.2.tar.gz", hash = "sha256:1a48954217c2b3c6759c89b9ddd2c8e5b668b8730564e0283b009f23932be150"},
+    {file = "sphinx_jsonschema-1.20.0-py3-none-any.whl", hash = "sha256:84c94d08bb0ebcff2cdc96c9eb5372153270f16f342776f48856b5b1d1f17732"},
+    {file = "sphinx_jsonschema-1.20.0.tar.gz", hash = "sha256:472631960973368790afef549325b5faeab1a9ed205f5f14b753c4c2d62045ba"},
 ]
 
 [package.dependencies]
@@ -5122,25 +5123,22 @@ urllib3 = "*"
 
 [[package]]
 name = "sphinx-substitution-extensions"
-version = "2026.8.13.1"
+version = "2026.10.9"
 description = "Extensions for Sphinx which allow for substitutions."
 optional = false
 python-versions = ">=3.11"
 groups = ["main"]
 files = [
-    {file = "sphinx_substitution_extensions-2026.8.13.1-py3-none-any.whl", hash = "sha256:6006ee556fed311f57113337cb095b31aef5014875ba2d905e9271e6210c8e04"},
-    {file = "sphinx_substitution_extensions-2026.8.13.1.tar.gz", hash = "sha256:a4c64ed45614af028b6e397f001852e3968d8d06db2e02f79cceec8de53623a8"},
+    {file = "sphinx_substitution_extensions-2026.10.9-py3-none-any.whl", hash = "sha256:e1b9365f462eaaaca50dd80f21504255345a08ce980a8b10c35be5afd972e73d"},
+    {file = "sphinx_substitution_extensions-2026.10.9.tar.gz", hash = "sha256:8778fbb7816199238a3cd2df3acb01e9d99f792a9c9d9456f03704e79285d5ad"},
 ]
 
 [package.dependencies]
-beartype = ">=0.22.9"
+beartype = ">=0.23.0rc2"
 docutils = ">=0.19"
 myst-parser = ">=4.0.0"
 sphinx = ">=8.1.0"
-
-[package.extras]
-dev = ["actionlint-py (==1.7.12.24)", "check-manifest (==0.51)", "deptry (==0.25.1)", "doc8 (==2.0.0)", "doc8-custom-ignores (==2026.7.29.1)", "doccmd (==2026.7.19)", "interrogate (==1.7.0)", "mypy-strict-kwargs (==2026.7.19.1)", "mypy[faster-cache] (==2.3.0)", "no-defaults (==2.1.0)", "prek (==0.4.12)", "pydocstringformatter (==1.0.0)", "pylint[spelling] (==4.0.6)", "pyproject-fmt (==2.27.0)", "pyrefly (==1.2.0)", "pyright (==1.1.411)", "pyroma (==5.0.1)", "pytest (==9.1.1)", "pytest-beartype-tests (==2026.4.26)", "pytest-cov (==7.1.0)", "ruff (==0.16.2)", "shellcheck-py (==0.11.0.1)", "shfmt-py (==4.0.0)", "sphinx (>=9,<10)", "sphinx-lint (==1.0.2)", "sphinx-toolbox (==4.3.0)", "strict-kwargs (==2026.7.24)", "towncrier (==25.8.0)", "ty (==0.0.69)", "types-docutils (==0.22.3.20260724)", "vale (==3.13.0.0)", "vulture (==2.16)", "yamlfix (==1.19.1)", "zizmor (==1.29.0)"]
-release = ["check-wheel-contents (==0.6.3)", "towncrier (==25.8.0)"]
+typing-extensions = ">=4.6.0"
 
 [[package]]
 name = "sphinxcontrib-applehelp"
@@ -6471,4 +6469,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.14,<4"
-content-hash = "ee147118d46116175cd904c30df166f272fc1ae360a0b8f431ad03da32ae8e14"
+content-hash = "d051adfbe904db0f716f104d5deb7ef1797b61567b2bb0d581ad4bd33366d9c1"
