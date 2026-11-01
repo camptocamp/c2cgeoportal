@@ -1,5 +1,5 @@
 c2cciutils==1.7.5
-pre-commit==4.6.2
+pre-commit==4.7.0
 tag-publish==1.2.6
 applications-download==1.7.0
 virtualenv>=21.14.13 # not directly required, pinned by Snyk to avoid a vulnerability
