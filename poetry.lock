@@ -17,14 +17,14 @@ attrs = ">=21.3.0"
 
 [[package]]
 name = "alembic"
-version = "1.20.0"
+version = "1.20.1"
 description = "A database migration tool for SQLAlchemy."
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "alembic-1.20.0-py3-none-any.whl", hash = "sha256:77eb101048d95f982c0353e9233404889dcd7a6fc244c107836c0e2fc9cf7d9d"},
-    {file = "alembic-1.20.0.tar.gz", hash = "sha256:db505480647bc60386c5369402f4a57a506b7539c9e9ef5e270d45cbbe4939bf"},
+    {file = "alembic-1.20.1-py3-none-any.whl", hash = "sha256:9970712cfb81ea26c8658d378aaa5b8f6ff9146e5bb111d70497c164016cf598"},
+    {file = "alembic-1.20.1.tar.gz", hash = "sha256:83490def1f723413db5096591f7609ac52544805be93849170088ed04f5a2e0b"},
 ]
 
 [package.dependencies]
@@ -378,18 +378,18 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "boto3"
-version = "1.43.101"
+version = "1.43.118"
 description = "The AWS SDK for Python (Boto3)"
 optional = false
 python-versions = ">=3.10"
 groups = ["dev"]
 files = [
-    {file = "boto3-1.43.101-py3-none-any.whl", hash = "sha256:8a899b0ea94df3f2fab6d0c69caf2791f2971449696834374d8e88ced01c7ef3"},
-    {file = "boto3-1.43.101.tar.gz", hash = "sha256:49f3eb750f70e050df9929a7e9392e67896c97d7d0a448f13ed3354c634268bd"},
+    {file = "boto3-1.43.118-py3-none-any.whl", hash = "sha256:ab8f3d2c622ef039338b4f228d97ea55f1abd573d84bb9b9a5ee8cb6780c0ccd"},
+    {file = "boto3-1.43.118.tar.gz", hash = "sha256:c0620f799e0f0c222ba42c337b65cdbcd3da38a3121187f634d8926cbbb28a9c"},
 ]
 
 [package.dependencies]
-botocore = ">=1.43.101,<1.44.0"
+botocore = ">=1.43.118,<1.44.0"
 jmespath = ">=0.7.1,<2.0.0"
 s3transfer = ">=0.19.0,<0.20.0"
 
@@ -398,14 +398,14 @@ crt = ["botocore[crt] (>=1.21.0,<2.0a0)"]
 
 [[package]]
 name = "botocore"
-version = "1.43.101"
+version = "1.43.118"
 description = "Low-level, data-driven core of boto 3."
 optional = false
 python-versions = ">=3.10"
 groups = ["dev"]
 files = [
-    {file = "botocore-1.43.101-py3-none-any.whl", hash = "sha256:f380237ffecc3f887265cd09c4d7e9c8e8dd9ba6162af83b1fc9e5d24622e461"},
-    {file = "botocore-1.43.101.tar.gz", hash = "sha256:3bc67fb55046e1e05ce5f2bd0171f37bef1cf54161786ef04ff338614d98169e"},
+    {file = "botocore-1.43.118-py3-none-any.whl", hash = "sha256:a45d7ae570674161e4a3542d8c68633bf7503f92d1de781ef7361b79488eda6f"},
+    {file = "botocore-1.43.118.tar.gz", hash = "sha256:7f3f9d88cc9e847587690f82a42e3c3c292c3026c92c1e60d68a9310018e003f"},
 ]
 
 [package.dependencies]
@@ -3207,14 +3207,14 @@ files = [
 
 [[package]]
 name = "pre-commit"
-version = "4.6.2"
+version = "4.7.0"
 description = "A framework for managing and maintaining multi-language pre-commit hooks."
 optional = false
-python-versions = ">=3.10"
+python-versions = ">=3.11"
 groups = ["dev"]
 files = [
-    {file = "pre_commit-4.6.2-py2.py3-none-any.whl", hash = "sha256:e2dde9a75d3bce11bd3831c26d134df00a2803c1d818be6a0383c3dcda25dc4e"},
-    {file = "pre_commit-4.6.2.tar.gz", hash = "sha256:8f5d7bfb021ecdbcd9d49d89847082dd24172ccde534390081a679ad046e2441"},
+    {file = "pre_commit-4.7.0-py2.py3-none-any.whl", hash = "sha256:2e229038ad3656081b70c27913157e4b636ef306f643f024a8a8e3f0f7b2f877"},
+    {file = "pre_commit-4.7.0.tar.gz", hash = "sha256:1f3deee12b914c8fa184bd2b5953391c2e4f36763e403d4a23dc9983fa7c6e86"},
 ]
 
 [package.dependencies]
@@ -3226,21 +3226,22 @@ virtualenv = ">=20.10.0"
 
 [[package]]
 name = "prek"
-version = "0.5.3"
+version = "0.5.7"
 description = "A fast Git hook manager written in Rust, designed as a drop-in alternative to pre-commit, reimagined."
 optional = false
 python-versions = ">=3.8"
 groups = ["dev"]
 files = [
-    {file = "prek-0.5.3-py3-none-macosx_10_12_x86_64.whl", hash = "sha256:2d7240c5e6a996ef5bebe5d57d43049803e41c225b343681c020bf0c87dab2b2"},
-    {file = "prek-0.5.3-py3-none-macosx_11_0_arm64.whl", hash = "sha256:1dd6df8235ca361dbbeec89c305ccb41a138088a2fc548484b4cb89f66a80d20"},
-    {file = "prek-0.5.3-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.musllinux_1_1_aarch64.whl", hash = "sha256:61ff791bb850ba52cc0d86576498df7e1bd1e9ed20df63dae113a4a6aa495e19"},
-    {file = "prek-0.5.3-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:a863379a2668c4ef079d820ffd5b14073145380dfbe0e70fef498dc73c568f86"},
-    {file = "prek-0.5.3-py3-none-manylinux_2_28_aarch64.whl", hash = "sha256:086d1b77557f0a089568dc5b93c22ccd793351524f3eeb29d36781421a350e72"},
-    {file = "prek-0.5.3-py3-none-musllinux_1_1_x86_64.whl", hash = "sha256:4f09b947255124e9591a7f7ef16eb5340a36ba94a275d788d7ea804fab35f0e2"},
-    {file = "prek-0.5.3-py3-none-win_amd64.whl", hash = "sha256:5b74a9742c3e8f8688d5dad1439688f112e2e1746fcb91016015dae38df3eb42"},
-    {file = "prek-0.5.3-py3-none-win_arm64.whl", hash = "sha256:20d92aef53a5e237f4659ecc6669c0fbc98a1b83f0e2476530400a72d42ca390"},
-    {file = "prek-0.5.3.tar.gz", hash = "sha256:06d88bed9a5b2886cd3796957e4cecf05fa9b06724b625df31dbf0a48ff2330c"},
+    {file = "prek-0.5.7-py3-none-macosx_10_12_x86_64.whl", hash = "sha256:621835811891d11d3feb5ca47102ca97973c5b4e6fbd1b35b1293d412d29d9cc"},
+    {file = "prek-0.5.7-py3-none-macosx_11_0_arm64.whl", hash = "sha256:ef10cf46c0660b011fc067b7ce20dc78f2c44b6f905bf8dc49402353f67283b1"},
+    {file = "prek-0.5.7-py3-none-manylinux_2_17_aarch64.manylinux2014_aarch64.musllinux_1_1_aarch64.whl", hash = "sha256:b38075f9363066d72d1cd887b5a260ec938516fea9ea44def53e592ee75090d5"},
+    {file = "prek-0.5.7-py3-none-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:6a8f7734931c4b6a5f2efca121fabed7979408df233ce6d9b043f4148873021c"},
+    {file = "prek-0.5.7-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:c139c494fb1d9826688f8107d1514fa2a58f8f4a0f0527b68e7970fa50a8b723"},
+    {file = "prek-0.5.7-py3-none-manylinux_2_28_aarch64.whl", hash = "sha256:e86139ab5662124818dc1957854d8281f635414016e545ab72e63365c995824b"},
+    {file = "prek-0.5.7-py3-none-musllinux_1_1_x86_64.whl", hash = "sha256:94bd6a93ccf8ebb1d30b822161515e3e31ea916ce7411febe8ceb5f607eb840d"},
+    {file = "prek-0.5.7-py3-none-win_amd64.whl", hash = "sha256:fa69837b6d1d2b6be5fe7fe4cd27fd5606f2155e784fec55ee7df7ed9f9bf211"},
+    {file = "prek-0.5.7-py3-none-win_arm64.whl", hash = "sha256:239ccb081e3766d83a6a9a5ebee1d5cbb7986fc8e4f230e785423d409cff95e3"},
+    {file = "prek-0.5.7.tar.gz", hash = "sha256:91049700f0f13b4575deb44045dd6dd51f7c4a70c53ec5d452b09925962e3b35"},
 ]
 
 [[package]]
@@ -4352,47 +4353,49 @@ PyYAML = ">=6.0,<7.0"
 
 [[package]]
 name = "rasterio"
-version = "1.5.1"
+version = "1.5.2"
 description = "Fast and direct raster I/O for use with NumPy"
 optional = false
 python-versions = ">=3.12"
 groups = ["main"]
 files = [
-    {file = "rasterio-1.5.1-cp312-cp312-macosx_14_0_arm64.whl", hash = "sha256:c209e670abf0f30695a784c4f0170366462b9a3eaea3e49122ab2ce81799460b"},
-    {file = "rasterio-1.5.1-cp312-cp312-macosx_15_0_x86_64.whl", hash = "sha256:833511f045ca49dafbf25da4762a0b19dcf5d046ded8b318c094363e2d65f474"},
-    {file = "rasterio-1.5.1-cp312-cp312-manylinux_2_28_aarch64.whl", hash = "sha256:821d49afd18498fb0918b72961b1b667193c64edf8cc484081c522d10b33980d"},
-    {file = "rasterio-1.5.1-cp312-cp312-manylinux_2_28_x86_64.whl", hash = "sha256:a270366c4f44f7bb4367d7068b6de08c56b2b04049e3dfcd06d451141fee3a7f"},
-    {file = "rasterio-1.5.1-cp312-cp312-win_amd64.whl", hash = "sha256:6fbafe970d44ec06179c7884cdb160a90311e3d19da25bff970fab06123f0201"},
-    {file = "rasterio-1.5.1-cp312-cp312-win_arm64.whl", hash = "sha256:e31b65231a631b0b59471aeae4423167d42f88da0c5ee5a519dc07deb7a4666b"},
-    {file = "rasterio-1.5.1-cp313-cp313-macosx_14_0_arm64.whl", hash = "sha256:937944c445d4ea4d6969e9dbfcf305143c05fc4df2f8fadfa360cb2d0f65d7b0"},
-    {file = "rasterio-1.5.1-cp313-cp313-macosx_15_0_x86_64.whl", hash = "sha256:e863b614cadad435a4394792b6cdc84324b15197629ad5a20c8d56cbc4eeff92"},
-    {file = "rasterio-1.5.1-cp313-cp313-manylinux_2_28_aarch64.whl", hash = "sha256:b117209922784ef7948f702a0e9eb26be744f4b24d31f5eb97c45c0f04e2e4c3"},
-    {file = "rasterio-1.5.1-cp313-cp313-manylinux_2_28_x86_64.whl", hash = "sha256:9093a9277559ac0f954d9a0266886bc4037e3ffd7a40837f6ea6486a96c8c258"},
-    {file = "rasterio-1.5.1-cp313-cp313-win_amd64.whl", hash = "sha256:b3686865af2c67114f5dfb67df483db61bccad4078083a3dad481ea035e5d701"},
-    {file = "rasterio-1.5.1-cp313-cp313-win_arm64.whl", hash = "sha256:0898355908ed3614ba1415532432cf4a1a308b189b2c9d8307a26a44bcb1713b"},
-    {file = "rasterio-1.5.1-cp314-cp314-macosx_14_0_arm64.whl", hash = "sha256:c8702772d6e91c0578d84af88de7d4926c48b0b6eca33d0660e90d7f37c06bf1"},
-    {file = "rasterio-1.5.1-cp314-cp314-macosx_15_0_x86_64.whl", hash = "sha256:d8064e9b2820c3f1027399f410d8cdbfb57bdedfad46e5381afb527a9b6f74a2"},
-    {file = "rasterio-1.5.1-cp314-cp314-manylinux_2_28_aarch64.whl", hash = "sha256:ee01dc4b114a21078af87da916816c6c62ba5b5d216725f148ae695ef4deebf2"},
-    {file = "rasterio-1.5.1-cp314-cp314-manylinux_2_28_x86_64.whl", hash = "sha256:5ff9db698a88e716254fb0788768f75d7b58532c8253674261fa05abd40f621e"},
-    {file = "rasterio-1.5.1-cp314-cp314-win_amd64.whl", hash = "sha256:546ca44c4417772a48c5224b037f10330a75cde74b429f07ac43838e20f9b2c9"},
-    {file = "rasterio-1.5.1-cp314-cp314-win_arm64.whl", hash = "sha256:a685d2e97684b275b12859f9e0b95a8f511a51a2ac51b284428c6f50f1bcfd17"},
-    {file = "rasterio-1.5.1-cp314-cp314t-macosx_14_0_arm64.whl", hash = "sha256:c361ed93cb8ceb314bf42d98815f2b6dd0254f7367d2b932435a8cf0aeaecf96"},
-    {file = "rasterio-1.5.1-cp314-cp314t-macosx_15_0_x86_64.whl", hash = "sha256:00c78697cb565e97f99deb485fc7f23f28ff30e857124872ef0c5a3e83dd7e47"},
-    {file = "rasterio-1.5.1-cp314-cp314t-manylinux_2_28_aarch64.whl", hash = "sha256:82719d4de76f3bafb165e932ad997b07116aa08621db079750ef1031dc514e11"},
-    {file = "rasterio-1.5.1-cp314-cp314t-manylinux_2_28_x86_64.whl", hash = "sha256:8683074903018918341908e714f792ed5d696bad441ecec1787de8eb896573cd"},
-    {file = "rasterio-1.5.1-cp314-cp314t-win_amd64.whl", hash = "sha256:c0cd79ed52481d55395f1d3def075ff45173ed07ccd238fddeb0c63522b3d137"},
-    {file = "rasterio-1.5.1-cp314-cp314t-win_arm64.whl", hash = "sha256:11e2e9c68971beeec603c2613fa7740cf0a02dd026ef1aaa75d1cdf4246fbde6"},
-    {file = "rasterio-1.5.1-cp315-cp315-macosx_14_0_arm64.whl", hash = "sha256:3aa1a3441587341b78558b5359aa5d2694b45a911d7b5df23af726420e420bce"},
-    {file = "rasterio-1.5.1-cp315-cp315-macosx_15_0_x86_64.whl", hash = "sha256:60d74d11f290510639046c447256085eae0a925acdfe07e37f7436fb97cb9f46"},
-    {file = "rasterio-1.5.1-cp315-cp315-manylinux_2_28_aarch64.whl", hash = "sha256:5933e56b15ef29fcbec370a2e0b5ac39b33023d85a3f5b01cdf0cbe4231c6204"},
-    {file = "rasterio-1.5.1-cp315-cp315-manylinux_2_28_x86_64.whl", hash = "sha256:01f927ee7ef08cbc111b34092df266308fd2c64fad2e21a97c991973eb8e0c25"},
-    {file = "rasterio-1.5.1-cp315-cp315-win_amd64.whl", hash = "sha256:55e18b8a6a7f4a9769942d48a1545c5a97920cf841fe5e4099032ba855bdf95c"},
-    {file = "rasterio-1.5.1-cp315-cp315t-macosx_14_0_arm64.whl", hash = "sha256:94ae0fe4c0eb031da99614a1a1cd27819f900f86bc84976cd9f713eee05584a3"},
-    {file = "rasterio-1.5.1-cp315-cp315t-macosx_15_0_x86_64.whl", hash = "sha256:bf5d2cf43791651522fedb284cc08398f96fecc018dff24d7fc97965c909ab3a"},
-    {file = "rasterio-1.5.1-cp315-cp315t-manylinux_2_28_aarch64.whl", hash = "sha256:e4ea970d39f0b134fc91141d767b3c49bc2dea38a32f0b036fbdd5ec2e8ca457"},
-    {file = "rasterio-1.5.1-cp315-cp315t-manylinux_2_28_x86_64.whl", hash = "sha256:fbb933659035f0aca32e4dc0dc022c7162b4f6598b15366c5b19b4a7e65c1991"},
-    {file = "rasterio-1.5.1-cp315-cp315t-win_amd64.whl", hash = "sha256:ac450a2c1e6de990eaaee347ebceca160b1531c9f13c5db489d0e3113ea13984"},
-    {file = "rasterio-1.5.1.tar.gz", hash = "sha256:c1b6ae15f4ccad704f1fe8417da5c2250145c7bcdb91acb53833bf5aefdd9e48"},
+    {file = "rasterio-1.5.2-cp312-cp312-macosx_15_0_arm64.whl", hash = "sha256:89821de2f1d9e9f637f9bc0c466a2a6499b2a96db68909e0c21ff7ce6eb5a63e"},
+    {file = "rasterio-1.5.2-cp312-cp312-macosx_15_0_x86_64.whl", hash = "sha256:078e0486cfd15af4cee62842af71d6fb9e0f2bdab624c14527d929acfde6fe47"},
+    {file = "rasterio-1.5.2-cp312-cp312-manylinux_2_28_aarch64.whl", hash = "sha256:0459e4d999ed219d8dff48b71523d3643c33d5ce2ec6a793477dc09592f9e84b"},
+    {file = "rasterio-1.5.2-cp312-cp312-manylinux_2_28_x86_64.whl", hash = "sha256:8d0f9c1ba8975fe2980bbef313310982eeea0558f8c8f4989aed5fc6fbeac5c0"},
+    {file = "rasterio-1.5.2-cp312-cp312-win_amd64.whl", hash = "sha256:508d8ca45893fea9785128b6206e0347300d015a7dc453822f9d25a376aa3754"},
+    {file = "rasterio-1.5.2-cp312-cp312-win_arm64.whl", hash = "sha256:c148628357f43a54d7b26e9ef52ed0be3cc9d3e33456cff6a72ddd8347633287"},
+    {file = "rasterio-1.5.2-cp313-cp313-macosx_15_0_arm64.whl", hash = "sha256:de9db8f891c63e6a1d8deb7d4c8fe703795245ad3b2572d35e0ec76b39495f29"},
+    {file = "rasterio-1.5.2-cp313-cp313-macosx_15_0_x86_64.whl", hash = "sha256:19b8849ac84c6c26208314c7e516062b8aaabc1aa45f06c7edf22d5b098a7f84"},
+    {file = "rasterio-1.5.2-cp313-cp313-manylinux_2_28_aarch64.whl", hash = "sha256:f85cec5d23e7cd8d22a4b4edba11f63a94008c396a03433b8fb260140c00cb90"},
+    {file = "rasterio-1.5.2-cp313-cp313-manylinux_2_28_x86_64.whl", hash = "sha256:be2d2a825d545e6c6e8b2aa0d67c963e9ffc44ce3cecbab4ffe95dc87c0fc0de"},
+    {file = "rasterio-1.5.2-cp313-cp313-win_amd64.whl", hash = "sha256:edbf60e95cb26604b7b884a7edf64a778a0f5ab64aed6f0b7dc9c1664967ae0c"},
+    {file = "rasterio-1.5.2-cp313-cp313-win_arm64.whl", hash = "sha256:eba030745bd573df0dbecc19ed6a22f6b2037e7b1785170f84115a7c58bea72e"},
+    {file = "rasterio-1.5.2-cp314-cp314-macosx_15_0_arm64.whl", hash = "sha256:56dbdfe40d0ab1d1e334cadf8ebd6b9aa16f1ca24102f03bf23027b38fa5b798"},
+    {file = "rasterio-1.5.2-cp314-cp314-macosx_15_0_x86_64.whl", hash = "sha256:947463239e4e5425a056de17af5d46ae65a52ae4a1da4ad46a53dc80d503aaf6"},
+    {file = "rasterio-1.5.2-cp314-cp314-manylinux_2_28_aarch64.whl", hash = "sha256:240a42dc5a712e072b2744aa84ca6ee92c132c37593f0ecdfc2c03c61ee07707"},
+    {file = "rasterio-1.5.2-cp314-cp314-manylinux_2_28_x86_64.whl", hash = "sha256:a91052160dbc446e25daf047e8144be2179602892cbaac5287130371eccf6b16"},
+    {file = "rasterio-1.5.2-cp314-cp314-win_amd64.whl", hash = "sha256:09b880424977d9612d90639c8206ebaddfbdff7331435fa7e0435398b3583481"},
+    {file = "rasterio-1.5.2-cp314-cp314-win_arm64.whl", hash = "sha256:15da322ea5e5531073483c8966d17bc941911d669e17a02b71665c05ce9713ef"},
+    {file = "rasterio-1.5.2-cp314-cp314t-macosx_15_0_arm64.whl", hash = "sha256:d968492267b487ac217878b3275570256eae187f5e99406fdf0dfb7a855d675a"},
+    {file = "rasterio-1.5.2-cp314-cp314t-macosx_15_0_x86_64.whl", hash = "sha256:0c9bb43598fb58e3f01f3b2aed8be626fff44eb937c622df7801ed7dd8e728f6"},
+    {file = "rasterio-1.5.2-cp314-cp314t-manylinux_2_28_aarch64.whl", hash = "sha256:9ac0143897e0315cc858dbd5699840d8fa218281e382acfb89b10575c96d5e17"},
+    {file = "rasterio-1.5.2-cp314-cp314t-manylinux_2_28_x86_64.whl", hash = "sha256:f9f3360cc66d1e2172018f9858db5c39e1f0046a5029e07645cff67a009e0801"},
+    {file = "rasterio-1.5.2-cp314-cp314t-win_amd64.whl", hash = "sha256:baf0182ad0e4088289ff453aa3f217f7fee04822430a3a747028d9c8b4ee7299"},
+    {file = "rasterio-1.5.2-cp314-cp314t-win_arm64.whl", hash = "sha256:97161fd2a1d63d3ec175a9e48a12bf1ac243cb4681696d7840bcf35f54c7c10c"},
+    {file = "rasterio-1.5.2-cp315-cp315-macosx_15_0_arm64.whl", hash = "sha256:0f268d0fc26963ad25fbda485fefa6a566c99974700a2646630e102a5e943421"},
+    {file = "rasterio-1.5.2-cp315-cp315-macosx_15_0_x86_64.whl", hash = "sha256:12fe70049207cba191cdc57f5a1edd6b1d8a939163422ff710f82acb12f7e33a"},
+    {file = "rasterio-1.5.2-cp315-cp315-manylinux_2_28_aarch64.whl", hash = "sha256:0f2d222803d4cf8831e742389cff541ece3ed6896e331b0add617bba43ba5d5d"},
+    {file = "rasterio-1.5.2-cp315-cp315-manylinux_2_28_x86_64.whl", hash = "sha256:9b27f07663103b73eba772ccf039bd58022c79a074058071fd72aaedb66f4d96"},
+    {file = "rasterio-1.5.2-cp315-cp315-win_amd64.whl", hash = "sha256:78f7e9a26e294731eb59e887d5502df9d98d7d34580490ee0614fffb2669ad96"},
+    {file = "rasterio-1.5.2-cp315-cp315-win_arm64.whl", hash = "sha256:6fa985ecb32e9e84f1d0143a72c9d55543c55a653a605de435be7779361cbd2c"},
+    {file = "rasterio-1.5.2-cp315-cp315t-macosx_15_0_arm64.whl", hash = "sha256:3d0f767b1755f680e0442185695c2fc6e850c1bb275468aa4c56c49e007b713a"},
+    {file = "rasterio-1.5.2-cp315-cp315t-macosx_15_0_x86_64.whl", hash = "sha256:86aa888d8794210d879db1da6d47a620649ba6e017d610740099c20cd0c3414a"},
+    {file = "rasterio-1.5.2-cp315-cp315t-manylinux_2_28_aarch64.whl", hash = "sha256:0278c967ca3e95677add4cefa635baae4596fab17f42b5562da43cf1e71162dd"},
+    {file = "rasterio-1.5.2-cp315-cp315t-manylinux_2_28_x86_64.whl", hash = "sha256:e47d5dc89b714525755374998910a8e21606cb95f45312775d2186df4e2503e0"},
+    {file = "rasterio-1.5.2-cp315-cp315t-win_amd64.whl", hash = "sha256:3b8bec76f88ebe3437c4b8ecd85b0de7889ddab20e36d4145b7319f72add56fc"},
+    {file = "rasterio-1.5.2-cp315-cp315t-win_arm64.whl", hash = "sha256:8a201b3b52b102a210e52ad8ee342f22eb2bbdd3c1c5803b2e6e76e82533f0db"},
+    {file = "rasterio-1.5.2.tar.gz", hash = "sha256:e65a15b7bd22ce8f8ce8159856669dc9fafabf66cde6156e8f8e71d55abcd515"},
 ]
 
 [package.dependencies]
@@ -5713,4 +5716,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.14,<4"
-content-hash = "e4a4bda047d42301588bd759982e5f02cafd8bd14095d985ababcde7c78a37f9"
+content-hash = "6e68219589972e2fc688e4001b9077b287ca3b74cef6cb2c23173411f5f4236c"
