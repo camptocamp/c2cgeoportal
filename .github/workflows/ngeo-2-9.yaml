@@ -22,6 +22,12 @@ jobs:
       MAJOR_VERSION: '2.9'
 
     steps:
+      # Previously configured by the removed gopass action, still required by the steps that
+      # commit: the ngeo version and the changelog push.
+      - name: Configure Git
+        run: |
+          git config --global user.email "geospatial-bot@camptocamp.com"
+          git config --global user.name "CI"
       - run: '! ls BACKPORT_TODO'
       - run: df -h
       - name: Clean all docker images
