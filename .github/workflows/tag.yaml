@@ -16,6 +16,12 @@ jobs:
     if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
 
     steps:
+      # Previously configured by the removed gopass action, still required by the version push.
+      - name: Configure Git
+        run: |
+          git config --global user.email "geospatial-bot@camptocamp.com"
+          git config --global user.name "CI"
+
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - run: scripts/get-main-version --github

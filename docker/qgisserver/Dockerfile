@@ -56,7 +56,7 @@ COPY --from=camptocamp/geomapfish /opt/c2cgeoportal/commons /opt/c2cgeoportal/co
 
 ARG GEOMAPFISH_VERSION
 
-RUN VERSION=$GEOMAPFISH_VERSION python3 -m pip install --disable-pip-version-check --no-deps \
+RUN VERSION=$GEOMAPFISH_VERSION POETRY_DYNAMIC_VERSIONING_BYPASS=$GEOMAPFISH_VERSION python3 -m pip install --disable-pip-version-check --no-deps \
     --editable=/opt/c2cgeoportal/commons \
     && pip freeze > /requirements.txt
 
