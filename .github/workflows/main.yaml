@@ -46,6 +46,12 @@ jobs:
       MIN_PYTHON_VERSION: '3.10'
 
     steps:
+      # Previously configured by the removed gopass action, still required by the steps that
+      # commit: the version and changelog push, and the documentation publication.
+      - name: Configure Git
+        run: |
+          git config --global user.email "geospatial-bot@camptocamp.com"
+          git config --global user.name "CI"
       - run: '! ls BACKPORT_TODO'
       - run: df -h
       - name: Clean all docker images
@@ -289,10 +295,15 @@ jobs:
           for folder in commons geoportal admin; do
             rm -rf "${folder}/dist"
             (cd "${folder}"; poetry build)
+            if ls "${folder}"/dist/*.whl | grep -q -- "-0.0.0-"; then
+              echo "::error::The wheel of ${folder} is versioned 0.0.0"
+              exit 1
+            fi
           done
         env:
           VERSION: ${{ steps.version.outputs.full }}
           VERSION_TYPE: version_tag
+          POETRY_DYNAMIC_VERSIONING_BYPASS: ${{ steps.version.outputs.full }}
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && env.HAS_SECRETS == 'HAS_SECRETS'

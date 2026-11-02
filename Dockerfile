@@ -251,7 +251,7 @@ WORKDIR /opt/c2cgeoportal
 RUN --mount=type=cache,target=/var/cache,sharing=locked \
     --mount=type=cache,target=/root/.cache \
     ln -s /opt/c2cgeoportal/commons/c2cgeoportal_commons/alembic /opt \
-    && python3 -m pip install --disable-pip-version-check --no-deps \
+    && POETRY_DYNAMIC_VERSIONING_BYPASS=${VERSION} python3 -m pip install --disable-pip-version-check --no-deps \
         --editable=commons \
         --editable=geoportal \
         --editable=admin \
