@@ -28,6 +28,7 @@ Required PostgreSQL extensions
 * ``postgis``
 * ``hstore``
 * ``pg_trgm`` (optional)
+* ``unaccent`` (optional)
 
 Requirements that can be installed in the user space
 ----------------------------------------------------

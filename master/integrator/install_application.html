@@ -115,7 +115,7 @@ environment variable, for cygwin, git and node binaries.</p>
 <li><p>build the JavaScript and CSS resources into compressed files.</p></li>
 </ul>
 </div></blockquote>
-<p>Activate the devlopement environment:</p>
+<p>Activate the development environment:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">cp<span class="w"> </span>docker-compose.override.sample.yaml<span class="w"> </span>docker-compose.override.yaml</span>
 </pre></div></div><p>Run the composition:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d</span>
@@ -125,7 +125,7 @@ environment variable, for cygwin, git and node binaries.</p>
 <span class="prompt1">docker<span class="w"> </span>compose<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>geoportal<span class="w"> </span>alembic<span class="w"> </span>--config<span class="o">=</span>alembic.ini<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--name<span class="o">=</span>static<span class="w"> </span>upgrade<span class="w"> </span>head</span>
 </pre></div></div><p>Your application should now be available at: <code class="docutils literal notranslate"><span class="pre">https://localhost:8484/</span></code>.</p>
-<p>If you ahave an Apache in front of your application,
+<p>If you have an Apache in front of your application,
 add in the <code class="docutils literal notranslate"><span class="pre">/var/www/vhosts/&lt;vhost_name&gt;/conf/proxies.conf</span></code> file
 (create it if it does not exist):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ProxyPass</span> <span class="s2">"/&lt;instance&gt;"</span>  <span class="s2">"http://localhost:&lt;application_port&gt;/&lt;instance&gt;"</span>
@@ -238,7 +238,7 @@ at <code class="docutils literal notranslate"><span class="pre">https://new-site
       &#169;2011-2026, Camptocamp.
       
       |
-      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.1.0</a>
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.2.0</a>
       &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
       
       |
