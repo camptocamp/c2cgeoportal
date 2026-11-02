@@ -1,3 +1,11 @@
+##### 2.9.0.624
+
+- [Backport 2.9] Use the TRANSIFEX_TOKEN secret instead of the gopass store [c2cgeoportal#13503](https://github.com/camptocamp/c2cgeoportal/pull/13503)
+- Publish from a dedicated job with the dependencies locked by uv (2.9) [c2cgeoportal#13522](https://github.com/camptocamp/c2cgeoportal/pull/13522)
+- Audit Dpkg 2.9 [c2cgeoportal#13531](https://github.com/camptocamp/c2cgeoportal/pull/13531)
+- Update dependency pytz to v2026.6 (2.9) [c2cgeoportal#13535](https://github.com/camptocamp/c2cgeoportal/pull/13535)
+- Restore the Git identity lost with the gopass action (2.9) [c2cgeoportal#13566](https://github.com/camptocamp/c2cgeoportal/pull/13566)
+
 ##### 2.9.0.623
 
 - [Backport 2.9] Migrate the scaffolded publishing to tag-publish with a uv locked environment [c2cgeoportal#13482](https://github.com/camptocamp/c2cgeoportal/pull/13482)
