@@ -6,6 +6,7 @@ include = [
     { path = "c2cgeoportal_commons/locale/**/*.po", format = ["sdist", "wheel"] },
     { path = "c2cgeoportal_commons/locale/**/*.mo", format = ["sdist", "wheel"] },
 ]
+version = "0.0.0"
 
 [tool.poetry-dynamic-versioning]
 enable = true
@@ -23,12 +24,9 @@ format-jinja = """
 {%- endif -%}
 """
 
-[tool.poetry-plugin-tweak-dependencies-version]
-default = "present"
-
 [project]
 name = "c2cgeoportal_commons"
-version = "0.0.0"
+dynamic = ["version"]
 description = "c2cgeoportal commons"
 readme = "README.md"
 requires-python = ">=3.14"
@@ -65,8 +63,7 @@ broadcast = ["c2cwsgiutils"]
 
 [build-system]
 requires = [
-    "poetry-dynamic-versioning[plugin]==1.10.0",
-    "poetry-plugin-tweak-dependencies-version==1.5.7",
-    "poetry-plugin-drop-python-upper-constraint==1.0.1"
+    "poetry-core==2.5.0",
+    "poetry-dynamic-versioning[plugin]==1.10.1"
 ]
-build-backend = "poetry.core.masonry.api"
+build-backend = "poetry_dynamic_versioning.backend"

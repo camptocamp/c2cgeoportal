@@ -294,15 +294,12 @@ jobs:
           set -eux
           for folder in commons geoportal admin; do
             rm -rf "${folder}/dist"
-            (cd "${folder}"; poetry version "${VERSION}"; poetry build)
+            (cd "${folder}"; poetry build)
             if ls "${folder}"/dist/*.whl | grep -q -- "-0.0.0-"; then
               echo "::error::The wheel of ${folder} is versioned 0.0.0"
               exit 1
             fi
           done
-          # `poetry version` rewrote the pyproject.toml files, restore them so that the following
-          # steps build the images from the committed content.
-          git checkout -- commons/pyproject.toml geoportal/pyproject.toml admin/pyproject.toml
         env:
           VERSION: ${{ steps.version.outputs.full }}
           VERSION_TYPE: version_tag

@@ -45,6 +45,7 @@ repos:
         exclude: ^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/{{cookiecutter\.project}}/
         additional_dependencies:
           - poetry==2.5.1 # pypi
+          - poetry-dynamic-versioning[plugin]==1.10.1 # pypi
       - id: npm-lock
       - id: canonicalize
       - id: uv-lock

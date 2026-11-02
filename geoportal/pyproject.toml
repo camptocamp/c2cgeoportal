@@ -19,6 +19,7 @@ exclude = [
     "**/.ruff_cache/**",
     "**/.ruff_cache/**/*",
 ]
+version = "0.0.0"
 
 [tool.poetry-dynamic-versioning]
 enable = true
@@ -36,12 +37,8 @@ format-jinja = """
 {%- endif -%}
 """
 
-[tool.poetry-plugin-tweak-dependencies-version]
-default = "present"
-
 [project]
 name = "c2cgeoportal_geoportal"
-version = "0.0.0"
 description = "c2cgeoportal geoportal"
 readme = "README.md"
 readme-content-type = "text/markdown"
@@ -61,7 +58,7 @@ classifiers = [
     "Typing :: Typed",
 ]
 keywords = ["web", "gis", "geoportail", "c2cgeoportal", "geocommune", "pyramid"]
-dynamic = ["dependencies"]
+dynamic = ["dependencies", "version"]
 dependencies = [
     "alembic",
     "bottle",
@@ -130,8 +127,7 @@ c2cgeoportal = "c2cgeoportal_geoportal.lib.loader:Loader"
 
 [build-system]
 requires = [
-    "poetry-dynamic-versioning[plugin]==1.10.0",
-    "poetry-plugin-tweak-dependencies-version==1.5.7",
-    "poetry-plugin-drop-python-upper-constraint==1.0.1"
+    "poetry-core==2.5.0",
+    "poetry-dynamic-versioning[plugin]==1.10.1"
 ]
-build-backend = "poetry.core.masonry.api"
+build-backend = "poetry_dynamic_versioning.backend"
