@@ -288,35 +288,17 @@ jobs:
           make --makefile=build.mk build-translations
       # The Python packages and the images are given to the `publish` job, which is the only one
       # with the write permissions.
-      # poetry is installed in its own environment: it requires `virtualenv<21` while the CI
-      # requirements pin `virtualenv>=21.14.13` for Snyk.
-      - name: Install the build toolchain
-        run: |
-          set -eux
-          python3 -m venv /tmp/build-env
-          /tmp/build-env/bin/python3 -m pip install '--only-binary=:all:' \
-            poetry==2.0.1 \
-            'poetry-dynamic-versioning[plugin]==1.10.0' \
-            poetry-plugin-tweak-dependencies-version==1.5.7 \
-            poetry-plugin-drop-python-upper-constraint==1.0.1
-        if: >
-          github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
-          && env.HAS_SECRETS == 'HAS_SECRETS'
-          && env.MAIN_BRANCH != 'master'
       - name: Build the Python packages
         run: |
           set -eux
           for folder in commons geoportal admin; do
             rm -rf "${folder}/dist"
-            (cd "${folder}"; /tmp/build-env/bin/poetry version "${VERSION}"; /tmp/build-env/bin/poetry build)
+            (cd "${folder}"; poetry build)
             if ls "${folder}"/dist/*.whl | grep -q -- "-0.0.0-"; then
               echo "::error::The wheel of ${folder} is versioned 0.0.0"
               exit 1
             fi
           done
-          # `poetry version` rewrote the pyproject.toml files, restore them so that the following
-          # steps build the images from the committed content.
-          git checkout -- commons/pyproject.toml geoportal/pyproject.toml admin/pyproject.toml
         env:
           VERSION: ${{ steps.version.outputs.full }}
           VERSION_TYPE: version_tag

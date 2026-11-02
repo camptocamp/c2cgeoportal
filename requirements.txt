@@ -1,3 +1,4 @@
 poetry==2.5.1
 poetry-plugin-export==1.10.1
+poetry-dynamic-versioning[plugin]==1.10.1
 virtualenv>=21.14.13 # not directly required, pinned by Snyk to avoid a vulnerability
