@@ -92,6 +92,7 @@ def treeitems(
     # Do not propose ancestors to avoid cycles
     item_id = kw["request"].matchdict["id"]
     if item_id != "new":
+        item_id = int(item_id)
         search_ancestors = (
             dbsession.query(LayergroupTreeitem.treegroup_id)
             .filter(LayergroupTreeitem.treeitem_id == item_id)
