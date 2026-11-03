@@ -537,7 +537,11 @@ class OGCServerAccessControl(QgsAccessControlFilter):  # type: ignore[misc]
             .options(
                 joinedload(Role.functionalities),
             )
-            .filter(Role.id.in_(parameters.get("ROLE_IDS").split(",")))
+            .filter(
+                Role.id.in_(
+                    [int(role_id) for role_id in parameters.get("ROLE_IDS").split(",") if role_id.strip()],
+                ),
+            )
             .all()
         )
 
