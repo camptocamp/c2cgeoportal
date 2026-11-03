@@ -1,3 +1,4 @@
 c2cciutils[checks]==1.7.5
 pre-commit==4.6.2
+setuptools==84.2.1
 tag-publish==1.2.6
