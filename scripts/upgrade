@@ -120,20 +120,33 @@ def _main() -> None:
 
         win = platform.system() == "Windows"
         if not win:
-            home = os.path.expanduser("~")
-            additional_args.extend(
-                [
-                    # In the container the /tmp is the home directory of the user
-                    f"--volume={home}/.cache:/tmp/.cache",
-                ],
-            )
-
             uid = subprocess.check_output(["id", "-u"]).decode().strip()
             gid = subprocess.check_output(["id", "-g"]).decode().strip()
             if not (uid.isdigit() and gid.isdigit()):
                 print("Error: Failed to retrieve numeric UID and GID from system commands.", file=sys.stderr)
                 sys.exit(1)
             additional_args.append(f"--user={uid}:{gid}")
+
+            home = os.path.expanduser("~")
+            cache_dir = os.path.join(home, ".cache")
+            try:
+                os.makedirs(cache_dir, exist_ok=True)
+            except OSError as exception:
+                # The cache is optional, we don't want to block the upgrade if we can't create it.
+                print(
+                    f"Warning: unable to create the cache directory '{cache_dir}': {exception}",
+                    file=sys.stderr,
+                )
+            if os.access(cache_dir, os.W_OK):
+                # In the container the /tmp is the home directory of the user
+                additional_args.append(f"--volume={cache_dir}:/tmp/.cache")
+            else:
+                print(
+                    f"Warning: the cache directory '{cache_dir}' is not writable by the current user, "
+                    "the pre-commit cache will not be persisted. "
+                    f"You can fix it with: sudo chown -R {uid}:{gid} '{cache_dir}'",
+                    file=sys.stderr,
+                )
 
         sys.exit(
             subprocess.call(
