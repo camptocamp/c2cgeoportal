@@ -1,3 +1,7 @@
+##### 2.9.0.625
+
+- Install setuptools to build the 2.9 wheels [c2cgeoportal#13572](https://github.com/camptocamp/c2cgeoportal/pull/13572)
+
 ##### 2.9.0.624
 
 - [Backport 2.9] Use the TRANSIFEX_TOKEN secret instead of the gopass store [c2cgeoportal#13503](https://github.com/camptocamp/c2cgeoportal/pull/13503)
