@@ -7,7 +7,7 @@ services:
     extends:
       file: docker-compose-lib.yaml
       service: qgisserver
-    image: camptocamp/qgis-server:${QGIS_VERSION}-desktop
+    image: ghcr.io/camptocamp/qgis-server:${QGIS_VERSION}-desktop
     user: root
     volumes_from:
       - config

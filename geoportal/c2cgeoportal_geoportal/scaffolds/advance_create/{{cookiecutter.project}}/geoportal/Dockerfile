@@ -23,7 +23,7 @@ CMD [ "webpack-dev-server", "--mode=development", "--debug", "--watch", "--no-in
 
 ###############################################################################
 
-FROM camptocamp/geomapfish:{{cookiecutter.geomapfish_major_version_tag_env}} as runner
+FROM ghcr.io/camptocamp/geomapfish:{{cookiecutter.geomapfish_major_version_tag_env}} as runner
 
 COPY requirements.txt /tmp/requirements.txt
 RUN --mount=type=cache,target=/root/.cache \
