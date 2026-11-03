@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2024, Camptocamp SA
+# Copyright (c) 2017-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -35,7 +35,7 @@ Revises: 9268a1dffac0
 Create Date: 2017-09-20 14:49:22.465328
 """
 
-import psycopg2
+import psycopg
 from alembic import op
 from c2c.template.config import config
 
@@ -58,7 +58,7 @@ def upgrade() -> None:
     ]:
         try:
             op.drop_constraint(f"{source}_{dest}_id_fkey", source, schema=schema)
-        except psycopg2.ProgrammingError as e:
+        except psycopg.ProgrammingError as e:
             print(e)
             print("The constraint will probably don't exists, so we continue.")
 

@@ -13,7 +13,6 @@ SQLAlchemy = "2.1.6" # commons
 "zope.sqlalchemy" = "4.1" # commons
 shapely = "2.2.0"
 cee-syslog-handler = "0.6.0"
-psycopg2 = "2.9.13"
 psycopg = { version = "3.3.6", extras = ["binary"] }
 crypt-r = {version = "3.13.1", python = ">=3.13"}
 pytz = "2026.6"
