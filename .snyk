@@ -6,4 +6,12 @@ ignore:
     - '*':
         reason: Not used in c2cgeoportal
         created: 2022-10-12T12:46:58.590Z
+  SNYK-PYTHON-SETUPTOOLS-17895075:
+    - '*':
+        reason: 'not compatible with used setuptools version: deform and c2cgeoform still import pkg_resources, removed in setuptools 82, no compatible release available'
+        created: 2026-11-04T13:22:57.000Z
+  SNYK-PYTHON-SETUPTOOLS-21689156:
+    - '*':
+        reason: 'not compatible with used setuptools version: deform and c2cgeoform still import pkg_resources, removed in setuptools 82, no compatible release available'
+        created: 2026-11-04T13:22:57.000Z
 patch: {}
