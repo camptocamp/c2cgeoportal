@@ -243,11 +243,11 @@ camptocamp/geomapfish-config:latest:
   ubuntu_26_04/libpam-modules-bin: 1.7.0-5ubuntu3.2
   ubuntu_26_04/libpam-runtime: 1.7.0-5ubuntu3.2
   ubuntu_26_04/libpam0g: 1.7.0-5ubuntu3.2
-  ubuntu_26_04/libpcre2-16-0: 10.46-1build1
-  ubuntu_26_04/libpcre2-32-0: 10.46-1build1
-  ubuntu_26_04/libpcre2-8-0: 10.46-1build1
-  ubuntu_26_04/libpcre2-dev: 10.46-1build1
-  ubuntu_26_04/libpcre2-posix3: 10.46-1build1
+  ubuntu_26_04/libpcre2-16-0: 10.46-1ubuntu0.1
+  ubuntu_26_04/libpcre2-32-0: 10.46-1ubuntu0.1
+  ubuntu_26_04/libpcre2-8-0: 10.46-1ubuntu0.1
+  ubuntu_26_04/libpcre2-dev: 10.46-1ubuntu0.1
+  ubuntu_26_04/libpcre2-posix3: 10.46-1ubuntu0.1
   ubuntu_26_04/libperl5.40: 5.40.1-7ubuntu0.3
   ubuntu_26_04/libpkgconf7: 2.5.1-4
   ubuntu_26_04/libpng-dev: 1.6.57-1ubuntu0.1
@@ -333,7 +333,7 @@ camptocamp/geomapfish-config:latest:
   ubuntu_26_04/libyuv0: 0.0.1922.20260106-1
   ubuntu_26_04/libzstd-dev: 1.5.7+dfsg-3
   ubuntu_26_04/libzstd1: 1.5.7+dfsg-3
-  ubuntu_26_04/linux-libc-dev: 7.0.0-38.38
+  ubuntu_26_04/linux-libc-dev: 7.0.0-42.42
   ubuntu_26_04/login: 1:4.16.0-2+really2.41.3-3ubuntu2.2
   ubuntu_26_04/login.defs: 1:4.17.4-2ubuntu3
   ubuntu_26_04/logsave: 1.47.2-3ubuntu4
@@ -618,8 +618,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.2:
   ubuntu_26_04/libpangocairo-1.0-0: 1.57.0-1
   ubuntu_26_04/libpangoft2-1.0-0: 1.57.0-1
   ubuntu_26_04/libpciaccess0: 0.18.1-1ubuntu4.1
-  ubuntu_26_04/libpcre2-16-0: 10.46-1build1
-  ubuntu_26_04/libpcre2-8-0: 10.46-1build1
+  ubuntu_26_04/libpcre2-16-0: 10.46-1ubuntu0.1
+  ubuntu_26_04/libpcre2-8-0: 10.46-1ubuntu0.1
   ubuntu_26_04/libperl5.40: 5.40.1-7ubuntu0.3
   ubuntu_26_04/libpgm-5.3-0t64: 5.3.128~dfsg-2.1build2
   ubuntu_26_04/libpipewire-0.3-0t64: 1.6.2-1ubuntu1.1
@@ -831,7 +831,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.2:
   ubuntu_26_04/libzvbi-common: 0.2.44-1ubuntu2
   ubuntu_26_04/libzvbi0t64: 0.2.44-1ubuntu2
   ubuntu_26_04/lighttpd: 1.4.82-2ubuntu2
-  ubuntu_26_04/linux-libc-dev: 7.0.0-38.38
+  ubuntu_26_04/linux-libc-dev: 7.0.0-42.42
   ubuntu_26_04/login: 1:4.16.0-2+really2.41.3-3ubuntu2.2
   ubuntu_26_04/login.defs: 1:4.17.4-2ubuntu3
   ubuntu_26_04/logsave: 1.47.2-3ubuntu4
@@ -1140,8 +1140,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.2-gdal3.13:
   ubuntu_26_04/libpangocairo-1.0-0: 1.57.0-1
   ubuntu_26_04/libpangoft2-1.0-0: 1.57.0-1
   ubuntu_26_04/libpciaccess0: 0.18.1-1ubuntu4.1
-  ubuntu_26_04/libpcre2-16-0: 10.46-1build1
-  ubuntu_26_04/libpcre2-8-0: 10.46-1build1
+  ubuntu_26_04/libpcre2-16-0: 10.46-1ubuntu0.1
+  ubuntu_26_04/libpcre2-8-0: 10.46-1ubuntu0.1
   ubuntu_26_04/libperl5.40: 5.40.1-7ubuntu0.3
   ubuntu_26_04/libpgm-5.3-0t64: 5.3.128~dfsg-2.1build2
   ubuntu_26_04/libpipewire-0.3-0t64: 1.6.2-1ubuntu1.1
@@ -1353,7 +1353,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.2-gdal3.13:
   ubuntu_26_04/libzvbi-common: 0.2.44-1ubuntu2
   ubuntu_26_04/libzvbi0t64: 0.2.44-1ubuntu2
   ubuntu_26_04/lighttpd: 1.4.82-2ubuntu2
-  ubuntu_26_04/linux-libc-dev: 7.0.0-38.38
+  ubuntu_26_04/linux-libc-dev: 7.0.0-42.42
   ubuntu_26_04/login: 1:4.16.0-2+really2.41.3-3ubuntu2.2
   ubuntu_26_04/login.defs: 1:4.17.4-2ubuntu3
   ubuntu_26_04/logsave: 1.47.2-3ubuntu4
@@ -1662,8 +1662,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_26_04/libpangocairo-1.0-0: 1.57.0-1
   ubuntu_26_04/libpangoft2-1.0-0: 1.57.0-1
   ubuntu_26_04/libpciaccess0: 0.18.1-1ubuntu4
-  ubuntu_26_04/libpcre2-16-0: 10.46-1build1
-  ubuntu_26_04/libpcre2-8-0: 10.46-1build1
+  ubuntu_26_04/libpcre2-16-0: 10.46-1ubuntu0.1
+  ubuntu_26_04/libpcre2-8-0: 10.46-1ubuntu0.1
   ubuntu_26_04/libperl5.40: 5.40.1-7ubuntu0.3
   ubuntu_26_04/libpgm-5.3-0t64: 5.3.128~dfsg-2.1build2
   ubuntu_26_04/libpipewire-0.3-0t64: 1.6.2-1ubuntu1.1
@@ -1875,7 +1875,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_26_04/libzvbi-common: 0.2.44-1ubuntu2
   ubuntu_26_04/libzvbi0t64: 0.2.44-1ubuntu2
   ubuntu_26_04/lighttpd: 1.4.82-2ubuntu2
-  ubuntu_26_04/linux-libc-dev: 7.0.0-38.38
+  ubuntu_26_04/linux-libc-dev: 7.0.0-42.42
   ubuntu_26_04/login: 1:4.16.0-2+really2.41.3-3ubuntu2.2
   ubuntu_26_04/login.defs: 1:4.17.4-2ubuntu3
   ubuntu_26_04/logsave: 1.47.2-3ubuntu4
@@ -2191,8 +2191,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_26_04/libpangocairo-1.0-0: 1.57.0-1
   ubuntu_26_04/libpangoft2-1.0-0: 1.57.0-1
   ubuntu_26_04/libpciaccess0: 0.18.1-1ubuntu4
-  ubuntu_26_04/libpcre2-16-0: 10.46-1build1
-  ubuntu_26_04/libpcre2-8-0: 10.46-1build1
+  ubuntu_26_04/libpcre2-16-0: 10.46-1ubuntu0.1
+  ubuntu_26_04/libpcre2-8-0: 10.46-1ubuntu0.1
   ubuntu_26_04/libperl5.40: 5.40.1-7ubuntu0.3
   ubuntu_26_04/libpgm-5.3-0t64: 5.3.128~dfsg-2.1build2
   ubuntu_26_04/libpipewire-0.3-0t64: 1.6.2-1ubuntu1.1
@@ -2408,7 +2408,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_26_04/libzvbi-common: 0.2.44-1ubuntu2
   ubuntu_26_04/libzvbi0t64: 0.2.44-1ubuntu2
   ubuntu_26_04/lighttpd: 1.4.82-2ubuntu2
-  ubuntu_26_04/linux-libc-dev: 7.0.0-38.38
+  ubuntu_26_04/linux-libc-dev: 7.0.0-42.42
   ubuntu_26_04/login: 1:4.16.0-2+really2.41.3-3ubuntu2.2
   ubuntu_26_04/login.defs: 1:4.17.4-2ubuntu3
   ubuntu_26_04/logsave: 1.47.2-3ubuntu4
@@ -2679,8 +2679,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/libpam-runtime: 1.5.3-5ubuntu5.7
   ubuntu_24_04/libpam0g: 1.5.3-5ubuntu5.7
   ubuntu_24_04/libpciaccess0: 0.17-3build1
-  ubuntu_24_04/libpcre2-16-0: 10.42-4ubuntu2.1
-  ubuntu_24_04/libpcre2-8-0: 10.42-4ubuntu2.1
+  ubuntu_24_04/libpcre2-16-0: 10.42-4ubuntu2.2
+  ubuntu_24_04/libpcre2-8-0: 10.42-4ubuntu2.2
   ubuntu_24_04/libperl5.38t64: 5.38.2-3.2ubuntu0.6
   ubuntu_24_04/libpixman-1-0: 0.42.2-1build1
   ubuntu_24_04/libpng16-16t64: 1.6.43-5ubuntu0.7
@@ -3124,8 +3124,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_26_04/libpangocairo-1.0-0: 1.57.0-1
   ubuntu_26_04/libpangoft2-1.0-0: 1.57.0-1
   ubuntu_26_04/libpciaccess0: 0.18.1-1ubuntu4
-  ubuntu_26_04/libpcre2-16-0: 10.46-1build1
-  ubuntu_26_04/libpcre2-8-0: 10.46-1build1
+  ubuntu_26_04/libpcre2-16-0: 10.46-1ubuntu0.1
+  ubuntu_26_04/libpcre2-8-0: 10.46-1ubuntu0.1
   ubuntu_26_04/libperl5.40: 5.40.1-7ubuntu0.3
   ubuntu_26_04/libpgm-5.3-0t64: 5.3.128~dfsg-2.1build2
   ubuntu_26_04/libpipewire-0.3-0t64: 1.6.2-1ubuntu1.1
@@ -3337,7 +3337,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_26_04/libzvbi-common: 0.2.44-1ubuntu2
   ubuntu_26_04/libzvbi0t64: 0.2.44-1ubuntu2
   ubuntu_26_04/lighttpd: 1.4.82-2ubuntu2
-  ubuntu_26_04/linux-libc-dev: 7.0.0-38.38
+  ubuntu_26_04/linux-libc-dev: 7.0.0-42.42
   ubuntu_26_04/login: 1:4.16.0-2+really2.41.3-3ubuntu2.2
   ubuntu_26_04/login.defs: 1:4.17.4-2ubuntu3
   ubuntu_26_04/logsave: 1.47.2-3ubuntu4
@@ -3420,9 +3420,9 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_26_04/base-passwd: 3.6.8
   ubuntu_26_04/bash: 5.3-2ubuntu1
   ubuntu_26_04/bash-completion: 1:2.16.0-8build1
-  ubuntu_26_04/bind9-dnsutils: 1:9.20.24-1ubuntu0.4
-  ubuntu_26_04/bind9-host: 1:9.20.24-1ubuntu0.4
-  ubuntu_26_04/bind9-libs: 1:9.20.24-1ubuntu0.4
+  ubuntu_26_04/bind9-dnsutils: 1:9.20.24-1ubuntu0.5
+  ubuntu_26_04/bind9-host: 1:9.20.24-1ubuntu0.5
+  ubuntu_26_04/bind9-libs: 1:9.20.24-1ubuntu0.5
   ubuntu_26_04/binutils: 2.46-3ubuntu2
   ubuntu_26_04/binutils-common: 2.46-3ubuntu2
   ubuntu_26_04/binutils-x86-64-linux-gnu: 2.46-3ubuntu2
@@ -3622,7 +3622,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_26_04/libpam0g: 1.7.0-5ubuntu3.2
   ubuntu_26_04/libpango-1.0-0: 1.57.0-1
   ubuntu_26_04/libpciaccess0: 0.18.1-1ubuntu4
-  ubuntu_26_04/libpcre2-8-0: 10.46-1build1
+  ubuntu_26_04/libpcre2-8-0: 10.46-1ubuntu0.1
   ubuntu_26_04/libperl5.40: 5.40.1-7ubuntu0.3
   ubuntu_26_04/libpixman-1-0: 0.46.4-1
   ubuntu_26_04/libpkgconf7: 2.5.1-4
@@ -3714,7 +3714,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_26_04/libxtst6: 2:1.2.5-1ubuntu0.1
   ubuntu_26_04/libxxhash0: 0.8.3-2build1
   ubuntu_26_04/libzstd1: 1.5.7+dfsg-3
-  ubuntu_26_04/linux-libc-dev: 7.0.0-38.38
+  ubuntu_26_04/linux-libc-dev: 7.0.0-42.42
   ubuntu_26_04/login: 1:4.16.0-2+really2.41.3-3ubuntu2.2
   ubuntu_26_04/login.defs: 1:4.17.4-2ubuntu3
   ubuntu_26_04/logsave: 1.47.2-3ubuntu4
@@ -4281,7 +4281,7 @@ camptocamp/geomapfish:latest:
   ubuntu_26_04/libpam0g: 1.7.0-5ubuntu3.2
   ubuntu_26_04/libpango-1.0-0: 1.57.0-1
   ubuntu_26_04/libpciaccess0: 0.18.1-1ubuntu4
-  ubuntu_26_04/libpcre2-8-0: 10.46-1build1
+  ubuntu_26_04/libpcre2-8-0: 10.46-1ubuntu0.1
   ubuntu_26_04/libperl5.40: 5.40.1-7ubuntu0.3
   ubuntu_26_04/libpixman-1-0: 0.46.4-1
   ubuntu_26_04/libpng16-16t64: 1.6.57-1ubuntu0.1
@@ -4905,7 +4905,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_26_04/libpam0g: 1.7.0-5ubuntu3.2
   ubuntu_26_04/libpango-1.0-0: 1.57.0-1
   ubuntu_26_04/libpciaccess0: 0.18.1-1ubuntu4
-  ubuntu_26_04/libpcre2-8-0: 10.46-1build1
+  ubuntu_26_04/libpcre2-8-0: 10.46-1ubuntu0.1
   ubuntu_26_04/libperl5.40: 5.40.1-7ubuntu0.3
   ubuntu_26_04/libpixman-1-0: 0.46.4-1
   ubuntu_26_04/libpng16-16t64: 1.6.57-1ubuntu0.1
