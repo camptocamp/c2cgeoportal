@@ -54,14 +54,21 @@ ITEM_TYPE_ROUTE_MAP = {
 }
 
 
+def _to_int(value: Any) -> Any:
+    """Convert a numeric string to an integer."""
+    if isinstance(value, str) and value.isdigit():
+        return int(value)
+    return value
+
+
 class ChildSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
     """Schema of the child nodes."""
 
     def objectify(self, dict_: Any, context: Any = None) -> Any:
         if dict_.get("id", None):
-            context = self.dbsession.query(LayergroupTreeitem).get(dict_["id"])
+            context = self.dbsession.query(LayergroupTreeitem).get(_to_int(dict_["id"]))
         context = super().objectify(dict_, context)
-        context.treeitem = self.dbsession.query(TreeItem).get(dict_["treeitem_id"])
+        context.treeitem = self.dbsession.query(TreeItem).get(_to_int(dict_["treeitem_id"]))
         return context
 
 
@@ -127,11 +134,12 @@ def treeitems(
 def children_validator(node: Any, cstruct: Any) -> None:
     """Get the validator on the children nodes."""
     for dict_ in cstruct:
-        if dict_["treeitem_id"] not in [item["id"] for item in node.candidates]:
+        treeitem_id = _to_int(dict_["treeitem_id"])
+        if treeitem_id not in [item["id"] for item in node.candidates]:
             raise colander.Invalid(
                 node,
                 _("Value {} does not exist in table {} or is not allowed to avoid cycles").format(
-                    dict_["treeitem_id"],
+                    treeitem_id,
                     TreeItem.__tablename__,
                 ),
             )
@@ -143,6 +151,7 @@ def base_deferred_parent_id_validator(node: Any, kw: Any, model: Any) -> colande
 
     def validator(node: Any, cstruct: Any) -> None:
         """Validate the parent ID."""
+        cstruct = _to_int(cstruct)
         if kw["dbsession"].query(model).filter(model.id == cstruct).count() == 0:
             raise colander.Invalid(node, f"Value {cstruct} does not exist in table {model.__tablename__}")
 

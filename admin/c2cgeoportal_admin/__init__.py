@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2025, Camptocamp SA
+# Copyright (c) 2017-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,7 @@ import zope.sqlalchemy
 from c2c.template.config import config as configuration
 from pkg_resources import resource_filename
 from pyramid.config import Configurator
-from pyramid.events import BeforeRender, NewRequest
+from pyramid.events import BeforeRender, ContextFound, NewRequest
 from sqlalchemy import engine_from_config
 from sqlalchemy.orm import configure_mappers, sessionmaker
 from transaction import TransactionManager
@@ -47,6 +47,24 @@ from c2cgeoportal_admin.views import IsAdminPredicate
 
 search_paths = (resource_filename(__name__, "templates/widgets"), *c2cgeoform.default_search_paths)
 c2cgeoform.default_search_paths = search_paths
+
+
+def _coerce_matchdict_ids(event: ContextFound) -> None:
+    """Convert the numeric IDs from the URL to integers.
+
+    c2cgeoform reads the primary key from the URL as a string and compares it to
+    the model's primary key column. psycopg3 sends typed parameters, so
+    PostgreSQL no longer implicitly casts the string to an integer. Convert the
+    IDs to integers before the views and validators use them.
+    """
+    matchdict = event.request.matchdict
+    if not matchdict:
+        return
+    for key in ("id", "group_id", "item_id"):
+        value = matchdict.get(key)
+        if isinstance(value, str) and value.isdigit():
+            matchdict[key] = int(value)
+
 
 _ = TranslationStringFactory("c2cgeoportal_admin")
 
@@ -150,6 +168,7 @@ def includeme(config: Configurator) -> None:
     config.include("pyramid_tm")
     config.add_translation_dirs("c2cgeoportal_admin:locale")
     config.add_view_predicate("is_admin", IsAdminPredicate)
+    config.add_subscriber(_coerce_matchdict_ids, ContextFound)
 
     configure_mappers()
 

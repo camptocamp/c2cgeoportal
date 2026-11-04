@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2025, Camptocamp SA
+# Copyright (c) 2017-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -69,7 +69,9 @@ class LayerTreeViews:
     @view_config(route_name="layertree_children", renderer="fast_json")  # type: ignore[untyped-decorator]
     def children(self) -> list[dict[str, Any]]:
         interface = self._request.params.get("interface", None)
-        group_id = self._request.params.get("group_id", None)
+        group_id: int | None = self._request.params.get("group_id", None)
+        if group_id is not None:
+            group_id = int(group_id)
         path = self._request.params.get("path", "")
 
         client_tsf = TranslationStringFactory(f"{self._request.registry.package_name}-client")
