@@ -1,3 +1,7 @@
+##### 2.10.rc.3
+
+- Audit Dpkg 2.10 [c2cgeoportal#13601](https://github.com/camptocamp/c2cgeoportal/pull/13601)
+
 ##### 2.10.rc.2
 
 - Audit Cleanup Renovate configuration for version 2.10 [c2cgeoportal#13420](https://github.com/camptocamp/c2cgeoportal/pull/13420)
