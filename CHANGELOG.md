@@ -1,3 +1,10 @@
+##### 2.8.1.397
+
+- Update all patch/minor versions (2.8) [ngeo#10261](https://github.com/camptocamp/ngeo/pull/10261)
+- Update dependency pre-commit to v4.7.0 (2.8) [ngeo#10262](https://github.com/camptocamp/ngeo/pull/10262)
+- Update dependency i18next-http-backend to v4.0.6 (2.8) [ngeo#10280](https://github.com/camptocamp/ngeo/pull/10280)
+- Use Python 3.11 in the CI [ngeo#10284](https://github.com/camptocamp/ngeo/pull/10284)
+
 ##### 2.8.1.396
 
 - [Backport 2.8] Use the TRANSIFEX_TOKEN secret instead of the gopass store [c2cgeoportal#13505](https://github.com/camptocamp/c2cgeoportal/pull/13505)
