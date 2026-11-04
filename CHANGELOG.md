@@ -1,3 +1,7 @@
+##### 2.8.1.399
+
+- Update dependency pylint to v4 [SECURITY] (2.8) [c2cgeoportal#13593](https://github.com/camptocamp/c2cgeoportal/pull/13593)
+
 ##### 2.8.1.398
 
 - Audit Snyk check/fix 2.8 [c2cgeoportal#13449](https://github.com/camptocamp/c2cgeoportal/pull/13449)
