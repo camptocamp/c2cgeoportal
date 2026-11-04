@@ -1,3 +1,20 @@
+##### 2.8.1.396
+
+- [Backport 2.8] Use the TRANSIFEX_TOKEN secret instead of the gopass store [c2cgeoportal#13505](https://github.com/camptocamp/c2cgeoportal/pull/13505)
+- Fix the images sources [c2cgeoportal#13516](https://github.com/camptocamp/c2cgeoportal/pull/13516)
+- Publish from a dedicated job with the dependencies locked by uv (2.8) [c2cgeoportal#13523](https://github.com/camptocamp/c2cgeoportal/pull/13523)
+- Set Git user an email [c2cgeoportal#13524](https://github.com/camptocamp/c2cgeoportal/pull/13524)
+- [Backport 2.8] Use the uv lock to publish the project [c2cgeoportal#13528](https://github.com/camptocamp/c2cgeoportal/pull/13528)
+- Audit Dpkg 2.8 [c2cgeoportal#13530](https://github.com/camptocamp/c2cgeoportal/pull/13530)
+- Update dependency pytz to v2026.6 (2.8) [c2cgeoportal#13534](https://github.com/camptocamp/c2cgeoportal/pull/13534)
+- Lock file maintenance (2.8) [c2cgeoportal#13562](https://github.com/camptocamp/c2cgeoportal/pull/13562)
+- Restore the Git identity lost with the gopass action (2.8) [c2cgeoportal#13567](https://github.com/camptocamp/c2cgeoportal/pull/13567)
+- Tag the created project images with the ghcr.io names [c2cgeoportal#13573](https://github.com/camptocamp/c2cgeoportal/pull/13573)
+- Make the large secret passphrase configurable [c2cgeoportal#13579](https://github.com/camptocamp/c2cgeoportal/pull/13579)
+- Update dependency i18next-http-backend to v4 [SECURITY] (2.8) [ngeo#10226](https://github.com/camptocamp/ngeo/pull/10226)
+- Disable the snyk check in the CI configuration [ngeo#10245](https://github.com/camptocamp/ngeo/pull/10245)
+- [Backport 2.8] Replace the gopass store by the TRANSIFEX_TOKEN and CHROMATIC_PROJECT_TOKEN secrets [ngeo#10251](https://github.com/camptocamp/ngeo/pull/10251)
+
 ##### 2.8.1.395
 
 - Audit Dpkg 2.8 [c2cgeoportal#13508](https://github.com/camptocamp/c2cgeoportal/pull/13508)
