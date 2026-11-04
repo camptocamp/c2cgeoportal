@@ -64,6 +64,11 @@ setup(
     url="https://github.com/camptocamp/c2cgeoportal/",
     keywords="web gis geoportail c2cgeoportal geocommune pyramid",
     packages=find_packages(exclude=["tests.*"]),
+    # ``pkg_resources`` was removed from setuptools 82 and later. This top-level
+    # compatibility shim keeps our dependencies (c2cgeoform, deform, lingua, ...)
+    # and our own code working without downgrading setuptools below the Snyk
+    # security floor.
+    py_modules=["pkg_resources"],
     package_data={
         "c2cgeoportal_commons": [
             "py.typed",
