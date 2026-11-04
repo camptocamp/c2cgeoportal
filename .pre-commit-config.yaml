@@ -130,13 +130,27 @@ repos:
       - id: black
         exclude: (^commons/c2cgeoportal_commons/alembic/script\.py\.mako$|.*\.rst$|.*\.rst.tmpl$|^geoportal/c2cgeoportal_geoportal/scaffolds/advance_create/{{cookiecutter.project}}/geoportal/{{cookiecutter.package}}_geoportal/__init__.py$)
   - repo: https://github.com/PyCQA/prospector
-    rev: v1.8.4
+    rev: v1.19.1
     hooks:
       - id: prospector
         additional_dependencies:
           - setuptools==78.1.1 # pypi
-          - pylint==2.16.0 # pypi
+          - pylint==4.0.9 # pypi
         args:
           - --tool=pydocstyle
           - --die-on-tool-error
           - --output-format=pylint
+        exclude: |-
+          (?x)(
+            ^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/\{\{cookiecutter.project\}\}/
+            |^tests?/?
+            |/tests?(/|$)
+            |.*/tests(/|$)
+            |(^|/)test_[_a-zA-Z0-9]+\.py$
+            |(^|/)[_a-zA-Z0-9]+_tests?\.py$
+            |(^|/)tests?\.py$
+            |^docker/qgisserver/
+            |^scripts/
+            |^bin/
+            |^ci/
+          )
