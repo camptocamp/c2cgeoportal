@@ -40,6 +40,7 @@ jobs:
 
     env:
       MAJOR_VERSION: '2.9'
+      PRE_COMMIT_HOME: /home/runner/.cache/pre-commit
 
     steps:
       # Previously configured by the removed gopass action, still required by the steps that
@@ -83,8 +84,11 @@ jobs:
       - uses: actions/cache@v4
         with:
           path: ~/.cache/pre-commit
-          key: pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
-          restore-keys: "pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}\npre-commit-"
+          key: pre-commit-${{ env.MAIN_BRANCH }}-${{ hashFiles('.pre-commit-config.yaml') }}
+          restore-keys: |
+            pre-commit-${{ env.MAIN_BRANCH }}-${{ hashFiles('.pre-commit-config.yaml') }}
+            pre-commit-${{ env.MAIN_BRANCH }}-
+            pre-commit-
       - run: pre-commit run --all-files
       - run: git diff --exit-code --patch > /tmp/pre-commit.patch || true
         if: failure()
