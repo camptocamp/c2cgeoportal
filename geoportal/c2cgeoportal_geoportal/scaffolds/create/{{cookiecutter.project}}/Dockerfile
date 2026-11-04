@@ -39,7 +39,7 @@ RUN \
 
 ###############################################################################
 
-FROM camptocamp/geomapfish-config:{{cookiecutter.geomapfish_major_version_tag_env}} AS gmf_config
+FROM ghcr.io/camptocamp/geomapfish-config:{{cookiecutter.geomapfish_major_version_tag_env}} AS gmf_config
 
 ARG PGSCHEMA
 ENV PGSCHEMA=$PGSCHEMA
