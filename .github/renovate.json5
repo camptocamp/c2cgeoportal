@@ -199,6 +199,20 @@
       matchDepNames: ['setuptools'],
       allowedVersions: '<81.0.0',
     },
+    /**
+     * Stop all setuptools updates, security remediations included, on the branches up to 2.10:
+     * setuptools >= 81 dropped pkg_resources which is still required by the pinned Pyramid and
+     * c2cgeoform, and setuptools >= 83 requires Python >= 3.10 while 2.7 and 2.8 support Python 3.9.
+     * The `force` is needed because vulnerability alert updates are merged with `force.enabled`
+     * and would otherwise override a plain `enabled: false`.
+     */
+    {
+      matchDepNames: ['setuptools'],
+      matchBaseBranches: ['2.7', '2.8', '2.9', '2.10'],
+      force: {
+        enabled: false,
+      },
+    },
     /** Requires dashboard approval for major updates */
     {
       matchUpdateTypes: ['major'],
