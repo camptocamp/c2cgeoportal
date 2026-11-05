@@ -40,6 +40,7 @@ jobs:
 
     env:
       MAJOR_VERSION: '2.8'
+      PRE_COMMIT_HOME: /home/runner/.cache/pre-commit
 
     steps:
       - run: '! ls BACKPORT_TODO'
@@ -69,8 +70,11 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: ~/.cache/pre-commit
-          key: pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}
-          restore-keys: "pre-commit-${{ hashFiles('.pre-commit-config.yaml') }}\npre-commit-"
+          key: pre-commit-${{ env.MAIN_BRANCH }}-${{ hashFiles('.pre-commit-config.yaml') }}
+          restore-keys: |
+            pre-commit-${{ env.MAIN_BRANCH }}-${{ hashFiles('.pre-commit-config.yaml') }}
+            pre-commit-${{ env.MAIN_BRANCH }}-
+            pre-commit-
       - run: pre-commit run --all-files
         env:
           SKIP: poetry-lock
