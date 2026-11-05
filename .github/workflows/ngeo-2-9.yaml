@@ -40,7 +40,6 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ env.MAIN_BRANCH }}
-          token: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
 
       - uses: actions/setup-python@v5
         with:
@@ -257,11 +256,12 @@ jobs:
           retention-days: 1
         if: failure()
 
+      # Needs Contents: write on the target repository, which GITHUB_TOKEN cannot provide.
       - name: Notify demo
         run: >
           curl --request POST --header "Content-Type: application/json"
           --header 'Accept: application/vnd.github.v3+json'
-          --header "Authorization: token ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}"
+          --header "Authorization: token ${{ secrets.GS_GMF_DISPATCH_TOKEN }}"
           https://api.github.com/repos/camptocamp/demo_geomapfish/dispatches
           --data '{"event_type": "geomapfish_${{ env.MAJOR_VERSION }}_updated",
             "client_payload": {"version": "'"${{ steps.version.outputs.upgrade_version }}"'"}}'

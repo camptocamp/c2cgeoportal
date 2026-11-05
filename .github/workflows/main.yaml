@@ -64,12 +64,6 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
-          token: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
-        if: env.HAS_SECRETS == 'HAS_SECRETS'
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          fetch-depth: 0
-        if: env.HAS_SECRETS != 'HAS_SECRETS'
 
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
@@ -347,11 +341,12 @@ jobs:
       - run: git reset --hard
         if: failure()
 
+      # Needs Contents: write on the target repository, which GITHUB_TOKEN cannot provide.
       - name: Notify demo
         run: >
           curl --request POST --header "Content-Type: application/json"
           --header 'Accept: application/vnd.github.v3+json'
-          --header "Authorization: token ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}"
+          --header "Authorization: token ${{ secrets.GS_GMF_DISPATCH_TOKEN }}"
           https://api.github.com/repos/camptocamp/demo_geomapfish/dispatches
           --data '{"event_type": "geomapfish_${{ env.MAJOR_VERSION }}_updated",
             "client_payload": {"version": "'"${{ steps.version.outputs.upgrade_version }}"'"}}'
