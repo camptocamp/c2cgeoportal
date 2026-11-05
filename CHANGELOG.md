@@ -1,3 +1,7 @@
+##### 2.8.1.400
+
+- [Backport 2.8] Set PRE_COMMIT_HOME and scope the pre-commit cache by branch [c2cgeoportal#13589](https://github.com/camptocamp/c2cgeoportal/pull/13589)
+
 ##### 2.8.1.399
 
 - Update dependency pylint to v4 [SECURITY] (2.8) [c2cgeoportal#13593](https://github.com/camptocamp/c2cgeoportal/pull/13593)
