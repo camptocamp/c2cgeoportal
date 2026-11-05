@@ -2,6 +2,10 @@
 version: v1.25.1
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
+  SNYK-PYTHON-MAKO-20510290:
+    - '*':
+        reason: not compatible with used Python version, Mako >= 1.4.0 requires Python >= 3.10, the vulnerability is a path traversal only exploitable on Windows and we only run on Linux
+        created: 2026-11-05T15:20:00.000Z
   SNYK-PYTHON-FILELOCK-21280749:
     - '*':
         reason: not compatible with used Python version, filelock >= 4.1.1 requires Python >= 3.11
