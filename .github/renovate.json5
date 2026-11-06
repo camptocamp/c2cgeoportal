@@ -159,6 +159,12 @@
       enabled: false,
       matchDepNames: ['pyproj'],
     },
+    /** Don't update pre-commit on the branches that still support Python < 3.11 (4.7.0 requires >= 3.11) */
+    {
+      matchBaseBranches: ['2.7', '2.8', '2.9'],
+      enabled: false,
+      matchDepNames: ['pre-commit'],
+    },
     /** Don't update the old workflow files */
     {
       matchFileNames: [
