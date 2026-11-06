@@ -68,7 +68,6 @@ jobs:
           restore-keys: |
             pre-commit-${{ env.MAIN_BRANCH }}-${{ hashFiles('.pre-commit-config.yaml') }}
             pre-commit-${{ env.MAIN_BRANCH }}-
-            pre-commit-
       - run: pre-commit run --all-files
         env:
           SKIP: poetry-lock
