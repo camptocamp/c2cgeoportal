@@ -1,3 +1,8 @@
+##### 2.10.rc.4
+
+- [Backport 2.10] Set PRE_COMMIT_HOME and scope the pre-commit cache by branch [c2cgeoportal#13590](https://github.com/camptocamp/c2cgeoportal/pull/13590)
+- [Backport 2.10] Doc: ngeo does not support COG layers [c2cgeoportal#13596](https://github.com/camptocamp/c2cgeoportal/pull/13596)
+
 ##### 2.10.rc.3
 
 - Audit Dpkg 2.10 [c2cgeoportal#13601](https://github.com/camptocamp/c2cgeoportal/pull/13601)
