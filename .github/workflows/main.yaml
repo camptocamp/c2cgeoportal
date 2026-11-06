@@ -45,12 +45,6 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-          token: ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}
-        if: env.HAS_SECRETS == 'HAS_SECRETS'
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-        if: env.HAS_SECRETS != 'HAS_SECRETS'
 
       - uses: actions/setup-python@v4
         with:
@@ -273,17 +267,6 @@ jobs:
           path: /tmp/dpkg-versions.patch
           retention-days: 1
         if: failure()
-      - name: Notify demo
-        run: >
-          curl --request POST --header "Content-Type: application/json"
-          --header 'Accept: application/vnd.github.v3+json'
-          --header "Authorization: token ${{ secrets.GOPASS_CI_GITHUB_TOKEN }}"
-          https://api.github.com/repos/camptocamp/demo_geomapfish/dispatches
-          --data '{"event_type": "geomapfish_${{ env.MAJOR_VERSION }}_updated",
-            "client_payload": {"version": "'"${{ steps.version.outputs.upgrade_version }}"'"}}'
-        if: >
-          github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
-          && env.HAS_SECRETS == 'HAS_SECRETS'
 
       - name: Publish to Transifex
         run: |
