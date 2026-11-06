@@ -30,4 +30,108 @@ ignore:
     - '*':
         reason: Plugin not compatible with new Poetry version
         created: 2026-04-23T07:35:20.423Z
+  SNYK-PYTHON-DULWICH-20416729:
+    - '*':
+        reason: not compatible with used Poetry version
+        created: 2026-11-06T21:30:00.000Z
+  SNYK-PYTHON-DULWICH-20416732:
+    - '*':
+        reason: not compatible with used Poetry version
+        created: 2026-11-06T21:30:00.000Z
+  SNYK-PYTHON-DULWICH-22220108:
+    - '*':
+        reason: not compatible with used Poetry version
+        created: 2026-11-06T21:30:00.000Z
+  SNYK-PYTHON-VIRTUALENV-20335491:
+    - '*':
+        reason: not compatible with used Poetry version
+        created: 2026-11-06T21:30:00.000Z
+  SNYK-PYTHON-VIRTUALENV-20335492:
+    - '*':
+        reason: not compatible with used Poetry version
+        created: 2026-11-06T21:30:00.000Z
+  SNYK-PYTHON-VIRTUALENV-20335493:
+    - '*':
+        reason: not compatible with used Poetry version
+        created: 2026-11-06T21:30:00.000Z
+  SNYK-PYTHON-VIRTUALENV-20335500:
+    - '*':
+        reason: not compatible with used Poetry version
+        created: 2026-11-06T21:30:00.000Z
+  SNYK-PYTHON-VIRTUALENV-21282339:
+    - '*':
+        reason: not compatible with used Poetry version
+        created: 2026-11-06T21:30:00.000Z
+  SNYK-PYTHON-VIRTUALENV-21282342:
+    - '*':
+        reason: not compatible with used Poetry version
+        created: 2026-11-06T21:30:00.000Z
+  SNYK-PYTHON-VIRTUALENV-21282424:
+    - '*':
+        reason: not compatible with used Poetry version
+        created: 2026-11-06T21:30:00.000Z
+  SNYK-PYTHON-VIRTUALENV-21282484:
+    - '*':
+        reason: not compatible with used Poetry version
+        created: 2026-11-06T21:30:00.000Z
+  SNYK-PYTHON-VIRTUALENV-21282509:
+    - '*':
+        reason: not compatible with used Poetry version
+        created: 2026-11-06T21:30:00.000Z
+  SNYK-PYTHON-FILELOCK-21280750:
+    - '*':
+        reason: not compatible with used Poetry version
+        created: 2026-11-06T21:30:00.000Z
+  SNYK-PYTHON-FILELOCK-21280753:
+    - '*':
+        reason: not compatible with used Poetry version
+        created: 2026-11-06T21:30:00.000Z
+  SNYK-PYTHON-FILELOCK-21280754:
+    - '*':
+        reason: not compatible with used Poetry version
+        created: 2026-11-06T21:30:00.000Z
+  SNYK-PYTHON-FILELOCK-21280755:
+    - '*':
+        reason: not compatible with used Poetry version
+        created: 2026-11-06T21:30:00.000Z
+  SNYK-PYTHON-FILELOCK-21280756:
+    - '*':
+        reason: not compatible with used Poetry version
+        created: 2026-11-06T21:30:00.000Z
+  SNYK-PYTHON-FILELOCK-21280759:
+    - '*':
+        reason: not compatible with used Poetry version
+        created: 2026-11-06T21:30:00.000Z
+  SNYK-PYTHON-FILELOCK-21280760:
+    - '*':
+        reason: not compatible with used Poetry version
+        created: 2026-11-06T21:30:00.000Z
+  SNYK-PYTHON-FILELOCK-21280761:
+    - '*':
+        reason: not compatible with used Poetry version
+        created: 2026-11-06T21:30:00.000Z
+  SNYK-PYTHON-FILELOCK-21689161:
+    - '*':
+        reason: not compatible with used Poetry version
+        created: 2026-11-06T21:30:00.000Z
+  SNYK-PYTHON-FILELOCK-21689162:
+    - '*':
+        reason: not compatible with used Poetry version
+        created: 2026-11-06T21:30:00.000Z
+  SNYK-PYTHON-FILELOCK-21802489:
+    - '*':
+        reason: not compatible with used Poetry version
+        created: 2026-11-06T21:30:00.000Z
+  SNYK-PYTHON-FILELOCK-21802490:
+    - '*':
+        reason: not compatible with used Poetry version
+        created: 2026-11-06T21:30:00.000Z
+  SNYK-PYTHON-FILELOCK-21802520:
+    - '*':
+        reason: not compatible with used Poetry version
+        created: 2026-11-06T21:30:00.000Z
+  SNYK-PYTHON-PYLINT-21433563:
+    - '*':
+        reason: pylint 4 requires the migration to prospector >= 1.19 that is not done on this branch
+        created: 2026-11-06T23:15:00.000Z
 patch: {}
