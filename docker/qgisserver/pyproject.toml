@@ -8,7 +8,7 @@ papyrus = "2.6.2" # commons
 transaction = "5.1" # commons
 "c2c.template" = "2.5.0"
 GeoAlchemy2 = "0.20.0"
-SQLAlchemy = "2.0.54" # commons
+SQLAlchemy = "2.1.6" # commons
 "zope.event" = "6.2" # commons
 "zope.sqlalchemy" = "4.1" # commons
 shapely = "2.2.0"
@@ -22,8 +22,8 @@ prospector = { version = "1.19.1", extras = ["with_mypy", "with_bandit", "with_r
 prospector-profile-duplicated = "1.12.0"
 prospector-profile-utils  = "1.27.0"
 ruff = "0.16.8"
-types-pyyaml = "6.0.12.20260906"
-pytest = "9.1.1"
+types-pyyaml = "6.0.12.20261030"
+pytest = "9.2.0"
 
 [project]
 name = 'c2cgeoportal'
