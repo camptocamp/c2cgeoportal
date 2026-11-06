@@ -318,3 +318,11 @@ controller file of your app:
     The ``constructor`` of a class is not modifiable. If you want to modify to logic inside a
     constructor, you must copy the original class to a new custom class and use it instead of the original one.
     In some cases, you may use inheritance (with the ``extends`` keyword) to limit the copy-paste.
+
+
+Limitations
+-----------
+
+Regarding the c2cgeoportal backend, ngeo has some limitations:
+
+ - It can't display COG layers.
