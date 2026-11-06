@@ -153,6 +153,16 @@
       enabled: false,
       matchDepNames: ['types-pyyaml'],
     },
+    /**
+     * Don't update Mako on branch 2.8, the CVE-2026-102991 remediation (Mako 1.4.2) requires
+     * Python >= 3.10 while the branch supports Python >= 3.9.2, < 3.11, and the CVE is ignored
+     * in the .snyk policy (path traversal via a drive-letter URI, Windows only).
+     */
+    {
+      matchBaseBranches: ['2.8'],
+      enabled: false,
+      matchDepNames: ['Mako'],
+    },
     /** Don't update pyproj on branch 2.9 */
     {
       matchBaseBranches: ['2.9'],
