@@ -130,4 +130,8 @@ ignore:
     - '*':
         reason: not compatible with used Poetry version
         created: 2026-11-06T21:30:00.000Z
+  SNYK-PYTHON-PYLINT-21433563:
+    - '*':
+        reason: pylint 4 requires the migration to prospector >= 1.19 that is not done on this branch
+        created: 2026-11-06T23:15:00.000Z
 patch: {}
