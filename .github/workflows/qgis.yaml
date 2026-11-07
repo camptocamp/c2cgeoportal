@@ -133,7 +133,7 @@ jobs:
           python-version: '3.11'
       # 1.3.4 because it requires githubkit >= 0.17.1, which pins hishel < 2.0.0
       # (githubkit 0.17.0 + hishel 2.0.0 fail to import).
-      - run: python3 -m pip install --user '--only-binary=:all:' tag-publish==1.3.4
+      - run: python3 -m pip install --user '--only-binary=:all:' 'tag-publish[docker]==1.3.4'
 
       - name: Publish feature branch
         run: >
