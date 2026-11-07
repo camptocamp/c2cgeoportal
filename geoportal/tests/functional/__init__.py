@@ -177,7 +177,7 @@ def teardown_common() -> None:
     models.DBSessions = {}
 
 
-def create_default_ogcserver(session: Session) -> "main.OGCServer":
+def create_default_ogcserver(session: Session) -> main.OGCServer:
     from c2cgeoportal_commons.models.main import OGCServer
 
     ogcserver = session.query(OGCServer).filter(OGCServer.name == "__test_ogc_server").one_or_none()
@@ -191,7 +191,7 @@ def create_default_ogcserver(session: Session) -> "main.OGCServer":
     return ogcserver
 
 
-def _get_user(username: str) -> "static.User":
+def _get_user(username: str) -> static.User:
     from c2cgeoportal_commons.models import DBSession
     from c2cgeoportal_commons.models.static import User
 

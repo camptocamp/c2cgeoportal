@@ -113,7 +113,7 @@ class TestThemesEditColumns(TestCase):
     def _create_layer(
         self,
         exclude_properties: bool = False,
-        metadatas: list["Metadata"] | None = None,
+        metadatas: list[Metadata] | None = None,
         geom_type: bool = False,
     ) -> int:
         """
