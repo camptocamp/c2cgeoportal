@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2025, Camptocamp SA
+# Copyright (c) 2018-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -155,10 +155,10 @@ class XSD:
             element_callback=element_callback,
         )
 
-    def __call__(self, table: str) -> Callable[[type[str] | type[bytes], dict[str, Any]], bytes | None]:
+    def __call__(self, table: str) -> Callable[[type[str | bytes], dict[str, Any]], bytes | None]:
         del table  # unused
 
-        def _render(cls: type[str] | type[bytes], system: dict[str, Any]) -> bytes | None:
+        def _render(cls: type[str | bytes], system: dict[str, Any]) -> bytes | None:
             request = system.get("request")
             if request is not None:
                 response = request.response

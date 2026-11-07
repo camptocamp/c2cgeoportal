@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2025, Camptocamp SA
+# Copyright (c) 2018-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -77,7 +77,7 @@ def get_protected_layers_query(
     return q
 
 
-def get_writable_layers_query(request: Request, ogc_server_ids: Iterable[int]) -> Query["main.LayerWMS"]:
+def get_writable_layers_query(request: Request, ogc_server_ids: Iterable[int]) -> Query[main.LayerWMS]:
     """Get the writable layers query."""
     from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
         main,
@@ -91,7 +91,7 @@ def get_writable_layers_query(request: Request, ogc_server_ids: Iterable[int]) -
     )
 
 
-def get_protected_layers(request: Request, ogc_server_ids: Iterable[int]) -> dict[int, "main.LayerWMS"]:
+def get_protected_layers(request: Request, ogc_server_ids: Iterable[int]) -> dict[int, main.LayerWMS]:
     """
     Get the protected layers.
 
@@ -110,7 +110,7 @@ def get_protected_layers(request: Request, ogc_server_ids: Iterable[int]) -> dic
     return {r.id: r for r in results}
 
 
-def get_writable_layers(request: Request, ogc_server_ids: Iterable[int]) -> dict[int, "main.LayerWMS"]:
+def get_writable_layers(request: Request, ogc_server_ids: Iterable[int]) -> dict[int, main.LayerWMS]:
     """Get the writable layers."""
     from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
         DBSession,
@@ -125,7 +125,7 @@ def get_writable_layers(request: Request, ogc_server_ids: Iterable[int]) -> dict
 
 
 @CACHE_REGION.cache_on_arguments()
-def get_private_layers(ogc_server_ids: Iterable[int]) -> dict[int, "main.LayerWMS"]:
+def get_private_layers(ogc_server_ids: Iterable[int]) -> dict[int, main.LayerWMS]:
     """Get the private layers."""
     from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
         DBSession,

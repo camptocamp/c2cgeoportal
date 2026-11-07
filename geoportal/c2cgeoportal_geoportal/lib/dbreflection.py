@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2025, Camptocamp SA
+# Copyright (c) 2011-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@ import random
 import threading
 import warnings
 from collections.abc import Iterable
-from typing import Any, Union
+from typing import Any
 
 import sqlalchemy.ext.declarative
 from papyrus.geo_interface import GeoInterface
@@ -71,7 +71,7 @@ class _AssociationProxy:
         self,
         obj: sqlalchemy.ext.declarative.ConcreteBase,
         type_: sqlalchemy.ext.declarative.DeclarativeMeta | None = None,
-    ) -> Union["_AssociationProxy", str] | None:
+    ) -> _AssociationProxy | str | None:
         if obj is None:
             # For "hybrid" descriptors that work both at the instance
             # and class levels we could return an SQL expression here.

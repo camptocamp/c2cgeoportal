@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2025, Camptocamp SA
+# Copyright (c) 2011-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -605,7 +605,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore[misc]
     def _import(
         object_type: type[Any],
         messages: list[str],
-        callback: Callable[["main.Layer", list[str]], None] | None = None,
+        callback: Callable[[main.Layer, list[str]], None] | None = None,
         has_interfaces: bool = True,
         name_regex: str = ".*",
     ) -> None:
@@ -644,7 +644,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore[misc]
             if callback is not None:
                 callback(item, messages)
 
-    def _import_layer_wms(self, layer: "main.Layer", messages: list[str]) -> None:
+    def _import_layer_wms(self, layer: main.Layer, messages: list[str]) -> None:
         server = layer.ogc_server
         url = server.url_wfs or server.url
         if url is None:
@@ -691,7 +691,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore[misc]
                 if _get_config_str("IGNORE_I18N_ERRORS", "FALSE") != "TRUE":
                     raise
 
-    def _import_layer_wmts(self, layer: "main.Layer", messages: list[str]) -> None:
+    def _import_layer_wmts(self, layer: main.Layer, messages: list[str]) -> None:
         from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             DBSession,
         )
@@ -732,7 +732,7 @@ class GeomapfishThemeExtractor(Extractor):  # type: ignore[misc]
     def _import_layer_attributes(
         self,
         url: str,
-        layer: "main.Layer",
+        layer: main.Layer,
         item_type: str,
         name: str,
         messages: list[str],
