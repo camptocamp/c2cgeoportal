@@ -1,3 +1,37 @@
+##### 2.9.0.627
+
+- Lock file maintenance (2.9) [c2cgeoportal#13428](https://github.com/camptocamp/c2cgeoportal/pull/13428)
+- [Backport 2.9] Set Git user an email [c2cgeoportal#13525](https://github.com/camptocamp/c2cgeoportal/pull/13525)
+- Set PRE_COMMIT_HOME and scope the pre-commit cache by branch [c2cgeoportal#13588](https://github.com/camptocamp/c2cgeoportal/pull/13588)
+- [Backport 2.9] Doc: ngeo does not support COG layers [c2cgeoportal#13597](https://github.com/camptocamp/c2cgeoportal/pull/13597)
+- Use a dedicated dispatch token instead of the gopass CI token [c2cgeoportal#13610](https://github.com/camptocamp/c2cgeoportal/pull/13610)
+- Update dependency @types/d3-selection to v3.0.12 (2.9) [ngeo#10218](https://github.com/camptocamp/ngeo/pull/10218)
+- Update dependency Mako to v1.4.2 [SECURITY] (2.9) [ngeo#10224](https://github.com/camptocamp/ngeo/pull/10224)
+- Update dependency i18next-http-backend to v4 [SECURITY] (2.9) [ngeo#10227](https://github.com/camptocamp/ngeo/pull/10227)
+- Audit Snyk check/fix 2.9 [ngeo#10232](https://github.com/camptocamp/ngeo/pull/10232)
+- Audit Snyk check/fix 2.9 [ngeo#10236](https://github.com/camptocamp/ngeo/pull/10236)
+- Update dependency storybook to v8.6.19 [SECURITY] (2.9) [ngeo#10239](https://github.com/camptocamp/ngeo/pull/10239)
+- Audit Snyk check/fix 2.9 [ngeo#10241](https://github.com/camptocamp/ngeo/pull/10241)
+- Audit Snyk check/fix 2.9 [ngeo#10243](https://github.com/camptocamp/ngeo/pull/10243)
+- Audit Snyk check/fix 2.9 [ngeo#10246](https://github.com/camptocamp/ngeo/pull/10246)
+- Audit Snyk check/fix 2.9 [ngeo#10256](https://github.com/camptocamp/ngeo/pull/10256)
+- Update all patch/minor versions (2.9) [ngeo#10263](https://github.com/camptocamp/ngeo/pull/10263)
+- Update dependency webpack-dev-server to v5.2.7 (2.9) [ngeo#10264](https://github.com/camptocamp/ngeo/pull/10264)
+- Update dependency pre-commit to v4.7.0 (2.9) [ngeo#10265](https://github.com/camptocamp/ngeo/pull/10265)
+- [Backport 2.9] Replace the gopass store by the TRANSIFEX_TOKEN and CHROMATIC_PROJECT_TOKEN secrets [ngeo#10283](https://github.com/camptocamp/ngeo/pull/10283)
+
+##### 2.9.0.625
+
+- Install setuptools to build the 2.9 wheels [c2cgeoportal#13572](https://github.com/camptocamp/c2cgeoportal/pull/13572)
+
+##### 2.9.0.624
+
+- [Backport 2.9] Use the TRANSIFEX_TOKEN secret instead of the gopass store [c2cgeoportal#13503](https://github.com/camptocamp/c2cgeoportal/pull/13503)
+- Publish from a dedicated job with the dependencies locked by uv (2.9) [c2cgeoportal#13522](https://github.com/camptocamp/c2cgeoportal/pull/13522)
+- Audit Dpkg 2.9 [c2cgeoportal#13531](https://github.com/camptocamp/c2cgeoportal/pull/13531)
+- Update dependency pytz to v2026.6 (2.9) [c2cgeoportal#13535](https://github.com/camptocamp/c2cgeoportal/pull/13535)
+- Restore the Git identity lost with the gopass action (2.9) [c2cgeoportal#13566](https://github.com/camptocamp/c2cgeoportal/pull/13566)
+
 ##### 2.9.0.623
 
 - [Backport 2.9] Migrate the scaffolded publishing to tag-publish with a uv locked environment [c2cgeoportal#13482](https://github.com/camptocamp/c2cgeoportal/pull/13482)
