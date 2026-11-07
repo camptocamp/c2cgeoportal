@@ -55,7 +55,7 @@ def view_committing_user(request):
 def view_displaying_users_nb(request):
     from c2cgeoportal_commons.models.static import User
 
-    users = request.dbsession.query(User).all()
+    users = request.dbsession.query(User).order_by(User.username).all()
     username = "None"
     if len(users) > 0:
         username = users[0].username
