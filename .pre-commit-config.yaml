@@ -50,7 +50,7 @@ repos:
       - id: canonicalize
       - id: uv-lock
         additional_dependencies:
-          - uv==0.13.4 # pypi
+          - uv==0.13.6 # pypi
         files: |-
           (?x)^(
             \.github/publish/pyproject\.toml
@@ -85,7 +85,7 @@ repos:
     hooks:
       - id: prettier
         additional_dependencies:
-          - prettier@3.9.9 # npm
+          - prettier@3.9.10 # npm
           - prettier-plugin-sh@0.20.2 # npm
           - prettier-plugin-toml@4.1.0 # npm
         exclude: |-
@@ -105,7 +105,7 @@ repos:
     hooks:
       - id: git-check
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.38.2
+    rev: 0.39.0
     hooks:
       - id: check-github-workflows
       - id: check-github-actions
@@ -127,7 +127,7 @@ repos:
             |geoportal/c2cgeoportal_geoportal/scaffolds/create/{{cookiecutter\.project}}/mapserver/data/TM_EUROPE_BORDERS-0.3\.sql
           )$
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.16.8
+    rev: v0.17.3
     hooks:
       - id: ruff-format
         args:
@@ -135,7 +135,7 @@ repos:
         exclude: |-
           ^geoportal/c2cgeoportal_geoportal/scaffolds/advance_create/{{cookiecutter.project}}/geoportal/{{cookiecutter.package}}_geoportal/__init__\.py$
   - repo: https://github.com/prospector-dev/prospector
-    rev: v1.19.1
+    rev: v1.20.0
     hooks:
       - id: prospector
         args:
@@ -147,8 +147,8 @@ repos:
         additional_dependencies:
           - prospector-profile-duplicated==1.12.0 # pypi
           - prospector-profile-utils==1.27.0 # pypi
-          - ruff==0.16.8 # pypi
-          - pylint[spelling]==4.0.9 # pypi
+          - ruff==0.17.3 # pypi
+          - pylint[spelling]==4.1.3 # pypi
         exclude: |-
           (?x)(
             ^tests?/?
@@ -167,7 +167,7 @@ repos:
           - --profile=utils:pre-commit
         additional_dependencies:
           - prospector-profile-utils==1.27.0 # pypi
-          - ruff==0.16.8 # pypi
+          - ruff==0.17.3 # pypi
         exclude: |-
           (?x)(
             geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/\{\{cookiecutter.project\}\}/.*
@@ -186,10 +186,10 @@ repos:
             |\.github/publish\.yaml
           )$
   - repo: https://github.com/renovatebot/pre-commit-hooks
-    rev: 44.113.0
+    rev: 44.198.3
     hooks:
       - id: renovate-config-validator
   - repo: https://github.com/sbrunner/python-versions-hook
-    rev: 1.4.1
+    rev: 1.7.0
     hooks:
       - id: python-versions
