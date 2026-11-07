@@ -86,7 +86,6 @@ jobs:
           restore-keys: |
             pre-commit-${{ env.MAIN_BRANCH }}-${{ hashFiles('.pre-commit-config.yaml') }}
             pre-commit-${{ env.MAIN_BRANCH }}-
-            pre-commit-
       - run: pre-commit run --all-files --color=always
       - run: git diff --exit-code --patch > /tmp/pre-commit.patch; git diff --color; git reset --hard || true
         if: failure()
