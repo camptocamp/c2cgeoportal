@@ -137,6 +137,7 @@ requests = "==2.33.0"
 setuptools = "==83.0.0"
 urllib3 = "==2.7.0"
 protobuf = "==5.29.6"
+fsspec = "==2026.6.0"
 
 [dev-packages]
 awscli = "==0.7.0"  # Work with Object storage
