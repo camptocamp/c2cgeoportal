@@ -1,10 +1,10 @@
 camptocamp/geomapfish-config:latest:
   ubuntu_22_04/adduser: 3.118ubuntu5
-  ubuntu_22_04/apt: 2.4.14
+  ubuntu_22_04/apt: 2.4.15ubuntu0.1
   ubuntu_22_04/base-passwd: 3.5.52build1
   ubuntu_22_04/bash: 5.1-6ubuntu1.1
   ubuntu_22_04/bsdutils: 1:2.37.2-4ubuntu3.6
-  ubuntu_22_04/ca-certificates: 20260816ubuntu0.22.04.1
+  ubuntu_22_04/ca-certificates: 20260816ubuntu0.22.04.2
   ubuntu_22_04/coreutils: 8.32-4.1ubuntu1.4
   ubuntu_22_04/dash: 0.5.11+git20210903+057cd650a4ed-3build1
   ubuntu_22_04/debconf: 1.5.79ubuntu1
@@ -21,7 +21,7 @@ camptocamp/geomapfish-config:latest:
   ubuntu_22_04/hostname: 3.23ubuntu2
   ubuntu_22_04/init-system-helpers: '1.62'
   ubuntu_22_04/libacl1: 2.3.1-1
-  ubuntu_22_04/libapt-pkg6.0: 2.4.14
+  ubuntu_22_04/libapt-pkg6.0: 2.4.15ubuntu0.1
   ubuntu_22_04/libattr1: 1:2.5.1-1ubuntu0.1
   ubuntu_22_04/libaudit-common: 1:3.0.7-1ubuntu0.1
   ubuntu_22_04/libaudit1: 1:3.0.7-1ubuntu0.1
@@ -63,7 +63,7 @@ camptocamp/geomapfish-config:latest:
   ubuntu_22_04/libpam-modules-bin: 1.4.0-11ubuntu2.8
   ubuntu_22_04/libpam-runtime: 1.4.0-11ubuntu2.8
   ubuntu_22_04/libpam0g: 1.4.0-11ubuntu2.8
-  ubuntu_22_04/libpcre2-8-0: 10.39-3ubuntu0.1
+  ubuntu_22_04/libpcre2-8-0: 10.39-3ubuntu0.2
   ubuntu_22_04/libpcre3: 2:8.39-13ubuntu0.22.04.1
   ubuntu_22_04/libprocps8: 2:3.3.17-6ubuntu2.1
   ubuntu_22_04/libpython3-stdlib: 3.10.6-1~22.04.1
@@ -127,14 +127,14 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28:
   ubuntu_22_04/apache2-bin: 2.4.52-1ubuntu4.25
   ubuntu_22_04/apache2-data: 2.4.52-1ubuntu4.25
   ubuntu_22_04/apache2-utils: 2.4.52-1ubuntu4.25
-  ubuntu_22_04/apt: 2.4.14
+  ubuntu_22_04/apt: 2.4.15ubuntu0.1
   ubuntu_22_04/base-passwd: 3.5.52build1
   ubuntu_22_04/bash: 5.1-6ubuntu1.1
   ubuntu_22_04/binutils: 2.38-4ubuntu2.12
   ubuntu_22_04/binutils-common: 2.38-4ubuntu2.12
   ubuntu_22_04/binutils-x86-64-linux-gnu: 2.38-4ubuntu2.12
   ubuntu_22_04/bsdutils: 1:2.37.2-4ubuntu3.6
-  ubuntu_22_04/ca-certificates: 20260816ubuntu0.22.04.1
+  ubuntu_22_04/ca-certificates: 20260816ubuntu0.22.04.2
   ubuntu_22_04/coreutils: 8.32-4.1ubuntu1.4
   ubuntu_22_04/cpp: 4:11.2.0-1ubuntu1
   ubuntu_22_04/cpp-11: 11.4.0-1ubuntu1~22.04.3
@@ -165,7 +165,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28:
   ubuntu_22_04/libaprutil1: 1.6.1-5ubuntu4.22.04.3
   ubuntu_22_04/libaprutil1-dbd-sqlite3: 1.6.1-5ubuntu4.22.04.3
   ubuntu_22_04/libaprutil1-ldap: 1.6.1-5ubuntu4.22.04.3
-  ubuntu_22_04/libapt-pkg6.0: 2.4.14
+  ubuntu_22_04/libapt-pkg6.0: 2.4.15ubuntu0.1
   ubuntu_22_04/libasan6: 11.4.0-1ubuntu1~22.04.3
   ubuntu_22_04/libatomic1: 12.3.0-1ubuntu1~22.04.3
   ubuntu_22_04/libattr1: 1:2.5.1-1ubuntu0.1
@@ -303,8 +303,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28:
   ubuntu_22_04/libpam-runtime: 1.4.0-11ubuntu2.8
   ubuntu_22_04/libpam0g: 1.4.0-11ubuntu2.8
   ubuntu_22_04/libpciaccess0: 0.16-3
-  ubuntu_22_04/libpcre2-16-0: 10.39-3ubuntu0.1
-  ubuntu_22_04/libpcre2-8-0: 10.39-3ubuntu0.1
+  ubuntu_22_04/libpcre2-16-0: 10.39-3ubuntu0.2
+  ubuntu_22_04/libpcre2-8-0: 10.39-3ubuntu0.2
   ubuntu_22_04/libpcre3: 2:8.39-13ubuntu0.22.04.1
   ubuntu_22_04/libperl5.34: 5.34.0-3ubuntu1.9
   ubuntu_22_04/libpixman-1-0: 0.40.0-1ubuntu0.22.04.1
@@ -468,7 +468,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28:
   ubuntu_22_04/python3-lib2to3: 3.10.8-1~22.04
   ubuntu_22_04/python3-minimal: 3.10.6-1~22.04.1
   ubuntu_22_04/python3-numpy: 1:1.21.5-1ubuntu22.04.1
-  ubuntu_22_04/python3-pil: 9.0.1-1ubuntu0.5
+  ubuntu_22_04/python3-pil: 9.0.1-1ubuntu0.6
   ubuntu_22_04/python3-pip: 22.0.2+dfsg-1ubuntu0.7
   ubuntu_22_04/python3-pkg-resources: 59.6.0-1.2ubuntu0.22.04.3
   ubuntu_22_04/python3-pyqt5: 5.15.6+dfsg-1ubuntu3
@@ -513,14 +513,14 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28-gdal3.6:
   ubuntu_22_04/apache2-bin: 2.4.52-1ubuntu4.25
   ubuntu_22_04/apache2-data: 2.4.52-1ubuntu4.25
   ubuntu_22_04/apache2-utils: 2.4.52-1ubuntu4.25
-  ubuntu_22_04/apt: 2.4.14
+  ubuntu_22_04/apt: 2.4.15ubuntu0.1
   ubuntu_22_04/base-passwd: 3.5.52build1
   ubuntu_22_04/bash: 5.1-6ubuntu1.1
   ubuntu_22_04/binutils: 2.38-4ubuntu2.12
   ubuntu_22_04/binutils-common: 2.38-4ubuntu2.12
   ubuntu_22_04/binutils-x86-64-linux-gnu: 2.38-4ubuntu2.12
   ubuntu_22_04/bsdutils: 1:2.37.2-4ubuntu3.6
-  ubuntu_22_04/ca-certificates: 20260816ubuntu0.22.04.1
+  ubuntu_22_04/ca-certificates: 20260816ubuntu0.22.04.2
   ubuntu_22_04/coreutils: 8.32-4.1ubuntu1.4
   ubuntu_22_04/cpp: 4:11.2.0-1ubuntu1
   ubuntu_22_04/cpp-11: 11.4.0-1ubuntu1~22.04.3
@@ -551,7 +551,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28-gdal3.6:
   ubuntu_22_04/libaprutil1: 1.6.1-5ubuntu4.22.04.3
   ubuntu_22_04/libaprutil1-dbd-sqlite3: 1.6.1-5ubuntu4.22.04.3
   ubuntu_22_04/libaprutil1-ldap: 1.6.1-5ubuntu4.22.04.3
-  ubuntu_22_04/libapt-pkg6.0: 2.4.14
+  ubuntu_22_04/libapt-pkg6.0: 2.4.15ubuntu0.1
   ubuntu_22_04/libasan6: 11.4.0-1ubuntu1~22.04.3
   ubuntu_22_04/libatomic1: 12.3.0-1ubuntu1~22.04.3
   ubuntu_22_04/libattr1: 1:2.5.1-1ubuntu0.1
@@ -686,8 +686,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28-gdal3.6:
   ubuntu_22_04/libpam-runtime: 1.4.0-11ubuntu2.8
   ubuntu_22_04/libpam0g: 1.4.0-11ubuntu2.8
   ubuntu_22_04/libpciaccess0: 0.16-3
-  ubuntu_22_04/libpcre2-16-0: 10.39-3ubuntu0.1
-  ubuntu_22_04/libpcre2-8-0: 10.39-3ubuntu0.1
+  ubuntu_22_04/libpcre2-16-0: 10.39-3ubuntu0.2
+  ubuntu_22_04/libpcre2-8-0: 10.39-3ubuntu0.2
   ubuntu_22_04/libpcre3: 2:8.39-13ubuntu0.22.04.1
   ubuntu_22_04/libperl5.34: 5.34.0-3ubuntu1.9
   ubuntu_22_04/libpixman-1-0: 0.40.0-1ubuntu0.22.04.1
@@ -892,14 +892,14 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28-gdal3.7:
   ubuntu_22_04/apache2-bin: 2.4.52-1ubuntu4.25
   ubuntu_22_04/apache2-data: 2.4.52-1ubuntu4.25
   ubuntu_22_04/apache2-utils: 2.4.52-1ubuntu4.25
-  ubuntu_22_04/apt: 2.4.14
+  ubuntu_22_04/apt: 2.4.15ubuntu0.1
   ubuntu_22_04/base-passwd: 3.5.52build1
   ubuntu_22_04/bash: 5.1-6ubuntu1.1
   ubuntu_22_04/binutils: 2.38-4ubuntu2.12
   ubuntu_22_04/binutils-common: 2.38-4ubuntu2.12
   ubuntu_22_04/binutils-x86-64-linux-gnu: 2.38-4ubuntu2.12
   ubuntu_22_04/bsdutils: 1:2.37.2-4ubuntu3.6
-  ubuntu_22_04/ca-certificates: 20260816ubuntu0.22.04.1
+  ubuntu_22_04/ca-certificates: 20260816ubuntu0.22.04.2
   ubuntu_22_04/coreutils: 8.32-4.1ubuntu1.4
   ubuntu_22_04/cpp: 4:11.2.0-1ubuntu1
   ubuntu_22_04/cpp-11: 11.4.0-1ubuntu1~22.04.3
@@ -930,7 +930,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28-gdal3.7:
   ubuntu_22_04/libaprutil1: 1.6.1-5ubuntu4.22.04.3
   ubuntu_22_04/libaprutil1-dbd-sqlite3: 1.6.1-5ubuntu4.22.04.3
   ubuntu_22_04/libaprutil1-ldap: 1.6.1-5ubuntu4.22.04.3
-  ubuntu_22_04/libapt-pkg6.0: 2.4.14
+  ubuntu_22_04/libapt-pkg6.0: 2.4.15ubuntu0.1
   ubuntu_22_04/libasan6: 11.4.0-1ubuntu1~22.04.3
   ubuntu_22_04/libatomic1: 12.3.0-1ubuntu1~22.04.3
   ubuntu_22_04/libattr1: 1:2.5.1-1ubuntu0.1
@@ -1068,8 +1068,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28-gdal3.7:
   ubuntu_22_04/libpam-runtime: 1.4.0-11ubuntu2.8
   ubuntu_22_04/libpam0g: 1.4.0-11ubuntu2.8
   ubuntu_22_04/libpciaccess0: 0.16-3
-  ubuntu_22_04/libpcre2-16-0: 10.39-3ubuntu0.1
-  ubuntu_22_04/libpcre2-8-0: 10.39-3ubuntu0.1
+  ubuntu_22_04/libpcre2-16-0: 10.39-3ubuntu0.2
+  ubuntu_22_04/libpcre2-8-0: 10.39-3ubuntu0.2
   ubuntu_22_04/libpcre3: 2:8.39-13ubuntu0.22.04.1
   ubuntu_22_04/libperl5.34: 5.34.0-3ubuntu1.9
   ubuntu_22_04/libpixman-1-0: 0.40.0-1ubuntu0.22.04.1
@@ -1233,7 +1233,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28-gdal3.7:
   ubuntu_22_04/python3-lib2to3: 3.10.8-1~22.04
   ubuntu_22_04/python3-minimal: 3.10.6-1~22.04.1
   ubuntu_22_04/python3-numpy: 1:1.21.5-1ubuntu22.04.1
-  ubuntu_22_04/python3-pil: 9.0.1-1ubuntu0.5
+  ubuntu_22_04/python3-pil: 9.0.1-1ubuntu0.6
   ubuntu_22_04/python3-pip: 22.0.2+dfsg-1ubuntu0.7
   ubuntu_22_04/python3-pkg-resources: 59.6.0-1.2ubuntu0.22.04.3
   ubuntu_22_04/python3-pyqt5: 5.15.6+dfsg-1ubuntu3
@@ -1278,14 +1278,14 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/apache2-bin: 2.4.52-1ubuntu4.25
   ubuntu_22_04/apache2-data: 2.4.52-1ubuntu4.25
   ubuntu_22_04/apache2-utils: 2.4.52-1ubuntu4.25
-  ubuntu_22_04/apt: 2.4.14
+  ubuntu_22_04/apt: 2.4.15ubuntu0.1
   ubuntu_22_04/base-passwd: 3.5.52build1
   ubuntu_22_04/bash: 5.1-6ubuntu1.1
   ubuntu_22_04/binutils: 2.38-4ubuntu2.12
   ubuntu_22_04/binutils-common: 2.38-4ubuntu2.12
   ubuntu_22_04/binutils-x86-64-linux-gnu: 2.38-4ubuntu2.12
   ubuntu_22_04/bsdutils: 1:2.37.2-4ubuntu3.6
-  ubuntu_22_04/ca-certificates: 20260816ubuntu0.22.04.1
+  ubuntu_22_04/ca-certificates: 20260816ubuntu0.22.04.2
   ubuntu_22_04/coreutils: 8.32-4.1ubuntu1.4
   ubuntu_22_04/cpp: 4:11.2.0-1ubuntu1
   ubuntu_22_04/cpp-11: 11.4.0-1ubuntu1~22.04.3
@@ -1320,7 +1320,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libaprutil1: 1.6.1-5ubuntu4.22.04.3
   ubuntu_22_04/libaprutil1-dbd-sqlite3: 1.6.1-5ubuntu4.22.04.3
   ubuntu_22_04/libaprutil1-ldap: 1.6.1-5ubuntu4.22.04.3
-  ubuntu_22_04/libapt-pkg6.0: 2.4.14
+  ubuntu_22_04/libapt-pkg6.0: 2.4.15ubuntu0.1
   ubuntu_22_04/libarmadillo10: 1:10.8.2+dfsg-1
   ubuntu_22_04/libarpack2: 3.8.0-1
   ubuntu_22_04/libasan6: 11.4.0-1ubuntu1~22.04.3
@@ -1492,8 +1492,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libpam-runtime: 1.4.0-11ubuntu2.8
   ubuntu_22_04/libpam0g: 1.4.0-11ubuntu2.8
   ubuntu_22_04/libpciaccess0: 0.16-3
-  ubuntu_22_04/libpcre2-16-0: 10.39-3ubuntu0.1
-  ubuntu_22_04/libpcre2-8-0: 10.39-3ubuntu0.1
+  ubuntu_22_04/libpcre2-16-0: 10.39-3ubuntu0.2
+  ubuntu_22_04/libpcre2-8-0: 10.39-3ubuntu0.2
   ubuntu_22_04/libpcre3: 2:8.39-13ubuntu0.22.04.1
   ubuntu_22_04/libpdal-base13: 2.3.0+ds-2ubuntu4
   ubuntu_22_04/libpdal-util13: 2.3.0+ds-2ubuntu4
@@ -1674,7 +1674,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/python3-lib2to3: 3.10.8-1~22.04
   ubuntu_22_04/python3-minimal: 3.10.6-1~22.04.1
   ubuntu_22_04/python3-numpy: 1:1.21.5-1ubuntu22.04.1
-  ubuntu_22_04/python3-pil: 9.0.1-1ubuntu0.5
+  ubuntu_22_04/python3-pil: 9.0.1-1ubuntu0.6
   ubuntu_22_04/python3-pip: 22.0.2+dfsg-1ubuntu0.7
   ubuntu_22_04/python3-pkg-resources: 59.6.0-1.2ubuntu0.22.04.3
   ubuntu_22_04/python3-pyqt5: 5.15.6+dfsg-1ubuntu3
@@ -1721,14 +1721,14 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.7:
   ubuntu_22_04/apache2-bin: 2.4.52-1ubuntu4.25
   ubuntu_22_04/apache2-data: 2.4.52-1ubuntu4.25
   ubuntu_22_04/apache2-utils: 2.4.52-1ubuntu4.25
-  ubuntu_22_04/apt: 2.4.14
+  ubuntu_22_04/apt: 2.4.15ubuntu0.1
   ubuntu_22_04/base-passwd: 3.5.52build1
   ubuntu_22_04/bash: 5.1-6ubuntu1.1
   ubuntu_22_04/binutils: 2.38-4ubuntu2.12
   ubuntu_22_04/binutils-common: 2.38-4ubuntu2.12
   ubuntu_22_04/binutils-x86-64-linux-gnu: 2.38-4ubuntu2.12
   ubuntu_22_04/bsdutils: 1:2.37.2-4ubuntu3.6
-  ubuntu_22_04/ca-certificates: 20260816ubuntu0.22.04.1
+  ubuntu_22_04/ca-certificates: 20260816ubuntu0.22.04.2
   ubuntu_22_04/coreutils: 8.32-4.1ubuntu1.4
   ubuntu_22_04/cpp: 4:11.2.0-1ubuntu1
   ubuntu_22_04/cpp-11: 11.4.0-1ubuntu1~22.04.3
@@ -1763,7 +1763,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.7:
   ubuntu_22_04/libaprutil1: 1.6.1-5ubuntu4.22.04.3
   ubuntu_22_04/libaprutil1-dbd-sqlite3: 1.6.1-5ubuntu4.22.04.3
   ubuntu_22_04/libaprutil1-ldap: 1.6.1-5ubuntu4.22.04.3
-  ubuntu_22_04/libapt-pkg6.0: 2.4.14
+  ubuntu_22_04/libapt-pkg6.0: 2.4.15ubuntu0.1
   ubuntu_22_04/libarmadillo10: 1:10.8.2+dfsg-1
   ubuntu_22_04/libarpack2: 3.8.0-1
   ubuntu_22_04/libasan6: 11.4.0-1ubuntu1~22.04.3
@@ -1935,8 +1935,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.7:
   ubuntu_22_04/libpam-runtime: 1.4.0-11ubuntu2.8
   ubuntu_22_04/libpam0g: 1.4.0-11ubuntu2.8
   ubuntu_22_04/libpciaccess0: 0.16-3
-  ubuntu_22_04/libpcre2-16-0: 10.39-3ubuntu0.1
-  ubuntu_22_04/libpcre2-8-0: 10.39-3ubuntu0.1
+  ubuntu_22_04/libpcre2-16-0: 10.39-3ubuntu0.2
+  ubuntu_22_04/libpcre2-8-0: 10.39-3ubuntu0.2
   ubuntu_22_04/libpcre3: 2:8.39-13ubuntu0.22.04.1
   ubuntu_22_04/libpdal-base13: 2.3.0+ds-2ubuntu4
   ubuntu_22_04/libpdal-util13: 2.3.0+ds-2ubuntu4
@@ -2117,7 +2117,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.7:
   ubuntu_22_04/python3-lib2to3: 3.10.8-1~22.04
   ubuntu_22_04/python3-minimal: 3.10.6-1~22.04.1
   ubuntu_22_04/python3-numpy: 1:1.21.5-1ubuntu22.04.1
-  ubuntu_22_04/python3-pil: 9.0.1-1ubuntu0.5
+  ubuntu_22_04/python3-pil: 9.0.1-1ubuntu0.6
   ubuntu_22_04/python3-pip: 22.0.2+dfsg-1ubuntu0.7
   ubuntu_22_04/python3-pkg-resources: 59.6.0-1.2ubuntu0.22.04.3
   ubuntu_22_04/python3-pyqt5: 5.15.6+dfsg-1ubuntu3
@@ -2164,14 +2164,14 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/apache2-bin: 2.4.52-1ubuntu4.25
   ubuntu_22_04/apache2-data: 2.4.52-1ubuntu4.25
   ubuntu_22_04/apache2-utils: 2.4.52-1ubuntu4.25
-  ubuntu_22_04/apt: 2.4.14
+  ubuntu_22_04/apt: 2.4.15ubuntu0.1
   ubuntu_22_04/base-passwd: 3.5.52build1
   ubuntu_22_04/bash: 5.1-6ubuntu1.1
   ubuntu_22_04/binutils: 2.38-4ubuntu2.12
   ubuntu_22_04/binutils-common: 2.38-4ubuntu2.12
   ubuntu_22_04/binutils-x86-64-linux-gnu: 2.38-4ubuntu2.12
   ubuntu_22_04/bsdutils: 1:2.37.2-4ubuntu3.6
-  ubuntu_22_04/ca-certificates: 20260816ubuntu0.22.04.1
+  ubuntu_22_04/ca-certificates: 20260816ubuntu0.22.04.2
   ubuntu_22_04/coreutils: 8.32-4.1ubuntu1.4
   ubuntu_22_04/cpp: 4:11.2.0-1ubuntu1
   ubuntu_22_04/cpp-11: 11.4.0-1ubuntu1~22.04.3
@@ -2206,7 +2206,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libaprutil1: 1.6.1-5ubuntu4.22.04.3
   ubuntu_22_04/libaprutil1-dbd-sqlite3: 1.6.1-5ubuntu4.22.04.3
   ubuntu_22_04/libaprutil1-ldap: 1.6.1-5ubuntu4.22.04.3
-  ubuntu_22_04/libapt-pkg6.0: 2.4.14
+  ubuntu_22_04/libapt-pkg6.0: 2.4.15ubuntu0.1
   ubuntu_22_04/libarmadillo10: 1:10.8.2+dfsg-1
   ubuntu_22_04/libarpack2: 3.8.0-1
   ubuntu_22_04/libasan6: 11.4.0-1ubuntu1~22.04.3
@@ -2378,8 +2378,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libpam-runtime: 1.4.0-11ubuntu2.8
   ubuntu_22_04/libpam0g: 1.4.0-11ubuntu2.8
   ubuntu_22_04/libpciaccess0: 0.16-3
-  ubuntu_22_04/libpcre2-16-0: 10.39-3ubuntu0.1
-  ubuntu_22_04/libpcre2-8-0: 10.39-3ubuntu0.1
+  ubuntu_22_04/libpcre2-16-0: 10.39-3ubuntu0.2
+  ubuntu_22_04/libpcre2-8-0: 10.39-3ubuntu0.2
   ubuntu_22_04/libpcre3: 2:8.39-13ubuntu0.22.04.1
   ubuntu_22_04/libpdal-base13: 2.3.0+ds-2ubuntu4
   ubuntu_22_04/libpdal-util13: 2.3.0+ds-2ubuntu4
@@ -2560,7 +2560,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/python3-lib2to3: 3.10.8-1~22.04
   ubuntu_22_04/python3-minimal: 3.10.6-1~22.04.1
   ubuntu_22_04/python3-numpy: 1:1.21.5-1ubuntu22.04.1
-  ubuntu_22_04/python3-pil: 9.0.1-1ubuntu0.5
+  ubuntu_22_04/python3-pil: 9.0.1-1ubuntu0.6
   ubuntu_22_04/python3-pip: 22.0.2+dfsg-1ubuntu0.7
   ubuntu_22_04/python3-pkg-resources: 59.6.0-1.2ubuntu0.22.04.3
   ubuntu_22_04/python3-pyqt5: 5.15.6+dfsg-1ubuntu3
@@ -2604,17 +2604,17 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
 camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/adduser: 3.118ubuntu5
   ubuntu_22_04/adwaita-icon-theme: 41.0-1ubuntu1
-  ubuntu_22_04/apt: 2.4.14
-  ubuntu_22_04/apt-transport-https: 2.4.14
-  ubuntu_22_04/apt-utils: 2.4.14
+  ubuntu_22_04/apt: 2.4.15ubuntu0.1
+  ubuntu_22_04/apt-transport-https: 2.4.15ubuntu0.1
+  ubuntu_22_04/apt-utils: 2.4.15ubuntu0.1
   ubuntu_22_04/base-passwd: 3.5.52build1
   ubuntu_22_04/bash: 5.1-6ubuntu1.1
   ubuntu_22_04/bash-completion: 1:2.11-5ubuntu1
-  ubuntu_22_04/bind9-dnsutils: 1:9.18.39-0ubuntu0.22.04.7
-  ubuntu_22_04/bind9-host: 1:9.18.39-0ubuntu0.22.04.7
-  ubuntu_22_04/bind9-libs: 1:9.18.39-0ubuntu0.22.04.7
+  ubuntu_22_04/bind9-dnsutils: 1:9.18.39-0ubuntu0.22.04.8
+  ubuntu_22_04/bind9-host: 1:9.18.39-0ubuntu0.22.04.8
+  ubuntu_22_04/bind9-libs: 1:9.18.39-0ubuntu0.22.04.8
   ubuntu_22_04/bsdutils: 1:2.37.2-4ubuntu3.6
-  ubuntu_22_04/ca-certificates: 20260816ubuntu0.22.04.1
+  ubuntu_22_04/ca-certificates: 20260816ubuntu0.22.04.2
   ubuntu_22_04/coreutils: 8.32-4.1ubuntu1.4
   ubuntu_22_04/curl: 7.81.0-1ubuntu1.30
   ubuntu_22_04/dash: 0.5.11+git20210903+057cd650a4ed-3build1
@@ -2626,7 +2626,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/debianutils: 5.5-1ubuntu2
   ubuntu_22_04/diffutils: 1:3.8-0ubuntu2.1
   ubuntu_22_04/dirmngr: 2.2.27-3ubuntu2.5
-  ubuntu_22_04/dnsutils: 1:9.18.39-0ubuntu0.22.04.7
+  ubuntu_22_04/dnsutils: 1:9.18.39-0ubuntu0.22.04.8
   ubuntu_22_04/dpkg: 1.21.1ubuntu2.6
   ubuntu_22_04/e2fsprogs: 1.46.5-2ubuntu1.2
   ubuntu_22_04/editorconfig: 0.12.5-2
@@ -2662,7 +2662,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/less: 590-1ubuntu0.22.04.3
   ubuntu_22_04/libacl1: 2.3.1-1
   ubuntu_22_04/libapparmor1: 3.0.4-2ubuntu2.5
-  ubuntu_22_04/libapt-pkg6.0: 2.4.14
+  ubuntu_22_04/libapt-pkg6.0: 2.4.15ubuntu0.1
   ubuntu_22_04/libargon2-1: 0~20171227-0.3
   ubuntu_22_04/libasound2: 1.2.6.1-1ubuntu1.2
   ubuntu_22_04/libasound2-data: 1.2.6.1-1ubuntu1.2
@@ -2813,7 +2813,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/libpangocairo-1.0-0: 1.50.6+ds-2ubuntu1
   ubuntu_22_04/libpangoft2-1.0-0: 1.50.6+ds-2ubuntu1
   ubuntu_22_04/libpathplan4: 2.42.2-6ubuntu0.1
-  ubuntu_22_04/libpcre2-8-0: 10.39-3ubuntu0.1
+  ubuntu_22_04/libpcre2-8-0: 10.39-3ubuntu0.2
   ubuntu_22_04/libpcre3: 2:8.39-13ubuntu0.22.04.1
   ubuntu_22_04/libperl5.34: 5.34.0-3ubuntu1.9
   ubuntu_22_04/libpixman-1-0: 0.40.0-1ubuntu0.22.04.1
@@ -2943,7 +2943,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/python3-lib2to3: 3.10.8-1~22.04
   ubuntu_22_04/python3-minimal: 3.10.6-1~22.04.1
   ubuntu_22_04/python3-numpy: 1:1.21.5-1ubuntu22.04.1
-  ubuntu_22_04/python3-pil: 9.0.1-1ubuntu0.5
+  ubuntu_22_04/python3-pil: 9.0.1-1ubuntu0.6
   ubuntu_22_04/python3-pip: 22.0.2+dfsg-1ubuntu0.7
   ubuntu_22_04/python3-pkg-resources: 59.6.0-1.2ubuntu0.22.04.3
   ubuntu_22_04/python3-setuptools: 59.6.0-1.2ubuntu0.22.04.3
@@ -2991,13 +2991,13 @@ camptocamp/geomapfish-tools:latest:
 camptocamp/geomapfish:latest:
   ubuntu_22_04/adduser: 3.118ubuntu5
   ubuntu_22_04/adwaita-icon-theme: 41.0-1ubuntu1
-  ubuntu_22_04/apt: 2.4.14
-  ubuntu_22_04/apt-transport-https: 2.4.14
-  ubuntu_22_04/apt-utils: 2.4.14
+  ubuntu_22_04/apt: 2.4.15ubuntu0.1
+  ubuntu_22_04/apt-transport-https: 2.4.15ubuntu0.1
+  ubuntu_22_04/apt-utils: 2.4.15ubuntu0.1
   ubuntu_22_04/base-passwd: 3.5.52build1
   ubuntu_22_04/bash: 5.1-6ubuntu1.1
   ubuntu_22_04/bsdutils: 1:2.37.2-4ubuntu3.6
-  ubuntu_22_04/ca-certificates: 20260816ubuntu0.22.04.1
+  ubuntu_22_04/ca-certificates: 20260816ubuntu0.22.04.2
   ubuntu_22_04/coreutils: 8.32-4.1ubuntu1.4
   ubuntu_22_04/curl: 7.81.0-1ubuntu1.30
   ubuntu_22_04/dash: 0.5.11+git20210903+057cd650a4ed-3build1
@@ -3038,7 +3038,7 @@ camptocamp/geomapfish:latest:
   ubuntu_22_04/less: 590-1ubuntu0.22.04.3
   ubuntu_22_04/libacl1: 2.3.1-1
   ubuntu_22_04/libapparmor1: 3.0.4-2ubuntu2.5
-  ubuntu_22_04/libapt-pkg6.0: 2.4.14
+  ubuntu_22_04/libapt-pkg6.0: 2.4.15ubuntu0.1
   ubuntu_22_04/libargon2-1: 0~20171227-0.3
   ubuntu_22_04/libasound2: 1.2.6.1-1ubuntu1.2
   ubuntu_22_04/libasound2-data: 1.2.6.1-1ubuntu1.2
@@ -3171,7 +3171,7 @@ camptocamp/geomapfish:latest:
   ubuntu_22_04/libpangocairo-1.0-0: 1.50.6+ds-2ubuntu1
   ubuntu_22_04/libpangoft2-1.0-0: 1.50.6+ds-2ubuntu1
   ubuntu_22_04/libpathplan4: 2.42.2-6ubuntu0.1
-  ubuntu_22_04/libpcre2-8-0: 10.39-3ubuntu0.1
+  ubuntu_22_04/libpcre2-8-0: 10.39-3ubuntu0.2
   ubuntu_22_04/libpcre3: 2:8.39-13ubuntu0.22.04.1
   ubuntu_22_04/libperl5.34: 5.34.0-3ubuntu1.9
   ubuntu_22_04/libpixman-1-0: 0.40.0-1ubuntu0.22.04.1
@@ -3283,7 +3283,7 @@ camptocamp/geomapfish:latest:
   ubuntu_22_04/python3-lib2to3: 3.10.8-1~22.04
   ubuntu_22_04/python3-minimal: 3.10.6-1~22.04.1
   ubuntu_22_04/python3-numpy: 1:1.21.5-1ubuntu22.04.1
-  ubuntu_22_04/python3-pil: 9.0.1-1ubuntu0.5
+  ubuntu_22_04/python3-pil: 9.0.1-1ubuntu0.6
   ubuntu_22_04/python3-pip: 22.0.2+dfsg-1ubuntu0.7
   ubuntu_22_04/python3-pkg-resources: 59.6.0-1.2ubuntu0.22.04.3
   ubuntu_22_04/python3-setuptools: 59.6.0-1.2ubuntu0.22.04.3
@@ -3312,13 +3312,13 @@ camptocamp/geomapfish:latest:
 camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_22_04/adduser: 3.118ubuntu5
   ubuntu_22_04/adwaita-icon-theme: 41.0-1ubuntu1
-  ubuntu_22_04/apt: 2.4.14
-  ubuntu_22_04/apt-transport-https: 2.4.14
-  ubuntu_22_04/apt-utils: 2.4.14
+  ubuntu_22_04/apt: 2.4.15ubuntu0.1
+  ubuntu_22_04/apt-transport-https: 2.4.15ubuntu0.1
+  ubuntu_22_04/apt-utils: 2.4.15ubuntu0.1
   ubuntu_22_04/base-passwd: 3.5.52build1
   ubuntu_22_04/bash: 5.1-6ubuntu1.1
   ubuntu_22_04/bsdutils: 1:2.37.2-4ubuntu3.6
-  ubuntu_22_04/ca-certificates: 20260816ubuntu0.22.04.1
+  ubuntu_22_04/ca-certificates: 20260816ubuntu0.22.04.2
   ubuntu_22_04/coreutils: 8.32-4.1ubuntu1.4
   ubuntu_22_04/curl: 7.81.0-1ubuntu1.30
   ubuntu_22_04/dash: 0.5.11+git20210903+057cd650a4ed-3build1
@@ -3359,7 +3359,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_22_04/less: 590-1ubuntu0.22.04.3
   ubuntu_22_04/libacl1: 2.3.1-1
   ubuntu_22_04/libapparmor1: 3.0.4-2ubuntu2.5
-  ubuntu_22_04/libapt-pkg6.0: 2.4.14
+  ubuntu_22_04/libapt-pkg6.0: 2.4.15ubuntu0.1
   ubuntu_22_04/libargon2-1: 0~20171227-0.3
   ubuntu_22_04/libasound2: 1.2.6.1-1ubuntu1.2
   ubuntu_22_04/libasound2-data: 1.2.6.1-1ubuntu1.2
@@ -3492,7 +3492,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_22_04/libpangocairo-1.0-0: 1.50.6+ds-2ubuntu1
   ubuntu_22_04/libpangoft2-1.0-0: 1.50.6+ds-2ubuntu1
   ubuntu_22_04/libpathplan4: 2.42.2-6ubuntu0.1
-  ubuntu_22_04/libpcre2-8-0: 10.39-3ubuntu0.1
+  ubuntu_22_04/libpcre2-8-0: 10.39-3ubuntu0.2
   ubuntu_22_04/libpcre3: 2:8.39-13ubuntu0.22.04.1
   ubuntu_22_04/libperl5.34: 5.34.0-3ubuntu1.9
   ubuntu_22_04/libpixman-1-0: 0.40.0-1ubuntu0.22.04.1
@@ -3604,7 +3604,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_22_04/python3-lib2to3: 3.10.8-1~22.04
   ubuntu_22_04/python3-minimal: 3.10.6-1~22.04.1
   ubuntu_22_04/python3-numpy: 1:1.21.5-1ubuntu22.04.1
-  ubuntu_22_04/python3-pil: 9.0.1-1ubuntu0.5
+  ubuntu_22_04/python3-pil: 9.0.1-1ubuntu0.6
   ubuntu_22_04/python3-pip: 22.0.2+dfsg-1ubuntu0.7
   ubuntu_22_04/python3-pkg-resources: 59.6.0-1.2ubuntu0.22.04.3
   ubuntu_22_04/python3-setuptools: 59.6.0-1.2ubuntu0.22.04.3
