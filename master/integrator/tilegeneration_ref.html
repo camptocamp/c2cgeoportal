@@ -37,8 +37,8 @@
             
   <section id="tilecloud-chain-configuration">
 <span id="integrator-tilegeneration-ref"></span><h1>TileCloud-chain configuration<a class="headerlink" href="#tilecloud-chain-configuration" title="Link to this heading">¶</a></h1>
-<section id="tilecloud-chain-configuration">
-<span id="id1"></span><h2>TileCloud-chain configuration<a class="headerlink" href="#tilecloud-chain-configuration" title="Link to this heading">¶</a></h2>
+<section id="id1">
+<span id="id2"></span><h2>TileCloud-chain configuration<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
 <table class="docutils align-default">
 <tbody>
 <tr class="row-odd"><td colspan="4"><p><a class="reference external" href="https://raw.githubusercontent.com/camptocamp/tilecloud-chain/master/tilecloud_chain/schema.json">https://raw.githubusercontent.com/camptocamp/tilecloud-chain/master/tilecloud_chain/schema.json</a></p></td>
@@ -59,7 +59,7 @@
 <tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>object</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<tr class="row-odd"><td rowspan="5"><ul class="simple">
 <li><p>grids</p></li>
 </ul>
 </td>
@@ -71,23 +71,31 @@
 <td colspan="2"><p><em>object</em></p></td>
 </tr>
 <tr class="row-even"><td><p>additionalProperties</p></td>
-<td colspan="2"><p><a class="reference internal" href="#grid">Grid</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id4">Grid</a></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<tr class="row-odd"><td><p>propertyNames</p></td>
+<td><p>pattern</p></td>
+<td><p>^[a-zA-Z0-9_\-~\.]+$</p></td>
+</tr>
+<tr class="row-even"><td rowspan="5"><ul class="simple">
 <li><p>caches</p></li>
 </ul>
 </td>
 <td colspan="3"><p><em>Caches</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p>The tiles caches definitions by name, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-caches">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-caches</a></p></td>
+<tr class="row-odd"><td colspan="3"><p>The tiles caches definitions by name, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-caches">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-caches</a></p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>object</em></p></td>
 </tr>
-<tr class="row-even"><td><p>additionalProperties</p></td>
-<td colspan="2"><p><a class="reference internal" href="#cache">Cache</a></p></td>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td colspan="2"><p><a class="reference internal" href="#id15">Cache</a></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<tr class="row-even"><td><p>propertyNames</p></td>
+<td><p>pattern</p></td>
+<td><p>^[a-zA-Z0-9_\-~\.]+$</p></td>
+</tr>
+<tr class="row-odd"><td rowspan="5"><ul class="simple">
 <li><p>layers</p></li>
 </ul>
 </td>
@@ -99,293 +107,297 @@
 <td colspan="2"><p><em>object</em></p></td>
 </tr>
 <tr class="row-even"><td><p>additionalProperties</p></td>
-<td colspan="2"><p><a class="reference internal" href="#layer">Layer</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id48">Layer</a></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="4"><ul class="simple">
+<tr class="row-odd"><td><p>propertyNames</p></td>
+<td><p>pattern</p></td>
+<td><p>^[a-zA-Z0-9_\-~\.]+$</p></td>
+</tr>
+<tr class="row-even"><td rowspan="4"><ul class="simple">
 <li><p>process</p></li>
 </ul>
 </td>
 <td colspan="3"><p><em>Process</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p>List of available commands by name, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#process">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#process</a></p></td>
+<tr class="row-odd"><td colspan="3"><p>List of available commands by name, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#process">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#process</a></p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>object</em></p></td>
 </tr>
-<tr class="row-even"><td><p>additionalProperties</p></td>
-<td colspan="2"><p><a class="reference internal" href="#process-command">Process command</a></p></td>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td colspan="2"><p><a class="reference internal" href="#id49">Process command</a></p></td>
 </tr>
-<tr class="row-odd"><td><ul class="simple">
+<tr class="row-even"><td><ul class="simple">
 <li><p>generation</p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#generation">Generation</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#id50">Generation</a></p></td>
 </tr>
-<tr class="row-even"><td rowspan="10"><ul class="simple">
+<tr class="row-odd"><td rowspan="10"><ul class="simple">
 <li><p>sqs</p></li>
 </ul>
 </td>
 <td colspan="3"><p><em>SQS</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="3"><p>The Simple Queue Service configuration</p></td>
+<tr class="row-even"><td colspan="3"><p>The Simple Queue Service configuration</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>object</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="3"><p>properties</p></td>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
 </tr>
-<tr class="row-even"><td rowspan="4"><ul class="simple">
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
 <li><p>queue</p></li>
 </ul>
 </td>
 <td colspan="2"><p><em>SQS queue</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="2"><p>The queue name</p></td>
+<tr class="row-even"><td colspan="2"><p>The queue name</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td><p><em>string</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>default</p></td>
+<tr class="row-even"><td><p>default</p></td>
 <td><p>tilecloud</p></td>
 </tr>
-<tr class="row-even"><td><ul class="simple">
+<tr class="row-odd"><td><ul class="simple">
 <li><p>region</p></li>
 </ul>
 </td>
-<td colspan="2"><p><a class="reference internal" href="#aws-region">AWS region</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id51">AWS region</a></p></td>
 </tr>
-<tr class="row-odd"><td><p>additionalProperties</p></td>
-<td colspan="2"><p>False</p></td>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td colspan="2"><p>false</p></td>
 </tr>
-<tr class="row-even"><td rowspan="9"><ul class="simple">
+<tr class="row-odd"><td rowspan="9"><ul class="simple">
 <li><p>sns</p></li>
 </ul>
 </td>
 <td colspan="3"><p><em>SNS</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="3"><p>The Simple Notification Service configuration, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-sns">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-sns</a></p></td>
+<tr class="row-even"><td colspan="3"><p>The Simple Notification Service configuration, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-sns">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-sns</a></p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>object</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="3"><p>properties</p></td>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p><strong>topic</strong></p></li>
 </ul>
 </td>
 <td colspan="2"><p><em>Topic</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="2"><p>The topic</p></td>
+<tr class="row-even"><td colspan="2"><p>The topic</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td><p><em>string</em></p></td>
 </tr>
-<tr class="row-odd"><td><ul class="simple">
+<tr class="row-even"><td><ul class="simple">
 <li><p>region</p></li>
 </ul>
 </td>
-<td colspan="2"><p><a class="reference internal" href="#aws-region">AWS region</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id51">AWS region</a></p></td>
 </tr>
-<tr class="row-even"><td><p>additionalProperties</p></td>
-<td colspan="2"><p>False</p></td>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td colspan="2"><p>false</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="5"><ul class="simple">
+<tr class="row-even"><td rowspan="5"><ul class="simple">
 <li><p>queue_store</p></li>
 </ul>
 </td>
 <td colspan="3"><p><em>Queue store</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="3"><p>The used queue store</p></td>
+<tr class="row-odd"><td colspan="3"><p>The used queue store</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td colspan="2"><p><em>string</em></p></td>
 </tr>
-<tr class="row-even"><td><p>enum</p></td>
+<tr class="row-odd"><td><p>enum</p></td>
 <td colspan="2"><p>redis, sqs, postgresql</p></td>
 </tr>
-<tr class="row-odd"><td><p>default</p></td>
+<tr class="row-even"><td><p>default</p></td>
 <td colspan="2"><p>redis</p></td>
 </tr>
-<tr class="row-even"><td><ul class="simple">
+<tr class="row-odd"><td><ul class="simple">
 <li><p>redis</p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#redis">Redis</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#id53">Redis</a></p></td>
 </tr>
-<tr class="row-odd"><td><ul class="simple">
+<tr class="row-even"><td><ul class="simple">
 <li><p>postgresql</p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#postgresql">PostgreSQL</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#id52">PostgreSQL</a></p></td>
 </tr>
-<tr class="row-even"><td rowspan="25"><ul class="simple">
+<tr class="row-odd"><td rowspan="25"><ul class="simple">
 <li><p>openlayers</p></li>
 </ul>
 </td>
 <td colspan="3"><p><em>OpenLayers</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="3"><p>Configuration used to generate the OpenLayers example page</p></td>
+<tr class="row-even"><td colspan="3"><p>Configuration used to generate the OpenLayers example page</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>object</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="3"><p>properties</p></td>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
 </tr>
-<tr class="row-even"><td rowspan="5"><ul class="simple">
+<tr class="row-odd"><td rowspan="5"><ul class="simple">
 <li><p>srs</p></li>
 </ul>
 </td>
 <td colspan="2"><p><em>SRS</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="2"><p>The projection code</p></td>
+<tr class="row-even"><td colspan="2"><p>The projection code</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td><p><em>string</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>pattern</p></td>
+<tr class="row-even"><td><p>pattern</p></td>
 <td><p>^EPSG:[0-9]+$</p></td>
 </tr>
-<tr class="row-even"><td><p>default</p></td>
+<tr class="row-odd"><td><p>default</p></td>
 <td><p>EPSG:2056</p></td>
 </tr>
-<tr class="row-odd"><td rowspan="3"><ul class="simple">
+<tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p>proj4js_def</p></li>
 </ul>
 </td>
 <td colspan="2"><p><em>Proj4js definition</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="2"><p>The <cite>proj4js</cite> definition, by default it will be build with pyproj</p></td>
+<tr class="row-odd"><td colspan="2"><p>The <cite>proj4js</cite> definition, by default it will be build with pyproj</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td><p><em>string</em></p></td>
 </tr>
-<tr class="row-even"><td rowspan="4"><ul class="simple">
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
 <li><p>center_x</p></li>
 </ul>
 </td>
 <td colspan="2"><p><em>Center x</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="2"><p>The center easting</p></td>
+<tr class="row-even"><td colspan="2"><p>The center easting</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td><p><em>number</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>default</p></td>
+<tr class="row-even"><td><p>default</p></td>
 <td><p>2600000</p></td>
 </tr>
-<tr class="row-even"><td rowspan="4"><ul class="simple">
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
 <li><p>center_y</p></li>
 </ul>
 </td>
 <td colspan="2"><p><em>Center y</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="2"><p>The center northing</p></td>
+<tr class="row-even"><td colspan="2"><p>The center northing</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td><p><em>number</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>default</p></td>
+<tr class="row-even"><td><p>default</p></td>
 <td><p>1200000</p></td>
 </tr>
-<tr class="row-even"><td rowspan="4"><ul class="simple">
+<tr class="row-odd"><td rowspan="4"><ul class="simple">
 <li><p>zoom</p></li>
 </ul>
 </td>
 <td colspan="2"><p><em>Map initial zoom</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="2"><p>The initial zoom</p></td>
+<tr class="row-even"><td colspan="2"><p>The initial zoom</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td><p><em>number</em></p></td>
 </tr>
-<tr class="row-odd"><td><p>default</p></td>
+<tr class="row-even"><td><p>default</p></td>
 <td><p>3</p></td>
 </tr>
-<tr class="row-even"><td><p>additionalProperties</p></td>
-<td colspan="2"><p>False</p></td>
+<tr class="row-odd"><td><p>additionalProperties</p></td>
+<td colspan="2"><p>false</p></td>
 </tr>
-<tr class="row-odd"><td><ul class="simple">
+<tr class="row-even"><td><ul class="simple">
 <li><p>server</p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#server">Server</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#id54">Server</a></p></td>
 </tr>
-<tr class="row-even"><td><ul class="simple">
+<tr class="row-odd"><td><ul class="simple">
 <li><p>cost</p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#cost">Cost</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#id55">Cost</a></p></td>
 </tr>
-<tr class="row-odd"><td><ul class="simple">
+<tr class="row-even"><td><ul class="simple">
 <li><p>metadata</p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#metadata">Metadata</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#id56">Metadata</a></p></td>
 </tr>
-<tr class="row-even"><td><ul class="simple">
+<tr class="row-odd"><td><ul class="simple">
 <li><p>provider</p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#provider">Provider</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#id57">Provider</a></p></td>
 </tr>
-<tr class="row-odd"><td><ul class="simple">
+<tr class="row-even"><td><ul class="simple">
 <li><p>logging</p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#logging">Logging</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#id58">Logging</a></p></td>
 </tr>
-<tr class="row-even"><td rowspan="13"><ul class="simple">
+<tr class="row-odd"><td rowspan="13"><ul class="simple">
 <li><p>authentication</p></li>
 </ul>
 </td>
 <td colspan="3"><p><em>Authentication</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="3"><p>The authentication configuration</p></td>
+<tr class="row-even"><td colspan="3"><p>The authentication configuration</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td colspan="2"><p><em>object</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="3"><p>properties</p></td>
+<tr class="row-even"><td colspan="3"><p>properties</p></td>
 </tr>
-<tr class="row-even"><td rowspan="3"><ul class="simple">
+<tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p>github_repository</p></li>
 </ul>
 </td>
 <td colspan="2"><p><em>GitHub repository</em></p></td>
 </tr>
-<tr class="row-odd"><td colspan="2"><p>The GitHub repository name, on witch one we will check the access rights</p></td>
+<tr class="row-even"><td colspan="2"><p>The GitHub repository name, on witch one we will check the access rights</p></td>
 </tr>
-<tr class="row-even"><td><p>type</p></td>
+<tr class="row-odd"><td><p>type</p></td>
 <td><p><em>string</em></p></td>
 </tr>
-<tr class="row-odd"><td rowspan="5"><ul class="simple">
+<tr class="row-even"><td rowspan="5"><ul class="simple">
 <li><p>github_access_type</p></li>
 </ul>
 </td>
 <td colspan="2"><p><em>GitHub access</em></p></td>
 </tr>
-<tr class="row-even"><td colspan="2"><p>The kind of rights the user should have on the repository to have read-write access to the admin interface.</p></td>
+<tr class="row-odd"><td colspan="2"><p>The kind of rights the user should have on the repository to have read-write access to the admin interface.</p></td>
 </tr>
-<tr class="row-odd"><td><p>type</p></td>
+<tr class="row-even"><td><p>type</p></td>
 <td><p><em>string</em></p></td>
 </tr>
-<tr class="row-even"><td><p>enum</p></td>
+<tr class="row-odd"><td><p>enum</p></td>
 <td><p>push, pull, admin</p></td>
 </tr>
-<tr class="row-odd"><td><p>default</p></td>
+<tr class="row-even"><td><p>default</p></td>
 <td><p>pull</p></td>
 </tr>
-<tr class="row-even"><td><p>additionalProperties</p></td>
-<td colspan="2"><p>False</p></td>
-</tr>
 <tr class="row-odd"><td><p>additionalProperties</p></td>
-<td colspan="3"><p>False</p></td>
+<td colspan="2"><p>false</p></td>
+</tr>
+<tr class="row-even"><td><p>additionalProperties</p></td>
+<td colspan="3"><p>false</p></td>
 </tr>
 </tbody>
 </table>
 <section id="headers">
-<span id="headers"></span><h3>Headers<a class="headerlink" href="#headers" title="Link to this heading">¶</a></h3>
+<span id="id3"></span><h3>Headers<a class="headerlink" href="#headers" title="Link to this heading">¶</a></h3>
 <p>The headers that we send to the WMS backend</p>
 <table class="docutils align-default">
 <tbody>
@@ -402,7 +414,7 @@
 </table>
 </section>
 <section id="grid">
-<span id="grid"></span><h3>Grid<a class="headerlink" href="#grid" title="Link to this heading">¶</a></h3>
+<span id="id4"></span><h3>Grid<a class="headerlink" href="#grid" title="Link to this heading">¶</a></h3>
 <p>The WMTS grid definition, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-grids">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-grids</a></p>
 <table class="docutils align-default">
 <tbody>
@@ -529,13 +541,13 @@
 <td colspan="2"><p>zoom</p></td>
 </tr>
 <tr class="row-even"><td><p>additionalProperties</p></td>
-<td colspan="3"><p>False</p></td>
+<td colspan="3"><p>false</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="cache-wmst-capabilities-file">
-<span id="cache-wmst-capabilities-file"></span><h3>Cache WMST capabilities file<a class="headerlink" href="#cache-wmst-capabilities-file" title="Link to this heading">¶</a></h3>
+<span id="id5"></span><h3>Cache WMST capabilities file<a class="headerlink" href="#cache-wmst-capabilities-file" title="Link to this heading">¶</a></h3>
 <p>The generated WMTS capabilities file name</p>
 <table class="docutils align-default">
 <tbody>
@@ -549,7 +561,7 @@
 </table>
 </section>
 <section id="cache-http-url">
-<span id="cache-http-url"></span><h3>Cache HTTP URL<a class="headerlink" href="#cache-http-url" title="Link to this heading">¶</a></h3>
+<span id="id6"></span><h3>Cache HTTP URL<a class="headerlink" href="#cache-http-url" title="Link to this heading">¶</a></h3>
 <p>The HTTP URL %host will be replaces by one of the hosts</p>
 <table class="docutils align-default">
 <tbody>
@@ -560,7 +572,7 @@
 </table>
 </section>
 <section id="cache-host">
-<span id="cache-host"></span><h3>Cache host<a class="headerlink" href="#cache-host" title="Link to this heading">¶</a></h3>
+<span id="id7"></span><h3>Cache host<a class="headerlink" href="#cache-host" title="Link to this heading">¶</a></h3>
 <p>The host used to build the HTTP URLs</p>
 <table class="docutils align-default">
 <tbody>
@@ -575,7 +587,7 @@
 </table>
 </section>
 <section id="cache-http-urls">
-<span id="cache-http-urls"></span><h3>Cache HTTP URLs<a class="headerlink" href="#cache-http-urls" title="Link to this heading">¶</a></h3>
+<span id="id8"></span><h3>Cache HTTP URLs<a class="headerlink" href="#cache-http-urls" title="Link to this heading">¶</a></h3>
 <table class="docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p>type</p></td>
@@ -589,7 +601,7 @@
 </table>
 </section>
 <section id="cache-folder">
-<span id="cache-folder"></span><h3>Cache folder<a class="headerlink" href="#cache-folder" title="Link to this heading">¶</a></h3>
+<span id="id9"></span><h3>Cache folder<a class="headerlink" href="#cache-folder" title="Link to this heading">¶</a></h3>
 <p>The root folder of the cache</p>
 <table class="docutils align-default">
 <tbody>
@@ -603,7 +615,7 @@
 </table>
 </section>
 <section id="cache-filesystem">
-<span id="cache-filesystem"></span><h3>Cache filesystem<a class="headerlink" href="#cache-filesystem" title="Link to this heading">¶</a></h3>
+<span id="id10"></span><h3>Cache filesystem<a class="headerlink" href="#cache-filesystem" title="Link to this heading">¶</a></h3>
 <table class="docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p>type</p></td>
@@ -622,31 +634,31 @@
 <li><p>wmtscapabilities_file</p></li>
 </ul>
 </td>
-<td colspan="2"><p><a class="reference internal" href="#cache-wmst-capabilities-file">Cache WMST capabilities file</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id5">Cache WMST capabilities file</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p>http_url</p></li>
 </ul>
 </td>
-<td colspan="2"><p><a class="reference internal" href="#cache-http-url">Cache HTTP URL</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id6">Cache HTTP URL</a></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p>hosts</p></li>
 </ul>
 </td>
-<td colspan="2"><p><a class="reference internal" href="#cache-host">Cache host</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id7">Cache host</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p>http_urls</p></li>
 </ul>
 </td>
-<td colspan="2"><p><a class="reference internal" href="#cache-http-urls">Cache HTTP URLs</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id8">Cache HTTP URLs</a></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p>folder</p></li>
 </ul>
 </td>
-<td colspan="2"><p><a class="reference internal" href="#cache-folder">Cache folder</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id9">Cache folder</a></p></td>
 </tr>
 <tr class="row-odd"><td><p>additionalProperties</p></td>
 <td><p>type</p></td>
@@ -656,7 +668,7 @@
 </table>
 </section>
 <section id="cache-s3">
-<span id="cache-s3"></span><h3>Cache S3<a class="headerlink" href="#cache-s3" title="Link to this heading">¶</a></h3>
+<span id="id11"></span><h3>Cache S3<a class="headerlink" href="#cache-s3" title="Link to this heading">¶</a></h3>
 <table class="docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p>type</p></td>
@@ -675,25 +687,25 @@
 <li><p>wmtscapabilities_file</p></li>
 </ul>
 </td>
-<td colspan="2"><p><a class="reference internal" href="#cache-wmst-capabilities-file">Cache WMST capabilities file</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id5">Cache WMST capabilities file</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p>http_url</p></li>
 </ul>
 </td>
-<td colspan="2"><p><a class="reference internal" href="#cache-http-url">Cache HTTP URL</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id6">Cache HTTP URL</a></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p>hosts</p></li>
 </ul>
 </td>
-<td colspan="2"><p><a class="reference internal" href="#cache-host">Cache host</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id7">Cache host</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p>http_urls</p></li>
 </ul>
 </td>
-<td colspan="2"><p><a class="reference internal" href="#cache-http-urls">Cache HTTP URLs</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id8">Cache HTTP URLs</a></p></td>
 </tr>
 <tr class="row-even"><td rowspan="4"><ul class="simple">
 <li><p>tiles_url</p></li>
@@ -738,7 +750,7 @@
 <li><p>region</p></li>
 </ul>
 </td>
-<td colspan="2"><p><a class="reference internal" href="#aws-region">AWS region</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id51">AWS region</a></p></td>
 </tr>
 <tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p>cache_control</p></li>
@@ -755,7 +767,7 @@
 <li><p>folder</p></li>
 </ul>
 </td>
-<td colspan="2"><p><a class="reference internal" href="#cache-folder">Cache folder</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id9">Cache folder</a></p></td>
 </tr>
 <tr class="row-even"><td><p>additionalProperties</p></td>
 <td><p>type</p></td>
@@ -765,7 +777,7 @@
 </table>
 </section>
 <section id="cache-azure">
-<span id="cache-azure"></span><h3>Cache Azure<a class="headerlink" href="#cache-azure" title="Link to this heading">¶</a></h3>
+<span id="id12"></span><h3>Cache Azure<a class="headerlink" href="#cache-azure" title="Link to this heading">¶</a></h3>
 <p>Azure Blob Storage</p>
 <table class="docutils align-default">
 <tbody>
@@ -785,31 +797,31 @@
 <li><p>wmtscapabilities_file</p></li>
 </ul>
 </td>
-<td colspan="2"><p><a class="reference internal" href="#cache-wmst-capabilities-file">Cache WMST capabilities file</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id5">Cache WMST capabilities file</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p>http_url</p></li>
 </ul>
 </td>
-<td colspan="2"><p><a class="reference internal" href="#cache-http-url">Cache HTTP URL</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id6">Cache HTTP URL</a></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p>hosts</p></li>
 </ul>
 </td>
-<td colspan="2"><p><a class="reference internal" href="#cache-host">Cache host</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id7">Cache host</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p>http_urls</p></li>
 </ul>
 </td>
-<td colspan="2"><p><a class="reference internal" href="#cache-http-urls">Cache HTTP URLs</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id8">Cache HTTP URLs</a></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p>folder</p></li>
 </ul>
 </td>
-<td colspan="2"><p><a class="reference internal" href="#cache-folder">Cache folder</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id9">Cache folder</a></p></td>
 </tr>
 <tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p><strong>container</strong></p></li>
@@ -841,7 +853,7 @@
 </table>
 </section>
 <section id="cache-mbtiles">
-<span id="cache-mbtiles"></span><h3>Cache MBtiles<a class="headerlink" href="#cache-mbtiles" title="Link to this heading">¶</a></h3>
+<span id="id13"></span><h3>Cache MBtiles<a class="headerlink" href="#cache-mbtiles" title="Link to this heading">¶</a></h3>
 <table class="docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p>type</p></td>
@@ -860,31 +872,31 @@
 <li><p>wmtscapabilities_file</p></li>
 </ul>
 </td>
-<td colspan="2"><p><a class="reference internal" href="#cache-wmst-capabilities-file">Cache WMST capabilities file</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id5">Cache WMST capabilities file</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p>http_url</p></li>
 </ul>
 </td>
-<td colspan="2"><p><a class="reference internal" href="#cache-http-url">Cache HTTP URL</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id6">Cache HTTP URL</a></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p>hosts</p></li>
 </ul>
 </td>
-<td colspan="2"><p><a class="reference internal" href="#cache-host">Cache host</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id7">Cache host</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p>http_urls</p></li>
 </ul>
 </td>
-<td colspan="2"><p><a class="reference internal" href="#cache-http-urls">Cache HTTP URLs</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id8">Cache HTTP URLs</a></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p>folder</p></li>
 </ul>
 </td>
-<td colspan="2"><p><a class="reference internal" href="#cache-folder">Cache folder</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id9">Cache folder</a></p></td>
 </tr>
 <tr class="row-odd"><td><p>additionalProperties</p></td>
 <td><p>type</p></td>
@@ -894,7 +906,7 @@
 </table>
 </section>
 <section id="cache-bsddb">
-<span id="cache-bsddb"></span><h3>Cache BSDDB<a class="headerlink" href="#cache-bsddb" title="Link to this heading">¶</a></h3>
+<span id="id14"></span><h3>Cache BSDDB<a class="headerlink" href="#cache-bsddb" title="Link to this heading">¶</a></h3>
 <table class="docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p>type</p></td>
@@ -913,31 +925,31 @@
 <li><p>wmtscapabilities_file</p></li>
 </ul>
 </td>
-<td colspan="2"><p><a class="reference internal" href="#cache-wmst-capabilities-file">Cache WMST capabilities file</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id5">Cache WMST capabilities file</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p>http_url</p></li>
 </ul>
 </td>
-<td colspan="2"><p><a class="reference internal" href="#cache-http-url">Cache HTTP URL</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id6">Cache HTTP URL</a></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p>hosts</p></li>
 </ul>
 </td>
-<td colspan="2"><p><a class="reference internal" href="#cache-host">Cache host</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id7">Cache host</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p>http_urls</p></li>
 </ul>
 </td>
-<td colspan="2"><p><a class="reference internal" href="#cache-http-urls">Cache HTTP URLs</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id8">Cache HTTP URLs</a></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p>folder</p></li>
 </ul>
 </td>
-<td colspan="2"><p><a class="reference internal" href="#cache-folder">Cache folder</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id9">Cache folder</a></p></td>
 </tr>
 <tr class="row-odd"><td><p>additionalProperties</p></td>
 <td><p>type</p></td>
@@ -947,26 +959,26 @@
 </table>
 </section>
 <section id="cache">
-<span id="cache"></span><h3>Cache<a class="headerlink" href="#cache" title="Link to this heading">¶</a></h3>
+<span id="id15"></span><h3>Cache<a class="headerlink" href="#cache" title="Link to this heading">¶</a></h3>
 <p>The tiles cache definition, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-caches">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-caches</a></p>
 <table class="docutils align-default">
 <tbody>
 <tr class="row-odd"><td rowspan="5"><p>anyOf</p></td>
-<td><p><a class="reference internal" href="#cache-filesystem">Cache filesystem</a></p></td>
+<td><p><a class="reference internal" href="#id10">Cache filesystem</a></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#cache-s3">Cache S3</a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#id11">Cache S3</a></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#cache-azure">Cache Azure</a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id12">Cache Azure</a></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#cache-mbtiles">Cache MBtiles</a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#id13">Cache MBtiles</a></p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#cache-bsddb">Cache BSDDB</a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#id14">Cache BSDDB</a></p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="layer-title">
-<span id="layer-title"></span><h3>Layer title<a class="headerlink" href="#layer-title" title="Link to this heading">¶</a></h3>
+<span id="id16"></span><h3>Layer title<a class="headerlink" href="#layer-title" title="Link to this heading">¶</a></h3>
 <p>The title, use to generate the capabilities</p>
 <table class="docutils align-default">
 <tbody>
@@ -977,7 +989,7 @@
 </table>
 </section>
 <section id="layer-grid">
-<span id="layer-grid"></span><h3>Layer grid<a class="headerlink" href="#layer-grid" title="Link to this heading">¶</a></h3>
+<span id="id17"></span><h3>Layer grid<a class="headerlink" href="#layer-grid" title="Link to this heading">¶</a></h3>
 <p>The grid name, deprecated, use <cite>grids</cite> instead</p>
 <table class="docutils align-default">
 <tbody>
@@ -988,7 +1000,7 @@
 </table>
 </section>
 <section id="layer-grids">
-<span id="layer-grids"></span><h3>Layer grids<a class="headerlink" href="#layer-grids" title="Link to this heading">¶</a></h3>
+<span id="id18"></span><h3>Layer grids<a class="headerlink" href="#layer-grids" title="Link to this heading">¶</a></h3>
 <p>All the used grids name used in the capabilities, by default only the <cite>grid</cite> is used, if <cite>grid</cite> is not defined, all the grids are used</p>
 <table class="docutils align-default">
 <tbody>
@@ -1003,7 +1015,7 @@
 </table>
 </section>
 <section id="layer-srs">
-<span id="layer-srs"></span><h3>Layer SRS<a class="headerlink" href="#layer-srs" title="Link to this heading">¶</a></h3>
+<span id="id19"></span><h3>Layer SRS<a class="headerlink" href="#layer-srs" title="Link to this heading">¶</a></h3>
 <p>The projection reference, used for the bbox, the geoms, and the –bbox argument.</p>
 <table class="docutils align-default">
 <tbody>
@@ -1017,7 +1029,7 @@
 </table>
 </section>
 <section id="layer-proj4-literal">
-<span id="layer-proj4-literal"></span><h3>Layer Proj4 literal<a class="headerlink" href="#layer-proj4-literal" title="Link to this heading">¶</a></h3>
+<span id="id20"></span><h3>Layer Proj4 literal<a class="headerlink" href="#layer-proj4-literal" title="Link to this heading">¶</a></h3>
 <p>The Proj4 definition, used for the bbox, the geoms, and the –bbox argument.</p>
 <table class="docutils align-default">
 <tbody>
@@ -1028,7 +1040,7 @@
 </table>
 </section>
 <section id="layer-bounding-box">
-<span id="layer-bounding-box"></span><h3>Layer bounding box<a class="headerlink" href="#layer-bounding-box" title="Link to this heading">¶</a></h3>
+<span id="id21"></span><h3>Layer bounding box<a class="headerlink" href="#layer-bounding-box" title="Link to this heading">¶</a></h3>
 <p>The bounding box where we will generate the tiles</p>
 <table class="docutils align-default">
 <tbody>
@@ -1049,7 +1061,7 @@
 </table>
 </section>
 <section id="layer-min-resolution-seed">
-<span id="layer-min-resolution-seed"></span><h3>layer min resolution seed<a class="headerlink" href="#layer-min-resolution-seed" title="Link to this heading">¶</a></h3>
+<span id="id22"></span><h3>layer min resolution seed<a class="headerlink" href="#layer-min-resolution-seed" title="Link to this heading">¶</a></h3>
 <p>The minimum resolutions to pre-generate</p>
 <table class="docutils align-default">
 <tbody>
@@ -1060,7 +1072,7 @@
 </table>
 </section>
 <section id="layer-pixel-buffer">
-<span id="layer-pixel-buffer"></span><h3>Layer pixel buffer<a class="headerlink" href="#layer-pixel-buffer" title="Link to this heading">¶</a></h3>
+<span id="id23"></span><h3>Layer pixel buffer<a class="headerlink" href="#layer-pixel-buffer" title="Link to this heading">¶</a></h3>
 <p>The buffer in pixel used to calculate geometry intersection</p>
 <table class="docutils align-default">
 <tbody>
@@ -1074,7 +1086,7 @@
 </table>
 </section>
 <section id="force-tile-matrix-set-limits">
-<span id="force-tile-matrix-set-limits"></span><h3>Force tile matrix set limits<a class="headerlink" href="#force-tile-matrix-set-limits" title="Link to this heading">¶</a></h3>
+<span id="id24"></span><h3>Force tile matrix set limits<a class="headerlink" href="#force-tile-matrix-set-limits" title="Link to this heading">¶</a></h3>
 <p>When true, include TileMatrixSetLimits in WMTS capabilities even when px_buffer is set. Default: false.</p>
 <table class="docutils align-default">
 <tbody>
@@ -1082,13 +1094,13 @@
 <td><p><em>boolean</em></p></td>
 </tr>
 <tr class="row-even"><td><p>default</p></td>
-<td><p>False</p></td>
+<td><p>false</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="layer-geometry-filter">
-<span id="layer-geometry-filter"></span><h3>Layer geometry filter<a class="headerlink" href="#layer-geometry-filter" title="Link to this heading">¶</a></h3>
+<span id="id25"></span><h3>Layer geometry filter<a class="headerlink" href="#layer-geometry-filter" title="Link to this heading">¶</a></h3>
 <p>Enable the geometry intersection filter in the processing pipeline</p>
 <table class="docutils align-default">
 <tbody>
@@ -1096,13 +1108,13 @@
 <td><p><em>boolean</em></p></td>
 </tr>
 <tr class="row-even"><td><p>default</p></td>
-<td><p>True</p></td>
+<td><p>true</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="layer-meta">
-<span id="layer-meta"></span><h3>Layer meta<a class="headerlink" href="#layer-meta" title="Link to this heading">¶</a></h3>
+<span id="id26"></span><h3>Layer meta<a class="headerlink" href="#layer-meta" title="Link to this heading">¶</a></h3>
 <p>Use meta-tiles, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#meta-tiles">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#meta-tiles</a></p>
 <table class="docutils align-default">
 <tbody>
@@ -1110,13 +1122,13 @@
 <td><p><em>boolean</em></p></td>
 </tr>
 <tr class="row-even"><td><p>default</p></td>
-<td><p>False</p></td>
+<td><p>false</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="layer-meta-size">
-<span id="layer-meta-size"></span><h3>Layer meta size<a class="headerlink" href="#layer-meta-size" title="Link to this heading">¶</a></h3>
+<span id="id27"></span><h3>Layer meta size<a class="headerlink" href="#layer-meta-size" title="Link to this heading">¶</a></h3>
 <p>The meta-tile size in tiles</p>
 <table class="docutils align-default">
 <tbody>
@@ -1130,7 +1142,7 @@
 </table>
 </section>
 <section id="layer-meta-buffer">
-<span id="layer-meta-buffer"></span><h3>Layer meta buffer<a class="headerlink" href="#layer-meta-buffer" title="Link to this heading">¶</a></h3>
+<span id="id28"></span><h3>Layer meta buffer<a class="headerlink" href="#layer-meta-buffer" title="Link to this heading">¶</a></h3>
 <p>The meta-tiles buffer in pixels</p>
 <table class="docutils align-default">
 <tbody>
@@ -1144,7 +1156,7 @@
 </table>
 </section>
 <section id="layer-meta-save-options">
-<span id="layer-meta-save-options"></span><h3>Layer meta save options<a class="headerlink" href="#layer-meta-save-options" title="Link to this heading">¶</a></h3>
+<span id="id29"></span><h3>Layer meta save options<a class="headerlink" href="#layer-meta-save-options" title="Link to this heading">¶</a></h3>
 <p>The Pillow options used to save the tile generated from the meta-tiles</p>
 <table class="docutils align-default">
 <tbody>
@@ -1155,7 +1167,7 @@
 </table>
 </section>
 <section id="layer-layers">
-<span id="layer-layers"></span><h3>Layer layers<a class="headerlink" href="#layer-layers" title="Link to this heading">¶</a></h3>
+<span id="id30"></span><h3>Layer layers<a class="headerlink" href="#layer-layers" title="Link to this heading">¶</a></h3>
 <p>The WMS layers</p>
 <table class="docutils align-default">
 <tbody>
@@ -1166,7 +1178,7 @@
 </table>
 </section>
 <section id="layer-wmts-style">
-<span id="layer-wmts-style"></span><h3>Layer WMTS style<a class="headerlink" href="#layer-wmts-style" title="Link to this heading">¶</a></h3>
+<span id="id31"></span><h3>Layer WMTS style<a class="headerlink" href="#layer-wmts-style" title="Link to this heading">¶</a></h3>
 <p>The WMTS style</p>
 <table class="docutils align-default">
 <tbody>
@@ -1180,7 +1192,7 @@
 </table>
 </section>
 <section id="layer-mime-type">
-<span id="layer-mime-type"></span><h3>Layer MIME type<a class="headerlink" href="#layer-mime-type" title="Link to this heading">¶</a></h3>
+<span id="id32"></span><h3>Layer MIME type<a class="headerlink" href="#layer-mime-type" title="Link to this heading">¶</a></h3>
 <p>The MIME type of the tiles</p>
 <table class="docutils align-default">
 <tbody>
@@ -1194,7 +1206,7 @@
 </table>
 </section>
 <section id="layer-extension">
-<span id="layer-extension"></span><h3>Layer extension<a class="headerlink" href="#layer-extension" title="Link to this heading">¶</a></h3>
+<span id="id33"></span><h3>Layer extension<a class="headerlink" href="#layer-extension" title="Link to this heading">¶</a></h3>
 <p>The layer extension</p>
 <table class="docutils align-default">
 <tbody>
@@ -1205,7 +1217,7 @@
 </table>
 </section>
 <section id="layer-dimension-name">
-<span id="layer-dimension-name"></span><h3>Layer dimension name<a class="headerlink" href="#layer-dimension-name" title="Link to this heading">¶</a></h3>
+<span id="id34"></span><h3>Layer dimension name<a class="headerlink" href="#layer-dimension-name" title="Link to this heading">¶</a></h3>
 <p>The dimension name</p>
 <table class="docutils align-default">
 <tbody>
@@ -1219,7 +1231,7 @@
 </table>
 </section>
 <section id="layer-dimensions">
-<span id="layer-dimensions"></span><h3>layer dimensions<a class="headerlink" href="#layer-dimensions" title="Link to this heading">¶</a></h3>
+<span id="id35"></span><h3>layer dimensions<a class="headerlink" href="#layer-dimensions" title="Link to this heading">¶</a></h3>
 <p>The WMTS dimensions</p>
 <table class="docutils align-default">
 <tbody>
@@ -1238,7 +1250,7 @@
 <li><p><strong>name</strong></p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#layer-dimension-name">Layer dimension name</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#id34">Layer dimension name</a></p></td>
 </tr>
 <tr class="row-even"><td rowspan="5"><ul class="simple">
 <li><p><strong>generate</strong></p></li>
@@ -1291,13 +1303,13 @@
 <td colspan="2"><p>^[a-zA-Z0-9_\-\+~\.]+$</p></td>
 </tr>
 <tr class="row-even"><td><p>additionalProperties</p></td>
-<td colspan="3"><p>False</p></td>
+<td colspan="3"><p>false</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="layer-legend">
-<span id="layer-legend"></span><h3>Layer legend<a class="headerlink" href="#layer-legend" title="Link to this heading">¶</a></h3>
+<span id="id36"></span><h3>Layer legend<a class="headerlink" href="#layer-legend" title="Link to this heading">¶</a></h3>
 <p>Legend configuration for the layer</p>
 <table class="docutils align-default">
 <tbody>
@@ -1321,34 +1333,34 @@
 <td><p><em>boolean</em></p></td>
 </tr>
 <tr class="row-odd"><td><p>default</p></td>
-<td><p>True</p></td>
+<td><p>true</p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p>mime_type</p></li>
 </ul>
 </td>
-<td colspan="2"><p><a class="reference internal" href="#layer-legend-mime-type">Layer legend MIME type</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id38">Layer legend MIME type</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p>extension</p></li>
 </ul>
 </td>
-<td colspan="2"><p><a class="reference internal" href="#layer-legend-extension">Layer legend extension</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id39">Layer legend extension</a></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p>items</p></li>
 </ul>
 </td>
-<td colspan="2"><p><a class="reference internal" href="#layer-legends">Layer legends</a></p></td>
+<td colspan="2"><p><a class="reference internal" href="#id37">Layer legends</a></p></td>
 </tr>
 <tr class="row-odd"><td><p>additionalProperties</p></td>
-<td colspan="2"><p>False</p></td>
+<td colspan="2"><p>false</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="layer-legends">
-<span id="layer-legends"></span><h3>Layer legends<a class="headerlink" href="#layer-legends" title="Link to this heading">¶</a></h3>
+<span id="id37"></span><h3>Layer legends<a class="headerlink" href="#layer-legends" title="Link to this heading">¶</a></h3>
 <p>The provided legend</p>
 <table class="docutils align-default">
 <tbody>
@@ -1455,13 +1467,13 @@
 <td><p><em>number</em></p></td>
 </tr>
 <tr class="row-even"><td><p>additionalProperties</p></td>
-<td colspan="2"><p>False</p></td>
+<td colspan="2"><p>false</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="layer-legend-mime-type">
-<span id="layer-legend-mime-type"></span><h3>Layer legend MIME type<a class="headerlink" href="#layer-legend-mime-type" title="Link to this heading">¶</a></h3>
+<span id="id38"></span><h3>Layer legend MIME type<a class="headerlink" href="#layer-legend-mime-type" title="Link to this heading">¶</a></h3>
 <p>The mime type used to store the generated legend</p>
 <table class="docutils align-default">
 <tbody>
@@ -1478,7 +1490,7 @@
 </table>
 </section>
 <section id="layer-legend-extension">
-<span id="layer-legend-extension"></span><h3>Layer legend extension<a class="headerlink" href="#layer-legend-extension" title="Link to this heading">¶</a></h3>
+<span id="id39"></span><h3>Layer legend extension<a class="headerlink" href="#layer-legend-extension" title="Link to this heading">¶</a></h3>
 <p>The extension used to store the generated legend</p>
 <table class="docutils align-default">
 <tbody>
@@ -1495,7 +1507,7 @@
 </table>
 </section>
 <section id="layer-pre-hash-post-process">
-<span id="layer-pre-hash-post-process"></span><h3>Layer pre hash post process<a class="headerlink" href="#layer-pre-hash-post-process" title="Link to this heading">¶</a></h3>
+<span id="id40"></span><h3>Layer pre hash post process<a class="headerlink" href="#layer-pre-hash-post-process" title="Link to this heading">¶</a></h3>
 <p>Do an image post process before the empty hash check</p>
 <table class="docutils align-default">
 <tbody>
@@ -1506,7 +1518,7 @@
 </table>
 </section>
 <section id="layer-post-process">
-<span id="layer-post-process"></span><h3>Layer post process<a class="headerlink" href="#layer-post-process" title="Link to this heading">¶</a></h3>
+<span id="id41"></span><h3>Layer post process<a class="headerlink" href="#layer-post-process" title="Link to this heading">¶</a></h3>
 <p>Do an image post process after the empty hash check</p>
 <table class="docutils align-default">
 <tbody>
@@ -1517,7 +1529,7 @@
 </table>
 </section>
 <section id="layer-geometries">
-<span id="layer-geometries"></span><h3>Layer geometries<a class="headerlink" href="#layer-geometries" title="Link to this heading">¶</a></h3>
+<span id="id42"></span><h3>Layer geometries<a class="headerlink" href="#layer-geometries" title="Link to this heading">¶</a></h3>
 <p>The geometries used to determine where we should create the tiles, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-geomsql">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-geomsql</a></p>
 <table class="docutils align-default">
 <tbody>
@@ -1588,13 +1600,13 @@
 <td><p><em>number</em></p></td>
 </tr>
 <tr class="row-even"><td><p>additionalProperties</p></td>
-<td colspan="2"><p>False</p></td>
+<td colspan="2"><p>false</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="layer-empty-tile-detection">
-<span id="layer-empty-tile-detection"></span><h3>Layer empty tile detection<a class="headerlink" href="#layer-empty-tile-detection" title="Link to this heading">¶</a></h3>
+<span id="id43"></span><h3>Layer empty tile detection<a class="headerlink" href="#layer-empty-tile-detection" title="Link to this heading">¶</a></h3>
 <p>The rules used to detect the empty tiles, use <cite>generate-tiles –get-hash</cite> to get what we can use, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-hash">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-hash</a></p>
 <table class="docutils align-default">
 <tbody>
@@ -1626,13 +1638,13 @@
 <td><p><em>string</em></p></td>
 </tr>
 <tr class="row-odd"><td><p>additionalProperties</p></td>
-<td colspan="2"><p>False</p></td>
+<td colspan="2"><p>false</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="layer-empty-meta-tile-detection">
-<span id="layer-empty-meta-tile-detection"></span><h3>Layer empty meta-tile detection<a class="headerlink" href="#layer-empty-meta-tile-detection" title="Link to this heading">¶</a></h3>
+<span id="id44"></span><h3>Layer empty meta-tile detection<a class="headerlink" href="#layer-empty-meta-tile-detection" title="Link to this heading">¶</a></h3>
 <p>The rules used to detect the empty meta-tiles, use <cite>generate-tiles –get-hash</cite> to get what we can use, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-hash">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-hash</a></p>
 <table class="docutils align-default">
 <tbody>
@@ -1664,13 +1676,13 @@
 <td><p><em>string</em></p></td>
 </tr>
 <tr class="row-odd"><td><p>additionalProperties</p></td>
-<td colspan="2"><p>False</p></td>
+<td colspan="2"><p>false</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="layer-cost">
-<span id="layer-cost"></span><h3>Layer cost<a class="headerlink" href="#layer-cost" title="Link to this heading">¶</a></h3>
+<span id="id45"></span><h3>Layer cost<a class="headerlink" href="#layer-cost" title="Link to this heading">¶</a></h3>
 <p>The rules used to calculate the cost</p>
 <table class="docutils align-default">
 <tbody>
@@ -1736,13 +1748,13 @@
 <td><p>20</p></td>
 </tr>
 <tr class="row-odd"><td><p>additionalProperties</p></td>
-<td colspan="2"><p>False</p></td>
+<td colspan="2"><p>false</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="layer-wms">
-<span id="layer-wms"></span><h3>Layer WMS<a class="headerlink" href="#layer-wms" title="Link to this heading">¶</a></h3>
+<span id="id46"></span><h3>Layer WMS<a class="headerlink" href="#layer-wms" title="Link to this heading">¶</a></h3>
 <table class="docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p>type</p></td>
@@ -1761,61 +1773,61 @@
 <li><p>title</p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#layer-title">Layer title</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#id16">Layer title</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p>grid</p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#layer-grid">Layer grid</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#id17">Layer grid</a></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p>grids</p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#layer-grids">Layer grids</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#id18">Layer grids</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p>srs</p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#layer-srs">Layer SRS</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#id19">Layer SRS</a></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p>proj4_literal</p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#layer-proj4-literal">Layer Proj4 literal</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#id20">Layer Proj4 literal</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p>bbox</p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#layer-bounding-box">Layer bounding box</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#id21">Layer bounding box</a></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p>min_resolution_seed</p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#layer-min-resolution-seed">layer min resolution seed</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#id22">layer min resolution seed</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p>px_buffer</p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#layer-pixel-buffer">Layer pixel buffer</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#id23">Layer pixel buffer</a></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p>force_tile_matrix_set_limits</p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#force-tile-matrix-set-limits">Force tile matrix set limits</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#id24">Force tile matrix set limits</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p>meta</p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#layer-meta">Layer meta</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#id26">Layer meta</a></p></td>
 </tr>
 <tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p>meta_size</p></li>
@@ -1824,7 +1836,7 @@
 <td><p>default</p></td>
 <td colspan="2"><p>5</p></td>
 </tr>
-<tr class="row-odd"><td colspan="3"><p><a class="reference internal" href="#layer-meta-size">Layer meta size</a></p></td>
+<tr class="row-odd"><td colspan="3"><p><a class="reference internal" href="#id27">Layer meta size</a></p></td>
 </tr>
 <tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p>meta_buffer</p></li>
@@ -1833,109 +1845,109 @@
 <td><p>default</p></td>
 <td colspan="2"><p>128</p></td>
 </tr>
-<tr class="row-odd"><td colspan="3"><p><a class="reference internal" href="#layer-meta-buffer">Layer meta buffer</a></p></td>
+<tr class="row-odd"><td colspan="3"><p><a class="reference internal" href="#id28">Layer meta buffer</a></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p>meta_save_options</p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#layer-meta-save-options">Layer meta save options</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#id29">Layer meta save options</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p><strong>layers</strong></p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#layer-layers">Layer layers</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#id30">Layer layers</a></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p><strong>wmts_style</strong></p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#layer-wmts-style">Layer WMTS style</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#id31">Layer WMTS style</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p><strong>mime_type</strong></p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#layer-mime-type">Layer MIME type</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#id32">Layer MIME type</a></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p><strong>extension</strong></p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#layer-extension">Layer extension</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#id33">Layer extension</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p>dimensions</p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#layer-dimensions">layer dimensions</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#id35">layer dimensions</a></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p>legend</p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#layer-legend">Layer legend</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#id36">Layer legend</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p>legends</p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#layer-legends">Layer legends</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#id37">Layer legends</a></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p>legend_mime</p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#layer-legend-mime-type">Layer legend MIME type</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#id38">Layer legend MIME type</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p>legend_extension</p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#layer-legend-extension">Layer legend extension</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#id39">Layer legend extension</a></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p>pre_hash_post_process</p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#layer-pre-hash-post-process">Layer pre hash post process</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#id40">Layer pre hash post process</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p>post_process</p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#layer-post-process">Layer post process</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#id41">Layer post process</a></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p>geoms</p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#layer-geometries">Layer geometries</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#id42">Layer geometries</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p>geom_filter</p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#layer-geometry-filter">Layer geometry filter</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#id25">Layer geometry filter</a></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p>empty_tile_detection</p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#layer-empty-tile-detection">Layer empty tile detection</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#id43">Layer empty tile detection</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p>empty_metatile_detection</p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#layer-empty-meta-tile-detection">Layer empty meta-tile detection</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#id44">Layer empty meta-tile detection</a></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p>cost</p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#layer-cost">Layer cost</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#id45">Layer cost</a></p></td>
 </tr>
 <tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p><strong>url</strong></p></li>
@@ -1960,7 +1972,7 @@
 <td colspan="2"><p><em>boolean</em></p></td>
 </tr>
 <tr class="row-odd"><td><p>default</p></td>
-<td colspan="2"><p>False</p></td>
+<td colspan="2"><p>false</p></td>
 </tr>
 <tr class="row-even"><td rowspan="3"><ul class="simple">
 <li><p>query_layers</p></li>
@@ -2009,7 +2021,7 @@
 <li><p>headers</p></li>
 </ul>
 </td>
-<td colspan="3"><p><a class="reference internal" href="#headers">Headers</a></p></td>
+<td colspan="3"><p><a class="reference internal" href="#id3">Headers</a></p></td>
 </tr>
 <tr class="row-odd"><td rowspan="4"><ul class="simple">
 <li><p>version</p></li>
@@ -2026,13 +2038,13 @@
 <td colspan="2"><p>1.1.1</p></td>
 </tr>
 <tr class="row-odd"><td><p>additionalProperties</p></td>
-<td colspan="3"><p>False</p></td>
+<td colspan="3"><p>false</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="layer-mapnik">
-<span id="layer-mapnik"></span><h3>Layer Mapnik<a class="headerlink" href="#layer-mapnik" title="Link to this heading">¶</a></h3>
+<span id="id47"></span><h3>Layer Mapnik<a class="headerlink" href="#layer-mapnik" title="Link to this heading">¶</a></h3>
 <table class="docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p>type</p></td>
@@ -2051,61 +2063,61 @@
 <li><p>title</p></li>
 </ul>
 </td>
-<td colspan="4"><p><a class="reference internal" href="#layer-title">Layer title</a></p></td>
+<td colspan="4"><p><a class="reference internal" href="#id16">Layer title</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p>grid</p></li>
 </ul>
 </td>
-<td colspan="4"><p><a class="reference internal" href="#layer-grid">Layer grid</a></p></td>
+<td colspan="4"><p><a class="reference internal" href="#id17">Layer grid</a></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p>grids</p></li>
 </ul>
 </td>
-<td colspan="4"><p><a class="reference internal" href="#layer-grids">Layer grids</a></p></td>
+<td colspan="4"><p><a class="reference internal" href="#id18">Layer grids</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p>srs</p></li>
 </ul>
 </td>
-<td colspan="4"><p><a class="reference internal" href="#layer-srs">Layer SRS</a></p></td>
+<td colspan="4"><p><a class="reference internal" href="#id19">Layer SRS</a></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p>proj4_literal</p></li>
 </ul>
 </td>
-<td colspan="4"><p><a class="reference internal" href="#layer-proj4-literal">Layer Proj4 literal</a></p></td>
+<td colspan="4"><p><a class="reference internal" href="#id20">Layer Proj4 literal</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p>bbox</p></li>
 </ul>
 </td>
-<td colspan="4"><p><a class="reference internal" href="#layer-bounding-box">Layer bounding box</a></p></td>
+<td colspan="4"><p><a class="reference internal" href="#id21">Layer bounding box</a></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p>min_resolution_seed</p></li>
 </ul>
 </td>
-<td colspan="4"><p><a class="reference internal" href="#layer-min-resolution-seed">layer min resolution seed</a></p></td>
+<td colspan="4"><p><a class="reference internal" href="#id22">layer min resolution seed</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p>px_buffer</p></li>
 </ul>
 </td>
-<td colspan="4"><p><a class="reference internal" href="#layer-pixel-buffer">Layer pixel buffer</a></p></td>
+<td colspan="4"><p><a class="reference internal" href="#id23">Layer pixel buffer</a></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p>force_tile_matrix_set_limits</p></li>
 </ul>
 </td>
-<td colspan="4"><p><a class="reference internal" href="#force-tile-matrix-set-limits">Force tile matrix set limits</a></p></td>
+<td colspan="4"><p><a class="reference internal" href="#id24">Force tile matrix set limits</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p>meta</p></li>
 </ul>
 </td>
-<td colspan="4"><p><a class="reference internal" href="#layer-meta">Layer meta</a></p></td>
+<td colspan="4"><p><a class="reference internal" href="#id26">Layer meta</a></p></td>
 </tr>
 <tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p>meta_size</p></li>
@@ -2114,7 +2126,7 @@
 <td><p>default</p></td>
 <td colspan="3"><p>1</p></td>
 </tr>
-<tr class="row-odd"><td colspan="4"><p><a class="reference internal" href="#layer-meta-size">Layer meta size</a></p></td>
+<tr class="row-odd"><td colspan="4"><p><a class="reference internal" href="#id27">Layer meta size</a></p></td>
 </tr>
 <tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p>meta_buffer</p></li>
@@ -2123,7 +2135,7 @@
 <td><p>default</p></td>
 <td colspan="3"><p>0</p></td>
 </tr>
-<tr class="row-odd"><td colspan="4"><p><a class="reference internal" href="#layer-meta-buffer">Layer meta buffer</a></p></td>
+<tr class="row-odd"><td colspan="4"><p><a class="reference internal" href="#id28">Layer meta buffer</a></p></td>
 </tr>
 <tr class="row-even"><td rowspan="2"><ul class="simple">
 <li><p>layers</p></li>
@@ -2132,97 +2144,97 @@
 <td><p>default</p></td>
 <td colspan="3"><p>__all__</p></td>
 </tr>
-<tr class="row-odd"><td colspan="4"><p><a class="reference internal" href="#layer-layers">Layer layers</a></p></td>
+<tr class="row-odd"><td colspan="4"><p><a class="reference internal" href="#id30">Layer layers</a></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p><strong>wmts_style</strong></p></li>
 </ul>
 </td>
-<td colspan="4"><p><a class="reference internal" href="#layer-wmts-style">Layer WMTS style</a></p></td>
+<td colspan="4"><p><a class="reference internal" href="#id31">Layer WMTS style</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p><strong>mime_type</strong></p></li>
 </ul>
 </td>
-<td colspan="4"><p><a class="reference internal" href="#layer-mime-type">Layer MIME type</a></p></td>
+<td colspan="4"><p><a class="reference internal" href="#id32">Layer MIME type</a></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p><strong>extension</strong></p></li>
 </ul>
 </td>
-<td colspan="4"><p><a class="reference internal" href="#layer-extension">Layer extension</a></p></td>
+<td colspan="4"><p><a class="reference internal" href="#id33">Layer extension</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p>dimensions</p></li>
 </ul>
 </td>
-<td colspan="4"><p><a class="reference internal" href="#layer-dimensions">layer dimensions</a></p></td>
+<td colspan="4"><p><a class="reference internal" href="#id35">layer dimensions</a></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p>legend</p></li>
 </ul>
 </td>
-<td colspan="4"><p><a class="reference internal" href="#layer-legend">Layer legend</a></p></td>
+<td colspan="4"><p><a class="reference internal" href="#id36">Layer legend</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p>legends</p></li>
 </ul>
 </td>
-<td colspan="4"><p><a class="reference internal" href="#layer-legends">Layer legends</a></p></td>
+<td colspan="4"><p><a class="reference internal" href="#id37">Layer legends</a></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p>legend_mime</p></li>
 </ul>
 </td>
-<td colspan="4"><p><a class="reference internal" href="#layer-legend-mime-type">Layer legend MIME type</a></p></td>
+<td colspan="4"><p><a class="reference internal" href="#id38">Layer legend MIME type</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p>legend_extension</p></li>
 </ul>
 </td>
-<td colspan="4"><p><a class="reference internal" href="#layer-legend-extension">Layer legend extension</a></p></td>
+<td colspan="4"><p><a class="reference internal" href="#id39">Layer legend extension</a></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p>pre_hash_post_process</p></li>
 </ul>
 </td>
-<td colspan="4"><p><a class="reference internal" href="#layer-pre-hash-post-process">Layer pre hash post process</a></p></td>
+<td colspan="4"><p><a class="reference internal" href="#id40">Layer pre hash post process</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p>post_process</p></li>
 </ul>
 </td>
-<td colspan="4"><p><a class="reference internal" href="#layer-post-process">Layer post process</a></p></td>
+<td colspan="4"><p><a class="reference internal" href="#id41">Layer post process</a></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p>geoms</p></li>
 </ul>
 </td>
-<td colspan="4"><p><a class="reference internal" href="#layer-geometries">Layer geometries</a></p></td>
+<td colspan="4"><p><a class="reference internal" href="#id42">Layer geometries</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p>geom_filter</p></li>
 </ul>
 </td>
-<td colspan="4"><p><a class="reference internal" href="#layer-geometry-filter">Layer geometry filter</a></p></td>
+<td colspan="4"><p><a class="reference internal" href="#id25">Layer geometry filter</a></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p>empty_tile_detection</p></li>
 </ul>
 </td>
-<td colspan="4"><p><a class="reference internal" href="#layer-empty-tile-detection">Layer empty tile detection</a></p></td>
+<td colspan="4"><p><a class="reference internal" href="#id43">Layer empty tile detection</a></p></td>
 </tr>
 <tr class="row-odd"><td><ul class="simple">
 <li><p>empty_metatile_detection</p></li>
 </ul>
 </td>
-<td colspan="4"><p><a class="reference internal" href="#layer-empty-meta-tile-detection">Layer empty meta-tile detection</a></p></td>
+<td colspan="4"><p><a class="reference internal" href="#id44">Layer empty meta-tile detection</a></p></td>
 </tr>
 <tr class="row-even"><td><ul class="simple">
 <li><p>cost</p></li>
 </ul>
 </td>
-<td colspan="4"><p><a class="reference internal" href="#layer-cost">Layer cost</a></p></td>
+<td colspan="4"><p><a class="reference internal" href="#id45">Layer cost</a></p></td>
 </tr>
 <tr class="row-odd"><td rowspan="3"><ul class="simple">
 <li><p>mapfile</p></li>
@@ -2324,29 +2336,29 @@
 <td colspan="3"><p><em>boolean</em></p></td>
 </tr>
 <tr class="row-odd"><td><p>default</p></td>
-<td colspan="3"><p>False</p></td>
+<td colspan="3"><p>false</p></td>
 </tr>
 <tr class="row-even"><td><p>additionalProperties</p></td>
-<td colspan="4"><p>False</p></td>
+<td colspan="4"><p>false</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="layer">
-<span id="layer"></span><h3>Layer<a class="headerlink" href="#layer" title="Link to this heading">¶</a></h3>
+<span id="id48"></span><h3>Layer<a class="headerlink" href="#layer" title="Link to this heading">¶</a></h3>
 <p>The layer definition, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-layers">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#configure-layers</a></p>
 <table class="docutils align-default">
 <tbody>
 <tr class="row-odd"><td rowspan="2"><p>anyOf</p></td>
-<td><p><a class="reference internal" href="#layer-wms">Layer WMS</a></p></td>
+<td><p><a class="reference internal" href="#id46">Layer WMS</a></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#layer-mapnik">Layer Mapnik</a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#id47">Layer Mapnik</a></p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="process-command">
-<span id="process-command"></span><h3>Process command<a class="headerlink" href="#process-command" title="Link to this heading">¶</a></h3>
+<span id="id49"></span><h3>Process command<a class="headerlink" href="#process-command" title="Link to this heading">¶</a></h3>
 <p>A command</p>
 <table class="docutils align-default">
 <tbody>
@@ -2382,7 +2394,7 @@
 <td colspan="2"><p><em>boolean</em></p></td>
 </tr>
 <tr class="row-even"><td><p>default</p></td>
-<td colspan="2"><p>False</p></td>
+<td colspan="2"><p>false</p></td>
 </tr>
 <tr class="row-odd"><td rowspan="17"><ul class="simple">
 <li><p>arg</p></li>
@@ -2442,16 +2454,16 @@
 <td><p><em>string</em></p></td>
 </tr>
 <tr class="row-odd"><td><p>additionalProperties</p></td>
-<td colspan="2"><p>False</p></td>
+<td colspan="2"><p>false</p></td>
 </tr>
 <tr class="row-even"><td><p>additionalProperties</p></td>
-<td colspan="3"><p>False</p></td>
+<td colspan="3"><p>false</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="generation">
-<span id="generation"></span><h3>Generation<a class="headerlink" href="#generation" title="Link to this heading">¶</a></h3>
+<span id="id50"></span><h3>Generation<a class="headerlink" href="#generation" title="Link to this heading">¶</a></h3>
 <p>The configuration used for the generation</p>
 <table class="docutils align-default">
 <tbody>
@@ -2540,13 +2552,13 @@
 <td colspan="2"><p>1</p></td>
 </tr>
 <tr class="row-odd"><td><p>additionalProperties</p></td>
-<td colspan="3"><p>False</p></td>
+<td colspan="3"><p>false</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="aws-region">
-<span id="aws-region"></span><h3>AWS region<a class="headerlink" href="#aws-region" title="Link to this heading">¶</a></h3>
+<span id="id51"></span><h3>AWS region<a class="headerlink" href="#aws-region" title="Link to this heading">¶</a></h3>
 <p>The region</p>
 <table class="docutils align-default">
 <tbody>
@@ -2563,7 +2575,7 @@
 </table>
 </section>
 <section id="postgresql">
-<span id="postgresql"></span><h3>PostgreSQL<a class="headerlink" href="#postgresql" title="Link to this heading">¶</a></h3>
+<span id="id52"></span><h3>PostgreSQL<a class="headerlink" href="#postgresql" title="Link to this heading">¶</a></h3>
 <p>The PostgreSQL configuration (main configuration), the schema can be configured with the <cite>TILECLOUD_CHAIN_POSTGRESQL_SCHEMA</cite> environment variable</p>
 <table class="docutils align-default">
 <tbody>
@@ -2598,13 +2610,13 @@
 <td><p>10</p></td>
 </tr>
 <tr class="row-even"><td><p>additionalProperties</p></td>
-<td colspan="2"><p>False</p></td>
+<td colspan="2"><p>false</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="redis">
-<span id="redis"></span><h3>Redis<a class="headerlink" href="#redis" title="Link to this heading">¶</a></h3>
+<span id="id53"></span><h3>Redis<a class="headerlink" href="#redis" title="Link to this heading">¶</a></h3>
 <p>The Redis configuration (main configuration)</p>
 <table class="docutils align-default">
 <tbody>
@@ -2673,7 +2685,7 @@
 <td><p><em>integer</em></p></td>
 </tr>
 <tr class="row-even"><td><p>additionalItems</p></td>
-<td colspan="3"><p>False</p></td>
+<td colspan="3"><p>false</p></td>
 </tr>
 <tr class="row-odd"><td rowspan="2"><ul class="simple">
 <li><p>connection_kwargs</p></li>
@@ -2870,13 +2882,13 @@
 <td colspan="4"><p>10000</p></td>
 </tr>
 <tr class="row-odd"><td><p>additionalProperties</p></td>
-<td colspan="5"><p>False</p></td>
+<td colspan="5"><p>false</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="server">
-<span id="server"></span><h3>Server<a class="headerlink" href="#server" title="Link to this heading">¶</a></h3>
+<span id="id54"></span><h3>Server<a class="headerlink" href="#server" title="Link to this heading">¶</a></h3>
 <p>Configuration used by the tile server, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#distribute-the-tiles">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#distribute-the-tiles</a></p>
 <table class="docutils align-default">
 <tbody>
@@ -2923,7 +2935,7 @@
 <td colspan="3"><p><em>boolean</em></p></td>
 </tr>
 <tr class="row-odd"><td><p>default</p></td>
-<td colspan="3"><p>False</p></td>
+<td colspan="3"><p>false</p></td>
 </tr>
 <tr class="row-even"><td rowspan="10"><ul class="simple">
 <li><p>static_allow_extension</p></li>
@@ -3040,7 +3052,7 @@
 <td><p><em>string</em></p></td>
 </tr>
 <tr class="row-even"><td><p>additionalProperties</p></td>
-<td colspan="2"><p>False</p></td>
+<td colspan="2"><p>false</p></td>
 </tr>
 <tr class="row-odd"><td rowspan="7"><ul class="simple">
 <li><p>allowed_commands</p></li>
@@ -3133,13 +3145,13 @@
 <td colspan="3"><p><em>string</em></p></td>
 </tr>
 <tr class="row-odd"><td><p>additionalProperties</p></td>
-<td colspan="4"><p>False</p></td>
+<td colspan="4"><p>false</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="cost">
-<span id="cost"></span><h3>Cost<a class="headerlink" href="#cost" title="Link to this heading">¶</a></h3>
+<span id="id55"></span><h3>Cost<a class="headerlink" href="#cost" title="Link to this heading">¶</a></h3>
 <p>The configuration use to calculate the cast (unmaintained)</p>
 <table class="docutils align-default">
 <tbody>
@@ -3232,7 +3244,7 @@
 <td><p>0.12</p></td>
 </tr>
 <tr class="row-odd"><td><p>additionalProperties</p></td>
-<td colspan="2"><p>False</p></td>
+<td colspan="2"><p>false</p></td>
 </tr>
 <tr class="row-even"><td rowspan="13"><ul class="simple">
 <li><p>cloudfront</p></li>
@@ -3276,7 +3288,7 @@
 <td><p>0.12</p></td>
 </tr>
 <tr class="row-even"><td><p>additionalProperties</p></td>
-<td colspan="2"><p>False</p></td>
+<td colspan="2"><p>false</p></td>
 </tr>
 <tr class="row-odd"><td rowspan="9"><ul class="simple">
 <li><p>sqs</p></li>
@@ -3306,16 +3318,16 @@
 <td><p>0.01</p></td>
 </tr>
 <tr class="row-odd"><td><p>additionalProperties</p></td>
-<td colspan="2"><p>False</p></td>
+<td colspan="2"><p>false</p></td>
 </tr>
 <tr class="row-even"><td><p>additionalProperties</p></td>
-<td colspan="3"><p>False</p></td>
+<td colspan="3"><p>false</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="metadata">
-<span id="metadata"></span><h3>Metadata<a class="headerlink" href="#metadata" title="Link to this heading">¶</a></h3>
+<span id="id56"></span><h3>Metadata<a class="headerlink" href="#metadata" title="Link to this heading">¶</a></h3>
 <p>The configuration of the WMTS capabilities metadata</p>
 <table class="docutils align-default">
 <tbody>
@@ -3398,13 +3410,13 @@
 <td colspan="2"><p><em>string</em></p></td>
 </tr>
 <tr class="row-odd"><td><p>additionalProperties</p></td>
-<td colspan="3"><p>False</p></td>
+<td colspan="3"><p>false</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="provider">
-<span id="provider"></span><h3>Provider<a class="headerlink" href="#provider" title="Link to this heading">¶</a></h3>
+<span id="id57"></span><h3>Provider<a class="headerlink" href="#provider" title="Link to this heading">¶</a></h3>
 <p>The provider</p>
 <table class="docutils align-default">
 <tbody>
@@ -3513,7 +3525,7 @@
 <td><p><em>string</em></p></td>
 </tr>
 <tr class="row-even"><td><p>additionalProperties</p></td>
-<td colspan="2"><p>False</p></td>
+<td colspan="2"><p>false</p></td>
 </tr>
 <tr class="row-odd"><td rowspan="23"><ul class="simple">
 <li><p>address</p></li>
@@ -3595,22 +3607,22 @@
 <td><p><em>string</em></p></td>
 </tr>
 <tr class="row-odd"><td><p>additionalProperties</p></td>
-<td colspan="2"><p>False</p></td>
+<td colspan="2"><p>false</p></td>
 </tr>
 <tr class="row-even"><td><p>additionalProperties</p></td>
-<td colspan="3"><p>False</p></td>
+<td colspan="3"><p>false</p></td>
 </tr>
 <tr class="row-odd"><td><p>additionalProperties</p></td>
-<td colspan="4"><p>False</p></td>
+<td colspan="4"><p>false</p></td>
 </tr>
 <tr class="row-even"><td><p>additionalProperties</p></td>
-<td colspan="5"><p>False</p></td>
+<td colspan="5"><p>false</p></td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="logging">
-<span id="logging"></span><h3>Logging<a class="headerlink" href="#logging" title="Link to this heading">¶</a></h3>
+<span id="id58"></span><h3>Logging<a class="headerlink" href="#logging" title="Link to this heading">¶</a></h3>
 <p>The logging configuration to database, see <a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#logging">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/USAGE.rst#logging</a> (main configuration)</p>
 <table class="docutils align-default">
 <tbody>
@@ -3702,10 +3714,10 @@
 <td><p><em>string</em></p></td>
 </tr>
 <tr class="row-even"><td><p>additionalProperties</p></td>
-<td colspan="2"><p>False</p></td>
+<td colspan="2"><p>false</p></td>
 </tr>
 <tr class="row-odd"><td><p>additionalProperties</p></td>
-<td colspan="3"><p>False</p></td>
+<td colspan="3"><p>false</p></td>
 </tr>
 </tbody>
 </table>
