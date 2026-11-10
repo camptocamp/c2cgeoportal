@@ -242,7 +242,7 @@ def get_role_id(name: str) -> int:
 
     assert DBSession is not None
 
-    return cast("int", DBSession.query(main.Role.id).filter(main.Role.name == name).one()[0])
+    return DBSession.query(main.Role.id).filter(main.Role.name == name).one()[0]
 
 
 def get_roles_id(request: pyramid.request.Request) -> list[int]:

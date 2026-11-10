@@ -54,14 +54,28 @@ ITEM_TYPE_ROUTE_MAP = {
 }
 
 
+def _to_int(value: str | int) -> int:
+    """
+    Convert an identifier to an integer.
+
+    psycopg3 sends typed parameters, so identifiers must be integers to be compared with the primary key
+    columns.
+    """
+    if isinstance(value, int):
+        return value
+    if isinstance(value, str) and value.isdigit():
+        return int(value)
+    raise ValueError(f"Invalid integer identifier: {value}")
+
+
 class ChildSchemaNode(GeoFormSchemaNode):  # pylint: disable=abstract-method
     """Schema of the child nodes."""
 
     def objectify(self, dict_: Any, context: Any = None) -> Any:
         if dict_.get("id", None):
-            context = self.dbsession.query(LayergroupTreeitem).get(dict_["id"])
+            context = self.dbsession.query(LayergroupTreeitem).get(_to_int(dict_["id"]))
         context = super().objectify(dict_, context)
-        context.treeitem = self.dbsession.query(TreeItem).get(dict_["treeitem_id"])
+        context.treeitem = self.dbsession.query(TreeItem).get(_to_int(dict_["treeitem_id"]))
         return context
 
 
@@ -92,6 +106,7 @@ def treeitems(
     # Do not propose ancestors to avoid cycles
     item_id = kw["request"].matchdict["id"]
     if item_id != "new":
+        item_id = int(item_id)
         search_ancestors = (
             dbsession.query(LayergroupTreeitem.treegroup_id)
             .filter(LayergroupTreeitem.treeitem_id == item_id)
@@ -126,11 +141,16 @@ def treeitems(
 def children_validator(node: Any, cstruct: Any) -> None:
     """Get the validator on the children nodes."""
     for dict_ in cstruct:
-        if dict_["treeitem_id"] not in [item["id"] for item in node.candidates]:
+        try:
+            treeitem_id = _to_int(dict_["treeitem_id"])
+        except ValueError as exc:
+            # Return a validation error on a malformed identifier instead of an internal server error
+            raise colander.Invalid(node, str(exc)) from exc
+        if treeitem_id not in [item["id"] for item in node.candidates]:
             raise colander.Invalid(
                 node,
                 _("Value {} does not exist in table {} or is not allowed to avoid cycles").format(
-                    dict_["treeitem_id"],
+                    treeitem_id,
                     TreeItem.__tablename__,
                 ),
             )
@@ -142,8 +162,14 @@ def base_deferred_parent_id_validator(node: Any, kw: Any, model: Any) -> colande
 
     def validator(node: Any, cstruct: Any) -> None:
         """Validate the parent ID."""
-        if kw["dbsession"].query(model).filter(model.id == cstruct).count() == 0:
-            raise colander.Invalid(node, f"Value {cstruct} does not exist in table {model.__tablename__}")
+        try:
+            value = _to_int(cstruct)
+        except ValueError as exc:
+            # Return a validation error on a missing or malformed identifier instead of an internal
+            # server error, as the string pass-through did before
+            raise colander.Invalid(node, str(exc)) from exc
+        if kw["dbsession"].query(model).filter(model.id == value).count() == 0:
+            raise colander.Invalid(node, f"Value {value} does not exist in table {model.__tablename__}")
 
     return validator
 

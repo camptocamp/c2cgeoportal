@@ -75,6 +75,8 @@ from c2cgeoportal_geoportal.lib.dbreflection import (
 )
 
 if TYPE_CHECKING:
+    from sqlalchemy.sql.schema import Table
+
     from c2cgeoportal_commons.models import (
         main,  # pylint: disable=ungrouped-imports.useless-suppression
     )
@@ -100,7 +102,7 @@ class _BaseCallback:
     def _get_geometry_check_base_query(
         self,
         request: pyramid.request.Request,
-    ) -> sqlalchemy.orm.query.RowReturningQuery[tuple[int]]:
+    ) -> sqlalchemy.orm.query.RowReturningQuery[int]:
         from c2cgeoportal_commons.models.main import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             Layer,
             RestrictionArea,
@@ -248,7 +250,7 @@ class Layers:
             raise HTTPInternalServerError(f"Too many layers found with id {layer_id:d}") from None
         if not geo_table:
             raise HTTPNotFound(f"Layer {layer_id:d} has no geo table")
-        return cast("main.Layer", layer)
+        return layer
 
     def _get_layers_for_request(self) -> Generator["main.Layer", None, None]:
         """
@@ -593,7 +595,7 @@ def get_layer_class(layer: "main.Layer", with_last_update_columns: bool = False)
 
     for attribute_name in attributes_order or []:
         if attribute_name not in column_properties:
-            table = mapper.mapped_table
+            table = cast("Table", mapper.local_table)
             _LOG.warning(
                 'Attribute "%s" does not exists in table "%s.%s".\n'
                 'Please correct metadata "editingAttributesOrder" in layer "%s" (id=%s).\n'

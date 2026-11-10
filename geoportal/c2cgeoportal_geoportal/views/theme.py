@@ -346,11 +346,11 @@ class Theme:
 
         return url, content, errors
 
-    def _create_layer_query(self, interface: str) -> sqlalchemy.orm.query.RowReturningQuery[tuple[str]]:
+    def _create_layer_query(self, interface: str) -> sqlalchemy.orm.query.RowReturningQuery[str]:
         """Create an SQLAlchemy query for Layer and for the role identified to by ``role_id``."""
         assert models.DBSession is not None
 
-        query: sqlalchemy.orm.query.RowReturningQuery[tuple[str]] = models.DBSession.query(
+        query: sqlalchemy.orm.query.RowReturningQuery[str] = models.DBSession.query(
             main.Layer.name,
         ).filter(main.Layer.public.is_(True))
 
@@ -1250,7 +1250,8 @@ class Theme:
             if (time.time() - start_time) > 1:
                 _LOG.info("Do preload in %.3fs.", time.time() - start_time)
             _LOG.debug("Run garbage collection: %s", ", ".join([str(gc.collect(n)) for n in range(3)]))
-            result["ogcServers"] = {}
+            ogc_servers: dict[str, Any] = {}
+            result["ogcServers"] = ogc_servers
             for ogc_server, nb_layers in (
                 models.DBSession.query(
                     main.OGCServer,
@@ -1303,7 +1304,7 @@ class Theme:
                             if name in attributes:
                                 del attributes[name]
 
-                result["ogcServers"][ogc_server.name] = {
+                ogc_servers[ogc_server.name] = {
                     "url": url.url() if url else None,
                     "urlWfs": url_wfs.url() if url_wfs else None,
                     "uses": {

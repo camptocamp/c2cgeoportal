@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2025, Camptocamp SA
+# Copyright (c) 2021-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -79,6 +79,6 @@ class VectorTilesViews:
             set_common_headers(self.request, "vector_tiles", Cache.PUBLIC)
             response = self.request.response
             response.content_type = "application/vnd.mapbox-vector-tile"
-            response.body = row[0].tobytes()
+            response.body = bytes(row[0])
             return response
         return None

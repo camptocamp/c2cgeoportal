@@ -58,7 +58,7 @@ dependencies = [
 
 [project.optional-dependencies]
 testing = ["transaction"]
-upgrade = ["alembic", "psycopg2"]
+upgrade = ["alembic", "psycopg[binary]"]
 broadcast = ["c2cwsgiutils"]
 
 [build-system]
