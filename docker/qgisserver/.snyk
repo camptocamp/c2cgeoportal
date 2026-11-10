@@ -25,6 +25,20 @@ ignore:
     - '*':
         reason: Requires a new Python version
         created: 2026-01-12T07:30:31.896Z
+  SNYK-PYTHON-FILELOCK-21280759:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 4.2.1 requires Python >= 3.11 while the image build uses
+          Python 3.9/3.10 (CVE-2026-112909)
+        created: 2026-11-10T20:54:30.000Z
+  SNYK-PYTHON-FILELOCK-21802490:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 4.2.1 requires Python >= 3.11 while the image build uses
+          Python 3.9/3.10 (CVE-2026-112910)
+        created: 2026-11-10T20:54:30.000Z
   SNYK-PYTHON-WHEEL-15053866:
     - '*':
         reason: Requires a new Python version
