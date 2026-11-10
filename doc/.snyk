@@ -14,4 +14,445 @@ ignore:
     - '*':
         reason: Not compatible with used Python version
         created: 2026-01-13T09:19:14.740Z
+  SNYK-PYTHON-MAKO-20510290:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 1.4.2 requires Python >= 3.10 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-15265439:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 12.1.1 requires Python >= 3.10 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-16032068:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 12.2.0 requires Python >= 3.10 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-16419303:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 12.2.0 requires Python >= 3.10 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-16419304:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 12.2.0 requires Python >= 3.10 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-16419307:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 12.2.0 requires Python >= 3.10 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-17824465:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 12.3.0 requires Python >= 3.10 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-17824466:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 12.3.0 requires Python >= 3.10 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-17824467:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 12.3.0 requires Python >= 3.10 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-17824468:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 12.3.0 requires Python >= 3.10 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-17824469:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 12.3.0 requires Python >= 3.10 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-17972376:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 12.3.0 requires Python >= 3.10 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-17972377:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 12.3.0 requires Python >= 3.10 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-17972381:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 12.3.0 requires Python >= 3.10 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-17972384:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 12.3.0 requires Python >= 3.10 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-17972386:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 12.3.0 requires Python >= 3.10 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21277713:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 13.0.0 requires Python >= 3.11 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21277726:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 13.0.0 requires Python >= 3.11 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21277727:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 13.0.0 requires Python >= 3.11 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21277734:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 13.0.0 requires Python >= 3.11 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21277776:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 13.0.0 requires Python >= 3.11 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21277777:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 13.0.0 requires Python >= 3.11 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21277778:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 13.0.0 requires Python >= 3.11 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21277779:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 13.0.0 requires Python >= 3.11 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21277780:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 13.0.0 requires Python >= 3.11 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21277782:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 13.0.0 requires Python >= 3.11 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21277783:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 13.0.0 requires Python >= 3.11 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21277784:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 13.0.0 requires Python >= 3.11 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21277785:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 13.0.0 requires Python >= 3.11 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21277786:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 13.0.0 requires Python >= 3.11 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21277787:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 12.3.0 requires Python >= 3.10 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21277792:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 12.3.0 requires Python >= 3.10 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21277793:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 13.0.0 requires Python >= 3.11 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21277794:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 12.3.0 requires Python >= 3.10 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21277795:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 13.0.0 requires Python >= 3.11 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21277796:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 13.0.0 requires Python >= 3.11 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21277797:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 13.0.0 requires Python >= 3.11 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21277798:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 12.3.0 requires Python >= 3.10 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21277799:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 13.0.0 requires Python >= 3.11 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21277801:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 13.0.0 requires Python >= 3.11 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21277802:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 13.0.0 requires Python >= 3.11 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21279300:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 13.0.0 requires Python >= 3.11 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21369600:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 13.0.0 requires Python >= 3.11 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21430900:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 13.0.0 requires Python >= 3.11 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21430916:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 13.0.0 requires Python >= 3.11 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21430917:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 13.0.0 requires Python >= 3.11 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21430990:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 13.0.0 requires Python >= 3.11 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21430991:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 13.0.0 requires Python >= 3.11 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21430998:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 13.0.0 requires Python >= 3.11 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21430999:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 13.0.0 requires Python >= 3.11 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21431000:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 13.0.0 requires Python >= 3.11 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21431005:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 13.0.0 requires Python >= 3.11 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21431018:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 13.0.0 requires Python >= 3.11 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PILLOW-21431022:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 13.0.0 requires Python >= 3.11 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-PYGMENTS-15746419:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 2.20.0 requires Python >= 3.9 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-REQUESTS-15763443:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 2.33.0 requires Python >= 3.10 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-SETUPTOOLS-21689156:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 84.1.0 requires Python >= 3.10 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-URLLIB3-10390194:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 2.5.0 requires Python >= 3.9 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-URLLIB3-14192442:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 2.6.0 requires Python >= 3.9 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-URLLIB3-14192443:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 2.6.0 requires Python >= 3.9 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-URLLIB3-16642024:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 2.7.0 requires Python >= 3.10 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-URLLIB3-20302844:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 2.8.0 requires Python >= 3.10 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
+  SNYK-PYTHON-URLLIB3-20302846:
+    - '*':
+        reason: >-
+          Patched version not available for used Python version, the fixed
+          version 2.8.0 requires Python >= 3.10 while the doc build image uses
+          Python 3.8
+        created: 2026-11-10T22:32:50.000Z
 patch: {}
