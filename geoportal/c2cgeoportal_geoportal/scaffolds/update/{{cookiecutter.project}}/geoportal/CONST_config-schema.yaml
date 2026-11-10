@@ -61,8 +61,6 @@ mapping:
         type: scalar
       sqlalchemy.pool_overflow:
         type: scalar
-      sqlalchemy.executemany_mode:
-        type: str
       sqlalchemy.pool_pre_ping:
         type: scalar
       sqlalchemy_slave.url:
@@ -74,8 +72,6 @@ mapping:
         type: scalar
       sqlalchemy_slave.pool_overflow:
         type: scalar
-      sqlalchemy_slave.executemany_mode:
-        type: str
       sqlalchemy_slave.pool_pre_ping:
         type: scalar
       default_max_age:

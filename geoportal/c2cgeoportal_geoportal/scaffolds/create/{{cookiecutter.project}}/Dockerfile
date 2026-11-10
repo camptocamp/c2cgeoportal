@@ -5,8 +5,8 @@ FROM ghcr.io/camptocamp/geomapfish-tools:{{cookiecutter.geomapfish_version_tag_e
 
 ENV VARS_FILE=vars.yaml
 ENV CONFIG_VARS sqlalchemy.url sqlalchemy.pool_recycle sqlalchemy.pool_size sqlalchemy.max_overflow \
-    sqlalchemy.executemany_mode sqlalchemy_slave.url sqlalchemy_slave.pool_recycle sqlalchemy_slave.pool_size \
-    sqlalchemy_slave.max_overflow sqlalchemy_slave.executemany_mode schema schema_static enable_admin_interface \
+    sqlalchemy_slave.url sqlalchemy_slave.pool_recycle sqlalchemy_slave.pool_size \
+    sqlalchemy_slave.max_overflow schema schema_static enable_admin_interface \
     default_locale_name servers layers cache admin_interface getitfixed functionalities \
     raster shortener hide_capabilities tinyowsproxy resourceproxy print_url print_get_redirect \
     checker check_collector default_max_age package srid \
