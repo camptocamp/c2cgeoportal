@@ -10,6 +10,7 @@ from unittest.mock import patch
 import pytest
 from qgis.core import QgsProject, QgsVectorLayer
 from shapely.geometry import box
+from sqlalchemy.orm import Session, sessionmaker
 
 from .accesscontrol_test import add_node_in_qgis_project, set_request_parameters
 from geomapfish_qgisserver.accesscontrol import GeoMapFishAccessControl, OGCServerAccessControl
@@ -260,3 +261,58 @@ class TestProtectedAttributes:
                 qgis_layer_in_group,
                 ["public", "protected1", "protected2", "protected3"],
             ) == ["public"]
+
+
+@pytest.mark.usefixtures(
+    "qgs_access_control_filter",
+    "auto_single_ogc_server_env",
+    "test_data_protected",
+    "qgis_project",
+)
+class TestSessionsClosed:
+    def test_authorized_layer_attributes_closes_sessions(
+        self, server_iface, test_data_protected, qgis_project, clean_dbsession
+    ):
+        """
+        All the sessions created by authorizedLayerAttributes must be closed.
+
+        A session that is not closed keeps its connection checked out from the pool
+        (idle in transaction on the database side), and when the pool is exhausted
+        the next requests fail.
+        """
+        with patch(
+            "geomapfish_qgisserver.accesscontrol.OGCServerAccessControl.project",
+            return_value=qgis_project["project"],
+        ):
+            plugin = GeoMapFishAccessControl(server_iface)
+            assert isinstance(plugin.ogcserver_accesscontrol, OGCServerAccessControl)
+
+            created_sessions: list[Session] = []
+            closed_sessions: list[Session] = []
+
+            class TrackedSession(Session):
+                def __init__(self, *args, **kwargs):
+                    super().__init__(*args, **kwargs)
+                    created_sessions.append(self)
+
+                def close(self):
+                    closed_sessions.append(self)
+                    super().close()
+
+            plugin.ogcserver_accesscontrol.DBSession = sessionmaker(  # pylint: disable=invalid-name
+                class_=TrackedSession, bind=clean_dbsession.kw["bind"]
+            )
+
+            qgis_layer = qgis_project["project"].mapLayersByName("ows_private_layer2")[0]
+
+            for parameters in [
+                {"USER_ID": "0"},
+                {"ROLE_IDS": str(test_data_protected["role"])},
+                {},
+            ]:
+                set_request_parameters(server_iface, parameters)
+                plugin.authorizedLayerAttributes(
+                    qgis_layer,
+                    ["public", "protected1", "protected2", "protected3"],
+                )
+                assert closed_sessions == created_sessions
