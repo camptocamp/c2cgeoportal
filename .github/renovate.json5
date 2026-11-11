@@ -163,6 +163,20 @@
       enabled: false,
       matchDepNames: ['Mako'],
     },
+    /**
+     * Ignore all psycopg2 updates on branch 2.8, psycopg2 >= 2.9.13 requires Python >= 3.10 while
+     * the root project supports Python >= 3.9.2, < 3.11, and the security floor 2.9.12 is pinned
+     * in the root pyproject.toml.
+     * The `force` is needed because vulnerability alert updates are merged with `force.enabled`
+     * and would otherwise override a plain `enabled: false`.
+     */
+    {
+      matchBaseBranches: ['2.8'],
+      force: {
+        enabled: false,
+      },
+      matchDepNames: ['psycopg2'],
+    },
     /** Don't update pyproj on branch 2.9 */
     {
       matchBaseBranches: ['2.9'],
