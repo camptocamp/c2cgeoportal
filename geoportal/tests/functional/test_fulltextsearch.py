@@ -436,6 +436,39 @@ class TestFulltextsearchView(TestCase):
         assert response.features[1].properties["label"] == "label4"
         assert response.features[1].properties["layer_name"] == "layer1"
 
+    def test_match_with_newline(self):
+        from geojson.feature import FeatureCollection
+
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
+
+        request = self._create_dummy_request(params=dict(query="tra\r\nsol", limit=40))
+        fts = FullTextSearchView(request)
+        response = fts.fulltextsearch()
+        self.assertTrue(isinstance(response, FeatureCollection))
+        assert len(response.features) == 2
+        assert response.features[0].properties["label"] == "label1"
+        assert response.features[0].properties["layer_name"] == "layer1"
+        assert response.features[1].properties["label"] == "label4"
+        assert response.features[1].properties["layer_name"] == "layer1"
+
+    def test_multiline_query_with_punctuation_and_coordinates(self):
+        from geojson.feature import FeatureCollection
+
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
+
+        request = self._create_dummy_request(
+            params=dict(
+                query=(
+                    "RGX7 MXJ, Nigara, tAMBUNG, Kec. Pademawu, Kabupaten Pamekasan, "
+                    "Jawa Timur 69323, Indonesia\n-7.150746/113.514901"
+                )
+            )
+        )
+        fts = FullTextSearchView(request)
+        response = fts.fulltextsearch()
+        self.assertTrue(isinstance(response, FeatureCollection))
+        assert len(response.features) == 0
+
     def test_public_match_registered(self):
         from geojson.feature import FeatureCollection
 
