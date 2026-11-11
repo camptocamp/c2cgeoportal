@@ -168,6 +168,8 @@ and the configuration should be as follows:
 * Authentication type: ``Standard auth``
 * WFS support: recommended to be ``[X]``
 * Is single tile:  recommended to be ``[ ]``
+* OGC API path forwarding: recommended to be ``[X]``, so that the OGC API links built by QGIS Server
+  include the full path visible by the client (entry point included), see :ref:`integrator_ogc_api`.
 
 
 Project in Database
