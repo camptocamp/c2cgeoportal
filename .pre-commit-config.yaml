@@ -50,7 +50,7 @@ repos:
       - id: canonicalize
       - id: uv-lock
         additional_dependencies:
-          - uv==0.13.5 # pypi
+          - uv==0.13.7 # pypi
         files: |-
           (?x)^(
             \.github/publish/pyproject\.toml
