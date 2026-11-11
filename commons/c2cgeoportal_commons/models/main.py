@@ -981,6 +981,21 @@ class OGCServer(Base):  # type: ignore[valid-type,misc]
             },
         },
     )
+    ogc_api_forward_path: Mapped[bool] = mapped_column(
+        Boolean,
+        default=False,
+        info={
+            "colanderalchemy": {
+                "title": _("OGC API path forwarding"),
+                "description": _(
+                    "Forward the full path visible by the client (including the entry point) to the "
+                    "backend for the OGC API requests. Required for backends that build the OGC API "
+                    "links from the request URL like QGIS Server.",
+                ),
+                "column": 2,
+            },
+        },
+    )
 
     def __init__(
         self,
@@ -993,6 +1008,7 @@ class OGCServer(Base):  # type: ignore[valid-type,misc]
         auth: OGCServerAuth = OGCSERVER_AUTH_STANDARD,
         wfs_support: bool = True,
         is_single_tile: bool = False,
+        ogc_api_forward_path: bool = False,
     ) -> None:
         self.name = name
         self.description = description
@@ -1003,6 +1019,7 @@ class OGCServer(Base):  # type: ignore[valid-type,misc]
         self.auth = auth
         self.wfs_support = wfs_support
         self.is_single_tile = is_single_tile
+        self.ogc_api_forward_path = ogc_api_forward_path
 
     def __str__(self) -> str:
         return self.name or ""
