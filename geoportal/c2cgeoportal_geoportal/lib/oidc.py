@@ -29,7 +29,7 @@ import datetime
 import json
 import logging
 import string
-from typing import TYPE_CHECKING, Any, NamedTuple, Optional, TypedDict, Union
+from typing import TYPE_CHECKING, Any, NamedTuple, TypedDict
 
 import pyramid.request
 import simple_openid_connect.client
@@ -58,8 +58,8 @@ class DynamicUser(NamedTuple):
     username: str
     display_name: str
     email: str
-    settings_role: Optional["main.Role"]
-    roles: list["main.Role"]
+    settings_role: main.Role | None
+    roles: list[main.Role]
 
 
 @_CACHE_REGION_OBJ.cache_on_arguments()
@@ -152,7 +152,7 @@ def get_user_from_remember(
     request: pyramid.request.Request,
     remember_object: OidcRememberObject,
     update_create_user: bool = False,
-) -> Union["static.User", DynamicUser] | None:
+) -> static.User | DynamicUser | None:
     """
     Create a user from the remember object filled from `get_remember_from_user_info`.
 

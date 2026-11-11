@@ -32,7 +32,7 @@ import sys
 import time
 from argparse import ArgumentParser, Namespace
 from collections.abc import Iterator
-from typing import TYPE_CHECKING, Any, Optional
+from typing import TYPE_CHECKING, Any
 
 import pyramid.config
 import sqlalchemy.orm
@@ -343,10 +343,10 @@ class Import:
 
     def _add_fts(
         self,
-        item: "c2cgeoportal_commons.models.main.TreeItem",
-        interface: "c2cgeoportal_commons.models.main.Interface",
+        item: c2cgeoportal_commons.models.main.TreeItem,
+        interface: c2cgeoportal_commons.models.main.Interface,
         action: str,
-        role: Optional["c2cgeoportal_commons.models.main.Role"],
+        role: c2cgeoportal_commons.models.main.Role | None,
     ) -> None:
         key = (
             item.name if self.options.name else item.id,
@@ -378,7 +378,7 @@ class Import:
 
     def _extract_themes_roles(
         self,
-        themes: list["c2cgeoportal_commons.models.main.Theme"],
+        themes: list[c2cgeoportal_commons.models.main.Theme],
     ) -> dict[int, set[int]]:
         """
         Get the roles that give access to each theme, indexed by theme id.
@@ -408,8 +408,8 @@ class Import:
 
     def _add_theme(
         self,
-        theme: "c2cgeoportal_commons.models.main.Theme",
-        role: Optional["c2cgeoportal_commons.models.main.Role"] = None,
+        theme: c2cgeoportal_commons.models.main.Theme,
+        role: c2cgeoportal_commons.models.main.Role | None = None,
     ) -> None:
         if role is not None and role.id not in self.theme_roles[theme.id]:
             return
@@ -439,26 +439,26 @@ class Import:
 
     def _add_block(
         self,
-        group: "c2cgeoportal_commons.models.main.LayerGroup",
-        interface: "c2cgeoportal_commons.models.main.Interface",
-        role: Optional["c2cgeoportal_commons.models.main.Role"],
+        group: c2cgeoportal_commons.models.main.LayerGroup,
+        interface: c2cgeoportal_commons.models.main.Interface,
+        role: c2cgeoportal_commons.models.main.Role | None,
     ) -> bool:
         return self._add_group(group, interface, self.options.blocks, role)
 
     def _add_folder(
         self,
-        group: "c2cgeoportal_commons.models.main.LayerGroup",
-        interface: "c2cgeoportal_commons.models.main.Interface",
-        role: Optional["c2cgeoportal_commons.models.main.Role"],
+        group: c2cgeoportal_commons.models.main.LayerGroup,
+        interface: c2cgeoportal_commons.models.main.Interface,
+        role: c2cgeoportal_commons.models.main.Role | None,
     ) -> bool:
         return self._add_group(group, interface, self.options.folders, role)
 
     def _add_group(
         self,
-        group: "c2cgeoportal_commons.models.main.LayerGroup",
-        interface: "c2cgeoportal_commons.models.main.Interface",
+        group: c2cgeoportal_commons.models.main.LayerGroup,
+        interface: c2cgeoportal_commons.models.main.Interface,
         export: bool,
-        role: Optional["c2cgeoportal_commons.models.main.Role"],
+        role: c2cgeoportal_commons.models.main.Role | None,
     ) -> bool:
         from c2cgeoportal_commons.models.main import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
             LayerGroup,
@@ -492,8 +492,8 @@ class Import:
 
     @staticmethod
     def _layer_visible(
-        layer: "c2cgeoportal_commons.models.main.Layer",
-        role: Optional["c2cgeoportal_commons.models.main.Role"],
+        layer: c2cgeoportal_commons.models.main.Layer,
+        role: c2cgeoportal_commons.models.main.Role | None,
     ) -> bool:
         if layer.public:
             return True
@@ -503,9 +503,9 @@ class Import:
 
     def _add_layer(
         self,
-        layer: "c2cgeoportal_commons.models.main.Layer",
-        interface: "c2cgeoportal_commons.models.main.Interface",
-        role: Optional["c2cgeoportal_commons.models.main.Role"],
+        layer: c2cgeoportal_commons.models.main.Layer,
+        interface: c2cgeoportal_commons.models.main.Interface,
+        role: c2cgeoportal_commons.models.main.Role | None,
     ) -> bool:
         fill = interface in layer.interfaces and self._layer_visible(layer, role)
 
@@ -520,7 +520,7 @@ class Import:
 
     def _render_label(
         self,
-        item: "c2cgeoportal_commons.models.main.TreeItem",
+        item: c2cgeoportal_commons.models.main.TreeItem,
         lang: str,
     ) -> str:
         patterns = item.get_metadata("searchLabelPattern")
@@ -562,8 +562,8 @@ class Import:
 
     def _get_paths(
         self,
-        item: "c2cgeoportal_commons.models.main.TreeItem",
-    ) -> Iterator[list["c2cgeoportal_commons.models.main.TreeItem"]]:
+        item: c2cgeoportal_commons.models.main.TreeItem,
+    ) -> Iterator[list[c2cgeoportal_commons.models.main.TreeItem]]:
         if item is None:
             return
         if any(item.parents):
