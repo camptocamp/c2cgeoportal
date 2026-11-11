@@ -10,3 +10,4 @@ certifi>=2026.10.19 # not directly required, pinned by Snyk to avoid a vulnerabi
 zipp>=3.19.1 # not directly required, pinned by Snyk to avoid a vulnerability
 virtualenv>=20.26.0 # not directly required, pinned by Snyk to avoid a vulnerability
 dulwich>=1.2.5 # not directly required, pinned by Snyk to avoid a vulnerability
+filelock>=4.2.1 # not directly required, pinned by Snyk to avoid a vulnerability
