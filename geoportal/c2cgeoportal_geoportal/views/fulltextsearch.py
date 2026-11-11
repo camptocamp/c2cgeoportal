@@ -92,7 +92,7 @@ class FullTextSearchView:
         partitionlimit = min(partitionlimit, maxlimit)
 
         terms_array = [
-            IGNORED_STARTUP_CHARS_RE.sub("", elem) for elem in IGNORED_CHARS_RE.sub(" ", terms).split(" ")
+            IGNORED_STARTUP_CHARS_RE.sub("", elem) for elem in IGNORED_CHARS_RE.sub(" ", terms).split()
         ]
         terms_ts = "&".join(w + ":*" for w in terms_array if w != "")
         _filter = FullTextSearch.ts.op("@@")(func.to_tsquery(language, terms_ts))
