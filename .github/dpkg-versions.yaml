@@ -351,7 +351,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28:
   ubuntu_22_04/libgsl27: 2.7.1+dfsg-3
   ubuntu_22_04/libgslcblas0: 2.7.1+dfsg-3
   ubuntu_22_04/libgssapi-krb5-2: 1.19.2-2ubuntu0.10
-  ubuntu_22_04/libgstreamer-plugins-base1.0-0: 1.20.1-1ubuntu0.7
+  ubuntu_22_04/libgstreamer-plugins-base1.0-0: 1.20.1-1ubuntu0.8
   ubuntu_22_04/libgstreamer1.0-0: 1.20.3-0ubuntu1.1
   ubuntu_22_04/libgudev-1.0-0: 1:237-2build1
   ubuntu_22_04/libharfbuzz0b: 2.7.4-1ubuntu3.2
@@ -731,7 +731,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28-gdal3.6:
   ubuntu_22_04/libgsl27: 2.7.1+dfsg-3
   ubuntu_22_04/libgslcblas0: 2.7.1+dfsg-3
   ubuntu_22_04/libgssapi-krb5-2: 1.19.2-2ubuntu0.10
-  ubuntu_22_04/libgstreamer-plugins-base1.0-0: 1.20.1-1ubuntu0.7
+  ubuntu_22_04/libgstreamer-plugins-base1.0-0: 1.20.1-1ubuntu0.8
   ubuntu_22_04/libgstreamer1.0-0: 1.20.3-0ubuntu1.1
   ubuntu_22_04/libgudev-1.0-0: 1:237-2build1
   ubuntu_22_04/libharfbuzz0b: 2.7.4-1ubuntu3.2
@@ -1106,7 +1106,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28-gdal3.7:
   ubuntu_22_04/libgsl27: 2.7.1+dfsg-3
   ubuntu_22_04/libgslcblas0: 2.7.1+dfsg-3
   ubuntu_22_04/libgssapi-krb5-2: 1.19.2-2ubuntu0.10
-  ubuntu_22_04/libgstreamer-plugins-base1.0-0: 1.20.1-1ubuntu0.7
+  ubuntu_22_04/libgstreamer-plugins-base1.0-0: 1.20.1-1ubuntu0.8
   ubuntu_22_04/libgstreamer1.0-0: 1.20.3-0ubuntu1.1
   ubuntu_22_04/libgudev-1.0-0: 1:237-2build1
   ubuntu_22_04/libharfbuzz0b: 2.7.4-1ubuntu3.2
@@ -1505,7 +1505,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libgsl27: 2.7.1+dfsg-3
   ubuntu_22_04/libgslcblas0: 2.7.1+dfsg-3
   ubuntu_22_04/libgssapi-krb5-2: 1.19.2-2ubuntu0.10
-  ubuntu_22_04/libgstreamer-plugins-base1.0-0: 1.20.1-1ubuntu0.7
+  ubuntu_22_04/libgstreamer-plugins-base1.0-0: 1.20.1-1ubuntu0.8
   ubuntu_22_04/libgstreamer1.0-0: 1.20.3-0ubuntu1.1
   ubuntu_22_04/libgudev-1.0-0: 1:237-2build1
   ubuntu_22_04/libharfbuzz0b: 2.7.4-1ubuntu3.2
@@ -1553,7 +1553,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libmpdec3: 2.5.1-2build2
   ubuntu_22_04/libmpfr6: 4.1.0-3build3
   ubuntu_22_04/libmtdev1: 1.1.6-1build4
-  ubuntu_22_04/libmysqlclient21: 8.0.46-0ubuntu0.22.04.4
+  ubuntu_22_04/libmysqlclient21: 8.0.46-0ubuntu0.22.04.5
   ubuntu_22_04/libncurses6: 6.3-2ubuntu0.3
   ubuntu_22_04/libncursesw6: 6.3-2ubuntu0.3
   ubuntu_22_04/libnetcdf19: 1:4.8.1-1
@@ -1943,7 +1943,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.7:
   ubuntu_22_04/libgsl27: 2.7.1+dfsg-3
   ubuntu_22_04/libgslcblas0: 2.7.1+dfsg-3
   ubuntu_22_04/libgssapi-krb5-2: 1.19.2-2ubuntu0.10
-  ubuntu_22_04/libgstreamer-plugins-base1.0-0: 1.20.1-1ubuntu0.7
+  ubuntu_22_04/libgstreamer-plugins-base1.0-0: 1.20.1-1ubuntu0.8
   ubuntu_22_04/libgstreamer1.0-0: 1.20.3-0ubuntu1.1
   ubuntu_22_04/libgudev-1.0-0: 1:237-2build1
   ubuntu_22_04/libharfbuzz0b: 2.7.4-1ubuntu3.2
@@ -1991,7 +1991,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.7:
   ubuntu_22_04/libmpdec3: 2.5.1-2build2
   ubuntu_22_04/libmpfr6: 4.1.0-3build3
   ubuntu_22_04/libmtdev1: 1.1.6-1build4
-  ubuntu_22_04/libmysqlclient21: 8.0.46-0ubuntu0.22.04.4
+  ubuntu_22_04/libmysqlclient21: 8.0.46-0ubuntu0.22.04.5
   ubuntu_22_04/libncurses6: 6.3-2ubuntu0.3
   ubuntu_22_04/libncursesw6: 6.3-2ubuntu0.3
   ubuntu_22_04/libnetcdf19: 1:4.8.1-1
@@ -2381,7 +2381,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libgsl27: 2.7.1+dfsg-3
   ubuntu_22_04/libgslcblas0: 2.7.1+dfsg-3
   ubuntu_22_04/libgssapi-krb5-2: 1.19.2-2ubuntu0.10
-  ubuntu_22_04/libgstreamer-plugins-base1.0-0: 1.20.1-1ubuntu0.7
+  ubuntu_22_04/libgstreamer-plugins-base1.0-0: 1.20.1-1ubuntu0.8
   ubuntu_22_04/libgstreamer1.0-0: 1.20.3-0ubuntu1.1
   ubuntu_22_04/libgudev-1.0-0: 1:237-2build1
   ubuntu_22_04/libharfbuzz0b: 2.7.4-1ubuntu3.2
@@ -2429,7 +2429,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libmpdec3: 2.5.1-2build2
   ubuntu_22_04/libmpfr6: 4.1.0-3build3
   ubuntu_22_04/libmtdev1: 1.1.6-1build4
-  ubuntu_22_04/libmysqlclient21: 8.0.46-0ubuntu0.22.04.4
+  ubuntu_22_04/libmysqlclient21: 8.0.46-0ubuntu0.22.04.5
   ubuntu_22_04/libncurses6: 6.3-2ubuntu0.3
   ubuntu_22_04/libncursesw6: 6.3-2ubuntu0.3
   ubuntu_22_04/libnetcdf19: 1:4.8.1-1
