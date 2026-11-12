@@ -201,7 +201,15 @@ class MapservProxy(OGCProxy):
 
         _url = self._get_wfs_url(errors)
         if _url is not None:
-            _url.path = "/".join([_url.path.rstrip("/"), subpath, *self.request.matchdict.get("path", ())])
+            if self.ogc_server.ogc_api_forward_path:
+                # Some backends like QGIS Server build the OGC API links from the request URL path,
+                # forward the full path visible by the client (including the entry point) to have
+                # correct links in the generated responses.
+                _url.path = self.request.path
+            else:
+                _url.path = "/".join(
+                    [_url.path.rstrip("/"), subpath, *self.request.matchdict.get("path", ())],
+                )
 
         if _url is None:
             _LOG.error("Error getting the URL:\n%s", "\n".join(errors))
