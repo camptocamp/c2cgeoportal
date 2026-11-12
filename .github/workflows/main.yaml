@@ -54,6 +54,11 @@ jobs:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
+          # The direct push of the version and changelog update below is refused by the
+          # `Status` ruleset (required status checks) when authenticated with `GITHUB_TOKEN`,
+          # which cannot be a bypass actor; the owner of the dispatch token has the write
+          # role, which is on the bypass list.
+          token: ${{ secrets.GS_GMF_DISPATCH_TOKEN }}
 
       - run: echo "${HOME}/.local/bin" >> ${GITHUB_PATH}
       - run: python3 -m pip install --user --requirement=ci/requirements.txt
@@ -187,7 +192,7 @@ jobs:
 
       - name: Init Git
         run:
-          git remote set-url origin https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository
+          git remote set-url origin https://${GITHUB_ACTOR}:${{ secrets.GS_GMF_DISPATCH_TOKEN }}@github.com/${{ github.repository
           }}
       - run: make build-tools
       - run: make build-runner
