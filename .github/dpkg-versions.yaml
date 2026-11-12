@@ -219,8 +219,8 @@ camptocamp/geomapfish-config:latest:
   ubuntu_26_04/libmount1: 2.41.3-3ubuntu2.2
   ubuntu_26_04/libmuparser-dev: 2.3.4-2
   ubuntu_26_04/libmuparser2v5: 2.3.4-2
-  ubuntu_26_04/libmysqlclient-dev: 8.4.11-0ubuntu0.26.04.1
-  ubuntu_26_04/libmysqlclient24: 8.4.11-0ubuntu0.26.04.1
+  ubuntu_26_04/libmysqlclient-dev: 8.4.13-0ubuntu0.26.04.2
+  ubuntu_26_04/libmysqlclient24: 8.4.13-0ubuntu0.26.04.2
   ubuntu_26_04/libncursesw6: 6.6+20251231-1
   ubuntu_26_04/libnetcdf-dev: 1:4.9.3-1build2
   ubuntu_26_04/libnetcdf22: 1:4.9.3-1build2
@@ -2621,7 +2621,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/libgsl27: 2.7.1+dfsg-6ubuntu2
   ubuntu_24_04/libgslcblas0: 2.7.1+dfsg-6ubuntu2
   ubuntu_24_04/libgssapi-krb5-2: 1.20.1-6ubuntu2.7
-  ubuntu_24_04/libgstreamer-plugins-base1.0-0: 1.24.2-1ubuntu0.5
+  ubuntu_24_04/libgstreamer-plugins-base1.0-0: 1.24.2-1ubuntu0.6
   ubuntu_24_04/libgstreamer1.0-0: 1.24.2-1ubuntu0.1
   ubuntu_24_04/libgudev-1.0-0: 1:238-5ubuntu1
   ubuntu_24_04/libharfbuzz0b: 8.3.0-2build2
@@ -2824,7 +2824,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/libzip4t64: 1.7.3-1.1ubuntu2
   ubuntu_24_04/libzstd1: 1.5.5+dfsg2-2build1.1
   ubuntu_24_04/lighttpd: 1.4.74-1ubuntu3
-  ubuntu_24_04/linux-libc-dev: 6.8.0-147.147
+  ubuntu_24_04/linux-libc-dev: 6.8.0-149.149
   ubuntu_24_04/login: 1:4.13+dfsg1-4ubuntu3.2
   ubuntu_24_04/logsave: 1.47.0-2.4~exp1ubuntu4.1
   ubuntu_24_04/mawk: 1.3.4.20240123-1build1
