@@ -16,6 +16,7 @@ permissions:
 env:
   HAS_SECRETS: ${{ secrets.HAS_SECRETS }}
   MAIN_BRANCH: '2.8'
+  MAJOR_VERSION: '2.8'
 
 jobs:
   not-failed-backport:
@@ -37,9 +38,9 @@ jobs:
       success: ${{ steps.success.outputs.success }}
       versions: ${{ steps.version.outputs.versions }}
       version_full: ${{ steps.version.outputs.full }}
+      upgrade_version: ${{ steps.version.outputs.upgrade_version }}
 
     env:
-      MAJOR_VERSION: '2.8'
       PRE_COMMIT_HOME: /home/runner/.cache/pre-commit
 
     steps:
@@ -271,19 +272,6 @@ jobs:
       - id: success
         run: echo "success=true" >> $GITHUB_OUTPUT
 
-      # Needs Contents: write on the target repository, which GITHUB_TOKEN cannot provide.
-      - name: Notify demo
-        run: >
-          curl --request POST --header "Content-Type: application/json"
-          --header 'Accept: application/vnd.github.v3+json'
-          --header "Authorization: token ${{ secrets.GS_GMF_DISPATCH_TOKEN }}"
-          https://api.github.com/repos/camptocamp/demo_geomapfish/dispatches
-          --data '{"event_type": "geomapfish_${{ env.MAJOR_VERSION }}_updated",
-            "client_payload": {"version": "'"${{ steps.version.outputs.upgrade_version }}"'"}}'
-        if: >
-          github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
-          && env.HAS_SECRETS == 'HAS_SECRETS'
-
       - name: Publish to Transifex
         run: |
           git diff || true
@@ -369,6 +357,24 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         if: >
           env.HAS_SECRETS == 'HAS_SECRETS'
+          && needs.main.outputs.versions != ''
+
+      # After the Docker images publication, otherwise the demo upgrades would pull
+      # images that are not published yet.
+      # Needs Contents: write on the target repository, which GITHUB_TOKEN cannot provide.
+      - name: Notify demo
+        run: >
+          curl --request POST --header "Content-Type: application/json"
+          --header 'Accept: application/vnd.github.v3+json'
+          --header "Authorization: token ${GS_GMF_DISPATCH_TOKEN}"
+          https://api.github.com/repos/camptocamp/demo_geomapfish/dispatches
+          --data '{"event_type": "geomapfish_${{ env.MAJOR_VERSION }}_updated",
+            "client_payload": {"version": "'"${{ needs.main.outputs.upgrade_version }}"'"}}'
+        env:
+          GS_GMF_DISPATCH_TOKEN: ${{ secrets.GS_GMF_DISPATCH_TOKEN }}
+        if: >
+          github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
+          && env.HAS_SECRETS == 'HAS_SECRETS'
           && needs.main.outputs.versions != ''
 
       # The wheels are built by the main job, tag-publish only uploads what is in the dist folders.
