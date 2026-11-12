@@ -366,10 +366,12 @@ jobs:
         run: >
           curl --request POST --header "Content-Type: application/json"
           --header 'Accept: application/vnd.github.v3+json'
-          --header "Authorization: token ${{ secrets.GS_GMF_DISPATCH_TOKEN }}"
+          --header "Authorization: token ${GS_GMF_DISPATCH_TOKEN}"
           https://api.github.com/repos/camptocamp/demo_geomapfish/dispatches
           --data '{"event_type": "geomapfish_${{ env.MAJOR_VERSION }}_updated",
             "client_payload": {"version": "'"${{ needs.main.outputs.upgrade_version }}"'"}}'
+        env:
+          GS_GMF_DISPATCH_TOKEN: ${{ secrets.GS_GMF_DISPATCH_TOKEN }}
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && env.HAS_SECRETS == 'HAS_SECRETS'
