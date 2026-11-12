@@ -69,7 +69,7 @@ except ModuleNotFoundError:
 _LOG = logging.getLogger(__name__)
 _OPENID_CONNECT_ENABLED = os.environ.get("OPENID_CONNECT_ENABLED", "false").lower() in ("true", "yes", "1")
 
-_schema: str = config["schema_static"] or "static"
+_schema: str = config["schema_static"] or "static"  # pylint: disable=invalid-name
 
 # association table user <> role
 user_role = Table(
