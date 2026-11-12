@@ -93,8 +93,8 @@ if os.environ.get("DEVELOPMENT", "0") == "1":
 
 _LOG = logging.getLogger(__name__)
 
-_schema: str = config["schema"] or "main"
-_srid: int = cast(int, config["srid"]) or 3857
+_schema: str = config["schema"] or "main"  # pylint: disable=invalid-name
+_srid: int = cast(int, config["srid"]) or 3857  # pylint: disable=invalid-name
 
 # Set some default values for the admin interface
 conf = config.get_config()

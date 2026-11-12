@@ -43,7 +43,9 @@ except ModuleNotFoundError:
 
 
 # Should be filed on application initialization
-DBSession: sqlalchemy.orm.scoping.scoped_session[sqlalchemy.orm.Session] | None = None
+DBSession: sqlalchemy.orm.scoping.scoped_session[sqlalchemy.orm.Session] | None = (
+    None  # pylint: disable=invalid-name
+)
 
 
 class BaseType(sqlalchemy.ext.declarative.DeclarativeMeta, type):
@@ -51,7 +53,9 @@ class BaseType(sqlalchemy.ext.declarative.DeclarativeMeta, type):
 
 
 Base: BaseType = sqlalchemy.orm.declarative_base()
-DBSessions: dict[str, sqlalchemy.orm.scoping.scoped_session[sqlalchemy.orm.Session]] = {}
+DBSessions: dict[str, sqlalchemy.orm.scoping.scoped_session[sqlalchemy.orm.Session]] = (
+    {}
+)  # pylint: disable=invalid-name
 
 
 _LOG = logging.getLogger(__name__)
