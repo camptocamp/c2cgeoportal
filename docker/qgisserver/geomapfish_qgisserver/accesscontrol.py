@@ -729,22 +729,22 @@ class OGCServerAccessControl(QgsAccessControlFilter):
         Returns the authorized layer attributes.
         """
 
-        roles = self.get_roles(self.DBSession())
-        if roles == "ROOT":
-            return attributes
-
-        assert not isinstance(roles, str)  # nosec
-
-        if self.ogcserver is None:
-            parameters = self.serverInterface().requestHandler().parameterMap()
-            _LOG.warning(
-                "Call on uninitialized plugin, map: %s",
-                os.environ.get("QGIS_PROJECT_FILE", parameters.get("MAP")),
-            )
-            return []
-
         session = self.DBSession()
         try:
+            roles = self.get_roles(session)
+            if roles == "ROOT":
+                return attributes
+
+            assert not isinstance(roles, str)  # nosec
+
+            if self.ogcserver is None:
+                parameters = self.serverInterface().requestHandler().parameterMap()
+                _LOG.warning(
+                    "Call on uninitialized plugin, map: %s",
+                    os.environ.get("QGIS_PROJECT_FILE", parameters.get("MAP")),
+                )
+                return []
+
             layers = self.get_layers(session)
             ogc_layer_name = self.ogc_layer_name(layer)
             if ogc_layer_name not in layers:
