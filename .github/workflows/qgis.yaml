@@ -54,7 +54,9 @@ jobs:
         version:
           - '4.2'
           - 4.2-gdal3.13
-          - ltr
+          # ltr is based on Ubuntu 24.04 with Python 3.12, not compatible with the
+          # minimal Python version 3.14, see https://github.com/camptocamp/c2cgeoportal/pull/13538
+          # - ltr
           - lr
           - lr-debug
           # Used as default version
@@ -64,7 +66,7 @@ jobs:
     outputs:
       success-4-2: ${{ steps.success.outputs.success-4-2 }}
       success-4-2-gdal3-13: ${{ steps.success.outputs.success-4-2-gdal3-13 }}
-      success-ltr: ${{ steps.success.outputs.success-ltr }}
+      # success-ltr: ${{ steps.success.outputs.success-ltr }}
       success-lr: ${{ steps.success.outputs.success-lr }}
       success-lr-debug: ${{ steps.success.outputs.success-lr-debug }}
       success-master: ${{ steps.success.outputs.success-master }}
@@ -160,7 +162,7 @@ jobs:
     steps:
       - run: '[[ "${{ needs.main.outputs.success-4-2 }}" == "true" ]]'
       - run: '[[ "${{ needs.main.outputs.success-4-2-gdal3-13 }}" == "true" ]]'
-      - run: '[[ "${{ needs.main.outputs.success-ltr }}" == "true" ]]'
+      # - run: '[[ "${{ needs.main.outputs.success-ltr }}" == "true" ]]'
       - run: '[[ "${{ needs.main.outputs.success-lr }}" == "true" ]]'
       - run: '[[ "${{ needs.main.outputs.success-lr-debug }}" == "true" ]]'
       - run: '[[ "${{ needs.main.outputs.success-master }}" == "true" ]]'

@@ -67,10 +67,12 @@ docker:
       tags:
         - gmf{version}-qgis4.2
     # all versions
-    - name: camptocamp/geomapfish-qgisserver
-      group: qgis-ltr
-      tags:
-        - gmf{version}-qgisltr
+    # ltr is based on Ubuntu 24.04 with Python 3.12, not compatible with the
+    # minimal Python version 3.14, see https://github.com/camptocamp/c2cgeoportal/pull/13538
+    # - name: camptocamp/geomapfish-qgisserver
+    #   group: qgis-ltr
+    #   tags:
+    #     - gmf{version}-qgisltr
     - name: camptocamp/geomapfish-qgisserver
       group: qgis-lr
       tags:
