@@ -165,14 +165,18 @@ to <code class="docutils literal notranslate"><span class="pre">.github/workflow
 <ul class="simple">
 <li><p>the <code class="docutils literal notranslate"><span class="pre">name</span></code> and the job name to <code class="docutils literal notranslate"><span class="pre">Update</span> <span class="pre">ngeo</span> <span class="pre">&lt;new</span> <span class="pre">version&gt;</span></code>,</p></li>
 <li><p>the repository dispatch type to <code class="docutils literal notranslate"><span class="pre">ngeo_&lt;new</span> <span class="pre">version&gt;_updated</span></code>,</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">MAIN_BRANCH</span></code> and <code class="docutils literal notranslate"><span class="pre">MAJOR_VERSION</span></code> to <code class="docutils literal notranslate"><span class="pre">&lt;new</span> <span class="pre">version&gt;</span></code>,</p></li>
-<li><p>the <code class="docutils literal notranslate"><span class="pre">QGIS_VERSION</span></code> used to build the QGIS server,</p></li>
-<li><p>the <code class="docutils literal notranslate"><span class="pre">ci/test-upgrade</span></code> steps with the ones from the new version branch.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MAIN_BRANCH</span></code> to <code class="docutils literal notranslate"><span class="pre">&lt;new</span> <span class="pre">version&gt;</span></code>,</p></li>
+<li><p>the <code class="docutils literal notranslate"><span class="pre">runs-on</span></code> to the one used by the CI of the new version branch, so that the default node
+version of the runner is the same.</p></li>
 </ul>
-<p>This workflow checks out the stabilization branch, updates the <code class="docutils literal notranslate"><span class="pre">ngeo</span></code> package, the change log and the
-version, pushes the changes on the stabilization branch and republishes the images with:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span class="prompt1">tag-publish<span class="w"> </span>--type<span class="o">=</span>rebuild<span class="w"> </span>--version<span class="o">=</span>&lt;new<span class="w"> </span>version&gt;<span class="w"> </span>--docker-versions<span class="o">=</span>...</span>
-</pre></div></div></section>
+<p>This workflow checks out the stabilization branch, updates the <code class="docutils literal notranslate"><span class="pre">ngeo</span></code> package and normalizes the lock
+file with pre-commit (the modification of the lock file by the <code class="docutils literal notranslate"><span class="pre">npm-lock</span></code> hook is the expected outcome,
+not an error). When there is a change, it fails on purpose and uploads an
+<code class="docutils literal notranslate"><span class="pre">Update</span> <span class="pre">used</span> <span class="pre">ngeo</span> <span class="pre">[&lt;new</span> <span class="pre">version&gt;].patch</span></code> artifact. The GHCI patch module applies it on the protected
+stabilization branch in a <code class="docutils literal notranslate"><span class="pre">ghci/patch/&lt;new</span> <span class="pre">version&gt;-*</span></code> pull request with auto-merge, verified by the
+pull request CI. The version bump, the change log, the builds, the publication of the images and the
+demo notification are then done by the standard <code class="docutils literal notranslate"><span class="pre">main.yaml</span></code> and <code class="docutils literal notranslate"><span class="pre">qgis.yaml</span></code> CI on the merge push.</p>
+</section>
 <section id="configure-the-new-branch">
 <h2>Configure the new branch<a class="headerlink" href="#configure-the-new-branch" title="Link to this heading">¶</a></h2>
 <dl class="simple">
