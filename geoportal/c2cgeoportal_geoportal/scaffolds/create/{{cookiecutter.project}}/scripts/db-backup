@@ -81,7 +81,7 @@ def main() -> None:
             command3 = [
                 *(["--env=PGSSLMODE={}".format(env["PGSSLMODE"])] if "PGSSLMODE" in env else []),
                 *(["--env=PGOPTIONS={}".format(env["PGOPTIONS"])] if "PGOPTIONS" in env else []),
-                "camptocamp/postgres:{}".format(env["POSTGRES_TAG"]),
+                "ghcr.io/camptocamp/postgres:{}".format(env["POSTGRES_TAG"]),
                 "pg_dump",
                 "--format=c",
                 "--dbname={}".format(env["PGDATABASE"]),
@@ -93,7 +93,7 @@ def main() -> None:
                         "docker",
                         "run",
                         "--rm",
-                        "camptocamp/postgres:{}".format(env["POSTGRES_TAG"]),
+                        "ghcr.io/camptocamp/postgres:{}".format(env["POSTGRES_TAG"]),
                         "pg_dump",
                         "--version",
                     ]
