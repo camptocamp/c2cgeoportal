@@ -1,3 +1,18 @@
+##### 2.8.1.401
+
+- Update all patch/minor versions (2.8) [c2cgeoportal#13549](https://github.com/camptocamp/c2cgeoportal/pull/13549)
+- Audit Dpkg 2.8 [c2cgeoportal#13599](https://github.com/camptocamp/c2cgeoportal/pull/13599)
+- Audit Snyk check/fix 2.8 [c2cgeoportal#13604](https://github.com/camptocamp/c2cgeoportal/pull/13604)
+- Use a dedicated dispatch token instead of the gopass CI token [c2cgeoportal#13611](https://github.com/camptocamp/c2cgeoportal/pull/13611)
+- Update dependency oauthlib to v4.0.1 [SECURITY] (2.8) [c2cgeoportal#13620](https://github.com/camptocamp/c2cgeoportal/pull/13620)
+- [Backport 2.8] Remove cross-branch pre-commit cache restore keys [c2cgeoportal#13627](https://github.com/camptocamp/c2cgeoportal/pull/13627)
+- Audit Dpkg 2.8 [c2cgeoportal#13646](https://github.com/camptocamp/c2cgeoportal/pull/13646)
+- Audit Snyk check/fix 2.8 [c2cgeoportal#13669](https://github.com/camptocamp/c2cgeoportal/pull/13669)
+- Move the demo notification after the Docker images publication [c2cgeoportal#13672](https://github.com/camptocamp/c2cgeoportal/pull/13672)
+- Audit Dpkg 2.8 [c2cgeoportal#13673](https://github.com/camptocamp/c2cgeoportal/pull/13673)
+- Use the dispatch token to push the version and changelog updates [c2cgeoportal#13677](https://github.com/camptocamp/c2cgeoportal/pull/13677)
+- Audit Snyk check/fix 2.8 [c2cgeoportal#13678](https://github.com/camptocamp/c2cgeoportal/pull/13678)
+
 ##### 2.8.1.400
 
 - [Backport 2.8] Set PRE_COMMIT_HOME and scope the pre-commit cache by branch [c2cgeoportal#13589](https://github.com/camptocamp/c2cgeoportal/pull/13589)
