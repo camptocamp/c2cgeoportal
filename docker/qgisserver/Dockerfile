@@ -52,7 +52,7 @@ FROM base AS runner
 COPY geomapfish_qgisserver/* /var/www/plugins/geomapfish_qgisserver/
 COPY logging.ini /var/www/
 # hadolint ignore=DL3022
-COPY --from=camptocamp/geomapfish /opt/c2cgeoportal/commons /opt/c2cgeoportal/commons
+COPY --from=ghcr.io/camptocamp/geomapfish /opt/c2cgeoportal/commons /opt/c2cgeoportal/commons
 
 ARG GEOMAPFISH_VERSION
 
