@@ -83,7 +83,7 @@ def main() -> None:
                 + (["--env=PGSSLMODE={}".format(env["PGSSLMODE"])] if "PGSSLMODE" in env else [])
                 + (["--env=PGOPTIONS={}".format(env["PGOPTIONS"])] if "PGOPTIONS" in env else [])
                 + [
-                    "camptocamp/postgres:{}".format(env["POSTGRES_TAG"]),
+                    "ghcr.io/camptocamp/postgres:{}".format(env["POSTGRES_TAG"]),
                 ]
                 + [
                     "pg_restore",

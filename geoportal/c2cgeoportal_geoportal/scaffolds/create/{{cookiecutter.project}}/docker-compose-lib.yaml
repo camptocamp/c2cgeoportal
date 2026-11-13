@@ -66,7 +66,7 @@ services:
       - RASTER_BASE_PATH
 
   print:
-    image: camptocamp/mapfish_print:3.28
+    image: ghcr.io/camptocamp/mapfish_print:3.28
     user: www-data
     restart: unless-stopped
     environment:
@@ -74,7 +74,7 @@ services:
       - PGOPTIONS
 
   mapserver:
-    image: camptocamp/mapserver:7.6-gdal3.7
+    image: ghcr.io/camptocamp/mapserver:7.6-gdal3.7
     user: www-data
     restart: unless-stopped
     entrypoint: []
@@ -82,7 +82,7 @@ services:
       - PGOPTIONS
 
   qgisserver:
-    image: camptocamp/geomapfish-qgisserver:gmf${GEOMAPFISH_MAIN_VERSION}-qgis${QGIS_VERSION}
+    image: ghcr.io/camptocamp/geomapfish-qgisserver:gmf${GEOMAPFISH_MAIN_VERSION}-qgis${QGIS_VERSION}
     user: www-data
     restart: unless-stopped
     environment:
@@ -132,7 +132,7 @@ services:
       - PGSERVICEFILE=/etc/qgisserver/pg_service.conf
 
   tinyows:
-    image: camptocamp/tinyows:master
+    image: ghcr.io/camptocamp/tinyows:master
     user: www-data
     restart: unless-stopped
 
@@ -223,7 +223,7 @@ services:
       - AZURE_STORAGE_ACCOUNT_URL
 
   geoportal:
-    image: camptocamp/geomapfishapp-geoportal:${GEOMAPFISH_MAIN_MINOR_VERSION}
+    image: ghcr.io/camptocamp/geomapfishapp-geoportal:${GEOMAPFISH_MAIN_MINOR_VERSION}
     user: www-data
     restart: unless-stopped
     environment: &geoportal-env
@@ -316,7 +316,7 @@ services:
     environment: *geoportal-env
 
   tools:
-    image: camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION}
+    image: ghcr.io/camptocamp/geomapfish-tools:${GEOMAPFISH_VERSION}
     restart: unless-stopped
     volumes:
       - .:/src
@@ -391,7 +391,7 @@ services:
       - SUFFIX=
 
   alembic: &alembic
-    image: camptocamp/geomapfishapp-geoportal:${GEOMAPFISH_MAIN_VERSION}
+    image: ghcr.io/camptocamp/geomapfishapp-geoportal:${GEOMAPFISH_MAIN_VERSION}
     user: www-data
     entrypoint: []
     command:
@@ -464,7 +464,7 @@ services:
       - AZURE_STORAGE_SAS_TOKEN
 
   db:
-    image: camptocamp/postgres:${POSTGRES_TAG}
+    image: ghcr.io/camptocamp/postgres:${POSTGRES_TAG}
     environment:
       - PGUSER
       - PGPASSWORD
