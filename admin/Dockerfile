@@ -1,7 +1,7 @@
 # Used for development: please do not remove this file
 
 # hadolint ignore=DL3007
-FROM camptocamp/geomapfish-tools:latest
+FROM ghcr.io/camptocamp/geomapfish-tools:latest
 
 COPY . /app
 WORKDIR /app
