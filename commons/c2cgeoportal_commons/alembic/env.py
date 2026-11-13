@@ -1,5 +1,5 @@
 # noqa: INP001, EXE002
-# Copyright (c) 2014-2025, Camptocamp SA
+# Copyright (c) 2014-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
