@@ -1,3 +1,7 @@
+##### 2.8.1.403
+
+- Revert the QGIS desktop image to Docker Hub and use ghcr.io in updated_version [c2cgeoportal#13689](https://github.com/camptocamp/c2cgeoportal/pull/13689)
+
 ##### 2.8.1.402
 
 - Fix tsquery syntax error when the search query contains new lines [c2cgeoportal#13666](https://github.com/camptocamp/c2cgeoportal/pull/13666)
