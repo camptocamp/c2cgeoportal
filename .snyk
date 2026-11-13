@@ -2,6 +2,22 @@
 version: v1.25.1
 # ignores vulnerabilities until expiry date; change duration by modifying expiry date
 ignore:
+  SNYK-PYTHON-DULWICH-20416729:
+    - '*':
+        reason: not compatible with used Poetry version
+        created: 2026-11-12T20:02:07.000Z
+  SNYK-PYTHON-DULWICH-20416732:
+    - '*':
+        reason: not compatible with used Poetry version
+        created: 2026-11-12T20:02:07.000Z
+  SNYK-PYTHON-VIRTUALENV-21282424:
+    - '*':
+        reason: not compatible with used Poetry version
+        created: 2026-11-12T20:02:07.000Z
+  SNYK-PYTHON-FILELOCK-21280754:
+    - '*':
+        reason: not compatible with used Poetry version
+        created: 2026-11-12T20:02:07.000Z
   SNYK-PYTHON-DULWICH-22220108:
     - '*':
         reason: not compatible with used Poetry version
