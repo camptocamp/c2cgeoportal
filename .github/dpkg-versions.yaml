@@ -83,11 +83,11 @@ camptocamp/geomapfish-config:latest:
   ubuntu_26_04/libbsd0: 0.12.2-2build2
   ubuntu_26_04/libbz2-1.0: 1.0.8-6ubuntu0.1
   ubuntu_26_04/libbz2-dev: 1.0.8-6ubuntu0.1
-  ubuntu_26_04/libc-bin: 2.43-2ubuntu2.4
-  ubuntu_26_04/libc-dev-bin: 2.43-2ubuntu2.4
-  ubuntu_26_04/libc-gconv-modules-extra: 2.43-2ubuntu2.4
-  ubuntu_26_04/libc6: 2.43-2ubuntu2.4
-  ubuntu_26_04/libc6-dev: 2.43-2ubuntu2.4
+  ubuntu_26_04/libc-bin: 2.43-2ubuntu2.7
+  ubuntu_26_04/libc-dev-bin: 2.43-2ubuntu2.7
+  ubuntu_26_04/libc-gconv-modules-extra: 2.43-2ubuntu2.7
+  ubuntu_26_04/libc6: 2.43-2ubuntu2.7
+  ubuntu_26_04/libc6-dev: 2.43-2ubuntu2.7
   ubuntu_26_04/libcap-ng0: 0.8.5-4build5
   ubuntu_26_04/libcfitsio-dev: 4.6.3-1
   ubuntu_26_04/libcfitsio10t64: 4.6.3-1
@@ -387,10 +387,10 @@ camptocamp/geomapfish-config:latest:
   ubuntu_26_04/zlib1g: 1:1.3.dfsg+really1.3.1-1ubuntu3.2
 camptocamp/geomapfish-qgisserver:gmflatest-qgis4.2:
   ubuntu_26_04/adduser: 3.153ubuntu1
-  ubuntu_26_04/apache2: 2.4.66-2ubuntu2.7
-  ubuntu_26_04/apache2-bin: 2.4.66-2ubuntu2.7
-  ubuntu_26_04/apache2-data: 2.4.66-2ubuntu2.7
-  ubuntu_26_04/apache2-utils: 2.4.66-2ubuntu2.7
+  ubuntu_26_04/apache2: 2.4.66-2ubuntu2.8
+  ubuntu_26_04/apache2-bin: 2.4.66-2ubuntu2.8
+  ubuntu_26_04/apache2-data: 2.4.66-2ubuntu2.8
+  ubuntu_26_04/apache2-utils: 2.4.66-2ubuntu2.8
   ubuntu_26_04/apt: 3.2.1ubuntu0.1
   ubuntu_26_04/base-passwd: 3.6.8
   ubuntu_26_04/bash: 5.3-2ubuntu1
@@ -465,11 +465,11 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.2:
   ubuntu_26_04/libbrotli1: 1.2.0-3ubuntu0.1
   ubuntu_26_04/libbsd0: 0.12.2-2build2
   ubuntu_26_04/libbz2-1.0: 1.0.8-6ubuntu0.1
-  ubuntu_26_04/libc-bin: 2.43-2ubuntu2.4
-  ubuntu_26_04/libc-dev-bin: 2.43-2ubuntu2.4
-  ubuntu_26_04/libc-gconv-modules-extra: 2.43-2ubuntu2.4
-  ubuntu_26_04/libc6: 2.43-2ubuntu2.4
-  ubuntu_26_04/libc6-dev: 2.43-2ubuntu2.4
+  ubuntu_26_04/libc-bin: 2.43-2ubuntu2.7
+  ubuntu_26_04/libc-dev-bin: 2.43-2ubuntu2.7
+  ubuntu_26_04/libc-gconv-modules-extra: 2.43-2ubuntu2.7
+  ubuntu_26_04/libc6: 2.43-2ubuntu2.7
+  ubuntu_26_04/libc6-dev: 2.43-2ubuntu2.7
   ubuntu_26_04/libcairo-gobject2: 1.18.4-3
   ubuntu_26_04/libcairo2: 1.18.4-3
   ubuntu_26_04/libcap-ng0: 0.8.5-4build5
@@ -909,10 +909,10 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.2:
   ubuntu_26_04/zlib1g: 1:1.3.dfsg+really1.3.1-1ubuntu3.2
 camptocamp/geomapfish-qgisserver:gmflatest-qgis4.2-gdal3.13:
   ubuntu_26_04/adduser: 3.153ubuntu1
-  ubuntu_26_04/apache2: 2.4.66-2ubuntu2.7
-  ubuntu_26_04/apache2-bin: 2.4.66-2ubuntu2.7
-  ubuntu_26_04/apache2-data: 2.4.66-2ubuntu2.7
-  ubuntu_26_04/apache2-utils: 2.4.66-2ubuntu2.7
+  ubuntu_26_04/apache2: 2.4.66-2ubuntu2.8
+  ubuntu_26_04/apache2-bin: 2.4.66-2ubuntu2.8
+  ubuntu_26_04/apache2-data: 2.4.66-2ubuntu2.8
+  ubuntu_26_04/apache2-utils: 2.4.66-2ubuntu2.8
   ubuntu_26_04/apt: 3.2.1ubuntu0.1
   ubuntu_26_04/base-passwd: 3.6.8
   ubuntu_26_04/bash: 5.3-2ubuntu1
@@ -987,11 +987,11 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.2-gdal3.13:
   ubuntu_26_04/libbrotli1: 1.2.0-3ubuntu0.1
   ubuntu_26_04/libbsd0: 0.12.2-2build2
   ubuntu_26_04/libbz2-1.0: 1.0.8-6ubuntu0.1
-  ubuntu_26_04/libc-bin: 2.43-2ubuntu2.4
-  ubuntu_26_04/libc-dev-bin: 2.43-2ubuntu2.4
-  ubuntu_26_04/libc-gconv-modules-extra: 2.43-2ubuntu2.4
-  ubuntu_26_04/libc6: 2.43-2ubuntu2.4
-  ubuntu_26_04/libc6-dev: 2.43-2ubuntu2.4
+  ubuntu_26_04/libc-bin: 2.43-2ubuntu2.7
+  ubuntu_26_04/libc-dev-bin: 2.43-2ubuntu2.7
+  ubuntu_26_04/libc-gconv-modules-extra: 2.43-2ubuntu2.7
+  ubuntu_26_04/libc6: 2.43-2ubuntu2.7
+  ubuntu_26_04/libc6-dev: 2.43-2ubuntu2.7
   ubuntu_26_04/libcairo-gobject2: 1.18.4-3
   ubuntu_26_04/libcairo2: 1.18.4-3
   ubuntu_26_04/libcap-ng0: 0.8.5-4build5
@@ -1431,10 +1431,10 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.2-gdal3.13:
   ubuntu_26_04/zlib1g: 1:1.3.dfsg+really1.3.1-1ubuntu3.2
 camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_26_04/adduser: 3.153ubuntu1
-  ubuntu_26_04/apache2: 2.4.66-2ubuntu2.7
-  ubuntu_26_04/apache2-bin: 2.4.66-2ubuntu2.7
-  ubuntu_26_04/apache2-data: 2.4.66-2ubuntu2.7
-  ubuntu_26_04/apache2-utils: 2.4.66-2ubuntu2.7
+  ubuntu_26_04/apache2: 2.4.66-2ubuntu2.8
+  ubuntu_26_04/apache2-bin: 2.4.66-2ubuntu2.8
+  ubuntu_26_04/apache2-data: 2.4.66-2ubuntu2.8
+  ubuntu_26_04/apache2-utils: 2.4.66-2ubuntu2.8
   ubuntu_26_04/apt: 3.2.1ubuntu0.1
   ubuntu_26_04/base-passwd: 3.6.8
   ubuntu_26_04/bash: 5.3-2ubuntu1
@@ -1509,11 +1509,11 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_26_04/libbrotli1: 1.2.0-3ubuntu0.1
   ubuntu_26_04/libbsd0: 0.12.2-2build2
   ubuntu_26_04/libbz2-1.0: 1.0.8-6ubuntu0.1
-  ubuntu_26_04/libc-bin: 2.43-2ubuntu2.4
-  ubuntu_26_04/libc-dev-bin: 2.43-2ubuntu2.4
-  ubuntu_26_04/libc-gconv-modules-extra: 2.43-2ubuntu2.4
-  ubuntu_26_04/libc6: 2.43-2ubuntu2.4
-  ubuntu_26_04/libc6-dev: 2.43-2ubuntu2.4
+  ubuntu_26_04/libc-bin: 2.43-2ubuntu2.7
+  ubuntu_26_04/libc-dev-bin: 2.43-2ubuntu2.7
+  ubuntu_26_04/libc-gconv-modules-extra: 2.43-2ubuntu2.7
+  ubuntu_26_04/libc6: 2.43-2ubuntu2.7
+  ubuntu_26_04/libc6-dev: 2.43-2ubuntu2.7
   ubuntu_26_04/libcairo-gobject2: 1.18.4-3
   ubuntu_26_04/libcairo2: 1.18.4-3
   ubuntu_26_04/libcap-ng0: 0.8.5-4build5
@@ -1953,10 +1953,10 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_26_04/zlib1g: 1:1.3.dfsg+really1.3.1-1ubuntu3.2
 camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_26_04/adduser: 3.153ubuntu1
-  ubuntu_26_04/apache2: 2.4.66-2ubuntu2.7
-  ubuntu_26_04/apache2-bin: 2.4.66-2ubuntu2.7
-  ubuntu_26_04/apache2-data: 2.4.66-2ubuntu2.7
-  ubuntu_26_04/apache2-utils: 2.4.66-2ubuntu2.7
+  ubuntu_26_04/apache2: 2.4.66-2ubuntu2.8
+  ubuntu_26_04/apache2-bin: 2.4.66-2ubuntu2.8
+  ubuntu_26_04/apache2-data: 2.4.66-2ubuntu2.8
+  ubuntu_26_04/apache2-utils: 2.4.66-2ubuntu2.8
   ubuntu_26_04/apt: 3.2.1ubuntu0.1
   ubuntu_26_04/base-passwd: 3.6.8
   ubuntu_26_04/bash: 5.3-2ubuntu1
@@ -2033,11 +2033,11 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_26_04/libbrotli1: 1.2.0-3ubuntu0.1
   ubuntu_26_04/libbsd0: 0.12.2-2build2
   ubuntu_26_04/libbz2-1.0: 1.0.8-6ubuntu0.1
-  ubuntu_26_04/libc-bin: 2.43-2ubuntu2.4
-  ubuntu_26_04/libc-dev-bin: 2.43-2ubuntu2.4
-  ubuntu_26_04/libc-gconv-modules-extra: 2.43-2ubuntu2.4
-  ubuntu_26_04/libc6: 2.43-2ubuntu2.4
-  ubuntu_26_04/libc6-dev: 2.43-2ubuntu2.4
+  ubuntu_26_04/libc-bin: 2.43-2ubuntu2.7
+  ubuntu_26_04/libc-dev-bin: 2.43-2ubuntu2.7
+  ubuntu_26_04/libc-gconv-modules-extra: 2.43-2ubuntu2.7
+  ubuntu_26_04/libc6: 2.43-2ubuntu2.7
+  ubuntu_26_04/libc6-dev: 2.43-2ubuntu2.7
   ubuntu_26_04/libcairo-gobject2: 1.18.4-3
   ubuntu_26_04/libcairo2: 1.18.4-3
   ubuntu_26_04/libcap-ng0: 0.8.5-4build5
@@ -2487,10 +2487,10 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_26_04/zlib1g: 1:1.3.dfsg+really1.3.1-1ubuntu3.2
 camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/adduser: 3.137ubuntu1
-  ubuntu_24_04/apache2: 2.4.58-1ubuntu8.18
-  ubuntu_24_04/apache2-bin: 2.4.58-1ubuntu8.18
-  ubuntu_24_04/apache2-data: 2.4.58-1ubuntu8.18
-  ubuntu_24_04/apache2-utils: 2.4.58-1ubuntu8.18
+  ubuntu_24_04/apache2: 2.4.58-1ubuntu8.19
+  ubuntu_24_04/apache2-bin: 2.4.58-1ubuntu8.19
+  ubuntu_24_04/apache2-data: 2.4.58-1ubuntu8.19
+  ubuntu_24_04/apache2-utils: 2.4.58-1ubuntu8.19
   ubuntu_24_04/apt: 2.8.4ubuntu0.1
   ubuntu_24_04/base-passwd: 3.6.3build1
   ubuntu_24_04/bash: 5.2.21-2ubuntu4
@@ -2553,10 +2553,10 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/libbrotli1: 1.1.0-2ubuntu0.1
   ubuntu_24_04/libbsd0: 0.12.1-1build1.1
   ubuntu_24_04/libbz2-1.0: 1.0.8-5.1ubuntu0.1
-  ubuntu_24_04/libc-bin: 2.39-0ubuntu8.9
-  ubuntu_24_04/libc-dev-bin: 2.39-0ubuntu8.9
-  ubuntu_24_04/libc6: 2.39-0ubuntu8.9
-  ubuntu_24_04/libc6-dev: 2.39-0ubuntu8.9
+  ubuntu_24_04/libc-bin: 2.39-0ubuntu8.12
+  ubuntu_24_04/libc-dev-bin: 2.39-0ubuntu8.12
+  ubuntu_24_04/libc6: 2.39-0ubuntu8.12
+  ubuntu_24_04/libc6-dev: 2.39-0ubuntu8.12
   ubuntu_24_04/libcap-ng0: 0.8.4-2build2
   ubuntu_24_04/libcap2: 1:2.66-5ubuntu2.4
   ubuntu_24_04/libcap2-bin: 1:2.66-5ubuntu2.4
@@ -2846,7 +2846,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/python3: 3.12.3-0ubuntu2.1
   ubuntu_24_04/python3-minimal: 3.12.3-0ubuntu2.1
   ubuntu_24_04/python3-numpy: 1:1.26.4+ds-6ubuntu1
-  ubuntu_24_04/python3-pil: 10.2.0-1ubuntu1.4
+  ubuntu_24_04/python3-pil: 10.2.0-1ubuntu1.5
   ubuntu_24_04/python3-pip: 24.0+dfsg-1ubuntu1.3
   ubuntu_24_04/python3-pip-whl: 24.0+dfsg-1ubuntu1.3
   ubuntu_24_04/python3-pkg-resources: 68.1.2-2ubuntu1.2
@@ -2893,10 +2893,10 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/zlib1g: 1:1.3.dfsg-3.1ubuntu2.3
 camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_26_04/adduser: 3.153ubuntu1
-  ubuntu_26_04/apache2: 2.4.66-2ubuntu2.7
-  ubuntu_26_04/apache2-bin: 2.4.66-2ubuntu2.7
-  ubuntu_26_04/apache2-data: 2.4.66-2ubuntu2.7
-  ubuntu_26_04/apache2-utils: 2.4.66-2ubuntu2.7
+  ubuntu_26_04/apache2: 2.4.66-2ubuntu2.8
+  ubuntu_26_04/apache2-bin: 2.4.66-2ubuntu2.8
+  ubuntu_26_04/apache2-data: 2.4.66-2ubuntu2.8
+  ubuntu_26_04/apache2-utils: 2.4.66-2ubuntu2.8
   ubuntu_26_04/apt: 3.2.1ubuntu0.1
   ubuntu_26_04/base-passwd: 3.6.8
   ubuntu_26_04/bash: 5.3-2ubuntu1
@@ -2971,11 +2971,11 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_26_04/libbrotli1: 1.2.0-3ubuntu0.1
   ubuntu_26_04/libbsd0: 0.12.2-2build2
   ubuntu_26_04/libbz2-1.0: 1.0.8-6ubuntu0.1
-  ubuntu_26_04/libc-bin: 2.43-2ubuntu2.4
-  ubuntu_26_04/libc-dev-bin: 2.43-2ubuntu2.4
-  ubuntu_26_04/libc-gconv-modules-extra: 2.43-2ubuntu2.4
-  ubuntu_26_04/libc6: 2.43-2ubuntu2.4
-  ubuntu_26_04/libc6-dev: 2.43-2ubuntu2.4
+  ubuntu_26_04/libc-bin: 2.43-2ubuntu2.7
+  ubuntu_26_04/libc-dev-bin: 2.43-2ubuntu2.7
+  ubuntu_26_04/libc-gconv-modules-extra: 2.43-2ubuntu2.7
+  ubuntu_26_04/libc6: 2.43-2ubuntu2.7
+  ubuntu_26_04/libc6-dev: 2.43-2ubuntu2.7
   ubuntu_26_04/libcairo-gobject2: 1.18.4-3
   ubuntu_26_04/libcairo2: 1.18.4-3
   ubuntu_26_04/libcap-ng0: 0.8.5-4build5
@@ -3502,11 +3502,11 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_26_04/libbrotli1: 1.2.0-3ubuntu0.1
   ubuntu_26_04/libbsd0: 0.12.2-2build2
   ubuntu_26_04/libbz2-1.0: 1.0.8-6ubuntu0.1
-  ubuntu_26_04/libc-bin: 2.43-2ubuntu2.4
-  ubuntu_26_04/libc-dev-bin: 2.43-2ubuntu2.4
-  ubuntu_26_04/libc-gconv-modules-extra: 2.43-2ubuntu2.4
-  ubuntu_26_04/libc6: 2.43-2ubuntu2.4
-  ubuntu_26_04/libc6-dev: 2.43-2ubuntu2.4
+  ubuntu_26_04/libc-bin: 2.43-2ubuntu2.7
+  ubuntu_26_04/libc-dev-bin: 2.43-2ubuntu2.7
+  ubuntu_26_04/libc-gconv-modules-extra: 2.43-2ubuntu2.7
+  ubuntu_26_04/libc6: 2.43-2ubuntu2.7
+  ubuntu_26_04/libc6-dev: 2.43-2ubuntu2.7
   ubuntu_26_04/libcairo2: 1.18.4-3
   ubuntu_26_04/libcap-ng0: 0.8.5-4build5
   ubuntu_26_04/libcap2: 1:2.75-10ubuntu2
@@ -4187,9 +4187,9 @@ camptocamp/geomapfish:latest:
   ubuntu_26_04/libbrotli1: 1.2.0-3ubuntu0.1
   ubuntu_26_04/libbsd0: 0.12.2-2build2
   ubuntu_26_04/libbz2-1.0: 1.0.8-6ubuntu0.1
-  ubuntu_26_04/libc-bin: 2.43-2ubuntu2.4
-  ubuntu_26_04/libc-gconv-modules-extra: 2.43-2ubuntu2.4
-  ubuntu_26_04/libc6: 2.43-2ubuntu2.4
+  ubuntu_26_04/libc-bin: 2.43-2ubuntu2.7
+  ubuntu_26_04/libc-gconv-modules-extra: 2.43-2ubuntu2.7
+  ubuntu_26_04/libc6: 2.43-2ubuntu2.7
   ubuntu_26_04/libcairo2: 1.18.4-3
   ubuntu_26_04/libcap-ng0: 0.8.5-4build5
   ubuntu_26_04/libcares2: 1.34.6-1ubuntu0.2
@@ -4811,9 +4811,9 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_26_04/libbrotli1: 1.2.0-3ubuntu0.1
   ubuntu_26_04/libbsd0: 0.12.2-2build2
   ubuntu_26_04/libbz2-1.0: 1.0.8-6ubuntu0.1
-  ubuntu_26_04/libc-bin: 2.43-2ubuntu2.4
-  ubuntu_26_04/libc-gconv-modules-extra: 2.43-2ubuntu2.4
-  ubuntu_26_04/libc6: 2.43-2ubuntu2.4
+  ubuntu_26_04/libc-bin: 2.43-2ubuntu2.7
+  ubuntu_26_04/libc-gconv-modules-extra: 2.43-2ubuntu2.7
+  ubuntu_26_04/libc6: 2.43-2ubuntu2.7
   ubuntu_26_04/libcairo2: 1.18.4-3
   ubuntu_26_04/libcap-ng0: 0.8.5-4build5
   ubuntu_26_04/libcares2: 1.34.6-1ubuntu0.2
