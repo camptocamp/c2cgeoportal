@@ -1,3 +1,7 @@
+##### 2.10.rc.6
+
+- Lock file maintenance (2.10) [c2cgeoportal#13687](https://github.com/camptocamp/c2cgeoportal/pull/13687)
+
 ##### 2.10.rc.5
 
 - Remove the SECURITY.md file from the 2.10 branch [c2cgeoportal#13414](https://github.com/camptocamp/c2cgeoportal/pull/13414)
