@@ -54,9 +54,14 @@ In a `start-<version + 1>` pull request:
 - Set `MAJOR_VERSION: '<version + 1>'` in `.github/workflows/main.yaml` and `.github/workflows/qgis.yaml`.
 - Add the `.github/workflows/ngeo-<version>.yaml` maintenance workflow, adapted from the previous one
   (`repository_dispatch: ngeo_<version>_updated` sent by the `ngeo` `<version>` branch builds,
-  `MAIN_BRANCH`/`MAJOR_VERSION`, `QGIS_VERSION`, the `ci/test-upgrade` steps). It updates ngeo, the
-  change log and the version on the stabilization branch and republishes the images with
-  `tag-publish --type=rebuild --version=<version> --docker-versions=...`.
+  `MAIN_BRANCH`, the `runs-on` of the CI of the stabilization branch so that the default node version
+  of the runner is the same). It updates the `ngeo` package on the stabilization branch, normalizes the
+  lock file with pre-commit (the modification of the lock file by the `npm-lock` hook is the expected
+  outcome, not an error) and, when there is a change, fails on purpose and uploads an
+  `Update used ngeo [<version>].patch` artifact. The GHCI patch module applies it on the protected
+  stabilization branch in a `ghci/patch/<version>-*` pull request with auto-merge, verified by the pull
+  request CI. The version bump, the change log, the builds, the publication of the images and the demo
+  notification are then done by the standard `main.yaml` and `qgis.yaml` CI on the merge push.
   The `ngeo_master_updated` dispatch is ignored: on `master` the ngeo dependency is updated by Renovate.
 - Add `| <version> | To be defined |` in `SECURITY.md`; GHCI keeps the Renovate `baseBranchPatterns` and
   the `backport <version>` labels up to date from this file.

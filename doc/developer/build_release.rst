@@ -151,16 +151,17 @@ to ``.github/workflows/ngeo-<new version>.yaml`` and update it:
 
 * the ``name`` and the job name to ``Update ngeo <new version>``,
 * the repository dispatch type to ``ngeo_<new version>_updated``,
-* ``MAIN_BRANCH`` and ``MAJOR_VERSION`` to ``<new version>``,
-* the ``QGIS_VERSION`` used to build the QGIS server,
-* the ``ci/test-upgrade`` steps with the ones from the new version branch.
+* ``MAIN_BRANCH`` to ``<new version>``,
+* the ``runs-on`` to the one used by the CI of the new version branch, so that the default node
+  version of the runner is the same.
 
-This workflow checks out the stabilization branch, updates the ``ngeo`` package, the change log and the
-version, pushes the changes on the stabilization branch and republishes the images with:
-
-.. prompt:: bash
-
-    tag-publish --type=rebuild --version=<new version> --docker-versions=...
+This workflow checks out the stabilization branch, updates the ``ngeo`` package and normalizes the lock
+file with pre-commit (the modification of the lock file by the ``npm-lock`` hook is the expected outcome,
+not an error). When there is a change, it fails on purpose and uploads an
+``Update used ngeo [<new version>].patch`` artifact. The GHCI patch module applies it on the protected
+stabilization branch in a ``ghci/patch/<new version>-*`` pull request with auto-merge, verified by the
+pull request CI. The version bump, the change log, the builds, the publication of the images and the
+demo notification are then done by the standard ``main.yaml`` and ``qgis.yaml`` CI on the merge push.
 
 Configure the new branch
 ------------------------

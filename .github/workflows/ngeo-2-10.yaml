@@ -7,59 +7,33 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
-  packages: write
-  id-token: write
+  contents: read
 
 jobs:
   main:
     name: Update ngeo 2.10
     runs-on: ubuntu-26.04
-    timeout-minutes: 135
+    timeout-minutes: 30
 
     env:
+      PRE_COMMIT_HOME: /home/runner/.cache/pre-commit
       MAIN_BRANCH: '2.10'
-      MAJOR_VERSION: '2.10'
 
     steps:
-      # Previously configured by the removed gopass action, still required by the steps that
-      # commit: the ngeo version and the changelog push.
-      - name: Configure Git
-        run: |
-          git config --global user.email "geospatial-bot@camptocamp.com"
-          git config --global user.name "CI"
-      - run: '! ls BACKPORT_TODO'
-      - run: df -h
-      - name: Clean all docker images
-        run: docker system prune --all --force
-      # Inspired by https://github.com/jlumbroso/free-disk-space/
-      - run: sudo rm -rf /usr/local/lib/android /usr/share/dotnet "$AGENT_TOOLSDIRECTORY"
-      - run: df -h
-
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          fetch-depth: 0
           ref: ${{ env.MAIN_BRANCH }}
 
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: '3.14'
       - run: python3 -m pip install '--only-binary=:all:' --requirement=ci/requirements.txt
-      - name: Environment information
-        run: c2cciutils-env
-        env:
-          # To display the content of the github object
-          GITHUB_EVENT: ${{ toJson(github) }}
 
-      - run: applications-download --applications=ci/applications.yaml --versions=ci/applications-versions.yaml install --all
-
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
-        with:
-          node-version: 24.x
-      - run: npm update --ignore-scripts
+      # The floating dist-tag resolution is the purpose of this workflow; Sonar cannot accept
+      # it (locked versions required), the resolved versions end up locked with integrity
+      # hashes in the package-lock.json of the pull request created by the GHCI patch module.
+      - run: npm update --ignore-scripts # NOSONAR
         working-directory: geoportal
-      - id: version
-        run: scripts/get-version --auto-increment --github
 
       - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
@@ -68,213 +42,21 @@ jobs:
           restore-keys: |
             pre-commit-${{ env.MAIN_BRANCH }}-${{ hashFiles('.pre-commit-config.yaml') }}
             pre-commit-${{ env.MAIN_BRANCH }}-
+      # The npm-lock hook normalizes the lock file updated by `npm update`, and reports the
+      # modification as a failure, which is the expected outcome here, not an error.
       - run: pre-commit run --all-files
-      - run: git diff --exit-code --patch > /tmp/pre-commit.patch || true
-        if: failure()
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: Apply pre-commit fix.patch
-          path: /tmp/pre-commit.patch
-          retention-days: 1
-        if: failure()
-
-      - run: python3 -m pip install '--only-binary=:all:' --requirement=requirements.txt
-
-        # Build images
-      - run: make build-runner
-      - run: make build-tools
-      - run: make checks
-        if: always()
-      - run: make build-config
-
-      # Build and lint QGIS images
-      - run: QGIS_VERSION=master make build-qgisserver
-      - run: QGIS_VERSION=master make prospector-qgisserver
-
-      - run: make preparetest
-
-      # Auto generate Alembic script
-      - run: |
-          docker compose exec tests alembic --config=/opt/c2cgeoportal/commons/alembic.ini --name=main check \
-            || docker compose exec tests alembic --config=/opt/c2cgeoportal/commons/alembic.ini --name=main \
-            revision --autogenerate --message="${PULL_REQUEST_TITLE}"
-          docker compose exec tests alembic --config=/opt/c2cgeoportal/commons/alembic.ini --name=static check \
-            || docker compose exec tests alembic --config=/opt/c2cgeoportal/commons/alembic.ini --name=static \
-            revision --autogenerate --message="${PULL_REQUEST_TITLE}"
-          sudo chmod go+rw -R commons/c2cgeoportal_commons/alembic/
-          # Replace 'main' by schema and 'main. by f'{schema}.
-          sed -i "s/'main'/schema/g" commons/c2cgeoportal_commons/alembic/*/*.py
-          sed -i "s/'main\.'/f'{schema}./g" commons/c2cgeoportal_commons/alembic/*/*.py
-          # Replace 'main_static' by staticschema and 'main_static. by f'{staticschema}.
-          sed -i "s/'main_static'/staticschema/g" commons/c2cgeoportal_commons/alembic/*/*.py
-          sed -i "s/'main_static\.'/f'{staticschema}./g" commons/c2cgeoportal_commons/alembic/*/*.py
-          git checkout commons/c2cgeoportal_commons/alembic/main/ee25d267bf46_main_interface_desktop.py
-          git checkout commons/c2cgeoportal_commons/alembic/main/415746eb9f6_changes_for_v2.py
-          git add commons/c2cgeoportal_commons/alembic/main/*.py commons/c2cgeoportal_commons/alembic/static/*.py
-          pre-commit run --files commons/c2cgeoportal_commons/alembic/main/*.py commons/c2cgeoportal_commons/alembic/static/*.py || true
-          git add commons/c2cgeoportal_commons/alembic/main/*.py commons/c2cgeoportal_commons/alembic/static/*.py
-          git diff --staged --patch > /tmp/alembic.patch
-          git diff --staged --exit-code
-        env:
-          PULL_REQUEST_TITLE: ${{ github.event.pull_request.title }}
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: Add Alembic upgrade script.patch
-          path: /tmp/alembic.patch
-          retention-days: 1
-        if: failure()
-
-      # Tests
-      - run: c2cciutils-docker-logs
-      - run: make tests-commons
-      - run: c2cciutils-docker-logs
-      - run: make tests-geoportal
-      - run: c2cciutils-docker-logs
-      - run: make tests-admin
-      - run: c2cciutils-docker-logs
-      - run: make tests-qgisserver
-      - run: c2cciutils-docker-logs
-        if: always()
-      - run: docker compose down
-
-      - name: Test version generation for the changelog
-        run: scripts/updated_version latest latest
-
-      - run: sudo git clean -fdx
-
-        # Documentation
-      - run: >
-          docker build --tag=camptocamp/geomapfish-doc
-          --build-arg=MAJOR_VERSION=${MAJOR_VERSION}
-          --build-arg=MAIN_BRANCH=${MAIN_BRANCH}
-          doc
-        env:
-          DOCKER_BUILDKIT: '1'
-
-      - name: Extract documentation
-        run: ci/extract-documentation artifacts/documentations/ || true
-        if: always()
-
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: Documentation
-          path: artifacts/documentations/
-          if-no-files-found: ignore
-          retention-days: 5
-        if: always()
-
-      # Test App with Docker compose version 2.x
-      - timeout-minutes: 30
-        run: ci/test-app
-      - name: Docker logs
         continue-on-error: true
-        run: |
-          cd ${HOME}/workspace/testgeomapfishapp/
-          c2cciutils-docker-logs
-        if: failure()
 
-      # Use minimal version from the documentation
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          # When we upgrade this we should also upgrade the requirements
-          # in the documentation: doc/integrator/requirements.rst
-          # and the first pyupgrade pre-commit hook in .pre-commit-config.yaml
-          python-version: '3.8' # Shouldn't be upgraded to latest Python version
-      - run: python --version|grep ' 3\.8\.'
-      - run: pip install '--only-binary=:all:' --requirement=ci/requirements-project.txt
-      - run: docker compose version
-
-      # Test App
-      - timeout-minutes: 30
-        run: ci/test-app
-      - name: Docker logs
-        continue-on-error: true
-        run: |
-          cd ${HOME}/workspace/testgeomapfishapp/
-          c2cciutils-docker-logs
-        if: failure()
-
-      - run: git stash
-      - run: git pull --ff-only origin ${{ env.MAIN_BRANCH }}
-      - run: git stash pop || true
-
-        # Test Upgrade
-      - run: DOCKER_TAG=${{ steps.version.outputs.full }} make build-tools
-      - run: DOCKER_TAG=${{ steps.version.outputs.full }} make build-runner
-      - run: DOCKER_TAG=${{ steps.version.outputs.full }} make build-config
-      - run: docker images | grep "<none>" | awk '{print $3}' | xargs --no-run-if-empty docker rmi || true
-      - run: ci/test-upgrade init ${HOME}/workspace
-      - run: ci/test-upgrade 210 ${HOME}/workspace
-      - run: ci/test-upgrade 290 ${HOME}/workspace
-      - run: ci/test-upgrade 280 ${HOME}/workspace
-      - run: ci/test-upgrade 270 ${HOME}/workspace
-      - run: ci/test-upgrade cleanup ${HOME}/workspace
-
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
-        with:
-          python-version: '3.14'
-      - run: pip install '--only-binary=:all:' --requirement=ci/requirements-back.txt
-      - run: docker compose version
-
-      - name: Init Git
-        run:
-          git remote set-url origin https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository
-          }}
-      - run: make build-tools
-      - run: make build-runner
-      - run: make build-config
-
-      - run: ci/create-new-project ${HOME}/workspace geomapfishapp
-      - run: (cd ${HOME}/workspace/geomapfishapp/; ./build)
-
-      - name: Update the changelog
-        run: ci/changelog ${{ steps.version.outputs.full }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: git diff CHANGELOG.md
-      - run: |
-          git add geoportal/package-lock.json
-          git commit -m "Update used ngeo version"
-
-      - name: Push version and changelog
-        run: |
-          set -eux
-          git add ci/ci.yaml ci/changelog.yaml CHANGELOG.md
-          git diff --staged --quiet || (\
-            git commit -m "[skip ci] Update the minor version"; \
-            git push origin HEAD:${{ env.MAIN_BRANCH }} \
-          )
-      - name: Publish
-        run: >
-          tag-publish
-          --type=rebuild
-          --version=${{ env.MAIN_BRANCH }}
-          --docker-versions=${{ steps.version.outputs.versions }}
-        if: steps.version.outputs.versions != ''
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: git diff --exit-code --patch > /tmp/dpkg-versions.patch || true
-        if: failure()
+      - run: git add --all
+      # Fail on purpose when there is a change so that the GHCI patch module applies the uploaded
+      # patch on the stabilization branch in a pull request that is auto-merged by the CI checks.
+      - id: diff
+        run: git diff --staged --exit-code
+      - run: git diff --staged --patch > /tmp/update-ngeo.patch
+        if: failure() && steps.diff.outcome == 'failure'
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          name: Update dpkg versions list.patch
-          path: /tmp/dpkg-versions.patch
+          name: Update used ngeo [${{ env.MAIN_BRANCH }}].patch
+          path: /tmp/update-ngeo.patch
           retention-days: 1
-        if: failure()
-
-      # Needs Contents: write on the target repository, which GITHUB_TOKEN cannot provide.
-      - name: Notify demo
-        run: >
-          curl --request POST --header "Content-Type: application/json"
-          --header 'Accept: application/vnd.github.v3+json'
-          --header "Authorization: token ${{ secrets.GS_GMF_DISPATCH_TOKEN }}"
-          https://api.github.com/repos/camptocamp/demo_geomapfish/dispatches
-          --data '{"event_type": "geomapfish_${{ env.MAJOR_VERSION }}_updated",
-            "client_payload": {"version": "'"${{ steps.version.outputs.upgrade_version }}"'"}}'
-
-      - run: docker images
-        if: always()
-      - run: docker system df
-        if: always()
-      - run: df -h
-        if: always()
+        if: failure() && steps.diff.outcome == 'failure'

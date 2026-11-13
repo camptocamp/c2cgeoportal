@@ -30,7 +30,7 @@ jobs:
       - name: Auto reviews GHCI updates
         uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
         if: |-
-          startsWith(github.head_ref, 'ghci/audit/')
+          (startsWith(github.head_ref, 'ghci/audit/') || startsWith(github.head_ref, 'ghci/patch/'))
           && (github.event.pull_request.user.login == 'geo-ghci-test[bot]'
             || github.event.pull_request.user.login == 'geo-ghci-int[bot]'
             || github.event.pull_request.user.login == 'geo-ghci[bot]')
