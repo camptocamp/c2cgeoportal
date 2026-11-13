@@ -1,3 +1,7 @@
+##### 2.8.1.404
+
+- Audit Dpkg 2.8 [c2cgeoportal#13693](https://github.com/camptocamp/c2cgeoportal/pull/13693)
+
 ##### 2.8.1.403
 
 - Revert the QGIS desktop image to Docker Hub and use ghcr.io in updated_version [c2cgeoportal#13689](https://github.com/camptocamp/c2cgeoportal/pull/13689)
