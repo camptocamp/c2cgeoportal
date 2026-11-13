@@ -33,7 +33,7 @@ import transaction
 import webob.acceptparse
 from c2c.template.config import config as configuration
 from pyramid import testing
-from sqlalchemy.orm.session import Session
+from sqlalchemy.orm.session import Session  # noqa: TC002
 
 import c2cgeoportal_geoportal
 import c2cgeoportal_geoportal.lib

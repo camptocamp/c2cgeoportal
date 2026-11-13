@@ -26,18 +26,18 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import datetime
+import datetime  # noqa: ICN001
 import ipaddress
 import json
 import logging
 import re
-from collections.abc import Iterable
+from collections.abc import Iterable  # noqa: TC003
 from string import Formatter
 from typing import Any, cast
 
 import dateutil
 import pyramid.request
-import pyramid.response
+import pyramid.response  # noqa: TC002
 from pyramid.interfaces import IRoutePregenerator
 from zope.interface import implementer
 

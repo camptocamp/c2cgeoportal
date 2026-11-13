@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2025, Camptocamp SA
+# Copyright (c) 2012-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -31,7 +31,7 @@ from enum import Enum
 from typing import Any, cast
 
 import pyramid.request
-import pyramid.response
+import pyramid.response  # noqa: TC002
 
 _LOG = logging.getLogger(__name__)
 

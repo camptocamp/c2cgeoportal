@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2025, Camptocamp SA
+# Copyright (c) 2019-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -30,7 +30,7 @@ import glob
 import logging
 
 import pyramid.request
-import pyramid.response
+import pyramid.response  # noqa: TC002
 from lingva.extract import (  # strip_linenumbers,
     ExtractorOptions,
     POEntry,

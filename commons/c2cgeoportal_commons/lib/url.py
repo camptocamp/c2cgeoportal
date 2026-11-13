@@ -29,7 +29,7 @@ import logging
 import re
 import urllib.parse
 
-from pyramid.request import Request
+from pyramid.request import Request  # noqa: TC002
 
 _LOG = logging.getLogger(__name__)
 

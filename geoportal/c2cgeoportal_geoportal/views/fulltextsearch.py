@@ -29,7 +29,7 @@
 import re
 from typing import TYPE_CHECKING, Any
 
-import pyramid.request
+import pyramid.request  # noqa: TC002
 import sqlalchemy.orm.query
 from geoalchemy2.shape import to_shape
 from geojson import Feature, FeatureCollection

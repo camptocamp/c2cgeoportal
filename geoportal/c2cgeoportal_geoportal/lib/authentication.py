@@ -1,4 +1,4 @@
-# Copyright (c) 2014-2025, Camptocamp SA
+# Copyright (c) 2014-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -32,10 +32,10 @@ import logging
 import os
 import re
 import time
-from collections.abc import Callable
+from collections.abc import Callable  # noqa: TC003
 from typing import Any, cast
 
-import pyramid.request
+import pyramid.request  # noqa: TC002
 from Crypto.Cipher import AES  # nosec
 from pyramid.authentication import (
     AuthTktAuthenticationPolicy,

@@ -26,14 +26,14 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import xml.etree.ElementTree  # nosec  # noqa: ICN001
-from collections.abc import Callable
+import xml.etree.ElementTree  # nosec  # noqa: ICN001, TC003
+from collections.abc import Callable  # noqa: TC003
 from io import BytesIO
 from typing import Any, cast
 
 import sqlalchemy.orm.mapper
 import sqlalchemy.sql.elements
-import sqlalchemy.sql.schema
+import sqlalchemy.sql.schema  # noqa: TC002
 from papyrus.xsd import XSDGenerator as PapyrusXSDGenerator
 from papyrus.xsd import tag
 from sqlalchemy.orm.properties import ColumnProperty

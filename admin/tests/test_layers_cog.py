@@ -28,8 +28,8 @@ import re
 from typing import Any
 
 import pytest
-from sqlalchemy.orm import Session, SessionTransaction
-from webtest import TestApp as WebTestApp  # Avoid warning with pytest
+from sqlalchemy.orm import Session, SessionTransaction  # noqa: TC002
+from webtest import TestApp as WebTestApp  # Avoid warning with pytest  # noqa: TC002
 
 from . import AbstractViewsTests, factory_build_layers, get_test_default_layers
 

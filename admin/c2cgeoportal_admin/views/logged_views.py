@@ -25,12 +25,12 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-import datetime
+import datetime as dt
 
 from c2cgeoform.views.abstract_views import AbstractViews, DeleteResponse, SaveResponse
 from pyramid.httpexceptions import HTTPFound
 
-from c2cgeoportal_commons.models import Base
+from c2cgeoportal_commons.models import Base  # noqa: TC001
 from c2cgeoportal_commons.models.main import Log, LogAction
 
 
@@ -69,7 +69,7 @@ class LoggedViews[T: Log](AbstractViews[T]):
         assert self._name_field is not None
         assert self._id_field is not None
         log = self._log_model(
-            date=datetime.datetime.now(datetime.UTC),
+            date=dt.datetime.now(dt.UTC),
             action=action,
             element_type=self._model.__tablename__,
             element_id=getattr(obj, self._id_field),

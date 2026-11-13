@@ -25,7 +25,7 @@
 import logging
 from typing import Any
 
-import pyramid.request
+import pyramid.request  # noqa: TC002
 from pyramid.httpexceptions import HTTPBadRequest
 from pyramid.view import view_config
 

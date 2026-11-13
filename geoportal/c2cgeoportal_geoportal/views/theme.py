@@ -38,7 +38,7 @@ from math import sqrt
 from typing import Any, Optional, cast
 
 import dogpile.cache.api
-import lxml.etree as lxml_etree
+import lxml.etree as lxml_etree  # noqa: TC002
 import pyramid.httpexceptions
 import pyramid.request
 import requests

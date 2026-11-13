@@ -31,13 +31,13 @@ import os
 import re
 import subprocess  # nosec
 import traceback
-from collections.abc import Callable
+from collections.abc import Callable  # noqa: TC003
 from typing import TYPE_CHECKING, Any, cast
 from xml.parsers.expat import ExpatError
 
 import pyramid.threadlocal
 import requests
-import sqlalchemy.orm
+import sqlalchemy.orm  # noqa: TC002
 import yaml
 from bottle import MakoTemplate, template
 from c2c.template.config import config

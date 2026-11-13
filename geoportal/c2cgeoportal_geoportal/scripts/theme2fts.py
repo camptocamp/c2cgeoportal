@@ -31,13 +31,13 @@ import os
 import sys
 import time
 from argparse import ArgumentParser, Namespace
-from collections.abc import Iterator
+from collections.abc import Iterator  # noqa: TC003
 from typing import TYPE_CHECKING, Any
 
-import pyramid.config
+import pyramid.config  # noqa: TC002
 import sqlalchemy.orm
 import transaction
-from sqlalchemy.orm.session import Session
+from sqlalchemy.orm.session import Session  # noqa: TC002
 
 from c2cgeoportal_geoportal.lib.bashcolor import Color, colorize
 from c2cgeoportal_geoportal.lib.fulltextsearch import Normalize

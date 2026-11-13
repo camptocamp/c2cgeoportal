@@ -33,7 +33,7 @@ import re
 from datetime import datetime
 from typing import Any, Literal, cast, get_args
 
-import pyramid.request
+import pyramid.request  # noqa: TC002
 import sqlalchemy.orm.base
 from c2c.template.config import config
 from geoalchemy2 import Geometry, WKBElement, WKTElement

@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2025, Camptocamp SA
+# Copyright (c) 2011-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -29,14 +29,14 @@ import json
 import logging
 import os
 import subprocess
-from collections.abc import Mapping
+from collections.abc import Mapping  # noqa: TC003
 from time import sleep
 from typing import Any, cast
 from urllib.parse import urljoin
 
 import c2cwsgiutils.health_check
 import pyramid.config
-import pyramid.request
+import pyramid.request  # noqa: TC002
 import requests
 
 _LOG = logging.getLogger(__name__)

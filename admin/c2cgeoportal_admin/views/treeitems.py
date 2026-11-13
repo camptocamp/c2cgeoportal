@@ -28,7 +28,7 @@
 
 from functools import partial
 
-import sqlalchemy
+import sqlalchemy  # noqa: TC002
 from c2cgeoform.views.abstract_views import ListField, SaveResponse
 from pyramid.view import view_config
 from sqlalchemy.orm import subqueryload

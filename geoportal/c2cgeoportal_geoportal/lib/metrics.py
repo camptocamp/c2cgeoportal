@@ -27,7 +27,7 @@
 
 import gc
 import sys
-from collections.abc import Generator
+from collections.abc import Generator  # noqa: TC003
 
 import prometheus_client.core
 import prometheus_client.registry

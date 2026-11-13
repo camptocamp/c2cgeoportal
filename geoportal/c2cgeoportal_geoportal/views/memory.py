@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2025, Camptocamp SA
+# Copyright (c) 2018-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -31,7 +31,7 @@ import os
 import time
 from typing import Any, cast
 
-import pyramid.request
+import pyramid.request  # noqa: TC002
 from c2cwsgiutils import broadcast
 from c2cwsgiutils.auth import auth_view
 from c2cwsgiutils.debug import get_size

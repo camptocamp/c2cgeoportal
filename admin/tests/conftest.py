@@ -30,10 +30,10 @@ import sqlalchemy.exc
 import transaction
 from pyramid import testing
 from pyramid.paster import bootstrap
-from pyramid.router import Router
-from pyramid.scripting import AppEnvironment
+from pyramid.router import Router  # noqa: TC002
+from pyramid.scripting import AppEnvironment  # noqa: TC002
 from sqlalchemy.exc import DBAPIError
-from sqlalchemy.orm import Session, SessionTransaction
+from sqlalchemy.orm import Session, SessionTransaction  # noqa: TC002
 from webtest import TestApp as WebTestApp  # Avoid warning with pytest
 
 from c2cgeoportal_commons.testing import (

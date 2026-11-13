@@ -17,7 +17,6 @@ from typing import TYPE_CHECKING, Any, ClassVar, cast
 
 import c2cwsgiutils.broadcast
 import geoalchemy2
-import qgis.server
 import sqlalchemy
 import sqlalchemy.orm.session
 import yaml
@@ -35,14 +34,15 @@ from qgis.core import (
 )
 from qgis.server import QgsAccessControlFilter, QgsConfigCache
 from shapely import ops, wkb
-from shapely.geometry.base import BaseGeometry
 from sqlalchemy.orm import configure_mappers, joinedload, sessionmaker, subqueryload
-from sqlalchemy.orm.session import Session
 
 if TYPE_CHECKING:
+    import qgis.server
     from c2cgeoportal_commons.models import (  # noqa: PLC0415, RUF100
         main,  # pylint: disable=ungrouped-imports,useless-suppression
     )
+    from shapely.geometry.base import BaseGeometry
+    from sqlalchemy.orm.session import Session
 
 _LOG = logging.getLogger(__name__)
 

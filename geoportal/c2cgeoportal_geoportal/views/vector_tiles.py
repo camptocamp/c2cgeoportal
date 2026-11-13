@@ -29,8 +29,8 @@ import logging
 
 import sqlalchemy
 from pyramid.httpexceptions import HTTPNotFound
-from pyramid.request import Request
-from pyramid.response import Response
+from pyramid.request import Request  # noqa: TC002
+from pyramid.response import Response  # noqa: TC002
 from pyramid.view import view_config
 from tilecloud import TileCoord
 from tilecloud.grid.free import FreeTileGrid

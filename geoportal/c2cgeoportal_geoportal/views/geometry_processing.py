@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2025, Camptocamp SA
+# Copyright (c) 2011-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -26,13 +26,13 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import pyramid.request
+import pyramid.request  # noqa: TC002
 from geoalchemy2.shape import from_shape, to_shape
 from geojson import loads
 from pyramid.httpexceptions import HTTPBadRequest
 from pyramid.view import view_config
 from shapely.geometry import shape
-from shapely.geometry.base import BaseGeometry
+from shapely.geometry.base import BaseGeometry  # noqa: TC002
 from sqlalchemy import func
 
 from c2cgeoportal_commons.models import DBSession

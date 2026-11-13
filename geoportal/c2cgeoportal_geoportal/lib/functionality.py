@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2025, Camptocamp SA
+# Copyright (c) 2011-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
 import logging.config
 from typing import Any, cast
 
-import pyramid.request
+import pyramid.request  # noqa: TC002
 from sqlalchemy.orm import joinedload
 
 from c2cgeoportal_commons.models import main, static

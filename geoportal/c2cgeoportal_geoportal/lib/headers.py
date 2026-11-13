@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2024, Camptocamp SA
+# Copyright (c) 2013-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,11 +27,11 @@
 
 
 import re
-from collections.abc import Callable
+from collections.abc import Callable  # noqa: TC003
 
 import pyramid.registry
 import pyramid.request
-import pyramid.response
+import pyramid.response  # noqa: TC002
 
 
 class HeadersTween:

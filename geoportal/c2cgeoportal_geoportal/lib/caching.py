@@ -28,7 +28,7 @@
 
 import inspect
 import logging
-from collections.abc import Callable, Iterable, Mapping
+from collections.abc import Callable, Iterable, Mapping  # noqa: TC003
 from typing import TYPE_CHECKING, Any
 
 import pyramid.interfaces

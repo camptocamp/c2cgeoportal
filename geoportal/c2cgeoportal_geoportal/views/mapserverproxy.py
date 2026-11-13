@@ -35,11 +35,11 @@ from pyramid.httpexceptions import (
     HTTPInternalServerError,
     HTTPUnauthorized,
 )
-from pyramid.request import Request
-from pyramid.response import Response
+from pyramid.request import Request  # noqa: TC002
+from pyramid.response import Response  # noqa: TC002
 from pyramid.view import view_config
 
-from c2cgeoportal_commons.lib.url import Url
+from c2cgeoportal_commons.lib.url import Url  # noqa: TC001
 from c2cgeoportal_commons.models import main
 from c2cgeoportal_geoportal.lib import get_roles_id, get_roles_name
 from c2cgeoportal_geoportal.lib.caching import get_region

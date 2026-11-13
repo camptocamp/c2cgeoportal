@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2025, Camptocamp SA
+# Copyright (c) 2011-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,9 +27,9 @@
 import logging
 from typing import Any, cast
 
-import c2cwsgiutils.health_check
+import c2cwsgiutils.health_check  # noqa: TC002
 import pyramid.config
-import pyramid.request
+import pyramid.request  # noqa: TC002
 import requests
 
 from c2cgeoportal_geoportal.lib.checker import build_url

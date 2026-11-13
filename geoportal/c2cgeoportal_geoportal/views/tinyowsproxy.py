@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2025, Camptocamp SA
+# Copyright (c) 2015-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
 import logging
 from typing import Any
 
-import pyramid.request
+import pyramid.request  # noqa: TC002
 import sqlalchemy.exc
 from defusedxml import ElementTree
 from pyramid.httpexceptions import (

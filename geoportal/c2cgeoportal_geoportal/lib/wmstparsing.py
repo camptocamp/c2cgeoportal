@@ -26,7 +26,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import datetime
+import datetime as dt
 from typing import Any, Union
 
 import isodate
@@ -34,7 +34,7 @@ import isodate
 TimeExtent = Union["TimeExtentValue", "TimeExtentInterval"]
 
 
-def min_none(a: datetime.datetime | None, b: datetime.datetime | None) -> datetime.datetime | None:
+def min_none(a: dt.datetime | None, b: dt.datetime | None) -> dt.datetime | None:
     """Return the min value, support non in input."""
     if a is None:
         return b
@@ -43,7 +43,7 @@ def min_none(a: datetime.datetime | None, b: datetime.datetime | None) -> dateti
     return min(a, b)
 
 
-def max_none(a: datetime.datetime | None, b: datetime.datetime | None) -> datetime.datetime | None:
+def max_none(a: dt.datetime | None, b: dt.datetime | None) -> dt.datetime | None:
     """Return the max value, support non in input."""
     if a is None:
         return b
@@ -125,10 +125,10 @@ class TimeExtentValue:
 
     def __init__(
         self,
-        values: set[datetime.datetime],
+        values: set[dt.datetime],
         resolution: str,
-        min_def_value: datetime.datetime | None,
-        max_def_value: datetime.datetime | None,
+        min_def_value: dt.datetime | None,
+        max_def_value: dt.datetime | None,
     ) -> None:
         """
         Initialize.
@@ -172,12 +172,12 @@ class TimeExtentInterval:
 
     def __init__(
         self,
-        start: datetime.datetime,
-        end: datetime.datetime,
+        start: dt.datetime,
+        end: dt.datetime,
         interval: tuple[int, int, int, int],
         resolution: str,
-        min_def_value: datetime.datetime | None,
-        max_def_value: datetime.datetime | None,
+        min_def_value: dt.datetime | None,
+        max_def_value: dt.datetime | None,
     ) -> None:
         """
         Initialize.
@@ -274,7 +274,7 @@ def parse_extent(extent: list[str], default_values: str) -> TimeExtent:
     raise ValueError(f"Invalid time extent format '{extent}'")
 
 
-def _parse_default_values(default_values: str) -> tuple[datetime.datetime, datetime.datetime | None]:
+def _parse_default_values(default_values: str) -> tuple[dt.datetime, dt.datetime | None]:
     """
     Parse the 'default' value from OWSLib's defaulttimeposition and return a maximum of two dates.
 
@@ -294,7 +294,7 @@ def _parse_default_values(default_values: str) -> tuple[datetime.datetime, datet
     return min_def_value, max_def_value
 
 
-def _parse_date(date: str) -> tuple[str, datetime.datetime]:
+def _parse_date(date: str) -> tuple[str, dt.datetime]:
     """
     Parse a date string.
 
@@ -309,23 +309,23 @@ def _parse_date(date: str) -> tuple[str, datetime.datetime]:
 
     for resolution, pattern in list(resolutions.items()):
         try:
-            dt = datetime.datetime.strptime(date, pattern).replace(tzinfo=isodate.UTC)
+            parsed = dt.datetime.strptime(date, pattern).replace(tzinfo=isodate.UTC)
         except Exception:  # pylint: disable=broad-exception-caught # nosec
             pass
         else:
-            return resolution, dt
+            return resolution, parsed
 
     try:
-        dt = isodate.parse_datetime(date)
-        if dt.tzinfo is None:
-            dt = dt.replace(tzinfo=isodate.UTC)
+        parsed = isodate.parse_datetime(date)
+        if parsed.tzinfo is None:
+            parsed = parsed.replace(tzinfo=isodate.UTC)
     except Exception as e:
         raise ValueError(f"Invalid date format '{date}'") from e
     else:
-        return "second", dt
+        return "second", parsed
 
 
-def _format_date(date: datetime.datetime) -> str:
+def _format_date(date: dt.datetime) -> str:
     str_ = isodate.datetime_isoformat(date)
     assert isinstance(str_, str)
     if date.tzinfo is None:

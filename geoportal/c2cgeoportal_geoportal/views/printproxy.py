@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2025, Camptocamp SA
+# Copyright (c) 2011-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -31,8 +31,8 @@ import logging
 import urllib.parse
 
 import pyramid.request
-import pyramid.response
-import requests
+import pyramid.response  # noqa: TC002
+import requests  # noqa: TC002
 from pyramid.httpexceptions import HTTPBadGateway, HTTPFound
 from pyramid.view import view_config
 

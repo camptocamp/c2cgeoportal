@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2025, Camptocamp SA
+# Copyright (c) 2011-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -26,7 +26,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import pyramid.request
+import pyramid.request  # noqa: TC002
 
 
 class Root:

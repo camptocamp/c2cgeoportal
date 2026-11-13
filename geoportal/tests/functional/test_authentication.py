@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2025, Camptocamp SA
+# Copyright (c) 2017-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,7 +27,7 @@
 
 # pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access
 
-import datetime
+import datetime as dt
 from unittest import TestCase
 from unittest.mock import patch
 
@@ -54,11 +54,11 @@ class TestUrlAuthenticationPolicy(TestCase):
         user2 = User(username="__test_user2", password="__test_user2", deactivated=True)
         DBSession.add(user2)
 
-        now = datetime.datetime.utcnow()
+        now = dt.datetime.utcnow()
         user3 = User(username="__test_user3", password="__test_user3", expire_on=now)
         DBSession.add(user3)
 
-        tomorrow = now + datetime.timedelta(days=1)
+        tomorrow = now + dt.timedelta(days=1)
         user4 = User(username="__test_user4", password="__test_user4", expire_on=tomorrow)
         DBSession.add(user4)
 

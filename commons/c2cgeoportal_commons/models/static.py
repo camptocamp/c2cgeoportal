@@ -28,12 +28,12 @@
 
 import logging
 import os
-import sys
 from datetime import UTC, datetime
 from hashlib import sha1
 from hmac import compare_digest as compare_hash
 from typing import Any
 
+import crypt_r as crypt
 import sqlalchemy.schema
 from c2c.template.config import config
 from sqlalchemy import Column, ForeignKey, Table, text
@@ -45,11 +45,6 @@ from sqlalchemy.types import Boolean, DateTime, Integer, String, Unicode
 from c2cgeoportal_commons.lib.literal import Literal
 from c2cgeoportal_commons.models import Base, _
 from c2cgeoportal_commons.models.main import AbstractLog, Role
-
-if sys.version_info >= (3, 13):
-    import crypt_r as crypt
-else:
-    import crypt  # pylint: disable=deprecated-module
 
 try:
     from c2cgeoform.ext.deform_ext import RelationSelect2Widget
@@ -357,7 +352,8 @@ class User(Base):  # type: ignore[valid-type,misc]
     @staticmethod
     def __encrypt_password(password: str) -> str:
         """Hash the given password with SHA512."""
-        return crypt.crypt(password, crypt.METHOD_SHA512)  # pylint: disable=no-member
+        # crypt_r is not typed, its crypt() function returns a string
+        return crypt.crypt(password, crypt.METHOD_SHA512)  # type: ignore[no-any-return]  # pylint: disable=no-member
 
     def validate_password(self, passwd: str) -> bool:
         """

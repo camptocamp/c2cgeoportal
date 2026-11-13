@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2025, Camptocamp SA
+# Copyright (c) 2011-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,12 +27,12 @@
 
 
 import os
-from argparse import ArgumentParser, Namespace
+from argparse import ArgumentParser, Namespace  # noqa: TC003
 from typing import Any
 
 import c2cwsgiutils.setup_process
-import pyramid.config
-import transaction
+import pyramid.config  # noqa: TC002
+import transaction  # noqa: TC002
 import zope.sqlalchemy
 from sqlalchemy import engine_from_config
 from sqlalchemy.orm import Session, configure_mappers, sessionmaker

@@ -25,7 +25,7 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-import datetime
+import datetime  # noqa: ICN001
 import logging
 from typing import TYPE_CHECKING, Any, TypedDict
 
@@ -200,7 +200,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore[misc]
         client_id: str,
         code: str,
         redirect_uri: str,
-        client: c2cgeoportal_commons.models.static.OAuth2Client,
+        client: "c2cgeoportal_commons.models.static.OAuth2Client",  # noqa: UP037
         *args: Any,
         **kwargs: Any,
     ) -> bool:
@@ -837,7 +837,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore[misc]
         self,
         client_id: str,
         code: str,
-        client: c2cgeoportal_commons.models.static.OAuth2Client,
+        client: "c2cgeoportal_commons.models.static.OAuth2Client",  # noqa: UP037
         request: oauthlib.common.Request,
         *args: Any,
         **kwargs: Any,
@@ -910,7 +910,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore[misc]
         self,
         client_id: str,
         grant_type: str,
-        client: c2cgeoportal_commons.models.static.OAuth2Client,
+        client: "c2cgeoportal_commons.models.static.OAuth2Client",  # noqa: UP037
         request: oauthlib.common.Request,
         *args: Any,
         **kwargs: Any,
@@ -995,7 +995,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore[misc]
     def validate_refresh_token(
         self,
         refresh_token: str,
-        client: c2cgeoportal_commons.models.static.OAuth2Client,
+        client: "c2cgeoportal_commons.models.static.OAuth2Client",  # noqa: UP037
         request: oauthlib.common.Request,
         *args: Any,
         **kwargs: Any,
@@ -1047,7 +1047,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore[misc]
         self,
         client_id: str,
         response_type: str,
-        client: c2cgeoportal_commons.models.static.OAuth2Client,
+        client: "c2cgeoportal_commons.models.static.OAuth2Client",  # noqa: UP037
         request: oauthlib.common.Request,
         *args: Any,
         **kwargs: Any,
@@ -1079,7 +1079,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore[misc]
         self,
         client_id: str,
         scopes: list[str],
-        client: c2cgeoportal_commons.models.static.OAuth2Client,
+        client: "c2cgeoportal_commons.models.static.OAuth2Client",  # noqa: UP037
         request: oauthlib.common.Request,
         *args: Any,
         **kwargs: Any,
@@ -1113,7 +1113,7 @@ class RequestValidator(oauthlib.oauth2.RequestValidator):  # type: ignore[misc]
         self,
         username: str,
         password: str,
-        client: c2cgeoportal_commons.models.static.OAuth2Client,
+        client: "c2cgeoportal_commons.models.static.OAuth2Client",  # noqa: UP037
         request: oauthlib.common.Request,
         *args: Any,
         **kwargs: Any,

@@ -37,8 +37,8 @@ from typing import Any, cast
 import pkce
 import pyotp
 import pyramid.request
-import pyramid.response
-import simple_openid_connect.client
+import pyramid.response  # noqa: TC002
+import simple_openid_connect.client  # noqa: TC002
 from pyramid.httpexceptions import (
     HTTPBadRequest,
     HTTPForbidden,

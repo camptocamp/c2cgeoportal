@@ -25,13 +25,13 @@ import logging
 from typing import TYPE_CHECKING, Any
 from unittest.mock import patch
 
-import pyramid.request
+import pyramid.request  # noqa: TC002
 import pytest
 import sqlalchemy.orm
 import transaction
 from c2c.template.config import config as configuration
 from pyramid.testing import DummyRequest
-from sqlalchemy.orm.session import Session, SessionTransaction
+from sqlalchemy.orm.session import Session, SessionTransaction  # noqa: TC002
 
 from c2cgeoportal_commons.testing import (
     generate_mappers,

@@ -36,7 +36,7 @@ import subprocess  # nosec
 import sys
 import tempfile
 from argparse import ArgumentParser, Namespace
-from collections.abc import Callable
+from collections.abc import Callable  # noqa: TC003
 from json.decoder import JSONDecodeError
 from subprocess import call, check_call, check_output  # nosec
 from typing import Any, cast
