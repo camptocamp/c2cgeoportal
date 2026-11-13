@@ -121,7 +121,7 @@ jobs:
       - run: docker compose down
 
       - name: Test version generation for the changelog
-        run: scripts/updated_version latest latest
+        run: scripts/updated_version "$(scripts/get-version --major)" "$(scripts/get-version --major)"
 
       - run: sudo git clean -fdx
 
