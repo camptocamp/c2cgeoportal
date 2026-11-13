@@ -20,9 +20,10 @@ You may wish to override the values being written. All this is done in the confi
           access_control_allow_origin: [] # list oh hosts (e.g. https://example.com) or '*'
           headers: {} # list of additional headers
 
-Where ``<view>`` can be: ``dynamic``, ``index``, ``api``, ``apihelp``, ``profile``, ``raster``, ``error``,
-``themes``, ``config``, ``print``, ``fulltextsearch``, ``mapserver``, ``tinyows``, ``layers``,
-``shortener``, ``login``.
+Where ``<view>`` can be: ``altcha``, ``api``, ``apihelp``, ``config``, ``dynamic``, ``error``, ``feedback``,
+``fulltextsearch``, ``index``, ``layers``, ``login``, ``mapserver``, ``mapserver_ogcapi_mapserver``,
+``mapserver_ogcapi_qgisserver``, ``print``, ``profile``, ``raster``, ``shortener``, ``themes``, ``tinyows``,
+``user_settings``, ``vector_tiles``.
 
 Content-Security-Policy
 -----------------------

@@ -20,6 +20,16 @@ Use the long parameter names for clarity and maintainability.
 
 The new functionalities should be reasonably tested in the `*/tests/` folder or in `ci/test-app`.
 
+## Documentation
+
+Two different places, don't duplicate the content:
+
+- Breaking changes and migration steps for the existing projects must be documented in
+  `geoportal/c2cgeoportal_geoportal/scaffolds/update/{{cookiecutter.project}}/CONST_CHANGELOG.txt`,
+  in the section of the version that introduces the change (and not in the `doc/` documentation).
+- The `doc/` folder is the reference documentation: web services, configuration and how-to for
+  the latest version.
+
 ## Headers configuration
 
 When adding a new backend service/route that uses `set_common_headers(..., "<service>", ...)`:

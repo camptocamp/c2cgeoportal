@@ -433,6 +433,47 @@ Success JSON result
        "success": true
    }
 
+User settings
+=============
+
+Used to store and retrieve the settings of the logged user, as a free-form JSON object, they
+are persisted in the database and can then be synchronized between all the devices of the user.
+
+Get
+---
+
+URL: ``.../user/settings``
+
+Method: ``GET``
+
+The result is the settings of the logged user as a JSON object, an empty object if the user has
+no settings yet.
+
+Result HTTP code:
+
+* 200 Success: Success.
+* 401 Unauthorized: When the user is not authenticated.
+
+Update
+------
+
+URL: ``.../user/settings``
+
+Method: ``POST``
+
+The body must be a JSON object with the content type ``application/json``, it replaces all the
+settings of the logged user and the updated settings are returned in the response.
+
+The size of the payload is limited by the ``user_settings.max_payload_size`` configuration
+(``65536`` by default).
+
+Result HTTP code:
+
+* 200 Success: Success.
+* 400 Bad request: When the body is not a valid JSON object.
+* 401 Unauthorized: When the user is not authenticated.
+* 413 Request entity too large: When the payload is larger than the configured maximum size.
+
 .. _developer_webservices_fts:
 
 Full-text search
