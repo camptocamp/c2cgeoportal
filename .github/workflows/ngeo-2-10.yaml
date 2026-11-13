@@ -29,7 +29,10 @@ jobs:
           python-version: '3.14'
       - run: python3 -m pip install '--only-binary=:all:' --requirement=ci/requirements.txt
 
-      - run: npm update --ignore-scripts
+      # The floating dist-tag resolution is the purpose of this workflow; Sonar cannot accept
+      # it (locked versions required), the resolved versions end up locked with integrity
+      # hashes in the package-lock.json of the pull request created by the GHCI patch module.
+      - run: npm update --ignore-scripts # NOSONAR
         working-directory: geoportal
 
       - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
