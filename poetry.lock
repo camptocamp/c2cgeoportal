@@ -347,13 +347,13 @@ virtualenv = ["virtualenv (>=20.0.35)"]
 
 [[package]]
 name = "c2c-template"
-version = "2.4.2"
+version = "2.6.1"
 description = "Vars collector and template runner."
 optional = false
-python-versions = ">=3.9"
+python-versions = ">=3.10"
 files = [
-    {file = "c2c_template-2.4.2-py3-none-any.whl", hash = "sha256:c074485d0c4020810dc6870545f5602704da95c8c8422f75faa73fc997c741fa"},
-    {file = "c2c_template-2.4.2.tar.gz", hash = "sha256:5582ee975eed7573f558b9318874033098864efff3911f98efd2fd8c41f59602"},
+    {file = "c2c_template-2.6.1-py3-none-any.whl", hash = "sha256:1da2939077870bf2566c228f848e1f8aafc24641deba43eed746f7f2092d8aed"},
+    {file = "c2c_template-2.6.1.tar.gz", hash = "sha256:d569789106b82bdf8e4ba6263af46e83b17bc756f714c1cb2e992d813d0fe6ba"},
 ]
 
 [package.dependencies]
@@ -5036,4 +5036,4 @@ test = ["zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "54a93441c673678a1f34aea0dc5256c0f7c3b322836b6946ea5865b36a31e983"
+content-hash = "04d746dec7a0bcfe3d0c613b0feacbd49db22f8a1f2f9aa40c0f734c9a4f985e"
