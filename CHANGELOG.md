@@ -1,3 +1,7 @@
+##### 2.8.1.402
+
+- Fix tsquery syntax error when the search query contains new lines [c2cgeoportal#13666](https://github.com/camptocamp/c2cgeoportal/pull/13666)
+
 ##### 2.8.1.401
 
 - Update all patch/minor versions (2.8) [c2cgeoportal#13549](https://github.com/camptocamp/c2cgeoportal/pull/13549)
