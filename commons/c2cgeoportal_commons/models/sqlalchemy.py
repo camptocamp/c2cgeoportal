@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2025, Camptocamp SA
+# Copyright (c) 2012-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,7 +27,7 @@
 import json
 from typing import Any
 
-from sqlalchemy.engine import Dialect
+from sqlalchemy.engine import Dialect  # noqa: TC002
 from sqlalchemy.types import VARCHAR, TypeDecorator, UserDefinedType
 
 

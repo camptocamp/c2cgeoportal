@@ -30,7 +30,7 @@ from functools import partial
 from itertools import groupby
 from typing import cast
 
-import sqlalchemy.orm.query
+import sqlalchemy.orm.query  # noqa: TC002
 from c2cgeoform.views.abstract_views import ListField
 from sqlalchemy.orm import subqueryload
 

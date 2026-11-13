@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2025, Camptocamp SA
+# Copyright (c) 2013-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -28,7 +28,7 @@
 # pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access
 
 
-import datetime
+import datetime as dt
 from unittest import TestCase
 
 import isodate
@@ -122,35 +122,35 @@ class TestParseDate(TestCase):
 
         date = _parse_date("2010")
         assert date[0] == "year"
-        assert datetime.datetime(2010, 1, 1, tzinfo=isodate.UTC) == date[1]
+        assert dt.datetime(2010, 1, 1, tzinfo=isodate.UTC) == date[1]
 
     def test_parse_date_month(self) -> None:
         from c2cgeoportal_geoportal.lib.wmstparsing import _parse_date
 
         date = _parse_date("2010-02")
         assert date[0] == "month"
-        assert datetime.datetime(2010, 2, 1, tzinfo=isodate.UTC) == date[1]
+        assert dt.datetime(2010, 2, 1, tzinfo=isodate.UTC) == date[1]
 
     def test_parse_date(self) -> None:
         from c2cgeoportal_geoportal.lib.wmstparsing import _parse_date
 
         date = _parse_date("2010-02-03")
         assert date[0] == "day"
-        assert datetime.datetime(2010, 2, 3, tzinfo=isodate.UTC) == date[1]
+        assert dt.datetime(2010, 2, 3, tzinfo=isodate.UTC) == date[1]
 
     def test_parse_datetime(self) -> None:
         from c2cgeoportal_geoportal.lib.wmstparsing import _parse_date
 
         date = _parse_date("2010-02-03T12:34")
         assert date[0] == "second"
-        assert datetime.datetime(2010, 2, 3, 12, 34, tzinfo=isodate.UTC) == date[1]
+        assert dt.datetime(2010, 2, 3, 12, 34, tzinfo=isodate.UTC) == date[1]
 
     def test_parse_datetime_tz(self) -> None:
         from c2cgeoportal_geoportal.lib.wmstparsing import _parse_date
 
         date = _parse_date("2010-02-03T12:34Z")
         assert date[0] == "second"
-        assert datetime.datetime(2010, 2, 3, 12, 34, tzinfo=isodate.UTC) == date[1]
+        assert dt.datetime(2010, 2, 3, 12, 34, tzinfo=isodate.UTC) == date[1]
 
     def test_unsupported_format(self) -> None:
         from c2cgeoportal_geoportal.lib.wmstparsing import _parse_date
@@ -162,8 +162,8 @@ class TestFormat(TestCase):
     def test_format(self) -> None:
         from c2cgeoportal_geoportal.lib.wmstparsing import _format_date
 
-        dt = datetime.datetime(2010, 0o2, 0o1, 00, 00)
-        assert _format_date(dt) == "2010-02-01T00:00:00Z"
+        date = dt.datetime(2010, 0o2, 0o1, 00, 00)
+        assert _format_date(date) == "2010-02-01T00:00:00Z"
 
     def test_format_tz(self) -> None:
         from c2cgeoportal_geoportal.lib.wmstparsing import _format_date, _parse_date

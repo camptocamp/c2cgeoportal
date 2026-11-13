@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2025, Camptocamp SA
+# Copyright (c) 2011-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -31,7 +31,7 @@ import logging
 import os
 from typing import Any
 
-import pyramid.request
+import pyramid.request  # noqa: TC002
 from bs4 import BeautifulSoup
 from pyramid.i18n import TranslationStringFactory
 from pyramid.view import view_config

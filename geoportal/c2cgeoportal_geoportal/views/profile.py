@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2025, Camptocamp SA
+# Copyright (c) 2012-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -34,7 +34,7 @@ from json.decoder import JSONDecodeError
 from typing import Any
 
 import geojson
-import pyramid.request
+import pyramid.request  # noqa: TC002
 import requests
 from pyramid.httpexceptions import HTTPBadRequest, HTTPInternalServerError, HTTPNotFound
 from pyramid.i18n import TranslationStringFactory

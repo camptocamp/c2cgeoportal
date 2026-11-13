@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2025, Camptocamp SA
+# Copyright (c) 2011-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,7 +27,7 @@
 
 import logging
 
-import pyramid.request
+import pyramid.request  # noqa: TC002
 from pyramid.httpexceptions import HTTPBadRequest
 from sqlalchemy.orm.exc import NoResultFound  # type: ignore[attr-defined]
 

@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2025, Camptocamp SA
+# Copyright (c) 2017-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -29,7 +29,7 @@
 from functools import partial
 
 import sqlalchemy
-from c2cgeoform import JSONDict
+from c2cgeoform import JSONDict  # noqa: TC002
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import (
     DeleteResponse,

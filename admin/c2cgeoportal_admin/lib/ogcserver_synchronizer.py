@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2025, Camptocamp SA
+# Copyright (c) 2020-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -29,14 +29,14 @@
 import functools
 import logging
 from io import StringIO
-from types import TracebackType
+from types import TracebackType  # noqa: TC003
 from typing import cast
-from xml.etree.ElementTree import Element  # nosec
+from xml.etree.ElementTree import Element  # nosec  # noqa: TC003
 
-import pyramid.request
+import pyramid.request  # noqa: TC002
 import requests
 from defusedxml import ElementTree
-from sqlalchemy.orm.session import Session
+from sqlalchemy.orm.session import Session  # noqa: TC002
 
 from c2cgeoportal_commons.lib.url import get_url2
 from c2cgeoportal_commons.models import main

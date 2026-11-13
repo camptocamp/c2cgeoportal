@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2021, Camptocamp SA
+# Copyright (c) 2011-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,7 +27,7 @@
 
 
 from c2c.template.config import config as configuration
-from pyramid.config import Configurator
+from pyramid.config import Configurator  # noqa: TC002
 
 
 def includeme(config: Configurator) -> None:

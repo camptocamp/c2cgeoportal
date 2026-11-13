@@ -31,7 +31,7 @@ from functools import partial
 from typing import Any
 
 import colander
-import pyramid.request
+import pyramid.request  # noqa: TC002
 import sqlalchemy
 from c2cgeoform.schema import GeoFormSchemaNode
 from sqlalchemy.orm import aliased

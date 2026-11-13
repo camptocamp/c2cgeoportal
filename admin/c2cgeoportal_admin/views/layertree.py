@@ -28,7 +28,7 @@
 
 from typing import Any
 
-import pyramid.request
+import pyramid.request  # noqa: TC002
 from c2cgeoform.views.abstract_views import DeleteResponse, ItemAction
 from pyramid.httpexceptions import HTTPNotFound
 from pyramid.view import view_config, view_defaults

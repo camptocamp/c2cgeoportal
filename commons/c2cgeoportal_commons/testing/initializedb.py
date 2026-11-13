@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2025, Camptocamp SA
+# Copyright (c) 2017-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -31,8 +31,8 @@ import sys
 from typing import cast
 
 import sqlalchemy
-from sqlalchemy.engine import Connection
-from sqlalchemy.orm import Session
+from sqlalchemy.engine import Connection  # noqa: TC002
+from sqlalchemy.orm import Session  # noqa: TC002
 
 from c2cgeoportal_commons.models import Base
 

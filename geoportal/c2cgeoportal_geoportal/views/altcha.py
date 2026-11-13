@@ -26,11 +26,11 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import datetime
+import datetime as dt
 import logging
 from typing import Any, cast
 
-import pyramid.request
+import pyramid.request  # noqa: TC002
 from altcha import create_challenge, verify_solution
 from pyramid.httpexceptions import HTTPBadRequest
 from pyramid.view import view_config
@@ -51,8 +51,7 @@ def altcha_challenge(request: pyramid.request.Request) -> dict[str, Any]:
     challenge = create_challenge(
         algorithm=settings.get("algorithm", "PBKDF2/SHA-256"),
         cost=settings.get("cost", 5000),
-        expires_at=datetime.datetime.now(datetime.UTC)
-        + datetime.timedelta(seconds=settings.get("expires_in", 300)),
+        expires_at=dt.datetime.now(dt.UTC) + dt.timedelta(seconds=settings.get("expires_in", 300)),
         hmac_secret=settings.get("hmac_secret"),
     )
     set_common_headers(request, "altcha", Cache.PRIVATE_NO)

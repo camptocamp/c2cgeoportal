@@ -10,11 +10,11 @@ pylint:
 
 mypy:
   options:
-    python-version: '3.12'
+    python-version: '3.14'
 
 ruff:
   options:
-    target-version: py312
+    target-version: py314
 
 pyroma:
   run: false

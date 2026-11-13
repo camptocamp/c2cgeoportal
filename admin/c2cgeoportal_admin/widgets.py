@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2025, Camptocamp SA
+# Copyright (c) 2018-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -28,7 +28,7 @@
 from typing import Any
 
 import colander
-import pyramid.request
+import pyramid.request  # noqa: TC002
 from colander import Mapping, SchemaNode
 from deform import widget
 from deform.widget import MappingWidget, SequenceWidget

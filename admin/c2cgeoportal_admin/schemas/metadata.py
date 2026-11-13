@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2025, Camptocamp SA
+# Copyright (c) 2018-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -29,12 +29,12 @@ import json
 from typing import Any, Union, cast
 
 import colander
-import pyramid.request
+import pyramid.request  # noqa: TC002
 from c2cgeoform.schema import GeoFormSchemaNode
 from deform.widget import MappingWidget, SelectWidget, SequenceWidget, TextAreaWidget
 from sqlalchemy import inspect
-from sqlalchemy.orm.attributes import InstrumentedAttribute
-from sqlalchemy.orm.mapper import Mapper
+from sqlalchemy.orm.attributes import InstrumentedAttribute  # noqa: TC002
+from sqlalchemy.orm.mapper import Mapper  # noqa: TC002
 
 from c2cgeoportal_admin import _
 from c2cgeoportal_commons.lib.validators import url

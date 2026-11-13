@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2025, Camptocamp SA
+# Copyright (c) 2011-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,7 +27,7 @@
 
 
 import uuid
-from collections.abc import Callable
+from collections.abc import Callable  # noqa: TC003
 from typing import Any
 from urllib.parse import urljoin
 

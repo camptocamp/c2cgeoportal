@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2025, Camptocamp SA
+# Copyright (c) 2013-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -113,7 +113,7 @@ class TestThemesEditColumns(TestCase):
     def _create_layer(
         self,
         exclude_properties: bool = False,
-        metadatas: list["Metadata"] | None = None,
+        metadatas: list[Metadata] | None = None,
         geom_type: bool = False,
     ) -> int:
         """

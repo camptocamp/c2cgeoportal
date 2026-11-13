@@ -30,7 +30,7 @@ import copy
 import logging
 import xml.sax.handler  # nosec
 import xml.sax.xmlreader  # nosec
-from collections.abc import Callable
+from collections.abc import Callable  # noqa: TC003
 from io import StringIO
 from typing import Any
 from xml.sax.saxutils import XMLFilterBase, XMLGenerator  # nosec
@@ -44,7 +44,7 @@ from owslib.map.wms130 import ContentMetadata as ContentMetadata130
 from owslib.wms import WebMapService
 from pyramid.httpexceptions import HTTPBadGateway
 
-from c2cgeoportal_commons.lib.url import Url
+from c2cgeoportal_commons.lib.url import Url  # noqa: TC001
 from c2cgeoportal_geoportal.lib import (
     caching,
     get_ogc_server_wfs_url_ids,

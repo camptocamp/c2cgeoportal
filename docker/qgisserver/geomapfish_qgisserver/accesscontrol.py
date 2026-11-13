@@ -13,11 +13,10 @@ import re
 from enum import Enum
 from pathlib import Path
 from threading import Lock
-from typing import TYPE_CHECKING, Any, ClassVar, Optional, cast
+from typing import TYPE_CHECKING, Any, ClassVar, cast
 
 import c2cwsgiutils.broadcast
 import geoalchemy2
-import qgis.server
 import sqlalchemy
 import sqlalchemy.orm.session
 import yaml
@@ -35,14 +34,15 @@ from qgis.core import (
 )
 from qgis.server import QgsAccessControlFilter, QgsConfigCache
 from shapely import ops, wkb
-from shapely.geometry.base import BaseGeometry
 from sqlalchemy.orm import configure_mappers, joinedload, sessionmaker, subqueryload
-from sqlalchemy.orm.session import Session
 
 if TYPE_CHECKING:
+    import qgis.server
     from c2cgeoportal_commons.models import (  # noqa: PLC0415, RUF100
         main,  # pylint: disable=ungrouped-imports,useless-suppression
     )
+    from shapely.geometry.base import BaseGeometry
+    from sqlalchemy.orm.session import Session
 
 _LOG = logging.getLogger(__name__)
 
@@ -262,7 +262,7 @@ class GeoMapFishAccessControl(QgsAccessControlFilter):  # type: ignore[misc]
             message = "The method 'get_ogcserver_accesscontrol_config' can't be called on 'single' server"
             raise GMFError(message)
 
-    def get_ogcserver_accesscontrol(self) -> "OGCServerAccessControl":
+    def get_ogcserver_accesscontrol(self) -> OGCServerAccessControl:
         """Get the OGCServerAccessControl instance."""
         parameters = self.serverInterface().requestHandler().parameterMap()
 
@@ -370,7 +370,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):  # type: ignore[misc]
         map_file: str,
         srid: int,
         DBSession: sessionmaker[sqlalchemy.orm.session.Session],  # noqa: N803, RUF100
-        ogcserver: Optional["main.OGCServer"] = None,
+        ogcserver: main.OGCServer | None = None,
     ) -> None:
         """Initialize the plugin."""
         super().__init__(server_iface)
@@ -434,7 +434,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):  # type: ignore[misc]
             return layer.id()  # type: ignore[no-any-return]
         return layer.shortName() or layer.name()  # type: ignore[no-any-return]
 
-    def get_layers(self, session: Session) -> dict[str, list["main.Layer"]]:
+    def get_layers(self, session: Session) -> dict[str, list[main.Layer]]:
         """
         Get the list of GMF WMS layers that can give access to each QGIS layer or group.
 
@@ -512,7 +512,7 @@ class OGCServerAccessControl(QgsAccessControlFilter):  # type: ignore[misc]
             self.layers = layers
             return layers
 
-    def get_roles(self, session: Session) -> str | list["main.Role"]:
+    def get_roles(self, session: Session) -> str | list[main.Role]:
         """
         Get the current user's available roles based on request parameter USER_ID.
 
@@ -550,9 +550,9 @@ class OGCServerAccessControl(QgsAccessControlFilter):  # type: ignore[misc]
 
     @staticmethod
     def get_restriction_areas(
-        gmf_layers: list["main.Layer"],
+        gmf_layers: list[main.Layer],
         read_write: bool = False,
-        roles: str | list["main.Role"] | None = None,
+        roles: str | list[main.Role] | None = None,
     ) -> tuple[Access, BaseGeometry]:
         """
         Get access areas given by GMF layers and user roles for an access mode.

@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2025, Camptocamp SA
+# Copyright (c) 2018-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -26,14 +26,14 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import xml.etree.ElementTree  # nosec  # noqa: ICN001
-from collections.abc import Callable
+import xml.etree.ElementTree  # nosec  # noqa: ICN001, TC003
+from collections.abc import Callable  # noqa: TC003
 from io import BytesIO
 from typing import Any, cast
 
 import sqlalchemy.orm.mapper
 import sqlalchemy.sql.elements
-import sqlalchemy.sql.schema
+import sqlalchemy.sql.schema  # noqa: TC002
 from papyrus.xsd import XSDGenerator as PapyrusXSDGenerator
 from papyrus.xsd import tag
 from sqlalchemy.orm.properties import ColumnProperty
@@ -155,10 +155,10 @@ class XSD:
             element_callback=element_callback,
         )
 
-    def __call__(self, table: str) -> Callable[[type[str] | type[bytes], dict[str, Any]], bytes | None]:
+    def __call__(self, table: str) -> Callable[[type[str | bytes], dict[str, Any]], bytes | None]:
         del table  # unused
 
-        def _render(cls: type[str] | type[bytes], system: dict[str, Any]) -> bytes | None:
+        def _render(cls: type[str | bytes], system: dict[str, Any]) -> bytes | None:
             request = system.get("request")
             if request is not None:
                 response = request.response

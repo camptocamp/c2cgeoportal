@@ -31,9 +31,9 @@ import logging
 import os
 import re
 from datetime import datetime
-from typing import Any, Literal, Optional, cast, get_args
+from typing import Any, Literal, cast, get_args
 
-import pyramid.request
+import pyramid.request  # noqa: TC002
 import sqlalchemy.orm.base
 from c2c.template.config import config
 from geoalchemy2 import Geometry, WKBElement, WKTElement
@@ -381,7 +381,7 @@ class TreeItem(Base):  # type: ignore[valid-type,misc]
 
     @property
     # Better: def parents(self) -> List[TreeGroup]:
-    def parents(self) -> list["TreeItem"]:
+    def parents(self) -> list[TreeItem]:
         return [c.treegroup for c in self.parents_relation]
 
     def is_in_interface(self, name: str) -> bool:
@@ -390,7 +390,7 @@ class TreeItem(Base):  # type: ignore[valid-type,misc]
 
         return any(interface.name == name for interface in self.interfaces)
 
-    def get_metadata(self, name: str) -> list["Metadata"]:
+    def get_metadata(self, name: str) -> list[Metadata]:
         return [metadata for metadata in self.metadatas if metadata.name == name]
 
     def __init__(self, name: str = "") -> None:
@@ -459,7 +459,7 @@ class LayergroupTreeitem(Base):  # type: ignore[valid-type,misc]
 
     def __init__(
         self,
-        group: Optional["TreeGroup"] = None,
+        group: TreeGroup | None = None,
         item: TreeItem | None = None,
         ordering: int = 0,
     ) -> None:

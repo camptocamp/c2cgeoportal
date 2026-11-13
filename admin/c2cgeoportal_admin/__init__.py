@@ -26,7 +26,7 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from types import TracebackType
+from types import TracebackType  # noqa: TC003
 from typing import Any
 
 import c2cgeoform
@@ -39,7 +39,7 @@ from pyramid.config import Configurator
 from pyramid.events import BeforeRender, ContextFound, NewRequest
 from sqlalchemy import engine_from_config
 from sqlalchemy.orm import configure_mappers, sessionmaker
-from transaction import TransactionManager
+from transaction import TransactionManager  # noqa: TC002
 from translationstring import TranslationStringFactory
 
 from c2cgeoportal_admin.subscribers import add_localizer, add_renderer_globals

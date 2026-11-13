@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2025, Camptocamp SA
+# Copyright (c) 2018-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -30,9 +30,9 @@ from typing import Any
 
 import zope.sqlalchemy
 from sqlalchemy import engine_from_config
-from sqlalchemy.engine import Engine
+from sqlalchemy.engine import Engine  # noqa: TC002
 from sqlalchemy.orm import Session, configure_mappers, sessionmaker
-from transaction import TransactionManager
+from transaction import TransactionManager  # noqa: TC002
 
 
 def get_engine(settings: dict[str, Any], prefix: str = "sqlalchemy.") -> Engine:
