@@ -22,10 +22,11 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-import logging
-from typing import Any
+from __future__ import annotations
 
-import pyramid.request
+import logging
+from typing import TYPE_CHECKING, Any
+
 from pyramid.httpexceptions import HTTPBadRequest
 from pyramid.view import view_config
 
@@ -34,6 +35,9 @@ from c2cgeoportal_commons.models import DBSession
 from c2cgeoportal_commons.models.static import Feedback
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
 from c2cgeoportal_geoportal.views.altcha import verify_altcha_payload
+
+if TYPE_CHECKING:
+    import pyramid.request
 
 _LOG = logging.getLogger(__name__)
 

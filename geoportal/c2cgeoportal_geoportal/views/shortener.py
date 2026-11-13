@@ -26,14 +26,15 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import datetime
+from __future__ import annotations
+
+import datetime as dt
 import logging
 import random
 import string
-from typing import cast
+from typing import TYPE_CHECKING, cast
 from urllib.parse import urlparse
 
-import pyramid.request
 from pyramid.httpexceptions import (
     HTTPBadRequest,
     HTTPFound,
@@ -46,6 +47,9 @@ from c2cgeoportal_commons.lib.email_ import send_email_config
 from c2cgeoportal_commons.models import DBSession, static
 from c2cgeoportal_geoportal import is_allowed_url
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
+
+if TYPE_CHECKING:
+    import pyramid.request
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -70,7 +74,7 @@ class Shortener:
             raise HTTPNotFound(f"Ref '{ref!s}' not found")
 
         short_urls[0].nb_hits += 1
-        short_urls[0].last_hit = datetime.datetime.now(datetime.UTC)
+        short_urls[0].last_hit = dt.datetime.now(dt.UTC)
 
         return short_urls[0].url
 
@@ -147,7 +151,7 @@ class Shortener:
             short_url.url = url
             short_url.ref = ref
             short_url.creator_email = user_email
-            short_url.creation = datetime.datetime.now(tz=datetime.UTC)
+            short_url.creation = dt.datetime.now(tz=dt.UTC)
             short_url.nb_hits = 0
 
             DBSession.add(short_url)

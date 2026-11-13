@@ -26,11 +26,12 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from __future__ import annotations
+
 import json
 import logging
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
-import pyramid.request
 from pyramid.httpexceptions import (
     HTTPBadRequest,
     HTTPInternalServerError,
@@ -40,8 +41,12 @@ from pyramid.httpexceptions import (
 from pyramid.view import view_config
 
 from c2cgeoportal_commons import models
-from c2cgeoportal_commons.models import static
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
+
+if TYPE_CHECKING:
+    import pyramid.request
+
+    from c2cgeoportal_commons.models import static
 
 _LOG = logging.getLogger(__name__)
 

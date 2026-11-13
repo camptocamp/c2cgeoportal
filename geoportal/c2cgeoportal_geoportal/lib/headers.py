@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2024, Camptocamp SA
+# Copyright (c) 2013-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -26,12 +26,18 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from __future__ import annotations
+
 import re
-from collections.abc import Callable
+from typing import TYPE_CHECKING
 
 import pyramid.registry
 import pyramid.request
-import pyramid.response
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
+    import pyramid.response
 
 
 class HeadersTween:

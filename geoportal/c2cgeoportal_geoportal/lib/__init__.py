@@ -26,24 +26,29 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import datetime
+from __future__ import annotations
+
+import datetime  # noqa: ICN001
 import ipaddress
 import json
 import logging
 import re
-from collections.abc import Iterable
 from string import Formatter
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
 import dateutil
 import pyramid.request
-import pyramid.response
 from pyramid.interfaces import IRoutePregenerator
 from zope.interface import implementer
 
 from c2cgeoportal_commons.lib.url import get_url2
 from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
 from c2cgeoportal_geoportal.lib.caching import get_region
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
+
+    import pyramid.response
 
 _LOG = logging.getLogger(__name__)
 _CACHE_REGION = get_region("std")

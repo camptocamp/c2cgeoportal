@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2025, Camptocamp SA
+# Copyright (c) 2021-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -26,10 +26,11 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from functools import partial
-from typing import cast
+from __future__ import annotations
 
-import sqlalchemy
+from functools import partial
+from typing import TYPE_CHECKING, cast
+
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import (
     DeleteResponse,
@@ -43,6 +44,9 @@ from pyramid.view import view_config, view_defaults
 
 from c2cgeoportal_admin.views.logged_views import LoggedViews
 from c2cgeoportal_commons.models.static import Log, OAuth2Client
+
+if TYPE_CHECKING:
+    import sqlalchemy
 
 _list_field = partial(ListField, OAuth2Client)
 

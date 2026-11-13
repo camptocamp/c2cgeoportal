@@ -26,18 +26,18 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from __future__ import annotations
+
 import json
 import os
 import re
 import subprocess  # nosec
 import traceback
-from collections.abc import Callable
 from typing import TYPE_CHECKING, Any, cast
 from xml.parsers.expat import ExpatError
 
 import pyramid.threadlocal
 import requests
-import sqlalchemy.orm
 import yaml
 from bottle import MakoTemplate, template
 from c2c.template.config import config
@@ -59,7 +59,10 @@ from c2cgeoportal_geoportal.lib.caching import init_region
 from c2cgeoportal_geoportal.views.layers import Layers, get_layer_class
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
     from xml.dom import Node
+
+    import sqlalchemy.orm
 
     from c2cgeoportal_commons.models import (
         main,  # pylint: disable=ungrouped-imports,useless-suppression

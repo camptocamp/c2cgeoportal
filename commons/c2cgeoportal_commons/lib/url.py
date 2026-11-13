@@ -25,11 +25,15 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+from __future__ import annotations
+
 import logging
 import re
 import urllib.parse
+from typing import TYPE_CHECKING
 
-from pyramid.request import Request
+if TYPE_CHECKING:
+    from pyramid.request import Request
 
 _LOG = logging.getLogger(__name__)
 

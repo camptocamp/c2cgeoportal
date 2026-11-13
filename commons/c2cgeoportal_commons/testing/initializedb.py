@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2025, Camptocamp SA
+# Copyright (c) 2017-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -26,15 +26,19 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from __future__ import annotations
+
 import os
 import sys
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
 import sqlalchemy
-from sqlalchemy.engine import Connection
-from sqlalchemy.orm import Session
 
 from c2cgeoportal_commons.models import Base
+
+if TYPE_CHECKING:
+    from sqlalchemy.engine import Connection
+    from sqlalchemy.orm import Session
 
 
 def usage(argv: list[str]) -> None:

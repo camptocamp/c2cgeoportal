@@ -25,14 +25,15 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-import datetime
+from __future__ import annotations
+
+import datetime  # noqa: ICN001
 import importlib
 import json
 import logging
 import os
 import re
 import urllib.parse
-from collections.abc import Callable
 from functools import partial
 from typing import TYPE_CHECKING, Any, Optional, cast
 
@@ -43,7 +44,6 @@ import c2cwsgiutils.index
 import dateutil.parser
 import pyramid.config
 import pyramid.request
-import pyramid.response
 import simple_openid_connect.data
 import sqlalchemy
 import sqlalchemy.orm
@@ -55,7 +55,6 @@ from deform import Form
 from dogpile.cache import register_backend
 from papyrus.renderers import GeoJSON
 from prometheus_client.core import REGISTRY
-from pyramid.config import Configurator
 from pyramid.httpexceptions import HTTPException
 from pyramid.path import AssetResolver
 from pyramid_mako import add_mako_renderer
@@ -84,6 +83,11 @@ from c2cgeoportal_geoportal.lib.xsd import XSD
 from c2cgeoportal_geoportal.views.entry import Entry, canvas_view, custom_view
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
+
+    import pyramid.response
+    from pyramid.config import Configurator
+
     from c2cgeoportal_commons.models import (
         static,  # pylint: disable=ungrouped-imports,useless-suppression
     )
@@ -362,13 +366,13 @@ def is_valid_referrer(request: pyramid.request.Request, settings: dict[str, Any]
 
 def create_get_user_from_request(
     settings: dict[str, Any],
-) -> Callable[[pyramid.request.Request, str | None], static.User | None]:
+) -> Callable[[pyramid.request.Request, str | None], Optional["static.User"]]:  # noqa: UP037, UP045
     """Get the get_user_from_request function."""
 
     def get_user_from_request(
         request: pyramid.request.Request,
         username: str | None = None,
-    ) -> static.User | None:
+    ) -> Optional["static.User"]:  # noqa: UP037, UP045
         """
         Return the User object for the request.
 

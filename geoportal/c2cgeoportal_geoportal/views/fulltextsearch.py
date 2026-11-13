@@ -26,10 +26,11 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from __future__ import annotations
+
 import re
 from typing import TYPE_CHECKING, Any
 
-import pyramid.request
 import sqlalchemy.orm.query
 from geoalchemy2.shape import to_shape
 from geojson import Feature, FeatureCollection
@@ -50,6 +51,8 @@ IGNORED_CHARS_RE = re.compile(r"[()&|!:<>\t]")
 IGNORED_STARTUP_CHARS_RE = re.compile(r"^[']*")
 
 if TYPE_CHECKING:
+    import pyramid.request
+
     _Result = sqlalchemy.orm.query.RowReturningQuery[tuple[Any, Any, Any, Any, Any, Any]]
 else:
     _Result = sqlalchemy.orm.query.RowReturningQuery

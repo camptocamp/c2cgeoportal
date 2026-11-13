@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2025, Camptocamp SA
+# Copyright (c) 2017-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -26,8 +26,14 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import pyramid.config
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from c2cgeoform.routes import register_route, register_routes
+
+if TYPE_CHECKING:
+    import pyramid.config
 
 
 def includeme(config: pyramid.config.Configurator) -> None:

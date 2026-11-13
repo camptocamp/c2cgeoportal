@@ -26,16 +26,19 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from collections.abc import Iterable
-from typing import TYPE_CHECKING, Any
+from __future__ import annotations
 
-import sqlalchemy.orm
-from pyramid.request import Request
-from sqlalchemy.orm.query import Query
+from typing import TYPE_CHECKING, Any
 
 from c2cgeoportal_geoportal.lib import caching, get_roles_id
 
 if TYPE_CHECKING:
+    from collections.abc import Iterable
+
+    import sqlalchemy.orm
+    from pyramid.request import Request
+    from sqlalchemy.orm.query import Query
+
     from c2cgeoportal_commons.models import main
 
 CACHE_REGION = caching.get_region("std")
@@ -77,7 +80,7 @@ def get_protected_layers_query(
     return q
 
 
-def get_writable_layers_query(request: Request, ogc_server_ids: Iterable[int]) -> Query[main.LayerWMS]:
+def get_writable_layers_query(request: Request, ogc_server_ids: Iterable[int]) -> Query["main.LayerWMS"]:  # noqa: UP037
     """Get the writable layers query."""
     from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
         main,
@@ -91,7 +94,7 @@ def get_writable_layers_query(request: Request, ogc_server_ids: Iterable[int]) -
     )
 
 
-def get_protected_layers(request: Request, ogc_server_ids: Iterable[int]) -> dict[int, main.LayerWMS]:
+def get_protected_layers(request: Request, ogc_server_ids: Iterable[int]) -> dict[int, "main.LayerWMS"]:  # noqa: UP037
     """
     Get the protected layers.
 
@@ -110,7 +113,7 @@ def get_protected_layers(request: Request, ogc_server_ids: Iterable[int]) -> dic
     return {r.id: r for r in results}
 
 
-def get_writable_layers(request: Request, ogc_server_ids: Iterable[int]) -> dict[int, main.LayerWMS]:
+def get_writable_layers(request: Request, ogc_server_ids: Iterable[int]) -> dict[int, "main.LayerWMS"]:  # noqa: UP037
     """Get the writable layers."""
     from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
         DBSession,
@@ -125,7 +128,7 @@ def get_writable_layers(request: Request, ogc_server_ids: Iterable[int]) -> dict
 
 
 @CACHE_REGION.cache_on_arguments()
-def get_private_layers(ogc_server_ids: Iterable[int]) -> dict[int, main.LayerWMS]:
+def get_private_layers(ogc_server_ids: Iterable[int]) -> dict[int, "main.LayerWMS"]:  # noqa: UP037
     """Get the private layers."""
     from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
         DBSession,

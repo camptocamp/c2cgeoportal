@@ -21,17 +21,17 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+from __future__ import annotations
+
 import logging
 from typing import TYPE_CHECKING, Any
 from unittest.mock import patch
 
-import pyramid.request
 import pytest
 import sqlalchemy.orm
 import transaction
 from c2c.template.config import config as configuration
 from pyramid.testing import DummyRequest
-from sqlalchemy.orm.session import Session, SessionTransaction
 
 from c2cgeoportal_commons.testing import (
     generate_mappers,
@@ -47,6 +47,9 @@ _LOG = logging.getLogger(__name__)
 mapserv_url = "http://mapserver:8080/"
 
 if TYPE_CHECKING:
+    import pyramid.request
+    from sqlalchemy.orm.session import Session, SessionTransaction
+
     from c2cgeoportal_commons.models import main, static
 
 

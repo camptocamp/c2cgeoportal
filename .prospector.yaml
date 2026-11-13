@@ -44,6 +44,9 @@ ruff:
     - S110 # `try`-`except`-`pass` detected, consider logging the exception
     - BLE001 # Do not catch blind exception: `Exception`
     - N806 # Variable `{}` in function should be lowercase
+    # UP037 removes the quotes from the forward references that are resolved
+    # at runtime by introspection (dogpile cache decorators, SQLAlchemy Mapped)
+    - UP037
 
 pycodestyle:
   run: false

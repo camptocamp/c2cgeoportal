@@ -30,10 +30,13 @@ import enum
 import logging
 import os
 import re
-from datetime import datetime
-from typing import Any, Literal, cast, get_args
 
-import pyramid.request
+# The `datetime` import is used in a `Mapped[datetime]` annotation: SQLAlchemy
+# resolves the class annotations at runtime, so it cannot be moved into the
+# `TYPE_CHECKING` block.
+from datetime import datetime  # noqa: TC003
+from typing import TYPE_CHECKING, Any, Literal, cast, get_args
+
 import sqlalchemy.orm.base
 from c2c.template.config import config
 from geoalchemy2 import Geometry, WKBElement, WKTElement
@@ -49,6 +52,9 @@ import c2cgeoportal_commons.lib.literal
 from c2cgeoportal_commons.lib.url import get_url2
 from c2cgeoportal_commons.models import Base, _, cache_invalidate_cb
 from c2cgeoportal_commons.models.sqlalchemy import JSONEncodedDict, TsVector
+
+if TYPE_CHECKING:
+    import pyramid.request
 
 try:
     import colander

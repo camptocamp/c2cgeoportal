@@ -26,10 +26,11 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from functools import partial
-from typing import Any, cast
+from __future__ import annotations
 
-from c2cgeoform import JSONDict
+from functools import partial
+from typing import TYPE_CHECKING, Any, cast
+
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import (
     AbstractViews,
@@ -53,6 +54,9 @@ from c2cgeoportal_admin.views.logged_views import LoggedViews
 from c2cgeoportal_commons.lib.literal import Literal
 from c2cgeoportal_commons.models import cache_invalidate_cb
 from c2cgeoportal_commons.models.main import LogAction, OGCServer
+
+if TYPE_CHECKING:
+    from c2cgeoform import JSONDict
 
 _list_field = partial(ListField, OGCServer)
 

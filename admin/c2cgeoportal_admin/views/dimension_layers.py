@@ -26,16 +26,20 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from __future__ import annotations
+
 from functools import partial
 from itertools import groupby
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
-import sqlalchemy.orm.query
 from c2cgeoform.views.abstract_views import ListField
 from sqlalchemy.orm import subqueryload
 
 from c2cgeoportal_admin.views.layers import LayerViews
 from c2cgeoportal_commons.models.main import DimensionLayer
+
+if TYPE_CHECKING:
+    import sqlalchemy.orm.query
 
 _list_field = partial(ListField, DimensionLayer)
 

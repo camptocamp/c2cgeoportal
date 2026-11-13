@@ -26,8 +26,10 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from __future__ import annotations
+
 import logging
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from pyramid.httpexceptions import (
     HTTPForbidden,
@@ -35,11 +37,8 @@ from pyramid.httpexceptions import (
     HTTPInternalServerError,
     HTTPUnauthorized,
 )
-from pyramid.request import Request
-from pyramid.response import Response
 from pyramid.view import view_config
 
-from c2cgeoportal_commons.lib.url import Url
 from c2cgeoportal_commons.models import main
 from c2cgeoportal_geoportal.lib import get_roles_id, get_roles_name
 from c2cgeoportal_geoportal.lib.caching import get_region
@@ -47,6 +46,12 @@ from c2cgeoportal_geoportal.lib.common_headers import Cache
 from c2cgeoportal_geoportal.lib.filter_capabilities import filter_capabilities
 from c2cgeoportal_geoportal.lib.functionality import get_mapserver_substitution_params
 from c2cgeoportal_geoportal.views.ogcproxy import OGCProxy
+
+if TYPE_CHECKING:
+    from pyramid.request import Request
+    from pyramid.response import Response
+
+    from c2cgeoportal_commons.lib.url import Url
 
 _CACHE_REGION = get_region("std")
 _LOG = logging.getLogger(__name__)

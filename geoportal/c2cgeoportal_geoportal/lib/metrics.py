@@ -25,9 +25,11 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+from __future__ import annotations
+
 import gc
 import sys
-from collections.abc import Generator
+from typing import TYPE_CHECKING
 
 import prometheus_client.core
 import prometheus_client.registry
@@ -36,6 +38,9 @@ from c2cwsgiutils.debug import get_size
 
 from c2cgeoportal_geoportal.lib.caching import MEMORY_CACHE_DICT
 from c2cgeoportal_geoportal.views.raster import Raster
+
+if TYPE_CHECKING:
+    from collections.abc import Generator
 
 
 class MemoryCacheSizeCollector(prometheus_client.registry.Collector):

@@ -26,8 +26,9 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from types import TracebackType
-from typing import Any
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any
 
 import c2cgeoform
 import c2cwsgiutils.pretty_json
@@ -39,11 +40,15 @@ from pyramid.config import Configurator
 from pyramid.events import BeforeRender, ContextFound, NewRequest
 from sqlalchemy import engine_from_config
 from sqlalchemy.orm import configure_mappers, sessionmaker
-from transaction import TransactionManager
 from translationstring import TranslationStringFactory
 
 from c2cgeoportal_admin.subscribers import add_localizer, add_renderer_globals
 from c2cgeoportal_admin.views import IsAdminPredicate
+
+if TYPE_CHECKING:
+    from types import TracebackType
+
+    from transaction import TransactionManager
 
 search_paths = (resource_filename(__name__, "templates/widgets"), *c2cgeoform.default_search_paths)
 c2cgeoform.default_search_paths = search_paths

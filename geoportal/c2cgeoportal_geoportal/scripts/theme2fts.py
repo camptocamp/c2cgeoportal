@@ -26,18 +26,17 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from __future__ import annotations
+
 import gettext
 import os
 import sys
 import time
 from argparse import ArgumentParser, Namespace
-from collections.abc import Iterator
 from typing import TYPE_CHECKING, Any
 
-import pyramid.config
 import sqlalchemy.orm
 import transaction
-from sqlalchemy.orm.session import Session
 
 from c2cgeoportal_geoportal.lib.bashcolor import Color, colorize
 from c2cgeoportal_geoportal.lib.fulltextsearch import Normalize
@@ -45,6 +44,11 @@ from c2cgeoportal_geoportal.lib.i18n import LOCALE_PATH
 from c2cgeoportal_geoportal.scripts import fill_arguments, get_appsettings, get_session
 
 if TYPE_CHECKING:
+    from collections.abc import Iterator
+
+    import pyramid.config
+    from sqlalchemy.orm.session import Session
+
     import c2cgeoportal_commons.models.main
 
 

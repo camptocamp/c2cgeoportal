@@ -26,6 +26,8 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from __future__ import annotations
+
 import asyncio
 import gc
 import logging
@@ -35,10 +37,9 @@ import sys
 import time
 from collections import Counter
 from math import sqrt
-from typing import Any, Optional, cast
+from typing import TYPE_CHECKING, Any, Optional, cast
 
 import dogpile.cache.api
-import lxml.etree as lxml_etree
 import pyramid.httpexceptions
 import pyramid.request
 import requests
@@ -71,6 +72,9 @@ from c2cgeoportal_geoportal.lib.layers import (
 )
 from c2cgeoportal_geoportal.lib.wmstparsing import TimeInformation, parse_extent
 from c2cgeoportal_geoportal.views.layers import get_layer_metadata
+
+if TYPE_CHECKING:
+    import lxml.etree as lxml_etree
 
 _LOG = logging.getLogger(__name__)
 _CACHE_REGION = get_region("std")

@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2025, Camptocamp SA
+# Copyright (c) 2012-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -25,16 +25,17 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+from __future__ import annotations
+
 import json
 import logging
 import math
 import urllib.parse
 from decimal import Decimal
 from json.decoder import JSONDecodeError
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import geojson
-import pyramid.request
 import requests
 from pyramid.httpexceptions import HTTPBadRequest, HTTPInternalServerError, HTTPNotFound
 from pyramid.i18n import TranslationStringFactory
@@ -42,6 +43,9 @@ from pyramid.view import view_config
 
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
 from c2cgeoportal_geoportal.views.raster import Raster
+
+if TYPE_CHECKING:
+    import pyramid.request
 
 _LOG = logging.getLogger(__name__)
 

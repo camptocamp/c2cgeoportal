@@ -1,4 +1,4 @@
-# Copyright (c) 2014-2025, Camptocamp SA
+# Copyright (c) 2014-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -26,16 +26,16 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from __future__ import annotations
+
 import binascii
 import json
 import logging
 import os
 import re
 import time
-from collections.abc import Callable
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
-import pyramid.request
 from Crypto.Cipher import AES  # nosec
 from pyramid.authentication import (
     AuthTktAuthenticationPolicy,
@@ -50,6 +50,11 @@ from zope.interface import implementer
 import c2cgeoportal_commons.models
 from c2cgeoportal_geoportal.lib import oauth2
 from c2cgeoportal_geoportal.resources import defaultgroupsfinder
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
+    import pyramid.request
 
 _LOG = logging.getLogger(__name__)
 

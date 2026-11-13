@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2025, Camptocamp SA
+# Copyright (c) 2019-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -26,11 +26,13 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from __future__ import annotations
+
 import glob
 import logging
+from typing import TYPE_CHECKING
 
 import pyramid.request
-import pyramid.response
 from lingva.extract import (  # strip_linenumbers,
     ExtractorOptions,
     POEntry,
@@ -47,6 +49,9 @@ from pyramid.view import view_config
 
 from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
+
+if TYPE_CHECKING:
+    import pyramid.response
 
 _LOG = logging.getLogger(__name__)
 _INITIALIZED = False

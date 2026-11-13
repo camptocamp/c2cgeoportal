@@ -25,13 +25,14 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-import datetime
+from __future__ import annotations
+
+import datetime  # noqa: ICN001
 import json
 import logging
 import string
-from typing import TYPE_CHECKING, Any, NamedTuple, TypedDict
+from typing import TYPE_CHECKING, Any, NamedTuple, Optional, TypedDict, Union
 
-import pyramid.request
 import simple_openid_connect.client
 import simple_openid_connect.data
 from pyramid.httpexceptions import (
@@ -44,6 +45,8 @@ from pyramid.security import remember
 from c2cgeoportal_geoportal.lib.caching import get_region
 
 if TYPE_CHECKING:
+    import pyramid.request
+
     from c2cgeoportal_commons.models import main, static
 
 _LOG = logging.getLogger(__name__)
@@ -58,8 +61,8 @@ class DynamicUser(NamedTuple):
     username: str
     display_name: str
     email: str
-    settings_role: main.Role | None
-    roles: list[main.Role]
+    settings_role: Optional["main.Role"]  # noqa: UP037, UP045
+    roles: list["main.Role"]  # noqa: UP037
 
 
 @_CACHE_REGION_OBJ.cache_on_arguments()
@@ -152,7 +155,7 @@ def get_user_from_remember(
     request: pyramid.request.Request,
     remember_object: OidcRememberObject,
     update_create_user: bool = False,
-) -> static.User | DynamicUser | None:
+) -> Union["static.User", DynamicUser] | None:  # noqa: UP007, UP037
     """
     Create a user from the remember object filled from `get_remember_from_user_info`.
 

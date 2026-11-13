@@ -25,18 +25,23 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+from __future__ import annotations
+
 import logging
+from typing import TYPE_CHECKING
 
 import sqlalchemy
 from pyramid.httpexceptions import HTTPNotFound
-from pyramid.request import Request
-from pyramid.response import Response
 from pyramid.view import view_config
 from tilecloud import TileCoord
 from tilecloud.grid.free import FreeTileGrid
 
 from c2cgeoportal_commons.models import DBSession, main
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
+
+if TYPE_CHECKING:
+    from pyramid.request import Request
+    from pyramid.response import Response
 
 _LOG = logging.getLogger(__name__)
 

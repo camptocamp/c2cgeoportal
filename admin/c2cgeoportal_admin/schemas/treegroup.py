@@ -26,12 +26,13 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from __future__ import annotations
+
 import logging
 from functools import partial
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import colander
-import pyramid.request
 import sqlalchemy
 from c2cgeoform.schema import GeoFormSchemaNode
 from sqlalchemy.orm import aliased
@@ -41,6 +42,9 @@ from c2cgeoportal_admin import _
 from c2cgeoportal_admin.widgets import ChildrenWidget, ChildWidget
 from c2cgeoportal_commons.lib.literal import Literal
 from c2cgeoportal_commons.models.main import LayergroupTreeitem, TreeGroup, TreeItem
+
+if TYPE_CHECKING:
+    import pyramid.request
 
 _LOG = logging.getLogger(__name__)
 

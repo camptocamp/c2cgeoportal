@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2025, Camptocamp SA
+# Copyright (c) 2017-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -26,11 +26,12 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from __future__ import annotations
+
 from functools import partial
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import colander
-import pyramid.request
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import (
     DeleteResponse,
@@ -46,6 +47,9 @@ from pyramid.view import view_config, view_defaults
 from c2cgeoportal_admin import _
 from c2cgeoportal_admin.views.logged_views import LoggedViews
 from c2cgeoportal_commons.models.main import Functionality
+
+if TYPE_CHECKING:
+    import pyramid.request
 
 _list_field = partial(ListField, Functionality)
 

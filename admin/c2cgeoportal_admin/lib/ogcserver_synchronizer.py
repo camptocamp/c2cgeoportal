@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2025, Camptocamp SA
+# Copyright (c) 2020-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -26,20 +26,25 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from __future__ import annotations
+
 import functools
 import logging
 from io import StringIO
-from types import TracebackType
-from typing import cast
-from xml.etree.ElementTree import Element  # nosec
+from typing import TYPE_CHECKING, cast
 
-import pyramid.request
 import requests
 from defusedxml import ElementTree
-from sqlalchemy.orm.session import Session
 
 from c2cgeoportal_commons.lib.url import get_url2
 from c2cgeoportal_commons.models import main
+
+if TYPE_CHECKING:
+    from types import TracebackType
+    from xml.etree.ElementTree import Element
+
+    import pyramid.request
+    from sqlalchemy.orm.session import Session
 
 
 class _DryRunTransaction:

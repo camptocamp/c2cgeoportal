@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2025, Camptocamp SA
+# Copyright (c) 2011-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -26,16 +26,22 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import pyramid.request
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from geoalchemy2.shape import from_shape, to_shape
 from geojson import loads
 from pyramid.httpexceptions import HTTPBadRequest
 from pyramid.view import view_config
 from shapely.geometry import shape
-from shapely.geometry.base import BaseGeometry
 from sqlalchemy import func
 
 from c2cgeoportal_commons.models import DBSession
+
+if TYPE_CHECKING:
+    import pyramid.request
+    from shapely.geometry.base import BaseGeometry
 
 
 class GeometryProcessing:

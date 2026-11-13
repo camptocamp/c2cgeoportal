@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2025, Camptocamp SA
+# Copyright (c) 2017-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -26,10 +26,12 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from __future__ import annotations
+
 from functools import partial
+from typing import TYPE_CHECKING
 
 import sqlalchemy
-import sqlalchemy.orm.query
 from c2cgeoform.schema import GeoFormSchemaNode
 from c2cgeoform.views.abstract_views import (
     DeleteResponse,
@@ -47,6 +49,9 @@ from c2cgeoportal_admin.schemas.treegroup import children_schema_node
 from c2cgeoportal_admin.schemas.treeitem import parent_id_node
 from c2cgeoportal_admin.views.treeitems import TreeItemViews
 from c2cgeoportal_commons.models.main import LayerGroup, TreeGroup
+
+if TYPE_CHECKING:
+    import sqlalchemy.orm.query
 
 _list_field = partial(ListField, LayerGroup)
 

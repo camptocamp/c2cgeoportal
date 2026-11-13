@@ -26,18 +26,23 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import xml.etree.ElementTree  # nosec  # noqa: ICN001
-from collections.abc import Callable
+from __future__ import annotations
+
 from io import BytesIO
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
 import sqlalchemy.orm.mapper
 import sqlalchemy.sql.elements
-import sqlalchemy.sql.schema
 from papyrus.xsd import XSDGenerator as PapyrusXSDGenerator
 from papyrus.xsd import tag
 from sqlalchemy.orm.properties import ColumnProperty
 from sqlalchemy.orm.util import class_mapper
+
+if TYPE_CHECKING:
+    import xml.etree.ElementTree  # noqa: ICN001
+    from collections.abc import Callable
+
+    import sqlalchemy.sql.schema
 
 
 def _element_callback(tb: str, column: sqlalchemy.sql.elements.NamedColumn[Any]) -> None:

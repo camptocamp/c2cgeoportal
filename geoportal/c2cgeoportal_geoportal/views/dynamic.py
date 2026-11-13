@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2025, Camptocamp SA
+# Copyright (c) 2018-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -26,11 +26,12 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from __future__ import annotations
+
 import re
 import urllib.parse
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
-import pyramid.request
 from pyramid.httpexceptions import HTTPNotFound
 from pyramid.view import view_config
 from sqlalchemy import func
@@ -41,6 +42,9 @@ from c2cgeoportal_geoportal import is_allowed_host
 from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
 from c2cgeoportal_geoportal.lib.caching import get_region
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
+
+if TYPE_CHECKING:
+    import pyramid.request
 
 CACHE_REGION = get_region("std")
 

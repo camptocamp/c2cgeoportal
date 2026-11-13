@@ -26,6 +26,8 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from __future__ import annotations
+
 import argparse
 import atexit
 import filecmp
@@ -36,15 +38,17 @@ import subprocess  # nosec
 import sys
 import tempfile
 from argparse import ArgumentParser, Namespace
-from collections.abc import Callable
 from json.decoder import JSONDecodeError
 from subprocess import call, check_call, check_output  # nosec
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
 import requests
 import yaml
 
 from c2cgeoportal_geoportal.lib.bashcolor import Color, colorize
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 REQUIRED_TEMPLATE_KEYS = ["package", "srid", "extent"]
 TEMPLATE_EXAMPLE = {"package": "${package}", "srid": "${srid}", "extent": "489246, 78873, 837119, 296543"}
