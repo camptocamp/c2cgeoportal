@@ -1,3 +1,11 @@
+##### 2.8.1.405
+
+- Lock file maintenance (2.8) [c2cgeoportal#13636](https://github.com/camptocamp/c2cgeoportal/pull/13636)
+- Update dependency glob to v14 [SECURITY] (2.8) [ngeo#10270](https://github.com/camptocamp/ngeo/pull/10270)
+- Use a dedicated dispatch token instead of the gopass CI token [ngeo#10288](https://github.com/camptocamp/ngeo/pull/10288)
+- [Backport 2.8] Mock the JPEG tiles of the demo WMTS in the example checks [ngeo#10291](https://github.com/camptocamp/ngeo/pull/10291)
+- Revert the glob update to v14 and use Node.js version 16 on the branch 2.8 [ngeo#10297](https://github.com/camptocamp/ngeo/pull/10297)
+
 ##### 2.8.1.404
 
 - Audit Dpkg 2.8 [c2cgeoportal#13693](https://github.com/camptocamp/c2cgeoportal/pull/13693)
