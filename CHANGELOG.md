@@ -1,3 +1,7 @@
+##### 2.10.rc.8
+
+- Audit Dpkg 2.10 [c2cgeoportal#13696](https://github.com/camptocamp/c2cgeoportal/pull/13696)
+
 ##### 2.10.rc.7
 
 - Update dependency dnspython to v2.9.2 [SECURITY] (2.10) [c2cgeoportal#13697](https://github.com/camptocamp/c2cgeoportal/pull/13697)
