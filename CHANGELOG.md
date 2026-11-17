@@ -1,3 +1,8 @@
+##### 2.10.rc.9
+
+- Update used ngeo [c2cgeoportal#13700](https://github.com/camptocamp/c2cgeoportal/pull/13700)
+- Audit Snyk check/fix 2.10 [ngeo#10301](https://github.com/camptocamp/ngeo/pull/10301)
+
 ##### 2.10.rc.8
 
 - Audit Dpkg 2.10 [c2cgeoportal#13696](https://github.com/camptocamp/c2cgeoportal/pull/13696)
