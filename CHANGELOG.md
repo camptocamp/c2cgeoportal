@@ -1,3 +1,7 @@
+##### 2.8.1.407
+
+- Scaffold: Let ghci create the l10n pull request instead of the gopass CI token [c2cgeoportal#13651](https://github.com/camptocamp/c2cgeoportal/pull/13651)
+
 ##### 2.8.1.406
 
 - Update CI dependencies (2.8) [c2cgeoportal#13550](https://github.com/camptocamp/c2cgeoportal/pull/13550)
