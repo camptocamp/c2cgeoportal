@@ -1,3 +1,27 @@
+##### 2.9.0.628
+
+- Update all patch/minor versions (2.9) [c2cgeoportal#13551](https://github.com/camptocamp/c2cgeoportal/pull/13551)
+- Update CI dependencies (2.9) [c2cgeoportal#13552](https://github.com/camptocamp/c2cgeoportal/pull/13552)
+- Audit Dpkg 2.9 [c2cgeoportal#13602](https://github.com/camptocamp/c2cgeoportal/pull/13602)
+- Update dependency oauthlib to v4.0.1 [SECURITY] (2.9) [c2cgeoportal#13621](https://github.com/camptocamp/c2cgeoportal/pull/13621)
+- [Backport 2.9] Remove cross-branch pre-commit cache restore keys [c2cgeoportal#13626](https://github.com/camptocamp/c2cgeoportal/pull/13626)
+- 2.9 missing ghci.io and uv [c2cgeoportal#13628](https://github.com/camptocamp/c2cgeoportal/pull/13628)
+- Lock file maintenance (2.9) [c2cgeoportal#13637](https://github.com/camptocamp/c2cgeoportal/pull/13637)
+- Scaffold: Let ghci create the l10n pull request instead of the gopass CI token [c2cgeoportal#13652](https://github.com/camptocamp/c2cgeoportal/pull/13652)
+- Close the database session in authorizedLayerAttributes [c2cgeoportal#13653](https://github.com/camptocamp/c2cgeoportal/pull/13653)
+- Update CI dependencies (2.9) [c2cgeoportal#13660](https://github.com/camptocamp/c2cgeoportal/pull/13660)
+- Audit Snyk check/fix 2.9 [c2cgeoportal#13670](https://github.com/camptocamp/c2cgeoportal/pull/13670)
+- Tag the created project images with the ghcr.io names [c2cgeoportal#13671](https://github.com/camptocamp/c2cgeoportal/pull/13671)
+- Audit Dpkg 2.9 [c2cgeoportal#13676](https://github.com/camptocamp/c2cgeoportal/pull/13676)
+- Audit Snyk check/fix 2.9 [c2cgeoportal#13679](https://github.com/camptocamp/c2cgeoportal/pull/13679)
+- Update dependency certifi to v2026.10.23 (2.9) [c2cgeoportal#13680](https://github.com/camptocamp/c2cgeoportal/pull/13680)
+- Update c2c.template to 2.6.1 to fix the rendering of templates given with absolute paths [c2cgeoportal#13686](https://github.com/camptocamp/c2cgeoportal/pull/13686)
+- Use GeoMapFish images from ghcr.io in the 2.9 scaffold [c2cgeoportal#13690](https://github.com/camptocamp/c2cgeoportal/pull/13690)
+- Audit Dpkg 2.9 [c2cgeoportal#13695](https://github.com/camptocamp/c2cgeoportal/pull/13695)
+- Audit Snyk check/fix 2.9 [c2cgeoportal#13698](https://github.com/camptocamp/c2cgeoportal/pull/13698)
+- Update dependency glob to v14 [SECURITY] (2.9) [ngeo#10254](https://github.com/camptocamp/ngeo/pull/10254)
+- Use a dedicated dispatch token instead of the gopass CI token [ngeo#10287](https://github.com/camptocamp/ngeo/pull/10287)
+
 ##### 2.9.0.627
 
 - Lock file maintenance (2.9) [c2cgeoportal#13428](https://github.com/camptocamp/c2cgeoportal/pull/13428)
