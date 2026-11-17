@@ -1,3 +1,7 @@
+##### 2.8.1.406
+
+- Update CI dependencies (2.8) [c2cgeoportal#13550](https://github.com/camptocamp/c2cgeoportal/pull/13550)
+
 ##### 2.8.1.405
 
 - Lock file maintenance (2.8) [c2cgeoportal#13636](https://github.com/camptocamp/c2cgeoportal/pull/13636)
