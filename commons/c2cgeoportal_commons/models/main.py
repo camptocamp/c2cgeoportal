@@ -34,7 +34,7 @@ import re
 # The `datetime` import is used in a `Mapped[datetime]` annotation: SQLAlchemy
 # resolves the class annotations at runtime, so it cannot be moved into the
 # `TYPE_CHECKING` block.
-from datetime import datetime  # noqa: TC003
+from datetime import datetime
 from typing import TYPE_CHECKING, Any, Literal, cast, get_args
 
 import sqlalchemy.orm.base

@@ -76,7 +76,7 @@ class _AssociationProxy:
         self,
         obj: sqlalchemy.ext.declarative.ConcreteBase,
         type_: sqlalchemy.ext.declarative.DeclarativeMeta | None = None,
-    ) -> Union["_AssociationProxy", str] | None:  # noqa: UP007, UP037
+    ) -> Union["_AssociationProxy", str] | None:  # noqa: UP007
         if obj is None:
             # For "hybrid" descriptors that work both at the instance
             # and class levels we could return an SQL expression here.
