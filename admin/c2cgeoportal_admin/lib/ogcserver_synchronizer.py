@@ -41,7 +41,7 @@ from c2cgeoportal_commons.models import main
 
 if TYPE_CHECKING:
     from types import TracebackType
-    from xml.etree.ElementTree import Element
+    from xml.etree.ElementTree import Element  # nosec
 
     import pyramid.request
     from sqlalchemy.orm.session import Session

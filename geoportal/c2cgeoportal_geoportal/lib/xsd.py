@@ -39,7 +39,7 @@ from sqlalchemy.orm.properties import ColumnProperty
 from sqlalchemy.orm.util import class_mapper
 
 if TYPE_CHECKING:
-    import xml.etree.ElementTree  # noqa: ICN001
+    import xml.etree.ElementTree  # nosec  # noqa: ICN001
     from collections.abc import Callable
 
     import sqlalchemy.sql.schema
