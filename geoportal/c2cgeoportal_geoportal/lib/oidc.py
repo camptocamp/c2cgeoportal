@@ -61,8 +61,8 @@ class DynamicUser(NamedTuple):
     username: str
     display_name: str
     email: str
-    settings_role: Optional["main.Role"]  # noqa: UP045
-    roles: list["main.Role"]
+    settings_role: Optional[main.Role]  # noqa: UP045
+    roles: list[main.Role]
 
 
 @_CACHE_REGION_OBJ.cache_on_arguments()
@@ -155,7 +155,7 @@ def get_user_from_remember(
     request: pyramid.request.Request,
     remember_object: OidcRememberObject,
     update_create_user: bool = False,
-) -> Union["static.User", DynamicUser] | None:  # noqa: UP007
+) -> Union[static.User, DynamicUser] | None:  # noqa: UP007
     """
     Create a user from the remember object filled from `get_remember_from_user_info`.
 
