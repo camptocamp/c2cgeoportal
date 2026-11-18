@@ -2487,10 +2487,10 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_26_04/zlib1g: 1:1.3.dfsg+really1.3.1-1ubuntu3.2
 camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/adduser: 3.137ubuntu1
-  ubuntu_24_04/apache2: 2.4.58-1ubuntu8.18
-  ubuntu_24_04/apache2-bin: 2.4.58-1ubuntu8.18
-  ubuntu_24_04/apache2-data: 2.4.58-1ubuntu8.18
-  ubuntu_24_04/apache2-utils: 2.4.58-1ubuntu8.18
+  ubuntu_24_04/apache2: 2.4.58-1ubuntu8.19
+  ubuntu_24_04/apache2-bin: 2.4.58-1ubuntu8.19
+  ubuntu_24_04/apache2-data: 2.4.58-1ubuntu8.19
+  ubuntu_24_04/apache2-utils: 2.4.58-1ubuntu8.19
   ubuntu_24_04/apt: 2.8.4ubuntu0.1
   ubuntu_24_04/base-passwd: 3.6.3build1
   ubuntu_24_04/bash: 5.2.21-2ubuntu4
@@ -2553,10 +2553,10 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/libbrotli1: 1.1.0-2ubuntu0.1
   ubuntu_24_04/libbsd0: 0.12.1-1build1.1
   ubuntu_24_04/libbz2-1.0: 1.0.8-5.1ubuntu0.1
-  ubuntu_24_04/libc-bin: 2.39-0ubuntu8.9
-  ubuntu_24_04/libc-dev-bin: 2.39-0ubuntu8.9
-  ubuntu_24_04/libc6: 2.39-0ubuntu8.9
-  ubuntu_24_04/libc6-dev: 2.39-0ubuntu8.9
+  ubuntu_24_04/libc-bin: 2.39-0ubuntu8.12
+  ubuntu_24_04/libc-dev-bin: 2.39-0ubuntu8.12
+  ubuntu_24_04/libc6: 2.39-0ubuntu8.12
+  ubuntu_24_04/libc6-dev: 2.39-0ubuntu8.12
   ubuntu_24_04/libcap-ng0: 0.8.4-2build2
   ubuntu_24_04/libcap2: 1:2.66-5ubuntu2.4
   ubuntu_24_04/libcap2-bin: 1:2.66-5ubuntu2.4
@@ -2621,7 +2621,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/libgsl27: 2.7.1+dfsg-6ubuntu2
   ubuntu_24_04/libgslcblas0: 2.7.1+dfsg-6ubuntu2
   ubuntu_24_04/libgssapi-krb5-2: 1.20.1-6ubuntu2.7
-  ubuntu_24_04/libgstreamer-plugins-base1.0-0: 1.24.2-1ubuntu0.6
+  ubuntu_24_04/libgstreamer-plugins-base1.0-0: 1.24.2-1ubuntu0.7
   ubuntu_24_04/libgstreamer1.0-0: 1.24.2-1ubuntu0.1
   ubuntu_24_04/libgudev-1.0-0: 1:238-5ubuntu1
   ubuntu_24_04/libharfbuzz0b: 8.3.0-2build2
@@ -2846,7 +2846,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/python3: 3.12.3-0ubuntu2.1
   ubuntu_24_04/python3-minimal: 3.12.3-0ubuntu2.1
   ubuntu_24_04/python3-numpy: 1:1.26.4+ds-6ubuntu1
-  ubuntu_24_04/python3-pil: 10.2.0-1ubuntu1.4
+  ubuntu_24_04/python3-pil: 10.2.0-1ubuntu1.5
   ubuntu_24_04/python3-pip: 24.0+dfsg-1ubuntu1.3
   ubuntu_24_04/python3-pip-whl: 24.0+dfsg-1ubuntu1.3
   ubuntu_24_04/python3-pkg-resources: 68.1.2-2ubuntu1.2
