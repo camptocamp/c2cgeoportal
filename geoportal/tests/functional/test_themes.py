@@ -32,7 +32,7 @@ import json
 
 import pytest
 
-from tests.functional import create_dummy_request
+from tests.functional import create_dummy_request, mapserv_url
 from tests.functional import setup_common as setup_module  # noqa
 from tests.functional import teardown_common as teardown_module  # noqa
 
@@ -41,6 +41,7 @@ from tests.functional import teardown_common as teardown_module  # noqa
 def themes_setup(dbsession, transact, default_ogcserver):
     from c2cgeoportal_commons.models.main import (
         OGCSERVER_AUTH_NOAUTH,
+        OGCSERVER_AUTH_STANDARD,
         Dimension,
         Functionality,
         Interface,
@@ -86,6 +87,25 @@ def themes_setup(dbsession, transact, default_ogcserver):
     ogc_server_config_url.query_auth = OGCSERVER_AUTH_NOAUTH
     ogc_server_config_url.edit_url = "config://mapserver/mapserv_proxy/Map?map=Edit"
     ogc_server_config_url.edit_auth = OGCSERVER_AUTH_NOAUTH
+
+    # An OGC server proxied by the map proxy with the OGC API protocols and without URL defined for
+    # the uses, the published URLs should be the OGC API paths of the proxy.
+    ogc_server_ogc_api = OGCServer(
+        name="__test_ogc_server_ogc_api",
+        url=mapserv_url,
+        type="mapserver",
+        image_type="image/png",
+    )
+    ogc_server_ogc_api.wfs_support = False
+    ogc_server_ogc_api.auth = OGCSERVER_AUTH_STANDARD
+    ogc_server_ogc_api.map_protocol = "OGC API - Maps"
+    ogc_server_ogc_api.query_protocol = "OGC API - Features"
+    ogc_server_ogc_api.edit_protocol = "OGC API - Features"
+
+    # Layer not attached to any theme, only used to have the OGC server exported in the themes.
+    layer_ogc_api_wms = LayerWMS(name="__test_layer_ogc_api_wms", public=True)
+    layer_ogc_api_wms.layer = "__test_layer_internal_wms"
+    layer_ogc_api_wms.ogc_server = ogc_server_ogc_api
 
     # Layer not attached to any theme, only used to have the OGC server exported in the themes.
     layer_config_url_wms = LayerWMS(name="__test_layer_config_url_wms", public=True)
@@ -147,9 +167,11 @@ def themes_setup(dbsession, transact, default_ogcserver):
             min_levels,
             ogc_server_external,
             ogc_server_config_url,
+            ogc_server_ogc_api,
             layer_internal_wms,
             layer_external_wms,
             layer_config_url_wms,
+            layer_ogc_api_wms,
             layer_wmts,
             layer_group_1,
             layer_group_2,
@@ -183,11 +205,15 @@ def _create_request_obj(params=None, **kwargs):
     request = create_dummy_request(**kwargs)
 
     def route_url(name, _query=None, **kwargs):
-        del name  # Unused
-        del kwargs  # Unused
-        if _query is None:
-            return "http://localhost/ci/mapserv"
-        return "http://localhost/ci/mapserv?" + "&".join(["=".join(i) for i in list(_query.items())])
+        if name == "mapserverproxy_ogcapi_mapserver_root":
+            url = f"http://localhost/ci/mapserv_proxy/{kwargs['ogcserver']}/ogcapi"
+        else:
+            del name  # Unused
+            assert not kwargs
+            url = "http://localhost/ci/mapserv"
+        if not _query:
+            return url
+        return url + "?" + "&".join(["=".join(i) for i in list(_query.items())])
 
     request.route_url = route_url
     request.params = params
@@ -382,7 +408,7 @@ def test_ogc_server(dbsession, transact, themes_setup) -> None:
             "uses": {
                 "edit": {
                     "protocol": "OGC API - Features",
-                    "url": "http://localhost/ci/mapserv?ogcserver=__test_ogc_server&ogcserver_type=edit",
+                    "url": "http://localhost/ci/mapserv_proxy/__test_ogc_server/ogcapi?ogcserver_type=edit",
                 },
                 "map": {
                     "protocol": "WMS",
@@ -407,7 +433,7 @@ def test_ogc_server(dbsession, transact, themes_setup) -> None:
             "uses": {
                 "edit": {
                     "protocol": "OGC API - Features",
-                    "url": "https://wms.geo.admin.ch/edit",
+                    "url": "https://wms.geo.admin.ch/edit/ogcapi",
                 },
                 "map": {
                     "protocol": "WMS",
@@ -432,7 +458,7 @@ def test_ogc_server(dbsession, transact, themes_setup) -> None:
             "uses": {
                 "edit": {
                     "protocol": "OGC API - Features",
-                    "url": "http://mapserver:8383/mapserv_proxy/Map?map=Edit",
+                    "url": "http://mapserver:8383/mapserv_proxy/Map/ogcapi?map=Edit",
                 },
                 "map": {
                     "protocol": "WMS",
@@ -441,6 +467,34 @@ def test_ogc_server(dbsession, transact, themes_setup) -> None:
                 "query": {
                     "protocol": "WFS/GetFeature",
                     "url": "http://mapserver:8383/mapserv_proxy/Map?map=Query",
+                },
+            },
+            "wfsSupport": False,
+        },
+        "__test_ogc_server_ogc_api": {
+            "attributes": None,
+            "credential": True,
+            "imageType": "image/png",
+            "isSingleTile": False,
+            "namespace": None,
+            "type": "mapserver",
+            "url": "http://localhost/ci/mapserv?ogcserver=__test_ogc_server_ogc_api",
+            "urlWfs": "http://localhost/ci/mapserv?ogcserver=__test_ogc_server_ogc_api",
+            "uses": {
+                # With the OGC API protocols and no URL defined for the uses, the URLs are the OGC
+                # API paths of the proxy, without the WMS/WFS style parameters.
+                "edit": {
+                    "protocol": "OGC API - Features",
+                    "url": "http://localhost/ci/mapserv_proxy/__test_ogc_server_ogc_api/ogcapi",
+                },
+                "map": {
+                    "protocol": "OGC API - Maps",
+                    "url": "http://localhost/ci/mapserv_proxy/__test_ogc_server_ogc_api/ogcapi"
+                    "?ogcserver_type=map",
+                },
+                "query": {
+                    "protocol": "OGC API - Features",
+                    "url": "http://localhost/ci/mapserv_proxy/__test_ogc_server_ogc_api/ogcapi",
                 },
             },
             "wfsSupport": False,
