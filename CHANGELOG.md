@@ -1,3 +1,10 @@
+##### 2.9.0.630
+
+- Update used ngeo [c2cgeoportal#13706](https://github.com/camptocamp/c2cgeoportal/pull/13706)
+- [Backport 2.9] Mock the JPEG tiles of the demo WMTS in the example checks [ngeo#10292](https://github.com/camptocamp/ngeo/pull/10292)
+- Fix custom filter criteria alignment with remove button [ngeo#10296](https://github.com/camptocamp/ngeo/pull/10296)
+- Audit Snyk check/fix 2.9 [ngeo#10302](https://github.com/camptocamp/ngeo/pull/10302)
+
 ##### 2.9.0.629
 
 - Update CI dependencies to v1.3.5 (2.9) [c2cgeoportal#13710](https://github.com/camptocamp/c2cgeoportal/pull/13710)
