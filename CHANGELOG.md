@@ -1,3 +1,7 @@
+##### 2.10.rc.13
+
+- [Backport 2.10] Update c2c.template to 2.6.1 to fix the rendering of templates given with absolute paths [c2cgeoportal#13723](https://github.com/camptocamp/c2cgeoportal/pull/13723)
+
 ##### 2.10.rc.12
 
 - Document the user settings service, refresh the headers services list and add a documentation rule [c2cgeoportal#13685](https://github.com/camptocamp/c2cgeoportal/pull/13685)
