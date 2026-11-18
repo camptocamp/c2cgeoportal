@@ -1,3 +1,7 @@
+##### 2.8.1.409
+
+- Update CI dependencies (2.8) [c2cgeoportal#13709](https://github.com/camptocamp/c2cgeoportal/pull/13709)
+
 ##### 2.8.1.408
 
 - Audit Dpkg 2.8 [c2cgeoportal#13703](https://github.com/camptocamp/c2cgeoportal/pull/13703)
