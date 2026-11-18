@@ -351,7 +351,7 @@ dependencies = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "tag-publish", extras = ["docker"], specifier = "==1.3.4" }]
+requires-dist = [{ name = "tag-publish", extras = ["docker"], specifier = "==1.3.5" }]
 
 [[package]]
 name = "pydantic"
@@ -572,7 +572,7 @@ wheels = [
 
 [[package]]
 name = "tag-publish"
-version = "1.3.4"
+version = "1.3.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "githubkit" },
@@ -580,9 +580,9 @@ dependencies = [
     { name = "pyyaml" },
     { name = "security-md" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/30/3d/dda7dce8b70a5a12b0cf6fcc1059da02932b9b97c44c9f938fe7fe0161f5/tag_publish-1.3.4.tar.gz", hash = "sha256:3b674e9b90b6ad176725ae9f1cc23ece41e5cfb731839296e130d276982cf043", size = 31592, upload-time = "2026-11-06T09:43:42.054Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/8e/13/d4e2ec7f8bb55697cbb8a59b662fb0ea441bacb3ec711a61c326666518ee/tag_publish-1.3.5.tar.gz", hash = "sha256:fa1086e3db9b62355d7bd4ab9e9cfea5ec8ecc7e811731ea2afa9cc97540d589", size = 32120, upload-time = "2026-11-13T13:28:44.668Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/a8/2d/23a8a9848c5c913000163b13273eea55fb0a2a60e439f228d56217ab8089/tag_publish-1.3.4-py3-none-any.whl", hash = "sha256:14a63366162a2e4c822c6234a0497ec33308ec8d36a7c2b041a019a2743e07d7", size = 31291, upload-time = "2026-11-06T09:43:41.028Z" },
+    { url = "https://files.pythonhosted.org/packages/24/b4/8f0c3f7a6b6348c6d2135ef0ba1bf0e10b5e7eb6e70be8c629f0f7d7b142/tag_publish-1.3.5-py3-none-any.whl", hash = "sha256:0e33c2143a497d85e06db3d0dc00132beb4a83a37bc456fdd6cd2de7bbd79e8a", size = 31862, upload-time = "2026-11-13T13:28:43.343Z" },
 ]
 
 [package.optional-dependencies]
