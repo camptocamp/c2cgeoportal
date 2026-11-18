@@ -1,3 +1,7 @@
+##### 2.9.0.629
+
+- Update CI dependencies to v1.3.5 (2.9) [c2cgeoportal#13710](https://github.com/camptocamp/c2cgeoportal/pull/13710)
+
 ##### 2.9.0.628
 
 - Update all patch/minor versions (2.9) [c2cgeoportal#13551](https://github.com/camptocamp/c2cgeoportal/pull/13551)
