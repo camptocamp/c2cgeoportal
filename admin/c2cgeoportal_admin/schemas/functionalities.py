@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2025, Camptocamp SA
+# Copyright (c) 2018-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -26,16 +26,20 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from typing import Any
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any
 
 import colander
 from c2cgeoform.ext.deform_ext import RelationCheckBoxListWidget
 from c2cgeoform.schema import GeoFormManyToManySchemaNode, manytomany_validator
 from sqlalchemy import inspect, select
-from sqlalchemy.orm.attributes import InstrumentedAttribute
 from sqlalchemy.sql.functions import concat
 
 from c2cgeoportal_commons.models.main import Functionality
+
+if TYPE_CHECKING:
+    from sqlalchemy.orm.attributes import InstrumentedAttribute
 
 
 def available_functionalities_for(settings: dict[str, Any], model: type[Any]) -> list[dict[str, Any]]:

@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2025, Camptocamp SA
+# Copyright (c) 2011-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -24,15 +24,19 @@
 # The views and conclusions contained in the software and documentation are those
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
-import logging
-from typing import Any, cast
+from __future__ import annotations
 
-import c2cwsgiutils.health_check
+import logging
+from typing import TYPE_CHECKING, Any, cast
+
 import pyramid.config
-import pyramid.request
 import requests
 
 from c2cgeoportal_geoportal.lib.checker import build_url
+
+if TYPE_CHECKING:
+    import c2cwsgiutils.health_check
+    import pyramid.request
 
 _LOG = logging.getLogger(__name__)
 

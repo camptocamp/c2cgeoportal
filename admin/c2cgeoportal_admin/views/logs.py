@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025, Camptocamp SA
+# Copyright (c) 2023-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -25,10 +25,11 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-from functools import partial
-from typing import Any
+from __future__ import annotations
 
-from c2cgeoform import JSONDict
+from functools import partial
+from typing import TYPE_CHECKING, Any
+
 from c2cgeoform.views.abstract_views import (
     AbstractViews,
     GridResponse,
@@ -40,6 +41,9 @@ from pyramid.view import view_config, view_defaults
 
 from c2cgeoportal_commons.models import _
 from c2cgeoportal_commons.models.main import AbstractLog
+
+if TYPE_CHECKING:
+    from c2cgeoform import JSONDict
 
 _list_field = partial(ListField, AbstractLog)
 

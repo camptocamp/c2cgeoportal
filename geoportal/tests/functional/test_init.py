@@ -28,7 +28,7 @@
 # pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access,no-value-for-parameter
 
 import base64
-import datetime
+import datetime as dt
 import json
 import time
 import types
@@ -231,10 +231,10 @@ class TestGetUser:
         dbsession.add(test_user)
         dbsession.flush()
 
-        now = datetime.datetime.now(tz=datetime.UTC)
+        now = dt.datetime.now(tz=dt.UTC)
         remember_object = json.dumps(
             {
-                "access_token_expires": (now - datetime.timedelta(hours=1)).isoformat(),
+                "access_token_expires": (now - dt.timedelta(hours=1)).isoformat(),
                 "refresh_token_expires": None,
                 "username": "refresh_test_user",
                 "display_name": None,
@@ -244,7 +244,7 @@ class TestGetUser:
             }
         )
         refreshed_object = {
-            "access_token_expires": (now + datetime.timedelta(hours=1)).isoformat(),
+            "access_token_expires": (now + dt.timedelta(hours=1)).isoformat(),
             "refresh_token_expires": None,
             "username": "refresh_test_user",
             "display_name": "Refresh Test User",
@@ -300,10 +300,10 @@ class TestGetUser:
         request.get_remember_from_user_info = types.MethodType(oidc.get_remember_from_user_info, request)
         request.get_user_from_remember = types.MethodType(oidc.get_user_from_remember, request)
 
-        now = datetime.datetime.now(tz=datetime.UTC)
+        now = dt.datetime.now(tz=dt.UTC)
         remember_object = json.dumps(
             {
-                "access_token_expires": (now - datetime.timedelta(hours=1)).isoformat(),
+                "access_token_expires": (now - dt.timedelta(hours=1)).isoformat(),
                 "refresh_token_expires": None,
                 "username": "expired_test_user",
                 "display_name": None,

@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2025, Camptocamp SA
+# Copyright (c) 2011-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -25,21 +25,26 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+from __future__ import annotations
+
 import random
 import threading
 import warnings
-from collections.abc import Iterable
-from typing import Any, Union
+from typing import TYPE_CHECKING, Any
 
 import sqlalchemy.ext.declarative
 from papyrus.geo_interface import GeoInterface
 from sqlalchemy import Column, Integer, MetaData, Table
 from sqlalchemy.exc import SAWarning
 from sqlalchemy.orm import relationship
-from sqlalchemy.orm.session import Session
 from sqlalchemy.orm.util import class_mapper
 
 from c2cgeoportal_geoportal.lib.caching import get_region
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
+
+    from sqlalchemy.orm.session import Session
 
 CACHE_REGION_OBJ = get_region("obj")
 SQL_GEOMETRY_COLUMNS = """
@@ -71,7 +76,7 @@ class _AssociationProxy:
         self,
         obj: sqlalchemy.ext.declarative.ConcreteBase,
         type_: sqlalchemy.ext.declarative.DeclarativeMeta | None = None,
-    ) -> Union["_AssociationProxy", str] | None:
+    ) -> _AssociationProxy | str | None:
         if obj is None:
             # For "hybrid" descriptors that work both at the instance
             # and class levels we could return an SQL expression here.

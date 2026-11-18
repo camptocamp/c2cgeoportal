@@ -22,7 +22,9 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-from typing import Any
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any
 
 import pyramid.request
 import pytest
@@ -30,10 +32,7 @@ import sqlalchemy.exc
 import transaction
 from pyramid import testing
 from pyramid.paster import bootstrap
-from pyramid.router import Router
-from pyramid.scripting import AppEnvironment
 from sqlalchemy.exc import DBAPIError
-from sqlalchemy.orm import Session, SessionTransaction
 from webtest import TestApp as WebTestApp  # Avoid warning with pytest
 
 from c2cgeoportal_commons.testing import (
@@ -43,6 +42,11 @@ from c2cgeoportal_commons.testing import (
     get_tm_session,
 )
 from c2cgeoportal_commons.testing.initializedb import truncate_tables
+
+if TYPE_CHECKING:
+    from pyramid.router import Router
+    from pyramid.scripting import AppEnvironment
+    from sqlalchemy.orm import Session, SessionTransaction
 
 
 @pytest.fixture(scope="session")

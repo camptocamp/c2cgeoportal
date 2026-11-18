@@ -26,9 +26,10 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from __future__ import annotations
+
 import inspect
 import logging
-from collections.abc import Callable, Iterable, Mapping
 from typing import TYPE_CHECKING, Any
 
 import pyramid.interfaces
@@ -43,6 +44,8 @@ from sqlalchemy.orm.util import identity_key
 from c2cgeoportal_commons.models import Base
 
 if TYPE_CHECKING:
+    from collections.abc import Callable, Iterable, Mapping
+
     from dogpile.cache.api import SerializedReturnType
 else:
     SerializedReturnType = Any

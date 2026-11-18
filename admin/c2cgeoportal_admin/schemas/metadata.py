@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2025, Camptocamp SA
+# Copyright (c) 2018-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -25,20 +25,24 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+from __future__ import annotations
+
 import json
-from typing import Any, Union, cast
+from typing import TYPE_CHECKING, Any, Union, cast
 
 import colander
-import pyramid.request
 from c2cgeoform.schema import GeoFormSchemaNode
 from deform.widget import MappingWidget, SelectWidget, SequenceWidget, TextAreaWidget
 from sqlalchemy import inspect
-from sqlalchemy.orm.attributes import InstrumentedAttribute
-from sqlalchemy.orm.mapper import Mapper
 
 from c2cgeoportal_admin import _
 from c2cgeoportal_commons.lib.validators import url
 from c2cgeoportal_commons.models.main import Metadata
+
+if TYPE_CHECKING:
+    import pyramid.request
+    from sqlalchemy.orm.attributes import InstrumentedAttribute
+    from sqlalchemy.orm.mapper import Mapper
 
 
 def get_relevant_for(model: type[Any] | Mapper[Any]) -> set[str]:

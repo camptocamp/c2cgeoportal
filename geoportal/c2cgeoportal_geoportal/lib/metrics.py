@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2025, Camptocamp SA
+# Copyright (c) 2018-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -25,9 +25,11 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+from __future__ import annotations
+
 import gc
 import sys
-from collections.abc import Generator
+from typing import TYPE_CHECKING
 
 import prometheus_client.core
 import prometheus_client.registry
@@ -37,6 +39,9 @@ from c2cwsgiutils.debug import get_size
 from c2cgeoportal_geoportal.lib.caching import MEMORY_CACHE_DICT
 from c2cgeoportal_geoportal.views.raster import Raster
 
+if TYPE_CHECKING:
+    from collections.abc import Generator
+
 
 class MemoryCacheSizeCollector(prometheus_client.registry.Collector):
     """Get the memory used by the cache."""
@@ -45,7 +50,7 @@ class MemoryCacheSizeCollector(prometheus_client.registry.Collector):
         super().__init__()
         self.all = all_
 
-    def collect(self) -> Generator[prometheus_client.core.GaugeMetricFamily, None, None]:
+    def collect(self) -> Generator[prometheus_client.core.GaugeMetricFamily]:
         gauge = prometheus_client.core.GaugeMetricFamily(
             "c2cgeoportal_memory_cache_bytes",
             "Memory used by cache",
@@ -72,7 +77,7 @@ def _get_memory_cache(all_: bool) -> dict[str, list[tuple[str, int]]]:
 class RasterDataSizeCollector(prometheus_client.registry.Collector):
     """Get the memory used by Raster data cache."""
 
-    def collect(self) -> Generator[prometheus_client.core.GaugeMetricFamily, None, None]:
+    def collect(self) -> Generator[prometheus_client.core.GaugeMetricFamily]:
         gauge = prometheus_client.core.GaugeMetricFamily(
             "c2cgeoportal_raster_data_bytes",
             "Memory used by raster",
@@ -96,7 +101,7 @@ def _get_raster_data() -> dict[str, list[tuple[str, float]]]:
 class TotalPythonObjectMemoryCollector(prometheus_client.registry.Collector):
     """Get the memory used by Python objects."""
 
-    def collect(self) -> Generator[prometheus_client.core.GaugeMetricFamily, None, None]:
+    def collect(self) -> Generator[prometheus_client.core.GaugeMetricFamily]:
         gauge = prometheus_client.core.GaugeMetricFamily(
             "c2cgeoportal_total_python_object_memory_bytes",
             "Memory used by Python objects",

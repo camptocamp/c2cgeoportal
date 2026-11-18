@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2025, Camptocamp SA
+# Copyright (c) 2015-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -26,10 +26,11 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import logging
-from typing import Any
+from __future__ import annotations
 
-import pyramid.request
+import logging
+from typing import TYPE_CHECKING, Any
+
 import sqlalchemy.exc
 from defusedxml import ElementTree
 from pyramid.httpexceptions import (
@@ -51,6 +52,9 @@ from c2cgeoportal_geoportal.lib.filter_capabilities import (
 )
 from c2cgeoportal_geoportal.lib.layers import get_writable_layers
 from c2cgeoportal_geoportal.views.ogcproxy import OGCProxy
+
+if TYPE_CHECKING:
+    import pyramid.request
 
 _LOG = logging.getLogger(__name__)
 

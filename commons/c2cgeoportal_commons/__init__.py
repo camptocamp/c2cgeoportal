@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2021, Camptocamp SA
+# Copyright (c) 2011-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -26,8 +26,14 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
 from c2c.template.config import config as configuration
-from pyramid.config import Configurator
+
+if TYPE_CHECKING:
+    from pyramid.config import Configurator
 
 
 def includeme(config: Configurator) -> None:

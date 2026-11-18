@@ -1,4 +1,4 @@
-# Copyright (c) 2014-2025, Camptocamp SA
+# Copyright (c) 2014-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -26,6 +26,8 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from __future__ import annotations
+
 import argparse
 import atexit
 import filecmp
@@ -36,15 +38,17 @@ import subprocess  # nosec
 import sys
 import tempfile
 from argparse import ArgumentParser, Namespace
-from collections.abc import Callable
 from json.decoder import JSONDecodeError
 from subprocess import call, check_call, check_output  # nosec
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
 import requests
 import yaml
 
 from c2cgeoportal_geoportal.lib.bashcolor import Color, colorize
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 REQUIRED_TEMPLATE_KEYS = ["package", "srid", "extent"]
 TEMPLATE_EXAMPLE = {"package": "${package}", "srid": "${srid}", "extent": "489246, 78873, 837119, 296543"}
@@ -107,9 +111,9 @@ class Step:
 
     def __call__(
         self,
-        current_step: Callable[["C2cUpgradeTool", int], None],
-    ) -> Callable[["C2cUpgradeTool"], None]:
-        def decorate(c2cupgradetool: "C2cUpgradeTool") -> None:
+        current_step: Callable[[C2cUpgradeTool, int], None],
+    ) -> Callable[[C2cUpgradeTool], None]:
+        def decorate(c2cupgradetool: C2cUpgradeTool) -> None:
             try:
                 if os.path.isfile(f".UPGRADE{self.step_number - 1}"):
                     os.unlink(f".UPGRADE{self.step_number - 1}")

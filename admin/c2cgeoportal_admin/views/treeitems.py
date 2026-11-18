@@ -26,9 +26,11 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from functools import partial
+from __future__ import annotations
 
-import sqlalchemy
+from functools import partial
+from typing import TYPE_CHECKING
+
 from c2cgeoform.views.abstract_views import ListField, SaveResponse
 from pyramid.view import view_config
 from sqlalchemy.orm import subqueryload
@@ -41,6 +43,9 @@ from c2cgeoportal_commons.models.main import (
     TreeGroup,
     TreeItem,
 )
+
+if TYPE_CHECKING:
+    import sqlalchemy
 
 _list_field = partial(ListField, TreeItem)
 

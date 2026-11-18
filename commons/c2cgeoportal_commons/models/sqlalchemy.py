@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2025, Camptocamp SA
+# Copyright (c) 2012-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -24,11 +24,15 @@
 # The views and conclusions contained in the software and documentation are those
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
-import json
-from typing import Any
+from __future__ import annotations
 
-from sqlalchemy.engine import Dialect
+import json
+from typing import TYPE_CHECKING, Any
+
 from sqlalchemy.types import VARCHAR, TypeDecorator, UserDefinedType
+
+if TYPE_CHECKING:
+    from sqlalchemy.engine import Dialect
 
 
 # get from https://docs.sqlalchemy.org/en/latest/orm/extensions/

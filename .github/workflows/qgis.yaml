@@ -36,7 +36,7 @@ jobs:
       - run: docker save --output=/tmp/tools.docker camptocamp/geomapfish-tools
 
       - name: Upload artifact
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: tools.docker
           path: /tmp/tools.docker
@@ -54,7 +54,9 @@ jobs:
         version:
           - '4.2'
           - 4.2-gdal3.13
-          - ltr
+          # ltr is based on Ubuntu 24.04 with Python 3.12, not compatible with the
+          # minimal Python version 3.14, see https://github.com/camptocamp/c2cgeoportal/pull/13538
+          # - ltr
           - lr
           - lr-debug
           # Used as default version
@@ -64,7 +66,7 @@ jobs:
     outputs:
       success-4-2: ${{ steps.success.outputs.success-4-2 }}
       success-4-2-gdal3-13: ${{ steps.success.outputs.success-4-2-gdal3-13 }}
-      success-ltr: ${{ steps.success.outputs.success-ltr }}
+      # success-ltr: ${{ steps.success.outputs.success-ltr }}
       success-lr: ${{ steps.success.outputs.success-lr }}
       success-lr-debug: ${{ steps.success.outputs.success-lr-debug }}
       success-master: ${{ steps.success.outputs.success-master }}
@@ -74,7 +76,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: '3.14'
       - run: python3 -m pip install --user --requirement=ci/requirements.txt
@@ -84,7 +86,7 @@ jobs:
         if: env.HAS_SECRETS == 'HAS_SECRETS'
 
       - name: Download artifacts (Docker images) from previous workflows
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: tools.docker
           path: /tmp/
@@ -136,7 +138,7 @@ jobs:
 
       - run: git diff --exit-code --patch > /tmp/dpkg-versions.patch || true
         if: failure()
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: Update QGIS ${{ matrix.version }} dpkg versions list.patch
           path: /tmp/dpkg-versions.patch
@@ -160,7 +162,7 @@ jobs:
     steps:
       - run: '[[ "${{ needs.main.outputs.success-4-2 }}" == "true" ]]'
       - run: '[[ "${{ needs.main.outputs.success-4-2-gdal3-13 }}" == "true" ]]'
-      - run: '[[ "${{ needs.main.outputs.success-ltr }}" == "true" ]]'
+      # - run: '[[ "${{ needs.main.outputs.success-ltr }}" == "true" ]]'
       - run: '[[ "${{ needs.main.outputs.success-lr }}" == "true" ]]'
       - run: '[[ "${{ needs.main.outputs.success-lr-debug }}" == "true" ]]'
       - run: '[[ "${{ needs.main.outputs.success-master }}" == "true" ]]'

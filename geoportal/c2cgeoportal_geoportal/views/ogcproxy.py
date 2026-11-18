@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2025, Camptocamp SA
+# Copyright (c) 2011-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -25,9 +25,11 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-import logging
+from __future__ import annotations
 
-import pyramid.request
+import logging
+from typing import TYPE_CHECKING
+
 from pyramid.httpexceptions import HTTPBadRequest
 from sqlalchemy.orm.exc import NoResultFound  # type: ignore[attr-defined]
 
@@ -35,6 +37,9 @@ from c2cgeoportal_commons.lib.url import Url, get_url2
 from c2cgeoportal_commons.models import DBSession, main
 from c2cgeoportal_geoportal.lib.caching import get_region
 from c2cgeoportal_geoportal.views.proxy import Proxy
+
+if TYPE_CHECKING:
+    import pyramid.request
 
 _CACHE_REGION = get_region("std")
 _LOG = logging.getLogger(__name__)

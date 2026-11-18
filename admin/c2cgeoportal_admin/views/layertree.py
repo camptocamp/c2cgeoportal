@@ -26,9 +26,10 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-from typing import Any
+from __future__ import annotations
 
-import pyramid.request
+from typing import TYPE_CHECKING, Any
+
 from c2cgeoform.views.abstract_views import DeleteResponse, ItemAction
 from pyramid.httpexceptions import HTTPNotFound
 from pyramid.view import view_config, view_defaults
@@ -42,6 +43,9 @@ from c2cgeoportal_commons.models.main import (
     Theme,
     TreeItem,
 )
+
+if TYPE_CHECKING:
+    import pyramid.request
 
 itemtypes_tables = {
     "theme": "themes",

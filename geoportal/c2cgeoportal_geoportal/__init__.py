@@ -25,16 +25,17 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-import datetime
+from __future__ import annotations
+
+import datetime as dt
 import importlib
 import json
 import logging
 import os
 import re
 import urllib.parse
-from collections.abc import Callable
 from functools import partial
-from typing import TYPE_CHECKING, Any, Optional, cast
+from typing import TYPE_CHECKING, Any, cast
 
 import c2cgeoform
 import c2cwsgiutils
@@ -43,7 +44,6 @@ import c2cwsgiutils.index
 import dateutil.parser
 import pyramid.config
 import pyramid.request
-import pyramid.response
 import simple_openid_connect.data
 import sqlalchemy
 import sqlalchemy.orm
@@ -55,7 +55,6 @@ from deform import Form
 from dogpile.cache import register_backend
 from papyrus.renderers import GeoJSON
 from prometheus_client.core import REGISTRY
-from pyramid.config import Configurator
 from pyramid.httpexceptions import HTTPException
 from pyramid.path import AssetResolver
 from pyramid_mako import add_mako_renderer
@@ -84,6 +83,11 @@ from c2cgeoportal_geoportal.lib.xsd import XSD
 from c2cgeoportal_geoportal.views.entry import Entry, canvas_view, custom_view
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
+
+    import pyramid.response
+    from pyramid.config import Configurator
+
     from c2cgeoportal_commons.models import (
         static,  # pylint: disable=ungrouped-imports,useless-suppression
     )
@@ -362,13 +366,13 @@ def is_valid_referrer(request: pyramid.request.Request, settings: dict[str, Any]
 
 def create_get_user_from_request(
     settings: dict[str, Any],
-) -> Callable[[pyramid.request.Request, str | None], Optional["static.User"]]:
+) -> Callable[[pyramid.request.Request, str | None], static.User | None]:
     """Get the get_user_from_request function."""
 
     def get_user_from_request(
         request: pyramid.request.Request,
         username: str | None = None,
-    ) -> Optional["static.User"]:
+    ) -> static.User | None:
         """
         Return the User object for the request.
 
@@ -460,8 +464,8 @@ def create_get_user_from_request(
                                 "access_token_expires is not offset-aware, "
                                 "make it offset-aware by replacing tzinfo with UTC",
                             )
-                            access_token_expires = access_token_expires.replace(tzinfo=datetime.UTC)
-                        if access_token_expires < datetime.datetime.now(tz=datetime.UTC):
+                            access_token_expires = access_token_expires.replace(tzinfo=dt.UTC)
+                        if access_token_expires < dt.datetime.now(tz=dt.UTC):
                             refresh_token = request.cookies.get("refresh_token")
                             if refresh_token is None:
                                 return None
@@ -475,9 +479,9 @@ def create_get_user_from_request(
                                         "make it offset-aware by replacing tzinfo with UTC",
                                     )
                                     refresh_token_expires = refresh_token_expires.replace(
-                                        tzinfo=datetime.UTC,
+                                        tzinfo=dt.UTC,
                                     )
-                                if refresh_token_expires < datetime.datetime.now(tz=datetime.UTC):
+                                if refresh_token_expires < dt.datetime.now(tz=dt.UTC):
                                     return None
                             token_response = oidc.get_oidc_client(
                                 request,

@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2025, Camptocamp SA
+# Copyright (c) 2021-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -25,10 +25,14 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-from typing import cast
+from __future__ import annotations
 
-from pyramid.i18n import TranslationString
+from typing import TYPE_CHECKING, cast
+
 from pyramid.threadlocal import get_current_request
+
+if TYPE_CHECKING:
+    from pyramid.i18n import TranslationString
 
 
 class Literal:

@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/camptocamp/tag-publish/1.3.3/tag_publish/schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/camptocamp/tag-publish/1.3.4/tag_publish/schema.json
 
 docker:
   images:
@@ -67,10 +67,12 @@ docker:
       tags:
         - gmf{version}-qgis4.2
     # all versions
-    - name: camptocamp/geomapfish-qgisserver
-      group: qgis-ltr
-      tags:
-        - gmf{version}-qgisltr
+    # ltr is based on Ubuntu 24.04 with Python 3.12, not compatible with the
+    # minimal Python version 3.14, see https://github.com/camptocamp/c2cgeoportal/pull/13538
+    # - name: camptocamp/geomapfish-qgisserver
+    #   group: qgis-ltr
+    #   tags:
+    #     - gmf{version}-qgisltr
     - name: camptocamp/geomapfish-qgisserver
       group: qgis-lr
       tags:

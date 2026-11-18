@@ -8,11 +8,13 @@
 
 import logging.config
 import os
-from typing import Any, TextIO
+from typing import TYPE_CHECKING, Any, TextIO
 
 import c2cwsgiutils.pyramid_logging
-import qgis.server
 from qgis.core import Qgis, QgsMessageLog
+
+if TYPE_CHECKING:
+    import qgis.server
 
 SERVER_IFACE: qgis.server.QgsServerInterface = None
 

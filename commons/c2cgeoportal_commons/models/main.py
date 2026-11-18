@@ -30,10 +30,13 @@ import enum
 import logging
 import os
 import re
-from datetime import datetime
-from typing import Any, Literal, Optional, cast, get_args
 
-import pyramid.request
+# The `datetime` import is used in a `Mapped[datetime]` annotation: SQLAlchemy
+# resolves the class annotations at runtime, so it cannot be moved into the
+# `TYPE_CHECKING` block.
+from datetime import datetime
+from typing import TYPE_CHECKING, Any, Literal, cast, get_args
+
 import sqlalchemy.orm.base
 from c2c.template.config import config
 from geoalchemy2 import Geometry, WKBElement, WKTElement
@@ -49,6 +52,9 @@ import c2cgeoportal_commons.lib.literal
 from c2cgeoportal_commons.lib.url import get_url2
 from c2cgeoportal_commons.models import Base, _, cache_invalidate_cb
 from c2cgeoportal_commons.models.sqlalchemy import JSONEncodedDict, TsVector
+
+if TYPE_CHECKING:
+    import pyramid.request
 
 try:
     import colander
@@ -381,7 +387,7 @@ class TreeItem(Base):  # type: ignore[valid-type,misc]
 
     @property
     # Better: def parents(self) -> List[TreeGroup]:
-    def parents(self) -> list["TreeItem"]:
+    def parents(self) -> list[TreeItem]:
         return [c.treegroup for c in self.parents_relation]
 
     def is_in_interface(self, name: str) -> bool:
@@ -390,7 +396,7 @@ class TreeItem(Base):  # type: ignore[valid-type,misc]
 
         return any(interface.name == name for interface in self.interfaces)
 
-    def get_metadata(self, name: str) -> list["Metadata"]:
+    def get_metadata(self, name: str) -> list[Metadata]:
         return [metadata for metadata in self.metadatas if metadata.name == name]
 
     def __init__(self, name: str = "") -> None:
@@ -459,7 +465,7 @@ class LayergroupTreeitem(Base):  # type: ignore[valid-type,misc]
 
     def __init__(
         self,
-        group: Optional["TreeGroup"] = None,
+        group: TreeGroup | None = None,
         item: TreeItem | None = None,
         ordering: int = 0,
     ) -> None:

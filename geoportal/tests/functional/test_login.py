@@ -253,12 +253,8 @@ class TestLoginView(TestCase):
             login.change_password()
 
     def test_change_password_good_is_password_changed(self) -> None:
-        import sys
 
-        if sys.version_info >= (3, 13):
-            import crypt_r as crypt
-        else:
-            import crypt
+        import crypt_r as crypt
 
         from c2cgeoportal_geoportal.views.login import Login
 

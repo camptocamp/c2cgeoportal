@@ -26,24 +26,29 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import datetime
+from __future__ import annotations
+
+import datetime as dt
 import ipaddress
 import json
 import logging
 import re
-from collections.abc import Iterable
 from string import Formatter
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
 import dateutil
 import pyramid.request
-import pyramid.response
 from pyramid.interfaces import IRoutePregenerator
 from zope.interface import implementer
 
 from c2cgeoportal_commons.lib.url import get_url2
 from c2cgeoportal_geoportal.lib.cacheversion import get_cache_version
 from c2cgeoportal_geoportal.lib.caching import get_region
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable
+
+    import pyramid.response
 
 _LOG = logging.getLogger(__name__)
 _CACHE_REGION = get_region("std")
@@ -92,27 +97,27 @@ def get_typed(
         elif type_["type"] == "date":
             date = dateutil.parser.parse(
                 value,
-                default=datetime.datetime(1, 1, 1, 0, 0, 0, tzinfo=datetime.UTC),
+                default=dt.datetime(1, 1, 1, 0, 0, 0, tzinfo=dt.UTC),
             )
-            if date.time() != datetime.time(0, 0, 0):
+            if date.time() != dt.time(0, 0, 0):
                 errors.add(f"{prefix}The date attribute '{name}'='{value}' should not have any time")
             else:
-                return datetime.date.strftime(date.date(), "%Y-%m-%d")
+                return dt.date.strftime(date.date(), "%Y-%m-%d")
         elif type_["type"] == "time":
             date = dateutil.parser.parse(
                 value,
-                default=datetime.datetime(1, 1, 1, 0, 0, 0, tzinfo=datetime.UTC),
+                default=dt.datetime(1, 1, 1, 0, 0, 0, tzinfo=dt.UTC),
             )
-            if date.date() != datetime.date(1, 1, 1):
+            if date.date() != dt.date(1, 1, 1):
                 errors.add(f"{prefix}The time attribute '{name}'='{value}' should not have any date")
             else:
-                return datetime.time.strftime(date.time(), "%H:%M:%S")
+                return dt.time.strftime(date.time(), "%H:%M:%S")
         elif type_["type"] == "datetime":
             date = dateutil.parser.parse(
                 value,
-                default=datetime.datetime(1, 1, 1, 0, 0, 0, tzinfo=datetime.UTC),
+                default=dt.datetime(1, 1, 1, 0, 0, 0, tzinfo=dt.UTC),
             )
-            return datetime.datetime.strftime(date, "%Y-%m-%dT%H:%M:%S")
+            return dt.datetime.strftime(date, "%Y-%m-%dT%H:%M:%S")
         elif type_["type"] == "url":
             url = get_url2(f"{prefix}The attribute '{name}'", value, request, errors)
             return url.url() if url else ""

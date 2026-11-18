@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2025, Camptocamp SA
+# Copyright (c) 2011-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -25,19 +25,24 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
+from __future__ import annotations
+
 import json
 import logging
 import os
 import subprocess
-from collections.abc import Mapping
 from time import sleep
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 from urllib.parse import urljoin
 
 import c2cwsgiutils.health_check
 import pyramid.config
-import pyramid.request
 import requests
+
+if TYPE_CHECKING:
+    from collections.abc import Mapping
+
+    import pyramid.request
 
 _LOG = logging.getLogger(__name__)
 

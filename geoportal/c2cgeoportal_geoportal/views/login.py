@@ -26,19 +26,19 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from __future__ import annotations
+
 import json
 import logging
 import secrets
 import string
 import sys
 import urllib.parse
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
 import pkce
 import pyotp
 import pyramid.request
-import pyramid.response
-import simple_openid_connect.client
 from pyramid.httpexceptions import (
     HTTPBadRequest,
     HTTPForbidden,
@@ -61,6 +61,10 @@ from c2cgeoportal_geoportal import is_allowed_url, is_valid_referrer
 from c2cgeoportal_geoportal.lib import get_setting, is_intranet, oauth2, oidc
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
 from c2cgeoportal_geoportal.lib.functionality import get_functionality
+
+if TYPE_CHECKING:
+    import pyramid.response
+    import simple_openid_connect.client
 
 _LOG = logging.getLogger(__name__)
 

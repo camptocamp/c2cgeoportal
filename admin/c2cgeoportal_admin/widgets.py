@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2025, Camptocamp SA
+# Copyright (c) 2018-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -25,15 +25,19 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-from typing import Any
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, Any
 
 import colander
-import pyramid.request
 from colander import Mapping, SchemaNode
 from deform import widget
 from deform.widget import MappingWidget, SequenceWidget
 
 from c2cgeoportal_commons.models.main import TreeItem
+
+if TYPE_CHECKING:
+    import pyramid.request
 
 registry = widget.default_resource_registry
 registry.set_js_resources(

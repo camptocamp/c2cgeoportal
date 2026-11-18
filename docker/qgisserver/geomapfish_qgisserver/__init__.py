@@ -9,11 +9,14 @@
 import logging
 import sys
 import traceback
+from typing import TYPE_CHECKING
 
-import qgis.server
 from qgis.core import Qgis, QgsMessageLog
 
 from . import gmf_logging
+
+if TYPE_CHECKING:
+    import qgis.server
 
 _LOG = logging.getLogger(__name__)
 

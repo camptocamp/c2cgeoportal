@@ -21,17 +21,17 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+from __future__ import annotations
+
 import logging
 from typing import TYPE_CHECKING, Any
 from unittest.mock import patch
 
-import pyramid.request
 import pytest
 import sqlalchemy.orm
 import transaction
 from c2c.template.config import config as configuration
 from pyramid.testing import DummyRequest
-from sqlalchemy.orm.session import Session, SessionTransaction
 
 from c2cgeoportal_commons.testing import (
     generate_mappers,
@@ -47,6 +47,9 @@ _LOG = logging.getLogger(__name__)
 mapserv_url = "http://mapserver:8080/"
 
 if TYPE_CHECKING:
+    import pyramid.request
+    from sqlalchemy.orm.session import Session, SessionTransaction
+
     from c2cgeoportal_commons.models import main, static
 
 
@@ -121,7 +124,7 @@ def dummy_request(dbsession_old) -> pyramid.request.Request:
 
 
 @pytest.fixture
-def default_ogcserver(dbsession_old, transact_old) -> "main.OGCServer":
+def default_ogcserver(dbsession_old, transact_old) -> main.OGCServer:
     from c2cgeoportal_commons.models.main import OGCServer
 
     del transact_old
@@ -138,7 +141,7 @@ def default_ogcserver(dbsession_old, transact_old) -> "main.OGCServer":
 
 
 @pytest.fixture
-def some_user(dbsession_old, transact_old) -> "static.User":
+def some_user(dbsession_old, transact_old) -> static.User:
     from c2cgeoportal_commons.models.static import User
 
     del transact_old
@@ -151,7 +154,7 @@ def some_user(dbsession_old, transact_old) -> "static.User":
 
 
 @pytest.fixture
-def admin_user(dbsession_old, transact_old) -> "static.User":
+def admin_user(dbsession_old, transact_old) -> static.User:
     from c2cgeoportal_commons.models.main import Role
     from c2cgeoportal_commons.models.static import User
 
@@ -166,7 +169,7 @@ def admin_user(dbsession_old, transact_old) -> "static.User":
 
 
 @pytest.fixture
-def default_ogcserver_2(dbsession: Session) -> "main.OGCServer":
+def default_ogcserver_2(dbsession: Session) -> main.OGCServer:
     from c2cgeoportal_commons.models.main import OGCServer
 
     dbsession.flush()

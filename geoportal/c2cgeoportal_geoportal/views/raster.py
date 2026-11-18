@@ -26,6 +26,8 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from __future__ import annotations
+
 import decimal
 import json
 import logging
@@ -37,19 +39,19 @@ import urllib.parse
 from json.decoder import JSONDecodeError
 from typing import TYPE_CHECKING, Any
 
-import numpy as np
-import pyramid.request
 import requests
 import zope.event.classhandler
 from pyramid.httpexceptions import HTTPBadRequest, HTTPInternalServerError, HTTPNotFound
 from pyramid.view import view_config
-from rasterio.io import DatasetReader
 
 from c2cgeoportal_commons.models import InvalidateCacheEvent
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
 
 if TYPE_CHECKING:
     import fiona.collection
+    import numpy as np
+    import pyramid.request
+    from rasterio.io import DatasetReader
 
 _LOG = logging.getLogger(__name__)
 
@@ -57,7 +59,7 @@ _LOG = logging.getLogger(__name__)
 class Raster:
     """All the view concerned the raster (point, not the profile profile)."""
 
-    data: dict[str, "fiona.collection.Collection | DatasetReader"] = {}  # noqa: RUF012
+    data: dict[str, fiona.collection.Collection | DatasetReader] = {}  # noqa: RUF012
     _data_lock = threading.RLock()
 
     def __init__(self, request: pyramid.request.Request) -> None:
@@ -121,7 +123,7 @@ class Raster:
         set_common_headers(self.request, "raster", Cache.PUBLIC_NO)
         return result
 
-    def _get_data(self, layer: dict[str, Any], name: str) -> "fiona.collection.Collection | DatasetReader":
+    def _get_data(self, layer: dict[str, Any], name: str) -> fiona.collection.Collection | DatasetReader:
         with self._data_lock:
             if name not in self.data:
                 path = layer["file"]

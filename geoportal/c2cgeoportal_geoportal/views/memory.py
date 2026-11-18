@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2025, Camptocamp SA
+# Copyright (c) 2018-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -26,12 +26,13 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from __future__ import annotations
+
 import logging
 import os
 import time
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
-import pyramid.request
 from c2cwsgiutils import broadcast
 from c2cwsgiutils.auth import auth_view
 from c2cwsgiutils.debug import get_size
@@ -39,6 +40,9 @@ from pyramid.view import view_config
 
 from c2cgeoportal_geoportal.lib.caching import MEMORY_CACHE_DICT
 from c2cgeoportal_geoportal.views import raster
+
+if TYPE_CHECKING:
+    import pyramid.request
 
 _LOG = logging.getLogger(__name__)
 

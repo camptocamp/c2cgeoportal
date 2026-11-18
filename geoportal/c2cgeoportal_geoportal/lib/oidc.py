@@ -25,13 +25,14 @@
 # of the authors and should not be interpreted as representing official policies,
 # either expressed or implied, of the FreeBSD Project.
 
-import datetime
+from __future__ import annotations
+
+import datetime as dt
 import json
 import logging
 import string
-from typing import TYPE_CHECKING, Any, NamedTuple, Optional, TypedDict, Union
+from typing import TYPE_CHECKING, Any, NamedTuple, TypedDict
 
-import pyramid.request
 import simple_openid_connect.client
 import simple_openid_connect.data
 from pyramid.httpexceptions import (
@@ -44,6 +45,8 @@ from pyramid.security import remember
 from c2cgeoportal_geoportal.lib.caching import get_region
 
 if TYPE_CHECKING:
+    import pyramid.request
+
     from c2cgeoportal_commons.models import main, static
 
 _LOG = logging.getLogger(__name__)
@@ -58,8 +61,8 @@ class DynamicUser(NamedTuple):
     username: str
     display_name: str
     email: str
-    settings_role: Optional["main.Role"]
-    roles: list["main.Role"]
+    settings_role: main.Role | None
+    roles: list[main.Role]
 
 
 @_CACHE_REGION_OBJ.cache_on_arguments()
@@ -152,7 +155,7 @@ def get_user_from_remember(
     request: pyramid.request.Request,
     remember_object: OidcRememberObject,
     update_create_user: bool = False,
-) -> Union["static.User", DynamicUser] | None:
+) -> static.User | DynamicUser | None:
     """
     Create a user from the remember object filled from `get_remember_from_user_info`.
 
@@ -309,15 +312,12 @@ class OidcRemember:
         )
         remember_object: OidcRememberObject = {
             "access_token_expires": (
-                datetime.datetime.now(tz=datetime.UTC) + datetime.timedelta(seconds=token_response.expires_in)
+                dt.datetime.now(tz=dt.UTC) + dt.timedelta(seconds=token_response.expires_in)
             ).isoformat(),
             "refresh_token_expires": (
                 None
                 if refresh_token_expires_in is None
-                else (
-                    datetime.datetime.now(tz=datetime.UTC)
-                    + datetime.timedelta(seconds=refresh_token_expires_in)
-                ).isoformat()
+                else (dt.datetime.now(tz=dt.UTC) + dt.timedelta(seconds=refresh_token_expires_in)).isoformat()
             ),
             "username": None,
             "display_name": None,

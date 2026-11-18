@@ -23,6 +23,8 @@
 
 """Pyramid application test package."""
 
+from __future__ import annotations
+
 import logging
 from configparser import ConfigParser
 from typing import TYPE_CHECKING, Any
@@ -33,7 +35,6 @@ import transaction
 import webob.acceptparse
 from c2c.template.config import config as configuration
 from pyramid import testing
-from sqlalchemy.orm.session import Session
 
 import c2cgeoportal_geoportal
 import c2cgeoportal_geoportal.lib
@@ -42,6 +43,8 @@ from c2cgeoportal_commons import models
 from c2cgeoportal_geoportal.lib import caching
 
 if TYPE_CHECKING:
+    from sqlalchemy.orm.session import Session
+
     from c2cgeoportal_commons.models import main, static
 
 _LOG = logging.getLogger(__name__)
@@ -177,7 +180,7 @@ def teardown_common() -> None:
     models.DBSessions = {}
 
 
-def create_default_ogcserver(session: Session) -> "main.OGCServer":
+def create_default_ogcserver(session: Session) -> main.OGCServer:
     from c2cgeoportal_commons.models.main import OGCServer
 
     ogcserver = session.query(OGCServer).filter(OGCServer.name == "__test_ogc_server").one_or_none()
@@ -191,7 +194,7 @@ def create_default_ogcserver(session: Session) -> "main.OGCServer":
     return ogcserver
 
 
-def _get_user(username: str) -> "static.User":
+def _get_user(username: str) -> static.User:
     from c2cgeoportal_commons.models import DBSession
     from c2cgeoportal_commons.models.static import User
 

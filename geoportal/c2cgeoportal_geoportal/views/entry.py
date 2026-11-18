@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2025, Camptocamp SA
+# Copyright (c) 2011-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -26,18 +26,22 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from __future__ import annotations
+
 import glob
 import logging
 import os
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-import pyramid.request
 from bs4 import BeautifulSoup
 from pyramid.i18n import TranslationStringFactory
 from pyramid.view import view_config
 
 from c2cgeoportal_geoportal.lib.caching import get_region
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
+
+if TYPE_CHECKING:
+    import pyramid.request
 
 _ = TranslationStringFactory("c2cgeoportal")
 _LOG = logging.getLogger(__name__)

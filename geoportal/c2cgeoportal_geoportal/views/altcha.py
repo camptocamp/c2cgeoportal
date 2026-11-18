@@ -26,16 +26,20 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
-import datetime
-import logging
-from typing import Any, cast
+from __future__ import annotations
 
-import pyramid.request
+import datetime as dt
+import logging
+from typing import TYPE_CHECKING, Any, cast
+
 from altcha import create_challenge, verify_solution
 from pyramid.httpexceptions import HTTPBadRequest
 from pyramid.view import view_config
 
 from c2cgeoportal_geoportal.lib.common_headers import Cache, set_common_headers
+
+if TYPE_CHECKING:
+    import pyramid.request
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -51,8 +55,7 @@ def altcha_challenge(request: pyramid.request.Request) -> dict[str, Any]:
     challenge = create_challenge(
         algorithm=settings.get("algorithm", "PBKDF2/SHA-256"),
         cost=settings.get("cost", 5000),
-        expires_at=datetime.datetime.now(datetime.UTC)
-        + datetime.timedelta(seconds=settings.get("expires_in", 300)),
+        expires_at=dt.datetime.now(dt.UTC) + dt.timedelta(seconds=settings.get("expires_in", 300)),
         hmac_secret=settings.get("hmac_secret"),
     )
     set_common_headers(request, "altcha", Cache.PRIVATE_NO)

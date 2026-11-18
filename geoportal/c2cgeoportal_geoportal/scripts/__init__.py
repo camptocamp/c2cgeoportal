@@ -1,4 +1,4 @@
-# Copyright (c) 2011-2025, Camptocamp SA
+# Copyright (c) 2011-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -26,16 +26,21 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+from __future__ import annotations
+
 import os
-from argparse import ArgumentParser, Namespace
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import c2cwsgiutils.setup_process
-import pyramid.config
-import transaction
 import zope.sqlalchemy
 from sqlalchemy import engine_from_config
 from sqlalchemy.orm import Session, configure_mappers, sessionmaker
+
+if TYPE_CHECKING:
+    from argparse import ArgumentParser, Namespace
+
+    import pyramid.config
+    import transaction
 
 
 def fill_arguments(parser: ArgumentParser, use_attribute: bool = False) -> None:

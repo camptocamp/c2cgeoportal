@@ -24,14 +24,18 @@
 
 # pylint: disable=no-self-use
 
+from __future__ import annotations
+
 import re
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import pytest
-from sqlalchemy.orm import Session, SessionTransaction
-from webtest import TestApp as WebTestApp  # Avoid warning with pytest
 
 from . import AbstractViewsTests, factory_build_layers, get_test_default_layers
+
+if TYPE_CHECKING:
+    from sqlalchemy.orm import Session, SessionTransaction
+    from webtest import TestApp as WebTestApp
 
 
 @pytest.fixture
