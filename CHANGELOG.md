@@ -1,3 +1,11 @@
+##### 2.10.rc.12
+
+- Document the user settings service, refresh the headers services list and add a documentation rule [c2cgeoportal#13685](https://github.com/camptocamp/c2cgeoportal/pull/13685)
+- Audit Dpkg 2.10 [c2cgeoportal#13704](https://github.com/camptocamp/c2cgeoportal/pull/13704)
+- Interpret the internal config:// schema in the OGC server URLs of the themes [c2cgeoportal#13705](https://github.com/camptocamp/c2cgeoportal/pull/13705)
+- Update used ngeo [c2cgeoportal#13707](https://github.com/camptocamp/c2cgeoportal/pull/13707)
+- Audit Snyk check/fix 2.10 [ngeo#10303](https://github.com/camptocamp/ngeo/pull/10303)
+
 ##### 2.10.rc.11
 
 - Update CI dependencies (2.10) [c2cgeoportal#13711](https://github.com/camptocamp/c2cgeoportal/pull/13711)
