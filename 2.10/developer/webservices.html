@@ -418,6 +418,39 @@ or <code class="docutils literal notranslate"><span class="pre">background_layer
 </section>
 </section>
 </section>
+<section id="user-settings">
+<h2>User settings<a class="headerlink" href="#user-settings" title="Link to this heading">¶</a></h2>
+<p>Used to store and retrieve the settings of the logged user, as a free-form JSON object, they
+are persisted in the database and can then be synchronized between all the devices of the user.</p>
+<section id="get">
+<h3>Get<a class="headerlink" href="#get" title="Link to this heading">¶</a></h3>
+<p>URL: <code class="docutils literal notranslate"><span class="pre">.../user/settings</span></code></p>
+<p>Method: <code class="docutils literal notranslate"><span class="pre">GET</span></code></p>
+<p>The result is the settings of the logged user as a JSON object, an empty object if the user has
+no settings yet.</p>
+<p>Result HTTP code:</p>
+<ul class="simple">
+<li><p>200 Success: Success.</p></li>
+<li><p>401 Unauthorized: When the user is not authenticated.</p></li>
+</ul>
+</section>
+<section id="update">
+<h3>Update<a class="headerlink" href="#update" title="Link to this heading">¶</a></h3>
+<p>URL: <code class="docutils literal notranslate"><span class="pre">.../user/settings</span></code></p>
+<p>Method: <code class="docutils literal notranslate"><span class="pre">POST</span></code></p>
+<p>The body must be a JSON object with the content type <code class="docutils literal notranslate"><span class="pre">application/json</span></code>, it replaces all the
+settings of the logged user and the updated settings are returned in the response.</p>
+<p>The size of the payload is limited by the <code class="docutils literal notranslate"><span class="pre">user_settings.max_payload_size</span></code> configuration
+(<code class="docutils literal notranslate"><span class="pre">65536</span></code> by default).</p>
+<p>Result HTTP code:</p>
+<ul class="simple">
+<li><p>200 Success: Success.</p></li>
+<li><p>400 Bad request: When the body is not a valid JSON object.</p></li>
+<li><p>401 Unauthorized: When the user is not authenticated.</p></li>
+<li><p>413 Request entity too large: When the payload is larger than the configured maximum size.</p></li>
+</ul>
+</section>
+</section>
 <section id="full-text-search">
 <span id="developer-webservices-fts"></span><h2>Full-text search<a class="headerlink" href="#full-text-search" title="Link to this heading">¶</a></h2>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../search</span></code></p>
@@ -715,16 +748,16 @@ and to the used language (entries without language are always kept).</p>
 </div>
 </section>
 </section>
-<section id="get">
-<h3>Get<a class="headerlink" href="#get" title="Link to this heading">¶</a></h3>
+<section id="id14">
+<h3>Get<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h3>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../s/&lt;ref&gt;</span></code></p>
 <p>Result: HTTP 302 redirect to the original URL.</p>
 </section>
 <section id="fetch">
 <h3>Fetch<a class="headerlink" href="#fetch" title="Link to this heading">¶</a></h3>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../short/get/&lt;ref&gt;</span></code></p>
-<section id="id14">
-<h4>Result<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h4>
+<section id="id15">
+<h4>Result<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">"long_url"</span><span class="p">:</span> <span class="o">&lt;</span><span class="n">the</span> <span class="n">original</span> <span class="n">URL</span><span class="o">&gt;</span>
 <span class="p">}</span>
@@ -735,12 +768,12 @@ and to the used language (entries without language are always kept).</p>
 </section>
 <section id="feedback">
 <h2>Feedback<a class="headerlink" href="#feedback" title="Link to this heading">¶</a></h2>
-<section id="id15">
-<h3>Create<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h3>
+<section id="id16">
+<h3>Create<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h3>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../feedback</span></code></p>
 <p>Method <code class="docutils literal notranslate"><span class="pre">POST</span></code></p>
-<section id="id16">
-<h4>Parameters<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h4>
+<section id="id17">
+<h4>Parameters<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">user_agent</span></code>: User agent string.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">application</span></code>: Application identifier.</p></li>
@@ -750,8 +783,8 @@ and to the used language (entries without language are always kept).</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">feedback</span></code>: The feedback text.</p></li>
 </ul>
 </section>
-<section id="id17">
-<h4>Result<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h4>
+<section id="id18">
+<h4>Result<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">"success"</span><span class="p">:</span> <span class="n">true</span>
 <span class="p">}</span>
@@ -768,8 +801,8 @@ against spam.</p>
 <h3>Challenge<a class="headerlink" href="#challenge" title="Link to this heading">¶</a></h3>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../altcha/challenge</span></code></p>
 <p>Method <code class="docutils literal notranslate"><span class="pre">GET</span></code></p>
-<section id="id18">
-<h4>Result<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h4>
+<section id="id19">
+<h4>Result<a class="headerlink" href="#id19" title="Link to this heading">¶</a></h4>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">"parameters"</span><span class="p">:</span> <span class="p">{</span>
         <span class="s2">"algorithm"</span><span class="p">:</span> <span class="s2">"PBKDF2/SHA-256"</span><span class="p">,</span>
@@ -810,8 +843,8 @@ and the <code class="docutils literal notranslate"><span class="pre">&lt;geomB&g
 <p>This service create and returns the list of strings to translate for the localization in gettext POT format.</p>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../locale.pot</span></code></p>
 <p>Method: <code class="docutils literal notranslate"><span class="pre">GET</span></code></p>
-<section id="id19">
-<h3>Parameters<a class="headerlink" href="#id19" title="Link to this heading">¶</a></h3>
+<section id="id20">
+<h3>Parameters<a class="headerlink" href="#id20" title="Link to this heading">¶</a></h3>
 <blockquote>
 <div><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">interfaces</span></code>: List of interfaces we want to use.</p></li>
@@ -828,8 +861,8 @@ and the <code class="docutils literal notranslate"><span class="pre">&lt;geomB&g
 <h2>Map server proxy<a class="headerlink" href="#map-server-proxy" title="Link to this heading">¶</a></h2>
 <p>This is a proxy to access OGC servers.</p>
 <p>URL: <code class="docutils literal notranslate"><span class="pre">.../mapserv_proxy</span></code> or <code class="docutils literal notranslate"><span class="pre">.../mapserv_proxy/&lt;ogcserver&gt;/...</span></code></p>
-<section id="id20">
-<h3>Parameters<a class="headerlink" href="#id20" title="Link to this heading">¶</a></h3>
+<section id="id21">
+<h3>Parameters<a class="headerlink" href="#id21" title="Link to this heading">¶</a></h3>
 <blockquote>
 <div><ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">ogcserver</span></code>: The OGC server name to use.</p></li>
