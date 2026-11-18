@@ -37,7 +37,7 @@ import sys
 import time
 from collections import Counter
 from math import sqrt
-from typing import TYPE_CHECKING, Any, Optional, cast
+from typing import TYPE_CHECKING, Any, cast
 
 import dogpile.cache.api
 import pyramid.httpexceptions
@@ -955,7 +955,7 @@ class Theme:
         ogc_server: main.OGCServer,
         preload: bool = False,
         cache: bool = True,
-    ) -> tuple[Optional[lxml_etree.Element], set[str]]:  # noqa: UP045 # pylint: disable=c-extension-no-member
+    ) -> tuple[lxml_etree.Element | None, set[str]]:  # pylint: disable=c-extension-no-member
         errors = set()
 
         wfs_url = wfs_url.clone()

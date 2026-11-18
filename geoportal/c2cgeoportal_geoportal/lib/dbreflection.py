@@ -30,7 +30,7 @@ from __future__ import annotations
 import random
 import threading
 import warnings
-from typing import TYPE_CHECKING, Any, Union
+from typing import TYPE_CHECKING, Any
 
 import sqlalchemy.ext.declarative
 from papyrus.geo_interface import GeoInterface
@@ -76,7 +76,7 @@ class _AssociationProxy:
         self,
         obj: sqlalchemy.ext.declarative.ConcreteBase,
         type_: sqlalchemy.ext.declarative.DeclarativeMeta | None = None,
-    ) -> Union[_AssociationProxy, str] | None:  # noqa: UP007
+    ) -> _AssociationProxy | str | None:
         if obj is None:
             # For "hybrid" descriptors that work both at the instance
             # and class levels we could return an SQL expression here.

@@ -31,7 +31,7 @@ import datetime as dt
 import json
 import logging
 import string
-from typing import TYPE_CHECKING, Any, NamedTuple, Optional, TypedDict, Union
+from typing import TYPE_CHECKING, Any, NamedTuple, TypedDict
 
 import simple_openid_connect.client
 import simple_openid_connect.data
@@ -61,7 +61,7 @@ class DynamicUser(NamedTuple):
     username: str
     display_name: str
     email: str
-    settings_role: Optional[main.Role]  # noqa: UP045
+    settings_role: main.Role | None
     roles: list[main.Role]
 
 
@@ -155,7 +155,7 @@ def get_user_from_remember(
     request: pyramid.request.Request,
     remember_object: OidcRememberObject,
     update_create_user: bool = False,
-) -> Union[static.User, DynamicUser] | None:  # noqa: UP007
+) -> static.User | DynamicUser | None:
     """
     Create a user from the remember object filled from `get_remember_from_user_info`.
 
