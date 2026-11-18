@@ -769,6 +769,26 @@ TimeMode = Literal["disabled", "value", "range"]
 TimeWidget = Literal["slider", "datepicker"]
 
 
+_OGCSERVER_URL_SCHEMAS_HELP = _(
+    """
+    <p>The <code>config://&lt;name&gt;</code> schema refers to one of the servers of the
+    <code>servers</code> section of the configuration, and the
+    <code>static://&lt;path&gt;</code> schema to a static view of the application. Those schemas are
+    internal to the application, they are interpreted before the URL is published in the themes, then
+    the client only ever gets a plain URL. The resolved value is displayed under the field once
+    saved.</p>
+    """
+)
+
+
+_OGCSERVER_PROTOCOL_HELP = _(
+    """
+    <p>It is published in the <code>uses</code> of the themes, it tells to the next generation
+    clients which protocol they have to use to build their requests.</p>
+    """
+)
+
+
 class OGCServer(Base):  # type: ignore[valid-type,misc]
     """The ogc_server table representation."""
 
@@ -781,9 +801,15 @@ class OGCServer(Base):  # type: ignore[valid-type,misc]
             _(
                 """
             <div class="help-block">
+                <p>An <code>OGC server</code> is a source of map (<code>WMS</code>) and of feature
+                (<code>WFS</code>) information. It is used by the <code>WMS layers</code> with the
+                <code>OGC server</code> field of the layer, and by the other layer types with the
+                <code>ogcServer</code> metadata, to query them or to print them in high quality.</p>
                 <p>This is the description of an OGC server (WMS/WFS).\n
                 For one server we try to create only one request when it is possible.</p>
-                <p>If you want to query the same server to get PNG and JPEG images,\n
+                <p>A <code>OGC server</code> should be defined for one given combination of URL,
+                authentication type and image type. If you want to query the same server to get PNG
+                and JPEG images,\n
                 you should define two <code>OGC servers</code>.</p>
                 <hr>
             </div>
@@ -830,8 +856,11 @@ class OGCServer(Base):  # type: ignore[valid-type,misc]
         info={
             "colanderalchemy": {
                 "title": _("Base URL"),
-                "description": _(
-                    "The OGC server URL, used at least to get the map, as a default for querying and editing.",
+                "description": c2cgeoportal_commons.lib.literal.LiteralConcat(
+                    _(
+                        "The OGC server URL, used at least to get the map, as a default for querying and editing.",
+                    ),
+                    _OGCSERVER_URL_SCHEMAS_HELP,
                 ),
             },
         },
@@ -858,7 +887,10 @@ class OGCServer(Base):  # type: ignore[valid-type,misc]
         info={
             "colanderalchemy": {
                 "title": _("Map protocol"),
-                "description": _("The protocol to use for the map requests. Not used by ngeo."),
+                "description": c2cgeoportal_commons.lib.literal.LiteralConcat(
+                    _("The protocol to use for the map requests. Not used by ngeo."),
+                    _OGCSERVER_PROTOCOL_HELP,
+                ),
                 "widget": SelectWidget(values=[(e, e) for e in get_args(OGCServerMapProtocol)]),
             },
         },
@@ -869,8 +901,11 @@ class OGCServer(Base):  # type: ignore[valid-type,misc]
         info={
             "colanderalchemy": {
                 "title": _("Query URL"),
-                "description": _(
-                    "The URL to use for the map query requests. If empty, the <code>Base URL</code> is used. Not used by ngeo.",
+                "description": c2cgeoportal_commons.lib.literal.LiteralConcat(
+                    _(
+                        "The URL to use for the map query requests. If empty, the <code>Base URL</code> is used. Not used by ngeo.",
+                    ),
+                    _OGCSERVER_URL_SCHEMAS_HELP,
                 ),
             },
         },
@@ -899,7 +934,10 @@ class OGCServer(Base):  # type: ignore[valid-type,misc]
         info={
             "colanderalchemy": {
                 "title": _("Query protocol"),
-                "description": _("The protocol to use for the feature query requests. Not used by ngeo."),
+                "description": c2cgeoportal_commons.lib.literal.LiteralConcat(
+                    _("The protocol to use for the feature query requests. Not used by ngeo."),
+                    _OGCSERVER_PROTOCOL_HELP,
+                ),
                 "widget": SelectWidget(values=[(e, e) for e in get_args(OGCServerFeatureProtocol)]),
             },
         },
@@ -910,8 +948,11 @@ class OGCServer(Base):  # type: ignore[valid-type,misc]
         info={
             "colanderalchemy": {
                 "title": _("Edit URL"),
-                "description": _(
-                    "The URL to use for the feature editing requests. If empty, the <code>Base URL</code> is used. Not used by ngeo.",
+                "description": c2cgeoportal_commons.lib.literal.LiteralConcat(
+                    _(
+                        "The URL to use for the feature editing requests. If empty, the <code>Base URL</code> is used. Not used by ngeo.",
+                    ),
+                    _OGCSERVER_URL_SCHEMAS_HELP,
                 ),
             },
         },
@@ -940,7 +981,10 @@ class OGCServer(Base):  # type: ignore[valid-type,misc]
         info={
             "colanderalchemy": {
                 "title": _("Edit protocol"),
-                "description": _("The protocol to use for the feature editing requests. Not used by ngeo."),
+                "description": c2cgeoportal_commons.lib.literal.LiteralConcat(
+                    _("The protocol to use for the feature editing requests. Not used by ngeo."),
+                    _OGCSERVER_PROTOCOL_HELP,
+                ),
                 "widget": SelectWidget(values=[(e, e) for e in get_args(OGCServerEditProtocol)]),
             },
         },
@@ -966,8 +1010,12 @@ class OGCServer(Base):  # type: ignore[valid-type,misc]
         info={
             "colanderalchemy": {
                 "title": _("Image type"),
-                "description": c2cgeoportal_commons.lib.literal.Literal(
+                "description": c2cgeoportal_commons.lib.literal.LiteralConcat(
                     _("The MIME type of the images (e.g.: <code>image/png</code>)."),
+                    _(
+                        "<p>It is published as <code>imageType</code> in the themes, and used as the "
+                        "<code>FORMAT</code> parameter of the <code>GetMap</code> requests.</p>",
+                    ),
                 ),
                 "widget": SelectWidget(values=[(e, e) for e in get_args(ImageType)]),
                 "column": 2,
@@ -979,8 +1027,11 @@ class OGCServer(Base):  # type: ignore[valid-type,misc]
         info={
             "colanderalchemy": {
                 "title": _("WFS URL"),
-                "description": _(
-                    "The WFS server URL. If empty, the <code>Base URL</code> is used. Not used by GeoGirafe.",
+                "description": c2cgeoportal_commons.lib.literal.LiteralConcat(
+                    _(
+                        "The WFS server URL. If empty, the <code>Base URL</code> is used. Not used by GeoGirafe.",
+                    ),
+                    _OGCSERVER_URL_SCHEMAS_HELP,
                 ),
                 "column": 2,
             },
@@ -991,7 +1042,14 @@ class OGCServer(Base):  # type: ignore[valid-type,misc]
         info={
             "colanderalchemy": {
                 "title": _("WFS support"),
-                "description": _("Whether WFS is supported by the server. Not used by GeoGirafe."),
+                "description": c2cgeoportal_commons.lib.literal.LiteralConcat(
+                    _("Whether WFS is supported by the server. Not used by GeoGirafe."),
+                    _(
+                        "<p>When enabled, the attributes of the layers of this server are read with a "
+                        "<code>DescribeFeatureType</code> request on the <code>WFS URL</code>, and "
+                        "published in the themes.</p>",
+                    ),
+                ),
                 "column": 2,
             },
         },
@@ -1001,7 +1059,13 @@ class OGCServer(Base):  # type: ignore[valid-type,misc]
         info={
             "colanderalchemy": {
                 "title": _("Single tile"),
-                "description": _("Whether to use the single tile mode (Legacy)."),
+                "description": c2cgeoportal_commons.lib.literal.LiteralConcat(
+                    _("Whether to use the single tile mode (Legacy)."),
+                    _(
+                        "<p>Published as <code>isSingleTile</code> in the themes, it is not used by the "
+                        "next generation clients.</p>",
+                    ),
+                ),
                 "column": 2,
             },
         },
