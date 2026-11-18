@@ -1,3 +1,7 @@
+##### 2.9.0.631
+
+- [Backport 2.9] Move the demo notification after the Docker images publication [c2cgeoportal#13718](https://github.com/camptocamp/c2cgeoportal/pull/13718)
+
 ##### 2.9.0.630
 
 - Update used ngeo [c2cgeoportal#13706](https://github.com/camptocamp/c2cgeoportal/pull/13706)
