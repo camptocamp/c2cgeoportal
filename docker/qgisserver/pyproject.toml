@@ -6,7 +6,7 @@ python = ">=3.10,<4"
 c2cwsgiutils = { extras = ["broadcast"], version = "6.1.10" }
 papyrus = "2.6.2" # commons
 transaction = "5.1" # commons
-"c2c.template" = "2.5.0"
+"c2c.template" = "2.6.1"
 GeoAlchemy2 = "0.20.0"
 SQLAlchemy = "2.0.54" # commons
 "zope.event" = "6.2" # commons
