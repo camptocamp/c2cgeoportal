@@ -1,3 +1,8 @@
+##### 2.10.rc.14
+
+- [Backport 2.10] Move the demo notification after the Docker images publication [c2cgeoportal#13717](https://github.com/camptocamp/c2cgeoportal/pull/13717)
+- Document the OGC server fields in the administration interface [c2cgeoportal#13730](https://github.com/camptocamp/c2cgeoportal/pull/13730)
+
 ##### 2.10.rc.13
 
 - [Backport 2.10] Update c2c.template to 2.6.1 to fix the rendering of templates given with absolute paths [c2cgeoportal#13723](https://github.com/camptocamp/c2cgeoportal/pull/13723)
