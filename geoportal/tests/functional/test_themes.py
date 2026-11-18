@@ -41,7 +41,6 @@ from tests.functional import teardown_common as teardown_module  # noqa
 def themes_setup(dbsession, transact, default_ogcserver):
     from c2cgeoportal_commons.models.main import (
         OGCSERVER_AUTH_NOAUTH,
-        OGCSERVER_AUTH_STANDARD,
         Dimension,
         Functionality,
         Interface,
@@ -93,11 +92,10 @@ def themes_setup(dbsession, transact, default_ogcserver):
     ogc_server_ogc_api = OGCServer(
         name="__test_ogc_server_ogc_api",
         url=mapserv_url,
-        type="mapserver",
+        type_="mapserver",
         image_type="image/png",
+        wfs_support=False,
     )
-    ogc_server_ogc_api.wfs_support = False
-    ogc_server_ogc_api.auth = OGCSERVER_AUTH_STANDARD
     ogc_server_ogc_api.map_protocol = "OGC API - Maps"
     ogc_server_ogc_api.query_protocol = "OGC API - Features"
     ogc_server_ogc_api.edit_protocol = "OGC API - Features"
