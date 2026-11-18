@@ -39,7 +39,7 @@ from sqlalchemy.orm.properties import ColumnProperty
 from sqlalchemy.orm.util import class_mapper
 
 if TYPE_CHECKING:
-    import xml.etree.ElementTree  # nosec  # noqa: ICN001
+    import xml.etree.ElementTree as ET  # nosec
     from collections.abc import Callable
 
     import sqlalchemy.sql.schema
@@ -58,10 +58,9 @@ class XSDGenerator(PapyrusXSDGenerator):  # type: ignore[misc]
         self,
         include_primary_keys: bool = False,
         include_foreign_keys: bool = False,
-        sequence_callback: Callable[[xml.etree.ElementTree.TreeBuilder, type[str]], None] | None = None,
+        sequence_callback: Callable[[ET.TreeBuilder, type[str]], None] | None = None,
         element_callback: (
-            Callable[[xml.etree.ElementTree.TreeBuilder, sqlalchemy.sql.expression.ColumnElement[Any]], None]
-            | None
+            Callable[[ET.TreeBuilder, sqlalchemy.sql.expression.ColumnElement[Any]], None] | None
         ) = None,
     ) -> None:
         super().__init__(
@@ -147,10 +146,9 @@ class XSD:
         self,
         include_primary_keys: bool = False,
         include_foreign_keys: bool = False,
-        sequence_callback: Callable[[xml.etree.ElementTree.TreeBuilder, type[str]], None] | None = None,
+        sequence_callback: Callable[[ET.TreeBuilder, type[str]], None] | None = None,
         element_callback: (
-            Callable[[xml.etree.ElementTree.TreeBuilder, sqlalchemy.sql.expression.ColumnElement[Any]], None]
-            | None
+            Callable[[ET.TreeBuilder, sqlalchemy.sql.expression.ColumnElement[Any]], None] | None
         ) = None,
     ) -> None:
         self.generator = XSDGenerator(

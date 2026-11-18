@@ -27,7 +27,7 @@
 
 from __future__ import annotations
 
-import datetime  # noqa: ICN001
+import datetime as dt
 import importlib
 import json
 import logging
@@ -464,8 +464,8 @@ def create_get_user_from_request(
                                 "access_token_expires is not offset-aware, "
                                 "make it offset-aware by replacing tzinfo with UTC",
                             )
-                            access_token_expires = access_token_expires.replace(tzinfo=datetime.UTC)
-                        if access_token_expires < datetime.datetime.now(tz=datetime.UTC):
+                            access_token_expires = access_token_expires.replace(tzinfo=dt.UTC)
+                        if access_token_expires < dt.datetime.now(tz=dt.UTC):
                             refresh_token = request.cookies.get("refresh_token")
                             if refresh_token is None:
                                 return None
@@ -479,9 +479,9 @@ def create_get_user_from_request(
                                         "make it offset-aware by replacing tzinfo with UTC",
                                     )
                                     refresh_token_expires = refresh_token_expires.replace(
-                                        tzinfo=datetime.UTC,
+                                        tzinfo=dt.UTC,
                                     )
-                                if refresh_token_expires < datetime.datetime.now(tz=datetime.UTC):
+                                if refresh_token_expires < dt.datetime.now(tz=dt.UTC):
                                     return None
                             token_response = oidc.get_oidc_client(
                                 request,

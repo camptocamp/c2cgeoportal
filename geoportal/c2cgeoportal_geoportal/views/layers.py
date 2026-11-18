@@ -27,7 +27,7 @@
 
 from __future__ import annotations
 
-import datetime  # noqa: ICN001
+import datetime as dt
 import json
 import logging
 import os
@@ -96,7 +96,7 @@ class _BaseCallback:
     def update(self, request: pyramid.request.Request, obj: Any) -> None:
         last_update_date = Layers.get_metadata(self.layer, "lastUpdateDateColumn")
         if last_update_date is not None:
-            setattr(obj, last_update_date, datetime.datetime.now(tz=datetime.UTC))
+            setattr(obj, last_update_date, dt.datetime.now(tz=dt.UTC))
 
         last_update_user = Layers.get_metadata(self.layer, "lastUpdateUserColumn")
         if last_update_user is not None:

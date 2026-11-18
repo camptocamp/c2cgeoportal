@@ -27,7 +27,7 @@
 
 from __future__ import annotations
 
-import datetime  # noqa: ICN001
+import datetime as dt
 import json
 import logging
 import string
@@ -312,15 +312,12 @@ class OidcRemember:
         )
         remember_object: OidcRememberObject = {
             "access_token_expires": (
-                datetime.datetime.now(tz=datetime.UTC) + datetime.timedelta(seconds=token_response.expires_in)
+                dt.datetime.now(tz=dt.UTC) + dt.timedelta(seconds=token_response.expires_in)
             ).isoformat(),
             "refresh_token_expires": (
                 None
                 if refresh_token_expires_in is None
-                else (
-                    datetime.datetime.now(tz=datetime.UTC)
-                    + datetime.timedelta(seconds=refresh_token_expires_in)
-                ).isoformat()
+                else (dt.datetime.now(tz=dt.UTC) + dt.timedelta(seconds=refresh_token_expires_in)).isoformat()
             ),
             "username": None,
             "display_name": None,
