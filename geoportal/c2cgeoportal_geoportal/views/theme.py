@@ -1050,22 +1050,28 @@ class Theme:
             if not ogc_api:
                 # Without a URL defined for the use, the `map` type is used, then the proxy uses the
                 # base URL and the base authentication of the OGC server.
-                return self.request.route_url(
-                    "mapserverproxy",
-                    _query={
-                        "ogcserver": ogc_server.name,
-                        "ogcserver_type": type_ if defined_url else "map",
-                    },
+                return cast(
+                    "str",
+                    self.request.route_url(
+                        "mapserverproxy",
+                        _query={
+                            "ogcserver": ogc_server.name,
+                            "ogcserver_type": type_ if defined_url else "map",
+                        },
+                    ),
                 )
             # The `ogcserver_type` parameter tells to the proxy which URL and authentication of the
             # OGC server should be used. It is not set when no URL is defined for the use as the
             # proxy then uses the base authentication, only the `map` type is set to use the base
             # URL instead of the WFS URL.
             query = {"ogcserver_type": type_} if defined_url or type_ == "map" else {}
-            return self.request.route_url(
-                "mapserverproxy_ogcapi_mapserver_root",
-                ogcserver=ogc_server.name,
-                _query=query,
+            return cast(
+                "str",
+                self.request.route_url(
+                    "mapserverproxy_ogcapi_mapserver_root",
+                    ogcserver=ogc_server.name,
+                    _query=query,
+                ),
             )
 
         name = (
