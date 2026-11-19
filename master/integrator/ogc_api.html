@@ -70,6 +70,10 @@ paths are removed.</p>
 <p>QGIS Server builds the OGC API URLs from the request, the proxy forwards the original <code class="docutils literal notranslate"><span class="pre">Host</span></code> header and
 the <code class="docutils literal notranslate"><span class="pre">HTTPS</span></code> environment variable of the QGIS Server container should be set to <code class="docutils literal notranslate"><span class="pre">on</span></code> when the
 application is served in HTTPS.</p>
+<p>As the links are built from the request URL path, the <code class="docutils literal notranslate"><span class="pre">OGC</span> <span class="pre">API</span> <span class="pre">path</span> <span class="pre">forwarding</span></code> option of the OGC
+server should be enabled: the proxy forwards the full path visible by the client (including the entry
+point, <code class="docutils literal notranslate"><span class="pre">VISIBLE_ENTRY_POINT</span></code>) to QGIS Server. This option is automatically enabled by the database
+upgrade for the existing OGC servers of type <code class="docutils literal notranslate"><span class="pre">qgisserver</span></code>.</p>
 </section>
 <section id="ogc-api-documentation">
 <h1>OGC API Documentation<a class="headerlink" href="#ogc-api-documentation" title="Link to this heading">¶</a></h1>

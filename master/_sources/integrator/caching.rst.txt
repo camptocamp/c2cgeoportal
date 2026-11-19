@@ -23,8 +23,7 @@ To change this value, add the following structure in the ``vars.yaml``:
                 cache_control_max_age: <max_age>
 
 
-Where ``<service_name>`` can be: ``entry``, ``fulltextsearch``, ``mapserver``,
-``print`` or ``layers`` (editing).
+Where ``<service_name>`` can be any of the services listed in :ref:`integrator_headers`.
 
 
 Internal
