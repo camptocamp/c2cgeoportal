@@ -738,6 +738,26 @@ OGCSERVER_AUTH_STANDARD: OGCServerAuth = "Standard auth"
 OGCSERVER_AUTH_GEOSERVER: OGCServerAuth = "Geoserver auth"
 OGCSERVER_AUTH_PROXY: OGCServerAuth = "Proxy"
 
+_ogc_server_auth_types = _(
+    """
+    <ul>
+        <li><code>No auth</code>: the client requests the OGC server directly, without going
+            through the <code>mapserv_proxy</code> service and without adding any information.
+            The URL of the server should then be reachable from the browser, then this type should
+            only be used for a server exposed to the outside.</li>
+        <li><code>Proxy</code>: the requests go through the <code>mapserv_proxy</code> service,
+            without adding any authentication information. To be used for a server that is only
+            reachable from within the infrastructure (MapServer, QGIS Server, ...).</li>
+        <li><code>Standard auth</code>: the requests go through the <code>mapserv_proxy</code>
+            service, the <code>role_ids</code> and <code>user_id</code> parameters are added to the
+            requests.</li>
+        <li><code>Geoserver auth</code>: the requests go through the <code>mapserv_proxy</code>
+            service, the <code>sec-username</code> and <code>sec-roles</code> headers are added to
+            the requests.</li>
+    </ul>
+    """
+)
+
 OGCServerMapProtocol = Literal["WMS", "OGC API - Maps"]
 OGCSERVER_MAP_PROTOCOL_WMS: OGCServerMapProtocol = "WMS"
 OGCSERVER_MAP_PROTOCOL_OGCAPI: OGCServerMapProtocol = "OGC API - Maps"
@@ -829,7 +849,10 @@ class OGCServer(Base):  # type: ignore[valid-type,misc]
         info={
             "colanderalchemy": {
                 "title": _("Base authentication type"),
-                "description": _("The kind of authentication to use."),
+                "description": c2cgeoportal_commons.lib.literal.LiteralConcat(
+                    _("The kind of authentication to use."),
+                    _ogc_server_auth_types,
+                ),
                 "widget": SelectWidget(values=[(e, e) for e in get_args(OGCServerAuth)]),
             },
         },
@@ -865,10 +888,11 @@ class OGCServer(Base):  # type: ignore[valid-type,misc]
         info={
             "colanderalchemy": {
                 "title": _("Query authentication type"),
-                "description": c2cgeoportal_commons.lib.literal.Literal(
+                "description": c2cgeoportal_commons.lib.literal.LiteralConcat(
                     _(
                         "The kind of authentication to use for the query, if <code>Query URL</code> is not set the <code>Authentication type</code> will be used. Not used by ngeo.",
                     ),
+                    _ogc_server_auth_types,
                 ),
                 "widget": SelectWidget(values=[(e, e) for e in get_args(OGCServerAuth)]),
             },
@@ -905,10 +929,11 @@ class OGCServer(Base):  # type: ignore[valid-type,misc]
         info={
             "colanderalchemy": {
                 "title": _("Edit authentication type"),
-                "description": c2cgeoportal_commons.lib.literal.Literal(
+                "description": c2cgeoportal_commons.lib.literal.LiteralConcat(
                     _(
                         "The kind of authentication to use for the editing, if <code>Edit URL</code> is not set the <code>Authentication type</code> will be used. Not used by ngeo.",
                     ),
+                    _ogc_server_auth_types,
                 ),
                 "widget": SelectWidget(values=[(e, e) for e in get_args(OGCServerAuth)]),
             },

@@ -46,3 +46,17 @@ class Literal:
 
     def __bool__(self) -> bool:
         return len(self.s) > 0
+
+
+class LiteralConcat:
+    """Concatenation of literals, each part being translated when rendered."""
+
+    def __init__(self, *parts: str | TranslationString) -> None:
+        self.parts = parts
+
+    def __html__(self) -> str:
+        request = get_current_request()
+        return "".join(cast("str", request.translate(part)) for part in self.parts)
+
+    def __bool__(self) -> bool:
+        return any(len(part) > 0 for part in self.parts)

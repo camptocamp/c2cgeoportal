@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2025, Camptocamp SA
+# Copyright (c) 2013-2026, Camptocamp SA
 # All rights reserved.
 
 # Redistribution and use in source and binary forms, with or without
@@ -27,6 +27,8 @@
 
 # pylint: disable=missing-docstring,attribute-defined-outside-init,protected-access
 
+
+import json
 
 import pytest
 
@@ -71,6 +73,25 @@ def themes_setup(dbsession, transact, default_ogcserver):
     ogc_server_external.query_auth = OGCSERVER_AUTH_NOAUTH
     ogc_server_external.edit_url = "https://wms.geo.admin.ch/edit"
     ogc_server_external.edit_auth = OGCSERVER_AUTH_NOAUTH
+
+    # An OGC server with "No auth" defined with the internal `config://` schema, the internal
+    # schema should be interpreted and never exposed to the client.
+    ogc_server_config_url = OGCServer(
+        name="__test_ogc_server_config_url",
+        url="config://mapserver/mapserv_proxy/Map?map=Map",
+        auth=OGCSERVER_AUTH_NOAUTH,
+    )
+    ogc_server_config_url.wfs_support = False
+    ogc_server_config_url.query_url = "config://mapserver/mapserv_proxy/Map?map=Query"
+    ogc_server_config_url.query_auth = OGCSERVER_AUTH_NOAUTH
+    ogc_server_config_url.edit_url = "config://mapserver/mapserv_proxy/Map?map=Edit"
+    ogc_server_config_url.edit_auth = OGCSERVER_AUTH_NOAUTH
+
+    # Layer not attached to any theme, only used to have the OGC server exported in the themes.
+    layer_config_url_wms = LayerWMS(name="__test_layer_config_url_wms", public=True)
+    layer_config_url_wms.layer = "__test_layer_config_url_wms"
+    layer_config_url_wms.interfaces = [main]
+    layer_config_url_wms.ogc_server = ogc_server_config_url
 
     layer_internal_wms = LayerWMS(name="__test_layer_internal_wms", public=True)
     layer_internal_wms.layer = "__test_layer_internal_wms"
@@ -125,8 +146,10 @@ def themes_setup(dbsession, transact, default_ogcserver):
             mobile,
             min_levels,
             ogc_server_external,
+            ogc_server_config_url,
             layer_internal_wms,
             layer_external_wms,
+            layer_config_url_wms,
             layer_wmts,
             layer_group_1,
             layer_group_2,
@@ -175,7 +198,14 @@ def _create_request_obj(params=None, **kwargs):
 def _create_theme_obj(**kwargs):
     from c2cgeoportal_geoportal.views.theme import Theme
 
-    kwargs["additional_settings"] = {"admin_interface": {"available_metadata": [{"name": "test"}]}}
+    kwargs["additional_settings"] = {
+        "admin_interface": {"available_metadata": [{"name": "test"}]},
+        "servers": {
+            "internal": "http://localhost/",
+            "local": "https://www.example.com/",
+            "mapserver": "http://mapserver:8383/",
+        },
+    }
     return Theme(_create_request_obj(**kwargs))
 
 
@@ -390,7 +420,34 @@ def test_ogc_server(dbsession, transact, themes_setup) -> None:
             },
             "wfsSupport": False,
         },
+        "__test_ogc_server_config_url": {
+            "attributes": None,
+            "credential": False,
+            "imageType": "image/png",
+            "isSingleTile": False,
+            "namespace": None,
+            "type": "mapserver",
+            "url": "http://mapserver:8383/mapserv_proxy/Map?map=Map",
+            "urlWfs": "http://mapserver:8383/mapserv_proxy/Map?map=Map",
+            "uses": {
+                "edit": {
+                    "protocol": "OGC API - Features",
+                    "url": "http://mapserver:8383/mapserv_proxy/Map?map=Edit",
+                },
+                "map": {
+                    "protocol": "WMS",
+                    "url": "http://mapserver:8383/mapserv_proxy/Map?map=Map",
+                },
+                "query": {
+                    "protocol": "WFS/GetFeature",
+                    "url": "http://mapserver:8383/mapserv_proxy/Map?map=Query",
+                },
+            },
+            "wfsSupport": False,
+        },
     }
+    # The internal `config://` schema should never be exposed to the client.
+    assert "config://" not in json.dumps(themes["ogcServers"])
     assert [_only_name(t, "ogcServer") for t in themes["themes"]] == [
         {
             "children": [

@@ -1013,13 +1013,34 @@ class Theme:
             )
             return None, errors
 
+    def get_public_url(
+        self,
+        ogc_server: main.OGCServer,
+        type_: str,
+        url: str,
+        errors: set[str],
+    ) -> str | None:
+        """
+        Resolve the URL of an OGC server to be published in the themes.
+
+        The ``config://`` schema is an internal way to refer to one of the servers of the ``servers``
+        configuration, it should never be exposed to the client, then it is interpreted here.
+        """
+        url_object = get_url2(
+            f"The OGC server ({type_}) '{ogc_server.name}'",
+            url,
+            self.request,
+            errors=errors,
+        )
+        return url_object.url() if url_object is not None else None
+
     def get_url_internal_wfs(
         self,
         ogc_server: main.OGCServer,
         errors: set[str],
-    ) -> tuple[Url | None, Url | None, Url | None, str, str, str]:
+    ) -> tuple[Url | None, Url | None, Url | None, str | None, str | None, str | None]:
         # required to do every time to validate the url.
-        map_url: str
+        map_url: str | None
         if ogc_server.auth != main.OGCSERVER_AUTH_NOAUTH:
             url: Url | None = Url(
                 self.request.route_url("mapserverproxy", _query={"ogcserver": ogc_server.name}),
@@ -1037,7 +1058,7 @@ class Theme:
             )
         else:
             url = get_url2(f"The OGC server '{ogc_server.name}'", ogc_server.url, self.request, errors=errors)
-            map_url = ogc_server.url
+            map_url = url.url() if url is not None else None
             url_wfs = (
                 get_url2(
                     f"The OGC server (WFS) '{ogc_server.name}'",
@@ -1058,7 +1079,7 @@ class Theme:
                     _query={"ogcserver": ogc_server.name, "ogcserver_type": "query"},
                 )
             else:
-                query_url = ogc_server.query_url
+                query_url = self.get_public_url(ogc_server, "Query", ogc_server.query_url, errors)
 
         edit_url = map_url
         if ogc_server.edit_url is not None and ogc_server.edit_url != "":
@@ -1068,7 +1089,7 @@ class Theme:
                     _query={"ogcserver": ogc_server.name, "ogcserver_type": "edit"},
                 )
             else:
-                edit_url = ogc_server.edit_url
+                edit_url = self.get_public_url(ogc_server, "Edit", ogc_server.edit_url, errors)
 
         return url_internal_wfs, url, url_wfs, map_url, query_url, edit_url
 
