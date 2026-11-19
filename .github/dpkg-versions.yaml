@@ -2931,7 +2931,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/pinentry-curses: 1.1.1-1build2
   ubuntu_22_04/pkg-config: 0.29.2-1ubuntu3
   ubuntu_22_04/postgresql-client: 18+293.pgdg22.04+1
-  ubuntu_22_04/postgresql-client-18: 18.6-1.pgdg22.04+2
+  ubuntu_22_04/postgresql-client-19: 19.0-1.pgdg22.04+1
   ubuntu_22_04/postgresql-client-common: 293.pgdg22.04+1
   ubuntu_22_04/procps: 2:3.3.17-6ubuntu2.1
   ubuntu_22_04/proj-data: 8.2.1-1
