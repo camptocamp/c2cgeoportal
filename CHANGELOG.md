@@ -1,3 +1,10 @@
+##### 2.10.rc.18
+
+- [Backport 2.10] Use the dispatch token to push the version and changelog updates [c2cgeoportal#13719](https://github.com/camptocamp/c2cgeoportal/pull/13719)
+- [Backport 2.10] Fix tsquery syntax error when the search query contains new lines [c2cgeoportal#13721](https://github.com/camptocamp/c2cgeoportal/pull/13721)
+- [Backport 2.10] Pull the c2cgeoportal images from ghcr.io instead of Docker Hub [c2cgeoportal#13725](https://github.com/camptocamp/c2cgeoportal/pull/13725)
+- [Backport 2.10] Auto review the GHCI patch pull requests on the stabilization branches [c2cgeoportal#13727](https://github.com/camptocamp/c2cgeoportal/pull/13727)
+
 ##### 2.10.rc.14
 
 - [Backport 2.10] Move the demo notification after the Docker images publication [c2cgeoportal#13717](https://github.com/camptocamp/c2cgeoportal/pull/13717)
