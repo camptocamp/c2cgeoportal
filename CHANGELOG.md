@@ -1,3 +1,28 @@
+##### 2.7.1.360
+
+- Audit Dpkg 2.7 [c2cgeoportal#13529](https://github.com/camptocamp/c2cgeoportal/pull/13529)
+- Update dependency pytz to v2026.6 (2.7) [c2cgeoportal#13533](https://github.com/camptocamp/c2cgeoportal/pull/13533)
+- Update all patch/minor versions (2.7) [c2cgeoportal#13547](https://github.com/camptocamp/c2cgeoportal/pull/13547)
+- Update CI dependencies (2.7) [c2cgeoportal#13548](https://github.com/camptocamp/c2cgeoportal/pull/13548)
+- Audit Dpkg 2.7 [c2cgeoportal#13600](https://github.com/camptocamp/c2cgeoportal/pull/13600)
+- Remove the gopass CI token usage [c2cgeoportal#13612](https://github.com/camptocamp/c2cgeoportal/pull/13612)
+- Audit Dpkg 2.7 [c2cgeoportal#13614](https://github.com/camptocamp/c2cgeoportal/pull/13614)
+- Audit Snyk check/fix 2.7 [c2cgeoportal#13616](https://github.com/camptocamp/c2cgeoportal/pull/13616)
+- Update dependency oauthlib to v4.0.1 [SECURITY] (2.7) [c2cgeoportal#13619](https://github.com/camptocamp/c2cgeoportal/pull/13619)
+- Audit Snyk check/fix 2.7 [c2cgeoportal#13643](https://github.com/camptocamp/c2cgeoportal/pull/13643)
+- Audit Dpkg 2.7 [c2cgeoportal#13647](https://github.com/camptocamp/c2cgeoportal/pull/13647)
+- Scaffold: Let ghci create the l10n pull request instead of the gopass CI token [c2cgeoportal#13650](https://github.com/camptocamp/c2cgeoportal/pull/13650)
+- Update CI dependencies (2.7) [c2cgeoportal#13659](https://github.com/camptocamp/c2cgeoportal/pull/13659)
+- Audit Snyk check/fix 2.7 [c2cgeoportal#13668](https://github.com/camptocamp/c2cgeoportal/pull/13668)
+- Audit Dpkg 2.7 [c2cgeoportal#13674](https://github.com/camptocamp/c2cgeoportal/pull/13674)
+- Use GeoMapFish images from ghcr.io in the 2.7 scaffolds [c2cgeoportal#13688](https://github.com/camptocamp/c2cgeoportal/pull/13688)
+- Update dpkg versions list [c2cgeoportal#13692](https://github.com/camptocamp/c2cgeoportal/pull/13692)
+- Audit Dpkg 2.7 [c2cgeoportal#13694](https://github.com/camptocamp/c2cgeoportal/pull/13694)
+- Auto review the GHCI patch pull requests on the stabilization branches [c2cgeoportal#13701](https://github.com/camptocamp/c2cgeoportal/pull/13701)
+- Audit Dpkg 2.7 [c2cgeoportal#13702](https://github.com/camptocamp/c2cgeoportal/pull/13702)
+- Update dependency tag-publish to v1.3.5 (2.7) [c2cgeoportal#13708](https://github.com/camptocamp/c2cgeoportal/pull/13708)
+- [Backport 2.7] 2.9 missing ghci.io and uv [c2cgeoportal#13713](https://github.com/camptocamp/c2cgeoportal/pull/13713)
+
 ##### 2.7.1.359
 
 - Use docker compose cp to extract the coverage of the tests [c2cgeoportal#13500](https://github.com/camptocamp/c2cgeoportal/pull/13500)
