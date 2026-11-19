@@ -446,7 +446,7 @@ class TestFulltextsearchView(TestCase):
 
         from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
 
-        request = self._create_dummy_request(params=dict(query="tra\r\nsol", limit=40))
+        request = self._create_dummy_request(params={"query": "tra\r\nsol", "limit": 40})
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, FeatureCollection))
@@ -462,12 +462,12 @@ class TestFulltextsearchView(TestCase):
         from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
 
         request = self._create_dummy_request(
-            params=dict(
-                query=(
+            params={
+                "query": (
                     "RGX7 MXJ, Nigara, tAMBUNG, Kec. Pademawu, Kabupaten Pamekasan, "
                     "Jawa Timur 69323, Indonesia\n-7.150746/113.514901"
                 )
-            )
+            }
         )
         fts = FullTextSearchView(request)
         response = fts.fulltextsearch()
