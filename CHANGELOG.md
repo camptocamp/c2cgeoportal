@@ -1,3 +1,7 @@
+##### 2.8.1.410
+
+- [Backport 2.8] Auto review the GHCI patch pull requests on the stabilization branches [c2cgeoportal#13724](https://github.com/camptocamp/c2cgeoportal/pull/13724)
+
 ##### 2.8.1.409
 
 - Update CI dependencies (2.8) [c2cgeoportal#13709](https://github.com/camptocamp/c2cgeoportal/pull/13709)
