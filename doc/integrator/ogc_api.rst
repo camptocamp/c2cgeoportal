@@ -47,6 +47,11 @@ QGIS Server builds the OGC API URLs from the request, the proxy forwards the ori
 the ``HTTPS`` environment variable of the QGIS Server container should be set to ``on`` when the
 application is served in HTTPS.
 
+As the links are built from the request URL path, the ``OGC API path forwarding`` option of the OGC
+server should be enabled: the proxy forwards the full path visible by the client (including the entry
+point, ``VISIBLE_ENTRY_POINT``) to QGIS Server. This option is automatically enabled by the database
+upgrade for the existing OGC servers of type ``qgisserver``.
+
 
 OGC API Documentation
 ---------------------
