@@ -1,3 +1,8 @@
+##### 2.8.1.412
+
+- Audit Dpkg 2.8 [c2cgeoportal#13736](https://github.com/camptocamp/c2cgeoportal/pull/13736)
+- Update dpkg versions list [c2cgeoportal#13741](https://github.com/camptocamp/c2cgeoportal/pull/13741)
+
 ##### 2.8.1.411
 
 - Update QGIS 3.34-gdal3.7 dpkg versions list [c2cgeoportal#13733](https://github.com/camptocamp/c2cgeoportal/pull/13733)
