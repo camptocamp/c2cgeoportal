@@ -292,6 +292,35 @@ class TestMapserverproxyView(TestCase):
         # The original Host header is forwarded to build correct links in the OGC API responses
         assert mock_request.call_args.kwargs["headers"]["Host"] == "example.com"
 
+    def test_ogcapi_base_url(self) -> None:
+        """The OGC API requests are proxied to the base URL and not to the WFS URL."""
+        from unittest.mock import MagicMock, patch
+
+        from c2cgeoportal_commons.models import DBSession
+        from c2cgeoportal_commons.models.main import OGCServer
+        from c2cgeoportal_geoportal.lib import caching
+        from c2cgeoportal_geoportal.views.mapserverproxy import MapservProxy
+
+        ogc_server = DBSession.query(OGCServer).filter(OGCServer.name == "__test_ogc_server").one()
+        ogc_server.url_wfs = "http://tinyows:8080/"
+        DBSession.flush()
+        caching.invalidate_region()
+
+        request = self._create_dummy_request()
+        request.method = "GET"
+        request.headers["Host"] = "example.com"
+        # The landing route `/mapserv_proxy/{ogcserver}/ogcapi` has no `path` element in the matchdict
+        request.matchdict = {"ogcserver": "__test_ogc_server"}
+        backend_response = MagicMock()
+        backend_response.ok = True
+        backend_response.status_code = 200
+        backend_response.content = b"{}"
+        backend_response.headers = {"Content-Type": "application/json"}
+        with patch("requests.request", return_value=backend_response) as mock_request:
+            response = MapservProxy(request).proxy_ogcapi_mapserver()
+        assert response.status_code == 200
+        assert mock_request.call_args.args[1].startswith("http://mapserver:8080/ogcapi?")
+
     def test_ogcapi_edit_url(self) -> None:
         from unittest.mock import MagicMock, patch
 

@@ -209,9 +209,9 @@ class MapservProxy(OGCProxy):
             }
             _url = url_methods[ogcserver_type](errors)
         else:
-            # Without an `ogcserver_type` parameter the OGC API is served by the WFS URL, like
-            # before this parameter was supported on the OGC API paths.
-            _url = self._get_wfs_url(errors)
+            # Without an `ogcserver_type` parameter the OGC API is served by the base URL of the
+            # OGC server, the WFS URL is a legacy WFS configuration that doesn't serve OGC API.
+            _url = self._get_wms_url(errors)
         if _url is not None:
             if self.ogc_server.ogc_api_forward_path:
                 # Some backends like QGIS Server build the OGC API links from the request URL path,

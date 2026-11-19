@@ -487,8 +487,7 @@ def test_ogc_server(dbsession, transact, themes_setup) -> None:
                 },
                 "map": {
                     "protocol": "OGC API - Maps",
-                    "url": "http://localhost/ci/mapserv_proxy/__test_ogc_server_ogc_api/ogcapi"
-                    "?ogcserver_type=map",
+                    "url": "http://localhost/ci/mapserv_proxy/__test_ogc_server_ogc_api/ogcapi",
                 },
                 "query": {
                     "protocol": "OGC API - Features",

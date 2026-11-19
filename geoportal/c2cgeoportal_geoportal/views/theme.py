@@ -1061,10 +1061,9 @@ class Theme:
                     ),
                 )
             # The `ogcserver_type` parameter tells to the proxy which URL and authentication of the
-            # OGC server should be used. It is not set when no URL is defined for the use as the
-            # proxy then uses the base authentication, only the `map` type is set to use the base
-            # URL instead of the WFS URL.
-            query = {"ogcserver_type": type_} if defined_url or type_ == "map" else {}
+            # OGC server should be used. It is only set when a URL is defined for the use, otherwise
+            # the proxy uses the base URL and the base authentication of the OGC server.
+            query = {"ogcserver_type": type_} if defined_url else {}
             return cast(
                 "str",
                 self.request.route_url(

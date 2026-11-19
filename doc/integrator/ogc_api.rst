@@ -66,10 +66,14 @@ When the map, query or edit protocol of an OGC server is an OGC API protocol, th
 requests from that root path, for example ``<url>/collections/<collection>/items``.
 
 With an authentication others than ``No auth``, the root path is the one of the proxy,
-``/mapserv_proxy/<ogc-server>/ogcapi``, and the ``ogcserver_type`` parameter tells to the proxy which
-URL (base, query or edit URL) and which authentication of the OGC server should be used, like for the
-WMS/WFS requests. Without a URL defined for the use, the parameter is only set for the map use, the
-proxy then uses the base URL and the base authentication of the OGC server.
+``/mapserv_proxy/<ogc-server>/ogcapi``, and the proxy serves the OGC API from the **Base URL** of the
+OGC server.
+
+When a URL is defined for the use, the ``ogcserver_type`` parameter is added to the published URL,
+``?ogcserver_type=query`` or ``?ogcserver_type=edit``, and tells to the proxy which URL and which
+authentication of the OGC server should be used, like for the WMS/WFS requests. Note that when the
+``OGC API path forwarding`` option is enabled, the proxy forwards the path visible by the client, then
+only the parameters (as ``MAP``) and the host of the URL defined for the use are used, not its path.
 
 With the ``No auth`` authentication, the URL of the use is used as is (the internal ``config://``
 schema is interpreted) and the OGC API root path is appended to it.
