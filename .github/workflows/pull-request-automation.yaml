@@ -24,7 +24,7 @@ jobs:
       - name: Auto review GHCI updates
         uses: actions/github-script@v8
         if: |-
-          startsWith(github.head_ref, 'ghci/audit/')
+          (startsWith(github.head_ref, 'ghci/audit/') || startsWith(github.head_ref, 'ghci/patch/'))
           && (github.event.pull_request.user.login == 'geo-ghci-test[bot]'
             || github.event.pull_request.user.login == 'geo-ghci-int[bot]'
             || github.event.pull_request.user.login == 'geo-ghci[bot]')
