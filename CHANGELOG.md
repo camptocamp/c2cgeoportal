@@ -1,3 +1,7 @@
+##### 2.8.1.411
+
+- Update QGIS 3.34-gdal3.7 dpkg versions list [c2cgeoportal#13733](https://github.com/camptocamp/c2cgeoportal/pull/13733)
+
 ##### 2.8.1.410
 
 - [Backport 2.8] Auto review the GHCI patch pull requests on the stabilization branches [c2cgeoportal#13724](https://github.com/camptocamp/c2cgeoportal/pull/13724)
