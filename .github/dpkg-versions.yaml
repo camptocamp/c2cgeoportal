@@ -4077,7 +4077,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_26_04/pkgconf: 2.5.1-4
   ubuntu_26_04/pkgconf-bin: 2.5.1-4
   ubuntu_26_04/postgresql-client: 18+291.pgdg26.04+1
-  ubuntu_26_04/postgresql-client-18: 18.4-1.pgdg26.04+1
+  ubuntu_26_04/postgresql-client-19: 19.0-1.pgdg26.04+1
   ubuntu_26_04/postgresql-client-common: 291.pgdg26.04+1
   ubuntu_26_04/procps: 2:4.0.4-9ubuntu1
   ubuntu_26_04/proj-data: 9.7.1-1
