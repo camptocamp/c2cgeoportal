@@ -274,12 +274,16 @@ jobs:
         run: |
           docker build --target=tools --tag=transifex --build-arg=MAJOR_VERSION=${MAJOR_VERSION} --build-arg=VERSION=0.0.0 .
           docker run --name=transifex -ti --rm --detach --volume=${HOME}:/root transifex tail -f /dev/null
+          docker exec --env=TRANSIFEX_TOKEN="${TRANSIFEX_TOKEN}" transifex bash -c \
+              '(cd /opt/c2cgeoportal; make --makefile=dependencies.mk transifex-private-credentials)'
           docker exec transifex bash -c \
               '(cd /opt/c2cgeoportal; make --makefile=dependencies.mk transifex-send)'
           docker stop transifex
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && env.HAS_SECRETS == 'HAS_SECRETS'
+        env:
+          TRANSIFEX_TOKEN: ${{ secrets.TRANSIFEX_TOKEN }}
 
       - name: Publish documentation to GitHub.io
         run: ci/publish-documentation
