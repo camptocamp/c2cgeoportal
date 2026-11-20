@@ -1,3 +1,8 @@
+##### 2.8.1.413
+
+- Return bad request instead of internal server error for unknown interface [c2cgeoportal#13746](https://github.com/camptocamp/c2cgeoportal/pull/13746)
+- [Backport 2.8] Publish the sources to Transifex with the TRANSIFEX_TOKEN secret [c2cgeoportal#13748](https://github.com/camptocamp/c2cgeoportal/pull/13748)
+
 ##### 2.8.1.412
 
 - Audit Dpkg 2.8 [c2cgeoportal#13736](https://github.com/camptocamp/c2cgeoportal/pull/13736)
