@@ -1,3 +1,7 @@
+##### 2.7.1.363
+
+- Publish the sources to Transifex with the TRANSIFEX_TOKEN secret [c2cgeoportal#13743](https://github.com/camptocamp/c2cgeoportal/pull/13743)
+
 ##### 2.7.1.361
 
 - Set the Git identity in the version and changelog push step [c2cgeoportal#13737](https://github.com/camptocamp/c2cgeoportal/pull/13737)
