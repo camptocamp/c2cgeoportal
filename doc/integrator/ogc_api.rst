@@ -43,6 +43,11 @@ QGIS Server uses ``/ogcapi`` as the OGC API root by default since QGIS 4, it can
 ``QGIS_SERVER_API_WFS3_ROOT_PATH`` since QGIS 3.44.3. The former ``/mapserv_proxy/<ogc-server>/wfs3/*``
 paths are removed.
 
+The ``ogcapi`` root path is also the one used by c2cgeoportal in the proxy routes and in the URLs
+published in the themes, then ``QGIS_SERVER_API_WFS3_ROOT_PATH`` should keep its default value,
+``/ogcapi``, in the QGIS Server configuration. With a QGIS Server older than 3.44.3 the OGC API root
+path is ``/wfs3`` and doesn't match the c2cgeoportal paths.
+
 QGIS Server builds the OGC API URLs from the request, the proxy forwards the original ``Host`` header and
 the ``HTTPS`` environment variable of the QGIS Server container should be set to ``on`` when the
 application is served in HTTPS.
@@ -51,6 +56,27 @@ As the links are built from the request URL path, the ``OGC API path forwarding`
 server should be enabled: the proxy forwards the full path visible by the client (including the entry
 point, ``VISIBLE_ENTRY_POINT``) to QGIS Server. This option is automatically enabled by the database
 upgrade for the existing OGC servers of type ``qgisserver``.
+
+URLs published in the themes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When the map, query or edit protocol of an OGC server is an OGC API protocol, the
+:ref:`themes webservice <developer_webservices>` publishes the root path of the API in
+``uses.<use>.url``, and not the WMS/WFS style URL with parameters. Then the client builds its
+requests from that root path, for example ``<url>/collections/<collection>/items``.
+
+With an authentication others than ``No auth``, the root path is the one of the proxy,
+``/mapserv_proxy/<ogc-server>/ogcapi``, and the proxy serves the OGC API from the **Base URL** of the
+OGC server.
+
+When a URL is defined for the use, the ``ogcserver_type`` parameter is added to the published URL,
+``?ogcserver_type=query`` or ``?ogcserver_type=edit``, and tells to the proxy which URL and which
+authentication of the OGC server should be used, like for the WMS/WFS requests. Note that when the
+``OGC API path forwarding`` option is enabled, the proxy forwards the path visible by the client, then
+only the parameters (as ``MAP``) and the host of the URL defined for the use are used, not its path.
+
+With the ``No auth`` authentication, the URL of the use is used as is (the internal ``config://``
+schema is interpreted) and the OGC API root path is appended to it.
 
 
 OGC API Documentation

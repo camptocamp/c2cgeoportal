@@ -41,6 +41,7 @@ from pyramid.view import view_config
 
 from c2cgeoportal_commons.lib.url import Url
 from c2cgeoportal_commons.models import main
+from c2cgeoportal_geoportal import OGC_API_ROOT_PATH
 from c2cgeoportal_geoportal.lib import get_roles_id, get_roles_name
 from c2cgeoportal_geoportal.lib.caching import get_region
 from c2cgeoportal_geoportal.lib.common_headers import Cache
@@ -190,7 +191,7 @@ class MapservProxy(OGCProxy):
     @view_config(route_name="mapserverproxy_ogcapi_mapserver")  # type: ignore[untyped-decorator]
     @view_config(route_name="mapserverproxy_ogcapi_mapserver_root")  # type: ignore[untyped-decorator]
     def proxy_ogcapi_mapserver(self) -> Response:
-        return self.proxy_ogcapi("ogcapi")
+        return self.proxy_ogcapi(OGC_API_ROOT_PATH)
 
     def proxy_ogcapi(self, subpath: str) -> Response:
         self._setup_auth()
@@ -199,7 +200,18 @@ class MapservProxy(OGCProxy):
 
         errors: set[str] = set()
 
-        _url = self._get_wfs_url(errors)
+        ogcserver_type = self.lower_params.get("ogcserver_type")
+        if ogcserver_type in ("map", "query", "edit"):
+            url_methods = {
+                "map": self._get_wms_url,
+                "query": self._get_query_url,
+                "edit": self._get_edit_url,
+            }
+            _url = url_methods[ogcserver_type](errors)
+        else:
+            # Without an `ogcserver_type` parameter the OGC API is served by the base URL of the
+            # OGC server, the WFS URL is a legacy WFS configuration that doesn't serve OGC API.
+            _url = self._get_wms_url(errors)
         if _url is not None:
             if self.ogc_server.ogc_api_forward_path:
                 # Some backends like QGIS Server build the OGC API links from the request URL path,
