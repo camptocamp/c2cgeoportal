@@ -1,3 +1,7 @@
+##### 2.9.0.633
+
+- Audit Dpkg 2.9 [c2cgeoportal#13739](https://github.com/camptocamp/c2cgeoportal/pull/13739)
+
 ##### 2.9.0.632
 
 - [Backport 2.9] Use the dispatch token to push the version and changelog updates [c2cgeoportal#13720](https://github.com/camptocamp/c2cgeoportal/pull/13720)
