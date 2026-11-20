@@ -167,9 +167,9 @@ the borders. The <code class="docutils literal notranslate"><span class="pre">me
 </div>
 <p>Where <code class="docutils literal notranslate"><span class="pre">&lt;z/x/y&gt;</span></code> should refer to an empty tile/metatile. Generally it’s a good idea to use z as the maximum
 zoom, x and y as 0.</p>
-<p>The source server should return a uniform empty image for the given tile/metatile. If it returns no data at
-all (HTTP <code class="docutils literal notranslate"><span class="pre">204</span></code> or <code class="docutils literal notranslate"><span class="pre">404</span></code>), the tile is dropped, no hash can be computed and an error message is printed
-instead.</p>
+<p>The source server should return a uniform empty image for the given tile/metatile. If it returns no content
+at all (HTTP <code class="docutils literal notranslate"><span class="pre">204</span></code>), the tile is dropped, no hash can be computed and an error message is printed instead.
+An HTTP <code class="docutils literal notranslate"><span class="pre">404</span></code> is treated as a source error (missing map, layer or OGC server) and reported as a tile error.</p>
 </section>
 <section id="configure-geom-sql">
 <h4>Configure geom/sql<a class="headerlink" href="#configure-geom-sql" title="Permalink to this headline">¶</a></h4>
@@ -356,6 +356,9 @@ run.</p>
 <p><code class="docutils literal notranslate"><span class="pre">{.sourceCode</span> <span class="pre">.}</span> <span class="pre">#</span> <span class="pre">[time]</span> <span class="pre">some</span> <span class="pre">comments</span> <span class="pre">z/x/y</span> <span class="pre">#</span> <span class="pre">[time]</span> <span class="pre">the</span> <span class="pre">error</span> <span class="pre">z/x/y:+m/+m</span> <span class="pre">#</span> <span class="pre">[time]</span> <span class="pre">the</span> <span class="pre">error</span></code></p>
 <p>The first line is just a comment, the second, is for an error on a tile, and the third is for an error on a
 meta tile.</p>
+<p>The error message contains the type of the error, the URL of the request when it comes from an HTTP
+source, the elapsed time and the cause of the error, all on a single line (the new lines are replaced
+by spaces).</p>
 </section>
 <section id="proxy-cache-issue">
 <h3>Proxy/cache issue<a class="headerlink" href="#proxy-cache-issue" title="Permalink to this headline">¶</a></h3>
@@ -397,6 +400,9 @@ configuration file or in the <code class="docutils literal notranslate"><span cl
 <p>Queue inserts are batched to improve performance when generating very large pyramids. The default
 batch size is <code class="docutils literal notranslate"><span class="pre">100</span></code> rows and can be changed with
 <code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__POSTGRESQL__QUEUE_INSERT_BATCH_SIZE</span></code>.</p>
+<p>The queue maintenance (job queue creation, job status updates, restart of too long pending jobs and
+meta tiles) is run by the consumers at most once per minute by default, the interval in seconds can
+be changed with <code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__POSTGRESQL__MAINTENANCE_INTERVAL</span></code>.</p>
 <p>See the [configuration reference](<a class="reference external" href="https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/CONFIG.md#definitions/postgresql">https://github.com/camptocamp/tilecloud-chain/blob/master/tilecloud_chain/CONFIG.md#definitions/postgresql</a>) for the other configuration possibilities.</p>
 <p>With that the admin page is enhance with a job concept with enhanced status and they can be
 canceled, and restarted.</p>
@@ -670,6 +676,16 @@ durations (e.g.: <code class="docutils literal notranslate"><span class="pre">PT
 <li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__ALLOWED_PROCESS_COMMANDS</span></code>: Comma-separated list of allowed process commands
 (default: <code class="docutils literal notranslate"><span class="pre">optipng,jpegoptim,pngquant</span></code>)</p></li>
 </ul>
+<p>HTTP:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__HTTP__TIMEOUT</span></code>: Total timeout of the requests done to get the tiles from the
+sources, in seconds (default: <code class="docutils literal notranslate"><span class="pre">300</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__HTTP__CONNECT_TIMEOUT</span></code>: Timeout of the connection to the sources, in seconds
+(default: the value of <code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__HTTP__TIMEOUT</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__HTTP__CLOSE_GRACE_PERIOD</span></code>: Maximum time, in seconds, the closing of a tile
+store waits for the requests it still has in flight, to not fail the tiles which are being
+generated (default: <code class="docutils literal notranslate"><span class="pre">30</span></code>)</p></li>
+</ul>
 <p>Logging:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__LOGGING__LOG_TYPE</span></code>: Logging output format, either <code class="docutils literal notranslate"><span class="pre">console</span></code> or <code class="docutils literal notranslate"><span class="pre">json</span></code>
@@ -739,6 +755,8 @@ the <code class="docutils literal notranslate"><span class="pre">img-src</span><
 <li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__POSTGRESQL__INIT_TIMEOUT</span></code>: Timeout for PostgreSQL database initialization, accepts
 ISO 8601 durations (e.g.: <code class="docutils literal notranslate"><span class="pre">PT30S</span></code>), short format (e.g.: <code class="docutils literal notranslate"><span class="pre">30s</span></code>, <code class="docutils literal notranslate"><span class="pre">1m</span></code>) or seconds (e.g.: <code class="docutils literal notranslate"><span class="pre">30</span></code>)
 (default: <code class="docutils literal notranslate"><span class="pre">30</span></code>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TILECLOUD_CHAIN__POSTGRESQL__MAINTENANCE_INTERVAL</span></code>: Minimum interval in seconds between two
+PostgreSQL queue maintenance runs (default: <code class="docutils literal notranslate"><span class="pre">60</span></code>)</p></li>
 </ul>
 <p>Redis:</p>
 <ul class="simple">
