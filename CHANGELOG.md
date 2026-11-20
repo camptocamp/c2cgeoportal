@@ -1,3 +1,7 @@
+##### 2.10.rc.23
+
+- [Backport 2.10] Return bad request instead of internal server error for unknown interface [c2cgeoportal#13749](https://github.com/camptocamp/c2cgeoportal/pull/13749)
+
 ##### 2.10.rc.22
 
 - [Backport 2.10] Close the database session in authorizedLayerAttributes [c2cgeoportal#13734](https://github.com/camptocamp/c2cgeoportal/pull/13734)
