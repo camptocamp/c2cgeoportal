@@ -27,7 +27,7 @@
 
 
 import re
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, cast
 
 import pyramid.request
 import sqlalchemy.orm.query
@@ -70,8 +70,7 @@ class FullTextSearchView:
     def _get_interface_id(interface: str) -> int | None:
         assert DBSession is not None
 
-        entry = DBSession.query(Interface).filter_by(name=interface).first()
-        return None if entry is None else entry.id
+        return cast("int | None", DBSession.query(Interface.id).filter_by(name=interface).scalar())
 
     def _get_user_filter(self) -> ColumnElement[bool]:
         """Get the filter on the entries visible by the current user."""
