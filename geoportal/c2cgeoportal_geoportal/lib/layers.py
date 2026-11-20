@@ -107,7 +107,8 @@ def get_protected_layers(request: Request, ogc_server_ids: Iterable[int]) -> dic
 
     q = get_protected_layers_query(request, ogc_server_ids, what=main.LayerWMS)
     results = q.all()
-    DBSession.expunge_all()
+    for r in results:
+        DBSession.expunge(r)
     return {r.id: r for r in results}
 
 
@@ -121,7 +122,8 @@ def get_writable_layers(request: Request, ogc_server_ids: Iterable[int]) -> dict
 
     q = get_writable_layers_query(request, ogc_server_ids)
     results = q.all()
-    DBSession.expunge_all()
+    for r in results:
+        DBSession.expunge(r)
     return {r.id: r for r in results}
 
 
@@ -142,7 +144,8 @@ def get_private_layers(ogc_server_ids: Iterable[int]) -> dict[int, "main.LayerWM
         .filter(main.OGCServer.id.in_(ogc_server_ids))
     )
     results = q.all()
-    DBSession.expunge_all()
+    for r in results:
+        DBSession.expunge(r)
     return {r.id: r for r in results}
 
 
