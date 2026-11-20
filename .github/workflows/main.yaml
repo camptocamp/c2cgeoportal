@@ -284,11 +284,14 @@ jobs:
           git status --ignored || true
           make build-tools
           docker run --name=transifex -ti --rm --detach --volume=${HOME}:/root camptocamp/geomapfish-tools tail -f /dev/null
+          docker exec --env=TRANSIFEX_TOKEN="${TRANSIFEX_TOKEN}" transifex bash -c \
+              '(cd /opt/c2cgeoportal; make --makefile=dependencies.mk transifex-private-credentials)'
           docker exec transifex bash -c \
               '(cd /opt/c2cgeoportal; make --makefile=dependencies.mk transifex-send)'
           docker stop transifex
         env:
           DOCKER_BUILDKIT: '1'
+          TRANSIFEX_TOKEN: ${{ secrets.TRANSIFEX_TOKEN }}
         if: >
           github.ref == format('refs/heads/{0}', env.MAIN_BRANCH)
           && env.HAS_SECRETS == 'HAS_SECRETS'
