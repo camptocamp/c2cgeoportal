@@ -180,7 +180,7 @@ camptocamp/geomapfish-config:latest:
   ubuntu_22_04/libxml2: 2.9.13+dfsg-1ubuntu0.14
   ubuntu_22_04/libxxhash0: 0.8.1-1
   ubuntu_22_04/libzstd1: 1.4.8+dfsg-3build1
-  ubuntu_22_04/linux-libc-dev: 5.15.0-203.213
+  ubuntu_22_04/linux-libc-dev: 5.15.0-204.214
   ubuntu_22_04/login: 1:4.8.1-2ubuntu2.2
   ubuntu_22_04/logsave: 1.46.5-2ubuntu1.2
   ubuntu_22_04/lsb-base: 11.1.0ubuntu4
@@ -542,7 +542,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28:
   ubuntu_22_04/libxxhash0: 0.8.1-1
   ubuntu_22_04/libzip4: 1.7.3-1ubuntu2
   ubuntu_22_04/libzstd1: 1.4.8+dfsg-3build1
-  ubuntu_22_04/linux-libc-dev: 5.15.0-203.213
+  ubuntu_22_04/linux-libc-dev: 5.15.0-204.214
   ubuntu_22_04/login: 1:4.8.1-2ubuntu2.2
   ubuntu_22_04/logsave: 1.46.5-2ubuntu1.2
   ubuntu_22_04/lsb-base: 11.1.0ubuntu4
@@ -917,7 +917,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28-gdal3.6:
   ubuntu_22_04/libxxhash0: 0.8.1-1
   ubuntu_22_04/libzip4: 1.7.3-1ubuntu2
   ubuntu_22_04/libzstd1: 1.4.8+dfsg-3build1
-  ubuntu_22_04/linux-libc-dev: 5.15.0-203.213
+  ubuntu_22_04/linux-libc-dev: 5.15.0-204.214
   ubuntu_22_04/login: 1:4.8.1-2ubuntu2.2
   ubuntu_22_04/logsave: 1.46.5-2ubuntu1.2
   ubuntu_22_04/lsb-base: 11.1.0ubuntu4
@@ -1297,7 +1297,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28-gdal3.7:
   ubuntu_22_04/libxxhash0: 0.8.1-1
   ubuntu_22_04/libzip4: 1.7.3-1ubuntu2
   ubuntu_22_04/libzstd1: 1.4.8+dfsg-3build1
-  ubuntu_22_04/linux-libc-dev: 5.15.0-203.213
+  ubuntu_22_04/linux-libc-dev: 5.15.0-204.214
   ubuntu_22_04/login: 1:4.8.1-2ubuntu2.2
   ubuntu_22_04/logsave: 1.46.5-2ubuntu1.2
   ubuntu_22_04/lsb-base: 11.1.0ubuntu4
@@ -1731,7 +1731,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libxxhash0: 0.8.1-1
   ubuntu_22_04/libzip4: 1.7.3-1ubuntu2
   ubuntu_22_04/libzstd1: 1.4.8+dfsg-3build1
-  ubuntu_22_04/linux-libc-dev: 5.15.0-203.213
+  ubuntu_22_04/linux-libc-dev: 5.15.0-204.214
   ubuntu_22_04/login: 1:4.8.1-2ubuntu2.2
   ubuntu_22_04/logsave: 1.46.5-2ubuntu1.2
   ubuntu_22_04/lsb-base: 11.1.0ubuntu4
@@ -2169,7 +2169,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.7:
   ubuntu_22_04/libxxhash0: 0.8.1-1
   ubuntu_22_04/libzip4: 1.7.3-1ubuntu2
   ubuntu_22_04/libzstd1: 1.4.8+dfsg-3build1
-  ubuntu_22_04/linux-libc-dev: 5.15.0-203.213
+  ubuntu_22_04/linux-libc-dev: 5.15.0-204.214
   ubuntu_22_04/login: 1:4.8.1-2ubuntu2.2
   ubuntu_22_04/logsave: 1.46.5-2ubuntu1.2
   ubuntu_22_04/lsb-base: 11.1.0ubuntu4
@@ -2607,7 +2607,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libxxhash0: 0.8.1-1
   ubuntu_22_04/libzip4: 1.7.3-1ubuntu2
   ubuntu_22_04/libzstd1: 1.4.8+dfsg-3build1
-  ubuntu_22_04/linux-libc-dev: 5.15.0-203.213
+  ubuntu_22_04/linux-libc-dev: 5.15.0-204.214
   ubuntu_22_04/login: 1:4.8.1-2ubuntu2.2
   ubuntu_22_04/logsave: 1.46.5-2ubuntu1.2
   ubuntu_22_04/lsb-base: 11.1.0ubuntu4
@@ -2905,7 +2905,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/librsvg2-2: 2.52.5+dfsg-3ubuntu0.2
   ubuntu_22_04/librtmp1: 2.4+20151223.gitfa8646d.1-2build4
   ubuntu_22_04/librttopo1: 1.1.0-2
-  ubuntu_22_04/libruby3.0: 3.0.2-7ubuntu2.13
+  ubuntu_22_04/libruby3.0: 3.0.2-7ubuntu2.14
   ubuntu_22_04/libsasl2-2: 2.1.27+dfsg2-3ubuntu1.2
   ubuntu_22_04/libsasl2-modules-db: 2.1.27+dfsg2-3ubuntu1.2
   ubuntu_22_04/libseccomp2: 2.5.3-2ubuntu3~22.04.1
@@ -2975,7 +2975,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/libxxhash0: 0.8.1-1
   ubuntu_22_04/libyaml-0-2: 0.2.2-1build2
   ubuntu_22_04/libzstd1: 1.4.8+dfsg-3build1
-  ubuntu_22_04/linux-libc-dev: 5.15.0-203.213
+  ubuntu_22_04/linux-libc-dev: 5.15.0-204.214
   ubuntu_22_04/login: 1:4.8.1-2ubuntu2.2
   ubuntu_22_04/logsave: 1.46.5-2ubuntu1.2
   ubuntu_22_04/lsb-base: 11.1.0ubuntu4
@@ -3034,7 +3034,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/ruby-rubygems: 3.3.5-2ubuntu1.2
   ubuntu_22_04/ruby-webrick: 1.7.0-3ubuntu0.2
   ubuntu_22_04/ruby-xmlrpc: 0.3.2-1ubuntu0.1
-  ubuntu_22_04/ruby3.0: 3.0.2-7ubuntu2.13
+  ubuntu_22_04/ruby3.0: 3.0.2-7ubuntu2.14
   ubuntu_22_04/rubygems-integration: '1.18'
   ubuntu_22_04/sed: 4.8-1ubuntu2.1
   ubuntu_22_04/sensible-utils: 0.0.17
@@ -3331,7 +3331,7 @@ camptocamp/geomapfish:latest:
   ubuntu_22_04/libxtst6: 2:1.2.3-1ubuntu0.22.04.1
   ubuntu_22_04/libxxhash0: 0.8.1-1
   ubuntu_22_04/libzstd1: 1.4.8+dfsg-3build1
-  ubuntu_22_04/linux-libc-dev: 5.15.0-203.213
+  ubuntu_22_04/linux-libc-dev: 5.15.0-204.214
   ubuntu_22_04/login: 1:4.8.1-2ubuntu2.2
   ubuntu_22_04/logsave: 1.46.5-2ubuntu1.2
   ubuntu_22_04/lsb-base: 11.1.0ubuntu4
@@ -3656,7 +3656,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_22_04/libxtst6: 2:1.2.3-1ubuntu0.22.04.1
   ubuntu_22_04/libxxhash0: 0.8.1-1
   ubuntu_22_04/libzstd1: 1.4.8+dfsg-3build1
-  ubuntu_22_04/linux-libc-dev: 5.15.0-203.213
+  ubuntu_22_04/linux-libc-dev: 5.15.0-204.214
   ubuntu_22_04/login: 1:4.8.1-2ubuntu2.2
   ubuntu_22_04/logsave: 1.46.5-2ubuntu1.2
   ubuntu_22_04/lsb-base: 11.1.0ubuntu4
