@@ -1,3 +1,7 @@
+##### 2.10.rc.22
+
+- [Backport 2.10] Close the database session in authorizedLayerAttributes [c2cgeoportal#13734](https://github.com/camptocamp/c2cgeoportal/pull/13734)
+
 ##### 2.10.rc.21
 
 - Audit Dpkg 2.10 [c2cgeoportal#13740](https://github.com/camptocamp/c2cgeoportal/pull/13740)
