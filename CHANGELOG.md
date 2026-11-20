@@ -1,3 +1,8 @@
+##### 2.7.1.361
+
+- Set the Git identity in the version and changelog push step [c2cgeoportal#13737](https://github.com/camptocamp/c2cgeoportal/pull/13737)
+- Audit Dpkg 2.7 [c2cgeoportal#13738](https://github.com/camptocamp/c2cgeoportal/pull/13738)
+
 ##### 2.7.1.360
 
 - Audit Dpkg 2.7 [c2cgeoportal#13529](https://github.com/camptocamp/c2cgeoportal/pull/13529)
