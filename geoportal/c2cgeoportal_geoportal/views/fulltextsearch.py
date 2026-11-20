@@ -27,7 +27,7 @@
 
 
 import re
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, cast
 
 import pyramid.request
 import sqlalchemy.orm.query
@@ -67,10 +67,10 @@ class FullTextSearchView:
 
     @staticmethod
     @CACHE_REGION.cache_on_arguments()
-    def _get_interface_id(interface: str) -> int:
+    def _get_interface_id(interface: str) -> int | None:
         assert DBSession is not None
 
-        return DBSession.query(Interface).filter_by(name=interface).one().id
+        return cast("int | None", DBSession.query(Interface.id).filter_by(name=interface).scalar())
 
     def _get_user_filter(self) -> ColumnElement[bool]:
         """Get the filter on the entries visible by the current user."""
@@ -88,9 +88,12 @@ class FullTextSearchView:
     def _get_interface_filter(self) -> ColumnElement[bool]:
         """Get the filter on the interface requested by the user."""
         if "interface" in self.request.params:
+            interface_id = self._get_interface_id(self.request.params["interface"])
+            if interface_id is None:
+                raise HTTPBadRequest(detail="unknown interface")
             return or_(
                 FullTextSearch.interface_id.is_(None),
-                FullTextSearch.interface_id == self._get_interface_id(self.request.params["interface"]),
+                FullTextSearch.interface_id == interface_id,
             )
         interface_filter: ColumnElement[bool] = FullTextSearch.interface_id.is_(None)
         return interface_filter
