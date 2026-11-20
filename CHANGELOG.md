@@ -1,3 +1,8 @@
+##### 2.10.rc.20
+
+- Update used ngeo [c2cgeoportal#13735](https://github.com/camptocamp/c2cgeoportal/pull/13735)
+- [Backport 2.10] Fix custom filter criteria alignment with remove button [ngeo#10308](https://github.com/camptocamp/ngeo/pull/10308)
+
 ##### 2.10.rc.18
 
 - [Backport 2.10] Use the dispatch token to push the version and changelog updates [c2cgeoportal#13719](https://github.com/camptocamp/c2cgeoportal/pull/13719)
