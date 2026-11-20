@@ -1,3 +1,7 @@
+##### 2.8.1.414
+
+- Update QGIS 3.28-gdal3.6 dpkg versions list [c2cgeoportal#13751](https://github.com/camptocamp/c2cgeoportal/pull/13751)
+
 ##### 2.8.1.413
 
 - Return bad request instead of internal server error for unknown interface [c2cgeoportal#13746](https://github.com/camptocamp/c2cgeoportal/pull/13746)
