@@ -237,6 +237,17 @@ class TestFulltextsearchView(TestCase):
         response = fts.fulltextsearch()
         assert isinstance(response, HTTPBadRequest)
 
+    def test_badrequest_unknown_interface(self) -> None:
+        import pytest
+        from pyramid.httpexceptions import HTTPBadRequest
+
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
+
+        request = self._create_dummy_request(params={"query": "lausanne", "interface": "unknown"})
+        fts = FullTextSearchView(request)
+        with pytest.raises(HTTPBadRequest):
+            fts.fulltextsearch()
+
     def test_limit(self) -> None:
         from geojson.feature import FeatureCollection
 
@@ -746,6 +757,17 @@ class TestFulltextsearchView(TestCase):
         response = fts.capabilities()
         assert "layer_iface" in response["categories"]
         assert "layer1" in response["categories"]
+
+    def test_capabilities_unknown_interface(self) -> None:
+        import pytest
+        from pyramid.httpexceptions import HTTPBadRequest
+
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
+
+        request = self._create_dummy_request(params={"interface": "unknown"})
+        fts = FullTextSearchView(request)
+        with pytest.raises(HTTPBadRequest):
+            fts.capabilities()
 
     def test_duplicate_entries(self):
         import transaction
