@@ -69,7 +69,7 @@ def _get_jwks_client() -> PyJWKClient:
     return _jwks_client
 
 
-def _verify_github_oidc_token(token: str, allowed_repository: str | None) -> dict[str, Any]:
+def _verify_github_oidc_token(token: str, allowed_repository: str) -> dict[str, Any]:
     """
     Validate a GitHub Actions OIDC token.
 
@@ -95,7 +95,7 @@ def _verify_github_oidc_token(token: str, allowed_repository: str | None) -> dic
     except jwt.InvalidTokenError as exc:
         raise HTTPForbidden(f"Invalid token: {exc}") from None
 
-    if allowed_repository is not None and payload.get("repository") != allowed_repository:
+    if payload.get("repository") != allowed_repository:
         raise HTTPForbidden(
             f"Unauthorized repository: {payload.get('repository')}, expected: {allowed_repository}"
         )
@@ -108,14 +108,20 @@ def _authenticate_localepot(request: pyramid.request.Request) -> None:
     Authenticate the request for the /locale.pot endpoint.
 
     Accepts either:
-    - A GitHub Actions OIDC token in the Authorization header (Bearer token)
-    - An admin authentication (via c2cwsgiutils.auth_view) as fallback
+
+    - A GitHub Actions OIDC token in the `Authorization` header (Bearer token), the
+      `github_oidc_allowed_repository` configuration gives the only repository accepted, without
+      it all the OIDC tokens are refused
+    - The administration authentication (via c2cwsgiutils.auth_view, the `C2C_SECRET`), for the
+      local usage, it should not be used in production as it is a shared static secret
     """
     auth_header = request.headers.get("Authorization", "")
     if auth_header.startswith("Bearer "):
         token = auth_header[7:]
         settings = request.registry.settings or {}
-        allowed_repository = settings.get("github_oidc_allowed_repository")
+        allowed_repository: str = settings.get("github_oidc_allowed_repository") or ""
+        if allowed_repository == "":
+            raise HTTPForbidden("No allowed repository configured for the OIDC authentication")
         _verify_github_oidc_token(token, allowed_repository)
         return
 

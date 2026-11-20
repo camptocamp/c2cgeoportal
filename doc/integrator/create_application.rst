@@ -331,6 +331,11 @@ Be careful, GitHub will read only the file present on the main branch.
 
 This workflow will query the `locale.pot` view, using `PROJECT_PUBLIC_URL` found in `Makefile`,
 and open a pull request to update the localization files (`.po`) with current list of translatable strings.
+The view being protected, the workflow requests a GitHub Actions OIDC token (`id-token: write` permission)
+and passes it to `make update-po-from-url` with the `OIDC_TOKEN` variable.
+Only the repository set in the `github_oidc_allowed_repository` variable of the `geoportal/vars.yaml`
+file is accepted, it defaults to `camptocamp/<project>` for a new project, adapt it if your repository
+is hosted in another organization.
 
 Be careful, GitHub will read only the file present on the main branch.
 

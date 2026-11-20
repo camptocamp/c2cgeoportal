@@ -23,6 +23,7 @@
 
 # This file should be used only on the test project in the c2cgeoportal CI
 
+import os
 import re
 
 import polib
@@ -30,12 +31,23 @@ import pytest
 import requests
 
 
+def test_localepot_authentication() -> None:
+    """Tests that the locale pot view doesn't leak the strings without authentication."""
+    response = requests.get("https://front/locale.pot", verify=False, timeout=30)  # nosec
+    assert "msgid" not in response.text, response.text
+
+
 @pytest.mark.parametrize("test_number", [0, 1])
 def test_po(test_number: int) -> None:
     """Tests that the generated pot files are identical between the command line and the view."""
     del test_number
 
-    response = requests.get("https://front/locale.pot", verify=False, timeout=30)  # nosec
+    response = requests.get(
+        "https://front/locale.pot",
+        headers={"X-API-Key": os.environ["C2C_SECRET"]},
+        verify=False,
+        timeout=30,
+    )  # nosec
     assert response.status_code == 200, response.text
     response_keys = {e.msgid for e in polib.pofile(response.text)}
 

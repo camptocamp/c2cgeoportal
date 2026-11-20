@@ -86,7 +86,7 @@ class TestVerifyGithubOidcToken(TestCase):
         token = _create_test_token(self.private_key)
         mock_get_client.return_value = self._mock_jwks_client(self.public_key)
 
-        payload = _verify_github_oidc_token(token, None)
+        payload = _verify_github_oidc_token(token, "org/repo")
         self.assertEqual(payload["repository"], "org/repo")
 
     @patch("c2cgeoportal_geoportal.views.i18n._get_jwks_client")
@@ -125,7 +125,7 @@ class TestVerifyGithubOidcToken(TestCase):
         mock_get_client.return_value = self._mock_jwks_client(self.public_key)
 
         with self.assertRaises(HTTPForbidden) as ctx:
-            _verify_github_oidc_token(token, None)
+            _verify_github_oidc_token(token, "org/repo")
         self.assertEqual("Token expired", str(ctx.exception.detail))
 
     @patch("c2cgeoportal_geoportal.views.i18n._get_jwks_client")
@@ -139,7 +139,7 @@ class TestVerifyGithubOidcToken(TestCase):
         mock_get_client.return_value = self._mock_jwks_client(self.public_key)
 
         with self.assertRaises(HTTPForbidden) as ctx:
-            _verify_github_oidc_token(token, None)
+            _verify_github_oidc_token(token, "org/repo")
         self.assertEqual("Invalid token audience", str(ctx.exception.detail))
 
     @patch("c2cgeoportal_geoportal.views.i18n._get_jwks_client")
@@ -153,28 +153,15 @@ class TestVerifyGithubOidcToken(TestCase):
         mock_get_client.return_value = self._mock_jwks_client(self.public_key)
 
         with self.assertRaises(HTTPForbidden) as ctx:
-            _verify_github_oidc_token(token, None)
+            _verify_github_oidc_token(token, "org/repo")
         self.assertEqual("Invalid token issuer", str(ctx.exception.detail))
 
 
 class TestAuthenticateLocalepot(TestCase):
     """Tests for _authenticate_localepot."""
 
-    def test_bearer_token_with_valid_oidc(self):
-        """A valid Bearer token should be accepted."""
-        from c2cgeoportal_geoportal.views.i18n import _authenticate_localepot
-
-        request = MagicMock()
-        request.headers = {"Authorization": "Bearer fake-token"}
-        request.registry.settings = {}
-
-        with patch("c2cgeoportal_geoportal.views.i18n._verify_github_oidc_token") as mock_verify:
-            mock_verify.return_value = {"repository": "org/repo"}
-            _authenticate_localepot(request)
-            mock_verify.assert_called_once_with("fake-token", None)
-
-    def test_bearer_token_with_repository_setting(self):
-        """The allowed_repository setting should be passed to verification."""
+    def test_bearer_token(self):
+        """A Bearer token should be verified against the configured repository."""
         from c2cgeoportal_geoportal.views.i18n import _authenticate_localepot
 
         request = MagicMock()
@@ -185,6 +172,36 @@ class TestAuthenticateLocalepot(TestCase):
             mock_verify.return_value = {"repository": "my/repo"}
             _authenticate_localepot(request)
             mock_verify.assert_called_once_with("fake-token", "my/repo")
+
+    def test_bearer_token_without_allowed_repository_configuration(self):
+        """Without the configuration the OIDC authentication is refused."""
+        from pyramid.httpexceptions import HTTPForbidden
+
+        from c2cgeoportal_geoportal.views.i18n import _authenticate_localepot
+
+        request = MagicMock()
+        request.headers = {"Authorization": "Bearer fake-token"}
+        request.registry.settings = {}
+
+        with patch("c2cgeoportal_geoportal.views.i18n._verify_github_oidc_token") as mock_verify:
+            with self.assertRaises(HTTPForbidden):
+                _authenticate_localepot(request)
+            mock_verify.assert_not_called()
+
+    def test_bearer_token_with_empty_allowed_repository(self):
+        """The default empty configuration should refuse the OIDC authentication."""
+        from pyramid.httpexceptions import HTTPForbidden
+
+        from c2cgeoportal_geoportal.views.i18n import _authenticate_localepot
+
+        request = MagicMock()
+        request.headers = {"Authorization": "Bearer fake-token"}
+        request.registry.settings = {"github_oidc_allowed_repository": ""}
+
+        with patch("c2cgeoportal_geoportal.views.i18n._verify_github_oidc_token") as mock_verify:
+            with self.assertRaises(HTTPForbidden):
+                _authenticate_localepot(request)
+            mock_verify.assert_not_called()
 
     def test_no_bearer_token_falls_back_to_auth_view(self):
         """Without a Bearer token, auth_view should be called."""

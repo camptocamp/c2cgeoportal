@@ -916,6 +916,20 @@ URL: ``.../locale.pot``
 
 Method: ``GET``
 
+Authentication
+--------------
+
+The service is protected, it accepts one of:
+
+ - A GitHub Actions OIDC token, in the ``Authorization`` header as ``Bearer <token>``, with the
+   audience ``geomapfish-l10n``. This is what the ``update_l10n`` workflow of a project does. The
+   ``github_oidc_allowed_repository`` configuration parameter gives the only repository accepted;
+   without it (the default in ``CONST_vars.yaml``) all the OIDC tokens are refused.
+ - The administration authentication, as for the administration interface: the ``secret`` parameter,
+   the ``X-API-Key`` header or the ``C2C_SECRET`` cookie, holding the ``C2C_SECRET`` value. It is
+   meant for a local usage, it should not be used in production as it relies on a static shared
+   secret.
+
 Parameters
 ----------
 

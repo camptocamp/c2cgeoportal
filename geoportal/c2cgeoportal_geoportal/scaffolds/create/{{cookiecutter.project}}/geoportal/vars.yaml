@@ -32,6 +32,11 @@ vars:
   # This also defines the language used for the text search.
   default_locale_name: fr
 
+  # The GitHub repository allowed to get the /locale.pot view with a GitHub Actions OIDC
+  # token, used by the update_l10n workflow, change it if the repository is not hosted
+  # in the 'camptocamp' organization.
+  github_oidc_allowed_repository: 'camptocamp/{{cookiecutter.project}}'
+
   # All the application interfaces used to create the apache rewrite rules
   interfaces:
     - name: desktop
