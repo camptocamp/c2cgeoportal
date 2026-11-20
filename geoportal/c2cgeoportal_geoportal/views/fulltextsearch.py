@@ -62,8 +62,7 @@ class FullTextSearchView:
     @staticmethod
     @CACHE_REGION.cache_on_arguments()  # type: ignore
     def _get_interface_id(interface: str) -> Optional[int]:
-        entry = DBSession.query(Interface).filter_by(name=interface).first()
-        return None if entry is None else cast(int, entry.id)
+        return cast(Optional[int], DBSession.query(Interface.id).filter_by(name=interface).scalar())
 
     @view_config(route_name="fulltextsearch", renderer="geojson")  # type: ignore
     def fulltextsearch(self) -> FeatureCollection:
