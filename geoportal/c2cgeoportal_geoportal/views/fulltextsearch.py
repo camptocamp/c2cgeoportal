@@ -27,7 +27,7 @@
 
 
 import re
-from typing import cast
+from typing import Optional, cast
 
 import pyramid.request
 from geoalchemy2.shape import to_shape
@@ -61,8 +61,8 @@ class FullTextSearchView:
 
     @staticmethod
     @CACHE_REGION.cache_on_arguments()  # type: ignore
-    def _get_interface_id(interface: str) -> int:
-        return cast(int, DBSession.query(Interface).filter_by(name=interface).one().id)
+    def _get_interface_id(interface: str) -> Optional[int]:
+        return cast(Optional[int], DBSession.query(Interface.id).filter_by(name=interface).scalar())
 
     @view_config(route_name="fulltextsearch", renderer="geojson")  # type: ignore
     def fulltextsearch(self) -> FeatureCollection:
@@ -116,11 +116,14 @@ class FullTextSearchView:
             )
 
         if "interface" in self.request.params:
+            interface_id = self._get_interface_id(self.request.params["interface"])
+            if interface_id is None:
+                return HTTPBadRequest(detail="unknown interface")
             _filter = and_(
                 _filter,
                 or_(
                     FullTextSearch.interface_id.is_(None),
-                    FullTextSearch.interface_id == self._get_interface_id(self.request.params["interface"]),
+                    FullTextSearch.interface_id == interface_id,
                 ),
             )
         else:

@@ -236,6 +236,16 @@ class TestFulltextsearchView(TestCase):
         response = fts.fulltextsearch()
         self.assertTrue(isinstance(response, HTTPBadRequest))
 
+    def test_badrequest_unknown_interface(self):
+        from pyramid.httpexceptions import HTTPBadRequest
+
+        from c2cgeoportal_geoportal.views.fulltextsearch import FullTextSearchView
+
+        request = self._create_dummy_request(params=dict(query="lausanne", interface="unknown"))
+        fts = FullTextSearchView(request)
+        response = fts.fulltextsearch()
+        self.assertTrue(isinstance(response, HTTPBadRequest))
+
     def test_limit(self):
         from geojson.feature import FeatureCollection
 
