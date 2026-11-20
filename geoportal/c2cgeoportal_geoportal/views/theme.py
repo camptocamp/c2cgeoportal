@@ -179,6 +179,7 @@ class Theme:
         self._layerswmts_cache: list[main.LayerWMTS] | None = None
         self._layergroup_cache: list[main.LayerGroup] | None = None
         self._themes_cache: list[main.Theme] | None = None
+        self._unauthorized_layers_cache: dict[int, set[str]] = {}
 
     def _get_metadata(
         self,
@@ -553,6 +554,22 @@ class Theme:
             for child_layer in wms_layer_obj["children"]:
                 self._fill_child_layer(layer_theme, child_layer, wms, unauthorized_layers)
 
+    def _get_unauthorized_layers(
+        self,
+        ogc_server_id: int,
+        wms_children_map: dict[str, list[str]],
+    ) -> set[str]:
+        """
+        Get the unauthorized layers of an OGC server.
+
+        Memoized per request, as it is called for each layer of the theme tree construction.
+        """
+        unauthorized_layers = self._unauthorized_layers_cache.get(ogc_server_id)
+        if unauthorized_layers is None:
+            unauthorized_layers = get_unauthorized_layers(self.request, ogc_server_id, wms_children_map)
+            self._unauthorized_layers_cache[ogc_server_id] = unauthorized_layers
+        return unauthorized_layers
+
     async def _fill_wms(
         self,
         layer_theme: dict[str, Any],
@@ -572,7 +589,7 @@ class Theme:
         wms_children_map: dict[str, list[str]] = {
             name: layer_data["children"] for name, layer_data in wms["layers"].items()
         }
-        unauthorized_layers = get_unauthorized_layers(self.request, layer.ogc_server.id, wms_children_map)
+        unauthorized_layers = self._get_unauthorized_layers(layer.ogc_server.id, wms_children_map)
 
         layer_theme["childLayers"] = []
         for layer_name in layer.layer.split(","):
@@ -1323,9 +1340,7 @@ class Theme:
                             name: layer_data["children"] for name, layer_data in wms["layers"].items()
                         }
 
-                    unauthorized_layers = get_unauthorized_layers(
-                        self.request, ogc_server.id, wms_children_map
-                    )
+                    unauthorized_layers = self._get_unauthorized_layers(ogc_server.id, wms_children_map)
 
                     if attributes is not None:
                         for name in unauthorized_layers:

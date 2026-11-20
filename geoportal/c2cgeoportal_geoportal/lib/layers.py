@@ -28,7 +28,7 @@
 
 import copy
 from collections.abc import Iterable
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, NamedTuple
 
 import sqlalchemy.orm
 from pyramid.request import Request
@@ -107,8 +107,8 @@ def get_protected_layers(request: Request, ogc_server_ids: Iterable[int]) -> dic
 
     q = get_protected_layers_query(request, ogc_server_ids, what=main.LayerWMS)
     results = q.all()
-    for r in results:
-        DBSession.expunge(r)
+    # Don't expunge the layers: they can be the same instances as those used elsewhere in the
+    # request (for example in the theme tree construction) and must stay attached to the session.
     return {r.id: r for r in results}
 
 
@@ -122,14 +122,27 @@ def get_writable_layers(request: Request, ogc_server_ids: Iterable[int]) -> dict
 
     q = get_writable_layers_query(request, ogc_server_ids)
     results = q.all()
-    for r in results:
-        DBSession.expunge(r)
+    # Don't expunge the layers: they can be the same instances as those used elsewhere in the
+    # request (for example in the theme tree construction) and must stay attached to the session.
     return {r.id: r for r in results}
 
 
+class PrivateLayer(NamedTuple):
+    """A snapshot of the columns of a private layer, safe to keep in the cache."""
+
+    id: int
+    name: str
+    layer: str
+
+
 @CACHE_REGION.cache_on_arguments()
-def get_private_layers(ogc_server_ids: Iterable[int]) -> dict[int, "main.LayerWMS"]:
-    """Get the private layers."""
+def get_private_layers(ogc_server_ids: Iterable[int]) -> dict[int, PrivateLayer]:
+    """
+    Get the private layers.
+
+    Only the needed columns are queried (no ORM entity) so the cached values never hold session
+    bound objects and querying never detaches the instances shared with the current request.
+    """
     from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
         DBSession,
         main,
@@ -138,15 +151,12 @@ def get_private_layers(ogc_server_ids: Iterable[int]) -> dict[int, "main.LayerWM
     assert DBSession is not None
 
     q = (
-        DBSession.query(main.LayerWMS)
+        DBSession.query(main.LayerWMS.id, main.LayerWMS.name, main.LayerWMS.layer)
         .filter(main.LayerWMS.public.is_(False))
         .join(main.LayerWMS.ogc_server)
         .filter(main.OGCServer.id.in_(ogc_server_ids))
     )
-    results = q.all()
-    for r in results:
-        DBSession.expunge(r)
-    return {r.id: r for r in results}
+    return {id_: PrivateLayer(id_, name, layer) for id_, name, layer in q.all()}
 
 
 def get_unauthorized_layers(
