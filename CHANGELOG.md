@@ -1,3 +1,7 @@
+##### 2.7.1.364
+
+- Audit Dpkg 2.7 [c2cgeoportal#13753](https://github.com/camptocamp/c2cgeoportal/pull/13753)
+
 ##### 2.7.1.363
 
 - Publish the sources to Transifex with the TRANSIFEX_TOKEN secret [c2cgeoportal#13743](https://github.com/camptocamp/c2cgeoportal/pull/13743)
