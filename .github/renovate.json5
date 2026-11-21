@@ -147,6 +147,24 @@
       enabled: false,
       matchDepNames: ['gitpython'],
     },
+    /**
+     * Don't update pyyaml in the qgisserver Python 3.10 environment of branch 2.7: the remediation
+     * of CVE-2020-14343 is PyYAML >= 5.4, but 5.4/5.4.1 have no wheel for Python 3.10 and their
+     * source build fails with `AttributeError: cython_sources` with Cython >= 3, so the pipenv
+     * lock update can never succeed (see pull request #13756). PyYAML 6 is not an option either
+     * because pyyaml-include 1.2.post2 requires PyYAML < 6.0 and the same bump was already
+     * reverted on 2.7 (b1f7b6512). The CVE is ignored in docker/qgisserver/python/3.10/.snyk.
+     * The `force` is needed because vulnerability alert updates are merged with `force.enabled`
+     * and would otherwise override a plain `enabled: false`.
+     */
+    {
+      matchDepNames: ['pyyaml'],
+      matchBaseBranches: ['2.7'],
+      matchFileNames: ['docker/qgisserver/python/3.10/Pipfile'],
+      force: {
+        enabled: false,
+      },
+    },
     /** Don't update types-pyyaml on branch 2.8 */
     {
       matchBaseBranches: ['2.8'],
