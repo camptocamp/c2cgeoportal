@@ -1,3 +1,7 @@
+##### 2.9.0.635
+
+- Update dependency certifi to v2026.11.20 (2.9) [c2cgeoportal#13761](https://github.com/camptocamp/c2cgeoportal/pull/13761)
+
 ##### 2.9.0.634
 
 - [Backport 2.9] Publish the sources to Transifex with the TRANSIFEX_TOKEN secret [c2cgeoportal#13747](https://github.com/camptocamp/c2cgeoportal/pull/13747)
