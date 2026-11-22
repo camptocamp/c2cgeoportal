@@ -1,3 +1,7 @@
+##### 2.8.1.417
+
+- Update dependency certifi to v2026.11.20 (2.8) [c2cgeoportal#13760](https://github.com/camptocamp/c2cgeoportal/pull/13760)
+
 ##### 2.8.1.416
 
 - Update QGIS 3.34-gdal3.7 dpkg versions list [c2cgeoportal#13755](https://github.com/camptocamp/c2cgeoportal/pull/13755)
