@@ -1,3 +1,7 @@
+##### 2.10.rc.24
+
+- Update dependency certifi to v2026.11.20 (2.10) [c2cgeoportal#13762](https://github.com/camptocamp/c2cgeoportal/pull/13762)
+
 ##### 2.10.rc.23
 
 - [Backport 2.10] Return bad request instead of internal server error for unknown interface [c2cgeoportal#13749](https://github.com/camptocamp/c2cgeoportal/pull/13749)
