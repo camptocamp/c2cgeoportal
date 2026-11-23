@@ -17,6 +17,8 @@ certifi = "2026.11.20"
 pillow = "13.0.0"
 dnspython = "2.9.2"
 soupsieve = "4.0.1"
+gunicorn = "27.0.0"
+pydantic = "2.14.2"
 
 [project]
 name = 'c2cgeoportal'
