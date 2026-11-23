@@ -34,7 +34,7 @@ Information
    `docker-compose-qgis.yaml` file and the `make qgis` target are removed from the project template,
    use a QGIS desktop installed locally instead.
 
-4. The default QGIS Server version is now `master` for the new projects (in the `env.default` file),
+4. The default QGIS Server version is now `4.4-gdal3.13` for the new projects (in the `env.default` file),
    the `env.default` file is not updated by the upgrade process then the existing projects are not
    impacted, you can set `QGIS_VERSION` in the `env.project` file to change the used version.
 
