@@ -1,3 +1,7 @@
+##### 2.8.1.418
+
+- Lock file maintenance (2.8) [c2cgeoportal#13764](https://github.com/camptocamp/c2cgeoportal/pull/13764)
+
 ##### 2.8.1.417
 
 - Update dependency certifi to v2026.11.20 (2.8) [c2cgeoportal#13760](https://github.com/camptocamp/c2cgeoportal/pull/13760)
