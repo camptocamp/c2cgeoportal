@@ -1,3 +1,8 @@
+##### 2.9.0.636
+
+- [Backport 2.9] Return bad request instead of internal server error for unknown interface [c2cgeoportal#13750](https://github.com/camptocamp/c2cgeoportal/pull/13750)
+- Audit Dpkg 2.9 [c2cgeoportal#13754](https://github.com/camptocamp/c2cgeoportal/pull/13754)
+
 ##### 2.9.0.635
 
 - Update dependency certifi to v2026.11.20 (2.9) [c2cgeoportal#13761](https://github.com/camptocamp/c2cgeoportal/pull/13761)
