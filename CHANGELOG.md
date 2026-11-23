@@ -1,3 +1,7 @@
+##### 2.10.rc.26
+
+- Use QGIS 4.4-gdal3.13 as default version [c2cgeoportal#13768](https://github.com/camptocamp/c2cgeoportal/pull/13768)
+
 ##### 2.10.rc.25
 
 - Lock file maintenance (2.10) [c2cgeoportal#13766](https://github.com/camptocamp/c2cgeoportal/pull/13766)
