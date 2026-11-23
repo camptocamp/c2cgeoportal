@@ -1,3 +1,7 @@
+##### 2.8.1.419
+
+- Audit Dpkg 2.8 [c2cgeoportal#13773](https://github.com/camptocamp/c2cgeoportal/pull/13773)
+
 ##### 2.8.1.418
 
 - Lock file maintenance (2.8) [c2cgeoportal#13764](https://github.com/camptocamp/c2cgeoportal/pull/13764)
