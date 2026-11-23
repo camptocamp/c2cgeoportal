@@ -1,3 +1,7 @@
+##### 2.10.rc.25
+
+- Lock file maintenance (2.10) [c2cgeoportal#13766](https://github.com/camptocamp/c2cgeoportal/pull/13766)
+
 ##### 2.10.rc.24
 
 - Update dependency certifi to v2026.11.20 (2.10) [c2cgeoportal#13762](https://github.com/camptocamp/c2cgeoportal/pull/13762)
