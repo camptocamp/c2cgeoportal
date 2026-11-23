@@ -1,3 +1,8 @@
+##### 2.7.1.365
+
+- Update dependency pyyaml [SECURITY] (2.7) [c2cgeoportal#13771](https://github.com/camptocamp/c2cgeoportal/pull/13771)
+- Audit Dpkg 2.7 [c2cgeoportal#13772](https://github.com/camptocamp/c2cgeoportal/pull/13772)
+
 ##### 2.7.1.364
 
 - Audit Dpkg 2.7 [c2cgeoportal#13753](https://github.com/camptocamp/c2cgeoportal/pull/13753)
