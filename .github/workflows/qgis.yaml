@@ -52,20 +52,20 @@ jobs:
       matrix:
         # The versions should be set everywhere we have a == QGIS version == comment
         version:
-          - '4.2'
-          - 4.2-gdal3.13
+          - '4.4'
+          # Used as default version
+          - 4.4-gdal3.13
           # ltr is based on Ubuntu 24.04 with Python 3.12, not compatible with the
           # minimal Python version 3.14, see https://github.com/camptocamp/c2cgeoportal/pull/13538
           # - ltr
           - lr
           - lr-debug
-          # Used as default version
           - master
 
     # == QGIS version ==
     outputs:
-      success-4-2: ${{ steps.success.outputs.success-4-2 }}
-      success-4-2-gdal3-13: ${{ steps.success.outputs.success-4-2-gdal3-13 }}
+      success-4-4: ${{ steps.success.outputs.success-4-4 }}
+      success-4-4-gdal3-13: ${{ steps.success.outputs.success-4-4-gdal3-13 }}
       # success-ltr: ${{ steps.success.outputs.success-ltr }}
       success-lr: ${{ steps.success.outputs.success-lr }}
       success-lr-debug: ${{ steps.success.outputs.success-lr-debug }}
@@ -160,8 +160,8 @@ jobs:
 
     # == QGIS version ==
     steps:
-      - run: '[[ "${{ needs.main.outputs.success-4-2 }}" == "true" ]]'
-      - run: '[[ "${{ needs.main.outputs.success-4-2-gdal3-13 }}" == "true" ]]'
+      - run: '[[ "${{ needs.main.outputs.success-4-4 }}" == "true" ]]'
+      - run: '[[ "${{ needs.main.outputs.success-4-4-gdal3-13 }}" == "true" ]]'
       # - run: '[[ "${{ needs.main.outputs.success-ltr }}" == "true" ]]'
       - run: '[[ "${{ needs.main.outputs.success-lr }}" == "true" ]]'
       - run: '[[ "${{ needs.main.outputs.success-lr-debug }}" == "true" ]]'
