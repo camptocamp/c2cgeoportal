@@ -1,3 +1,8 @@
+##### 2.9.0.637
+
+- Lock file maintenance (2.9) [c2cgeoportal#13765](https://github.com/camptocamp/c2cgeoportal/pull/13765)
+- Audit Snyk check/fix 2.9 [c2cgeoportal#13774](https://github.com/camptocamp/c2cgeoportal/pull/13774)
+
 ##### 2.9.0.636
 
 - [Backport 2.9] Return bad request instead of internal server error for unknown interface [c2cgeoportal#13750](https://github.com/camptocamp/c2cgeoportal/pull/13750)
