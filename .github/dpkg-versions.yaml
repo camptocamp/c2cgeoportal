@@ -154,7 +154,7 @@ camptocamp/geomapfish-config:latest:
   ubuntu_22_04/libspatialite7: 5.0.1-2build2
   ubuntu_22_04/libsqlite3-0: 3.37.2-2ubuntu0.8
   ubuntu_22_04/libss2: 1.46.5-2ubuntu1.2
-  ubuntu_22_04/libssh-4: 0.9.6-2ubuntu0.22.04.8
+  ubuntu_22_04/libssh-4: 0.9.6-2ubuntu0.22.04.9
   ubuntu_22_04/libssl3: 3.0.2-0ubuntu1.30
   ubuntu_22_04/libstdc++-11-dev: 11.4.0-1ubuntu1~22.04.3
   ubuntu_22_04/libstdc++6: 12.3.0-1ubuntu1~22.04.3
@@ -473,7 +473,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28:
   ubuntu_22_04/libspatialite7: 5.0.1-2build2
   ubuntu_22_04/libsqlite3-0: 3.37.2-2ubuntu0.8
   ubuntu_22_04/libss2: 1.46.5-2ubuntu1.2
-  ubuntu_22_04/libssh-4: 0.9.6-2ubuntu0.22.04.8
+  ubuntu_22_04/libssh-4: 0.9.6-2ubuntu0.22.04.9
   ubuntu_22_04/libssl-dev: 3.0.2-0ubuntu1.30
   ubuntu_22_04/libssl3: 3.0.2-0ubuntu1.30
   ubuntu_22_04/libstdc++6: 12.3.0-1ubuntu1~22.04.3
@@ -850,7 +850,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28-gdal3.6:
   ubuntu_22_04/libspatialite7: 5.0.1-2build2
   ubuntu_22_04/libsqlite3-0: 3.37.2-2ubuntu0.8
   ubuntu_22_04/libss2: 1.46.5-2ubuntu1.2
-  ubuntu_22_04/libssh-4: 0.9.6-2ubuntu0.22.04.8
+  ubuntu_22_04/libssh-4: 0.9.6-2ubuntu0.22.04.9
   ubuntu_22_04/libssl-dev: 3.0.2-0ubuntu1.30
   ubuntu_22_04/libssl3: 3.0.2-0ubuntu1.30
   ubuntu_22_04/libstdc++6: 12.3.0-1ubuntu1~22.04.3
@@ -1228,7 +1228,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28-gdal3.7:
   ubuntu_22_04/libspatialite7: 5.0.1-2build2
   ubuntu_22_04/libsqlite3-0: 3.37.2-2ubuntu0.8
   ubuntu_22_04/libss2: 1.46.5-2ubuntu1.2
-  ubuntu_22_04/libssh-4: 0.9.6-2ubuntu0.22.04.8
+  ubuntu_22_04/libssh-4: 0.9.6-2ubuntu0.22.04.9
   ubuntu_22_04/libssl-dev: 3.0.2-0ubuntu1.30
   ubuntu_22_04/libssl3: 3.0.2-0ubuntu1.30
   ubuntu_22_04/libstdc++6: 12.3.0-1ubuntu1~22.04.3
@@ -1656,7 +1656,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libspatialite7: 5.0.1-2build2
   ubuntu_22_04/libsqlite3-0: 3.37.2-2ubuntu0.8
   ubuntu_22_04/libss2: 1.46.5-2ubuntu1.2
-  ubuntu_22_04/libssh-4: 0.9.6-2ubuntu0.22.04.8
+  ubuntu_22_04/libssh-4: 0.9.6-2ubuntu0.22.04.9
   ubuntu_22_04/libssl-dev: 3.0.2-0ubuntu1.30
   ubuntu_22_04/libssl3: 3.0.2-0ubuntu1.30
   ubuntu_22_04/libstdc++6: 12.3.0-1ubuntu1~22.04.3
@@ -2094,7 +2094,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.7:
   ubuntu_22_04/libspatialite7: 5.0.1-2build2
   ubuntu_22_04/libsqlite3-0: 3.37.2-2ubuntu0.8
   ubuntu_22_04/libss2: 1.46.5-2ubuntu1.2
-  ubuntu_22_04/libssh-4: 0.9.6-2ubuntu0.22.04.8
+  ubuntu_22_04/libssh-4: 0.9.6-2ubuntu0.22.04.9
   ubuntu_22_04/libssl-dev: 3.0.2-0ubuntu1.30
   ubuntu_22_04/libssl3: 3.0.2-0ubuntu1.30
   ubuntu_22_04/libstdc++6: 12.3.0-1ubuntu1~22.04.3
@@ -2532,7 +2532,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libspatialite7: 5.0.1-2build2
   ubuntu_22_04/libsqlite3-0: 3.37.2-2ubuntu0.8
   ubuntu_22_04/libss2: 1.46.5-2ubuntu1.2
-  ubuntu_22_04/libssh-4: 0.9.6-2ubuntu0.22.04.8
+  ubuntu_22_04/libssh-4: 0.9.6-2ubuntu0.22.04.9
   ubuntu_22_04/libssl-dev: 3.0.2-0ubuntu1.30
   ubuntu_22_04/libssl3: 3.0.2-0ubuntu1.30
   ubuntu_22_04/libstdc++6: 12.3.0-1ubuntu1~22.04.3
@@ -2918,7 +2918,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/libspatialite7: 5.0.1-2build2
   ubuntu_22_04/libsqlite3-0: 3.37.2-2ubuntu0.8
   ubuntu_22_04/libss2: 1.46.5-2ubuntu1.2
-  ubuntu_22_04/libssh-4: 0.9.6-2ubuntu0.22.04.8
+  ubuntu_22_04/libssh-4: 0.9.6-2ubuntu0.22.04.9
   ubuntu_22_04/libssl-dev: 3.0.2-0ubuntu1.30
   ubuntu_22_04/libssl3: 3.0.2-0ubuntu1.30
   ubuntu_22_04/libstdc++6: 12.3.0-1ubuntu1~22.04.3
@@ -3279,7 +3279,7 @@ camptocamp/geomapfish:latest:
   ubuntu_22_04/libspatialite7: 5.0.1-2build2
   ubuntu_22_04/libsqlite3-0: 3.37.2-2ubuntu0.8
   ubuntu_22_04/libss2: 1.46.5-2ubuntu1.2
-  ubuntu_22_04/libssh-4: 0.9.6-2ubuntu0.22.04.8
+  ubuntu_22_04/libssh-4: 0.9.6-2ubuntu0.22.04.9
   ubuntu_22_04/libssl-dev: 3.0.2-0ubuntu1.30
   ubuntu_22_04/libssl3: 3.0.2-0ubuntu1.30
   ubuntu_22_04/libstdc++6: 12.3.0-1ubuntu1~22.04.3
@@ -3604,7 +3604,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_22_04/libspatialite7: 5.0.1-2build2
   ubuntu_22_04/libsqlite3-0: 3.37.2-2ubuntu0.8
   ubuntu_22_04/libss2: 1.46.5-2ubuntu1.2
-  ubuntu_22_04/libssh-4: 0.9.6-2ubuntu0.22.04.8
+  ubuntu_22_04/libssh-4: 0.9.6-2ubuntu0.22.04.9
   ubuntu_22_04/libssl-dev: 3.0.2-0ubuntu1.30
   ubuntu_22_04/libssl3: 3.0.2-0ubuntu1.30
   ubuntu_22_04/libstdc++6: 12.3.0-1ubuntu1~22.04.3
