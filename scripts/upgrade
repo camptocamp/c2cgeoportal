@@ -138,8 +138,17 @@ def _main() -> None:
                     file=sys.stderr,
                 )
             if os.access(cache_dir, os.W_OK):
-                # In the container the /tmp is the home directory of the user
-                additional_args.append(f"--volume={cache_dir}:/tmp/.cache")
+                # Mount the cache at the same absolute path inside the container: pre-commit
+                # records absolute paths in its store (db.db) and they must stay valid outside
+                # of the container (host pre-commit runs, GitHub Actions cache, ...).
+                # In the container the /tmp is the home directory of the user, so the store
+                # directory is forced with PRE_COMMIT_HOME to point on the mounted path.
+                additional_args.extend(
+                    [
+                        f"--volume={cache_dir}:{cache_dir}",
+                        f"--env=PRE_COMMIT_HOME={os.path.join(cache_dir, 'pre-commit')}",
+                    ],
+                )
             else:
                 print(
                     f"Warning: the cache directory '{cache_dir}' is not writable by the current user, "
