@@ -1,3 +1,9 @@
+##### 2.10.rc.28
+
+- Mount the pre-commit cache in the upgrade container at the host path [c2cgeoportal#13776](https://github.com/camptocamp/c2cgeoportal/pull/13776)
+- Audit Dpkg 2.10 [c2cgeoportal#13780](https://github.com/camptocamp/c2cgeoportal/pull/13780)
+- Update used ngeo [c2cgeoportal#13782](https://github.com/camptocamp/c2cgeoportal/pull/13782)
+
 ##### 2.10.rc.27
 
 - Audit Snyk check/fix 2.10 [c2cgeoportal#13775](https://github.com/camptocamp/c2cgeoportal/pull/13775)
