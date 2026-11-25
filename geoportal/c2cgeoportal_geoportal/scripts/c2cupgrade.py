@@ -380,6 +380,13 @@ class C2cUpgradeTool:
                     ],
                 )
 
+        # Copy the new `.prettierignore` from the create template before fixing the style,
+        # otherwise prettier reformats the files that are ignored in the new version,
+        # e.g. the generated Controller.js application files.
+        prettierignore = "CONST_create_template/.prettierignore"
+        if os.path.exists(prettierignore) and not self.is_managed(".prettierignore"):
+            shutil.copyfile(prettierignore, ".prettierignore")
+
         check_call(["git", "add", "--all", "CONST_create_template/"])
 
         def changed_files() -> list[str]:
