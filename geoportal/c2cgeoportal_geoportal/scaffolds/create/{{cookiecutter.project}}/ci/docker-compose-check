@@ -11,11 +11,15 @@ def _main() -> None:
 
     services = [
         s.strip()
-        for s in subprocess.run(["docker", "compose", "ps"], check=True, stdout=subprocess.PIPE)
+        for s in subprocess.run(
+            ["docker", "compose", "ps"], check=True, stdout=subprocess.PIPE
+        )
         .stdout.decode("utf-8")
         .splitlines()
     ]
-    errors_statuses = [s for s in services if " Exit " in s and not s.endswith(" Exit 0")]
+    errors_statuses = [
+        s for s in services if " Exit " in s and not s.endswith(" Exit 0")
+    ]
     if errors_statuses:
         print("\n".join(errors_statuses))
         sys.exit(1)

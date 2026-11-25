@@ -94,6 +94,8 @@ git --no-pager diff
 echo ::endgroup::
 
 git add --all
-git commit --quiet --message='Format'
+# The created projects are delivered already formatted, in that case the commit
+# has nothing to commit and exits with 1, and that is the expected case
+git commit --quiet --message='Format' || true
 
 git clean -fX
