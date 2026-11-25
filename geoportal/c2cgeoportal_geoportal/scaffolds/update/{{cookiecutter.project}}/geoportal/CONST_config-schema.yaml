@@ -772,6 +772,9 @@ mapping:
                     sequence:
                       - *map
 
+      github_oidc_allowed_repository:
+        type: str
+
       lingva_extractor:
         type: map
         mapping:

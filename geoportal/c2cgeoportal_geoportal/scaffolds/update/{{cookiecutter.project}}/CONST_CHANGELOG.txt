@@ -38,11 +38,27 @@ Information
    the `env.default` file is not updated by the upgrade process then the existing projects are not
    impacted, you can set `QGIS_VERSION` in the `env.project` file to change the used version.
 
+5. The `/locale.pot` view is no longer public. It accepts a GitHub Actions OIDC token (`Bearer`
+   authorization header, with the audience `geomapfish-l10n`), restricted to the repository given by
+   the `github_oidc_allowed_repository` configuration, without it all the OIDC tokens are refused.
+   The administration authentication (`secret` parameter, `X-API-Key` header or `C2C_SECRET` cookie)
+   is still accepted but is no longer recommended in production, it relies on a static shared secret.
+
 Changes to apply
 ================
 
 1. Update your jasper report project files by following those instructions:
    https://github.com/mapfish/mapfish-print/releases/tag/4.0.0
+
+2. The `Dockerfile` (with `github_oidc_allowed_repository` added to `CONFIG_VARS`), the `Makefile`
+   (with the `OIDC_TOKEN` sent as `Authorization` header by the `update-po-from-url` target) and the
+   `.github/workflows/update_l10n.yaml` (with the `id-token: write` permission and the OIDC token
+   request) are refreshed by the upgrade, they are not project files. If you have them in the
+   `managed_files` of your `project.yaml` file, you should report the changes from the
+   `CONST_create_template` directory yourself.
+   Then set `github_oidc_allowed_repository` in your `geoportal/vars.yaml` file to the
+   `<organization>/<repository>` of your project, else the `update_l10n` workflow will be refused
+   by the `/locale.pot` view.
 
 =============
 Version 2.9.0

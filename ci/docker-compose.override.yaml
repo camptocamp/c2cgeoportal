@@ -5,6 +5,9 @@ services:
     environment:
       - TEST=%
       - test=1234
+      # Authentication secret used by the acceptance tests (see also the tools service below),
+      # the same value must be set in both services.
+      - C2C_SECRET=c2c-ci-test-secret
     volumes:
       - ./geoportal/ci/:/app/ci/
 
@@ -23,6 +26,9 @@ services:
   tools:
     volumes_from:
       - config:rw
+    environment:
+      # Same secret as the geoportal service, read by the acceptance tests
+      - C2C_SECRET=c2c-ci-test-secret
 
   db:
     extends:

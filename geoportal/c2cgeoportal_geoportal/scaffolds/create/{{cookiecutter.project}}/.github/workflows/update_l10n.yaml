@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: read
+  id-token: write
 
 jobs:
   l10n:
@@ -29,7 +30,16 @@ jobs:
           ref: ${{'{{'}} matrix.branch {{'}}'}}
 
       - run: ./build --env
-      - run: PROJECT_PUBLIC_URL=${{'{{'}} matrix.base_url {{'}}'}} make -e update-po-from-url
+
+      - name: Get GitHub OIDC token
+        id: oidc
+        run: |
+          TOKEN=$(curl -sS -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=geomapfish-l10n" | jq -r .value)
+          echo "::add-mask::$TOKEN"
+          echo "token=$TOKEN" >> "$GITHUB_OUTPUT"
+
+      - run: PROJECT_PUBLIC_URL=${{'{{'}} matrix.base_url {{'}}'}} OIDC_TOKEN=${{'{{'}} steps.oidc.outputs.token {{'}}'}} make -e update-po-from-url
 
       # The job fails when the translations changed. The `patch` module of ghci picks the artifact up,
       # applies it on the branch carried by its name and opens the pull request, so no personal access

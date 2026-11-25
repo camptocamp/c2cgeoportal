@@ -26,8 +26,9 @@
 # either expressed or implied, of the FreeBSD Project.
 
 
+import copy
 from collections.abc import Iterable
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, NamedTuple
 
 import sqlalchemy.orm
 from pyramid.request import Request
@@ -106,7 +107,8 @@ def get_protected_layers(request: Request, ogc_server_ids: Iterable[int]) -> dic
 
     q = get_protected_layers_query(request, ogc_server_ids, what=main.LayerWMS)
     results = q.all()
-    DBSession.expunge_all()
+    # Don't expunge the layers: they can be the same instances as those used elsewhere in the
+    # request (for example in the theme tree construction) and must stay attached to the session.
     return {r.id: r for r in results}
 
 
@@ -120,13 +122,27 @@ def get_writable_layers(request: Request, ogc_server_ids: Iterable[int]) -> dict
 
     q = get_writable_layers_query(request, ogc_server_ids)
     results = q.all()
-    DBSession.expunge_all()
+    # Don't expunge the layers: they can be the same instances as those used elsewhere in the
+    # request (for example in the theme tree construction) and must stay attached to the session.
     return {r.id: r for r in results}
 
 
+class PrivateLayer(NamedTuple):
+    """A snapshot of the columns of a private layer, safe to keep in the cache."""
+
+    id: int
+    name: str
+    layer: str
+
+
 @CACHE_REGION.cache_on_arguments()
-def get_private_layers(ogc_server_ids: Iterable[int]) -> dict[int, "main.LayerWMS"]:
-    """Get the private layers."""
+def get_private_layers(ogc_server_ids: Iterable[int]) -> dict[int, PrivateLayer]:
+    """
+    Get the private layers.
+
+    Only the needed columns are queried (no ORM entity) so the cached values never hold session
+    bound objects and querying never detaches the instances shared with the current request.
+    """
     from c2cgeoportal_commons.models import (  # noqa: PLC0415 # pylint: disable=import-outside-toplevel
         DBSession,
         main,
@@ -135,11 +151,49 @@ def get_private_layers(ogc_server_ids: Iterable[int]) -> dict[int, "main.LayerWM
     assert DBSession is not None
 
     q = (
-        DBSession.query(main.LayerWMS)
+        DBSession.query(main.LayerWMS.id, main.LayerWMS.name, main.LayerWMS.layer)
         .filter(main.LayerWMS.public.is_(False))
         .join(main.LayerWMS.ogc_server)
         .filter(main.OGCServer.id.in_(ogc_server_ids))
     )
-    results = q.all()
-    DBSession.expunge_all()
-    return {r.id: r for r in results}
+    return {id_: PrivateLayer(id_, name, layer) for id_, name, layer in q.all()}
+
+
+def get_unauthorized_layers(
+    request: Request,
+    ogc_server_id: int,
+    wms_children_map: dict[str, list[str]],
+) -> set[str]:
+    """
+    Get the set of OGC layer names that the current user is not authorized to access.
+
+    A layer is unauthorized if it is private (public=False) in c2cgeoportal AND the user does not have
+    access to it through their roles. When a parent group is unauthorized, all its descendant layers are
+    also considered unauthorized.
+
+    Layers that are not defined in c2cgeoportal at all are considered public (not unauthorized).
+    """
+    gmf_private_layers = copy.copy(get_private_layers([ogc_server_id]))
+    for id_ in list(get_protected_layers(request, [ogc_server_id]).keys()):
+        if id_ in gmf_private_layers:
+            del gmf_private_layers[id_]
+
+    unauthorized: set[str] = set()
+    for gmf_layer in list(gmf_private_layers.values()):
+        for ogc_layer in gmf_layer.layer.split(","):
+            unauthorized.add(ogc_layer)
+            _add_descendants(ogc_layer, wms_children_map, unauthorized)
+
+    return unauthorized
+
+
+def _add_descendants(
+    layer_name: str,
+    wms_children_map: dict[str, list[str]],
+    result: set[str],
+) -> None:
+    """Recursively add all descendants of a layer to the result set."""
+    for child in wms_children_map.get(layer_name, []):
+        if child not in result:
+            result.add(child)
+            _add_descendants(child, wms_children_map, result)
