@@ -132,8 +132,7 @@ repos:
       - id: ruff-format
         args:
           - --line-length=110
-        exclude: |-
-          ^geoportal/c2cgeoportal_geoportal/scaffolds/advance_create/{{cookiecutter.project}}/geoportal/{{cookiecutter.package}}_geoportal/__init__\.py$
+        exclude: ^geoportal/c2cgeoportal_geoportal/scaffolds/[a-z_]+/{{cookiecutter\.project}}/
   - repo: https://github.com/prospector-dev/prospector
     rev: v1.20.0
     hooks:

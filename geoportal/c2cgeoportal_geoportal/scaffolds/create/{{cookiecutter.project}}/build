@@ -15,11 +15,16 @@ from typing import TYPE_CHECKING, Any, List, Optional
 
 import yaml
 
-CompletedProcess = subprocess.CompletedProcess[str] if TYPE_CHECKING else subprocess.CompletedProcess
+CompletedProcess = (
+    subprocess.CompletedProcess[str] if TYPE_CHECKING else subprocess.CompletedProcess
+)
 
 
 def run(
-    args: argparse.Namespace, command: List[str], exit_on_error: bool = True, **kwargs: Any
+    args: argparse.Namespace,
+    command: List[str],
+    exit_on_error: bool = True,
+    **kwargs: Any,
 ) -> Optional[CompletedProcess]:
     if args.verbose or args.dry_run:
         print(shlex.join(command))
@@ -36,15 +41,25 @@ def run(
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Build the project")
-    parser.add_argument("--verbose", action="store_true", help="Display the Docker build commands")
-    parser.add_argument("--no-cache", action="store_true", help="Disable docker cache on build")
     parser.add_argument(
-        "--dry-run", action="store_true", help="Display the docker build commands without executing them"
+        "--verbose", action="store_true", help="Display the Docker build commands"
+    )
+    parser.add_argument(
+        "--no-cache", action="store_true", help="Disable docker cache on build"
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Display the docker build commands without executing them",
     )
     parser.add_argument("--service", help="Build only the specified service")
     parser.add_argument("--env", action="store_true", help="Build only the .env file")
-    parser.add_argument("--simple", action="store_true", help="Force simple application mode")
-    parser.add_argument("--not-simple", action="store_true", help="Force not simple application mode")
+    parser.add_argument(
+        "--simple", action="store_true", help="Force simple application mode"
+    )
+    parser.add_argument(
+        "--not-simple", action="store_true", help="Force not simple application mode"
+    )
     parser.add_argument("--upgrade", help="Start upgrading the project to version")
     parser.add_argument(
         "--reload",
@@ -60,9 +75,12 @@ def main() -> None:
         help="Do not pull external or base images for faster rebuild during development.",
     )
     parser.add_argument(
-        "--debug", help="Path to c2cgeoportal source folder to be able to debug the upgrade procedure"
+        "--debug",
+        help="Path to c2cgeoportal source folder to be able to debug the upgrade procedure",
     )
-    parser.add_argument("--stack-trace", action="store_true", help="Display the stack trace on error")
+    parser.add_argument(
+        "--stack-trace", action="store_true", help="Display the stack trace on error"
+    )
     parser.add_argument("env_files", nargs="*", help="The environment config")
     args = parser.parse_args()
 
@@ -124,7 +142,11 @@ def main() -> None:
             if args.not_simple:
                 simple = False
 
-            git_hash = run(args, ["git", "rev-parse", "HEAD"], stdout=subprocess.PIPE).stdout.decode().strip()
+            git_hash = (
+                run(args, ["git", "rev-parse", "HEAD"], stdout=subprocess.PIPE)
+                .stdout.decode()
+                .strip()
+            )
 
             dest.write(f"SIMPLE={str(simple).upper()}\n")
             dest.write(f"GIT_HASH={git_hash}\n")
@@ -143,7 +165,9 @@ def main() -> None:
         if not args.no_pull:
             # Pull all the images
             if not args.service:
-                run(args, [*docker_compose_command, "pull", "--ignore-buildable"])  # nosec
+                run(
+                    args, [*docker_compose_command, "pull", "--ignore-buildable"]
+                )  # nosec
             docker_compose_build_cmd.append("--pull")
 
         if args.service:
@@ -181,7 +205,16 @@ def main() -> None:
     if args.reload is not None:
         run(args, [*docker_compose_command, "rm", "--force", "-v", "config"])
         for service in services:
-            run(args, [*docker_compose_command, "up", "--detach", "--force-recreate", service])
+            run(
+                args,
+                [
+                    *docker_compose_command,
+                    "up",
+                    "--detach",
+                    "--force-recreate",
+                    service,
+                ],
+            )
 
 
 if __name__ == "__main__":
