@@ -37,9 +37,13 @@ import sys
 def main() -> None:
     """Backup the database."""
     parser = argparse.ArgumentParser(description="Backup the database.")
-    parser.add_argument("--verbose", action="store_true", help="Print the command that is executed.")
     parser.add_argument(
-        "--dry-run", action="store_true", help="Only print the command that would be executed."
+        "--verbose", action="store_true", help="Print the command that is executed."
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Only print the command that would be executed.",
     )
     parser.add_argument(
         "--env",
@@ -79,8 +83,16 @@ def main() -> None:
             command2 = ["--env=PGPASSWORD={}".format(env["PGPASSWORD"])]
             command2_annon = ["--env=PGPASSWORD=***"]
             command3 = [
-                *(["--env=PGSSLMODE={}".format(env["PGSSLMODE"])] if "PGSSLMODE" in env else []),
-                *(["--env=PGOPTIONS={}".format(env["PGOPTIONS"])] if "PGOPTIONS" in env else []),
+                *(
+                    ["--env=PGSSLMODE={}".format(env["PGSSLMODE"])]
+                    if "PGSSLMODE" in env
+                    else []
+                ),
+                *(
+                    ["--env=PGOPTIONS={}".format(env["PGOPTIONS"])]
+                    if "PGOPTIONS" in env
+                    else []
+                ),
                 "ghcr.io/camptocamp/postgres:{}".format(env["POSTGRES_TAG"]),
                 "pg_dump",
                 "--format=c",
@@ -101,7 +113,11 @@ def main() -> None:
                 print(shlex.join([*command1, *command2_annon, *command3]))
             if args.dry_run:
                 sys.exit(0)
-            sys.exit(subprocess.run([*command1, *command2, *command3], stdout=file_out).returncode)
+            sys.exit(
+                subprocess.run(
+                    [*command1, *command2, *command3], stdout=file_out
+                ).returncode
+            )
         else:
             command = [
                 "docker",
@@ -115,7 +131,9 @@ def main() -> None:
                 *args.arg,
             ]
             if args.dry_run or args.verbose:
-                subprocess.run(["docker", "compose", "exec", "tools", "pg_dump", "--version"])
+                subprocess.run(
+                    ["docker", "compose", "exec", "tools", "pg_dump", "--version"]
+                )
                 print(shlex.join(command))
             if args.dry_run:
                 sys.exit(0)

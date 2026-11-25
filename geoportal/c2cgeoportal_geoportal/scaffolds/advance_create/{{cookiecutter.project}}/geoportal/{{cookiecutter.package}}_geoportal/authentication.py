@@ -1,6 +1,7 @@
-from c2cgeoportal_geoportal.lib.authentication import create_authentication
 from pyramid.authorization import ACLAuthorizationPolicy
 from pyramid.config import Configurator
+
+from c2cgeoportal_geoportal.lib.authentication import create_authentication
 
 
 def includeme(config: Configurator) -> None:

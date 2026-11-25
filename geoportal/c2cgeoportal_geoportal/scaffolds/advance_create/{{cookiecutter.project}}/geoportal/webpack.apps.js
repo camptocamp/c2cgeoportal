@@ -10,7 +10,7 @@ const nodeEnv = process.env['NODE_ENV'] || 'development';
 const dev = nodeEnv == 'development';
 
 for (const filename of ls(
-  path.resolve(__dirname, '{{cookiecutter.package}}_geoportal/static-ngeo/js/apps/*.html.ejs')
+  path.resolve(__dirname, '{{cookiecutter.package}}_geoportal/static-ngeo/js/apps/*.html.ejs'),
 )) {
   const name = filename.file.substr(0, filename.file.length - '.html.ejs'.length);
   entry[name] = '{{cookiecutter.package}}/apps/Controller' + name + '.js';
@@ -26,7 +26,7 @@ for (const filename of ls(
         version: '{{cookiecutter.geomapfish_version}}',
         cache_version: '${CACHE_VERSION}',
       },
-    })
+    }),
   );
 }
 
@@ -52,10 +52,7 @@ module.exports = {
   resolve: {
     modules: ['/opt/c2cgeoportal/geoportal/node_modules/'],
     alias: {
-      '{{cookiecutter.package}}': path.resolve(
-        __dirname,
-        '{{cookiecutter.package}}_geoportal/static-ngeo/js'
-      ),
+      '{{cookiecutter.package}}': path.resolve(__dirname, '{{cookiecutter.package}}_geoportal/static-ngeo/js'),
       ngeo: '/opt/c2cgeoportal/geoportal/node_modules/ngeo/distlib/src',
       gmf: '/opt/c2cgeoportal/geoportal/node_modules/ngeo/distlib/src',
       gmfapi: '/opt/c2cgeoportal/geoportal/node_modules/ngeo/distlib/srcapi',

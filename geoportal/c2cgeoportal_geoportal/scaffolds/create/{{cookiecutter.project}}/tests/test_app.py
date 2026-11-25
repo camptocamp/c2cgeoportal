@@ -11,7 +11,11 @@ import requests
         ("https://front/themes", {}, 120),
         ("https://front/static-geomapfish/0/locales/fr.json", {}, 2),
         ("https://front/dynamic.json", {"interface": "desktop"}, 10),
-        ("https://front/dynamic.json", {"interface": "desktop", "query": "", "path": "/"}, 10),
+        (
+            "https://front/dynamic.json",
+            {"interface": "desktop", "query": "", "path": "/"},
+            10,
+        ),
         ("https://front/c2c/health_check", {}, 2),
         ("https://front/c2c/health_check", {"max_level": "1"}, 2),
         ("https://front/c2c/health_check", {"checker": "check_collector"}, 2),
@@ -63,7 +67,9 @@ import requests
 def test_url(url: str, params: dict[str, str], timeout: int) -> None:
     """Tests that some URL didn't return an error."""
     for _ in range(6):
-        response = requests.get(url, params=params, verify=False, timeout=timeout)  # nosec
+        response = requests.get(
+            url, params=params, verify=False, timeout=timeout
+        )  # nosec
         if response.status_code == 503:
             time.sleep(1)
             continue
