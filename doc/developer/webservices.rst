@@ -90,6 +90,12 @@ OGC Server
 The ``protocol`` can be ``WMS``, ``WMS/GetFeatureInfo``, ``WFS/GetFeature``,
 ``OGC API - Maps``, ``OGC API - Features``.
 
+For the WMS/WFS protocols, the ``url`` is the URL of the OWS service, the client adds the request
+parameters to it. For the OGC API protocols, the ``url`` is the root path of the API (the
+``/mapserv_proxy/<ogc-server>/ogcapi`` path of the proxy when the OGC server is proxied, the base URL
+of the server plus the OGC API root path otherwise), the client builds the requests from it, for
+example ``<url>/collections/<collection>/items``.
+
 The ``uses`` is used by ``GeoGirafe``, not by ``ngeo``.
 
 The ``urlWfs`` and ``wfsSupport`` are used by ``ngeo``, not by ``GeoGirafe`` (=> deprecated, will be removed in future version).

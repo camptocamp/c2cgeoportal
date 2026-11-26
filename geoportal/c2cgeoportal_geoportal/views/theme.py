@@ -54,7 +54,7 @@ from pyramid.view import view_config
 from sqlalchemy.orm import subqueryload
 from sqlalchemy.orm.exc import NoResultFound  # type: ignore[attr-defined]
 
-from c2cgeoportal_geoportal import is_allowed_host, is_allowed_url
+from c2cgeoportal_geoportal import OGC_API_ROOT_PATH, is_allowed_host, is_allowed_url
 from c2cgeoportal_geoportal.lib import (
     get_roles_id,
     get_typed,
@@ -78,6 +78,8 @@ _CACHE_OGC_SERVER_REGION = get_region("ogc-server")
 _TIMEOUT = int(os.environ.get("C2CGEOPORTAL_THEME_TIMEOUT", "300"))
 
 Metadata = str | int | float | bool | list[Any] | dict[str, Any]
+
+OGCServerProtocol = main.OGCServerMapProtocol | main.OGCServerFeatureProtocol | main.OGCServerEditProtocol
 
 
 async def get_http_cached(
@@ -1009,26 +1011,82 @@ class Theme:
             )
             return None, errors
 
-    def get_public_url(
-        self,
-        ogc_server: main.OGCServer,
-        type_: str,
-        url: str,
-        errors: set[str],
-    ) -> str | None:
+    def get_public_url(self, name: str, url: str, errors: set[str]) -> Url | None:
         """
-        Resolve the URL of an OGC server to be published in the themes.
+        Resolve the public URL of an OGC server.
 
         The ``config://`` schema is an internal way to refer to one of the servers of the ``servers``
         configuration, it should never be exposed to the client, then it is interpreted here.
         """
-        url_object = get_url2(
-            f"The OGC server ({type_}) '{ogc_server.name}'",
-            url,
-            self.request,
-            errors=errors,
+        return get_url2(name, url, self.request, errors=errors)
+
+    def get_use_url(
+        self,
+        ogc_server: main.OGCServer,
+        type_: str,
+        protocol: OGCServerProtocol | None,
+        url: str | None,
+        auth: main.OGCServerAuth,
+        errors: set[str],
+    ) -> str | None:
+        """
+        Get the URL of one use (``map``, ``query`` or ``edit``) of an OGC server.
+
+        If no URL is defined for the use, the base URL and the base authentication of the OGC server
+        are used.
+
+        For the OGC API protocols the published URL is the root path of the API, built from the
+        ``ogcapi`` path of the proxy or from the base URL of the server, the client builds then the
+        requests from that root path. The other protocols use the WMS/WFS style URLs with parameters.
+        """
+        ogc_api = protocol is not None and protocol.startswith("OGC API")
+        if url is None or url == "":
+            # No URL defined for that use, then it's the base URL and the base authentication.
+            use_url, use_auth, defined_url = ogc_server.url, ogc_server.auth, False
+        else:
+            use_url, use_auth, defined_url = url, auth, True
+
+        if use_auth != main.OGCSERVER_AUTH_NOAUTH:
+            if not ogc_api:
+                # Without a URL defined for the use, the `map` type is used, then the proxy uses the
+                # base URL and the base authentication of the OGC server.
+                return cast(
+                    "str",
+                    self.request.route_url(
+                        "mapserverproxy",
+                        _query={
+                            "ogcserver": ogc_server.name,
+                            "ogcserver_type": type_ if defined_url else "map",
+                        },
+                    ),
+                )
+            # The `ogcserver_type` parameter tells to the proxy which URL and authentication of the
+            # OGC server should be used. It is only set when a URL is defined for the use, otherwise
+            # the proxy uses the base URL and the base authentication of the OGC server.
+            query = {"ogcserver_type": type_} if defined_url else {}
+            return cast(
+                "str",
+                self.request.route_url(
+                    "mapserverproxy_ogcapi_mapserver_root",
+                    ogcserver=ogc_server.name,
+                    _query=query,
+                ),
+            )
+
+        name = (
+            f"The OGC server ({type_}) '{ogc_server.name}'"
+            if defined_url
+            else f"The OGC server '{ogc_server.name}'"
         )
-        return url_object.url() if url_object is not None else None
+        url_object = self.get_public_url(name, use_url, errors)
+        if url_object is None:
+            return None
+        if ogc_api:
+            # The OGC API is served on a root path, the client builds the requests from it.
+            path = url_object.path.rstrip("/")
+            if not path.endswith(f"/{OGC_API_ROOT_PATH}"):
+                url_object.path = f"{path}/{OGC_API_ROOT_PATH}"
+        return url_object.url()
 
     def get_url_internal_wfs(
         self,
@@ -1036,14 +1094,9 @@ class Theme:
         errors: set[str],
     ) -> tuple[Url | None, Url | None, Url | None, str | None, str | None, str | None]:
         # required to do every time to validate the url.
-        map_url: str | None
         if ogc_server.auth != main.OGCSERVER_AUTH_NOAUTH:
             url: Url | None = Url(
                 self.request.route_url("mapserverproxy", _query={"ogcserver": ogc_server.name}),
-            )
-            map_url = self.request.route_url(
-                "mapserverproxy",
-                _query={"ogcserver": ogc_server.name, "ogcserver_type": "map"},
             )
             url_wfs: Url | None = url
             url_internal_wfs = get_url2(
@@ -1054,7 +1107,6 @@ class Theme:
             )
         else:
             url = get_url2(f"The OGC server '{ogc_server.name}'", ogc_server.url, self.request, errors=errors)
-            map_url = url.url() if url is not None else None
             url_wfs = (
                 get_url2(
                     f"The OGC server (WFS) '{ogc_server.name}'",
@@ -1067,25 +1119,23 @@ class Theme:
             )
             url_internal_wfs = url_wfs
 
-        query_url = map_url
-        if ogc_server.query_url is not None and ogc_server.query_url != "":
-            if ogc_server.query_auth != main.OGCSERVER_AUTH_NOAUTH:
-                query_url = self.request.route_url(
-                    "mapserverproxy",
-                    _query={"ogcserver": ogc_server.name, "ogcserver_type": "query"},
-                )
-            else:
-                query_url = self.get_public_url(ogc_server, "Query", ogc_server.query_url, errors)
-
-        edit_url = map_url
-        if ogc_server.edit_url is not None and ogc_server.edit_url != "":
-            if ogc_server.edit_auth != main.OGCSERVER_AUTH_NOAUTH:
-                edit_url = self.request.route_url(
-                    "mapserverproxy",
-                    _query={"ogcserver": ogc_server.name, "ogcserver_type": "edit"},
-                )
-            else:
-                edit_url = self.get_public_url(ogc_server, "Edit", ogc_server.edit_url, errors)
+        map_url = self.get_use_url(ogc_server, "map", ogc_server.map_protocol, None, ogc_server.auth, errors)
+        query_url = self.get_use_url(
+            ogc_server,
+            "query",
+            ogc_server.query_protocol,
+            ogc_server.query_url,
+            ogc_server.query_auth,
+            errors,
+        )
+        edit_url = self.get_use_url(
+            ogc_server,
+            "edit",
+            ogc_server.edit_protocol,
+            ogc_server.edit_url,
+            ogc_server.edit_auth,
+            errors,
+        )
 
         return url_internal_wfs, url, url_wfs, map_url, query_url, edit_url
 

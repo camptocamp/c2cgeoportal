@@ -1075,6 +1075,8 @@ class OGCServer(Base):  # type: ignore[valid-type,misc]
                     "Forward the full path visible by the client (including the entry point) to the "
                     "backend for the OGC API requests. Required for backends that build the OGC API "
                     "links from the request URL like QGIS Server.",
+                    "The paths of the <code>URL</code> are then not used, "
+                    "only their parameters are sent to the backend.",
                 ),
                 "column": 2,
             },

@@ -115,6 +115,10 @@ INTERFACE_TYPE_NGEO = "ngeo"
 INTERFACE_TYPE_CANVAS = "canvas"
 INTERFACE_TYPE_CUSTOM = "custom"
 
+# The root path of the OGC API exposed by the proxy, it should be the same as the
+# ``QGIS_SERVER_API_WFS3_ROOT_PATH`` of the QGIS Server, its default value since QGIS 4.
+OGC_API_ROOT_PATH = "ogcapi"
+
 
 def add_interface_config(config: pyramid.config.Configurator, interface_config: dict[str, Any]) -> None:
     """Add the interface (desktop, mobile, ...) views and routes with only the config."""
@@ -743,21 +747,25 @@ def includeme(config: pyramid.config.Configurator) -> None:
     # OGC Api routes
     config.add_route(
         "mapserverproxy_ogcapi_mapserver_root",
-        "/mapserv_proxy/{ogcserver}/ogcapi",
+        f"/mapserv_proxy/{{ogcserver}}/{OGC_API_ROOT_PATH}",
         mapserverproxy=True,
         pregenerator=C2CPregenerator(role=True),
         request_method="GET",
     )
     config.add_route(
         "mapserverproxy_ogcapi_mapserver",
-        "/mapserv_proxy/{ogcserver}/ogcapi/*path",
+        f"/mapserv_proxy/{{ogcserver}}/{OGC_API_ROOT_PATH}/*path",
         mapserverproxy=True,
         pregenerator=C2CPregenerator(role=True),
         request_method=("GET", "POST", "PUT", "DELETE", "PATCH"),
     )
     add_cors_route(config, "/mapserv_proxy", "mapserver")
-    add_cors_route(config, "/mapserv_proxy/{ogcserver}/ogcapi", "mapserver_ogcapi_mapserver")
-    add_cors_route(config, "/mapserv_proxy/{ogcserver}/ogcapi/*path", "mapserver_ogcapi_mapserver")
+    add_cors_route(config, f"/mapserv_proxy/{{ogcserver}}/{OGC_API_ROOT_PATH}", "mapserver_ogcapi_mapserver")
+    add_cors_route(
+        config,
+        f"/mapserv_proxy/{{ogcserver}}/{OGC_API_ROOT_PATH}/*path",
+        "mapserver_ogcapi_mapserver",
+    )
 
     # Add route to the tinyows proxy
     config.add_route("tinyowsproxy", "/tinyows_proxy", pregenerator=C2CPregenerator(role=True))
