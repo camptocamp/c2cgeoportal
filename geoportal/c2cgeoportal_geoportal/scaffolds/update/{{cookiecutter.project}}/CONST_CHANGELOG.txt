@@ -67,8 +67,21 @@ Changes to apply
      `status` and `date_value` columns are not managed by the built-in service).
    - Before running the migrations, rename the existing table to keep the data:
      `ALTER TABLE <schema_static>.feedback RENAME TO feedback_legacy;`
-     then let the migration `3d75d1d9500b` create the new table, and copy the
-     required rows from `feedback_legacy` with your own migration.
+     then let the migration `3d75d1d9500b` create the new table.
+   - After the migration, copy the old rows into the new table with an
+     `INSERT INTO ... SELECT`, the column names of the old table depending on
+     the project, the columns not managed by the built-in service (`reason`,
+     `category`, `status` and `date_value`) being simply dropped, for example:
+
+     ```sql
+     INSERT INTO <schema_static>.feedback (
+         user_agent, application, permalink, text, email
+     )
+     SELECT ua, '<application name>', permalink, text, email
+     FROM <schema_static>.feedback_legacy;
+     ```
+
+   - Once the copied rows are verified, the `feedback_legacy` table can be dropped.
 
 =============
 Version 2.9.0
