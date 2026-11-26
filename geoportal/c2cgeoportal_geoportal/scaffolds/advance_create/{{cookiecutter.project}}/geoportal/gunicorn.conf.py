@@ -87,7 +87,9 @@ def on_starting(server: gunicorn.arbiter.Arbiter) -> None:
     prometheus.start()
 
 
-def post_fork(server: gunicorn.arbiter.Arbiter, worker: gunicorn.workers.base.Worker) -> None:
+def post_fork(
+    server: gunicorn.arbiter.Arbiter, worker: gunicorn.workers.base.Worker
+) -> None:
     """
     Will cleanup the configuration we get from the main process.
 
@@ -98,7 +100,9 @@ def post_fork(server: gunicorn.arbiter.Arbiter, worker: gunicorn.workers.base.Wo
     prometheus.cleanup()
 
 
-def child_exit(server: gunicorn.arbiter.Arbiter, worker: gunicorn.workers.base.Worker) -> None:
+def child_exit(
+    server: gunicorn.arbiter.Arbiter, worker: gunicorn.workers.base.Worker
+) -> None:
     """
     Remove the metrics for the exited worker.
 
