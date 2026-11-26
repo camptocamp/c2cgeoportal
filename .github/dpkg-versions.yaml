@@ -35,7 +35,7 @@ camptocamp/geomapfish-config:latest:
   ubuntu_22_04/libcrypt1: 1:4.4.27-1
   ubuntu_22_04/libdb5.3: 5.3.28+dfsg1-0.8ubuntu3
   ubuntu_22_04/libdebconfclient0: 0.261ubuntu1
-  ubuntu_22_04/libexpat1: 2.4.7-1ubuntu0.9
+  ubuntu_22_04/libexpat1: 2.4.7-1ubuntu0.10
   ubuntu_22_04/libext2fs2: 1.46.5-2ubuntu1.2
   ubuntu_22_04/libffi8: 3.4.2-4
   ubuntu_22_04/libgcc-s1: 12.3.0-1ubuntu1~22.04.3
@@ -43,13 +43,13 @@ camptocamp/geomapfish-config:latest:
   ubuntu_22_04/libgmp10: 2:6.2.1+dfsg-3ubuntu1
   ubuntu_22_04/libgnutls30: 3.7.3-4ubuntu1.9
   ubuntu_22_04/libgpg-error0: 1.43-3
-  ubuntu_22_04/libgssapi-krb5-2: 1.19.2-2ubuntu0.10
+  ubuntu_22_04/libgssapi-krb5-2: 1.19.2-2ubuntu0.12
   ubuntu_22_04/libhogweed6: 3.7.3-1build2
   ubuntu_22_04/libidn2-0: 2.3.2-2build1
-  ubuntu_22_04/libk5crypto3: 1.19.2-2ubuntu0.10
+  ubuntu_22_04/libk5crypto3: 1.19.2-2ubuntu0.12
   ubuntu_22_04/libkeyutils1: 1.6.1-2ubuntu3
-  ubuntu_22_04/libkrb5-3: 1.19.2-2ubuntu0.10
-  ubuntu_22_04/libkrb5support0: 1.19.2-2ubuntu0.10
+  ubuntu_22_04/libkrb5-3: 1.19.2-2ubuntu0.12
+  ubuntu_22_04/libkrb5support0: 1.19.2-2ubuntu0.12
   ubuntu_22_04/liblz4-1: 1.9.3-2build2
   ubuntu_22_04/liblzma5: 5.2.5-2ubuntu1.2
   ubuntu_22_04/libmount1: 2.37.2-4ubuntu3.6
@@ -123,10 +123,10 @@ camptocamp/geomapfish-config:latest:
   ubuntu_22_04/util-linux: 2.37.2-4ubuntu3.6
 camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28:
   ubuntu_22_04/adduser: 3.118ubuntu5
-  ubuntu_22_04/apache2: 2.4.52-1ubuntu4.27
-  ubuntu_22_04/apache2-bin: 2.4.52-1ubuntu4.27
-  ubuntu_22_04/apache2-data: 2.4.52-1ubuntu4.27
-  ubuntu_22_04/apache2-utils: 2.4.52-1ubuntu4.27
+  ubuntu_22_04/apache2: 2.4.52-1ubuntu4.28
+  ubuntu_22_04/apache2-bin: 2.4.52-1ubuntu4.28
+  ubuntu_22_04/apache2-data: 2.4.52-1ubuntu4.28
+  ubuntu_22_04/apache2-utils: 2.4.52-1ubuntu4.28
   ubuntu_22_04/apt: 2.4.15ubuntu0.1
   ubuntu_22_04/base-passwd: 3.5.52build1
   ubuntu_22_04/bash: 5.1-6ubuntu1.1
@@ -207,15 +207,15 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28:
   ubuntu_22_04/libdrm-nouveau2: 2.4.113-2~ubuntu0.22.04.1
   ubuntu_22_04/libdrm-radeon1: 2.4.113-2~ubuntu0.22.04.1
   ubuntu_22_04/libdrm2: 2.4.113-2~ubuntu0.22.04.1
-  ubuntu_22_04/libdw1: 0.186-1ubuntu0.1
+  ubuntu_22_04/libdw1: 0.186-1ubuntu0.2
   ubuntu_22_04/libedit2: 3.1-20210910-1build1
   ubuntu_22_04/libegl-mesa0: 23.2.1-1ubuntu3.1~22.04.4
   ubuntu_22_04/libegl1: 1.4.0-1
-  ubuntu_22_04/libelf1: 0.186-1ubuntu0.1
+  ubuntu_22_04/libelf1: 0.186-1ubuntu0.2
   ubuntu_22_04/libevdev2: 1.12.1+dfsg-1
   ubuntu_22_04/libexiv2-27: 0.27.5-3ubuntu1.3
-  ubuntu_22_04/libexpat1: 2.4.7-1ubuntu0.9
-  ubuntu_22_04/libexpat1-dev: 2.4.7-1ubuntu0.9
+  ubuntu_22_04/libexpat1: 2.4.7-1ubuntu0.10
+  ubuntu_22_04/libexpat1-dev: 2.4.7-1ubuntu0.10
   ubuntu_22_04/libext2fs2: 1.46.5-2ubuntu1.2
   ubuntu_22_04/libfcgi0ldbl: 2.4.2-2ubuntu0.1
   ubuntu_22_04/libffi8: 3.4.2-4
@@ -247,7 +247,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28:
   ubuntu_22_04/libgraphite2-3: 1.3.14-1ubuntu0.1
   ubuntu_22_04/libgsl27: 2.7.1+dfsg-3
   ubuntu_22_04/libgslcblas0: 2.7.1+dfsg-3
-  ubuntu_22_04/libgssapi-krb5-2: 1.19.2-2ubuntu0.10
+  ubuntu_22_04/libgssapi-krb5-2: 1.19.2-2ubuntu0.12
   ubuntu_22_04/libgstreamer-plugins-base1.0-0: 1.20.1-1ubuntu0.9
   ubuntu_22_04/libgstreamer1.0-0: 1.20.3-0ubuntu1.2
   ubuntu_22_04/libgudev-1.0-0: 1:237-2build1
@@ -269,10 +269,10 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28:
   ubuntu_22_04/libjs-jquery: 3.6.0+dfsg+~3.5.13-1
   ubuntu_22_04/libjs-sphinxdoc: 4.3.2-1
   ubuntu_22_04/libjs-underscore: 1.13.2~dfsg-2
-  ubuntu_22_04/libk5crypto3: 1.19.2-2ubuntu0.10
+  ubuntu_22_04/libk5crypto3: 1.19.2-2ubuntu0.12
   ubuntu_22_04/libkeyutils1: 1.6.1-2ubuntu3
-  ubuntu_22_04/libkrb5-3: 1.19.2-2ubuntu0.10
-  ubuntu_22_04/libkrb5support0: 1.19.2-2ubuntu0.10
+  ubuntu_22_04/libkrb5-3: 1.19.2-2ubuntu0.12
+  ubuntu_22_04/libkrb5support0: 1.19.2-2ubuntu0.12
   ubuntu_22_04/liblapack3: 3.10.0-2ubuntu1
   ubuntu_22_04/liblcms2-2: 2.12~rc1-2ubuntu0.1
   ubuntu_22_04/libldap-2.5-0: 2.5.20+dfsg-0ubuntu0.22.04.1
@@ -380,7 +380,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28:
   ubuntu_22_04/libstdc++6: 12.3.0-1ubuntu1~22.04.3
   ubuntu_22_04/libsystemd0: 249.11-0ubuntu3.23
   ubuntu_22_04/libtasn1-6: 4.18.0-4ubuntu0.2
-  ubuntu_22_04/libtiff5: 4.3.0-6ubuntu0.13
+  ubuntu_22_04/libtiff5: 4.3.0-6ubuntu0.14
   ubuntu_22_04/libtinfo6: 6.3-2ubuntu0.3
   ubuntu_22_04/libtirpc-common: 1.3.2-2ubuntu0.1
   ubuntu_22_04/libtirpc-dev: 1.3.2-2ubuntu0.1
@@ -435,7 +435,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28:
   ubuntu_22_04/libxmu6: 2:1.1.3-3
   ubuntu_22_04/libxmuu1: 2:1.1.3-3
   ubuntu_22_04/libxpm4: 1:3.5.12-1ubuntu0.22.04.4
-  ubuntu_22_04/libxrender1: 1:0.9.10-1build4
+  ubuntu_22_04/libxrender1: 1:0.9.10-1ubuntu0.22.04.1
   ubuntu_22_04/libxshmfence1: 1.3-1build4
   ubuntu_22_04/libxslt1.1: 1.1.34-4ubuntu0.22.04.5
   ubuntu_22_04/libxt6: 1:1.2.1-1
@@ -509,10 +509,10 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28:
   ubuntu_22_04/zlib1g: 1:1.2.11.dfsg-2ubuntu9.2
 camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28-gdal3.6:
   ubuntu_22_04/adduser: 3.118ubuntu5
-  ubuntu_22_04/apache2: 2.4.52-1ubuntu4.27
-  ubuntu_22_04/apache2-bin: 2.4.52-1ubuntu4.27
-  ubuntu_22_04/apache2-data: 2.4.52-1ubuntu4.27
-  ubuntu_22_04/apache2-utils: 2.4.52-1ubuntu4.27
+  ubuntu_22_04/apache2: 2.4.52-1ubuntu4.28
+  ubuntu_22_04/apache2-bin: 2.4.52-1ubuntu4.28
+  ubuntu_22_04/apache2-data: 2.4.52-1ubuntu4.28
+  ubuntu_22_04/apache2-utils: 2.4.52-1ubuntu4.28
   ubuntu_22_04/apt: 2.4.15ubuntu0.1
   ubuntu_22_04/base-passwd: 3.5.52build1
   ubuntu_22_04/bash: 5.1-6ubuntu1.1
@@ -593,15 +593,15 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28-gdal3.6:
   ubuntu_22_04/libdrm-nouveau2: 2.4.113-2~ubuntu0.22.04.1
   ubuntu_22_04/libdrm-radeon1: 2.4.113-2~ubuntu0.22.04.1
   ubuntu_22_04/libdrm2: 2.4.113-2~ubuntu0.22.04.1
-  ubuntu_22_04/libdw1: 0.186-1ubuntu0.1
+  ubuntu_22_04/libdw1: 0.186-1ubuntu0.2
   ubuntu_22_04/libedit2: 3.1-20210910-1build1
   ubuntu_22_04/libegl-mesa0: 23.2.1-1ubuntu3.1~22.04.4
   ubuntu_22_04/libegl1: 1.4.0-1
-  ubuntu_22_04/libelf1: 0.186-1ubuntu0.1
+  ubuntu_22_04/libelf1: 0.186-1ubuntu0.2
   ubuntu_22_04/libevdev2: 1.12.1+dfsg-1
   ubuntu_22_04/libexiv2-27: 0.27.5-3ubuntu1.3
-  ubuntu_22_04/libexpat1: 2.4.7-1ubuntu0.9
-  ubuntu_22_04/libexpat1-dev: 2.4.7-1ubuntu0.9
+  ubuntu_22_04/libexpat1: 2.4.7-1ubuntu0.10
+  ubuntu_22_04/libexpat1-dev: 2.4.7-1ubuntu0.10
   ubuntu_22_04/libext2fs2: 1.46.5-2ubuntu1.2
   ubuntu_22_04/libfcgi0ldbl: 2.4.2-2ubuntu0.1
   ubuntu_22_04/libffi8: 3.4.2-4
@@ -632,7 +632,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28-gdal3.6:
   ubuntu_22_04/libgraphite2-3: 1.3.14-1ubuntu0.1
   ubuntu_22_04/libgsl27: 2.7.1+dfsg-3
   ubuntu_22_04/libgslcblas0: 2.7.1+dfsg-3
-  ubuntu_22_04/libgssapi-krb5-2: 1.19.2-2ubuntu0.10
+  ubuntu_22_04/libgssapi-krb5-2: 1.19.2-2ubuntu0.12
   ubuntu_22_04/libgstreamer-plugins-base1.0-0: 1.20.1-1ubuntu0.9
   ubuntu_22_04/libgstreamer1.0-0: 1.20.3-0ubuntu1.2
   ubuntu_22_04/libgudev-1.0-0: 1:237-2build1
@@ -653,10 +653,10 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28-gdal3.6:
   ubuntu_22_04/libjs-jquery: 3.6.0+dfsg+~3.5.13-1
   ubuntu_22_04/libjs-sphinxdoc: 4.3.2-1
   ubuntu_22_04/libjs-underscore: 1.13.2~dfsg-2
-  ubuntu_22_04/libk5crypto3: 1.19.2-2ubuntu0.10
+  ubuntu_22_04/libk5crypto3: 1.19.2-2ubuntu0.12
   ubuntu_22_04/libkeyutils1: 1.6.1-2ubuntu3
-  ubuntu_22_04/libkrb5-3: 1.19.2-2ubuntu0.10
-  ubuntu_22_04/libkrb5support0: 1.19.2-2ubuntu0.10
+  ubuntu_22_04/libkrb5-3: 1.19.2-2ubuntu0.12
+  ubuntu_22_04/libkrb5support0: 1.19.2-2ubuntu0.12
   ubuntu_22_04/liblapack3: 3.10.0-2ubuntu1
   ubuntu_22_04/libldap-2.5-0: 2.5.20+dfsg-0ubuntu0.22.04.1
   ubuntu_22_04/libllvm15: 1:15.0.7-0ubuntu0.22.04.3
@@ -762,7 +762,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28-gdal3.6:
   ubuntu_22_04/libstdc++6: 12.3.0-1ubuntu1~22.04.3
   ubuntu_22_04/libsystemd0: 249.11-0ubuntu3.23
   ubuntu_22_04/libtasn1-6: 4.18.0-4ubuntu0.2
-  ubuntu_22_04/libtiff5: 4.3.0-6ubuntu0.13
+  ubuntu_22_04/libtiff5: 4.3.0-6ubuntu0.14
   ubuntu_22_04/libtinfo6: 6.3-2ubuntu0.3
   ubuntu_22_04/libtirpc-common: 1.3.2-2ubuntu0.1
   ubuntu_22_04/libtirpc-dev: 1.3.2-2ubuntu0.1
@@ -815,7 +815,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28-gdal3.6:
   ubuntu_22_04/libxmu6: 2:1.1.3-3
   ubuntu_22_04/libxmuu1: 2:1.1.3-3
   ubuntu_22_04/libxpm4: 1:3.5.12-1ubuntu0.22.04.4
-  ubuntu_22_04/libxrender1: 1:0.9.10-1build4
+  ubuntu_22_04/libxrender1: 1:0.9.10-1ubuntu0.22.04.1
   ubuntu_22_04/libxshmfence1: 1.3-1build4
   ubuntu_22_04/libxslt1.1: 1.1.34-4ubuntu0.22.04.5
   ubuntu_22_04/libxt6: 1:1.2.1-1
@@ -888,10 +888,10 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28-gdal3.6:
   ubuntu_22_04/zlib1g: 1:1.2.11.dfsg-2ubuntu9.2
 camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28-gdal3.7:
   ubuntu_22_04/adduser: 3.118ubuntu5
-  ubuntu_22_04/apache2: 2.4.52-1ubuntu4.27
-  ubuntu_22_04/apache2-bin: 2.4.52-1ubuntu4.27
-  ubuntu_22_04/apache2-data: 2.4.52-1ubuntu4.27
-  ubuntu_22_04/apache2-utils: 2.4.52-1ubuntu4.27
+  ubuntu_22_04/apache2: 2.4.52-1ubuntu4.28
+  ubuntu_22_04/apache2-bin: 2.4.52-1ubuntu4.28
+  ubuntu_22_04/apache2-data: 2.4.52-1ubuntu4.28
+  ubuntu_22_04/apache2-utils: 2.4.52-1ubuntu4.28
   ubuntu_22_04/apt: 2.4.15ubuntu0.1
   ubuntu_22_04/base-passwd: 3.5.52build1
   ubuntu_22_04/bash: 5.1-6ubuntu1.1
@@ -972,15 +972,15 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28-gdal3.7:
   ubuntu_22_04/libdrm-nouveau2: 2.4.113-2~ubuntu0.22.04.1
   ubuntu_22_04/libdrm-radeon1: 2.4.113-2~ubuntu0.22.04.1
   ubuntu_22_04/libdrm2: 2.4.113-2~ubuntu0.22.04.1
-  ubuntu_22_04/libdw1: 0.186-1ubuntu0.1
+  ubuntu_22_04/libdw1: 0.186-1ubuntu0.2
   ubuntu_22_04/libedit2: 3.1-20210910-1build1
   ubuntu_22_04/libegl-mesa0: 23.2.1-1ubuntu3.1~22.04.4
   ubuntu_22_04/libegl1: 1.4.0-1
-  ubuntu_22_04/libelf1: 0.186-1ubuntu0.1
+  ubuntu_22_04/libelf1: 0.186-1ubuntu0.2
   ubuntu_22_04/libevdev2: 1.12.1+dfsg-1
   ubuntu_22_04/libexiv2-27: 0.27.5-3ubuntu1.3
-  ubuntu_22_04/libexpat1: 2.4.7-1ubuntu0.9
-  ubuntu_22_04/libexpat1-dev: 2.4.7-1ubuntu0.9
+  ubuntu_22_04/libexpat1: 2.4.7-1ubuntu0.10
+  ubuntu_22_04/libexpat1-dev: 2.4.7-1ubuntu0.10
   ubuntu_22_04/libext2fs2: 1.46.5-2ubuntu1.2
   ubuntu_22_04/libfcgi0ldbl: 2.4.2-2ubuntu0.1
   ubuntu_22_04/libffi8: 3.4.2-4
@@ -1012,7 +1012,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28-gdal3.7:
   ubuntu_22_04/libgraphite2-3: 1.3.14-1ubuntu0.1
   ubuntu_22_04/libgsl27: 2.7.1+dfsg-3
   ubuntu_22_04/libgslcblas0: 2.7.1+dfsg-3
-  ubuntu_22_04/libgssapi-krb5-2: 1.19.2-2ubuntu0.10
+  ubuntu_22_04/libgssapi-krb5-2: 1.19.2-2ubuntu0.12
   ubuntu_22_04/libgstreamer-plugins-base1.0-0: 1.20.1-1ubuntu0.9
   ubuntu_22_04/libgstreamer1.0-0: 1.20.3-0ubuntu1.2
   ubuntu_22_04/libgudev-1.0-0: 1:237-2build1
@@ -1034,10 +1034,10 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28-gdal3.7:
   ubuntu_22_04/libjs-jquery: 3.6.0+dfsg+~3.5.13-1
   ubuntu_22_04/libjs-sphinxdoc: 4.3.2-1
   ubuntu_22_04/libjs-underscore: 1.13.2~dfsg-2
-  ubuntu_22_04/libk5crypto3: 1.19.2-2ubuntu0.10
+  ubuntu_22_04/libk5crypto3: 1.19.2-2ubuntu0.12
   ubuntu_22_04/libkeyutils1: 1.6.1-2ubuntu3
-  ubuntu_22_04/libkrb5-3: 1.19.2-2ubuntu0.10
-  ubuntu_22_04/libkrb5support0: 1.19.2-2ubuntu0.10
+  ubuntu_22_04/libkrb5-3: 1.19.2-2ubuntu0.12
+  ubuntu_22_04/libkrb5support0: 1.19.2-2ubuntu0.12
   ubuntu_22_04/liblapack3: 3.10.0-2ubuntu1
   ubuntu_22_04/liblcms2-2: 2.12~rc1-2ubuntu0.1
   ubuntu_22_04/libldap-2.5-0: 2.5.20+dfsg-0ubuntu0.22.04.1
@@ -1145,7 +1145,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28-gdal3.7:
   ubuntu_22_04/libstdc++6: 12.3.0-1ubuntu1~22.04.3
   ubuntu_22_04/libsystemd0: 249.11-0ubuntu3.23
   ubuntu_22_04/libtasn1-6: 4.18.0-4ubuntu0.2
-  ubuntu_22_04/libtiff5: 4.3.0-6ubuntu0.13
+  ubuntu_22_04/libtiff5: 4.3.0-6ubuntu0.14
   ubuntu_22_04/libtinfo6: 6.3-2ubuntu0.3
   ubuntu_22_04/libtirpc-common: 1.3.2-2ubuntu0.1
   ubuntu_22_04/libtirpc-dev: 1.3.2-2ubuntu0.1
@@ -1200,7 +1200,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28-gdal3.7:
   ubuntu_22_04/libxmu6: 2:1.1.3-3
   ubuntu_22_04/libxmuu1: 2:1.1.3-3
   ubuntu_22_04/libxpm4: 1:3.5.12-1ubuntu0.22.04.4
-  ubuntu_22_04/libxrender1: 1:0.9.10-1build4
+  ubuntu_22_04/libxrender1: 1:0.9.10-1ubuntu0.22.04.1
   ubuntu_22_04/libxshmfence1: 1.3-1build4
   ubuntu_22_04/libxslt1.1: 1.1.34-4ubuntu0.22.04.5
   ubuntu_22_04/libxt6: 1:1.2.1-1
@@ -1274,10 +1274,10 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.28-gdal3.7:
   ubuntu_22_04/zlib1g: 1:1.2.11.dfsg-2ubuntu9.2
 camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/adduser: 3.118ubuntu5
-  ubuntu_22_04/apache2: 2.4.52-1ubuntu4.27
-  ubuntu_22_04/apache2-bin: 2.4.52-1ubuntu4.27
-  ubuntu_22_04/apache2-data: 2.4.52-1ubuntu4.27
-  ubuntu_22_04/apache2-utils: 2.4.52-1ubuntu4.27
+  ubuntu_22_04/apache2: 2.4.52-1ubuntu4.28
+  ubuntu_22_04/apache2-bin: 2.4.52-1ubuntu4.28
+  ubuntu_22_04/apache2-data: 2.4.52-1ubuntu4.28
+  ubuntu_22_04/apache2-utils: 2.4.52-1ubuntu4.28
   ubuntu_22_04/apt: 2.4.15ubuntu0.1
   ubuntu_22_04/base-passwd: 3.5.52build1
   ubuntu_22_04/bash: 5.1-6ubuntu1.1
@@ -1357,7 +1357,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libcups2: 2.4.1op1-1ubuntu4.21
   ubuntu_22_04/libcurl3-gnutls: 7.81.0-1ubuntu1.30
   ubuntu_22_04/libcurl4: 7.81.0-1ubuntu1.30
-  ubuntu_22_04/libdav1d5: 0.9.2-1
+  ubuntu_22_04/libdav1d5: 0.9.2-1ubuntu0.1
   ubuntu_22_04/libdb5.3: 5.3.28+dfsg1-0.8ubuntu3
   ubuntu_22_04/libdbus-1-3: 1.12.20-2ubuntu4.1
   ubuntu_22_04/libde265-0: 1.0.8-1ubuntu0.3
@@ -1371,15 +1371,15 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libdrm-nouveau2: 2.4.113-2~ubuntu0.22.04.1
   ubuntu_22_04/libdrm-radeon1: 2.4.113-2~ubuntu0.22.04.1
   ubuntu_22_04/libdrm2: 2.4.113-2~ubuntu0.22.04.1
-  ubuntu_22_04/libdw1: 0.186-1ubuntu0.1
+  ubuntu_22_04/libdw1: 0.186-1ubuntu0.2
   ubuntu_22_04/libedit2: 3.1-20210910-1build1
   ubuntu_22_04/libegl-mesa0: 23.2.1-1ubuntu3.1~22.04.4
   ubuntu_22_04/libegl1: 1.4.0-1
-  ubuntu_22_04/libelf1: 0.186-1ubuntu0.1
+  ubuntu_22_04/libelf1: 0.186-1ubuntu0.2
   ubuntu_22_04/libevdev2: 1.12.1+dfsg-1
   ubuntu_22_04/libexiv2-27: 0.27.5-3ubuntu1.3
-  ubuntu_22_04/libexpat1: 2.4.7-1ubuntu0.9
-  ubuntu_22_04/libexpat1-dev: 2.4.7-1ubuntu0.9
+  ubuntu_22_04/libexpat1: 2.4.7-1ubuntu0.10
+  ubuntu_22_04/libexpat1-dev: 2.4.7-1ubuntu0.10
   ubuntu_22_04/libext2fs2: 1.46.5-2ubuntu1.2
   ubuntu_22_04/libfcgi0ldbl: 2.4.2-2ubuntu0.1
   ubuntu_22_04/libffi8: 3.4.2-4
@@ -1416,7 +1416,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libgraphite2-3: 1.3.14-1ubuntu0.1
   ubuntu_22_04/libgsl27: 2.7.1+dfsg-3
   ubuntu_22_04/libgslcblas0: 2.7.1+dfsg-3
-  ubuntu_22_04/libgssapi-krb5-2: 1.19.2-2ubuntu0.10
+  ubuntu_22_04/libgssapi-krb5-2: 1.19.2-2ubuntu0.12
   ubuntu_22_04/libgstreamer-plugins-base1.0-0: 1.20.1-1ubuntu0.9
   ubuntu_22_04/libgstreamer1.0-0: 1.20.3-0ubuntu1.2
   ubuntu_22_04/libgudev-1.0-0: 1:237-2build1
@@ -1443,13 +1443,13 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libjs-sphinxdoc: 4.3.2-1
   ubuntu_22_04/libjs-underscore: 1.13.2~dfsg-2
   ubuntu_22_04/libjson-c5: 0.15-3~ubuntu1.22.04.2
-  ubuntu_22_04/libk5crypto3: 1.19.2-2ubuntu0.10
+  ubuntu_22_04/libk5crypto3: 1.19.2-2ubuntu0.12
   ubuntu_22_04/libkeyutils1: 1.6.1-2ubuntu3
   ubuntu_22_04/libkmlbase1: 1.3.0-9
   ubuntu_22_04/libkmldom1: 1.3.0-9
   ubuntu_22_04/libkmlengine1: 1.3.0-9
-  ubuntu_22_04/libkrb5-3: 1.19.2-2ubuntu0.10
-  ubuntu_22_04/libkrb5support0: 1.19.2-2ubuntu0.10
+  ubuntu_22_04/libkrb5-3: 1.19.2-2ubuntu0.12
+  ubuntu_22_04/libkrb5support0: 1.19.2-2ubuntu0.12
   ubuntu_22_04/liblapack3: 3.10.0-2ubuntu1
   ubuntu_22_04/liblaszip8: 3.4.3-2
   ubuntu_22_04/liblcms2-2: 2.12~rc1-2ubuntu0.1
@@ -1580,7 +1580,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libsystemd0: 249.11-0ubuntu3.23
   ubuntu_22_04/libsz2: 1.0.6-1
   ubuntu_22_04/libtasn1-6: 4.18.0-4ubuntu0.2
-  ubuntu_22_04/libtiff5: 4.3.0-6ubuntu0.13
+  ubuntu_22_04/libtiff5: 4.3.0-6ubuntu0.14
   ubuntu_22_04/libtinfo6: 6.3-2ubuntu0.3
   ubuntu_22_04/libtirpc-common: 1.3.2-2ubuntu0.1
   ubuntu_22_04/libtirpc-dev: 1.3.2-2ubuntu0.1
@@ -1639,7 +1639,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/libxmu6: 2:1.1.3-3
   ubuntu_22_04/libxmuu1: 2:1.1.3-3
   ubuntu_22_04/libxpm4: 1:3.5.12-1ubuntu0.22.04.4
-  ubuntu_22_04/libxrender1: 1:0.9.10-1build4
+  ubuntu_22_04/libxrender1: 1:0.9.10-1ubuntu0.22.04.1
   ubuntu_22_04/libxshmfence1: 1.3-1build4
   ubuntu_22_04/libxslt1.1: 1.1.34-4ubuntu0.22.04.5
   ubuntu_22_04/libxt6: 1:1.2.1-1
@@ -1717,10 +1717,10 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34:
   ubuntu_22_04/zlib1g: 1:1.2.11.dfsg-2ubuntu9.2
 camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.7:
   ubuntu_22_04/adduser: 3.118ubuntu5
-  ubuntu_22_04/apache2: 2.4.52-1ubuntu4.27
-  ubuntu_22_04/apache2-bin: 2.4.52-1ubuntu4.27
-  ubuntu_22_04/apache2-data: 2.4.52-1ubuntu4.27
-  ubuntu_22_04/apache2-utils: 2.4.52-1ubuntu4.27
+  ubuntu_22_04/apache2: 2.4.52-1ubuntu4.28
+  ubuntu_22_04/apache2-bin: 2.4.52-1ubuntu4.28
+  ubuntu_22_04/apache2-data: 2.4.52-1ubuntu4.28
+  ubuntu_22_04/apache2-utils: 2.4.52-1ubuntu4.28
   ubuntu_22_04/apt: 2.4.15ubuntu0.1
   ubuntu_22_04/base-passwd: 3.5.52build1
   ubuntu_22_04/bash: 5.1-6ubuntu1.1
@@ -1800,7 +1800,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.7:
   ubuntu_22_04/libcups2: 2.4.1op1-1ubuntu4.21
   ubuntu_22_04/libcurl3-gnutls: 7.81.0-1ubuntu1.30
   ubuntu_22_04/libcurl4: 7.81.0-1ubuntu1.30
-  ubuntu_22_04/libdav1d5: 0.9.2-1
+  ubuntu_22_04/libdav1d5: 0.9.2-1ubuntu0.1
   ubuntu_22_04/libdb5.3: 5.3.28+dfsg1-0.8ubuntu3
   ubuntu_22_04/libdbus-1-3: 1.12.20-2ubuntu4.1
   ubuntu_22_04/libde265-0: 1.0.8-1ubuntu0.3
@@ -1814,15 +1814,15 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.7:
   ubuntu_22_04/libdrm-nouveau2: 2.4.113-2~ubuntu0.22.04.1
   ubuntu_22_04/libdrm-radeon1: 2.4.113-2~ubuntu0.22.04.1
   ubuntu_22_04/libdrm2: 2.4.113-2~ubuntu0.22.04.1
-  ubuntu_22_04/libdw1: 0.186-1ubuntu0.1
+  ubuntu_22_04/libdw1: 0.186-1ubuntu0.2
   ubuntu_22_04/libedit2: 3.1-20210910-1build1
   ubuntu_22_04/libegl-mesa0: 23.2.1-1ubuntu3.1~22.04.4
   ubuntu_22_04/libegl1: 1.4.0-1
-  ubuntu_22_04/libelf1: 0.186-1ubuntu0.1
+  ubuntu_22_04/libelf1: 0.186-1ubuntu0.2
   ubuntu_22_04/libevdev2: 1.12.1+dfsg-1
   ubuntu_22_04/libexiv2-27: 0.27.5-3ubuntu1.3
-  ubuntu_22_04/libexpat1: 2.4.7-1ubuntu0.9
-  ubuntu_22_04/libexpat1-dev: 2.4.7-1ubuntu0.9
+  ubuntu_22_04/libexpat1: 2.4.7-1ubuntu0.10
+  ubuntu_22_04/libexpat1-dev: 2.4.7-1ubuntu0.10
   ubuntu_22_04/libext2fs2: 1.46.5-2ubuntu1.2
   ubuntu_22_04/libfcgi0ldbl: 2.4.2-2ubuntu0.1
   ubuntu_22_04/libffi8: 3.4.2-4
@@ -1859,7 +1859,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.7:
   ubuntu_22_04/libgraphite2-3: 1.3.14-1ubuntu0.1
   ubuntu_22_04/libgsl27: 2.7.1+dfsg-3
   ubuntu_22_04/libgslcblas0: 2.7.1+dfsg-3
-  ubuntu_22_04/libgssapi-krb5-2: 1.19.2-2ubuntu0.10
+  ubuntu_22_04/libgssapi-krb5-2: 1.19.2-2ubuntu0.12
   ubuntu_22_04/libgstreamer-plugins-base1.0-0: 1.20.1-1ubuntu0.9
   ubuntu_22_04/libgstreamer1.0-0: 1.20.3-0ubuntu1.2
   ubuntu_22_04/libgudev-1.0-0: 1:237-2build1
@@ -1886,13 +1886,13 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.7:
   ubuntu_22_04/libjs-sphinxdoc: 4.3.2-1
   ubuntu_22_04/libjs-underscore: 1.13.2~dfsg-2
   ubuntu_22_04/libjson-c5: 0.15-3~ubuntu1.22.04.2
-  ubuntu_22_04/libk5crypto3: 1.19.2-2ubuntu0.10
+  ubuntu_22_04/libk5crypto3: 1.19.2-2ubuntu0.12
   ubuntu_22_04/libkeyutils1: 1.6.1-2ubuntu3
   ubuntu_22_04/libkmlbase1: 1.3.0-9
   ubuntu_22_04/libkmldom1: 1.3.0-9
   ubuntu_22_04/libkmlengine1: 1.3.0-9
-  ubuntu_22_04/libkrb5-3: 1.19.2-2ubuntu0.10
-  ubuntu_22_04/libkrb5support0: 1.19.2-2ubuntu0.10
+  ubuntu_22_04/libkrb5-3: 1.19.2-2ubuntu0.12
+  ubuntu_22_04/libkrb5support0: 1.19.2-2ubuntu0.12
   ubuntu_22_04/liblapack3: 3.10.0-2ubuntu1
   ubuntu_22_04/liblaszip8: 3.4.3-2
   ubuntu_22_04/liblcms2-2: 2.12~rc1-2ubuntu0.1
@@ -2023,7 +2023,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.7:
   ubuntu_22_04/libsystemd0: 249.11-0ubuntu3.23
   ubuntu_22_04/libsz2: 1.0.6-1
   ubuntu_22_04/libtasn1-6: 4.18.0-4ubuntu0.2
-  ubuntu_22_04/libtiff5: 4.3.0-6ubuntu0.13
+  ubuntu_22_04/libtiff5: 4.3.0-6ubuntu0.14
   ubuntu_22_04/libtinfo6: 6.3-2ubuntu0.3
   ubuntu_22_04/libtirpc-common: 1.3.2-2ubuntu0.1
   ubuntu_22_04/libtirpc-dev: 1.3.2-2ubuntu0.1
@@ -2082,7 +2082,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.7:
   ubuntu_22_04/libxmu6: 2:1.1.3-3
   ubuntu_22_04/libxmuu1: 2:1.1.3-3
   ubuntu_22_04/libxpm4: 1:3.5.12-1ubuntu0.22.04.4
-  ubuntu_22_04/libxrender1: 1:0.9.10-1build4
+  ubuntu_22_04/libxrender1: 1:0.9.10-1ubuntu0.22.04.1
   ubuntu_22_04/libxshmfence1: 1.3-1build4
   ubuntu_22_04/libxslt1.1: 1.1.34-4ubuntu0.22.04.5
   ubuntu_22_04/libxt6: 1:1.2.1-1
@@ -2160,10 +2160,10 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.7:
   ubuntu_22_04/zlib1g: 1:1.2.11.dfsg-2ubuntu9.2
 camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/adduser: 3.118ubuntu5
-  ubuntu_22_04/apache2: 2.4.52-1ubuntu4.27
-  ubuntu_22_04/apache2-bin: 2.4.52-1ubuntu4.27
-  ubuntu_22_04/apache2-data: 2.4.52-1ubuntu4.27
-  ubuntu_22_04/apache2-utils: 2.4.52-1ubuntu4.27
+  ubuntu_22_04/apache2: 2.4.52-1ubuntu4.28
+  ubuntu_22_04/apache2-bin: 2.4.52-1ubuntu4.28
+  ubuntu_22_04/apache2-data: 2.4.52-1ubuntu4.28
+  ubuntu_22_04/apache2-utils: 2.4.52-1ubuntu4.28
   ubuntu_22_04/apt: 2.4.15ubuntu0.1
   ubuntu_22_04/base-passwd: 3.5.52build1
   ubuntu_22_04/bash: 5.1-6ubuntu1.1
@@ -2243,7 +2243,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libcups2: 2.4.1op1-1ubuntu4.21
   ubuntu_22_04/libcurl3-gnutls: 7.81.0-1ubuntu1.30
   ubuntu_22_04/libcurl4: 7.81.0-1ubuntu1.30
-  ubuntu_22_04/libdav1d5: 0.9.2-1
+  ubuntu_22_04/libdav1d5: 0.9.2-1ubuntu0.1
   ubuntu_22_04/libdb5.3: 5.3.28+dfsg1-0.8ubuntu3
   ubuntu_22_04/libdbus-1-3: 1.12.20-2ubuntu4.1
   ubuntu_22_04/libde265-0: 1.0.8-1ubuntu0.3
@@ -2257,15 +2257,15 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libdrm-nouveau2: 2.4.113-2~ubuntu0.22.04.1
   ubuntu_22_04/libdrm-radeon1: 2.4.113-2~ubuntu0.22.04.1
   ubuntu_22_04/libdrm2: 2.4.113-2~ubuntu0.22.04.1
-  ubuntu_22_04/libdw1: 0.186-1ubuntu0.1
+  ubuntu_22_04/libdw1: 0.186-1ubuntu0.2
   ubuntu_22_04/libedit2: 3.1-20210910-1build1
   ubuntu_22_04/libegl-mesa0: 23.2.1-1ubuntu3.1~22.04.4
   ubuntu_22_04/libegl1: 1.4.0-1
-  ubuntu_22_04/libelf1: 0.186-1ubuntu0.1
+  ubuntu_22_04/libelf1: 0.186-1ubuntu0.2
   ubuntu_22_04/libevdev2: 1.12.1+dfsg-1
   ubuntu_22_04/libexiv2-27: 0.27.5-3ubuntu1.3
-  ubuntu_22_04/libexpat1: 2.4.7-1ubuntu0.9
-  ubuntu_22_04/libexpat1-dev: 2.4.7-1ubuntu0.9
+  ubuntu_22_04/libexpat1: 2.4.7-1ubuntu0.10
+  ubuntu_22_04/libexpat1-dev: 2.4.7-1ubuntu0.10
   ubuntu_22_04/libext2fs2: 1.46.5-2ubuntu1.2
   ubuntu_22_04/libfcgi0ldbl: 2.4.2-2ubuntu0.1
   ubuntu_22_04/libffi8: 3.4.2-4
@@ -2302,7 +2302,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libgraphite2-3: 1.3.14-1ubuntu0.1
   ubuntu_22_04/libgsl27: 2.7.1+dfsg-3
   ubuntu_22_04/libgslcblas0: 2.7.1+dfsg-3
-  ubuntu_22_04/libgssapi-krb5-2: 1.19.2-2ubuntu0.10
+  ubuntu_22_04/libgssapi-krb5-2: 1.19.2-2ubuntu0.12
   ubuntu_22_04/libgstreamer-plugins-base1.0-0: 1.20.1-1ubuntu0.9
   ubuntu_22_04/libgstreamer1.0-0: 1.20.3-0ubuntu1.2
   ubuntu_22_04/libgudev-1.0-0: 1:237-2build1
@@ -2329,13 +2329,13 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libjs-sphinxdoc: 4.3.2-1
   ubuntu_22_04/libjs-underscore: 1.13.2~dfsg-2
   ubuntu_22_04/libjson-c5: 0.15-3~ubuntu1.22.04.2
-  ubuntu_22_04/libk5crypto3: 1.19.2-2ubuntu0.10
+  ubuntu_22_04/libk5crypto3: 1.19.2-2ubuntu0.12
   ubuntu_22_04/libkeyutils1: 1.6.1-2ubuntu3
   ubuntu_22_04/libkmlbase1: 1.3.0-9
   ubuntu_22_04/libkmldom1: 1.3.0-9
   ubuntu_22_04/libkmlengine1: 1.3.0-9
-  ubuntu_22_04/libkrb5-3: 1.19.2-2ubuntu0.10
-  ubuntu_22_04/libkrb5support0: 1.19.2-2ubuntu0.10
+  ubuntu_22_04/libkrb5-3: 1.19.2-2ubuntu0.12
+  ubuntu_22_04/libkrb5support0: 1.19.2-2ubuntu0.12
   ubuntu_22_04/liblapack3: 3.10.0-2ubuntu1
   ubuntu_22_04/liblaszip8: 3.4.3-2
   ubuntu_22_04/liblcms2-2: 2.12~rc1-2ubuntu0.1
@@ -2466,7 +2466,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libsystemd0: 249.11-0ubuntu3.23
   ubuntu_22_04/libsz2: 1.0.6-1
   ubuntu_22_04/libtasn1-6: 4.18.0-4ubuntu0.2
-  ubuntu_22_04/libtiff5: 4.3.0-6ubuntu0.13
+  ubuntu_22_04/libtiff5: 4.3.0-6ubuntu0.14
   ubuntu_22_04/libtinfo6: 6.3-2ubuntu0.3
   ubuntu_22_04/libtirpc-common: 1.3.2-2ubuntu0.1
   ubuntu_22_04/libtirpc-dev: 1.3.2-2ubuntu0.1
@@ -2525,7 +2525,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis3.34-gdal3.8:
   ubuntu_22_04/libxmu6: 2:1.1.3-3
   ubuntu_22_04/libxmuu1: 2:1.1.3-3
   ubuntu_22_04/libxpm4: 1:3.5.12-1ubuntu0.22.04.4
-  ubuntu_22_04/libxrender1: 1:0.9.10-1build4
+  ubuntu_22_04/libxrender1: 1:0.9.10-1ubuntu0.22.04.1
   ubuntu_22_04/libxshmfence1: 1.3-1build4
   ubuntu_22_04/libxslt1.1: 1.1.34-4ubuntu0.22.04.5
   ubuntu_22_04/libxt6: 1:1.2.1-1
@@ -2664,8 +2664,8 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/libapparmor1: 3.0.4-2ubuntu2.5
   ubuntu_22_04/libapt-pkg6.0: 2.4.15ubuntu0.1
   ubuntu_22_04/libargon2-1: 0~20171227-0.3
-  ubuntu_22_04/libasound2: 1.2.6.1-1ubuntu1.2
-  ubuntu_22_04/libasound2-data: 1.2.6.1-1ubuntu1.2
+  ubuntu_22_04/libasound2: 1.2.6.1-1ubuntu1.3
+  ubuntu_22_04/libasound2-data: 1.2.6.1-1ubuntu1.3
   ubuntu_22_04/libassuan0: 2.5.5-1build1
   ubuntu_22_04/libatk-bridge2.0-0: 2.38.0-3
   ubuntu_22_04/libatk1.0-0: 2.36.0-3build1
@@ -2715,11 +2715,11 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/libdrm2: 2.4.113-2~ubuntu0.22.04.1
   ubuntu_22_04/libedit2: 3.1-20210910-1build1
   ubuntu_22_04/libeditorconfig0: 0.12.5-2
-  ubuntu_22_04/libelf1: 0.186-1ubuntu0.1
+  ubuntu_22_04/libelf1: 0.186-1ubuntu0.2
   ubuntu_22_04/libepoxy0: 1.5.10-1
   ubuntu_22_04/liberror-perl: 0.17029-1
-  ubuntu_22_04/libexpat1: 2.4.7-1ubuntu0.9
-  ubuntu_22_04/libexpat1-dev: 2.4.7-1ubuntu0.9
+  ubuntu_22_04/libexpat1: 2.4.7-1ubuntu0.10
+  ubuntu_22_04/libexpat1-dev: 2.4.7-1ubuntu0.10
   ubuntu_22_04/libext2fs2: 1.46.5-2ubuntu1.2
   ubuntu_22_04/libffi8: 3.4.2-4
   ubuntu_22_04/libfontconfig1: 2.13.1-4.2ubuntu5
@@ -2745,7 +2745,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/libgpm2: 1.20.7-10build1
   ubuntu_22_04/libgraphite2-3: 1.3.14-1ubuntu0.1
   ubuntu_22_04/libgraphviz-dev: 2.42.2-6ubuntu0.1
-  ubuntu_22_04/libgssapi-krb5-2: 1.19.2-2ubuntu0.10
+  ubuntu_22_04/libgssapi-krb5-2: 1.19.2-2ubuntu0.12
   ubuntu_22_04/libgtk-3-0: 3.24.33-1ubuntu2.2
   ubuntu_22_04/libgtk-3-common: 3.24.33-1ubuntu2.2
   ubuntu_22_04/libgtk2.0-0: 2.24.33-2ubuntu2.1
@@ -2768,11 +2768,11 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/libjs-sphinxdoc: 4.3.2-1
   ubuntu_22_04/libjs-underscore: 1.13.2~dfsg-2
   ubuntu_22_04/libjson-c5: 0.15-3~ubuntu1.22.04.2
-  ubuntu_22_04/libk5crypto3: 1.19.2-2ubuntu0.10
+  ubuntu_22_04/libk5crypto3: 1.19.2-2ubuntu0.12
   ubuntu_22_04/libkeyutils1: 1.6.1-2ubuntu3
   ubuntu_22_04/libkmod2: 29-1ubuntu1.1
-  ubuntu_22_04/libkrb5-3: 1.19.2-2ubuntu0.10
-  ubuntu_22_04/libkrb5support0: 1.19.2-2ubuntu0.10
+  ubuntu_22_04/libkrb5-3: 1.19.2-2ubuntu0.12
+  ubuntu_22_04/libkrb5support0: 1.19.2-2ubuntu0.12
   ubuntu_22_04/libksba8: 1.6.0-2ubuntu0.2
   ubuntu_22_04/liblab-gamut1: 2.42.2-6ubuntu0.1
   ubuntu_22_04/liblapack3: 3.10.0-2ubuntu1
@@ -2857,7 +2857,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/libtcl8.6: 8.6.12+dfsg-1build1
   ubuntu_22_04/libthai-data: 0.1.29-1build1
   ubuntu_22_04/libthai0: 0.1.29-1build1
-  ubuntu_22_04/libtiff5: 4.3.0-6ubuntu0.13
+  ubuntu_22_04/libtiff5: 4.3.0-6ubuntu0.14
   ubuntu_22_04/libtinfo6: 6.3-2ubuntu0.3
   ubuntu_22_04/libtirpc-common: 1.3.2-2ubuntu0.1
   ubuntu_22_04/libtirpc-dev: 1.3.2-2ubuntu0.1
@@ -2898,7 +2898,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_22_04/libxml2-utils: 2.9.13+dfsg-1ubuntu0.14
   ubuntu_22_04/libxpm4: 1:3.5.12-1ubuntu0.22.04.4
   ubuntu_22_04/libxrandr2: 2:1.5.2-1build1
-  ubuntu_22_04/libxrender1: 1:0.9.10-1build4
+  ubuntu_22_04/libxrender1: 1:0.9.10-1ubuntu0.22.04.1
   ubuntu_22_04/libxshmfence1: 1.3-1build4
   ubuntu_22_04/libxss1: 1:1.2.3-1build2
   ubuntu_22_04/libxtables12: 1.8.7-1ubuntu5.2
@@ -3040,8 +3040,8 @@ camptocamp/geomapfish:latest:
   ubuntu_22_04/libapparmor1: 3.0.4-2ubuntu2.5
   ubuntu_22_04/libapt-pkg6.0: 2.4.15ubuntu0.1
   ubuntu_22_04/libargon2-1: 0~20171227-0.3
-  ubuntu_22_04/libasound2: 1.2.6.1-1ubuntu1.2
-  ubuntu_22_04/libasound2-data: 1.2.6.1-1ubuntu1.2
+  ubuntu_22_04/libasound2: 1.2.6.1-1ubuntu1.3
+  ubuntu_22_04/libasound2-data: 1.2.6.1-1ubuntu1.3
   ubuntu_22_04/libassuan0: 2.5.5-1build1
   ubuntu_22_04/libatk-bridge2.0-0: 2.38.0-3
   ubuntu_22_04/libatk1.0-0: 2.36.0-3build1
@@ -3086,8 +3086,8 @@ camptocamp/geomapfish:latest:
   ubuntu_22_04/libdrm-common: 2.4.113-2~ubuntu0.22.04.1
   ubuntu_22_04/libdrm2: 2.4.113-2~ubuntu0.22.04.1
   ubuntu_22_04/libepoxy0: 1.5.10-1
-  ubuntu_22_04/libexpat1: 2.4.7-1ubuntu0.9
-  ubuntu_22_04/libexpat1-dev: 2.4.7-1ubuntu0.9
+  ubuntu_22_04/libexpat1: 2.4.7-1ubuntu0.10
+  ubuntu_22_04/libexpat1-dev: 2.4.7-1ubuntu0.10
   ubuntu_22_04/libext2fs2: 1.46.5-2ubuntu1.2
   ubuntu_22_04/libffi8: 3.4.2-4
   ubuntu_22_04/libfontconfig1: 2.13.1-4.2ubuntu5
@@ -3112,7 +3112,7 @@ camptocamp/geomapfish:latest:
   ubuntu_22_04/libgpg-error0: 1.43-3
   ubuntu_22_04/libgraphite2-3: 1.3.14-1ubuntu0.1
   ubuntu_22_04/libgraphviz-dev: 2.42.2-6ubuntu0.1
-  ubuntu_22_04/libgssapi-krb5-2: 1.19.2-2ubuntu0.10
+  ubuntu_22_04/libgssapi-krb5-2: 1.19.2-2ubuntu0.12
   ubuntu_22_04/libgtk-3-0: 3.24.33-1ubuntu2.2
   ubuntu_22_04/libgtk-3-common: 3.24.33-1ubuntu2.2
   ubuntu_22_04/libgtk2.0-0: 2.24.33-2ubuntu2.1
@@ -3134,11 +3134,11 @@ camptocamp/geomapfish:latest:
   ubuntu_22_04/libjs-sphinxdoc: 4.3.2-1
   ubuntu_22_04/libjs-underscore: 1.13.2~dfsg-2
   ubuntu_22_04/libjson-c5: 0.15-3~ubuntu1.22.04.2
-  ubuntu_22_04/libk5crypto3: 1.19.2-2ubuntu0.10
+  ubuntu_22_04/libk5crypto3: 1.19.2-2ubuntu0.12
   ubuntu_22_04/libkeyutils1: 1.6.1-2ubuntu3
   ubuntu_22_04/libkmod2: 29-1ubuntu1.1
-  ubuntu_22_04/libkrb5-3: 1.19.2-2ubuntu0.10
-  ubuntu_22_04/libkrb5support0: 1.19.2-2ubuntu0.10
+  ubuntu_22_04/libkrb5-3: 1.19.2-2ubuntu0.12
+  ubuntu_22_04/libkrb5support0: 1.19.2-2ubuntu0.12
   ubuntu_22_04/libksba8: 1.6.0-2ubuntu0.2
   ubuntu_22_04/liblab-gamut1: 2.42.2-6ubuntu0.1
   ubuntu_22_04/liblapack3: 3.10.0-2ubuntu1
@@ -3212,7 +3212,7 @@ camptocamp/geomapfish:latest:
   ubuntu_22_04/libtasn1-6: 4.18.0-4ubuntu0.2
   ubuntu_22_04/libthai-data: 0.1.29-1build1
   ubuntu_22_04/libthai0: 0.1.29-1build1
-  ubuntu_22_04/libtiff5: 4.3.0-6ubuntu0.13
+  ubuntu_22_04/libtiff5: 4.3.0-6ubuntu0.14
   ubuntu_22_04/libtinfo6: 6.3-2ubuntu0.3
   ubuntu_22_04/libtirpc-common: 1.3.2-2ubuntu0.1
   ubuntu_22_04/libtirpc-dev: 1.3.2-2ubuntu0.1
@@ -3250,7 +3250,7 @@ camptocamp/geomapfish:latest:
   ubuntu_22_04/libxml2: 2.9.13+dfsg-1ubuntu0.14
   ubuntu_22_04/libxpm4: 1:3.5.12-1ubuntu0.22.04.4
   ubuntu_22_04/libxrandr2: 2:1.5.2-1build1
-  ubuntu_22_04/libxrender1: 1:0.9.10-1build4
+  ubuntu_22_04/libxrender1: 1:0.9.10-1ubuntu0.22.04.1
   ubuntu_22_04/libxshmfence1: 1.3-1build4
   ubuntu_22_04/libxss1: 1:1.2.3-1build2
   ubuntu_22_04/libxtst6: 2:1.2.3-1ubuntu0.22.04.1
@@ -3361,8 +3361,8 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_22_04/libapparmor1: 3.0.4-2ubuntu2.5
   ubuntu_22_04/libapt-pkg6.0: 2.4.15ubuntu0.1
   ubuntu_22_04/libargon2-1: 0~20171227-0.3
-  ubuntu_22_04/libasound2: 1.2.6.1-1ubuntu1.2
-  ubuntu_22_04/libasound2-data: 1.2.6.1-1ubuntu1.2
+  ubuntu_22_04/libasound2: 1.2.6.1-1ubuntu1.3
+  ubuntu_22_04/libasound2-data: 1.2.6.1-1ubuntu1.3
   ubuntu_22_04/libassuan0: 2.5.5-1build1
   ubuntu_22_04/libatk-bridge2.0-0: 2.38.0-3
   ubuntu_22_04/libatk1.0-0: 2.36.0-3build1
@@ -3407,8 +3407,8 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_22_04/libdrm-common: 2.4.113-2~ubuntu0.22.04.1
   ubuntu_22_04/libdrm2: 2.4.113-2~ubuntu0.22.04.1
   ubuntu_22_04/libepoxy0: 1.5.10-1
-  ubuntu_22_04/libexpat1: 2.4.7-1ubuntu0.9
-  ubuntu_22_04/libexpat1-dev: 2.4.7-1ubuntu0.9
+  ubuntu_22_04/libexpat1: 2.4.7-1ubuntu0.10
+  ubuntu_22_04/libexpat1-dev: 2.4.7-1ubuntu0.10
   ubuntu_22_04/libext2fs2: 1.46.5-2ubuntu1.2
   ubuntu_22_04/libffi8: 3.4.2-4
   ubuntu_22_04/libfontconfig1: 2.13.1-4.2ubuntu5
@@ -3433,7 +3433,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_22_04/libgpg-error0: 1.43-3
   ubuntu_22_04/libgraphite2-3: 1.3.14-1ubuntu0.1
   ubuntu_22_04/libgraphviz-dev: 2.42.2-6ubuntu0.1
-  ubuntu_22_04/libgssapi-krb5-2: 1.19.2-2ubuntu0.10
+  ubuntu_22_04/libgssapi-krb5-2: 1.19.2-2ubuntu0.12
   ubuntu_22_04/libgtk-3-0: 3.24.33-1ubuntu2.2
   ubuntu_22_04/libgtk-3-common: 3.24.33-1ubuntu2.2
   ubuntu_22_04/libgtk2.0-0: 2.24.33-2ubuntu2.1
@@ -3455,11 +3455,11 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_22_04/libjs-sphinxdoc: 4.3.2-1
   ubuntu_22_04/libjs-underscore: 1.13.2~dfsg-2
   ubuntu_22_04/libjson-c5: 0.15-3~ubuntu1.22.04.2
-  ubuntu_22_04/libk5crypto3: 1.19.2-2ubuntu0.10
+  ubuntu_22_04/libk5crypto3: 1.19.2-2ubuntu0.12
   ubuntu_22_04/libkeyutils1: 1.6.1-2ubuntu3
   ubuntu_22_04/libkmod2: 29-1ubuntu1.1
-  ubuntu_22_04/libkrb5-3: 1.19.2-2ubuntu0.10
-  ubuntu_22_04/libkrb5support0: 1.19.2-2ubuntu0.10
+  ubuntu_22_04/libkrb5-3: 1.19.2-2ubuntu0.12
+  ubuntu_22_04/libkrb5support0: 1.19.2-2ubuntu0.12
   ubuntu_22_04/libksba8: 1.6.0-2ubuntu0.2
   ubuntu_22_04/liblab-gamut1: 2.42.2-6ubuntu0.1
   ubuntu_22_04/liblapack3: 3.10.0-2ubuntu1
@@ -3533,7 +3533,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_22_04/libtasn1-6: 4.18.0-4ubuntu0.2
   ubuntu_22_04/libthai-data: 0.1.29-1build1
   ubuntu_22_04/libthai0: 0.1.29-1build1
-  ubuntu_22_04/libtiff5: 4.3.0-6ubuntu0.13
+  ubuntu_22_04/libtiff5: 4.3.0-6ubuntu0.14
   ubuntu_22_04/libtinfo6: 6.3-2ubuntu0.3
   ubuntu_22_04/libtirpc-common: 1.3.2-2ubuntu0.1
   ubuntu_22_04/libtirpc-dev: 1.3.2-2ubuntu0.1
@@ -3571,7 +3571,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_22_04/libxml2: 2.9.13+dfsg-1ubuntu0.14
   ubuntu_22_04/libxpm4: 1:3.5.12-1ubuntu0.22.04.4
   ubuntu_22_04/libxrandr2: 2:1.5.2-1build1
-  ubuntu_22_04/libxrender1: 1:0.9.10-1build4
+  ubuntu_22_04/libxrender1: 1:0.9.10-1ubuntu0.22.04.1
   ubuntu_22_04/libxshmfence1: 1.3-1build4
   ubuntu_22_04/libxss1: 1:1.2.3-1build2
   ubuntu_22_04/libxtst6: 2:1.2.3-1ubuntu0.22.04.1
