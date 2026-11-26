@@ -1,3 +1,7 @@
+##### 2.10.rc.29
+
+- Audit Dpkg 2.10 [c2cgeoportal#13786](https://github.com/camptocamp/c2cgeoportal/pull/13786)
+
 ##### 2.10.rc.28
 
 - Mount the pre-commit cache in the upgrade container at the host path [c2cgeoportal#13776](https://github.com/camptocamp/c2cgeoportal/pull/13776)
