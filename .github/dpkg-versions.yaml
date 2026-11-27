@@ -46,7 +46,7 @@ camptocamp/geomapfish-config:latest:
   ubuntu_26_04/hostname: 3.25build1
   ubuntu_26_04/icu-devtools: 78.2-2ubuntu1
   ubuntu_26_04/init-system-helpers: '1.69'
-  ubuntu_26_04/krb5-multidev: 1.22.1-2ubuntu4.1
+  ubuntu_26_04/krb5-multidev: 1.22.1-2ubuntu4.3
   ubuntu_26_04/libabsl20260107: 20260107.0-4
   ubuntu_26_04/libacl1: 2.3.2-2
   ubuntu_26_04/libacl1-dev: 2.3.2-2
@@ -148,8 +148,8 @@ camptocamp/geomapfish-config:latest:
   ubuntu_26_04/libgpgme45: 2.0.1-2build1
   ubuntu_26_04/libgpgmepp-dev: 2.0.0-2
   ubuntu_26_04/libgpgmepp7: 2.0.0-2
-  ubuntu_26_04/libgssapi-krb5-2: 1.22.1-2ubuntu4.1
-  ubuntu_26_04/libgssrpc4t64: 1.22.1-2ubuntu4.1
+  ubuntu_26_04/libgssapi-krb5-2: 1.22.1-2ubuntu4.3
+  ubuntu_26_04/libgssrpc4t64: 1.22.1-2ubuntu4.3
   ubuntu_26_04/libhdf4-0: 4.3.1-2
   ubuntu_26_04/libhdf4-dev: 4.3.1-2
   ubuntu_26_04/libhdf5-310: 1.14.6+repack-2
@@ -181,10 +181,10 @@ camptocamp/geomapfish-config:latest:
   ubuntu_26_04/libjson-c5: 0.18+ds-3
   ubuntu_26_04/libjxl-dev: 0.11.1-6ubuntu4.2
   ubuntu_26_04/libjxl0.11: 0.11.1-6ubuntu4.2
-  ubuntu_26_04/libk5crypto3: 1.22.1-2ubuntu4.1
-  ubuntu_26_04/libkadm5clnt-mit12: 1.22.1-2ubuntu4.1
-  ubuntu_26_04/libkadm5srv-mit12: 1.22.1-2ubuntu4.1
-  ubuntu_26_04/libkdb5-10t64: 1.22.1-2ubuntu4.1
+  ubuntu_26_04/libk5crypto3: 1.22.1-2ubuntu4.3
+  ubuntu_26_04/libkadm5clnt-mit12: 1.22.1-2ubuntu4.3
+  ubuntu_26_04/libkadm5srv-mit12: 1.22.1-2ubuntu4.3
+  ubuntu_26_04/libkdb5-10t64: 1.22.1-2ubuntu4.3
   ubuntu_26_04/libkeyutils1: 1.6.3-6ubuntu3
   ubuntu_26_04/libkml-dev: 1.3.0-13
   ubuntu_26_04/libkmlbase1t64: 1.3.0-13
@@ -193,9 +193,9 @@ camptocamp/geomapfish-config:latest:
   ubuntu_26_04/libkmlengine1t64: 1.3.0-13
   ubuntu_26_04/libkmlregionator1t64: 1.3.0-13
   ubuntu_26_04/libkmlxsd1t64: 1.3.0-13
-  ubuntu_26_04/libkrb5-3: 1.22.1-2ubuntu4.1
-  ubuntu_26_04/libkrb5-dev: 1.22.1-2ubuntu4.1
-  ubuntu_26_04/libkrb5support0: 1.22.1-2ubuntu4.1
+  ubuntu_26_04/libkrb5-3: 1.22.1-2ubuntu4.3
+  ubuntu_26_04/libkrb5-dev: 1.22.1-2ubuntu4.3
+  ubuntu_26_04/libkrb5support0: 1.22.1-2ubuntu4.3
   ubuntu_26_04/libksba8: 1.6.7-2build1
   ubuntu_26_04/liblapack-dev: 3.12.1-7ubuntu1
   ubuntu_26_04/liblapack3: 3.12.1-7ubuntu1
@@ -306,9 +306,9 @@ camptocamp/geomapfish-config:latest:
   ubuntu_26_04/libsz2: 1.1.5-1
   ubuntu_26_04/libtasn1-6: 4.21.0-2
   ubuntu_26_04/libtasn1-6-dev: 4.21.0-2
-  ubuntu_26_04/libtiff-dev: 4.7.0-3ubuntu5
-  ubuntu_26_04/libtiff6: 4.7.0-3ubuntu5
-  ubuntu_26_04/libtiffxx6: 4.7.0-3ubuntu5
+  ubuntu_26_04/libtiff-dev: 4.7.0-3ubuntu5.1
+  ubuntu_26_04/libtiff6: 4.7.0-3ubuntu5.1
+  ubuntu_26_04/libtiffxx6: 4.7.0-3ubuntu5.1
   ubuntu_26_04/libtinfo6: 6.6+20251231-1
   ubuntu_26_04/libtsan2: 16-20260322-1ubuntu1
   ubuntu_26_04/libubsan1: 16-20260322-1ubuntu1
@@ -387,10 +387,10 @@ camptocamp/geomapfish-config:latest:
   ubuntu_26_04/zlib1g: 1:1.3.dfsg+really1.3.1-1ubuntu3.2
 camptocamp/geomapfish-qgisserver:gmflatest-qgis4.2:
   ubuntu_26_04/adduser: 3.153ubuntu1
-  ubuntu_26_04/apache2: 2.4.66-2ubuntu2.8
-  ubuntu_26_04/apache2-bin: 2.4.66-2ubuntu2.8
-  ubuntu_26_04/apache2-data: 2.4.66-2ubuntu2.8
-  ubuntu_26_04/apache2-utils: 2.4.66-2ubuntu2.8
+  ubuntu_26_04/apache2: 2.4.66-2ubuntu2.9
+  ubuntu_26_04/apache2-bin: 2.4.66-2ubuntu2.9
+  ubuntu_26_04/apache2-data: 2.4.66-2ubuntu2.9
+  ubuntu_26_04/apache2-utils: 2.4.66-2ubuntu2.9
   ubuntu_26_04/apt: 3.2.1ubuntu0.1
   ubuntu_26_04/base-passwd: 3.6.8
   ubuntu_26_04/bash: 5.3-2ubuntu1
@@ -444,8 +444,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.2:
   ubuntu_26_04/libaprutil1t64: 1.6.3-3ubuntu3.1
   ubuntu_26_04/libapt-pkg7.0: 3.2.1ubuntu0.1
   ubuntu_26_04/libasan8: 16-20260322-1ubuntu1
-  ubuntu_26_04/libasound2-data: 1.2.15.3-1ubuntu1.1
-  ubuntu_26_04/libasound2t64: 1.2.15.3-1ubuntu1.1
+  ubuntu_26_04/libasound2-data: 1.2.15.3-1ubuntu1.2
+  ubuntu_26_04/libasound2t64: 1.2.15.3-1ubuntu1.2
   ubuntu_26_04/libasyncns0: 0.8-7
   ubuntu_26_04/libatomic1: 16-20260322-1ubuntu1
   ubuntu_26_04/libattr1: 1:2.5.2-4ubuntu0.1
@@ -548,7 +548,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.2:
   ubuntu_26_04/libgsl28: 2.8+dfsg-6
   ubuntu_26_04/libgslcblas0: 2.8+dfsg-6
   ubuntu_26_04/libgsm1: 1.0.23-2
-  ubuntu_26_04/libgssapi-krb5-2: 1.22.1-2ubuntu4.1
+  ubuntu_26_04/libgssapi-krb5-2: 1.22.1-2ubuntu4.3
   ubuntu_26_04/libgudev-1.0-0: 1:238-7build1
   ubuntu_26_04/libharfbuzz-subset0: 12.3.2-2
   ubuntu_26_04/libharfbuzz0b: 12.3.2-2
@@ -572,10 +572,10 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.2:
   ubuntu_26_04/libjpeg8: 8c-2ubuntu12
   ubuntu_26_04/libjs-sphinxdoc: 8.2.3-12
   ubuntu_26_04/libjxl0.11: 0.11.1-6ubuntu4.2
-  ubuntu_26_04/libk5crypto3: 1.22.1-2ubuntu4.1
+  ubuntu_26_04/libk5crypto3: 1.22.1-2ubuntu4.3
   ubuntu_26_04/libkeyutils1: 1.6.3-6ubuntu3
-  ubuntu_26_04/libkrb5-3: 1.22.1-2ubuntu4.1
-  ubuntu_26_04/libkrb5support0: 1.22.1-2ubuntu4.1
+  ubuntu_26_04/libkrb5-3: 1.22.1-2ubuntu4.3
+  ubuntu_26_04/libkrb5support0: 1.22.1-2ubuntu4.3
   ubuntu_26_04/liblapack3: 3.12.1-7ubuntu1
   ubuntu_26_04/liblcms2-2: 2.17-1ubuntu0.2
   ubuntu_26_04/libldap-common: 2.6.10+dfsg-1ubuntu5
@@ -748,7 +748,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.2:
   ubuntu_26_04/libthai0: 0.1.30-1
   ubuntu_26_04/libtheoradec2: 1.2.0+dfsg-6
   ubuntu_26_04/libtheoraenc2: 1.2.0+dfsg-6
-  ubuntu_26_04/libtiff6: 4.7.0-3ubuntu5
+  ubuntu_26_04/libtiff6: 4.7.0-3ubuntu5.1
   ubuntu_26_04/libtinfo6: 6.6+20251231-1
   ubuntu_26_04/libts0t64: 1.22-1.1build2
   ubuntu_26_04/libtsan2: 16-20260322-1ubuntu1
@@ -909,10 +909,10 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.2:
   ubuntu_26_04/zlib1g: 1:1.3.dfsg+really1.3.1-1ubuntu3.2
 camptocamp/geomapfish-qgisserver:gmflatest-qgis4.2-gdal3.13:
   ubuntu_26_04/adduser: 3.153ubuntu1
-  ubuntu_26_04/apache2: 2.4.66-2ubuntu2.8
-  ubuntu_26_04/apache2-bin: 2.4.66-2ubuntu2.8
-  ubuntu_26_04/apache2-data: 2.4.66-2ubuntu2.8
-  ubuntu_26_04/apache2-utils: 2.4.66-2ubuntu2.8
+  ubuntu_26_04/apache2: 2.4.66-2ubuntu2.9
+  ubuntu_26_04/apache2-bin: 2.4.66-2ubuntu2.9
+  ubuntu_26_04/apache2-data: 2.4.66-2ubuntu2.9
+  ubuntu_26_04/apache2-utils: 2.4.66-2ubuntu2.9
   ubuntu_26_04/apt: 3.2.1ubuntu0.1
   ubuntu_26_04/base-passwd: 3.6.8
   ubuntu_26_04/bash: 5.3-2ubuntu1
@@ -966,8 +966,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.2-gdal3.13:
   ubuntu_26_04/libaprutil1t64: 1.6.3-3ubuntu3.1
   ubuntu_26_04/libapt-pkg7.0: 3.2.1ubuntu0.1
   ubuntu_26_04/libasan8: 16-20260322-1ubuntu1
-  ubuntu_26_04/libasound2-data: 1.2.15.3-1ubuntu1.1
-  ubuntu_26_04/libasound2t64: 1.2.15.3-1ubuntu1.1
+  ubuntu_26_04/libasound2-data: 1.2.15.3-1ubuntu1.2
+  ubuntu_26_04/libasound2t64: 1.2.15.3-1ubuntu1.2
   ubuntu_26_04/libasyncns0: 0.8-7
   ubuntu_26_04/libatomic1: 16-20260322-1ubuntu1
   ubuntu_26_04/libattr1: 1:2.5.2-4ubuntu0.1
@@ -1070,7 +1070,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.2-gdal3.13:
   ubuntu_26_04/libgsl28: 2.8+dfsg-6
   ubuntu_26_04/libgslcblas0: 2.8+dfsg-6
   ubuntu_26_04/libgsm1: 1.0.23-2
-  ubuntu_26_04/libgssapi-krb5-2: 1.22.1-2ubuntu4.1
+  ubuntu_26_04/libgssapi-krb5-2: 1.22.1-2ubuntu4.3
   ubuntu_26_04/libgudev-1.0-0: 1:238-7build1
   ubuntu_26_04/libharfbuzz-subset0: 12.3.2-2
   ubuntu_26_04/libharfbuzz0b: 12.3.2-2
@@ -1094,10 +1094,10 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.2-gdal3.13:
   ubuntu_26_04/libjpeg8: 8c-2ubuntu12
   ubuntu_26_04/libjs-sphinxdoc: 8.2.3-12
   ubuntu_26_04/libjxl0.11: 0.11.1-6ubuntu4.2
-  ubuntu_26_04/libk5crypto3: 1.22.1-2ubuntu4.1
+  ubuntu_26_04/libk5crypto3: 1.22.1-2ubuntu4.3
   ubuntu_26_04/libkeyutils1: 1.6.3-6ubuntu3
-  ubuntu_26_04/libkrb5-3: 1.22.1-2ubuntu4.1
-  ubuntu_26_04/libkrb5support0: 1.22.1-2ubuntu4.1
+  ubuntu_26_04/libkrb5-3: 1.22.1-2ubuntu4.3
+  ubuntu_26_04/libkrb5support0: 1.22.1-2ubuntu4.3
   ubuntu_26_04/liblapack3: 3.12.1-7ubuntu1
   ubuntu_26_04/liblcms2-2: 2.17-1ubuntu0.2
   ubuntu_26_04/libldap-common: 2.6.10+dfsg-1ubuntu5
@@ -1270,7 +1270,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.2-gdal3.13:
   ubuntu_26_04/libthai0: 0.1.30-1
   ubuntu_26_04/libtheoradec2: 1.2.0+dfsg-6
   ubuntu_26_04/libtheoraenc2: 1.2.0+dfsg-6
-  ubuntu_26_04/libtiff6: 4.7.0-3ubuntu5
+  ubuntu_26_04/libtiff6: 4.7.0-3ubuntu5.1
   ubuntu_26_04/libtinfo6: 6.6+20251231-1
   ubuntu_26_04/libts0t64: 1.22-1.1build2
   ubuntu_26_04/libtsan2: 16-20260322-1ubuntu1
@@ -1431,10 +1431,10 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.2-gdal3.13:
   ubuntu_26_04/zlib1g: 1:1.3.dfsg+really1.3.1-1ubuntu3.2
 camptocamp/geomapfish-qgisserver:gmflatest-qgis4.4:
   ubuntu_26_04/adduser: 3.153ubuntu1
-  ubuntu_26_04/apache2: 2.4.66-2ubuntu2.8
-  ubuntu_26_04/apache2-bin: 2.4.66-2ubuntu2.8
-  ubuntu_26_04/apache2-data: 2.4.66-2ubuntu2.8
-  ubuntu_26_04/apache2-utils: 2.4.66-2ubuntu2.8
+  ubuntu_26_04/apache2: 2.4.66-2ubuntu2.9
+  ubuntu_26_04/apache2-bin: 2.4.66-2ubuntu2.9
+  ubuntu_26_04/apache2-data: 2.4.66-2ubuntu2.9
+  ubuntu_26_04/apache2-utils: 2.4.66-2ubuntu2.9
   ubuntu_26_04/apt: 3.2.1ubuntu0.1
   ubuntu_26_04/base-passwd: 3.6.8
   ubuntu_26_04/bash: 5.3-2ubuntu1
@@ -1488,8 +1488,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.4:
   ubuntu_26_04/libaprutil1t64: 1.6.3-3ubuntu3.1
   ubuntu_26_04/libapt-pkg7.0: 3.2.1ubuntu0.1
   ubuntu_26_04/libasan8: 16-20260322-1ubuntu1
-  ubuntu_26_04/libasound2-data: 1.2.15.3-1ubuntu1.1
-  ubuntu_26_04/libasound2t64: 1.2.15.3-1ubuntu1.1
+  ubuntu_26_04/libasound2-data: 1.2.15.3-1ubuntu1.2
+  ubuntu_26_04/libasound2t64: 1.2.15.3-1ubuntu1.2
   ubuntu_26_04/libasyncns0: 0.8-7
   ubuntu_26_04/libatomic1: 16-20260322-1ubuntu1
   ubuntu_26_04/libattr1: 1:2.5.2-4ubuntu0.1
@@ -1592,7 +1592,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.4:
   ubuntu_26_04/libgsl28: 2.8+dfsg-6
   ubuntu_26_04/libgslcblas0: 2.8+dfsg-6
   ubuntu_26_04/libgsm1: 1.0.23-2
-  ubuntu_26_04/libgssapi-krb5-2: 1.22.1-2ubuntu4.1
+  ubuntu_26_04/libgssapi-krb5-2: 1.22.1-2ubuntu4.3
   ubuntu_26_04/libgudev-1.0-0: 1:238-7build1
   ubuntu_26_04/libharfbuzz-subset0: 12.3.2-2
   ubuntu_26_04/libharfbuzz0b: 12.3.2-2
@@ -1616,10 +1616,10 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.4:
   ubuntu_26_04/libjpeg8: 8c-2ubuntu12
   ubuntu_26_04/libjs-sphinxdoc: 8.2.3-12
   ubuntu_26_04/libjxl0.11: 0.11.1-6ubuntu4.2
-  ubuntu_26_04/libk5crypto3: 1.22.1-2ubuntu4.1
+  ubuntu_26_04/libk5crypto3: 1.22.1-2ubuntu4.3
   ubuntu_26_04/libkeyutils1: 1.6.3-6ubuntu3
-  ubuntu_26_04/libkrb5-3: 1.22.1-2ubuntu4.1
-  ubuntu_26_04/libkrb5support0: 1.22.1-2ubuntu4.1
+  ubuntu_26_04/libkrb5-3: 1.22.1-2ubuntu4.3
+  ubuntu_26_04/libkrb5support0: 1.22.1-2ubuntu4.3
   ubuntu_26_04/liblapack3: 3.12.1-7ubuntu1
   ubuntu_26_04/liblcms2-2: 2.17-1ubuntu0.2
   ubuntu_26_04/libldap-common: 2.6.10+dfsg-1ubuntu5
@@ -1792,7 +1792,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.4:
   ubuntu_26_04/libthai0: 0.1.30-1
   ubuntu_26_04/libtheoradec2: 1.2.0+dfsg-6
   ubuntu_26_04/libtheoraenc2: 1.2.0+dfsg-6
-  ubuntu_26_04/libtiff6: 4.7.0-3ubuntu5
+  ubuntu_26_04/libtiff6: 4.7.0-3ubuntu5.1
   ubuntu_26_04/libtinfo6: 6.6+20251231-1
   ubuntu_26_04/libts0t64: 1.22-1.1build2
   ubuntu_26_04/libtsan2: 16-20260322-1ubuntu1
@@ -1953,10 +1953,10 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.4:
   ubuntu_26_04/zlib1g: 1:1.3.dfsg+really1.3.1-1ubuntu3.2
 camptocamp/geomapfish-qgisserver:gmflatest-qgis4.4-gdal3.13:
   ubuntu_26_04/adduser: 3.153ubuntu1
-  ubuntu_26_04/apache2: 2.4.66-2ubuntu2.8
-  ubuntu_26_04/apache2-bin: 2.4.66-2ubuntu2.8
-  ubuntu_26_04/apache2-data: 2.4.66-2ubuntu2.8
-  ubuntu_26_04/apache2-utils: 2.4.66-2ubuntu2.8
+  ubuntu_26_04/apache2: 2.4.66-2ubuntu2.9
+  ubuntu_26_04/apache2-bin: 2.4.66-2ubuntu2.9
+  ubuntu_26_04/apache2-data: 2.4.66-2ubuntu2.9
+  ubuntu_26_04/apache2-utils: 2.4.66-2ubuntu2.9
   ubuntu_26_04/apt: 3.2.1ubuntu0.1
   ubuntu_26_04/base-passwd: 3.6.8
   ubuntu_26_04/bash: 5.3-2ubuntu1
@@ -2010,8 +2010,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.4-gdal3.13:
   ubuntu_26_04/libaprutil1t64: 1.6.3-3ubuntu3.1
   ubuntu_26_04/libapt-pkg7.0: 3.2.1ubuntu0.1
   ubuntu_26_04/libasan8: 16-20260322-1ubuntu1
-  ubuntu_26_04/libasound2-data: 1.2.15.3-1ubuntu1.1
-  ubuntu_26_04/libasound2t64: 1.2.15.3-1ubuntu1.1
+  ubuntu_26_04/libasound2-data: 1.2.15.3-1ubuntu1.2
+  ubuntu_26_04/libasound2t64: 1.2.15.3-1ubuntu1.2
   ubuntu_26_04/libasyncns0: 0.8-7
   ubuntu_26_04/libatomic1: 16-20260322-1ubuntu1
   ubuntu_26_04/libattr1: 1:2.5.2-4ubuntu0.1
@@ -2114,7 +2114,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.4-gdal3.13:
   ubuntu_26_04/libgsl28: 2.8+dfsg-6
   ubuntu_26_04/libgslcblas0: 2.8+dfsg-6
   ubuntu_26_04/libgsm1: 1.0.23-2
-  ubuntu_26_04/libgssapi-krb5-2: 1.22.1-2ubuntu4.1
+  ubuntu_26_04/libgssapi-krb5-2: 1.22.1-2ubuntu4.3
   ubuntu_26_04/libgudev-1.0-0: 1:238-7build1
   ubuntu_26_04/libharfbuzz-subset0: 12.3.2-2
   ubuntu_26_04/libharfbuzz0b: 12.3.2-2
@@ -2138,10 +2138,10 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.4-gdal3.13:
   ubuntu_26_04/libjpeg8: 8c-2ubuntu12
   ubuntu_26_04/libjs-sphinxdoc: 8.2.3-12
   ubuntu_26_04/libjxl0.11: 0.11.1-6ubuntu4.2
-  ubuntu_26_04/libk5crypto3: 1.22.1-2ubuntu4.1
+  ubuntu_26_04/libk5crypto3: 1.22.1-2ubuntu4.3
   ubuntu_26_04/libkeyutils1: 1.6.3-6ubuntu3
-  ubuntu_26_04/libkrb5-3: 1.22.1-2ubuntu4.1
-  ubuntu_26_04/libkrb5support0: 1.22.1-2ubuntu4.1
+  ubuntu_26_04/libkrb5-3: 1.22.1-2ubuntu4.3
+  ubuntu_26_04/libkrb5support0: 1.22.1-2ubuntu4.3
   ubuntu_26_04/liblapack3: 3.12.1-7ubuntu1
   ubuntu_26_04/liblcms2-2: 2.17-1ubuntu0.2
   ubuntu_26_04/libldap-common: 2.6.10+dfsg-1ubuntu5
@@ -2314,7 +2314,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.4-gdal3.13:
   ubuntu_26_04/libthai0: 0.1.30-1
   ubuntu_26_04/libtheoradec2: 1.2.0+dfsg-6
   ubuntu_26_04/libtheoraenc2: 1.2.0+dfsg-6
-  ubuntu_26_04/libtiff6: 4.7.0-3ubuntu5
+  ubuntu_26_04/libtiff6: 4.7.0-3ubuntu5.1
   ubuntu_26_04/libtinfo6: 6.6+20251231-1
   ubuntu_26_04/libts0t64: 1.22-1.1build2
   ubuntu_26_04/libtsan2: 16-20260322-1ubuntu1
@@ -2475,10 +2475,10 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.4-gdal3.13:
   ubuntu_26_04/zlib1g: 1:1.3.dfsg+really1.3.1-1ubuntu3.2
 camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_26_04/adduser: 3.153ubuntu1
-  ubuntu_26_04/apache2: 2.4.66-2ubuntu2.8
-  ubuntu_26_04/apache2-bin: 2.4.66-2ubuntu2.8
-  ubuntu_26_04/apache2-data: 2.4.66-2ubuntu2.8
-  ubuntu_26_04/apache2-utils: 2.4.66-2ubuntu2.8
+  ubuntu_26_04/apache2: 2.4.66-2ubuntu2.9
+  ubuntu_26_04/apache2-bin: 2.4.66-2ubuntu2.9
+  ubuntu_26_04/apache2-data: 2.4.66-2ubuntu2.9
+  ubuntu_26_04/apache2-utils: 2.4.66-2ubuntu2.9
   ubuntu_26_04/apt: 3.2.1ubuntu0.1
   ubuntu_26_04/base-passwd: 3.6.8
   ubuntu_26_04/bash: 5.3-2ubuntu1
@@ -2532,8 +2532,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_26_04/libaprutil1t64: 1.6.3-3ubuntu3.1
   ubuntu_26_04/libapt-pkg7.0: 3.2.1ubuntu0.1
   ubuntu_26_04/libasan8: 16-20260322-1ubuntu1
-  ubuntu_26_04/libasound2-data: 1.2.15.3-1ubuntu1.1
-  ubuntu_26_04/libasound2t64: 1.2.15.3-1ubuntu1.1
+  ubuntu_26_04/libasound2-data: 1.2.15.3-1ubuntu1.2
+  ubuntu_26_04/libasound2t64: 1.2.15.3-1ubuntu1.2
   ubuntu_26_04/libasyncns0: 0.8-7
   ubuntu_26_04/libatomic1: 16-20260322-1ubuntu1
   ubuntu_26_04/libattr1: 1:2.5.2-4ubuntu0.1
@@ -2636,7 +2636,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_26_04/libgsl28: 2.8+dfsg-6
   ubuntu_26_04/libgslcblas0: 2.8+dfsg-6
   ubuntu_26_04/libgsm1: 1.0.23-2
-  ubuntu_26_04/libgssapi-krb5-2: 1.22.1-2ubuntu4.1
+  ubuntu_26_04/libgssapi-krb5-2: 1.22.1-2ubuntu4.3
   ubuntu_26_04/libgudev-1.0-0: 1:238-7build1
   ubuntu_26_04/libharfbuzz-subset0: 12.3.2-2
   ubuntu_26_04/libharfbuzz0b: 12.3.2-2
@@ -2660,10 +2660,10 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_26_04/libjpeg8: 8c-2ubuntu12
   ubuntu_26_04/libjs-sphinxdoc: 8.2.3-12
   ubuntu_26_04/libjxl0.11: 0.11.1-6ubuntu4.2
-  ubuntu_26_04/libk5crypto3: 1.22.1-2ubuntu4.1
+  ubuntu_26_04/libk5crypto3: 1.22.1-2ubuntu4.3
   ubuntu_26_04/libkeyutils1: 1.6.3-6ubuntu3
-  ubuntu_26_04/libkrb5-3: 1.22.1-2ubuntu4.1
-  ubuntu_26_04/libkrb5support0: 1.22.1-2ubuntu4.1
+  ubuntu_26_04/libkrb5-3: 1.22.1-2ubuntu4.3
+  ubuntu_26_04/libkrb5support0: 1.22.1-2ubuntu4.3
   ubuntu_26_04/liblapack3: 3.12.1-7ubuntu1
   ubuntu_26_04/liblcms2-2: 2.17-1ubuntu0.2
   ubuntu_26_04/libldap-common: 2.6.10+dfsg-1ubuntu5
@@ -2836,7 +2836,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_26_04/libthai0: 0.1.30-1
   ubuntu_26_04/libtheoradec2: 1.2.0+dfsg-6
   ubuntu_26_04/libtheoraenc2: 1.2.0+dfsg-6
-  ubuntu_26_04/libtiff6: 4.7.0-3ubuntu5
+  ubuntu_26_04/libtiff6: 4.7.0-3ubuntu5.1
   ubuntu_26_04/libtinfo6: 6.6+20251231-1
   ubuntu_26_04/libts0t64: 1.22-1.1build2
   ubuntu_26_04/libtsan2: 16-20260322-1ubuntu1
@@ -2997,10 +2997,10 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_26_04/zlib1g: 1:1.3.dfsg+really1.3.1-1ubuntu3.2
 camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_26_04/adduser: 3.153ubuntu1
-  ubuntu_26_04/apache2: 2.4.66-2ubuntu2.8
-  ubuntu_26_04/apache2-bin: 2.4.66-2ubuntu2.8
-  ubuntu_26_04/apache2-data: 2.4.66-2ubuntu2.8
-  ubuntu_26_04/apache2-utils: 2.4.66-2ubuntu2.8
+  ubuntu_26_04/apache2: 2.4.66-2ubuntu2.9
+  ubuntu_26_04/apache2-bin: 2.4.66-2ubuntu2.9
+  ubuntu_26_04/apache2-data: 2.4.66-2ubuntu2.9
+  ubuntu_26_04/apache2-utils: 2.4.66-2ubuntu2.9
   ubuntu_26_04/apt: 3.2.1ubuntu0.1
   ubuntu_26_04/base-passwd: 3.6.8
   ubuntu_26_04/bash: 5.3-2ubuntu1
@@ -3055,8 +3055,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_26_04/libaprutil1t64: 1.6.3-3ubuntu3.1
   ubuntu_26_04/libapt-pkg7.0: 3.2.1ubuntu0.1
   ubuntu_26_04/libasan8: 16-20260322-1ubuntu1
-  ubuntu_26_04/libasound2-data: 1.2.15.3-1ubuntu1.1
-  ubuntu_26_04/libasound2t64: 1.2.15.3-1ubuntu1.1
+  ubuntu_26_04/libasound2-data: 1.2.15.3-1ubuntu1.2
+  ubuntu_26_04/libasound2t64: 1.2.15.3-1ubuntu1.2
   ubuntu_26_04/libasyncns0: 0.8-7
   ubuntu_26_04/libatomic1: 16-20260322-1ubuntu1
   ubuntu_26_04/libattr1: 1:2.5.2-4ubuntu0.1
@@ -3163,7 +3163,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_26_04/libgsl28: 2.8+dfsg-6
   ubuntu_26_04/libgslcblas0: 2.8+dfsg-6
   ubuntu_26_04/libgsm1: 1.0.23-2
-  ubuntu_26_04/libgssapi-krb5-2: 1.22.1-2ubuntu4.1
+  ubuntu_26_04/libgssapi-krb5-2: 1.22.1-2ubuntu4.3
   ubuntu_26_04/libgudev-1.0-0: 1:238-7build1
   ubuntu_26_04/libharfbuzz-subset0: 12.3.2-2
   ubuntu_26_04/libharfbuzz0b: 12.3.2-2
@@ -3189,10 +3189,10 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_26_04/libjs-sphinxdoc: 8.2.3-12
   ubuntu_26_04/libjson-c5: 0.18+ds-3
   ubuntu_26_04/libjxl0.11: 0.11.1-6ubuntu4.2
-  ubuntu_26_04/libk5crypto3: 1.22.1-2ubuntu4.1
+  ubuntu_26_04/libk5crypto3: 1.22.1-2ubuntu4.3
   ubuntu_26_04/libkeyutils1: 1.6.3-6ubuntu3
-  ubuntu_26_04/libkrb5-3: 1.22.1-2ubuntu4.1
-  ubuntu_26_04/libkrb5support0: 1.22.1-2ubuntu4.1
+  ubuntu_26_04/libkrb5-3: 1.22.1-2ubuntu4.3
+  ubuntu_26_04/libkrb5support0: 1.22.1-2ubuntu4.3
   ubuntu_26_04/liblapack3: 3.12.1-7ubuntu1
   ubuntu_26_04/liblcms2-2: 2.17-1ubuntu0.2
   ubuntu_26_04/libldap-common: 2.6.10+dfsg-1ubuntu5
@@ -3369,7 +3369,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_26_04/libthai0: 0.1.30-1
   ubuntu_26_04/libtheoradec2: 1.2.0+dfsg-6
   ubuntu_26_04/libtheoraenc2: 1.2.0+dfsg-6
-  ubuntu_26_04/libtiff6: 4.7.0-3ubuntu5
+  ubuntu_26_04/libtiff6: 4.7.0-3ubuntu5.1
   ubuntu_26_04/libtinfo6: 6.6+20251231-1
   ubuntu_26_04/libts0t64: 1.22-1.1build2
   ubuntu_26_04/libtsan2: 16-20260322-1ubuntu1
@@ -3531,10 +3531,10 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_26_04/zlib1g: 1:1.3.dfsg+really1.3.1-1ubuntu3.2
 camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/adduser: 3.137ubuntu1
-  ubuntu_24_04/apache2: 2.4.58-1ubuntu8.19
-  ubuntu_24_04/apache2-bin: 2.4.58-1ubuntu8.19
-  ubuntu_24_04/apache2-data: 2.4.58-1ubuntu8.19
-  ubuntu_24_04/apache2-utils: 2.4.58-1ubuntu8.19
+  ubuntu_24_04/apache2: 2.4.58-1ubuntu8.20
+  ubuntu_24_04/apache2-bin: 2.4.58-1ubuntu8.20
+  ubuntu_24_04/apache2-data: 2.4.58-1ubuntu8.20
+  ubuntu_24_04/apache2-utils: 2.4.58-1ubuntu8.20
   ubuntu_24_04/apt: 2.8.4ubuntu0.1
   ubuntu_24_04/base-passwd: 3.6.3build1
   ubuntu_24_04/bash: 5.2.21-2ubuntu4
@@ -3623,11 +3623,11 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/libdrm-common: 2.4.125-1ubuntu0.1~24.04.2
   ubuntu_24_04/libdrm-intel1: 2.4.125-1ubuntu0.1~24.04.2
   ubuntu_24_04/libdrm2: 2.4.125-1ubuntu0.1~24.04.2
-  ubuntu_24_04/libdw1t64: 0.190-1.1ubuntu0.1
+  ubuntu_24_04/libdw1t64: 0.190-1.1ubuntu0.2
   ubuntu_24_04/libedit2: 3.1-20230828-1build1
   ubuntu_24_04/libegl-mesa0: 25.2.8-0ubuntu0.24.04.2
   ubuntu_24_04/libegl1: 1.7.0-1build1
-  ubuntu_24_04/libelf1t64: 0.190-1.1ubuntu0.1
+  ubuntu_24_04/libelf1t64: 0.190-1.1ubuntu0.2
   ubuntu_24_04/libevdev2: 1.13.1+dfsg-1build1
   ubuntu_24_04/libexiv2-27: 0.27.6-1ubuntu0.3
   ubuntu_24_04/libexpat1: 2.6.1-2ubuntu0.7
@@ -3664,7 +3664,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/libgraphite2-3: 1.3.14-2ubuntu0.24.04.1
   ubuntu_24_04/libgsl27: 2.7.1+dfsg-6ubuntu2
   ubuntu_24_04/libgslcblas0: 2.7.1+dfsg-6ubuntu2
-  ubuntu_24_04/libgssapi-krb5-2: 1.20.1-6ubuntu2.7
+  ubuntu_24_04/libgssapi-krb5-2: 1.20.1-6ubuntu2.12
   ubuntu_24_04/libgstreamer-plugins-base1.0-0: 1.24.2-1ubuntu0.7
   ubuntu_24_04/libgstreamer1.0-0: 1.24.2-1ubuntu0.2
   ubuntu_24_04/libgudev-1.0-0: 1:238-5ubuntu1
@@ -3687,10 +3687,10 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/libjs-jquery: 3.6.1+dfsg+~3.5.14-1
   ubuntu_24_04/libjs-sphinxdoc: 7.2.6-6
   ubuntu_24_04/libjs-underscore: 1.13.4~dfsg+~1.11.4-3
-  ubuntu_24_04/libk5crypto3: 1.20.1-6ubuntu2.7
+  ubuntu_24_04/libk5crypto3: 1.20.1-6ubuntu2.12
   ubuntu_24_04/libkeyutils1: 1.6.3-3build1
-  ubuntu_24_04/libkrb5-3: 1.20.1-6ubuntu2.7
-  ubuntu_24_04/libkrb5support0: 1.20.1-6ubuntu2.7
+  ubuntu_24_04/libkrb5-3: 1.20.1-6ubuntu2.12
+  ubuntu_24_04/libkrb5support0: 1.20.1-6ubuntu2.12
   ubuntu_24_04/liblapack3: 3.12.0-3build1.1
   ubuntu_24_04/liblcms2-2: 2.14-2ubuntu0.1
   ubuntu_24_04/libldap2: 2.6.7+dfsg-1~exp1ubuntu8.2
@@ -3805,7 +3805,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/libstdc++6: 14.2.0-4ubuntu2~24.04.1
   ubuntu_24_04/libsystemd0: 255.4-1ubuntu8.18
   ubuntu_24_04/libtasn1-6: 4.19.0-3ubuntu0.24.04.2
-  ubuntu_24_04/libtiff6: 4.5.1+git230720-4ubuntu2.5
+  ubuntu_24_04/libtiff6: 4.5.1+git230720-4ubuntu2.6
   ubuntu_24_04/libtinfo6: 6.4+20240113-1ubuntu2.2
   ubuntu_24_04/libtsan2: 14.2.0-4ubuntu2~24.04.1
   ubuntu_24_04/libubsan1: 14.2.0-4ubuntu2~24.04.1
@@ -3937,10 +3937,10 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgisltr:
   ubuntu_24_04/zlib1g: 1:1.3.dfsg-3.1ubuntu2.3
 camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_26_04/adduser: 3.153ubuntu1
-  ubuntu_26_04/apache2: 2.4.66-2ubuntu2.8
-  ubuntu_26_04/apache2-bin: 2.4.66-2ubuntu2.8
-  ubuntu_26_04/apache2-data: 2.4.66-2ubuntu2.8
-  ubuntu_26_04/apache2-utils: 2.4.66-2ubuntu2.8
+  ubuntu_26_04/apache2: 2.4.66-2ubuntu2.9
+  ubuntu_26_04/apache2-bin: 2.4.66-2ubuntu2.9
+  ubuntu_26_04/apache2-data: 2.4.66-2ubuntu2.9
+  ubuntu_26_04/apache2-utils: 2.4.66-2ubuntu2.9
   ubuntu_26_04/apt: 3.2.1ubuntu0.1
   ubuntu_26_04/base-passwd: 3.6.8
   ubuntu_26_04/bash: 5.3-2ubuntu1
@@ -3994,8 +3994,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_26_04/libaprutil1t64: 1.6.3-3ubuntu3.1
   ubuntu_26_04/libapt-pkg7.0: 3.2.1ubuntu0.1
   ubuntu_26_04/libasan8: 16-20260322-1ubuntu1
-  ubuntu_26_04/libasound2-data: 1.2.15.3-1ubuntu1.1
-  ubuntu_26_04/libasound2t64: 1.2.15.3-1ubuntu1.1
+  ubuntu_26_04/libasound2-data: 1.2.15.3-1ubuntu1.2
+  ubuntu_26_04/libasound2t64: 1.2.15.3-1ubuntu1.2
   ubuntu_26_04/libasyncns0: 0.8-7
   ubuntu_26_04/libatomic1: 16-20260322-1ubuntu1
   ubuntu_26_04/libattr1: 1:2.5.2-4ubuntu0.1
@@ -4098,7 +4098,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_26_04/libgsl28: 2.8+dfsg-6
   ubuntu_26_04/libgslcblas0: 2.8+dfsg-6
   ubuntu_26_04/libgsm1: 1.0.23-2
-  ubuntu_26_04/libgssapi-krb5-2: 1.22.1-2ubuntu4.1
+  ubuntu_26_04/libgssapi-krb5-2: 1.22.1-2ubuntu4.3
   ubuntu_26_04/libgudev-1.0-0: 1:238-7build1
   ubuntu_26_04/libharfbuzz-subset0: 12.3.2-2
   ubuntu_26_04/libharfbuzz0b: 12.3.2-2
@@ -4122,10 +4122,10 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_26_04/libjpeg8: 8c-2ubuntu12
   ubuntu_26_04/libjs-sphinxdoc: 8.2.3-12
   ubuntu_26_04/libjxl0.11: 0.11.1-6ubuntu4.2
-  ubuntu_26_04/libk5crypto3: 1.22.1-2ubuntu4.1
+  ubuntu_26_04/libk5crypto3: 1.22.1-2ubuntu4.3
   ubuntu_26_04/libkeyutils1: 1.6.3-6ubuntu3
-  ubuntu_26_04/libkrb5-3: 1.22.1-2ubuntu4.1
-  ubuntu_26_04/libkrb5support0: 1.22.1-2ubuntu4.1
+  ubuntu_26_04/libkrb5-3: 1.22.1-2ubuntu4.3
+  ubuntu_26_04/libkrb5support0: 1.22.1-2ubuntu4.3
   ubuntu_26_04/liblapack3: 3.12.1-7ubuntu1
   ubuntu_26_04/liblcms2-2: 2.17-1ubuntu0.2
   ubuntu_26_04/libldap-common: 2.6.10+dfsg-1ubuntu5
@@ -4298,7 +4298,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_26_04/libthai0: 0.1.30-1
   ubuntu_26_04/libtheoradec2: 1.2.0+dfsg-6
   ubuntu_26_04/libtheoraenc2: 1.2.0+dfsg-6
-  ubuntu_26_04/libtiff6: 4.7.0-3ubuntu5
+  ubuntu_26_04/libtiff6: 4.7.0-3ubuntu5.1
   ubuntu_26_04/libtinfo6: 6.6+20251231-1
   ubuntu_26_04/libts0t64: 1.22-1.1build2
   ubuntu_26_04/libtsan2: 16-20260322-1ubuntu1
@@ -4526,8 +4526,8 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_26_04/libada-url0-3: 3.4.3-1
   ubuntu_26_04/libapt-pkg7.0: 3.2.1ubuntu0.1
   ubuntu_26_04/libasan8: 16-20260322-1ubuntu1
-  ubuntu_26_04/libasound2-data: 1.2.15.3-1ubuntu1.1
-  ubuntu_26_04/libasound2t64: 1.2.15.3-1ubuntu1.1
+  ubuntu_26_04/libasound2-data: 1.2.15.3-1ubuntu1.2
+  ubuntu_26_04/libasound2t64: 1.2.15.3-1ubuntu1.2
   ubuntu_26_04/libassuan9: 3.0.2-2build1
   ubuntu_26_04/libatk-bridge2.0-0t64: 2.60.0-1
   ubuntu_26_04/libatk1.0-0t64: 2.60.0-1
@@ -4602,7 +4602,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_26_04/libgpm2: 1.20.7-12build1
   ubuntu_26_04/libgprofng0: 2.46-3ubuntu2
   ubuntu_26_04/libgraphite2-3: 1.3.14-11ubuntu1.1
-  ubuntu_26_04/libgssapi-krb5-2: 1.22.1-2ubuntu4.1
+  ubuntu_26_04/libgssapi-krb5-2: 1.22.1-2ubuntu4.3
   ubuntu_26_04/libharfbuzz0b: 12.3.2-2
   ubuntu_26_04/libhogweed6t64: 3.10.2-1
   ubuntu_26_04/libhwasan0: 16-20260322-1ubuntu1
@@ -4624,10 +4624,10 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_26_04/libjs-sprintf-js: 1.1.3+ds1+~1.1.4-2
   ubuntu_26_04/libjs-util: 0.12.5+~1.0.10-2
   ubuntu_26_04/libjson-c5: 0.18+ds-3
-  ubuntu_26_04/libk5crypto3: 1.22.1-2ubuntu4.1
+  ubuntu_26_04/libk5crypto3: 1.22.1-2ubuntu4.3
   ubuntu_26_04/libkeyutils1: 1.6.3-6ubuntu3
-  ubuntu_26_04/libkrb5-3: 1.22.1-2ubuntu4.1
-  ubuntu_26_04/libkrb5support0: 1.22.1-2ubuntu4.1
+  ubuntu_26_04/libkrb5-3: 1.22.1-2ubuntu4.3
+  ubuntu_26_04/libkrb5support0: 1.22.1-2ubuntu4.3
   ubuntu_26_04/libksba8: 1.6.7-2build1
   ubuntu_26_04/liblapack3: 3.12.1-7ubuntu1
   ubuntu_26_04/libldap-common: 2.6.10+dfsg-1ubuntu5
@@ -4713,7 +4713,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_26_04/libtcmalloc-minimal4t64: 2.18.1-1
   ubuntu_26_04/libthai-data: 0.1.30-1
   ubuntu_26_04/libthai0: 0.1.30-1
-  ubuntu_26_04/libtiff6: 4.7.0-3ubuntu5
+  ubuntu_26_04/libtiff6: 4.7.0-3ubuntu5.1
   ubuntu_26_04/libtinfo6: 6.6+20251231-1
   ubuntu_26_04/libtirpc-common: 1.3.7-0.1
   ubuntu_26_04/libtirpc3t64: 1.3.7-0.1
@@ -5213,8 +5213,8 @@ camptocamp/geomapfish:latest:
   ubuntu_26_04/libacl1: 2.3.2-2
   ubuntu_26_04/libada-url0-3: 3.4.3-1
   ubuntu_26_04/libapt-pkg7.0: 3.2.1ubuntu0.1
-  ubuntu_26_04/libasound2-data: 1.2.15.3-1ubuntu1.1
-  ubuntu_26_04/libasound2t64: 1.2.15.3-1ubuntu1.1
+  ubuntu_26_04/libasound2-data: 1.2.15.3-1ubuntu1.2
+  ubuntu_26_04/libasound2t64: 1.2.15.3-1ubuntu1.2
   ubuntu_26_04/libassuan9: 3.0.2-2build1
   ubuntu_26_04/libatk-bridge2.0-0t64: 2.60.0-1
   ubuntu_26_04/libatk1.0-0t64: 2.60.0-1
@@ -5276,7 +5276,7 @@ camptocamp/geomapfish:latest:
   ubuntu_26_04/libgomp1: 16-20260322-1ubuntu1
   ubuntu_26_04/libgpg-error0: 1.58-2
   ubuntu_26_04/libgraphite2-3: 1.3.14-11ubuntu1.1
-  ubuntu_26_04/libgssapi-krb5-2: 1.22.1-2ubuntu4.1
+  ubuntu_26_04/libgssapi-krb5-2: 1.22.1-2ubuntu4.3
   ubuntu_26_04/libharfbuzz0b: 12.3.2-2
   ubuntu_26_04/libhogweed6t64: 3.10.2-1
   ubuntu_26_04/libicu78: 78.2-2ubuntu1
@@ -5292,10 +5292,10 @@ camptocamp/geomapfish:latest:
   ubuntu_26_04/libjs-sphinxdoc: 8.2.3-12
   ubuntu_26_04/libjs-sprintf-js: 1.1.3+ds1+~1.1.4-2
   ubuntu_26_04/libjs-util: 0.12.5+~1.0.10-2
-  ubuntu_26_04/libk5crypto3: 1.22.1-2ubuntu4.1
+  ubuntu_26_04/libk5crypto3: 1.22.1-2ubuntu4.3
   ubuntu_26_04/libkeyutils1: 1.6.3-6ubuntu3
-  ubuntu_26_04/libkrb5-3: 1.22.1-2ubuntu4.1
-  ubuntu_26_04/libkrb5support0: 1.22.1-2ubuntu4.1
+  ubuntu_26_04/libkrb5-3: 1.22.1-2ubuntu4.3
+  ubuntu_26_04/libkrb5support0: 1.22.1-2ubuntu4.3
   ubuntu_26_04/libksba8: 1.6.7-2build1
   ubuntu_26_04/liblapack3: 3.12.1-7ubuntu1
   ubuntu_26_04/libldap-common: 2.6.10+dfsg-1ubuntu5
@@ -5365,7 +5365,7 @@ camptocamp/geomapfish:latest:
   ubuntu_26_04/libtcmalloc-minimal4t64: 2.18.1-1
   ubuntu_26_04/libthai-data: 0.1.30-1
   ubuntu_26_04/libthai0: 0.1.30-1
-  ubuntu_26_04/libtiff6: 4.7.0-3ubuntu5
+  ubuntu_26_04/libtiff6: 4.7.0-3ubuntu5.1
   ubuntu_26_04/libtinfo6: 6.6+20251231-1
   ubuntu_26_04/libudev1: 259.5-0ubuntu3.4
   ubuntu_26_04/libunistring5: 1.3-2build1
@@ -5837,8 +5837,8 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_26_04/libacl1: 2.3.2-2
   ubuntu_26_04/libada-url0-3: 3.4.3-1
   ubuntu_26_04/libapt-pkg7.0: 3.2.1ubuntu0.1
-  ubuntu_26_04/libasound2-data: 1.2.15.3-1ubuntu1.1
-  ubuntu_26_04/libasound2t64: 1.2.15.3-1ubuntu1.1
+  ubuntu_26_04/libasound2-data: 1.2.15.3-1ubuntu1.2
+  ubuntu_26_04/libasound2t64: 1.2.15.3-1ubuntu1.2
   ubuntu_26_04/libassuan9: 3.0.2-2build1
   ubuntu_26_04/libatk-bridge2.0-0t64: 2.60.0-1
   ubuntu_26_04/libatk1.0-0t64: 2.60.0-1
@@ -5900,7 +5900,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_26_04/libgomp1: 16-20260322-1ubuntu1
   ubuntu_26_04/libgpg-error0: 1.58-2
   ubuntu_26_04/libgraphite2-3: 1.3.14-11ubuntu1.1
-  ubuntu_26_04/libgssapi-krb5-2: 1.22.1-2ubuntu4.1
+  ubuntu_26_04/libgssapi-krb5-2: 1.22.1-2ubuntu4.3
   ubuntu_26_04/libharfbuzz0b: 12.3.2-2
   ubuntu_26_04/libhogweed6t64: 3.10.2-1
   ubuntu_26_04/libicu78: 78.2-2ubuntu1
@@ -5916,10 +5916,10 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_26_04/libjs-sphinxdoc: 8.2.3-12
   ubuntu_26_04/libjs-sprintf-js: 1.1.3+ds1+~1.1.4-2
   ubuntu_26_04/libjs-util: 0.12.5+~1.0.10-2
-  ubuntu_26_04/libk5crypto3: 1.22.1-2ubuntu4.1
+  ubuntu_26_04/libk5crypto3: 1.22.1-2ubuntu4.3
   ubuntu_26_04/libkeyutils1: 1.6.3-6ubuntu3
-  ubuntu_26_04/libkrb5-3: 1.22.1-2ubuntu4.1
-  ubuntu_26_04/libkrb5support0: 1.22.1-2ubuntu4.1
+  ubuntu_26_04/libkrb5-3: 1.22.1-2ubuntu4.3
+  ubuntu_26_04/libkrb5support0: 1.22.1-2ubuntu4.3
   ubuntu_26_04/libksba8: 1.6.7-2build1
   ubuntu_26_04/liblapack3: 3.12.1-7ubuntu1
   ubuntu_26_04/libldap-common: 2.6.10+dfsg-1ubuntu5
@@ -5989,7 +5989,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_26_04/libtcmalloc-minimal4t64: 2.18.1-1
   ubuntu_26_04/libthai-data: 0.1.30-1
   ubuntu_26_04/libthai0: 0.1.30-1
-  ubuntu_26_04/libtiff6: 4.7.0-3ubuntu5
+  ubuntu_26_04/libtiff6: 4.7.0-3ubuntu5.1
   ubuntu_26_04/libtinfo6: 6.6+20251231-1
   ubuntu_26_04/libudev1: 259.5-0ubuntu3.4
   ubuntu_26_04/libunistring5: 1.3-2build1
