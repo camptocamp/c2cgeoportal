@@ -17,6 +17,14 @@ Information to know before starting the upgrade
 2. The Restriction area becomes a multipolygon and the `ST_Contains`
    doesn't match with invalid geometries as before (impact also editing).
 
+3. A feedback service is now built in c2cgeoportal: the `Feedback` model on the
+   `<schema_static>.feedback` table, the `POST /feedback` view and route, and the
+   alembic migration `3d75d1d9500b_add_feedback_table`.
+   A project having its own feedback implementation then fails at startup with
+   `sqlalchemy.exc.InvalidRequestError: Table '<schema_static>.feedback' is already
+   defined for this MetaData instance`, and the migration fails with
+   `relation "feedback" already exists`.
+
 Information
 ===========
 
@@ -43,6 +51,37 @@ Changes to apply
 
 1. Update your jasper report project files by following those instructions:
    https://github.com/mapfish/mapfish-print/releases/tag/4.0.0
+
+2. If you had your own feedback implementation, move to the built-in feedback service:
+
+   - Remove from `<package>_geoportal/models.py` the `Feedback` class, and from
+     `<package>_geoportal/views/` the feedback view (and its route registration in
+     `<package>_geoportal/__init__.py`).
+   - Remove the feedback page from `admin_interface.include_pages` in `vars.yaml`,
+     and keep in the `feedback` section only the settings of the built-in service
+     (`email_from`, `email_subject`, `email_body` and `altcha`), the other defaults
+     coming from `CONST_vars.yaml`.
+   - Update the frontend to post to `/feedback` with the parameters `feedback`,
+     `user_agent`, `application`, `permalink`, `email` and `email_optional`,
+     using the `feedbackUrl` route entrypoint (the old `reason`, `category`,
+     `status` and `date_value` columns are not managed by the built-in service).
+   - Before running the migrations, rename the existing table to keep the data:
+     `ALTER TABLE <schema_static>.feedback RENAME TO feedback_legacy;`
+     then let the migration `3d75d1d9500b` create the new table.
+   - After the migration, copy the old rows into the new table with an
+     `INSERT INTO ... SELECT`, the column names of the old table depending on
+     the project, the columns not managed by the built-in service (`reason`,
+     `category`, `status` and `date_value`) being simply dropped, for example:
+
+     ```sql
+     INSERT INTO <schema_static>.feedback (
+         user_agent, application, permalink, text, email
+     )
+     SELECT ua, '<application name>', permalink, text, email
+     FROM <schema_static>.feedback_legacy;
+     ```
+
+   - Once the copied rows are verified, the `feedback_legacy` table can be dropped.
 
 =============
 Version 2.9.0
