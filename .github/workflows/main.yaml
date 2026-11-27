@@ -16,7 +16,7 @@ env:
 
 # The `packages` and `id-token` write permissions are only used by the `publish` job.
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   not-failed-backport:
@@ -33,6 +33,10 @@ jobs:
     runs-on: ubuntu-26.04
     timeout-minutes: 135
     if: "!startsWith(github.event.head_commit.message, '[skip ci] ')"
+
+    # The version and changelog push and the documentation publication need write access.
+    permissions:
+      contents: write
 
     outputs:
       success: ${{ steps.success.outputs.success }}
@@ -99,7 +103,7 @@ jobs:
       - run: git reset --hard
         if: failure()
 
-      - run: python3 -m pip install --requirement=requirements.txt
+      - run: python3 -m pip install '--only-binary=:all:' --requirement=requirements.txt
 
         # Build images
       - run: make build-runner
@@ -129,10 +133,10 @@ jobs:
       - run: |
           docker compose exec tests alembic --config=/opt/c2cgeoportal/commons/alembic.ini --name=main check \
             || docker compose exec tests alembic --config=/opt/c2cgeoportal/commons/alembic.ini --name=main \
-            revision --autogenerate --message='${{ github.event.pull_request.title }}'
+            revision --autogenerate --message="${PR_TITLE}"
           docker compose exec tests alembic --config=/opt/c2cgeoportal/commons/alembic.ini --name=static check \
             || docker compose exec tests alembic --config=/opt/c2cgeoportal/commons/alembic.ini --name=static \
-            revision --autogenerate --message='${{ github.event.pull_request.title }}'
+            revision --autogenerate --message="${PR_TITLE}"
           sudo chmod go+rw -R commons/c2cgeoportal_commons/alembic/
           # Replace 'main' by schema and 'main. by f'{schema}.
           sed -i "s/'main'/schema/g" commons/c2cgeoportal_commons/alembic/*/*.py
@@ -147,6 +151,8 @@ jobs:
           git add commons/c2cgeoportal_commons/alembic/main/*.py commons/c2cgeoportal_commons/alembic/static/*.py
           git diff --staged --patch > /tmp/alembic.patch
           git diff --staged --exit-code
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: Add Alembic upgrade script.patch
@@ -209,7 +215,7 @@ jobs:
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: '${{ env.MIN_PYTHON_VERSION }}'
-      - run: pip install --requirement=ci/requirements-project.txt
+      - run: pip install '--only-binary=:all:' --requirement=ci/requirements-project.txt
       - run: docker compose version
 
       # Test App
@@ -246,13 +252,13 @@ jobs:
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: '3.14'
-      - run: pip install --requirement=ci/requirements-back.txt
+      - run: pip install '--only-binary=:all:' --requirement=ci/requirements-back.txt
       - run: docker compose version
 
       - name: Init Git
-        run:
-          git remote set-url origin https://${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository
-          }}
+        run: git remote set-url origin "https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: make build-tools
       - run: make build-runner
       - run: make build-config
