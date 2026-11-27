@@ -6,8 +6,8 @@ camptocamp/geomapfish-config:latest:
   ubuntu_26_04/autotools-dev: 20240727.1build1
   ubuntu_26_04/base-passwd: 3.6.8
   ubuntu_26_04/bash: 5.3-2ubuntu1
-  ubuntu_26_04/binutils: 2.46-3ubuntu2
-  ubuntu_26_04/binutils-common: 2.46-3ubuntu2
+  ubuntu_26_04/binutils: 2.46-3ubuntu2.1
+  ubuntu_26_04/binutils-common: 2.46-3ubuntu2.1
   ubuntu_26_04/bsdutils: 1:2.41.3-3ubuntu2.2
   ubuntu_26_04/ca-certificates: 20260816ubuntu0.26.04.2
   ubuntu_26_04/cfortran: 20210827-1
@@ -395,9 +395,9 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.2:
   ubuntu_26_04/base-passwd: 3.6.8
   ubuntu_26_04/bash: 5.3-2ubuntu1
   ubuntu_26_04/bash-completion: 1:2.16.0-8build1
-  ubuntu_26_04/binutils: 2.46-3ubuntu2
-  ubuntu_26_04/binutils-common: 2.46-3ubuntu2
-  ubuntu_26_04/binutils-x86-64-linux-gnu: 2.46-3ubuntu2
+  ubuntu_26_04/binutils: 2.46-3ubuntu2.1
+  ubuntu_26_04/binutils-common: 2.46-3ubuntu2.1
+  ubuntu_26_04/binutils-x86-64-linux-gnu: 2.46-3ubuntu2.1
   ubuntu_26_04/bsdutils: 1:2.41.3-3ubuntu2.2
   ubuntu_26_04/bubblewrap: 0.11.1-1ubuntu0.3
   ubuntu_26_04/ca-certificates: 20260816ubuntu0.26.04.2
@@ -458,7 +458,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.2:
   ubuntu_26_04/libavformat62: 7:8.0.1-3ubuntu2
   ubuntu_26_04/libavutil60: 7:8.0.1-3ubuntu2
   ubuntu_26_04/libb2-1: 0.98.1-1.1build2
-  ubuntu_26_04/libbinutils: 2.46-3ubuntu2
+  ubuntu_26_04/libbinutils: 2.46-3ubuntu2.1
   ubuntu_26_04/libblas3: 3.12.1-7ubuntu1
   ubuntu_26_04/libblkid1: 2.41.3-3ubuntu2.2
   ubuntu_26_04/libbluray3: 1:1.4.1-1
@@ -481,8 +481,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.2:
   ubuntu_26_04/libcom-err2: 1.47.2-3ubuntu4
   ubuntu_26_04/libcrypt-dev: 1:4.5.1-1
   ubuntu_26_04/libcrypt1: 1:4.5.1-1
-  ubuntu_26_04/libctf-nobfd0: 2.46-3ubuntu2
-  ubuntu_26_04/libctf0: 2.46-3ubuntu2
+  ubuntu_26_04/libctf-nobfd0: 2.46-3ubuntu2.1
+  ubuntu_26_04/libctf0: 2.46-3ubuntu2.1
   ubuntu_26_04/libcups2t64: 2.4.16-1ubuntu1.3
   ubuntu_26_04/libcurl3t64-gnutls: 8.18.0-1ubuntu2.8
   ubuntu_26_04/libcurl4t64: 8.18.0-1ubuntu2.8
@@ -543,7 +543,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.2:
   ubuntu_26_04/libgnutls30t64: 3.8.12-2ubuntu1.1
   ubuntu_26_04/libgomp1: 16-20260322-1ubuntu1
   ubuntu_26_04/libgpg-error0: 1.58-2
-  ubuntu_26_04/libgprofng0: 2.46-3ubuntu2
+  ubuntu_26_04/libgprofng0: 2.46-3ubuntu2.1
   ubuntu_26_04/libgraphite2-3: 1.3.14-11ubuntu1.1
   ubuntu_26_04/libgsl28: 2.8+dfsg-6
   ubuntu_26_04/libgslcblas0: 2.8+dfsg-6
@@ -718,7 +718,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.2:
   ubuntu_26_04/libsensors-config: 1:3.6.2-2build1
   ubuntu_26_04/libsensors5: 1:3.6.2-2build1
   ubuntu_26_04/libsepol2: 3.9-2
-  ubuntu_26_04/libsframe3: 2.46-3ubuntu2
+  ubuntu_26_04/libsframe3: 2.46-3ubuntu2.1
   ubuntu_26_04/libsharpyuv0: 1.5.0-0.1build1
   ubuntu_26_04/libshine3: 3.1.1-3build1
   ubuntu_26_04/libsm6: 2:1.2.6-1build1
@@ -917,9 +917,9 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.2-gdal3.13:
   ubuntu_26_04/base-passwd: 3.6.8
   ubuntu_26_04/bash: 5.3-2ubuntu1
   ubuntu_26_04/bash-completion: 1:2.16.0-8build1
-  ubuntu_26_04/binutils: 2.46-3ubuntu2
-  ubuntu_26_04/binutils-common: 2.46-3ubuntu2
-  ubuntu_26_04/binutils-x86-64-linux-gnu: 2.46-3ubuntu2
+  ubuntu_26_04/binutils: 2.46-3ubuntu2.1
+  ubuntu_26_04/binutils-common: 2.46-3ubuntu2.1
+  ubuntu_26_04/binutils-x86-64-linux-gnu: 2.46-3ubuntu2.1
   ubuntu_26_04/bsdutils: 1:2.41.3-3ubuntu2.2
   ubuntu_26_04/bubblewrap: 0.11.1-1ubuntu0.3
   ubuntu_26_04/ca-certificates: 20260816ubuntu0.26.04.2
@@ -980,7 +980,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.2-gdal3.13:
   ubuntu_26_04/libavformat62: 7:8.0.1-3ubuntu2
   ubuntu_26_04/libavutil60: 7:8.0.1-3ubuntu2
   ubuntu_26_04/libb2-1: 0.98.1-1.1build2
-  ubuntu_26_04/libbinutils: 2.46-3ubuntu2
+  ubuntu_26_04/libbinutils: 2.46-3ubuntu2.1
   ubuntu_26_04/libblas3: 3.12.1-7ubuntu1
   ubuntu_26_04/libblkid1: 2.41.3-3ubuntu2.2
   ubuntu_26_04/libbluray3: 1:1.4.1-1
@@ -1003,8 +1003,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.2-gdal3.13:
   ubuntu_26_04/libcom-err2: 1.47.2-3ubuntu4
   ubuntu_26_04/libcrypt-dev: 1:4.5.1-1
   ubuntu_26_04/libcrypt1: 1:4.5.1-1
-  ubuntu_26_04/libctf-nobfd0: 2.46-3ubuntu2
-  ubuntu_26_04/libctf0: 2.46-3ubuntu2
+  ubuntu_26_04/libctf-nobfd0: 2.46-3ubuntu2.1
+  ubuntu_26_04/libctf0: 2.46-3ubuntu2.1
   ubuntu_26_04/libcups2t64: 2.4.16-1ubuntu1.3
   ubuntu_26_04/libcurl3t64-gnutls: 8.18.0-1ubuntu2.8
   ubuntu_26_04/libcurl4t64: 8.18.0-1ubuntu2.8
@@ -1065,7 +1065,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.2-gdal3.13:
   ubuntu_26_04/libgnutls30t64: 3.8.12-2ubuntu1.1
   ubuntu_26_04/libgomp1: 16-20260322-1ubuntu1
   ubuntu_26_04/libgpg-error0: 1.58-2
-  ubuntu_26_04/libgprofng0: 2.46-3ubuntu2
+  ubuntu_26_04/libgprofng0: 2.46-3ubuntu2.1
   ubuntu_26_04/libgraphite2-3: 1.3.14-11ubuntu1.1
   ubuntu_26_04/libgsl28: 2.8+dfsg-6
   ubuntu_26_04/libgslcblas0: 2.8+dfsg-6
@@ -1240,7 +1240,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.2-gdal3.13:
   ubuntu_26_04/libsensors-config: 1:3.6.2-2build1
   ubuntu_26_04/libsensors5: 1:3.6.2-2build1
   ubuntu_26_04/libsepol2: 3.9-2
-  ubuntu_26_04/libsframe3: 2.46-3ubuntu2
+  ubuntu_26_04/libsframe3: 2.46-3ubuntu2.1
   ubuntu_26_04/libsharpyuv0: 1.5.0-0.1build1
   ubuntu_26_04/libshine3: 3.1.1-3build1
   ubuntu_26_04/libsm6: 2:1.2.6-1build1
@@ -1439,9 +1439,9 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.4:
   ubuntu_26_04/base-passwd: 3.6.8
   ubuntu_26_04/bash: 5.3-2ubuntu1
   ubuntu_26_04/bash-completion: 1:2.16.0-8build1
-  ubuntu_26_04/binutils: 2.46-3ubuntu2
-  ubuntu_26_04/binutils-common: 2.46-3ubuntu2
-  ubuntu_26_04/binutils-x86-64-linux-gnu: 2.46-3ubuntu2
+  ubuntu_26_04/binutils: 2.46-3ubuntu2.1
+  ubuntu_26_04/binutils-common: 2.46-3ubuntu2.1
+  ubuntu_26_04/binutils-x86-64-linux-gnu: 2.46-3ubuntu2.1
   ubuntu_26_04/bsdutils: 1:2.41.3-3ubuntu2.2
   ubuntu_26_04/bubblewrap: 0.11.1-1ubuntu0.3
   ubuntu_26_04/ca-certificates: 20260816ubuntu0.26.04.2
@@ -1502,7 +1502,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.4:
   ubuntu_26_04/libavformat62: 7:8.0.1-3ubuntu2
   ubuntu_26_04/libavutil60: 7:8.0.1-3ubuntu2
   ubuntu_26_04/libb2-1: 0.98.1-1.1build2
-  ubuntu_26_04/libbinutils: 2.46-3ubuntu2
+  ubuntu_26_04/libbinutils: 2.46-3ubuntu2.1
   ubuntu_26_04/libblas3: 3.12.1-7ubuntu1
   ubuntu_26_04/libblkid1: 2.41.3-3ubuntu2.2
   ubuntu_26_04/libbluray3: 1:1.4.1-1
@@ -1525,8 +1525,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.4:
   ubuntu_26_04/libcom-err2: 1.47.2-3ubuntu4
   ubuntu_26_04/libcrypt-dev: 1:4.5.1-1
   ubuntu_26_04/libcrypt1: 1:4.5.1-1
-  ubuntu_26_04/libctf-nobfd0: 2.46-3ubuntu2
-  ubuntu_26_04/libctf0: 2.46-3ubuntu2
+  ubuntu_26_04/libctf-nobfd0: 2.46-3ubuntu2.1
+  ubuntu_26_04/libctf0: 2.46-3ubuntu2.1
   ubuntu_26_04/libcups2t64: 2.4.16-1ubuntu1.3
   ubuntu_26_04/libcurl3t64-gnutls: 8.18.0-1ubuntu2.8
   ubuntu_26_04/libcurl4t64: 8.18.0-1ubuntu2.8
@@ -1587,7 +1587,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.4:
   ubuntu_26_04/libgnutls30t64: 3.8.12-2ubuntu1.1
   ubuntu_26_04/libgomp1: 16-20260322-1ubuntu1
   ubuntu_26_04/libgpg-error0: 1.58-2
-  ubuntu_26_04/libgprofng0: 2.46-3ubuntu2
+  ubuntu_26_04/libgprofng0: 2.46-3ubuntu2.1
   ubuntu_26_04/libgraphite2-3: 1.3.14-11ubuntu1.1
   ubuntu_26_04/libgsl28: 2.8+dfsg-6
   ubuntu_26_04/libgslcblas0: 2.8+dfsg-6
@@ -1762,7 +1762,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.4:
   ubuntu_26_04/libsensors-config: 1:3.6.2-2build1
   ubuntu_26_04/libsensors5: 1:3.6.2-2build1
   ubuntu_26_04/libsepol2: 3.9-2
-  ubuntu_26_04/libsframe3: 2.46-3ubuntu2
+  ubuntu_26_04/libsframe3: 2.46-3ubuntu2.1
   ubuntu_26_04/libsharpyuv0: 1.5.0-0.1build1
   ubuntu_26_04/libshine3: 3.1.1-3build1
   ubuntu_26_04/libsm6: 2:1.2.6-1build1
@@ -1961,9 +1961,9 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.4-gdal3.13:
   ubuntu_26_04/base-passwd: 3.6.8
   ubuntu_26_04/bash: 5.3-2ubuntu1
   ubuntu_26_04/bash-completion: 1:2.16.0-8build1
-  ubuntu_26_04/binutils: 2.46-3ubuntu2
-  ubuntu_26_04/binutils-common: 2.46-3ubuntu2
-  ubuntu_26_04/binutils-x86-64-linux-gnu: 2.46-3ubuntu2
+  ubuntu_26_04/binutils: 2.46-3ubuntu2.1
+  ubuntu_26_04/binutils-common: 2.46-3ubuntu2.1
+  ubuntu_26_04/binutils-x86-64-linux-gnu: 2.46-3ubuntu2.1
   ubuntu_26_04/bsdutils: 1:2.41.3-3ubuntu2.2
   ubuntu_26_04/bubblewrap: 0.11.1-1ubuntu0.3
   ubuntu_26_04/ca-certificates: 20260816ubuntu0.26.04.2
@@ -2024,7 +2024,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.4-gdal3.13:
   ubuntu_26_04/libavformat62: 7:8.0.1-3ubuntu2
   ubuntu_26_04/libavutil60: 7:8.0.1-3ubuntu2
   ubuntu_26_04/libb2-1: 0.98.1-1.1build2
-  ubuntu_26_04/libbinutils: 2.46-3ubuntu2
+  ubuntu_26_04/libbinutils: 2.46-3ubuntu2.1
   ubuntu_26_04/libblas3: 3.12.1-7ubuntu1
   ubuntu_26_04/libblkid1: 2.41.3-3ubuntu2.2
   ubuntu_26_04/libbluray3: 1:1.4.1-1
@@ -2047,8 +2047,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.4-gdal3.13:
   ubuntu_26_04/libcom-err2: 1.47.2-3ubuntu4
   ubuntu_26_04/libcrypt-dev: 1:4.5.1-1
   ubuntu_26_04/libcrypt1: 1:4.5.1-1
-  ubuntu_26_04/libctf-nobfd0: 2.46-3ubuntu2
-  ubuntu_26_04/libctf0: 2.46-3ubuntu2
+  ubuntu_26_04/libctf-nobfd0: 2.46-3ubuntu2.1
+  ubuntu_26_04/libctf0: 2.46-3ubuntu2.1
   ubuntu_26_04/libcups2t64: 2.4.16-1ubuntu1.3
   ubuntu_26_04/libcurl3t64-gnutls: 8.18.0-1ubuntu2.8
   ubuntu_26_04/libcurl4t64: 8.18.0-1ubuntu2.8
@@ -2109,7 +2109,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.4-gdal3.13:
   ubuntu_26_04/libgnutls30t64: 3.8.12-2ubuntu1.1
   ubuntu_26_04/libgomp1: 16-20260322-1ubuntu1
   ubuntu_26_04/libgpg-error0: 1.58-2
-  ubuntu_26_04/libgprofng0: 2.46-3ubuntu2
+  ubuntu_26_04/libgprofng0: 2.46-3ubuntu2.1
   ubuntu_26_04/libgraphite2-3: 1.3.14-11ubuntu1.1
   ubuntu_26_04/libgsl28: 2.8+dfsg-6
   ubuntu_26_04/libgslcblas0: 2.8+dfsg-6
@@ -2284,7 +2284,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgis4.4-gdal3.13:
   ubuntu_26_04/libsensors-config: 1:3.6.2-2build1
   ubuntu_26_04/libsensors5: 1:3.6.2-2build1
   ubuntu_26_04/libsepol2: 3.9-2
-  ubuntu_26_04/libsframe3: 2.46-3ubuntu2
+  ubuntu_26_04/libsframe3: 2.46-3ubuntu2.1
   ubuntu_26_04/libsharpyuv0: 1.5.0-0.1build1
   ubuntu_26_04/libshine3: 3.1.1-3build1
   ubuntu_26_04/libsm6: 2:1.2.6-1build1
@@ -2483,9 +2483,9 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_26_04/base-passwd: 3.6.8
   ubuntu_26_04/bash: 5.3-2ubuntu1
   ubuntu_26_04/bash-completion: 1:2.16.0-8build1
-  ubuntu_26_04/binutils: 2.46-3ubuntu2
-  ubuntu_26_04/binutils-common: 2.46-3ubuntu2
-  ubuntu_26_04/binutils-x86-64-linux-gnu: 2.46-3ubuntu2
+  ubuntu_26_04/binutils: 2.46-3ubuntu2.1
+  ubuntu_26_04/binutils-common: 2.46-3ubuntu2.1
+  ubuntu_26_04/binutils-x86-64-linux-gnu: 2.46-3ubuntu2.1
   ubuntu_26_04/bsdutils: 1:2.41.3-3ubuntu2.2
   ubuntu_26_04/bubblewrap: 0.11.1-1ubuntu0.3
   ubuntu_26_04/ca-certificates: 20260816ubuntu0.26.04.2
@@ -2546,7 +2546,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_26_04/libavformat62: 7:8.0.1-3ubuntu2
   ubuntu_26_04/libavutil60: 7:8.0.1-3ubuntu2
   ubuntu_26_04/libb2-1: 0.98.1-1.1build2
-  ubuntu_26_04/libbinutils: 2.46-3ubuntu2
+  ubuntu_26_04/libbinutils: 2.46-3ubuntu2.1
   ubuntu_26_04/libblas3: 3.12.1-7ubuntu1
   ubuntu_26_04/libblkid1: 2.41.3-3ubuntu2.2
   ubuntu_26_04/libbluray3: 1:1.4.1-1
@@ -2569,8 +2569,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_26_04/libcom-err2: 1.47.2-3ubuntu4
   ubuntu_26_04/libcrypt-dev: 1:4.5.1-1
   ubuntu_26_04/libcrypt1: 1:4.5.1-1
-  ubuntu_26_04/libctf-nobfd0: 2.46-3ubuntu2
-  ubuntu_26_04/libctf0: 2.46-3ubuntu2
+  ubuntu_26_04/libctf-nobfd0: 2.46-3ubuntu2.1
+  ubuntu_26_04/libctf0: 2.46-3ubuntu2.1
   ubuntu_26_04/libcups2t64: 2.4.16-1ubuntu1.3
   ubuntu_26_04/libcurl3t64-gnutls: 8.18.0-1ubuntu2.8
   ubuntu_26_04/libcurl4t64: 8.18.0-1ubuntu2.8
@@ -2631,7 +2631,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_26_04/libgnutls30t64: 3.8.12-2ubuntu1.1
   ubuntu_26_04/libgomp1: 16-20260322-1ubuntu1
   ubuntu_26_04/libgpg-error0: 1.58-2
-  ubuntu_26_04/libgprofng0: 2.46-3ubuntu2
+  ubuntu_26_04/libgprofng0: 2.46-3ubuntu2.1
   ubuntu_26_04/libgraphite2-3: 1.3.14-11ubuntu1.1
   ubuntu_26_04/libgsl28: 2.8+dfsg-6
   ubuntu_26_04/libgslcblas0: 2.8+dfsg-6
@@ -2806,7 +2806,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr:
   ubuntu_26_04/libsensors-config: 1:3.6.2-2build1
   ubuntu_26_04/libsensors5: 1:3.6.2-2build1
   ubuntu_26_04/libsepol2: 3.9-2
-  ubuntu_26_04/libsframe3: 2.46-3ubuntu2
+  ubuntu_26_04/libsframe3: 2.46-3ubuntu2.1
   ubuntu_26_04/libsharpyuv0: 1.5.0-0.1build1
   ubuntu_26_04/libshine3: 3.1.1-3build1
   ubuntu_26_04/libsm6: 2:1.2.6-1build1
@@ -3005,9 +3005,9 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_26_04/base-passwd: 3.6.8
   ubuntu_26_04/bash: 5.3-2ubuntu1
   ubuntu_26_04/bash-completion: 1:2.16.0-8build1
-  ubuntu_26_04/binutils: 2.46-3ubuntu2
-  ubuntu_26_04/binutils-common: 2.46-3ubuntu2
-  ubuntu_26_04/binutils-x86-64-linux-gnu: 2.46-3ubuntu2
+  ubuntu_26_04/binutils: 2.46-3ubuntu2.1
+  ubuntu_26_04/binutils-common: 2.46-3ubuntu2.1
+  ubuntu_26_04/binutils-x86-64-linux-gnu: 2.46-3ubuntu2.1
   ubuntu_26_04/bsdutils: 1:2.41.3-3ubuntu2.2
   ubuntu_26_04/bubblewrap: 0.11.1-1ubuntu0.3
   ubuntu_26_04/ca-certificates: 20260816ubuntu0.26.04.2
@@ -3070,7 +3070,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_26_04/libavutil60: 7:8.0.1-3ubuntu2
   ubuntu_26_04/libb2-1: 0.98.1-1.1build2
   ubuntu_26_04/libbabeltrace1: 1.5.11-5build1
-  ubuntu_26_04/libbinutils: 2.46-3ubuntu2
+  ubuntu_26_04/libbinutils: 2.46-3ubuntu2.1
   ubuntu_26_04/libblas3: 3.12.1-7ubuntu1
   ubuntu_26_04/libblkid1: 2.41.3-3ubuntu2.2
   ubuntu_26_04/libbluray3: 1:1.4.1-1
@@ -3093,8 +3093,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_26_04/libcom-err2: 1.47.2-3ubuntu4
   ubuntu_26_04/libcrypt-dev: 1:4.5.1-1
   ubuntu_26_04/libcrypt1: 1:4.5.1-1
-  ubuntu_26_04/libctf-nobfd0: 2.46-3ubuntu2
-  ubuntu_26_04/libctf0: 2.46-3ubuntu2
+  ubuntu_26_04/libctf-nobfd0: 2.46-3ubuntu2.1
+  ubuntu_26_04/libctf0: 2.46-3ubuntu2.1
   ubuntu_26_04/libcups2t64: 2.4.16-1ubuntu1.3
   ubuntu_26_04/libcurl3t64-gnutls: 8.18.0-1ubuntu2.8
   ubuntu_26_04/libcurl4t64: 8.18.0-1ubuntu2.8
@@ -3158,7 +3158,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_26_04/libgnutls30t64: 3.8.12-2ubuntu1.1
   ubuntu_26_04/libgomp1: 16-20260322-1ubuntu1
   ubuntu_26_04/libgpg-error0: 1.58-2
-  ubuntu_26_04/libgprofng0: 2.46-3ubuntu2
+  ubuntu_26_04/libgprofng0: 2.46-3ubuntu2.1
   ubuntu_26_04/libgraphite2-3: 1.3.14-11ubuntu1.1
   ubuntu_26_04/libgsl28: 2.8+dfsg-6
   ubuntu_26_04/libgslcblas0: 2.8+dfsg-6
@@ -3335,7 +3335,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgislr-debug:
   ubuntu_26_04/libsensors-config: 1:3.6.2-2build1
   ubuntu_26_04/libsensors5: 1:3.6.2-2build1
   ubuntu_26_04/libsepol2: 3.9-2
-  ubuntu_26_04/libsframe3: 2.46-3ubuntu2
+  ubuntu_26_04/libsframe3: 2.46-3ubuntu2.1
   ubuntu_26_04/libsharpyuv0: 1.5.0-0.1build1
   ubuntu_26_04/libshine3: 3.1.1-3build1
   ubuntu_26_04/libsm6: 2:1.2.6-1build1
@@ -3945,9 +3945,9 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_26_04/base-passwd: 3.6.8
   ubuntu_26_04/bash: 5.3-2ubuntu1
   ubuntu_26_04/bash-completion: 1:2.16.0-8build1
-  ubuntu_26_04/binutils: 2.46-3ubuntu2
-  ubuntu_26_04/binutils-common: 2.46-3ubuntu2
-  ubuntu_26_04/binutils-x86-64-linux-gnu: 2.46-3ubuntu2
+  ubuntu_26_04/binutils: 2.46-3ubuntu2.1
+  ubuntu_26_04/binutils-common: 2.46-3ubuntu2.1
+  ubuntu_26_04/binutils-x86-64-linux-gnu: 2.46-3ubuntu2.1
   ubuntu_26_04/bsdutils: 1:2.41.3-3ubuntu2.2
   ubuntu_26_04/bubblewrap: 0.11.1-1ubuntu0.3
   ubuntu_26_04/ca-certificates: 20260816ubuntu0.26.04.2
@@ -4008,7 +4008,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_26_04/libavformat62: 7:8.0.1-3ubuntu2
   ubuntu_26_04/libavutil60: 7:8.0.1-3ubuntu2
   ubuntu_26_04/libb2-1: 0.98.1-1.1build2
-  ubuntu_26_04/libbinutils: 2.46-3ubuntu2
+  ubuntu_26_04/libbinutils: 2.46-3ubuntu2.1
   ubuntu_26_04/libblas3: 3.12.1-7ubuntu1
   ubuntu_26_04/libblkid1: 2.41.3-3ubuntu2.2
   ubuntu_26_04/libbluray3: 1:1.4.1-1
@@ -4031,8 +4031,8 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_26_04/libcom-err2: 1.47.2-3ubuntu4
   ubuntu_26_04/libcrypt-dev: 1:4.5.1-1
   ubuntu_26_04/libcrypt1: 1:4.5.1-1
-  ubuntu_26_04/libctf-nobfd0: 2.46-3ubuntu2
-  ubuntu_26_04/libctf0: 2.46-3ubuntu2
+  ubuntu_26_04/libctf-nobfd0: 2.46-3ubuntu2.1
+  ubuntu_26_04/libctf0: 2.46-3ubuntu2.1
   ubuntu_26_04/libcups2t64: 2.4.16-1ubuntu1.3
   ubuntu_26_04/libcurl3t64-gnutls: 8.18.0-1ubuntu2.8
   ubuntu_26_04/libcurl4t64: 8.18.0-1ubuntu2.8
@@ -4093,7 +4093,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_26_04/libgnutls30t64: 3.8.12-2ubuntu1.1
   ubuntu_26_04/libgomp1: 16-20260322-1ubuntu1
   ubuntu_26_04/libgpg-error0: 1.58-2
-  ubuntu_26_04/libgprofng0: 2.46-3ubuntu2
+  ubuntu_26_04/libgprofng0: 2.46-3ubuntu2.1
   ubuntu_26_04/libgraphite2-3: 1.3.14-11ubuntu1.1
   ubuntu_26_04/libgsl28: 2.8+dfsg-6
   ubuntu_26_04/libgslcblas0: 2.8+dfsg-6
@@ -4268,7 +4268,7 @@ camptocamp/geomapfish-qgisserver:gmflatest-qgismaster:
   ubuntu_26_04/libsensors-config: 1:3.6.2-2build1
   ubuntu_26_04/libsensors5: 1:3.6.2-2build1
   ubuntu_26_04/libsepol2: 3.9-2
-  ubuntu_26_04/libsframe3: 2.46-3ubuntu2
+  ubuntu_26_04/libsframe3: 2.46-3ubuntu2.1
   ubuntu_26_04/libsharpyuv0: 1.5.0-0.1build1
   ubuntu_26_04/libshine3: 3.1.1-3build1
   ubuntu_26_04/libsm6: 2:1.2.6-1build1
@@ -4467,9 +4467,9 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_26_04/bind9-dnsutils: 1:9.20.24-1ubuntu0.5
   ubuntu_26_04/bind9-host: 1:9.20.24-1ubuntu0.5
   ubuntu_26_04/bind9-libs: 1:9.20.24-1ubuntu0.5
-  ubuntu_26_04/binutils: 2.46-3ubuntu2
-  ubuntu_26_04/binutils-common: 2.46-3ubuntu2
-  ubuntu_26_04/binutils-x86-64-linux-gnu: 2.46-3ubuntu2
+  ubuntu_26_04/binutils: 2.46-3ubuntu2.1
+  ubuntu_26_04/binutils-common: 2.46-3ubuntu2.1
+  ubuntu_26_04/binutils-x86-64-linux-gnu: 2.46-3ubuntu2.1
   ubuntu_26_04/bsdutils: 1:2.41.3-3ubuntu2.2
   ubuntu_26_04/ca-certificates: 20260816ubuntu0.26.04.2
   ubuntu_26_04/coreutils: 9.5-1ubuntu2+0.0.0~ubuntu25
@@ -4539,7 +4539,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_26_04/libavahi-client3: 0.8-18ubuntu1.1
   ubuntu_26_04/libavahi-common-data: 0.8-18ubuntu1.1
   ubuntu_26_04/libavahi-common3: 0.8-18ubuntu1.1
-  ubuntu_26_04/libbinutils: 2.46-3ubuntu2
+  ubuntu_26_04/libbinutils: 2.46-3ubuntu2.1
   ubuntu_26_04/libblas3: 3.12.1-7ubuntu1
   ubuntu_26_04/libblkid1: 2.41.3-3ubuntu2.2
   ubuntu_26_04/libbpf1: 1:1.6.3-1ubuntu1
@@ -4560,8 +4560,8 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_26_04/libcom-err2: 1.47.2-3ubuntu4
   ubuntu_26_04/libcrypt-dev: 1:4.5.1-1
   ubuntu_26_04/libcrypt1: 1:4.5.1-1
-  ubuntu_26_04/libctf-nobfd0: 2.46-3ubuntu2
-  ubuntu_26_04/libctf0: 2.46-3ubuntu2
+  ubuntu_26_04/libctf-nobfd0: 2.46-3ubuntu2.1
+  ubuntu_26_04/libctf0: 2.46-3ubuntu2.1
   ubuntu_26_04/libcups2t64: 2.4.16-1ubuntu1.3
   ubuntu_26_04/libcurl3t64-gnutls: 8.18.0-1ubuntu2.8
   ubuntu_26_04/libcurl4t64: 8.18.0-1ubuntu2.8
@@ -4600,7 +4600,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_26_04/libgomp1: 16-20260322-1ubuntu1
   ubuntu_26_04/libgpg-error0: 1.58-2
   ubuntu_26_04/libgpm2: 1.20.7-12build1
-  ubuntu_26_04/libgprofng0: 2.46-3ubuntu2
+  ubuntu_26_04/libgprofng0: 2.46-3ubuntu2.1
   ubuntu_26_04/libgraphite2-3: 1.3.14-11ubuntu1.1
   ubuntu_26_04/libgssapi-krb5-2: 1.22.1-2ubuntu4.3
   ubuntu_26_04/libharfbuzz0b: 12.3.2-2
@@ -4694,7 +4694,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_26_04/libsensors-config: 1:3.6.2-2build1
   ubuntu_26_04/libsensors5: 1:3.6.2-2build1
   ubuntu_26_04/libsepol2: 3.9-2
-  ubuntu_26_04/libsframe3: 2.46-3ubuntu2
+  ubuntu_26_04/libsframe3: 2.46-3ubuntu2.1
   ubuntu_26_04/libsharpyuv0: 1.5.0-0.1build1
   ubuntu_26_04/libsimdjson29: 4.2.4-1
   ubuntu_26_04/libsimdutf31: 8.0.0-1
@@ -4745,7 +4745,7 @@ camptocamp/geomapfish-tools:latest:
   ubuntu_26_04/libxerces-c3.2t64: 3.2.4+debian-1.3build2
   ubuntu_26_04/libxext6: 2:1.3.4-1build3
   ubuntu_26_04/libxfixes3: 1:6.0.0-2build2
-  ubuntu_26_04/libxi6: 2:1.8.2-2
+  ubuntu_26_04/libxi6: 2:1.8.2-2ubuntu0.26.04.1
   ubuntu_26_04/libxkbcommon0: 1.13.1-1
   ubuntu_26_04/libxml2-16: 2.15.2+dfsg-0.1ubuntu0.3
   ubuntu_26_04/libxml2-utils: 2.15.2+dfsg-0.1ubuntu0.3
@@ -5171,8 +5171,8 @@ camptocamp/geomapfish:latest:
   ubuntu_26_04/base-passwd: 3.6.8
   ubuntu_26_04/bash: 5.3-2ubuntu1
   ubuntu_26_04/bash-completion: 1:2.16.0-8build1
-  ubuntu_26_04/binutils: 2.46-3ubuntu2
-  ubuntu_26_04/binutils-common: 2.46-3ubuntu2
+  ubuntu_26_04/binutils: 2.46-3ubuntu2.1
+  ubuntu_26_04/binutils-common: 2.46-3ubuntu2.1
   ubuntu_26_04/bsdutils: 1:2.41.3-3ubuntu2.2
   ubuntu_26_04/ca-certificates: 20260816ubuntu0.26.04.2
   ubuntu_26_04/coreutils: 9.5-1ubuntu2+0.0.0~ubuntu25
@@ -5391,7 +5391,7 @@ camptocamp/geomapfish:latest:
   ubuntu_26_04/libxerces-c3.2t64: 3.2.4+debian-1.3build2
   ubuntu_26_04/libxext6: 2:1.3.4-1build3
   ubuntu_26_04/libxfixes3: 1:6.0.0-2build2
-  ubuntu_26_04/libxi6: 2:1.8.2-2
+  ubuntu_26_04/libxi6: 2:1.8.2-2ubuntu0.26.04.1
   ubuntu_26_04/libxkbcommon0: 1.13.1-1
   ubuntu_26_04/libxml2-16: 2.15.2+dfsg-0.1ubuntu0.3
   ubuntu_26_04/libxrandr2: 2:1.5.4-1build1
@@ -5795,8 +5795,8 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_26_04/base-passwd: 3.6.8
   ubuntu_26_04/bash: 5.3-2ubuntu1
   ubuntu_26_04/bash-completion: 1:2.16.0-8build1
-  ubuntu_26_04/binutils: 2.46-3ubuntu2
-  ubuntu_26_04/binutils-common: 2.46-3ubuntu2
+  ubuntu_26_04/binutils: 2.46-3ubuntu2.1
+  ubuntu_26_04/binutils-common: 2.46-3ubuntu2.1
   ubuntu_26_04/bsdutils: 1:2.41.3-3ubuntu2.2
   ubuntu_26_04/ca-certificates: 20260816ubuntu0.26.04.2
   ubuntu_26_04/coreutils: 9.5-1ubuntu2+0.0.0~ubuntu25
@@ -6015,7 +6015,7 @@ camptocamp/geomapfishapp-geoportal:latest:
   ubuntu_26_04/libxerces-c3.2t64: 3.2.4+debian-1.3build2
   ubuntu_26_04/libxext6: 2:1.3.4-1build3
   ubuntu_26_04/libxfixes3: 1:6.0.0-2build2
-  ubuntu_26_04/libxi6: 2:1.8.2-2
+  ubuntu_26_04/libxi6: 2:1.8.2-2ubuntu0.26.04.1
   ubuntu_26_04/libxkbcommon0: 1.13.1-1
   ubuntu_26_04/libxml2-16: 2.15.2+dfsg-0.1ubuntu0.3
   ubuntu_26_04/libxrandr2: 2:1.5.4-1build1
