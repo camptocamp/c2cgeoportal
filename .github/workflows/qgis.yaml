@@ -16,8 +16,7 @@ env:
   MAJOR_VERSION: '2.11'
 
 permissions:
-  packages: write
-  id-token: write
+  contents: read
 
 jobs:
   common:
@@ -46,6 +45,11 @@ jobs:
     name: QGIS build
     timeout-minutes: 15
     needs: common
+
+    # tag-publish needs the write permissions to push the images and to log in with OpenId Connect.
+    permissions:
+      packages: write
+      id-token: write
 
     strategy:
       fail-fast: false
@@ -79,7 +83,7 @@ jobs:
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: '3.14'
-      - run: python3 -m pip install --user --requirement=ci/requirements.txt
+      - run: python3 -m pip install --user '--only-binary=:all:' --requirement=ci/requirements.txt
 
       - run: scripts/get-version --auto-increment --github
         id: version

@@ -110,7 +110,7 @@ boto3 = "1.43.125"
 pre-commit = "4.7.0"
 prek = "0.5.7"
 # To be able to upgrade project from version <= 2.8
-c2cciutils = { version = "1.5.14", extras = ["checks"] }
+c2cciutils = { version = "1.7.5", extras = ["checks"] }
 
 [project]
 name = "c2cgeoportal"

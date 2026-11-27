@@ -37,6 +37,7 @@ import sys
 
 import c2cciutils
 import requests
+import security_md
 import yaml
 
 
@@ -120,7 +121,7 @@ def _main() -> None:
         security_response.ok
         and docker_config.get("latest", c2cciutils.configuration.PUBLISH_DOCKER_LATEST_DEFAULT) is True
     ):
-        security = c2cciutils.security.Security(security_response.text)
+        security = security_md.Security(security_response.text)
         version_index = security.headers.index("Version")
         latest = security.data[-1][version_index] == major_version
 
